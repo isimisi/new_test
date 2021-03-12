@@ -48,6 +48,5 @@ module.exports = {
     "global-require":"off",
     "no-plusplus":"off",
     "@typescript-eslint/no-shadow": ["error"]
-    "react/jsx-props-no-spreading": "off",
   }
 };

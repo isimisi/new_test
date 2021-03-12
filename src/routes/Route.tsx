@@ -1,12 +1,20 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, RouteComponentProps } from 'react-router-dom';
 
-export default function RouteWrapper({
-  component: Component,
-  isPrivate,
-  ...rest
-}) {
+interface Props {
+  component:
+    | React.ComponentType<RouteComponentProps<any>>
+    | React.ComponentType<any>;
+  isPrivate?: boolean;
+  path?: string;
+  exact?: boolean;
+}
+
+export default function RouteWrapper(props: Props): JSX.Element {
+  const { component, isPrivate, ...rest } = props;
   const signed = false;
 
   /**
@@ -28,15 +36,5 @@ export default function RouteWrapper({
   /**
    * If not included on both previous cases, redirect user to the desired route.
    */
-  return <Route {...rest} component={Component} />;
+  return <Route {...rest} component={component} />;
 }
-
-RouteWrapper.propTypes = {
-  isPrivate: PropTypes.bool,
-  component: PropTypes.oneOfType([PropTypes.element, PropTypes.func])
-    .isRequired,
-};
-
-RouteWrapper.defaultProps = {
-  isPrivate: false,
-};
