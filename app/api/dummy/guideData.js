@@ -1,17 +1,17 @@
 const guideSteps = [
   {
     title: 'Hi, welcome',
-    label: 'Here is some guide to use this template. Click next to continue or click on outside to skip it',
+    label: 'This is Juristic, we help you enhance your productivity',
     imgPath: '/images/guide/guide1.jpg',
   },
   {
     title: 'Dark and Light Mode',
-    label: 'Enjoy your eyes with dark/light mode, just switch the option in theme panel or on header',
+    label: 'Enjoy your eyes with dark/light mode, just switch the option on the header',
     imgPath: '/images/guide/guide2.gif',
   },
   {
-    title: 'Themes and Layout',
-    label: 'Build your template with various themes and layout combination. It easy to adjust following your brand identity',
+    title: 'Datamodels',
+    label: 'Define your data models and what to output',
     imgPath: '/images/guide/guide3.gif',
   },
   {
@@ -20,8 +20,8 @@ const guideSteps = [
     imgPath: '/images/guide/guide4.gif',
   },
   {
-    title: 'Code Preview',
-    label: 'Get source code easier without open files. Just click showcode button then You will see what a magic behind. It is available for Layout, Form Buttons, UI Components, Chart and Maps category',
+    title: 'Workspaces',
+    label: 'Make your workspaces to 10x your productivity',
     imgPath: '/images/guide/guide5.gif',
   },
 ];

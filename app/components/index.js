@@ -18,3 +18,6 @@ export Notification from './Notification/Notification';
 export EmptyData from './Tables/EmptyData';
 // Error
 export ErrorWrap from './Error/ErrorWrap';
+// widget
+export CounterWidget from './Counter/CounterWidget';
+export CounterTrading from './Counter/CounterTrading';

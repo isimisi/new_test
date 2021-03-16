@@ -81,7 +81,7 @@ function LoginForm(props) {
           Sign In
         </Typography>
         <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
-          Login to hack your productivity
+          Lorem ipsum dolor sit amet
         </Typography>
         <section className={classes.socmedLogin}>
           <div className={classes.btnArea}>

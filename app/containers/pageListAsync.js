@@ -9,8 +9,8 @@ export const DashboardPage = Loadable({
   loader: () => import('./Pages/Dashboard'),
   loading: Loading,
 });
-export const Form = Loadable({
-  loader: () => import('./Pages/Forms/ReduxForm'),
+export const Conditions = Loadable({
+  loader: () => import('./Pages/Conditions'),
   loading: Loading,
 });
 export const Table = Loadable({

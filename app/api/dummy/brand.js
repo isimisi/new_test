@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'Dandelion Pro',
-  desc: 'Dandelion Pro - React Website Template',
-  prefix: 'dandelion',
-  footerText: 'Dandelion Pro All Rights Reserved 2018',
-  logoText: 'Dandelion Pro',
+  name: 'Juristic',
+  desc: 'Hack your productivity',
+  prefix: 'Juristic',
+  footerText: 'Juristic All Rights Reserved 2021',
+  logoText: 'Juristic',
 };

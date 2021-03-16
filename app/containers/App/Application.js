@@ -7,7 +7,7 @@ import {
   Parent,
   DashboardPage,
   BlankPage,
-  Form,
+  Conditions,
   Table,
   Error,
   NotFound
@@ -21,7 +21,7 @@ function Application(props) {
       <Switch>
         <Route exact path="/app" component={BlankPage} />
         <Route path="/app/dashboard" component={DashboardPage} />
-        <Route path="/app/form" component={Form} />
+        <Route path="/app/conditions" component={Conditions} />
         <Route path="/app/table" component={Table} />
         <Route path="/app/page-list" component={Parent} />
         <Route path="/app/pages/not-found" component={NotFound} />
