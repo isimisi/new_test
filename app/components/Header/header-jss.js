@@ -34,7 +34,7 @@ const styles = theme => ({
         },
       },
       '& $headerTitle': {
-        left: theme.spacing(4),
+        left: 0,
       }
     },
     '&$right': {
@@ -303,7 +303,7 @@ const styles = theme => ({
   },
   mainMenu: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(1, 0),
+    padding: theme.spacing(2, 0),
     boxShadow: theme.shadows[3],
     position: 'relative',
     transition: 'padding 0.3s ease',
@@ -449,8 +449,8 @@ const styles = theme => ({
     },
     '&$invert': {
       '& $button': {
-        '& svg': {
-          fill: fade(theme.palette.text.primary, 0.5),
+        '& i': {
+          color: fade(theme.palette.text.primary, 0.5),
         }
       }
     }

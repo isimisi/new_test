@@ -16,7 +16,9 @@ function BlankPage() {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-
+      <PapperBlock title="Blank Page" desc="Some text description">
+        Content
+      </PapperBlock>
     </div>
   );
 }

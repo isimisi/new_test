@@ -2,11 +2,12 @@ module.exports = {
   dashboard: '/app',
   login: '/login',
   market: '#',
-  email: '#',
-  profile: '#',
-  calendar: '#',
+  email: '/app/pages/email',
+  profile: '/app/pages/user-profile',
+  calendar: '/app/pages/calendar',
   twitter: '#',
   github: '#',
   pinterest: '#',
-  linkedin: '#'
+  linkedin: '#',
+  buy: '#',
 };

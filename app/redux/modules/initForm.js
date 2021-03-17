@@ -14,7 +14,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case CLEAR:
       return state.withMutations((mutableState) => {
-        mutableState.set('formValues', []);
+        mutableState.set('formValues', Map());
       });
     default:
       return state;

@@ -6,7 +6,7 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
   },
   "parser": "babel-eslint",
   "rules": {
@@ -14,7 +14,7 @@
     "import/no-unresolved": 0,
     "import/no-named-as-default": 0,
     "no-unused-expressions": 0,
-    "comma-dangle": 0,
+    "comma-dangle": 0,  // not sure why airbnb turned this on. gross!
     "indent": [2, 2, {"SwitchCase": 1}],
     "no-console": 0,
     "no-alert": 0,
@@ -39,8 +39,8 @@
     "jsx-a11y/label-has-for": [ 2, {
         "required": {
             "every": [ "id" ]
-        }
-    }]
+        },
+    }],
   },
   "plugins": [
     "react",
@@ -57,6 +57,6 @@
     "__CLIENT__": true,
     "__SERVER__": true,
     "beforeAll": true,
-    "afterAll": true
+    "afterAll": true,
   }
 }

@@ -16,7 +16,7 @@ const styles = theme => ({
     width: '100%',
     marginTop: 0,
     zIndex: 1,
-    overflow: 'auto',
+    overflow: 'auto'
   },
   blogWrap: {
     color: theme.palette.text.primary,
