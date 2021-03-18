@@ -1,5 +1,0 @@
-export const FETCH_CALENDAR_DATA = 'FETCH_CALENDAR_DATA';
-export const ADD_EVENT = 'ADD_EVENT';
-export const DISCARD_EVENT = 'DISCARD_EVENT';
-export const SUBMIT_EVENT = 'SUBMIT_EVENT';
-export const DELETE_EVENT = 'DELETE_EVENT';

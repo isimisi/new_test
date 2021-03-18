@@ -10,6 +10,11 @@ const applicationTheme = (color, mode, direction) => ({
       hoverOpacity: 0.05
     }
   },
+  glass: {
+    backgroundColor: mode === 'dark' ? '#000000aa' : '#ffffffaa',
+    border: '1px solid rgba( 255, 255, 255, 0.18)',
+    shadow: '0 8px 32px 0 rgba( 31, 38, 135, 0.37 )'
+  },
   typography: {
     useNextVariants: true,
     fontFamily: [

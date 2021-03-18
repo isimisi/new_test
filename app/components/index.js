@@ -36,7 +36,6 @@ export SalesChartWidget from './Widget/SalesChartWidget';
 export CarouselWidget from './Widget/CarouselWidget';
 export AlbumWidget from './Widget/AlbumWidget';
 export MapWidget from './Widget/MapWidget';
-export ContactWidget from './Widget/ContactWidget';
 export WeatherWidget from './Widget/WeatherWidget';
 export DateWidget from './Widget/DateWidget';
 export FilesWidget from './Widget/FilesWidget';
@@ -144,4 +143,3 @@ export AddBoard from './TaskBoard/AddBoard';
 // Error
 export ErrorWrap from './Error/ErrorWrap';
 // Theme an Layout Settings
-export TemplateSettings from './TemplateSettings';

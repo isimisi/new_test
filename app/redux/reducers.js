@@ -11,16 +11,6 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import uiReducer from './modules/ui';
 import initval from './modules/initForm';
 import login from './modules/login';
-import treeTable from '../containers/Tables/reducers/treeTbReducer';
-import crudTable from '../containers/Tables/reducers/crudTbReducer';
-import crudTableForm from '../containers/Tables/reducers/crudTbFrmReducer';
-import ecommerce from '../containers/SampleApps/Ecommerce/reducers/ecommerceReducer';
-import contact from '../containers/SampleApps/Contact/reducers/contactReducer';
-import chat from '../containers/SampleApps/Chat/reducers/chatReducer';
-import email from '../containers/SampleApps/Email/reducers/emailReducer';
-import calendar from '../containers/SampleApps/Calendar/reducers/calendarReducer';
-import socmed from '../containers/SampleApps/Timeline/reducers/timelineReducer';
-import taskboard from '../containers/SampleApps/TaskBoard/reducers/taskboardReducer';
 
 /**
  * Branching reducers to use one reducer for many components
@@ -46,18 +36,6 @@ export default function createReducer(injectedReducers = {}) {
     ui: uiReducer,
     initval,
     login,
-    socmed,
-    calendar,
-    ecommerce,
-    contact,
-    chat,
-    email,
-    taskboard,
-    treeTableArrow: branchReducer(treeTable, 'treeTableArrow'),
-    treeTablePM: branchReducer(treeTable, 'treeTablePM'),
-    crudTableDemo: branchReducer(crudTable, 'crudTableDemo'),
-    crudTableForm,
-    crudTbFrmDemo: branchReducer(crudTableForm, 'crudTbFrmDemo'),
     language: languageProviderReducer,
     router: connectRouter(history),
     ...injectedReducers,

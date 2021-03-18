@@ -18,7 +18,7 @@ module.exports = [
       {
         key: 'output',
         name: 'Ouput',
-        link: '/',
+        link: '/app/output',
         icon: 'ios-document-outline',
       },
       {
@@ -29,31 +29,31 @@ module.exports = [
       {
         key: 'attributs',
         name: 'Attributes',
-        link: '/',
+        link: '/app/attributes',
         icon: 'ios-home-outline',
       },
       {
         key: 'relationships',
         name: 'Relationships',
-        link: '/',
+        link: '/app/relationships',
         icon: 'ios-list-box-outline',
       },
       {
         key: 'conditions',
         name: 'Conditions',
-        link: 'app/conditions',
+        link: '/app/conditions',
         icon: 'ios-grid-outline',
       },
       {
         key: 'groups',
         name: 'Groups',
-        link: '/',
+        link: '/app/groups',
         icon: 'ios-grid-outline',
       },
       {
         key: 'nodes',
         name: 'Nodes',
-        link: '/',
+        link: '/app/nodes',
         icon: 'ios-grid-outline',
       }
     ]
@@ -62,12 +62,24 @@ module.exports = [
     key: 'workspace',
     name: 'Workspaces',
     icon: 'ios-paw-outline',
-    linkParent: '/app',
+    linkParent: '/app/workspaces',
+  },
+  {
+    key: 'taskBoard',
+    name: 'Task Board',
+    icon: 'md-time',
+    linkParent: '/app/taskboard',
   },
   {
     key: 'settings',
     name: 'Settings',
     icon: 'ios-settings-outline',
-    linkParent: '/app',
+    linkParent: '/app/settings',
+  },
+  {
+    key: 'help',
+    name: 'Help',
+    icon: 'md-help',
+    linkParent: '/app/help-support',
   }
 ];
