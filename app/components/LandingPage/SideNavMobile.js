@@ -43,7 +43,7 @@ function SideNavMobile(props) {
           </Scrollspy>
         </List>
         <Typography variant="caption" className={classes.copyright}>
-          &copy; 2020 Dandelion Designs
+          &copy; 2021 juristic Designs
           <br />
             All Right Reserved
         </Typography>

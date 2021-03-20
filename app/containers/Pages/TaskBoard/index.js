@@ -72,7 +72,7 @@ function TaskBoardContainer(props) {
       </Helmet>
       <Notification close={() => closeNotif(closeNotifAction)} message={messageNotif} />
       <div className={classes.root} id="task_wrap">
-        <TaskBoard dataLoaded={dataLoaded} data={boardData.toJS()} removeBoard={(id) => handleDelete(id)} />
+        <TaskBoard dataLoaded={dataLoaded} data={boardData} removeBoard={(id) => handleDelete(id)} />
         <AddBoard
           openForm={openFrm}
           addEvent={() => addBoard(addAction)}

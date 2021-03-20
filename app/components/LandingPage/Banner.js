@@ -28,7 +28,7 @@ function Banner(props) {
     >
       {!slideMode && <BannerParallax />}
       <div className={!slideMode ? classes.container : ''}>
-        <Typography component="h2" variant="h2" gutterBottom>Dandelion Pro</Typography>
+        <Typography component="h2" variant="h2" gutterBottom>Juristic Pro</Typography>
         <Typography component="p" variant="h5" gutterBottom>A React.js Website Template </Typography>
         <div className={classes.btnArea}>
           <Button

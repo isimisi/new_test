@@ -1,14 +1,18 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-plusplus */
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
+  ReactFlowProvider,
   removeElements,
   addEdge,
   Controls,
   Background,
 } from 'react-flow-renderer';
-import Grid from '@material-ui/core/Grid';
+import { Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import styles from './workspace-jss';
+import DrapAndDropPanel from './DragAndDropPanel';
 
 const initElement = [
   {
@@ -120,44 +124,68 @@ const initElement = [
   },
 ];
 
-const onLoad = (reactFlowInstance) => {
-  console.log('flow loaded:', reactFlowInstance);
-  reactFlowInstance.fitView();
+const onDragOver = (event) => {
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'move';
 };
+
+
+let id = 0;
+const getId = () => `dndnode_${id++}`;
 
 const OverviewFlow = (props) => {
   const { classes } = props;
   const [elements, setElements] = useState(initElement);
-  const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
+  const [reactFlowInstance, setReactFlowInstance] = useState();
+
   const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
+  const onLoad = (_reactFlowInstance) => setReactFlowInstance(_reactFlowInstance);
+
+  const onDrop = (event) => {
+    event.preventDefault();
+
+    if (reactFlowInstance) {
+      const type = event.dataTransfer.getData('application/reactflow');
+      const position = reactFlowInstance.project({ x: event.clientX, y: event.clientY - 40 });
+      const newNode = {
+        id: getId(),
+        type,
+        position,
+        data: { label: `${type}` },
+      };
+
+      setElements((es) => es.concat(newNode));
+    }
+  };
 
   return (
     <div>
-      <Grid container spacing={3}>
-        <Grid
-          xs={4}
-          item
-          className={classes.paperGlass}
-        />
-        <Grid
-          xs={8}
-          item
-          style={{ height: '80vh' }}
-          className={classes.paperGlass}
-        >
-          <ReactFlow
-            elements={elements}
-            onElementsRemove={onElementsRemove}
-            onConnect={onConnect}
-            onLoad={onLoad}
-            snapToGrid
-            snapGrid={[15, 15]}
+      <ReactFlowProvider>
+        <Grid container spacing={3} style={{ justifyContent: 'space-around' }}>
+          <DrapAndDropPanel />
+          <Grid
+            xs={7}
+            item
+            style={{ height: '80vh' }}
+            className={classes.paperGlass}
           >
-            <Controls />
-            <Background color="#aaa" gap={16} />
-          </ReactFlow>
+            <ReactFlow
+              elements={elements}
+              onElementsRemove={onElementsRemove}
+              onConnect={onConnect}
+              onLoad={onLoad}
+              onDrop={onDrop}
+              onDragOver={onDragOver}
+              snapToGrid
+              snapGrid={[15, 15]}
+            >
+              <Controls />
+              <Background color="#aaa" gap={16} />
+            </ReactFlow>
+          </Grid>
         </Grid>
-      </Grid>
+      </ReactFlowProvider>
     </div>
   );
 };
