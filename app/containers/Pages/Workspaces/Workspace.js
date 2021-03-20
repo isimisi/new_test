@@ -144,7 +144,7 @@ const OverviewFlow = (props) => {
 
   const onDrop = (event) => {
     event.preventDefault();
-
+    console.log(event);
     if (reactFlowInstance) {
       const type = event.dataTransfer.getData('application/reactflow');
       const position = reactFlowInstance.project({ x: event.clientX, y: event.clientY - 40 });

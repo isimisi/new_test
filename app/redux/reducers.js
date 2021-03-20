@@ -11,6 +11,7 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import uiReducer from './modules/ui';
 import initval from './modules/initForm';
 import login from './modules/login';
+import taskboard from '../containers/pages/TaskBoard/reducers/taskboardReducer';
 
 /**
  * Branching reducers to use one reducer for many components
@@ -36,6 +37,7 @@ export default function createReducer(injectedReducers = {}) {
     ui: uiReducer,
     initval,
     login,
+    taskboard,
     language: languageProviderReducer,
     router: connectRouter(history),
     ...injectedReducers,

@@ -75,13 +75,3 @@ export const HelpSupport = loadable(() =>
   import ('./Pages/HelpSupport'), {
     fallback: <Loading />,
   });
-
-
-  PersonalDashboard
-TaskBoard
-Invoice
-Pricing
-NotFound
-Error
-Settings
-HelpSupport

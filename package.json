@@ -90,6 +90,7 @@
     ]
   },
   "dependencies": {
+    "@babel/helper-builder-react-jsx-experimental": "^7.12.4",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
     "@babel/polyfill": "7.4.3",
@@ -152,6 +153,8 @@
     "react-charts": "^1.0.10",
     "react-clock": "^2.3.0",
     "react-countup": "^3.0.3",
+    "react-dnd": "^14.0.1",
+    "react-dnd-html5-backend": "^14.0.0",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.12.13",
     "react-dropzone": "^10.2.1",

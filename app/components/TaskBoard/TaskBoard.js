@@ -3,9 +3,10 @@ import { PropTypes } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
-import { Board, Tag } from 'react-trello';
+import Board from 'react-trello';
 import HeaderBoard from './HeaderBoard';
 import styles from './taskBoard-jss';
+import DndCard from '../Cards/DndCard';
 
 const handleDragStart = (cardId, laneId) => {
   console.log('drag started');
@@ -20,45 +21,6 @@ const handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
   console.log(`targetLaneId: ${targetLaneId}`);
 };
 
-/* Custom Card */
-function CustomCard(props) {
-  const {
-    classes,
-    title,
-    label,
-    description,
-    tags
-  } = props;
-  return (
-    <div>
-      <header className={classes.header}>
-        <div className={classes.title}>{title}</div>
-        <div className={classes.label}>{label}</div>
-      </header>
-      {tags !== [] && <div className={classes.tags}>{tags.map((tag, index) => <Tag key={index.toString()} {...tag} />)}</div>}
-      <div className={classes.content}>
-        {description}
-      </div>
-    </div>
-  );
-}
-
-CustomCard.propTypes = {
-  tags: PropTypes.array,
-  classes: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  description: PropTypes.string,
-};
-
-
-CustomCard.defaultProps = {
-  tags: [],
-  label: '',
-  description: '',
-};
-
-const CustomCardStyled = withStyles(styles)(CustomCard);
 
 function TaskBoard(props) {
   const {
@@ -91,7 +53,7 @@ function TaskBoard(props) {
           </Button>
         )}
       >
-        <CustomCardStyled />
+        <DndCard />
       </Board>
     </div>
   );
