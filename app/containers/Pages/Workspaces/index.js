@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import MUIDataTable from 'mui-datatables';
@@ -30,7 +29,7 @@ const styles = theme => ({
   Checkout full documentation here :
   https://github.com/gregnb/mui-datatables/blob/master/README.md
 */
-function AdvFilter(props) {
+function Workspaces(props) {
   const columns = [
     {
       name: 'Title',
@@ -45,16 +44,13 @@ function AdvFilter(props) {
       }
     },
     {
-      name: 'Progress',
+      name: 'Group',
       options: {
-        filter: false,
-        customBodyRender: (value) => (
-          <LinearProgress variant="determinate" color="secondary" value={value} />
-        )
+        filter: true,
       }
     },
     {
-      name: 'Status',
+      name: 'Tags',
       options: {
         filter: true,
         customBodyRender: (value) => {
@@ -84,23 +80,29 @@ function AdvFilter(props) {
       options: {
         filter: true,
         customBodyRender: (value) => (
-          <Button variant="contained" color="secondary" href={`/app/workspaces/${value}`}>
+          <Button variant="contained" color="secondary" href={`/app/conditions/${value}`}>
               Open
           </Button>
         )
       }
     },
+    {
+      name: 'Last Edited',
+      options: {
+        filter: true,
+      }
+    },
   ];
 
   const data = [
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 1, 1],
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 2, 2],
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 3, 3],
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 4, 4],
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 5, 5],
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 6, 6],
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 7, 7],
-    ['Test Workspace', 'This is a test of a workspace', 30, 'active', 8, 8],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 1, 1, 'Friday at 3:59 pm'],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 2, 2, 'Friday at 3:59 pm'],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 3, 3, 'Friday at 3:59 pm'],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 4, 4, 'Friday at 3:59 pm'],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 5, 5, 'Friday at 3:59 pm'],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 6, 6, 'Friday at 3:59 pm'],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 7, 7, 'Friday at 3:59 pm'],
+    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 8, 8, 'Friday at 3:59 pm'],
   ];
 
   const options = {
@@ -126,8 +128,8 @@ function AdvFilter(props) {
   );
 }
 
-AdvFilter.propTypes = {
+Workspaces.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AdvFilter);
+export default withStyles(styles)(Workspaces);

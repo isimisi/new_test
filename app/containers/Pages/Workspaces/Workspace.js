@@ -12,9 +12,9 @@ import ReactFlow, {
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
-import Forward from '@material-ui/icons/Forward';
 import styles from './workspace-jss';
 import DrapAndDropPanel from './DragAndDropPanel';
+import NamingForm from '../../../components/Forms/NamingForm';
 
 const initElement = [
   {
@@ -169,6 +169,7 @@ const OverviewFlow = (props) => {
 
   return (
     <div>
+      <NamingForm type="condition" />
       <ReactFlowProvider>
         <div className={classes.root}>
           <DrapAndDropPanel />

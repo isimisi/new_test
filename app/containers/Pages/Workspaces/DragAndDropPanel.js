@@ -11,7 +11,6 @@ import Drawer from '@material-ui/core/Drawer';
 import Star from '@material-ui/icons/Star';
 import SearchIcon from '@material-ui/icons/Search';
 import styles from './workspace-jss';
-import DndCard from '../../../components/Cards/DndCard';
 import testData from './TestData';
 
 const onDragStart = (event, nodeType) => {

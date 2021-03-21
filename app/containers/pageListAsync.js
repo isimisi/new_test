@@ -38,11 +38,20 @@ export const Workspaces = loadable(() =>
     fallback: <Loading />,
   });
 
-  export const Workspace = loadable(() =>
+export const Workspace = loadable(() =>
   import ('./Pages/Workspaces/Workspace'), {
     fallback: <Loading />,
   });
 
+export const Conditions = loadable(() =>
+  import ('./Pages/Conditions'), {
+    fallback: <Loading />,
+  });
+
+export const Condition = loadable(() =>
+  import ('./Pages/Conditions/Condition'), {
+    fallback: <Loading />,
+  })
 
 export const TaskBoard = loadable(() =>
   import ('./pages/TaskBoard'), {

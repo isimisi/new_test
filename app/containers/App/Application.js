@@ -6,7 +6,8 @@ import Dashboard from '../Templates/Dashboard';
 import {
   PersonalDashboard, TaskBoard,
   Invoice, Pricing, Error, Settings,
-  HelpSupport, NotFound, Workspaces, Workspace
+  HelpSupport, NotFound, Workspaces, Workspace,
+  Conditions, Condition
 } from '../pageListAsync';
 
 function Application(props) {
@@ -18,9 +19,11 @@ function Application(props) {
         { /* Home */ }
         <Route exact path="/app" component={PersonalDashboard} />
         <Route exact path="/app/output" component={PersonalDashboard} />
+        <Route exact path="/app/alerts" component={PersonalDashboard} />
         <Route exact path="/app/attributes" component={PersonalDashboard} />
         <Route exact path="/app/relationships" component={PersonalDashboard} />
-        <Route exact path="/app/conditions" component={PersonalDashboard} />
+        <Route exact path="/app/conditions" component={Conditions} />
+        <Route exact path="/app/conditions/:id" component={Condition} />
         <Route exact path="/app/groups" component={PersonalDashboard} />
         <Route exact path="/app/nodes" component={PersonalDashboard} />
         <Route exact path="/app/workspaces" component={Workspaces} />

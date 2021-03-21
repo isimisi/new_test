@@ -24,7 +24,7 @@ module.exports = [
       {
         key: 'alerts',
         name: 'Alerts',
-        link: '/app/output',
+        link: '/app/alerts',
         icon: 'ios-document-outline',
       },
       {
