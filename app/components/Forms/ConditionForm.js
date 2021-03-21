@@ -17,7 +17,7 @@ import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
 
-const suggestions = [
+const andOrOption = [
   { label: 'All' },
   { label: 'At Least One' },
 ].map(suggestion => ({
@@ -25,7 +25,7 @@ const suggestions = [
   label: suggestion.label,
 }));
 
-const suggestionsOnBuilds = [
+const buildTypeOptions = [
   { label: 'Node Title' },
   { label: 'Node Attribut' },
   { label: 'Node Description' },
@@ -37,7 +37,7 @@ const suggestionsOnBuilds = [
   label: suggestion.label,
 }));
 
-const suggestionsOnBuildType = [
+const buildValuesOptions = [
   { label: 'Test1' },
   { label: 'Test2' },
 ].map(suggestion => ({
@@ -45,7 +45,7 @@ const suggestionsOnBuildType = [
   label: suggestion.label,
 }));
 
-const suggestionsComparisons = [
+const comparisonsOptions = [
   { label: 'is equal to' },
   { label: 'is not equal to' },
   { label: 'is greater than' },
@@ -81,7 +81,7 @@ const styles = theme => ({
   },
   inlineWrap: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   buttonInit: {
     margin: theme.spacing(4),
@@ -100,10 +100,16 @@ function ReduxFormDemo(props) {
     reset,
     submitting,
   } = props;
-  const [group, setGroup] = React.useState(suggestions[0]);
-  const [builds, setBuilds] = React.useState(suggestionsOnBuilds[0]);
-  const [buildTypes, setBuildTypes] = React.useState(null);
-  const [comparison, setComparison] = React.useState(suggestionsComparisons[0]);
+  const [andOrOptionValues, setAndOrOptionValues] = React.useState(andOrOption[0]);
+  const [rows, setRows] = React.useState([
+    {
+      buildType: null,
+      buildValue: null,
+      comparisonType: comparisonsOptions[0],
+      comparisonValue: ''
+    }
+  ]);
+
 
   const selectStyles = {
     input: base => ({
@@ -113,6 +119,12 @@ function ReduxFormDemo(props) {
         font: 'inherit',
       },
     }),
+  };
+
+  const handleChange = (value, index, type) => {
+    const newArray = [...rows];
+    newArray[index] = { ...newArray[index], [type]: value };
+    setRows(newArray);
   };
 
   return (
@@ -126,53 +138,73 @@ function ReduxFormDemo(props) {
                   classes={classes}
                   styles={selectStyles}
                   inputId="react-select-single"
-                  options={suggestions}
-                  value={group}
-                  onChange={(value) => setGroup(value)}
+                  options={andOrOption}
+                  value={andOrOptionValues}
+                  onChange={(value) => setAndOrOptionValues(value)}
                 />
               </div>
-              <div className={classes.inlineWrap}>
-                <div className={classes.field}>
-                  <Select
-                    classes={classes}
-                    styles={selectStyles}
-                    inputId="react-select-single"
-                    options={suggestionsOnBuilds}
-                    value={builds}
-                    onChange={(value) => setBuilds(value)}
-                  />
+              {rows.map((row, index) => (
+                <div className={classes.inlineWrap}>
+                  <div className={classes.field}>
+                    <Select
+                      classes={classes}
+                      styles={selectStyles}
+                      inputId="react-select-single"
+                      options={buildTypeOptions}
+                      value={row.buildType}
+                      placeholder="Build Type"
+                      onChange={(value) => {
+                        if (row.buildType) {
+                          handleChange(value, index, 'buildType');
+                        } else {
+                          const newRow = { ...row };
+                          newRow.buildType = value;
+                          setRows([newRow, ...rows]);
+                        }
+                      }}
+                    />
+                  </div>
+                  {row.buildType
+                  && (
+                    <>
+                      <div className={classes.field}>
+                        <Select
+                          classes={classes}
+                          styles={selectStyles}
+                          inputId="react-select-single"
+                          options={buildValuesOptions}
+                          value={row.buildValue}
+                          onChange={(value) => handleChange(value, index, 'buildValue')}
+                        />
+                      </div>
+                      <div className={classes.field}>
+                        <Select
+                          classes={classes}
+                          styles={selectStyles}
+                          inputId="react-select-single"
+                          options={comparisonsOptions}
+                          value={row.comparisonType}
+                          onChange={(value) => handleChange(value, index, 'comparisonType')}
+                        />
+                      </div>
+                      <div className={classes.field}>
+                        <Field
+                          name="comparisonValue"
+                          component={TextFieldRedux}
+                          placeholder="value"
+                          label="Value"
+                          value={row.comparisonValue}
+                          onChange={(value) => handleChange(value, index, 'comparisonValue')}
+                          validate={required}
+                          required
+                        />
+                      </div>
+                    </>
+                  )
+                  }
                 </div>
-                <div className={classes.field}>
-                  <Select
-                    classes={classes}
-                    styles={selectStyles}
-                    inputId="react-select-single"
-                    options={suggestionsOnBuildType}
-                    value={buildTypes}
-                    onChange={(value) => setBuilds(value)}
-                  />
-                </div>
-                <div className={classes.field}>
-                  <Select
-                    classes={classes}
-                    styles={selectStyles}
-                    inputId="react-select-single"
-                    options={suggestionsComparisons}
-                    value={comparison}
-                    onChange={(value) => setComparison(value)}
-                  />
-                </div>
-                <div className={classes.field}>
-                  <Field
-                    name="comparisonValue"
-                    component={TextFieldRedux}
-                    placeholder="value"
-                    label="Value"
-                    validate={required}
-                    required
-                  />
-                </div>
-              </div>
+              ))}
+
               <div>
                 <Button variant="contained" color="secondary" type="submit" disabled={submitting}>
                   Save
