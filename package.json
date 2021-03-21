@@ -8,7 +8,6 @@
     "node": ">=8.15.1"
   },
   "author": "Kean Ottesen",
-  "license": "Envato Regular License",
   "scripts": {
     "analyze:clean": "rimraf stats.json",
     "preanalyze": "npm run analyze:clean",
