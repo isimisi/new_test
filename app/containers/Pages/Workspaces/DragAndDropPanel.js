@@ -1,93 +1,77 @@
 /* eslint-disable no-param-reassign */
-import React, { useRef } from 'react';
-import { Grid } from '@material-ui/core';
+import React, { Fragment, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import PermContactCalendar from '@material-ui/icons/PermContactCalendar';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Drawer from '@material-ui/core/Drawer';
+import Star from '@material-ui/icons/Star';
+import SearchIcon from '@material-ui/icons/Search';
 import styles from './workspace-jss';
 import DndCard from '../../../components/Cards/DndCard';
-
-export const ItemTypes = {
-  NODE: 'node'
-};
-
+import testData from './TestData';
 
 const onDragStart = (event, nodeType) => {
-  console.log(event, 'sads');
   event.dataTransfer.setData('application/reactflow', nodeType);
   event.dataTransfer.effectAllowed = 'move';
 };
 
 const DrapAndDropPanel = (props) => {
   const { classes } = props;
+  const [filter, setFilter] = useState('all');
+
+  const handleChange = (event, value) => {
+    setFilter(value);
+  };
 
 
-  const testData = [
-    {
-      id: 'Leverandør',
-      title: 'Leverandør',
-      type: 'test',
-      label: 'TEST',
-      cardStyle: {
-        margin: 'auto',
-        marginBottom: 5
-      },
-      description: 'Dette er en leverandør node',
-      tags: [
-        { title: 'Error', color: 'white', bgcolor: '#F44336' },
-        { title: 'Warning', color: 'white', bgcolor: '#FF9800' },
-      ]
-    },
-    {
-      id: 'datterSelskab',
-      title: 'Datter Selskab',
-      label: 'TEST',
-      type: 'test',
-      cardStyle: {
-        margin: 'auto',
-        marginBottom: 5
-      },
-      description: 'Dette er en leverandør node',
-      tags: [
-        { title: 'Info', color: 'white', bgcolor: '#0288D1' },
-        { title: 'Success', color: 'white', bgcolor: '#388E3C' },
-      ]
-    }
-  ];
-
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: ItemTypes.NODE,
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging()
-    })
-  }));
-
-
-  // (event) => onDragStart(event, data.type)
   return (
-    <Grid
-      xs={4}
-      item
-      className={classes.paperGlass}
-    >
-      {testData.map((data => (
-        <DndProvider backend={HTML5Backend} key={data.id}>
-          <div
-            ref={drag}
-            style={{
-              opacity: isDragging ? 0.5 : 1,
-              borderRadius: 10,
-              boxShadow: '1px 3px 1px #9E9E9E',
-              backgroundColor: 'white',
-              marginTop: 20
-            }}
-          >
-            <DndCard title={data.title} label={data.label} description={data.description} tags={data.tags} />
+    <Fragment>
+      <Drawer
+        variant="permanent"
+        anchor="left"
+        open
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div>
+          <div className={classes.toolbar}>
+            <div className={classes.flex}>
+              <div className={classes.searchWrapper}>
+                <div className={classes.search}>
+                  <SearchIcon />
+                </div>
+                <input className={classes.input} onChange={(event) => console.log(event)} placeholder="Search" />
+              </div>
+            </div>
           </div>
-        </DndProvider>
-      )))}
-    </Grid>
+          <div className={classes.total}>
+            {testData.length}
+            &nbsp;
+            Nodes
+          </div>
+          {testData.map((data => (
+            <ListItem
+              button
+              key={data.id}
+              onDragStart={(event) => onDragStart(event, data.type)}
+              draggable
+              onClick={() => console.log('give me info of the node')}
+            >
+              <ListItemText primary={data.title} secondary={data.description} />
+            </ListItem>
+          )))}
+        </div>
+      </Drawer>
+      <BottomNavigation value={filter} onChange={handleChange} className={classes.bottomFilter}>
+        <BottomNavigationAction label="All" value="all" icon={<PermContactCalendar />} />
+        <BottomNavigationAction label="Favorites" value="favorites" icon={<Star />} />
+      </BottomNavigation>
+    </Fragment>
   );
 };
 

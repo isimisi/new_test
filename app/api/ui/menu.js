@@ -27,12 +27,6 @@ module.exports = [
         title: true,
       },
       {
-        key: 'attributs',
-        name: 'Attributes',
-        link: '/app/attributes',
-        icon: 'ios-home-outline',
-      },
-      {
         key: 'relationships',
         name: 'Relationships',
         link: '/app/relationships',

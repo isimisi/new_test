@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
   ReactFlowProvider,
@@ -9,8 +9,10 @@ import ReactFlow, {
   Controls,
   Background,
 } from 'react-flow-renderer';
-import { Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fab from '@material-ui/core/Fab';
+import Forward from '@material-ui/icons/Forward';
 import styles from './workspace-jss';
 import DrapAndDropPanel from './DragAndDropPanel';
 
@@ -135,40 +137,44 @@ const getId = () => `dndnode_${id++}`;
 
 const OverviewFlow = (props) => {
   const { classes } = props;
+  const reactFlowWrapper = useRef(null);
   const [elements, setElements] = useState(initElement);
   const [reactFlowInstance, setReactFlowInstance] = useState();
 
   const onConnect = (params) => setElements((els) => addEdge(params, els));
   const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
-  const onLoad = (_reactFlowInstance) => setReactFlowInstance(_reactFlowInstance);
+  const onLoad = (_reactFlowInstance) => {
+    setReactFlowInstance(_reactFlowInstance);
+    _reactFlowInstance.fitView();
+  };
 
   const onDrop = (event) => {
     event.preventDefault();
-    console.log(event);
-    if (reactFlowInstance) {
-      const type = event.dataTransfer.getData('application/reactflow');
-      const position = reactFlowInstance.project({ x: event.clientX, y: event.clientY - 40 });
-      const newNode = {
-        id: getId(),
-        type,
-        position,
-        data: { label: `${type}` },
-      };
 
-      setElements((es) => es.concat(newNode));
-    }
+    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    const type = event.dataTransfer.getData('application/reactflow');
+    const position = reactFlowInstance.project({
+      x: event.clientX - reactFlowBounds.left,
+      y: event.clientY - reactFlowBounds.top,
+    });
+    const newNode = {
+      id: getId(),
+      type,
+      position,
+      data: { label: `${type} node` },
+    };
+
+    setElements((es) => es.concat(newNode));
   };
 
   return (
     <div>
       <ReactFlowProvider>
-        <Grid container spacing={3} style={{ justifyContent: 'space-around' }}>
+        <div className={classes.root}>
           <DrapAndDropPanel />
-          <Grid
-            xs={7}
-            item
-            style={{ height: '80vh' }}
-            className={classes.paperGlass}
+          <div
+            className={classes.content}
+            ref={reactFlowWrapper}
           >
             <ReactFlow
               elements={elements}
@@ -177,15 +183,20 @@ const OverviewFlow = (props) => {
               onLoad={onLoad}
               onDrop={onDrop}
               onDragOver={onDragOver}
-              snapToGrid
-              snapGrid={[15, 15]}
             >
               <Controls />
               <Background color="#aaa" gap={16} />
             </ReactFlow>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </ReactFlowProvider>
+      <div>
+        <Tooltip title="Analyser">
+          <Fab variant="extended" color="primary" className={classes.addBtn}>
+            Analyse
+          </Fab>
+        </Tooltip>
+      </div>
     </div>
   );
 };
