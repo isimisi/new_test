@@ -1,12 +1,8 @@
 {
-  "name": "Juristic",
+  "name": "juristic",
   "version": "1.0.0",
-  "description": "Juristic",
+  "description": "juristic",
   "private": true,
-  "engines": {
-    "npm": ">=5",
-    "node": ">=8.15.1"
-  },
   "author": "Kean Ottesen",
   "scripts": {
     "analyze:clean": "rimraf stats.json",
