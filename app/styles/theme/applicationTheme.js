@@ -103,7 +103,7 @@ const applicationTheme = (color, mode, direction) => ({
         backgroundColor:
           mode === 'dark'
             ? '#292929'
-            : '#FFFFFF'
+            : '#fefefe'
       },
       rounded: {
         borderRadius: 8,

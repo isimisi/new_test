@@ -30,8 +30,8 @@ const buildTypeOptions = [
   { label: 'Node Attribut' },
   { label: 'Node Description' },
   { label: 'Relationship Label' },
-  { label: 'All (AND)' },
-  { label: 'At Least One (OR)' },
+  // { label: 'All (AND)' },
+  // { label: 'At Least One (OR)' },
 ].map(suggestion => ({
   value: suggestion.label,
   label: suggestion.label,
@@ -50,7 +50,6 @@ const comparisonsOptions = [
   { label: 'is not equal to' },
   { label: 'is greater than' },
   { label: 'is less than' },
-  { label: 'is between than' },
   { label: 'exists' },
   { label: 'does not exist' },
   { label: 'contains' },
@@ -70,9 +69,9 @@ const styles = theme => ({
     marginBottom: 20,
   },
   field: {
-    width: '30%',
+    width: '25%',
     marginLeft: 10,
-    marginBottom: 20
+    marginBottom: 20,
   },
   fieldBasic: {
     width: '100%',
@@ -87,6 +86,16 @@ const styles = theme => ({
     margin: theme.spacing(4),
     textAlign: 'center'
   },
+  andOrDiv: {
+    backgroundColor: theme.palette.type === 'dark' ? '#303030' : '#F7F8FA',
+    border: theme.palette.type === 'dark' ? '1px solid #606060' : '1px solid #F1F1F1',
+    borderRadius: theme.rounded.small,
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    whiteSpace: 'nowrap'
+  }
 });
 
 
@@ -123,9 +132,11 @@ function ReduxFormDemo(props) {
 
   const handleChange = (value, index, type) => {
     const newArray = [...rows];
+    console.log(newArray);
     newArray[index] = { ...newArray[index], [type]: value };
     setRows(newArray);
   };
+
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -145,6 +156,17 @@ function ReduxFormDemo(props) {
               </div>
               {rows.map((row, index) => (
                 <div className={classes.inlineWrap}>
+                  {index > 0
+                  && (
+                    <div>
+                      <div className={classes.andOrDiv}>
+                        <Typography variant="P">
+                          {andOrOptionValues.value === 'All' ? 'AND' : 'OR'}
+                        </Typography>
+                      </div>
+                    </div>
+                  )
+                  }
                   <div className={classes.field}>
                     <Select
                       classes={classes}
@@ -187,18 +209,20 @@ function ReduxFormDemo(props) {
                           onChange={(value) => handleChange(value, index, 'comparisonType')}
                         />
                       </div>
-                      <div className={classes.field}>
-                        <Field
-                          name="comparisonValue"
-                          component={TextFieldRedux}
-                          placeholder="value"
-                          label="Value"
-                          value={row.comparisonValue}
-                          onChange={(value) => handleChange(value, index, 'comparisonValue')}
-                          validate={required}
-                          required
-                        />
-                      </div>
+                      {!['exists', 'does not exist'].includes(row.comparisonType.value) ? (
+                        <div className={classes.field}>
+                          <Field
+                            name={`comparisonValue${index}`}
+                            component={TextFieldRedux}
+                            placeholder="value"
+                            label="Value"
+                            value={row.comparisonValue}
+                            onChange={(e) => handleChange(e.target.value, index, 'comparisonValue')}
+                            validate={required}
+                            required
+                          />
+                        </div>
+                      ) : null}
                     </>
                   )
                   }
