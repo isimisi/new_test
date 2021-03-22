@@ -13,6 +13,7 @@ import {
 function Application(props) {
   const { history } = props;
   const changeMode = useContext(ThemeContext);
+
   return (
     <Dashboard history={history} changeMode={changeMode}>
       <Switch>

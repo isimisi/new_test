@@ -128,6 +128,7 @@ function ReduxFormDemo(props) {
                       },
                       placeholder: 'groups',
                     }}
+                    placeholder="groups"
                     options={suggestions}
                     value={single}
                     onChange={handleChangeSingle}
