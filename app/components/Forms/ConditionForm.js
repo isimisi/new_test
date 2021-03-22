@@ -12,7 +12,10 @@ import Button from '@material-ui/core/Button';
 import {
   TextFieldRedux,
 } from 'dan-components/Forms/ReduxFormMUI';
+import TextField from '@material-ui/core/TextField';
 import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fab from '@material-ui/core/Fab';
 
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
@@ -95,7 +98,15 @@ const styles = theme => ({
     alignItems: 'center',
     marginBottom: 20,
     whiteSpace: 'nowrap'
-  }
+  },
+  addBtn: {
+    position: 'fixed',
+    bottom: 30,
+    right: 50,
+    width: 200,
+    height: 60,
+    zIndex: 100,
+  },
 });
 
 
@@ -137,7 +148,7 @@ function ReduxFormDemo(props) {
     setRows(newArray);
   };
 
-
+  console.log(rows);
   return (
     <div style={{ marginBottom: 20 }}>
       <Grid container spacing={3} alignItems="flex-start" direction="row" justify="center">
@@ -211,15 +222,10 @@ function ReduxFormDemo(props) {
                       </div>
                       {!['exists', 'does not exist'].includes(row.comparisonType.value) ? (
                         <div className={classes.field}>
-                          <Field
-                            name={`comparisonValue${index}`}
-                            component={TextFieldRedux}
-                            placeholder="value"
-                            label="Value"
+                          <TextField
                             value={row.comparisonValue}
+                            placeholder="Value"
                             onChange={(e) => handleChange(e.target.value, index, 'comparisonValue')}
-                            validate={required}
-                            required
                           />
                         </div>
                       ) : null}
@@ -245,6 +251,13 @@ function ReduxFormDemo(props) {
           </Paper>
         </Grid>
       </Grid>
+      <div>
+        <Tooltip title="Analyser">
+          <Fab variant="extended" color="primary" className={classes.addBtn}>
+            Save Condition
+          </Fab>
+        </Tooltip>
+      </div>
     </div>
   );
 }
