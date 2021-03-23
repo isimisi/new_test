@@ -14,7 +14,7 @@ import {
   TextFieldRedux,
 } from 'dan-components/Forms/ReduxFormMUI';
 import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
-
+import TextField from '@material-ui/core/TextField';
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
 
@@ -28,14 +28,25 @@ const suggestions = [
   label: suggestion.label,
 }));
 
+const attributeOptions = [
+  { label: 'Test Attribute 1' },
+  { label: 'Test Attribute 2' },
+  { label: 'Test Attribute 3' },
+  { label: 'Test Attribute 4' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));
+
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
     padding: 30
   },
   field: {
-    width: '100%',
-    marginBottom: 20
+    width: '70%',
+    marginBottom: 10
   },
   fieldBasic: {
     width: '100%',
@@ -66,7 +77,10 @@ function ReduxFormDemo(props) {
     type
   } = props;
   const [single, setSingle] = React.useState(null);
-
+  const [attributes, setAttributes] = React.useState([{
+    attribute: null,
+    attributeValue: ''
+  }]);
   function handleChangeSingle(value) {
     setSingle(value);
   }
@@ -79,6 +93,12 @@ function ReduxFormDemo(props) {
         font: 'inherit',
       },
     }),
+  };
+
+  const handleChange = (value, index, changeType) => {
+    const newArray = [...attributes];
+    newArray[index] = { ...newArray[index], [changeType]: value };
+    setAttributes(newArray);
   };
 
   return (
@@ -114,6 +134,38 @@ function ReduxFormDemo(props) {
                   rows={2}
                 />
               </div>
+              {type === 'Node' && attributes.map((attribute, index) => (
+                <div className={classes.inlineWrap}>
+                  <div className={classes.field}>
+                    <Select
+                      classes={classes}
+                      styles={selectStyles}
+                      inputId="react-select-single"
+                      options={attributeOptions}
+                      placeholder="attribute"
+                      value={attribute.attribute}
+                      onChange={(value) => {
+                        if (attribute.attribute) {
+                          handleChange(value, index, 'attribute');
+                        } else {
+                          const newRow = { ...attribute };
+                          newRow.attribute = value;
+                          setAttributes([newRow, ...attributes]);
+                        }
+                      }}
+                    />
+                  </div>
+                  {attribute.attribute && (
+                    <div className={classes.field} style={{ marginLeft: 20 }}>
+                      <TextField
+                        value={attribute.attributeValue}
+                        placeholder="Value"
+                        onChange={(e) => handleChange(e.target.value, index, 'attributeValue')}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
               <div className={classes.field}>
                 <NoSsr>
                   <Select

@@ -7,7 +7,8 @@ import {
   PersonalDashboard, TaskBoard,
   Invoice, Pricing, Error, Settings,
   HelpSupport, NotFound, Workspaces, Workspace,
-  Conditions, Condition
+  Conditions, Condition, Outputs, Output,
+  Nodes, Node
 } from '../pageListAsync';
 
 function Application(props) {
@@ -19,14 +20,16 @@ function Application(props) {
       <Switch>
         { /* Home */ }
         <Route exact path="/app" component={PersonalDashboard} />
-        <Route exact path="/app/output" component={PersonalDashboard} />
+        <Route exact path="/app/outputs" component={Outputs} />
+        <Route exact path="/app/outputs/:id" component={Output} />
         <Route exact path="/app/alerts" component={PersonalDashboard} />
         <Route exact path="/app/attributes" component={PersonalDashboard} />
         <Route exact path="/app/relationships" component={PersonalDashboard} />
         <Route exact path="/app/conditions" component={Conditions} />
         <Route exact path="/app/conditions/:id" component={Condition} />
         <Route exact path="/app/groups" component={PersonalDashboard} />
-        <Route exact path="/app/nodes" component={PersonalDashboard} />
+        <Route exact path="/app/nodes" component={Nodes} />
+        <Route exact path="/app/nodes/:id" component={Node} />
         <Route exact path="/app/workspaces" component={Workspaces} />
         <Route path="/app/workspaces/:id" component={Workspace} />
         <Route exact path="/app/taskboard" component={TaskBoard} />

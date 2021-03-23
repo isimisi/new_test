@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import MUIDataTable from 'mui-datatables';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fab from '@material-ui/core/Fab';
 
 const styles = theme => ({
   table: {
@@ -22,7 +24,13 @@ const styles = theme => ({
         }
       }
     }
-  }
+  },
+  addBtn: {
+    position: 'fixed',
+    bottom: 30,
+    right: 50,
+    zIndex: 100,
+  },
 });
 /*
   It uses npm mui-datatables. It's easy to use, you just describe columns and data collection.
@@ -124,6 +132,11 @@ function Workspaces(props) {
         options={options}
         elevation={10}
       />
+      <Tooltip title="New Workspace">
+        <Fab variant="extended" color="primary" className={classes.addBtn}>
+            Create new Workspace
+        </Fab>
+      </Tooltip>
     </div>
   );
 }

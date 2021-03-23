@@ -33,7 +33,7 @@ const styles = theme => ({
 });
 
 
-function Conditions(props) {
+function Nodes(props) {
   const columns = [
     {
       name: 'Title',
@@ -54,11 +54,11 @@ function Conditions(props) {
       }
     },
     {
-      name: 'See Condition',
+      name: 'See Node',
       options: {
         filter: true,
         customBodyRender: (value) => (
-          <Button variant="contained" color="primary" href={`/app/conditions/${value}`}>
+          <Button variant="contained" color="primary" href={`/app/nodes/${value}`}>
               Open
           </Button>
         )
@@ -73,14 +73,14 @@ function Conditions(props) {
   ];
 
   const data = [
-    ['Test condition', 'This is a test of a condition', 'Test Group', 1, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 2, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 3, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 4, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 5, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 6, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 7, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 8, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 1, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 2, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 3, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 4, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 5, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 6, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 7, 'Friday at 3:59 pm'],
+    ['Test Node', 'This is a test of a Node', 'Test Group', 8, 'Friday at 3:59 pm'],
   ];
 
   const options = {
@@ -96,23 +96,23 @@ function Conditions(props) {
   return (
     <div className={classes.table}>
       <MUIDataTable
-        title="Your Conditions"
+        title="Your Node"
         data={data}
         columns={columns}
         options={options}
         elevation={10}
       />
-      <Tooltip title="New Condition">
+      <Tooltip title="New Node">
         <Fab variant="extended" color="primary" className={classes.addBtn}>
-            Create new Condition
+            Create new Node
         </Fab>
       </Tooltip>
     </div>
   );
 }
 
-Conditions.propTypes = {
+Nodes.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Conditions);
+export default withStyles(styles)(Nodes);

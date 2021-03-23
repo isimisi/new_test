@@ -18,7 +18,7 @@ module.exports = [
       {
         key: 'output',
         name: 'Ouput',
-        link: '/app/output',
+        link: '/app/outputs',
         icon: 'ios-document-outline',
       },
       {
@@ -36,6 +36,12 @@ module.exports = [
         key: 'relationships',
         name: 'Relationships',
         link: '/app/relationships',
+        icon: 'ios-list-box-outline',
+      },
+      {
+        key: 'attributes',
+        name: 'Attributes',
+        link: '/app/attributes',
         icon: 'ios-list-box-outline',
       },
       {

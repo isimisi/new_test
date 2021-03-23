@@ -2,23 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { Field, reduxForm } from 'redux-form/immutable';
+import { reduxForm } from 'redux-form/immutable';
 import Grid from '@material-ui/core/Grid';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import {
-  TextFieldRedux,
-} from 'dan-components/Forms/ReduxFormMUI';
 import TextField from '@material-ui/core/TextField';
 import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 
-// validation functions
-const required = value => (value == null ? 'Required' : undefined);
 
 const andOrOption = [
   { label: 'All' },

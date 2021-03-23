@@ -53,6 +53,26 @@ export const Condition = loadable(() =>
     fallback: <Loading />,
   })
 
+export const Outputs = loadable(() =>
+  import ('./Pages/Outputs'), {
+    fallback: <Loading />,
+  })
+
+export const Output = loadable(() =>
+  import ('./Pages/Outputs/Output'), {
+    fallback: <Loading />,
+  })
+
+export const Nodes = loadable(() =>
+  import ('./Pages/Nodes'), {
+    fallback: <Loading />,
+  })
+
+export const Node = loadable(() =>
+  import ('./Pages/Nodes/node'), {
+    fallback: <Loading />,
+  })
+  
 export const TaskBoard = loadable(() =>
   import ('./pages/TaskBoard'), {
     fallback: <Loading />,

@@ -27,8 +27,6 @@ const styles = theme => ({
     position: 'fixed',
     bottom: 30,
     right: 50,
-    width: 200,
-    height: 60,
     zIndex: 100,
   },
   fixHeight: {},
