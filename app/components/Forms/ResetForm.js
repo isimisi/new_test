@@ -36,7 +36,6 @@ function ResetForm(props) {
       <div className={classes.topBar}>
         <NavLink to="/" className={classes.brand}>
           <img src={logo} alt={brand.name} />
-          {brand.name}
         </NavLink>
       </div>
       <Typography variant="h4" className={classes.title} gutterBottom>

@@ -48,7 +48,6 @@ function ComingSoon(props) {
             <div className={classes.brandCenter}>
               <div className={classes.brand}>
                 <img src={logo} alt={brand.name} />
-                {brand.name}
               </div>
             </div>
             <Typography variant="h2" className={classes.titleGradient} gutterBottom>

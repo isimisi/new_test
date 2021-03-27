@@ -86,7 +86,6 @@ function Header(props) {
           <div className={classes.spaceContainer}>
             <NavLink to="/" className={classes.brand}>
               <img src={logo} alt={brand.name} />
-              {brand.name}
             </NavLink>
             <Hidden mdDown>
               <nav>

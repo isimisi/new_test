@@ -49,8 +49,6 @@ function ProductGallery(props) {
               id: product.get('id'),
               name: product.get('name'),
               thumbnail: product.get('thumbnail'),
-              price: product.get('price'),
-              quantity: 1
             };
             return (
               <Grid item md={listView === 'list' ? 12 : 4} sm={listView === 'list' ? 12 : 6} xs={12} key={index.toString()}>
@@ -59,11 +57,6 @@ function ProductGallery(props) {
                   name={product.get('name')}
                   thumbnail={product.get('thumbnail')}
                   desc={product.get('desc')}
-                  ratting={product.get('ratting')}
-                  price={product.get('price')}
-                  prevPrice={product.get('prevPrice')}
-                  discount={product.get('discount')}
-                  soldout={product.get('soldout')}
                   detailOpen={() => handleDetailOpen(product)}
                   addToCart={() => handleAddToCart(itemAttr)}
                 />

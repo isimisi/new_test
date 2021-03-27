@@ -8,7 +8,8 @@ import {
   Invoice, Pricing, Error, Settings,
   HelpSupport, NotFound, Workspaces, Workspace,
   Conditions, Condition, Outputs, Output,
-  Nodes, Node
+  Nodes, Node, Groups, Alerts, Relationships,
+  Attributes
 } from '../pageListAsync';
 
 function Application(props) {
@@ -22,12 +23,12 @@ function Application(props) {
         <Route exact path="/app" component={PersonalDashboard} />
         <Route exact path="/app/outputs" component={Outputs} />
         <Route exact path="/app/outputs/:id" component={Output} />
-        <Route exact path="/app/alerts" component={PersonalDashboard} />
-        <Route exact path="/app/attributes" component={PersonalDashboard} />
-        <Route exact path="/app/relationships" component={PersonalDashboard} />
+        <Route exact path="/app/alerts" component={Alerts} />
+        <Route exact path="/app/attributes" component={Attributes} />
+        <Route exact path="/app/relationships" component={Relationships} />
         <Route exact path="/app/conditions" component={Conditions} />
         <Route exact path="/app/conditions/:id" component={Condition} />
-        <Route exact path="/app/groups" component={PersonalDashboard} />
+        <Route exact path="/app/groups" component={Groups} />
         <Route exact path="/app/nodes" component={Nodes} />
         <Route exact path="/app/nodes/:id" component={Node} />
         <Route exact path="/app/workspaces" component={Workspaces} />

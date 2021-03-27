@@ -63,7 +63,7 @@ function SearchProduct(props) {
               <div className={classes.search}>
                 <SearchIcon />
               </div>
-              <input className={classes.input} placeholder="Search Product" onChange={(event) => search(event)} />
+              <input className={classes.input} placeholder="Search Groups" onChange={(event) => search(event)} />
             </div>
           </div>
           <Typography variant="caption" className={classes.result}>
@@ -82,26 +82,7 @@ function SearchProduct(props) {
               </ToggleButtonGroup>
             </div>
           </Hidden>
-          <div className={classes.cart}>
-            <IconButton
-              color="inherit"
-              aria-owns={anchorEl ? 'simple-menu' : null}
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <Badge badgeContent={totalItems} color="secondary">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
-            <Cart
-              anchorEl={anchorEl}
-              dataCart={dataCart}
-              close={handleClose}
-              removeItem={removeItem}
-              checkout={checkout}
-              totalPrice={totalPrice}
-            />
-          </div>
+
         </Toolbar>
       </AppBar>
     </div>

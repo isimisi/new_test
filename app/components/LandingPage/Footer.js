@@ -54,7 +54,6 @@ function Footer(props) {
         <div className={classes.spaceContainer}>
           <div className={classes.brand}>
             <img src={logo} alt={brand.name} />
-            {brand.name}
           </div>
           <nav>
             <ul>

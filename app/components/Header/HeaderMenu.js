@@ -159,7 +159,6 @@ function HeaderMenu(props) {
           </div>
           <NavLink to={logoLink} className={classes.brand}>
             <img src={logo} alt={brand.name} />
-            {brand.name}
           </NavLink>
         </Hidden>
         <div className={classes.searchHeaderMenu}>

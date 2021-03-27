@@ -43,7 +43,6 @@ function SidebarContent(props) {
       <div className={classes.drawerHeader}>
         <NavLink to="/app" className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}>
           <img src={logo} alt={brand.name} />
-          {brand.name}
         </NavLink>
         {isLogin && (
           <div

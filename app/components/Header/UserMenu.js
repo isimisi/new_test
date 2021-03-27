@@ -150,13 +150,7 @@ function UserMenu(props) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose} component={Link} to={link.profile}>My Profile</MenuItem>
-        <MenuItem onClick={handleClose} component={Link} to={link.calendar}>My Calendar</MenuItem>
-        <MenuItem onClick={handleClose} component={Link} to={link.email}>
-          My Inbox
-          <ListItemIcon>
-            <Badge className={classNames(classes.badge, classes.badgeMenu)} badgeContent={2} color="secondary" />
-          </ListItemIcon>
-        </MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to={link.profile}>My Organization</MenuItem>
         <Divider />
         <MenuItem onClick={handleClose} component={Link} to="/">
           <ListItemIcon>

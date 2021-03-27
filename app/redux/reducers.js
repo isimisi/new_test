@@ -12,7 +12,7 @@ import uiReducer from './modules/ui';
 import initval from './modules/initForm';
 import login from './modules/login';
 import taskboard from '../containers/pages/TaskBoard/reducers/taskboardReducer';
-
+import groups from '../containers/pages/Groups/reducers/ecommerceReducer';
 /**
  * Branching reducers to use one reducer for many components
  */
@@ -38,6 +38,7 @@ export default function createReducer(injectedReducers = {}) {
     initval,
     login,
     taskboard,
+    groups,
     language: languageProviderReducer,
     router: connectRouter(history),
     ...injectedReducers,

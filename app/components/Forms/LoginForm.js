@@ -61,7 +61,6 @@ function LoginForm(props) {
       <Hidden mdUp>
         <NavLink to="/" className={classNames(classes.brand, classes.outer)}>
           <img src={logo} alt={brand.name} />
-          {brand.name}
         </NavLink>
       </Hidden>
       <Paper className={classNames(classes.paperWrap, deco && classes.petal)}>
@@ -69,7 +68,6 @@ function LoginForm(props) {
           <div className={classes.topBar}>
             <NavLink to="/" className={classes.brand}>
               <img src={logo} alt={brand.name} />
-              {brand.name}
             </NavLink>
             <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/register">
               <Icon className={classes.icon}>arrow_forward</Icon>

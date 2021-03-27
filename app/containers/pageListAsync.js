@@ -82,6 +82,26 @@ export const Invoice = loadable(() =>
     fallback: <Loading />,
   });
 
+export const Groups = loadable(() =>
+  import ('./Pages/Groups'), {
+    fallback: <Loading />,
+  });
+
+export const Alerts = loadable(() =>
+  import ('./Pages/Alerts'), {
+    fallback: <Loading />,
+  });
+
+export const Relationships = loadable(() =>
+  import ('./Pages/Relationships'), {
+    fallback: <Loading />,
+  });
+
+export const Attributes = loadable(() =>
+  import ('./Pages/Attributes'), {
+    fallback: <Loading />,
+  });
+
 
 // Other
 export const NotFound = loadable(() =>

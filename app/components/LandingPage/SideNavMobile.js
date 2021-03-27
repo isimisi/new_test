@@ -33,7 +33,6 @@ function SideNavMobile(props) {
       <div className={classes.drawerHeader}>
         <div className={classes.brandBig}>
           <img src={logo} alt={brand.name} />
-          <h3>{brand.name}</h3>
         </div>
       </div>
       <div className={classNames(classes.menuContainer, classes.landingNav, classes.rounded)}>
