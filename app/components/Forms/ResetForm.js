@@ -10,8 +10,8 @@ import FormControl from '@material-ui/core/FormControl';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import brand from 'dan-api/dummy/brand';
-import logo from 'dan-images/logo.svg';
+import brand from '@api/dummy/brand';
+import logo from '@images/logo.svg';
 import { TextFieldRedux } from './ReduxFormMUI';
 import styles from './user-jss';
 

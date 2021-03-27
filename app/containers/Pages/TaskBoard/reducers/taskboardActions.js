@@ -1,4 +1,4 @@
-import * as notification from 'dan-redux/constants/notifConstants';
+import * as notification from '@redux/constants/notifConstants';
 import * as types from './taskboardConstants';
 
 export const fetchAction = items => ({

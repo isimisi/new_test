@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Paper from '@material-ui/core/Paper';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';

@@ -1,13 +1,13 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-import MenuContent from 'dan-api/ui/menu';
-import { PapperBlock } from 'dan-components';
+import MenuContent from '@api/ui/menu';
+import { PapperBlock } from '@components';
 
 const styles = {
   link: {

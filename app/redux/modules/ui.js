@@ -1,5 +1,5 @@
 import { fromJS, List } from 'immutable';
-import MenuContent from 'dan-api/ui/menu';
+import MenuContent from '@api/ui/menu';
 import {
   TOGGLE_SIDEBAR,
   OPEN_MENU,

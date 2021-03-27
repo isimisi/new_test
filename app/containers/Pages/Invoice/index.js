@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import Button from '@material-ui/core/Button';
 import PrintIcon from '@material-ui/icons/Print';
 import ReactToPrint from 'react-to-print';
-import { PapperBlock, CommercialInvoice } from 'dan-components';
+import { PapperBlock, CommercialInvoice } from '@components';
 
 const styles = theme => ({
   button: {

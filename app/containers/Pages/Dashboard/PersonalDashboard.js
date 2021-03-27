@@ -1,6 +1,6 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import { Helmet } from 'react-helmet';
 import { withStyles } from '@material-ui/core/styles';
 // import Hidden from '@material-ui/core/Hidden';
@@ -15,7 +15,7 @@ import { withStyles } from '@material-ui/core/styles';
 //   TimelineWidget,
 //   FilesWidget,
 //   TaskWidget
-// } from 'dan-components';
+// } from '@components';
 import styles from './dashboard-jss';
 
 

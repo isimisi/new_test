@@ -9,14 +9,14 @@ import {
   AreaChart,
   Area
 } from 'recharts';
-import { data1 } from 'dan-api/chart/chartMiniData';
-import colorfull from 'dan-api/palette/colorfull';
+import { data1 } from '@api/chart/chartMiniData';
+import colorfull from '@api/palette/colorfull';
 import AccountBalanceWallet from '@material-ui/icons/AccountBalanceWallet';
 import CompareArrows from '@material-ui/icons/CompareArrows';
-import bitcoinLogo from 'dan-images/crypto/bitcoin.png';
-import rippleLogo from 'dan-images/crypto/ripple.png';
-import moneroLogo from 'dan-images/crypto/monero.png';
-import iotaLogo from 'dan-images/crypto/iota.png';
+import bitcoinLogo from '@images/crypto/bitcoin.png';
+import rippleLogo from '@images/crypto/ripple.png';
+import moneroLogo from '@images/crypto/monero.png';
+import iotaLogo from '@images/crypto/iota.png';
 import styles from './widget-jss';
 import CounterWidget from '../Counter/CounterWidget';
 import CounterTrading from '../Counter/CounterTrading';

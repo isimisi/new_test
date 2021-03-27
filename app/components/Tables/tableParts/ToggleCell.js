@@ -4,7 +4,7 @@ import TableCell from '@material-ui/core/TableCell';
 import classNames from 'classnames';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import css from 'dan-styles/Table.scss';
+import css from '@styles/Table.scss';
 
 function ToggleCell(props) {
   const {

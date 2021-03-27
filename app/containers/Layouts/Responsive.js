@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import Markdown from 'react-markdown';
-import { SourceReader, PapperBlock } from 'dan-components';
+import { SourceReader, PapperBlock } from '@components';
 import {
   Breakpoint,
   BreakpointGrid,

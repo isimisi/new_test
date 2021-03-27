@@ -3,9 +3,9 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { bindActionCreators } from 'redux';
-import { toggleAction, playTransitionAction } from 'dan-redux/actions/uiActions';
-import { HeaderMenu, Footer, GuideSlider } from 'dan-components';
-import dataMenu from 'dan-api/ui/menuBlog';
+import { toggleAction, playTransitionAction } from '@redux/actions/uiActions';
+import { HeaderMenu, Footer, GuideSlider } from '@components';
+import dataMenu from '@api/ui/menuBlog';
 import Decoration from './Decoration';
 import styles from './appStyles-jss';
 

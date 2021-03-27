@@ -1,14 +1,14 @@
 import { gradientBgLight, gradientBgDark } from 'containers/Templates/appStyles-jss';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import controlScreen from 'dan-images/screen/control_screen.png';
-import line1 from 'dan-images/decoration/line1.png';
-import line2 from 'dan-images/decoration/line2.png';
-import petal1 from 'dan-images/decoration/petal1.png';
-import petal2 from 'dan-images/decoration/petal2.png';
-import bgFooterDark from 'dan-images/decoration/bgFooterDark.svg';
-import bgFooterLight from 'dan-images/decoration/bgFooterLight.svg';
-import petalHeaderLight from 'dan-images/decoration_light.svg';
-import petalHeaderDark from 'dan-images/decoration_dark.svg';
+import controlScreen from '@images/screen/control_screen.png';
+import line1 from '@images/decoration/line1.png';
+import line2 from '@images/decoration/line2.png';
+import petal1 from '@images/decoration/petal1.png';
+import petal2 from '@images/decoration/petal2.png';
+import bgFooterDark from '@images/decoration/bgFooterDark.svg';
+import bgFooterLight from '@images/decoration/bgFooterLight.svg';
+import petalHeaderLight from '@images/decoration_light.svg';
+import petalHeaderDark from '@images/decoration_dark.svg';
 
 const sectionSpace = 96;
 const sectionSpaceMobile = 80;

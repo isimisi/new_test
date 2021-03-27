@@ -1,9 +1,9 @@
-import colorfull from 'dan-api/palette/colorfull';
+import colorfull from '@api/palette/colorfull';
 import { darken, fade, lighten } from '@material-ui/core/styles/colorManipulator';
 import { gradientBgLight, gradientBgDark } from 'containers/Templates/appStyles-jss';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
-import images from 'dan-api/images/photos';
+import images from '@api/images/photos';
 
 const styles = theme => ({
   rootCounter: {

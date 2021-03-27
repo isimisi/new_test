@@ -1,4 +1,4 @@
-import themePalette from 'dan-api/palette/themePaletteMode';
+import themePalette from '@api/palette/themePaletteMode';
 const applicationTheme = (color, mode, direction) => ({
   direction,
   palette: {

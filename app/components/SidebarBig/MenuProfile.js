@@ -6,7 +6,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
-import dummy from 'dan-api/dummy/dummyContents';
+import dummy from '@api/dummy/dummyContents';
 import styles from './sidebarBig-jss';
 
 function MenuProfile(props) {

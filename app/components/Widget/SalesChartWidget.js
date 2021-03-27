@@ -15,7 +15,7 @@ import purple from '@material-ui/core/colors/purple';
 import blue from '@material-ui/core/colors/blue';
 import cyan from '@material-ui/core/colors/cyan';
 import pink from '@material-ui/core/colors/pink';
-import colorfull from 'dan-api/palette/colorfull';
+import colorfull from '@api/palette/colorfull';
 import {
   BarChart,
   Bar,
@@ -28,8 +28,8 @@ import {
   PieChart, Pie, Cell,
   Legend
 } from 'recharts';
-import { dataSales } from 'dan-api/chart/chartData';
-import { data2 } from 'dan-api/chart/chartMiniData';
+import { dataSales } from '@api/chart/chartData';
+import { data2 } from '@api/chart/chartMiniData';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 

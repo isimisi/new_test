@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
-import brand from 'dan-api/dummy/brand';
-import dummy from 'dan-api/dummy/dummyContents';
-import logo from 'dan-images/logo.svg';
+import brand from '@api/dummy/brand';
+import dummy from '@api/dummy/dummyContents';
+import logo from '@images/logo.svg';
 import MainMenu from './MainMenu';
 import styles from './sidebar-jss';
 

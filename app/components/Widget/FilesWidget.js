@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
-import imgData from 'dan-api/images/imgData';
+import imgData from '@api/images/imgData';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 

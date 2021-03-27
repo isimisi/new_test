@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { ResetForm } from 'dan-components';
+import { ResetForm } from '@components';
 import styles from '../../../components/Forms/user-jss';
 
 function ResetPassword(props) {

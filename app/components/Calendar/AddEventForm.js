@@ -10,7 +10,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import { reduxForm, Field } from 'redux-form/immutable';
 import MomentUtils from '@date-io/moment';
 import { connect } from 'react-redux';
-import css from 'dan-styles/Form.scss';
+import css from '@styles/Form.scss';
 import { TextFieldRedux } from '../Forms/ReduxFormMUI';
 import styles from './calendar-jss';
 

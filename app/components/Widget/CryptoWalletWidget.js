@@ -13,9 +13,9 @@ import Input from '@material-ui/core/Input';
 import ContentCopy from '@material-ui/icons/FileCopy';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Avatar from '@material-ui/core/Avatar';
-import bitcoinLogo from 'dan-images/crypto/bitcoin.png';
-import litecoinLogo from 'dan-images/crypto/litecoin.png';
-import cardanoLogo from 'dan-images/crypto/cardano.png';
+import bitcoinLogo from '@images/crypto/bitcoin.png';
+import litecoinLogo from '@images/crypto/litecoin.png';
+import cardanoLogo from '@images/crypto/cardano.png';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 

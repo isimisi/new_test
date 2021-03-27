@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { HeaderLanding } from 'dan-components';
+import { HeaderLanding } from '@components';
 import Hidden from '@material-ui/core/Hidden';
 import styles from './appStyles-jss';
 

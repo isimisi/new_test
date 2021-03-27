@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/BorderColor';
 import DoneIcon from '@material-ui/icons/Done';
-import css from 'dan-styles/Table.scss';
+import css from '@styles/Table.scss';
 import EditableCell from './EditableCell';
 import SelectableCell from './SelectableCell';
 import ToggleCell from './ToggleCell';

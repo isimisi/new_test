@@ -14,7 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Select from '@material-ui/core/Select';
 import Tooltip from '@material-ui/core/Tooltip';
-import dummy from 'dan-api/dummy/dummyContents';
+import dummy from '@api/dummy/dummyContents';
 import styles from './jss/writePost-jss';
 
 function isImage(file) {

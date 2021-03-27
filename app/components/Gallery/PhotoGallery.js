@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import 'dan-styles/vendors/image-lightbox/image-lightbox.css';
+import '@styles/vendors/image-lightbox/image-lightbox.css';
 import ImageLightbox from '../ImageLightbox/ImageLightbox';
 import styles from './photo-jss';
 

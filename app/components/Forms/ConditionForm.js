@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
+import { initAction, clearAction } from '@redux/actions/reduxFormActions';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { LoginForm } from 'dan-components';
-import styles from 'dan-components/Forms/user-jss';
+import { LoginForm } from '@components';
+import styles from '@components/Forms/user-jss';
 
 function Login(props) {
   const [valueForm, setValueForm] = useState(null);

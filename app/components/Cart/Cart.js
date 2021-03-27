@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import styles from './cart-jss';
 
 function Cart(props) {

@@ -8,7 +8,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { reduxForm, Field } from 'redux-form/immutable';
 import { connect } from 'react-redux';
-import css from 'dan-styles/Form.scss';
+import css from '@styles/Form.scss';
 import { TextFieldRedux } from '../Forms/ReduxFormMUI';
 import styles from './taskBoard-jss';
 

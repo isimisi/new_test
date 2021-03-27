@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Typography from '@material-ui/core/Typography';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,7 +12,7 @@ import Input from '@material-ui/core/Input';
 import Fab from '@material-ui/core/Fab';
 import Divider from '@material-ui/core/Divider';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
-import dummy from 'dan-api/dummy/dummyContents';
+import dummy from '@api/dummy/dummyContents';
 import styles from '../SocialMedia/jss/socialMedia-jss';
 
 function Comment(props) {

@@ -10,9 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import brand from 'dan-api/dummy/brand';
-import logo from 'dan-images/logo.svg';
-import styles from 'dan-components/Forms/user-jss';
+import brand from '@api/dummy/brand';
+import logo from '@images/logo.svg';
+import styles from '@components/Forms/user-jss';
 
 function ComingSoon(props) {
   const { classes, deco } = props;

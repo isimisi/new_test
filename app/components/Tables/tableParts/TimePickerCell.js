@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
-import css from 'dan-styles/Table.scss';
+import css from '@styles/Table.scss';
 
 const styles = {
   datepicker: {

@@ -11,8 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Help from '@material-ui/icons/Help';
 import Avatar from '@material-ui/core/Avatar';
-import dummy from 'dan-api/dummy/dummyContents';
-import avatarApi from 'dan-api/images/avatars';
+import dummy from '@api/dummy/dummyContents';
+import avatarApi from '@api/images/avatars';
 import { TextFieldRedux } from './ReduxFormMUI';
 import styles from './user-jss';
 

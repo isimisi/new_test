@@ -4,7 +4,7 @@ import Dropzone from 'react-dropzone';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import Typography from '@material-ui/core/Typography';
@@ -20,7 +20,7 @@ import Smartphone from '@material-ui/icons/Smartphone';
 import LocationOn from '@material-ui/icons/LocationOn';
 import Work from '@material-ui/icons/Work';
 import Language from '@material-ui/icons/Language';
-import css from 'dan-styles/Form.scss';
+import css from '@styles/Form.scss';
 import { TextFieldRedux } from '../Forms/ReduxFormMUI';
 import styles from './contact-jss';
 

@@ -2,8 +2,8 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import cyan from '@material-ui/core/colors/cyan';
 import indigo from '@material-ui/core/colors/indigo';
 import red from '@material-ui/core/colors/red';
-import bg from 'dan-images/petal_grey_bg.svg';
-import bgLight from 'dan-images/petal_bg.svg';
+import bg from '@images/petal_grey_bg.svg';
+import bgLight from '@images/petal_bg.svg';
 import { gradientBgLight } from 'containers/Templates/appStyles-jss';
 const rootWraper = {
   display: 'flex',

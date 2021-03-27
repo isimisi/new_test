@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import 'dan-styles/vendors/react-calculator/styles.css';
+import '@styles/vendors/react-calculator/styles.css';
 import ResultPanel from './ResultPanel';
 import ButtonPanel from './ButtonPanel';
 

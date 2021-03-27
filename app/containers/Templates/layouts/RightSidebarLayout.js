@@ -8,8 +8,8 @@ import {
   Header,
   Sidebar,
   BreadCrumb,
-} from 'dan-components';
-import dataMenu from 'dan-api/ui/menu';
+} from '@components';
+import dataMenu from '@api/ui/menu';
 import Decoration from '../Decoration';
 import styles from '../appStyles-jss';
 

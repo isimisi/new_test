@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import TableCell from '@material-ui/core/TableCell';
 import TextField from '@material-ui/core/TextField';
-import css from 'dan-styles/Table.scss';
+import css from '@styles/Table.scss';
 
 const styles = {};
 

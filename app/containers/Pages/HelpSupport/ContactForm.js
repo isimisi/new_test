@@ -5,9 +5,9 @@ import { Field, reduxForm } from 'redux-form/immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
-import { PapperBlock } from 'dan-components';
-import { TextFieldRedux } from 'dan-components/Forms/ReduxFormMUI';
-import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
+import { PapperBlock } from '@components';
+import { TextFieldRedux } from '@components/Forms/ReduxFormMUI';
+import { initAction, clearAction } from '@redux/actions/reduxFormActions';
 import styles from './helpSupport-jss';
 
 // validation functions

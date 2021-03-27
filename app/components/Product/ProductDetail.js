@@ -12,13 +12,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import AddShoppingCart from '@material-ui/icons/AddShoppingCart';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
-import imgData from 'dan-api/images/imgData';
+import imgData from '@api/images/imgData';
 import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
-import Type from 'dan-styles/Typography.scss';
-import 'dan-styles/vendors/slick-carousel/slick-carousel.css';
-import 'dan-styles/vendors/slick-carousel/slick.css';
-import 'dan-styles/vendors/slick-carousel/slick-theme.css';
+import Type from '@styles/Typography.scss';
+import '@styles/vendors/slick-carousel/slick-carousel.css';
+import '@styles/vendors/slick-carousel/slick.css';
+import '@styles/vendors/slick-carousel/slick-theme.css';
 import Rating from '../Rating/Rating';
 import styles from './product-jss';
 

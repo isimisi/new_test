@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
-import { SourceReader, PapperBlock } from 'dan-components';
+import brand from '@api/dummy/brand';
+import { SourceReader, PapperBlock } from '@components';
 import { SidebarLayout, SidebarLayoutRight, FullHeader } from './demos';
 
 class AppLayout extends Component {

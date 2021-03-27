@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React from 'react';
-import Loading from 'dan-components/Loading';
+import Loading from '@components/Loading';
 import loadable from '../utils/loadable';
 // Dashboard
 export const PersonalDashboard = loadable(() =>

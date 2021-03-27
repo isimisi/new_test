@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import Slider from 'react-animated-slider';
-import imgApi from 'dan-api/images/photos';
+import imgApi from '@api/images/photos';
 import TestimonialsParallax from './TestimonialsParallax';
-import 'dan-styles/vendors/react-animated-slider/react-animated-slider.css';
+import '@styles/vendors/react-animated-slider/react-animated-slider.css';
 import Title from './Title';
 import styles from './landingStyle-jss';
 

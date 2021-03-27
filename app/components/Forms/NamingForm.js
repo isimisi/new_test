@@ -12,8 +12,8 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
   TextFieldRedux,
-} from 'dan-components/Forms/ReduxFormMUI';
-import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
+} from '@components/Forms/ReduxFormMUI';
+import { initAction, clearAction } from '@redux/actions/reduxFormActions';
 import TextField from '@material-ui/core/TextField';
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);

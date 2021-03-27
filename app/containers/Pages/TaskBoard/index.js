@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import { useSelector, useDispatch } from 'react-redux';
-import { TaskBoard, AddBoard, Notification } from 'dan-components';
+import { TaskBoard, AddBoard, Notification } from '@components';
 import {
   fetchAction,
   addAction,

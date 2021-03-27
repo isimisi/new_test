@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';

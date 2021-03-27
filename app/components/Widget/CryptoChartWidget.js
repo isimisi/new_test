@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import 'dan-styles/vendors/rechart/styles.css';
+import '@styles/vendors/rechart/styles.css';
 import {
   ComposedChart,
   Line,
@@ -26,8 +26,8 @@ import {
   Legend,
   ResponsiveContainer
 } from 'recharts';
-import { dataCrypto } from 'dan-api/chart/chartData';
-import colorfull from 'dan-api/palette/colorfull';
+import { dataCrypto } from '@api/chart/chartData';
+import colorfull from '@api/palette/colorfull';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 

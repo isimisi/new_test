@@ -4,7 +4,7 @@ import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import classNames from 'classnames';
-import css from 'dan-styles/Table.scss';
+import css from '@styles/Table.scss';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/BorderColor';
 

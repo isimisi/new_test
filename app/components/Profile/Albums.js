@@ -7,7 +7,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
-import imgData from 'dan-api/images/imgData';
+import imgData from '@api/images/imgData';
 import styles from './profile-jss';
 
 const LinkBtn = React.forwardRef(function LinkBtn(props, ref) { // eslint-disable-line

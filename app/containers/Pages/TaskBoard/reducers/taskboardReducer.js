@@ -1,6 +1,6 @@
 import { fromJS, List, Map } from 'immutable';
-import notif from 'dan-api/ui/notifMessage';
-import { CLOSE_NOTIF } from 'dan-redux/constants/notifConstants';
+import notif from '@api/ui/notifMessage';
+import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   FETCH_BOARD_DATA,
   ADD_BOARD,

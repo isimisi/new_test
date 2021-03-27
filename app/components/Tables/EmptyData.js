@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import TableIcon from '@material-ui/icons/Apps';
-import styles from 'dan-components/Tables/tableStyle-jss';
+import styles from '@components/Tables/tableStyle-jss';
 
 function EmptyData(props) {
   const { classes } = props;

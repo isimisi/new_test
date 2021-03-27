@@ -15,8 +15,8 @@ import FileIcon from '@material-ui/icons/Description';
 import ActionDelete from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Send from '@material-ui/icons/Send';
-import css from 'dan-styles/Form.scss';
-import 'dan-styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
+import css from '@styles/Form.scss';
+import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
 import isImage from '../Forms/helpers/helpers.js';
 import styles from './email-jss';
 

@@ -6,7 +6,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { PapperBlock } from 'dan-components';
+import { PapperBlock } from '@components';
 import styles from './helpSupport-jss';
 
 function Qna(props) {

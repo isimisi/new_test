@@ -6,7 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Calendar from 'react-calendar';
 import Clock from 'react-clock';
-import 'dan-styles/vendors/react-clock/react-clock.css';
+import '@styles/vendors/react-clock/react-clock.css';
 import styles from './widget-jss';
 
 function DateWidget(props) {

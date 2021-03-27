@@ -6,10 +6,10 @@ import classNames from 'classnames';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Icon from '@material-ui/core/Icon';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import Slider from 'react-animated-slider';
-import 'dan-styles/vendors/react-animated-slider/react-animated-slider.css';
-import imgApi from 'dan-api/images/photos';
+import '@styles/vendors/react-animated-slider/react-animated-slider.css';
+import imgApi from '@api/images/photos';
 
 const styles = theme => ({
   tag: {

@@ -5,7 +5,7 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/picker
 import MomentUtils from '@date-io/moment';
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
-import css from 'dan-styles/Table.scss';
+import css from '@styles/Table.scss';
 
 const styles = {
   datepicker: {

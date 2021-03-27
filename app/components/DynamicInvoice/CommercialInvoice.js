@@ -8,7 +8,7 @@
 import React, { useReducer, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import 'dan-styles/vendors/invoice/style.css';
+import '@styles/vendors/invoice/style.css';
 import { getDate } from '../../containers/helpers/dateTimeHelper';
 
 const styles = {

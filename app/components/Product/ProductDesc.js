@@ -15,8 +15,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import commentData from 'dan-api/apps/commentData';
-import styles from 'dan-components/Product/product-jss';
+import commentData from '@api/apps/commentData';
+import styles from '@components/Product/product-jss';
 import Comments from '../Comments';
 
 function TabContainer({ children, dir }) {

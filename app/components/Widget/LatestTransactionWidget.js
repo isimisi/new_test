@@ -9,8 +9,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Chip from '@material-ui/core/Chip';
-import styles from 'dan-components/Tables/tableStyle-jss';
-import messageStyles from 'dan-styles/Messages.scss';
+import styles from '@components/Tables/tableStyle-jss';
+import messageStyles from '@styles/Messages.scss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 
 let id = 0;

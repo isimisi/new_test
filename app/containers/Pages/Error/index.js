@@ -1,8 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import { Route } from 'react-router-dom';
-import { ErrorWrap } from 'dan-components';
+import { ErrorWrap } from '@components';
 
 const title = brand.name + ' - Aplication Error';
 const description = brand.desc;

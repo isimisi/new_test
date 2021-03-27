@@ -8,10 +8,10 @@ import Button from '@material-ui/core/Button';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Icon from '@material-ui/core/Icon';
-import carouselData from 'dan-api/images/carouselData';
-import 'dan-styles/vendors/slick-carousel/slick-carousel.css';
-import 'dan-styles/vendors/slick-carousel/slick.css';
-import 'dan-styles/vendors/slick-carousel/slick-theme.css';
+import carouselData from '@api/images/carouselData';
+import '@styles/vendors/slick-carousel/slick-carousel.css';
+import '@styles/vendors/slick-carousel/slick.css';
+import '@styles/vendors/slick-carousel/slick-theme.css';
 import styles from './widget-jss';
 
 function SampleNextArrow(props) {

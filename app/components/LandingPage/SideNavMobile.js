@@ -8,8 +8,8 @@ import AnchorLink from 'react-anchor-link-smooth-scroll';
 import Scrollspy from 'react-scrollspy';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import logo from 'dan-images/logo.svg';
-import brand from 'dan-api/dummy/brand';
+import logo from '@images/logo.svg';
+import brand from '@api/dummy/brand';
 import styles from '../Sidebar/sidebar-jss';
 
 function SideNavMobile(props) {

@@ -15,7 +15,7 @@ import {
   changeBgPositionAction,
   changeLayoutAction,
   changeDirectionAction
-} from 'dan-redux/actions/uiActions';
+} from '@redux/actions/uiActions';
 import applicationTheme from '../../styles/theme/applicationTheme';
 
 const styles = {

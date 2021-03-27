@@ -2,8 +2,8 @@ import pink from '@material-ui/core/colors/pink';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 import dark from '@material-ui/core/colors/blueGrey';
 import { fade, darken } from '@material-ui/core/styles/colorManipulator';
-import roundedThumbLight from 'dan-images/decoration/roundedThumbLight.png';
-import roundedThumbDark from 'dan-images/decoration/roundedThumbDark.png';
+import roundedThumbLight from '@images/decoration/roundedThumbLight.png';
+import roundedThumbDark from '@images/decoration/roundedThumbDark.png';
 
 const styles = theme => ({
   divider: {

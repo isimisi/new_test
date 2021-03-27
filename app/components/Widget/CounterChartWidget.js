@@ -7,8 +7,8 @@ import {
   AreaChart, Area,
   LineChart, Line,
 } from 'recharts';
-import { data1 } from 'dan-api/chart/chartMiniData';
-import colorfull from 'dan-api/palette/colorfull';
+import { data1 } from '@api/chart/chartMiniData';
+import colorfull from '@api/palette/colorfull';
 import AssignmentReturned from '@material-ui/icons/AssignmentReturned';
 import CounterWidget from '../Counter/CounterWidget';
 import styles from './widget-jss';

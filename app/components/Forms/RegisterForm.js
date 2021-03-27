@@ -18,8 +18,8 @@ import Brightness5 from '@material-ui/icons/Brightness5';
 import People from '@material-ui/icons/People';
 import Icon from '@material-ui/core/Icon';
 import Hidden from '@material-ui/core/Hidden';
-import brand from 'dan-api/dummy/brand';
-import logo from 'dan-images/logo.svg';
+import brand from '@api/dummy/brand';
+import logo from '@images/logo.svg';
 import { TextFieldRedux, CheckboxRedux } from './ReduxFormMUI';
 import styles from './user-jss';
 

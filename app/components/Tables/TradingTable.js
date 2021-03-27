@@ -12,7 +12,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TrendingUp from '@material-ui/icons/TrendingUp';
 import TrendingDown from '@material-ui/icons/TrendingDown';
 import TrendingFlat from '@material-ui/icons/TrendingFlat';
-import { cryptoData } from 'dan-api/chart/chartMiniData';
+import { cryptoData } from '@api/chart/chartMiniData';
 import { BarChart, Bar } from 'recharts';
 import PapperBlock from '../PapperBlock/PapperBlock';
 import EnhancedTableToolbar from './tableParts/TableToolbar';

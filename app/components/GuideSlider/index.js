@@ -10,7 +10,7 @@ import SwipeableViews from 'react-swipeable-views';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
-import guideData from 'dan-api/dummy/guideData';
+import guideData from '@api/dummy/guideData';
 import styles from './guide-jss';
 
 const maxStepsSwipe = guideData.length;

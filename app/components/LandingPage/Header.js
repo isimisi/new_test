@@ -12,8 +12,8 @@ import { NavLink } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import AppBar from '@material-ui/core/AppBar';
-import logo from 'dan-images/logo.svg';
-import brand from 'dan-api/dummy/brand';
+import logo from '@images/logo.svg';
+import brand from '@api/dummy/brand';
 import SideNavMobile from './SideNavMobile';
 import styles from './landingStyle-jss';
 

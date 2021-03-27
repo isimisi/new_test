@@ -5,12 +5,12 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
-import imgApi from 'dan-api/images/photos';
+import imgApi from '@api/images/photos';
 
 const dataCart = [
   {

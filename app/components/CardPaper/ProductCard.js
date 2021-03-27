@@ -14,7 +14,7 @@ import Chip from '@material-ui/core/Chip';
 import AddShoppingCart from '@material-ui/icons/AddShoppingCart';
 import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
-import Type from 'dan-styles/Typography.scss';
+import Type from '@styles/Typography.scss';
 import Rating from '../Rating/Rating';
 import styles from './cardStyle-jss';
 

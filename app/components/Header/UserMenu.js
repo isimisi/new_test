@@ -18,10 +18,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import dummy from 'dan-api/dummy/dummyContents';
-import messageStyles from 'dan-styles/Messages.scss';
-import avatarApi from 'dan-api/images/avatars';
-import link from 'dan-api/ui/link';
+import dummy from '@api/dummy/dummyContents';
+import messageStyles from '@styles/Messages.scss';
+import avatarApi from '@api/images/avatars';
+import link from '@api/ui/link';
 import styles from './header-jss';
 
 function UserMenu(props) {

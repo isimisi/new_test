@@ -13,10 +13,10 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import messageStyles from 'dan-styles/Messages.scss';
-import progressStyles from 'dan-styles/Progress.scss';
-import imgApi from 'dan-api/images/photos';
-import avatarApi from 'dan-api/images/avatars';
+import messageStyles from '@styles/Messages.scss';
+import progressStyles from '@styles/Progress.scss';
+import imgApi from '@api/images/photos';
+import avatarApi from '@api/images/avatars';
 import PapperBlock from '../PapperBlock/PapperBlock';
 import styles from './widget-jss';
 

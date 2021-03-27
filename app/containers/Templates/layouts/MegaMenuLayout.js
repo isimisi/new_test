@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
-import { HeaderMenu, BreadCrumb } from 'dan-components';
-import dataMenu from 'dan-api/ui/menu';
+import { HeaderMenu, BreadCrumb } from '@components';
+import dataMenu from '@api/ui/menu';
 import Decoration from '../Decoration';
 import styles from '../appStyles-jss';
 

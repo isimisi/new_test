@@ -9,7 +9,7 @@ import ActionDelete from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import CloudUpload from '@material-ui/icons/CloudUpload';
-import 'dan-styles/vendors/react-dropzone/react-dropzone.css';
+import '@styles/vendors/react-dropzone/react-dropzone.css';
 import isImage from './helpers/helpers.js';
 
 const styles = theme => ({

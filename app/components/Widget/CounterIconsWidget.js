@@ -6,7 +6,7 @@ import OndemandVideo from '@material-ui/icons/OndemandVideo';
 import SupervisorAccount from '@material-ui/icons/SupervisorAccount';
 import CollectionsBookmark from '@material-ui/icons/CollectionsBookmark';
 import Edit from '@material-ui/icons/Edit';
-import colorfull from 'dan-api/palette/colorfull';
+import colorfull from '@api/palette/colorfull';
 import CounterWidget from '../Counter/CounterWidget';
 import styles from './widget-jss';
 

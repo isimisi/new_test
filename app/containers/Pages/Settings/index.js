@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Helmet } from 'react-helmet';
-import brand from 'dan-api/dummy/brand';
+import brand from '@api/dummy/brand';
 import AppBar from '@material-ui/core/AppBar';
 import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,10 +10,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { withStyles } from '@material-ui/core/styles';
-import settingList from 'dan-api/ui/settingList';
+import settingList from '@api/ui/settingList';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
-import dummy from 'dan-api/dummy/dummyContents';
+import dummy from '@api/dummy/dummyContents';
 import DetailSettings from './DetailSettings';
 import styles from './settings-jss';
 

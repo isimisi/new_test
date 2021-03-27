@@ -12,7 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import LocalActivity from '@material-ui/icons/LocalActivity';
 import Typography from '@material-ui/core/Typography';
-import 'dan-styles/vendors/rechart/styles.css';
+import '@styles/vendors/rechart/styles.css';
 import {
   ComposedChart,
   Line,
@@ -23,8 +23,8 @@ import {
   CartesianGrid,
   ResponsiveContainer
 } from 'recharts';
-import { dataPerformance } from 'dan-api/chart/chartData';
-import colorfull from 'dan-api/palette/colorfull';
+import { dataPerformance } from '@api/chart/chartData';
+import colorfull from '@api/palette/colorfull';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 

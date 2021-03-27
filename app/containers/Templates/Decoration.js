@@ -2,9 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import decorationLight from 'dan-images/decoration_light.svg';
-import decorationDark from 'dan-images/decoration_dark.svg';
-import petalLight from 'dan-images/petal_bg.svg';
+import decorationLight from '@images/decoration_light.svg';
+import decorationDark from '@images/decoration_dark.svg';
+import petalLight from '@images/petal_bg.svg';
 import styles from './appStyles-jss';
 
 function Decoration(props) {

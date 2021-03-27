@@ -8,7 +8,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import imgApi from 'dan-api/images/photos';
+import imgApi from '@api/images/photos';
 import NewsCard from '../CardPaper/NewsCard';
 import styles from './widget-jss';
 

@@ -8,7 +8,7 @@ import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { initAction, clearAction } from 'dan-redux/actions/reduxFormActions';
+import { initAction, clearAction } from '@redux/actions/reduxFormActions';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import { useDropzone } from 'react-dropzone';

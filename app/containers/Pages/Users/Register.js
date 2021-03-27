@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import brand from 'dan-api/dummy/brand';
-import { RegisterForm } from 'dan-components';
-import styles from 'dan-components/Forms/user-jss';
+import brand from '@api/dummy/brand';
+import { RegisterForm } from '@components';
+import styles from '@components/Forms/user-jss';
 
 function Register(props) {
   const [valueForm, setValueForm] = useState(null);

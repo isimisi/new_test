@@ -11,7 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Ionicon from 'react-ionicons';
-import { openMenuAction, closeMenuAction } from 'dan-redux/actions/uiActions';
+import { openMenuAction, closeMenuAction } from '@redux/actions/uiActions';
 import MenuProfile from './MenuProfile';
 import styles from './sidebarBig-jss';
 

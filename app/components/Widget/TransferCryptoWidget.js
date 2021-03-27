@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import cardanoLogo from 'dan-images/crypto/cardano.png';
+import cardanoLogo from '@images/crypto/cardano.png';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 
