@@ -1,141 +1,258 @@
 // Main Components
-export Header from './Header/Header';
-export HeaderMenu from './Header/HeaderMenu';
-export Sidebar from './Sidebar';
-export SidebarBig from './SidebarBig';
-export BreadCrumb from './BreadCrumb/BreadCrumb';
-export SourceReader from './SourceReader/SourceReader';
-export PapperBlock from './PapperBlock/PapperBlock';
-export SearchUi from './Search/SearchUi';
 // Landing Page
-export Banner from './LandingPage/Banner';
-export Contact from './LandingPage/Contact';
-export Feature from './LandingPage/Feature';
-export Footer from './LandingPage/Footer';
-export HeaderLanding from './LandingPage/Header';
-export Pricing from './LandingPage/Pricing';
-export Showcase from './LandingPage/Showcase';
-export ShowcaseSlider from './LandingPage/ShowcaseSlider';
-export Technology from './LandingPage/Technology';
-export Testimonials from './LandingPage/Testimonials';
-export SideNav from './LandingPage/SideNav';
+import Banner from './LandingPage/Banner';
+import Header from './Header/Header';
+import HeaderMenu from './Header/HeaderMenu';
+import Sidebar from './Sidebar';
+import SidebarBig from './SidebarBig';
+import BreadCrumb from './BreadCrumb/BreadCrumb';
+import PapperBlock from './PapperBlock/PapperBlock';
+import SearchUi from './Search/SearchUi';
+import Contact from './LandingPage/Contact';
+import Feature from './LandingPage/Feature';
+import Footer from './LandingPage/Footer';
+import HeaderLanding from './LandingPage/Header';
+import Pricing from './LandingPage/Pricing';
+import Showcase from './LandingPage/Showcase';
+import ShowcaseSlider from './LandingPage/ShowcaseSlider';
+import Technology from './LandingPage/Technology';
+import Testimonials from './LandingPage/Testimonials';
+import SideNav from './LandingPage/SideNav';
 // Dashboard and Widget
-export CounterWidget from './Counter/CounterWidget';
-export CounterTrading from './Counter/CounterTrading';
-export SliderWidget from './Widget/SliderWidget';
-export CounterChartWidget from './Widget/CounterChartWidget';
-export CounterIconsWidget from './Widget/CounterIconsWidget';
-export CounterCryptoWidget from './Widget/CounterCryptoWidget';
-export PerformanceChartWidget from './Widget/PerformanceChartWidget';
-export TableWidget from './Widget/TableWidget';
-export MarketPlaceWIdget from './Widget/MarketPlaceWIdget';
-export TaskWidget from './Widget/TaskWidget';
-export ProfileWidget from './Widget/ProfileWidget';
-export ProgressWidget from './Widget/ProgressWidget';
-export SalesChartWidget from './Widget/SalesChartWidget';
-export CarouselWidget from './Widget/CarouselWidget';
-export AlbumWidget from './Widget/AlbumWidget';
-export MapWidget from './Widget/MapWidget';
-export WeatherWidget from './Widget/WeatherWidget';
-export DateWidget from './Widget/DateWidget';
-export FilesWidget from './Widget/FilesWidget';
-export NewsWidget from './Widget/NewsWidget';
-export CalculatorWidget from './Widget/CalculatorWidget';
-export TimelineWidget from './Widget/TimelineWidget';
-export CryptoChartWidget from './Widget/CryptoChartWidget';
-export TradingFormWidget from './Widget/TradingFormWidget';
-export LatestTransactionWidget from './Widget/LatestTransactionWidget';
-export CryptoWalletWidget from './Widget/CryptoWalletWidget';
-export TransferCryptoWidget from './Widget/TransferCryptoWidget';
-export HistoryWidget from './Widget/HistoryWidget';
-export NewsListWidget from './Widget/NewsListWidget';
-export PerformanceWidget from './Widget/PerformanceWidget';
+import CounterWidget from './Counter/CounterWidget';
+import CounterTrading from './Counter/CounterTrading';
+import SliderWidget from './Widget/SliderWidget';
+import CounterChartWidget from './Widget/CounterChartWidget';
+import CounterIconsWidget from './Widget/CounterIconsWidget';
+import CounterCryptoWidget from './Widget/CounterCryptoWidget';
+import PerformanceChartWidget from './Widget/PerformanceChartWidget';
+import TableWidget from './Widget/TableWidget';
+import MarketPlaceWIdget from './Widget/MarketPlaceWIdget';
+import TaskWidget from './Widget/TaskWidget';
+import ProfileWidget from './Widget/ProfileWidget';
+import ProgressWidget from './Widget/ProgressWidget';
+import SalesChartWidget from './Widget/SalesChartWidget';
+import CarouselWidget from './Widget/CarouselWidget';
+import AlbumWidget from './Widget/AlbumWidget';
+import MapWidget from './Widget/MapWidget';
+import WeatherWidget from './Widget/WeatherWidget';
+import DateWidget from './Widget/DateWidget';
+import FilesWidget from './Widget/FilesWidget';
+import NewsWidget from './Widget/NewsWidget';
+import CalculatorWidget from './Widget/CalculatorWidget';
+import TimelineWidget from './Widget/TimelineWidget';
+import CryptoChartWidget from './Widget/CryptoChartWidget';
+import TradingFormWidget from './Widget/TradingFormWidget';
+import LatestTransactionWidget from './Widget/LatestTransactionWidget';
+import CryptoWalletWidget from './Widget/CryptoWalletWidget';
+import TransferCryptoWidget from './Widget/TransferCryptoWidget';
+import HistoryWidget from './Widget/HistoryWidget';
+import NewsListWidget from './Widget/NewsListWidget';
+import PerformanceWidget from './Widget/PerformanceWidget';
 // Calculator
-export Calculator from './Calculator';
+import Calculator from './Calculator';
 // Guide
-export GuideSlider from './GuideSlider';
+import GuideSlider from './GuideSlider';
 // Table Components
-export TreeTable from './Tables/TreeTable';
-export CrudTable from './Tables/CrudTable';
-export CrudTableForm from './Tables/CrudTableForm';
-export AdvTable from './Tables/AdvTable';
-export TradingTable from './Tables/TradingTable';
-export EmptyData from './Tables/EmptyData';
+import TreeTable from './Tables/TreeTable';
+import CrudTable from './Tables/CrudTable';
+import CrudTableForm from './Tables/CrudTableForm';
+import AdvTable from './Tables/AdvTable';
+import TradingTable from './Tables/TradingTable';
+import EmptyData from './Tables/EmptyData';
 // Form
-export Notification from './Notification/Notification';
-export MaterialDropZone from './Forms/MaterialDropZone';
-export LoginForm from './Forms/LoginForm';
-export RegisterForm from './Forms/RegisterForm';
-export ResetForm from './Forms/ResetForm';
-export LockForm from './Forms/LockForm';
-export AddressForm from './Forms/AddressForm';
-export PaymentForm from './Forms/PaymentForm';
-export Review from './Forms/Review';
-export SideReview from './Forms/SideReview';
+import Notification from './Notification/Notification';
+import MaterialDropZone from './Forms/MaterialDropZone';
+import LoginForm from './Forms/LoginForm';
+import RegisterForm from './Forms/RegisterForm';
+import ResetForm from './Forms/ResetForm';
+import LockForm from './Forms/LockForm';
+import AddressForm from './Forms/AddressForm';
+import PaymentForm from './Forms/PaymentForm';
+import Review from './Forms/Review';
+import SideReview from './Forms/SideReview';
 // Texteditor Toolbar
-export HeadlinesButton from './TextEditor/HeadlinesButton';
+import HeadlinesButton from './TextEditor/HeadlinesButton';
 // UI
-export LimitedBadges from './Badges/LimitedBadges';
-export Quote from './Quote/Quote';
-export Pagination from './Pagination/Pagination';
-export ImageLightbox from './ImageLightbox/ImageLightbox';
-export Rating from './Rating/Rating';
+import LimitedBadges from './Badges/LimitedBadges';
+import Quote from './Quote/Quote';
+import Pagination from './Pagination/Pagination';
+import ImageLightbox from './ImageLightbox/ImageLightbox';
+import Rating from './Rating/Rating';
 // Social Media
-export Cover from './SocialMedia/Cover';
-export Timeline from './SocialMedia/Timeline';
-export SideSection from './SocialMedia/SideSection';
-export WritePost from './SocialMedia/WritePost';
-export Comments from './Comments';
+import Cover from './SocialMedia/Cover';
+import Timeline from './SocialMedia/Timeline';
+import SideSection from './SocialMedia/SideSection';
+import WritePost from './SocialMedia/WritePost';
+import Comments from './Comments';
 // Profile
-export About from './Profile/About';
-export Albums from './Profile/Albums';
-export Connection from './Profile/Connection';
-export Favorites from './Profile/Favorites';
+import About from './Profile/About';
+import Albums from './Profile/Albums';
+import Connection from './Profile/Connection';
+import Favorites from './Profile/Favorites';
 // Card
-export ProfileCard from './CardPaper/ProfileCard';
-export GeneralCard from './CardPaper/GeneralCard';
-export NewsCard from './CardPaper/NewsCard';
-export HorizontalNewsCard from './CardPaper/HorizontalNewsCard';
-export PlayerCard from './CardPaper/PlayerCard';
-export PostCard from './CardPaper/PostCard';
-export ProductCard from './CardPaper/ProductCard';
-export VideoCard from './CardPaper/VideoCard';
-export IdentityCard from './CardPaper/IdentityCard';
-export PricingCard from './CardPaper/PricingCard';
-export ShowcaseCard from './CardPaper/ShowcaseCard';
-export HeadlineCard from './CardPaper/HeadlineCard';
+import ProfileCard from './CardPaper/ProfileCard';
+import GeneralCard from './CardPaper/GeneralCard';
+import NewsCard from './CardPaper/NewsCard';
+import HorizontalNewsCard from './CardPaper/HorizontalNewsCard';
+import PlayerCard from './CardPaper/PlayerCard';
+import PostCard from './CardPaper/PostCard';
+import ProductCard from './CardPaper/ProductCard';
+import VideoCard from './CardPaper/VideoCard';
+import IdentityCard from './CardPaper/IdentityCard';
+import PricingCard from './CardPaper/PricingCard';
+import ShowcaseCard from './CardPaper/ShowcaseCard';
+import HeadlineCard from './CardPaper/HeadlineCard';
 // Search
-export SearchProduct from './Search/SearchProduct';
+import SearchProduct from './Search/SearchProduct';
 // Product
-export ProductGallery from './Product/ProductGallery';
-export ProductDesc from './Product/ProductDesc';
+import ProductGallery from './Product/ProductGallery';
+import ProductDesc from './Product/ProductDesc';
 // Gallery
-export PhotoGallery from './Gallery/PhotoGallery';
+import PhotoGallery from './Gallery/PhotoGallery';
 // Invoice
-export CommercialInvoice from './DynamicInvoice/CommercialInvoice';
+import CommercialInvoice from './DynamicInvoice/CommercialInvoice';
 // Panel
-export FloatingPanel from './Panel/FloatingPanel';
-export Cart from './Cart/Cart';
+import FloatingPanel from './Panel/FloatingPanel';
+import Cart from './Cart/Cart';
 // Contact
-export AddContact from './Contact/AddContact';
-export ContactList from './Contact/ContactList';
-export ContactDetail from './Contact/ContactDetail';
+import AddContact from './Contact/AddContact';
+import ContactList from './Contact/ContactList';
+import ContactDetail from './Contact/ContactDetail';
 // Chat
-export ChatHeader from './Chat/ChatHeader';
-export ChatRoom from './Chat/ChatRoom';
+import ChatHeader from './Chat/ChatHeader';
+import ChatRoom from './Chat/ChatRoom';
 // Email
-export EmailHeader from './Email/EmailHeader';
-export EmailSidebar from './Email/EmailSidebar';
-export EmailList from './Email/EmailList';
-export ComposeEmail from './Email/ComposeEmail';
+import EmailHeader from './Email/EmailHeader';
+import EmailSidebar from './Email/EmailSidebar';
+import EmailList from './Email/EmailList';
+import ComposeEmail from './Email/ComposeEmail';
 // Calendar
-export EventCalendar from './Calendar/EventCalendar';
-export DetailEvent from './Calendar/DetailEvent';
-export AddEvent from './Calendar/AddEvent';
-export AddEventForm from './Calendar/AddEventForm';
+import EventCalendar from './Calendar/EventCalendar';
+import DetailEvent from './Calendar/DetailEvent';
+import AddEvent from './Calendar/AddEvent';
+import AddEventForm from './Calendar/AddEventForm';
 // TaskBoard
-export TaskBoard from './TaskBoard/TaskBoard';
-export AddBoard from './TaskBoard/AddBoard';
+import TaskBoard from './TaskBoard/TaskBoard';
+import AddBoard from './TaskBoard/AddBoard';
 // Error
-export ErrorWrap from './Error/ErrorWrap';
-// Theme an Layout Settings
+import ErrorWrap from './Error/ErrorWrap';
+
+export default {
+  Banner,
+  Header,
+  HeaderMenu,
+  Sidebar,
+  SidebarBig,
+  BreadCrumb,
+  PapperBlock,
+  SearchUi,
+  Contact,
+  Feature,
+  Footer,
+  HeaderLanding,
+  Pricing,
+  Showcase,
+  ShowcaseSlider,
+  Technology,
+  Testimonials,
+  SideNav,
+  CounterWidget,
+  CounterTrading,
+  SliderWidget,
+  CounterChartWidget,
+  CounterIconsWidget,
+  CounterCryptoWidget,
+  PerformanceChartWidget,
+  TableWidget,
+  MarketPlaceWIdget,
+  TaskWidget,
+  ProfileWidget,
+  ProgressWidget,
+  SalesChartWidget,
+  CarouselWidget,
+  AlbumWidget,
+  MapWidget,
+  WeatherWidget,
+  DateWidget,
+  FilesWidget,
+  NewsWidget,
+  CalculatorWidget,
+  TimelineWidget,
+  CryptoChartWidget,
+  TradingFormWidget,
+  LatestTransactionWidget,
+  CryptoWalletWidget,
+  TransferCryptoWidget,
+  HistoryWidget,
+  NewsListWidget,
+  PerformanceWidget,
+  Calculator,
+  GuideSlider,
+  TreeTable,
+  CrudTable,
+  CrudTableForm,
+  AdvTable,
+  TradingTable,
+  EmptyData,
+  Notification,
+  MaterialDropZone,
+  LoginForm,
+  RegisterForm,
+  ResetForm,
+  LockForm,
+  AddressForm,
+  PaymentForm,
+  Review,
+  SideReview,
+  HeadlinesButton,
+  LimitedBadges,
+  Quote,
+  Pagination,
+  ImageLightbox,
+  Rating,
+  Cover,
+  Timeline,
+  SideSection,
+  WritePost,
+  Comments,
+  About,
+  Albums,
+  Connection,
+  Favorites,
+  ProfileCard,
+  GeneralCard,
+  NewsCard,
+  HorizontalNewsCard,
+  PlayerCard,
+  PostCard,
+  ProductCard,
+  VideoCard,
+  IdentityCard,
+  PricingCard,
+  ShowcaseCard,
+  HeadlineCard,
+  SearchProduct,
+  ProductGallery,
+  ProductDesc,
+  PhotoGallery,
+  CommercialInvoice,
+  FloatingPanel,
+  Cart,
+  AddContact,
+  ContactList,
+  ContactDetail,
+  ChatHeader,
+  ChatRoom,
+  EmailHeader,
+  EmailSidebar,
+  EmailList,
+  ComposeEmail,
+  EventCalendar,
+  DetailEvent,
+  AddEvent,
+  AddEventForm,
+  TaskBoard,
+  AddBoard,
+  ErrorWrap,
+};

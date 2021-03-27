@@ -1,7 +1,6 @@
 /**
  * Combine all reducers in this file and export the combined reducers.
  */
-
 import { reducer as form } from 'redux-form/immutable';
 import { combineReducers } from 'redux-immutable';
 import { connectRouter } from 'connected-react-router/immutable';
@@ -13,20 +12,6 @@ import initval from './modules/initForm';
 import login from './modules/login';
 import taskboard from '../containers/pages/TaskBoard/reducers/taskboardReducer';
 import groups from '../containers/pages/Groups/reducers/ecommerceReducer';
-/**
- * Branching reducers to use one reducer for many components
- */
-
-function branchReducer(reducerFunction, reducerName) {
-  return (state, action) => {
-    const { branch } = action;
-    const isInitializationCall = state === undefined;
-    if (branch !== reducerName && !isInitializationCall) {
-      return state;
-    }
-    return reducerFunction(state, action);
-  };
-}
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
