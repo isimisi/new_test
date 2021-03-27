@@ -13,7 +13,6 @@
     "preinstall": "npm run npmcheckversion",
     "postinstall": "npm run build:dll",
     "prebuild": "npm run build:clean",
-    "build": "webpack --config internals/webpack/webpack.prod.babel.js --color -p --progress --hide-modules --display-optimization-bailout",
     "build:clean": "rm -rf ./build",
     "build:dll": "node ./internals/scripts/dependencies.js",
     "start": "node server",
