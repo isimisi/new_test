@@ -11,13 +11,18 @@ import uiReducer from './modules/ui';
 import initval from './modules/initForm';
 import login from './modules/login';
 import taskboard from '../containers/pages/TaskBoard/reducers/taskboardReducer';
+
+
+import auth from '../containers/Pages/Users/reducers/authReducer';
 import groups from '../containers/pages/Groups/reducers/ecommerceReducer';
+
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
  */
-export default function createReducer(injectedReducers = {}) {
+export default function createReducer() {
   const rootReducer = combineReducers({
+    auth,
     form,
     ui: uiReducer,
     initval,
@@ -25,8 +30,7 @@ export default function createReducer(injectedReducers = {}) {
     taskboard,
     groups,
     language: languageProviderReducer,
-    router: connectRouter(history),
-    ...injectedReducers,
+    router: connectRouter(history)
   });
 
   // Wrap the root reducer and return a new root reducer with router state

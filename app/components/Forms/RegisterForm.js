@@ -79,7 +79,7 @@ function RegisterForm(props) {
           Register
         </Typography>
         <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
-          Lorem ipsum dolor sit amet
+          And hack your productivity
         </Typography>
         <Tabs
           value={tab}
@@ -90,7 +90,7 @@ function RegisterForm(props) {
           className={classes.tab}
         >
           <Tab label="With Email" />
-          <Tab label="With Social Media" />
+          {/* <Tab label="With Social Media" /> */}
         </Tabs>
         {tab === 0 && (
           <section className={classes.formWrap}>

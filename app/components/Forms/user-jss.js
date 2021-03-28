@@ -110,7 +110,7 @@ const styles = theme => ({
       margin: theme.spacing(2)
     },
     '& img': {
-      width: 30,
+      width: 100,
       marginRight: 10,
     },
   },
