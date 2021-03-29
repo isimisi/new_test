@@ -4,7 +4,7 @@ import * as notification from '@redux/constants/notifConstants';
 import { baseUrl } from '@api/constants';
 import * as types from './authConstants';
 
-export const login = (email, password, history) => async dispatch => {
+export const login = (email, password, history, locationState) => async dispatch => {
   const url = `${baseUrl}/login`;
   const body = { email, password };
 
@@ -13,7 +13,7 @@ export const login = (email, password, history) => async dispatch => {
     console.log(response);
     const { user, access_token } = response.data;
     dispatch({ type: types.LOGIN_SUCCES, user, access_token });
-    history.push('/app');
+    history.push(locationState?.from?.path || '/app');
   } catch (error) {
     const { message } = error.response.data[0];
     dispatch({ type: types.LOGIN_FAILED, message });

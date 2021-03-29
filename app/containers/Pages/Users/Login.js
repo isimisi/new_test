@@ -6,7 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { LoginForm, Notification } from '@components';
 import styles from '@components/Forms/user-jss';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import {
+  useHistory,
+  useLocation
+} from 'react-router-dom';
 import { login, closeNotifAction } from './reducers/authActions';
 
 
@@ -15,11 +18,13 @@ function Login(props) {
   const messageNotif = useSelector(state => state.getIn([reducer, 'errorMessage']));
   const dispatch = useDispatch();
   const history = useHistory();
+  const { state: locationState } = useLocation();
 
   const submitForm = values => {
     const email = values.get('email');
     const password = values.get('password');
-    dispatch(login(email, password, history));
+
+    dispatch(login(email, password, history, locationState));
   };
 
   const title = brand.name + ' - Login';

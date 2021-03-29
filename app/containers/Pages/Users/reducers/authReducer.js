@@ -10,7 +10,8 @@ const initialState = {
   firstName: '',
   lastName: '',
   token: '',
-  errorMessage: ''
+  errorMessage: '',
+  isAuthenticated: false
 };
 
 
@@ -31,6 +32,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('firstName', user.get('first_name'));
         mutableState.set('lastName', user.get('last_name'));
         mutableState.set('token', accessToken.get('token'));
+        mutableState.set('isAuthenticated', true);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {
