@@ -4,11 +4,12 @@ import {
   Route,
   Redirect
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 
 const PrivateRoute = ({ children, ...rest }) => {
-  const reducer = 'auth';
-  const isAuthenticated = useSelector(state => state.getIn([reducer, 'isAuthenticated']));
+  const tokenMatch = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/;
+  const { token } = loadFromLocalStorage();
+  const isAuthenticated = tokenMatch.test(token);
 
   return (
     <Route

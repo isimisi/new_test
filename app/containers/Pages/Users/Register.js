@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import brand from '@api/dummy/brand';
-import { RegisterForm } from '@components';
+import { RegisterForm, Notification } from '@components';
 import styles from '@components/Forms/user-jss';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  useHistory
+} from 'react-router-dom';
+import { register, closeNotifAction } from './reducers/authActions';
 
 function Register(props) {
-  const [valueForm, setValueForm] = useState(null);
+  const reducer = 'auth';
+  const messageNotif = useSelector(state => state.getIn([reducer, 'errorMessage']));
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const submitForm = values => {
-    setTimeout(() => {
-      setValueForm(values);
-      console.log(`You submitted:\n\n${valueForm}`);
-      window.location.href = '/app';
-    }, 500); // simulate server latency
+    const name = values.get('name');
+    const email = values.get('email');
+    const password = values.get('password');
+
+    dispatch(register(name, email, password, history));
   };
 
   const title = brand.name + ' - Register';
@@ -30,6 +38,7 @@ function Register(props) {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <div className={classes.container}>
         <div className={classes.userFormWrap}>
           <RegisterForm onSubmit={(values) => submitForm(values)} />

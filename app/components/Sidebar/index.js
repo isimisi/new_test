@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -6,6 +7,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import dummy from '@api/dummy/dummyContents';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './sidebar-jss';
 import SidebarContent from './SidebarContent';
 
@@ -13,8 +15,10 @@ function Sidebar(props) {
   const [status, setStatus] = useState(dummy.user.status);
   const [anchorEl, setAnchorEl] = useState(null);
   const [turnDarker, setTurnDarker] = useState(false);
+  const { first_name, last_name, organization_id } = loadFromLocalStorage();
+  const name = `${first_name} ${last_name}`;
+  const hasOrganization = !!organization_id;
 
-  // Initial header style
   let flagDarker = false;
 
   const handleScroll = () => {
@@ -78,6 +82,8 @@ function Sidebar(props) {
               openMenuStatus={handleOpen}
               closeMenuStatus={handleClose}
               changeStatus={handleChangeStatus}
+              name={name}
+              hasOrganization={hasOrganization}
             />
           </div>
         </SwipeableDrawer>
@@ -104,6 +110,8 @@ function Sidebar(props) {
             openMenuStatus={handleOpen}
             closeMenuStatus={handleClose}
             changeStatus={handleChangeStatus}
+            name={name}
+            hasOrganization={hasOrganization}
           />
         </Drawer>
       </Hidden>

@@ -1,6 +1,11 @@
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    display: 'flex',
+    justifycontent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    padding: 50
   },
   rootGeneral: {
     padding: theme.spacing(3)
@@ -23,7 +28,21 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       padding: '0 !important'
     }
-  }
+  },
+  lottie: {
+    height: '50%',
+    width: '50%',
+    alignSelf: 'center'
+  },
+  inlineWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  alignCenter: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
 });
 
 export default styles;

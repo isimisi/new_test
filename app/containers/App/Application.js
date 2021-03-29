@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { PropTypes } from 'prop-types';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import { ThemeContext } from './ThemeWrapper';
 import Dashboard from '../Templates/Dashboard';
 import {
@@ -12,8 +11,8 @@ import {
   Attributes
 } from '../pageListAsync';
 
-function Application(props) {
-  const { history } = props;
+function Application() {
+  const history = useHistory();
   const changeMode = useContext(ThemeContext);
 
   return (
@@ -48,8 +47,5 @@ function Application(props) {
   );
 }
 
-Application.propTypes = {
-  history: PropTypes.object.isRequired,
-};
 
 export default Application;

@@ -100,8 +100,8 @@ function RegisterForm(props) {
                   <Field
                     name="name"
                     component={TextFieldRedux}
-                    placeholder="Username"
-                    label="Username"
+                    placeholder="Your Name"
+                    label="Your Name"
                     required
                     className={classes.field}
                   />

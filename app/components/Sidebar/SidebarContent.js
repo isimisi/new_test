@@ -34,7 +34,8 @@ function SidebarContent(props) {
     loadTransition,
     leftSidebar,
     dataMenu,
-    isLogin
+    name,
+    hasOrganization
   } = props;
 
 
@@ -44,22 +45,20 @@ function SidebarContent(props) {
         <NavLink to="/app" className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}>
           <img src={logo} alt={brand.name} />
         </NavLink>
-        {isLogin && (
-          <div
-            className={classNames(classes.profile, classes.user)}
-            style={{ opacity: 1 - (transform / 100), marginTop: transform * -0.3 }}
-          >
-            <Avatar
-              alt={dummy.user.name}
-              src={dummy.user.avatar}
-              className={classNames(classes.avatar, classes.bigAvatar)}
-            />
-            <div>
-              <h4>{dummy.user.name}</h4>
+        <div
+          className={classNames(classes.profile, classes.user)}
+          style={{ opacity: 1 - (transform / 100), marginTop: transform * -0.3 }}
+        >
+          <Avatar
+            alt={name}
+            src={dummy.user.avatar}
+            className={classNames(classes.avatar, classes.bigAvatar)}
+          />
+          <div>
+            <h4>{name}</h4>
 
-            </div>
           </div>
-        )}
+        </div>
       </div>
       <div
         id="sidebar"
@@ -67,11 +66,11 @@ function SidebarContent(props) {
           classNames(
             classes.menuContainer,
             leftSidebar && classes.rounded,
-            isLogin && classes.withProfile
+            classes.withProfile
           )
         }
       >
-        <MainMenu loadTransition={loadTransition} dataMenu={dataMenu} toggleDrawerOpen={toggleDrawerOpen} />
+        <MainMenu hasOrganization={hasOrganization} loadTransition={loadTransition} dataMenu={dataMenu} toggleDrawerOpen={toggleDrawerOpen} />
       </div>
     </div>
   );
@@ -85,7 +84,8 @@ SidebarContent.propTypes = {
   loadTransition: PropTypes.func,
   leftSidebar: PropTypes.bool.isRequired,
   dataMenu: PropTypes.array.isRequired,
-  isLogin: PropTypes.bool
+  name: PropTypes.string.isRequired,
+  hasOrganization: PropTypes.bool.isRequired
 };
 
 SidebarContent.defaultProps = {
@@ -93,7 +93,6 @@ SidebarContent.defaultProps = {
   toggleDrawerOpen: () => {},
   loadTransition: () => {},
   anchorEl: null,
-  isLogin: true,
 };
 
 export default withStyles(styles)(SidebarContent);

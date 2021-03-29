@@ -33,7 +33,8 @@ function MainMenu(props) {
     classes,
     openSubMenu,
     open,
-    dataMenu
+    dataMenu,
+    hasOrganization
   } = props;
 
   const getMenus = menuArray => menuArray.map((item, index) => {
@@ -42,6 +43,7 @@ function MainMenu(props) {
         <div key={index.toString()}>
           <ListItem
             button
+            disabled={!hasOrganization && index < menuArray.length - 1}
             component={LinkBtn}
             to={item.linkParent ? item.linkParent : '#'}
             className={
@@ -128,6 +130,7 @@ MainMenu.propTypes = {
   toggleDrawerOpen: PropTypes.func.isRequired,
   loadTransition: PropTypes.func.isRequired,
   dataMenu: PropTypes.array.isRequired,
+  hasOrganization: PropTypes.bool.isRequired,
 };
 
 const openAction = (key, keyParent) => ({ type: 'OPEN_SUBMENU', key, keyParent });

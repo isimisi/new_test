@@ -16,13 +16,15 @@ import { withStyles } from '@material-ui/core/styles';
 //   FilesWidget,
 //   TaskWidget
 // } from '@components';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './dashboard-jss';
+import NoOrganization from './NoOrganization';
 
-
-function PersonalDashboard(props) {
+function PersonalDashboard() {
   const title = brand.name + ' - Personal Dashboard';
   const description = brand.desc;
-  // const { classes } = props;
+  const organization = loadFromLocalStorage().organization_id;
+
   return (
     <div>
       <Helmet>
@@ -33,6 +35,7 @@ function PersonalDashboard(props) {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
+      {!organization && <NoOrganization />}
     </div>
   );
 }
