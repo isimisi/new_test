@@ -139,3 +139,5 @@ export AddBoard from './TaskBoard/AddBoard';
 // Error
 export ErrorWrap from './Error/ErrorWrap';
 // Theme an Layout Settings
+// node
+export NodeDemo from './Nodes/NodeDemo';

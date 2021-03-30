@@ -3,7 +3,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import NamingForm from '../../../components/Forms/NamingForm';
-
+import { NodeDemo } from '@components';
 const Node = () => (
   <div>
     <Grid container spacing={2}>
@@ -11,7 +11,7 @@ const Node = () => (
         <NamingForm type="Node" />
       </Grid>
       <Grid item md={6}>
-        {/* <NodeDemo/> */}
+        <NodeDemo />
       </Grid>
     </Grid>
     <Tooltip title="Save">

@@ -18,7 +18,7 @@ import {
 
 const initialState = {
   /* Settings for Themes and layout */
-  theme: 'goldTheme',
+  theme: 'purpleRedTheme',
   direction: 'ltr',
   type: 'light', // light or dark
   gradient: true, // true or false
