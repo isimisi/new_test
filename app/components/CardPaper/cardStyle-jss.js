@@ -291,7 +291,7 @@ const styles = theme => ({
     },
   },
   priceHead: {
-    height: 300,
+    height: 350,
     position: 'relative',
     borderRadius: '50%',
     width: '150%',

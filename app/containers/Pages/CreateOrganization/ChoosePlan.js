@@ -10,17 +10,30 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { PricingCard, PapperBlock } from '@components';
+import { PricingCard, PapperBlock, Notification } from '@components';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  useHistory
+} from 'react-router-dom';
 import styles from '../HelpSupport/helpSupport-jss';
+import { choosePlan, closeNotifAction } from './reducers/createOrganizationActions';
 
 function Pricing(props) {
   const { classes } = props;
   const [expanded, setExpanded] = useState(null);
+  const reducer = 'createOrganization';
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleChange = useCallback(panel => {
     const expandedValue = expanded !== panel ? panel : false;
     setExpanded(expandedValue);
   }, [expanded]);
+
+  const handleGetItem = (item) => {
+    dispatch(choosePlan(item, history));
+  };
 
   const title = brand.name + ' - Pricing';
   const description = brand.desc;
@@ -34,37 +47,33 @@ function Pricing(props) {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <Grid container spacing={2}>
-        <Grid item md={3} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <PricingCard
-            title="Basic"
-            price="$0"
+            title="Standard"
+            price="$60"
             tier="free"
-            feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec']}
+            feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec', 'Pellentesque ac bibendum', 'Vivamus sit amet']}
+            onClick={() => handleGetItem(1)}
           />
         </Grid>
-        <Grid item md={3} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <PricingCard
-            title="Recomended"
-            price="$24"
+            title="Pro"
+            price="$240"
             tier="cheap"
             feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec', 'Pellentesque ac bibendum', 'Vivamus sit amet']}
+            onClick={() => handleGetItem(2)}
           />
         </Grid>
-        <Grid item md={3} sm={6} xs={12}>
+        <Grid item md={4} sm={6} xs={12}>
           <PricingCard
-            title="Extended"
-            price="$200"
+            title="Enterprice"
+            price="Let's chat"
             tier="expensive"
             feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec', 'Pellentesque ac bibendum', 'Vivamus sit amet']}
-          />
-        </Grid>
-        <Grid item md={3} sm={6} xs={12}>
-          <PricingCard
-            title="Enterprise"
-            price="$600"
-            tier="more-expensive"
-            feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec', 'Pellentesque ac bibendum', 'Vivamus sit amet']}
+            onClick={() => handleGetItem(3)}
           />
         </Grid>
       </Grid>

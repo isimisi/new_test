@@ -17,7 +17,7 @@ const NoOrganization = ({ classes }) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h3" style={{ textAlign: 'center', marginRight: '10%', marginLeft: '10%' }}>
-            You need to be in an organization in order to maximize your productivit.
+            You need to be in an organization in order to maximize your productivity.
       </Typography>
       <div className={classes.lottie}>
         <Lottie animationData={noOrganization} />

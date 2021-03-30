@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import brand from '@api/dummy/brand';
 import { Helmet } from 'react-helmet';
@@ -17,6 +17,9 @@ import { withStyles } from '@material-ui/core/styles';
 //   TaskWidget
 // } from '@components';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import {
+  useHistory
+} from 'react-router-dom';
 import styles from './dashboard-jss';
 import NoOrganization from './NoOrganization';
 
@@ -24,6 +27,14 @@ function PersonalDashboard() {
   const title = brand.name + ' - Personal Dashboard';
   const description = brand.desc;
   const organization = loadFromLocalStorage().organization_id;
+  const plan = loadFromLocalStorage().plan_id;
+  const history = useHistory();
+
+  useEffect(() => {
+    if (organization && !plan) {
+      history.push('/app/create/organiazation/choose/plan');
+    }
+  }, []);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
@@ -15,13 +15,16 @@ import Icon from '@material-ui/core/Icon';
 import Hidden from '@material-ui/core/Hidden';
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
-import { TextFieldRedux, CheckboxRedux } from './ReduxFormMUI';
+import countryList from 'react-select-country-list';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import { TextFieldRedux, SelectRedux } from './ReduxFormMUI';
+
 import styles from './user-jss';
+
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
-
-
 const LinkBtn = React.forwardRef(function LinkBtn(props, ref) { // eslint-disable-line
   return <NavLink to={props.to} {...props} innerRef={ref} />; // eslint-disable-line
 });
@@ -34,6 +37,9 @@ function RegisterForm(props) {
     submitting,
     deco
   } = props;
+
+  const options = useMemo(() => countryList().getData(), []);
+
   return (
     <Fragment>
       <Hidden mdUp>
@@ -44,17 +50,15 @@ function RegisterForm(props) {
       <Paper className={classNames(classes.paperWrap, deco && classes.petal)}>
         <Hidden smDown>
           <div className={classes.topBar}>
-            <NavLink to="/" className={classes.brand}>
-              <img src={logo} alt={brand.name} />
-            </NavLink>
-            <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/login">
+            <div />
+            <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/app">
               <Icon className={classes.icon}>arrow_forward</Icon>
-              Already have account ?
+              Already have an organization ?
             </Button>
           </div>
         </Hidden>
         <Typography variant="h4" className={classes.title} gutterBottom>
-          Register
+          Cretae your Organization
         </Typography>
         <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
           And hack your productivity
@@ -66,8 +70,8 @@ function RegisterForm(props) {
                 <Field
                   name="name"
                   component={TextFieldRedux}
-                  placeholder="Your Name"
-                  label="Your Name"
+                  placeholder="Organization Name"
+                  label="The Name of Your Organization"
                   required
                   className={classes.field}
                 />
@@ -76,10 +80,10 @@ function RegisterForm(props) {
             <div>
               <FormControl className={classes.formControl}>
                 <Field
-                  name="email"
+                  name="vat"
                   component={TextFieldRedux}
-                  placeholder="Your Email"
-                  label="Your Email"
+                  placeholder="Vat Number"
+                  label="Your Vat Number"
                   required
                   validate={[required]}
                   className={classes.field}
@@ -88,39 +92,27 @@ function RegisterForm(props) {
             </div>
             <div>
               <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="selection">Country</InputLabel>
                 <Field
-                  name="password"
-                  component={TextFieldRedux}
-                  type="password"
-                  label="Your Password"
+                  name="country"
+                  component={SelectRedux}
                   required
+                  placeholder="Country"
                   validate={[required]}
-                  className={classes.field}
-                />
+                  autoWidth
+                >
+                  {options.map(v => <MenuItem value={v.value}>{v.label}</MenuItem>)}
+                </Field>
               </FormControl>
             </div>
-            <div>
-              <FormControl className={classes.formControl}>
-                <Field
-                  name="passwordConfirm"
-                  component={TextFieldRedux}
-                  type="password"
-                  label="Re-type Password"
-                  required
-                  validate={[required]}
-                  className={classes.field}
-                />
-              </FormControl>
-            </div>
-            <div>
+            {/* <div>
               <FormControlLabel
                 control={(
                   <Field name="checkbox" component={CheckboxRedux} required className={classes.agree} />
                 )}
                 label="Agree with"
               />
-              <a href="#" className={classes.link}>Terms &amp; Condition</a>
-            </div>
+            </div> */}
             <div className={classes.btnArea}>
               <Button variant="contained" color="primary" type="submit">
                   Continue

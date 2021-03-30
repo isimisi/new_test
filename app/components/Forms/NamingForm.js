@@ -38,6 +38,15 @@ const attributeOptions = [
   label: suggestion.label,
 }));
 
+const typeSuggestions = [
+  { label: 'input' },
+  { label: 'output' },
+  { label: 'selectorNode' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));
+
 
 const styles = theme => ({
   root: {
@@ -45,7 +54,7 @@ const styles = theme => ({
     padding: 30
   },
   field: {
-    width: '70%',
+    width: '100%',
     marginBottom: 10
   },
   fieldBasic: {
@@ -76,13 +85,13 @@ function ReduxFormDemo(props) {
     submitting,
     type
   } = props;
-  const [single, setSingle] = React.useState(null);
+  const [group, setGroup] = React.useState(null);
   const [attributes, setAttributes] = React.useState([{
     attribute: null,
     attributeValue: ''
   }]);
-  function handleChangeSingle(value) {
-    setSingle(value);
+  function handleChangeGroups(value) {
+    setGroup(value);
   }
 
   const selectStyles = {
@@ -173,6 +182,27 @@ function ReduxFormDemo(props) {
                     styles={selectStyles}
                     inputId="react-select-single"
                     TextFieldProps={{
+                      label: 'type',
+                      InputLabelProps: {
+                        htmlFor: 'react-select-single',
+                        shrink: true,
+                      },
+                      placeholder: 'type',
+                    }}
+                    placeholder="type"
+                    options={typeSuggestions}
+                    value={group}
+                    onChange={handleChangeGroups}
+                  />
+                </NoSsr>
+              </div>
+              <div className={classes.field}>
+                <NoSsr>
+                  <Select
+                    classes={classes}
+                    styles={selectStyles}
+                    inputId="react-select-single"
+                    TextFieldProps={{
                       label: 'groups',
                       InputLabelProps: {
                         htmlFor: 'react-select-single',
@@ -182,8 +212,8 @@ function ReduxFormDemo(props) {
                     }}
                     placeholder="groups"
                     options={suggestions}
-                    value={single}
-                    onChange={handleChangeSingle}
+                    value={group}
+                    onChange={handleChangeGroups}
                   />
                 </NoSsr>
               </div>

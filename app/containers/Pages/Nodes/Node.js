@@ -1,11 +1,19 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
+import Grid from '@material-ui/core/Grid';
 import NamingForm from '../../../components/Forms/NamingForm';
 
 const Node = () => (
   <div>
-    <NamingForm type="Node" />
+    <Grid container spacing={2}>
+      <Grid item md={6}>
+        <NamingForm type="Node" />
+      </Grid>
+      <Grid item md={6}>
+        {/* <NodeDemo/> */}
+      </Grid>
+    </Grid>
     <Tooltip title="Save">
       <Fab
         variant="extended"

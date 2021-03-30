@@ -14,7 +14,8 @@ import taskboard from '../containers/pages/TaskBoard/reducers/taskboardReducer';
 
 
 import auth from '../containers/Pages/Users/reducers/authReducer';
-import groups from '../containers/pages/Groups/reducers/ecommerceReducer';
+import groups from '../containers/Pages/Groups/reducers/ecommerceReducer';
+import createOrganization from '../containers/Pages/CreateOrganization/reducers/createOrganizationReducer';
 
 
 /**
@@ -23,6 +24,7 @@ import groups from '../containers/pages/Groups/reducers/ecommerceReducer';
 export default function createReducer() {
   const rootReducer = combineReducers({
     auth,
+    createOrganization,
     form,
     ui: uiReducer,
     initval,

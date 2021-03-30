@@ -35,7 +35,8 @@ function SidebarContent(props) {
     leftSidebar,
     dataMenu,
     name,
-    hasOrganization
+    hasOrganization,
+    hasPlan
   } = props;
 
 
@@ -70,7 +71,7 @@ function SidebarContent(props) {
           )
         }
       >
-        <MainMenu hasOrganization={hasOrganization} loadTransition={loadTransition} dataMenu={dataMenu} toggleDrawerOpen={toggleDrawerOpen} />
+        <MainMenu hasOrganization={hasOrganization} hasPlan={hasPlan} loadTransition={loadTransition} dataMenu={dataMenu} toggleDrawerOpen={toggleDrawerOpen} />
       </div>
     </div>
   );
@@ -85,7 +86,8 @@ SidebarContent.propTypes = {
   leftSidebar: PropTypes.bool.isRequired,
   dataMenu: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
-  hasOrganization: PropTypes.bool.isRequired
+  hasOrganization: PropTypes.bool.isRequired,
+  hasPlan: PropTypes.bool.isRequired,
 };
 
 SidebarContent.defaultProps = {
