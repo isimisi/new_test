@@ -8,7 +8,7 @@ import {
   HelpSupport, NotFound, Workspaces, Workspace,
   Conditions, Condition, Outputs, Output,
   Nodes, Node, Groups, Alerts, Relationships,
-  Attributes
+  Attributes, CreateOrganization
 } from '../pageListAsync';
 
 function Application() {
@@ -34,6 +34,8 @@ function Application() {
         <Route path="/app/workspaces/:id" component={Workspace} />
         <Route exact path="/app/taskboard" component={TaskBoard} />
         <Route exact path="/app/settings" component={Settings} />
+        <Route exact path="/app/create/organization" component={CreateOrganization} />
+
         {/* Fremtidig brug */ }
         <Route path="/app/invoice" component={Invoice} />
         <Route path="/app/pricing" component={Pricing} />

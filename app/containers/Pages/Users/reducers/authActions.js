@@ -31,9 +31,9 @@ export const register = (name, email, password, history) => async dispatch => {
   };
   try {
     const response = await axios.post(url, body);
-    console.log(response);
     const { user, access_token } = response.data;
     dispatch({ type: types.REGISTER_SUCCESS, user, access_token });
+    saveToLocalStorage({ ...access_token, ...user });
     history.push('/app');
   } catch (error) {
     const { message } = error.response.data[0];

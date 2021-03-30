@@ -71,6 +71,7 @@ export AddressForm from './Forms/AddressForm';
 export PaymentForm from './Forms/PaymentForm';
 export Review from './Forms/Review';
 export SideReview from './Forms/SideReview';
+export CreateOrganizationForm from './Forms/CreateOrganizationForm';
 // Texteditor Toolbar
 export HeadlinesButton from './TextEditor/HeadlinesButton';
 // UI

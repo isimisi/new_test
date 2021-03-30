@@ -102,6 +102,11 @@ export const Attributes = loadable(() =>
     fallback: <Loading />,
   });
 
+export const CreateOrganization = loadable(() =>
+  import ('./Pages/CreateOrganization/CreateOrganization'), {
+    fallback: <Loading />,
+  });
+
 
 // Other
 export const NotFound = loadable(() =>

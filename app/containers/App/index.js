@@ -1,6 +1,7 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import NotFound from 'containers/Pages/NotFound/NotFound';
+import { isAuthenticated } from '@api/constants';
 import PrivateRoute from './PrivateRoute';
 import Auth from './Auth';
 import Application from './Application';
@@ -11,6 +12,15 @@ function App() {
   return (
     <ThemeWrapper>
       <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => (
+            isAuthenticated()
+              ? <Redirect to="/app" />
+              : <Redirect to="/login" />
+          )}
+        />
         <PrivateRoute path="/app">
           <Application />
         </PrivateRoute>

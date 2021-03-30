@@ -4,17 +4,19 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Route, Link } from 'react-router-dom';
+import Lottie from 'lottie-react';
+import notFound from './notFound.json';
 
 const styles = theme => ({
   errorWrap: {
     background: theme.palette.background.paper,
     boxShadow: theme.shadows[2],
     borderRadius: '50%',
-    width: 500,
-    height: 500,
+    width: 700,
+    height: 700,
     [theme.breakpoints.down('sm')]: {
-      width: 300,
-      height: 300,
+      width: 400,
+      height: 400,
     },
     display: 'flex',
     alignItems: 'center',
@@ -43,6 +45,15 @@ const styles = theme => ({
   },
   button: {
     marginTop: 24
+  },
+  lottie: {
+    borderRadius: '50%',
+    width: 700 / 1.5,
+    height: 700 / 1.5,
+    [theme.breakpoints.down('sm')]: {
+      width: 400 / 1.5,
+      height: 400 / 1.5,
+    },
   }
 });
 
@@ -55,8 +66,8 @@ const ErrorWrap = (props) => (
       const { classes, title, desc } = props;
       return (
         <div className={classes.errorWrap}>
-          <Typography className={classes.title} variant="h1">{title}</Typography>
-          <Typography variant="h5">{desc}</Typography>
+          <Lottie animationData={notFound} className={classes.lottie} />
+          <Typography variant="h6">{desc}</Typography>
           <Button
             variant="contained"
             color="primary"
