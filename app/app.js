@@ -16,7 +16,6 @@ import { ConnectedRouter } from 'connected-react-router/immutable';
 import FontFaceObserver from 'fontfaceobserver';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-import { saveState } from '@api/localStorage/localStorage';
 // Import root app
 import App from 'containers/App';
 import './styles/layout/base.scss';
