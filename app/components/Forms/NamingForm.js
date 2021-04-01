@@ -14,8 +14,7 @@ import {
   TextFieldRedux,
 } from '@components/Forms/ReduxFormMUI';
 import { initAction, clearAction } from '@redux/actions/reduxFormActions';
-import TextField from '@material-ui/core/TextField';
-// validation functions
+
 const required = value => (value == null ? 'Required' : undefined);
 
 const suggestions = [
@@ -28,15 +27,6 @@ const suggestions = [
   label: suggestion.label,
 }));
 
-const attributeOptions = [
-  { label: 'Test Attribute 1' },
-  { label: 'Test Attribute 2' },
-  { label: 'Test Attribute 3' },
-  { label: 'Test Attribute 4' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
 
 const typeSuggestions = [
   { label: 'input' },
@@ -86,10 +76,7 @@ function ReduxFormDemo(props) {
     type
   } = props;
   const [group, setGroup] = React.useState(null);
-  const [attributes, setAttributes] = React.useState([{
-    attribute: null,
-    attributeValue: ''
-  }]);
+
   function handleChangeGroups(value) {
     setGroup(value);
   }
@@ -104,11 +91,6 @@ function ReduxFormDemo(props) {
     }),
   };
 
-  const handleChange = (value, index, changeType) => {
-    const newArray = [...attributes];
-    newArray[index] = { ...newArray[index], [changeType]: value };
-    setAttributes(newArray);
-  };
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -143,38 +125,6 @@ function ReduxFormDemo(props) {
                   rows={2}
                 />
               </div>
-              {type === 'Node' && attributes.map((attribute, index) => (
-                <div className={classes.inlineWrap}>
-                  <div className={classes.field}>
-                    <Select
-                      classes={classes}
-                      styles={selectStyles}
-                      inputId="react-select-single"
-                      options={attributeOptions}
-                      placeholder="attribute"
-                      value={attribute.attribute}
-                      onChange={(value) => {
-                        if (attribute.attribute) {
-                          handleChange(value, index, 'attribute');
-                        } else {
-                          const newRow = { ...attribute };
-                          newRow.attribute = value;
-                          setAttributes([newRow, ...attributes]);
-                        }
-                      }}
-                    />
-                  </div>
-                  {attribute.attribute && (
-                    <div className={classes.field} style={{ marginLeft: 20 }}>
-                      <TextField
-                        value={attribute.attributeValue}
-                        placeholder="Value"
-                        onChange={(e) => handleChange(e.target.value, index, 'attributeValue')}
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
               <div className={classes.field}>
                 <NoSsr>
                   <Select
@@ -252,7 +202,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const ReduxFormMapped = reduxForm({
-  form: 'immutableExample',
+  form: 'NamingForm',
   enableReinitialize: true,
 })(ReduxFormDemo);
 
