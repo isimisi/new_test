@@ -31,6 +31,7 @@ function PersonalDashboard() {
   const history = useHistory();
 
   useEffect(() => {
+    console.log(organization && !plan);
     if (organization && !plan) {
       history.push('/app/create/organiazation/choose/plan');
     }

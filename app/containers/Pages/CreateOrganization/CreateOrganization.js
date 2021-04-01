@@ -11,7 +11,7 @@ import { createOrganization, closeNotifAction } from './reducers/createOrganizat
 
 const CreateOrganization = () => {
   const reducer = 'createOrganization';
-  const messageNotif = useSelector(state => state.getIn([reducer, 'errorMessage']));
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -20,7 +20,6 @@ const CreateOrganization = () => {
     const vat = values.get('vat');
     dispatch(createOrganization(vat, country, history));
   };
-
   const title = brand.name + ' - Register';
   const description = brand.desc;
   return (

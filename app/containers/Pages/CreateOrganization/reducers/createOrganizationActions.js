@@ -5,6 +5,9 @@ import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import { saveToLocalStorage, loadFromLocalStorage } from '@api/localStorage/localStorage';
 import * as types from './createOrganizationConstants';
 
+const localStorage = loadFromLocalStorage();
+
+
 export const createOrganization = (cvr, country, history) => async dispatch => {
   const url = `${baseUrl}/organization`;
   const body = { cvr, country };
@@ -12,10 +15,12 @@ export const createOrganization = (cvr, country, history) => async dispatch => {
   try {
     const response = await axios.post(url, body, header);
     const organization_id = response.data.organization.id;
-    saveToLocalStorage(...loadFromLocalStorage(), ...{ organization_id });
+    localStorage.organization_id = organization_id;
+    saveToLocalStorage(localStorage);
     history.push('/app/create/organiazation/choose/plan');
   } catch (error) {
     let message = genericErrorMessage;
+    console.log(error);
     if (error.response) {
       const { message: validatorMessage } = error.response.data;
       message = validatorMessage;
@@ -28,7 +33,6 @@ export const choosePlan = (plan, history) => async dispatch => {
   const url = `${baseUrl}/organization/plan`;
   const body = { plan_id: plan };
   const header = authHeader();
-  const localStorage = loadFromLocalStorage();
   try {
     const response = await axios.put(url, body, header);
     const { plan_id } = response.data;
