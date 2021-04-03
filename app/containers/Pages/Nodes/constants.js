@@ -48,3 +48,44 @@ export const tableOptions = {
 };
 
 export const reducer = 'node';
+
+export const getWidth = (size) => {
+  switch (size) {
+    case 'Small':
+      return '70%';
+    case 'Medium':
+      return '90%';
+    case 'Large':
+      return '100%';
+    default:
+      return '90%';
+  }
+};
+
+export const getSize = (width) => {
+  switch (width) {
+    case '70%':
+      return 'Small';
+    case '90%':
+      return 'Medium';
+    case '100%':
+      return 'Large';
+    default:
+      return 'Medium';
+  }
+};
+
+export const generateNodeStyle = (size, backgroundColor, borderColor, theme) => (
+  JSON.stringify({
+    width: getWidth(size),
+    backgroundColor,
+    borderColor,
+    border: '3px solid',
+    borderRadius: theme.rounded.small,
+    display: 'flex',
+    padding: 10,
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  }));

@@ -68,18 +68,18 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const title = fromJS(action.title);
         const description = fromJS(action.description);
-        const attributes = fromJS(action.attributes);
-        const type = fromJS(action.type);
-        const group = fromJS(action.group);
+        // const attributes = fromJS(action.attributes);
+        const nodeType = fromJS(action.nodeType);
+        // const group = fromJS(action.group_id);
         const size = fromJS(action.size);
         const backgroundColor = fromJS(action.backgroundColor);
         const borderColor = fromJS(action.borderColor);
 
         mutableState.set('title', title);
         mutableState.set('description', description);
-        mutableState.set('attributes', attributes);
-        mutableState.set('type', type);
-        mutableState.set('group', group);
+        // mutableState.set('attributes', attributes);
+        mutableState.set('type', nodeType);
+        // mutableState.set('group', group);
         mutableState.set('size', size);
         mutableState.set('backgroundColor', backgroundColor);
         mutableState.set('borderColor', borderColor);

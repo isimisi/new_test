@@ -232,11 +232,6 @@ function NodeForm(props) {
                 />
               </NoSsr>
             </div>
-            <div>
-              <Button variant="contained" color="secondary" onClick={() => onSave(title, description, attributes, type, group)}>
-                  Save
-              </Button>
-            </div>
           </Paper>
         </Grid>
       </Grid>

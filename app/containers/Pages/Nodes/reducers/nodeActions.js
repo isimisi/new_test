@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import * as types from './nodeConstants';
-
+import { getSize } from '../constants';
 const NODES = 'nodes';
 
 export const getNodes = () => async dispatch => {
@@ -39,8 +39,22 @@ export const showNode = (id) => async dispatch => {
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
-    const { node } = response.data;
-    dispatch({ type: types.SHOW_NODE_SUCCESS, node });
+    const node = response.data;
+    const {
+      label: title, description, type: nodeType, style: _style
+    } = node;
+    const style = JSON.parse(_style);
+    const { width, backgroundColor, borderColor } = style;
+    const size = getSize(width);
+    dispatch({
+      type: types.SHOW_NODE_SUCCESS,
+      title,
+      description,
+      nodeType,
+      backgroundColor,
+      borderColor,
+      size
+    });
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_NODE_FAILED, message });
@@ -53,12 +67,14 @@ export const putNode = (id, label, description, type, group_id, style, history) 
     label, description, type, group_id, style
   };
   const header = authHeader();
+  console.log(url, body, header);
   try {
     await axios.put(url, body, header);
     const message = 'You have updated your node';
     dispatch({ type: types.PUT_NODE_SUCCESS, message });
-    history.push('app/nodes');
+    history.push('/app/nodes');
   } catch (error) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_NODE_FAILED, message });
   }
