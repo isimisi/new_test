@@ -9,8 +9,8 @@ import { SketchPicker } from 'react-color';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import {
-  backgroundChange, borderChange, sizeChange
-} from '../../containers/Pages/Nodes/reducers/nodeActions';
+  colorChange, sizeChange
+} from '../../containers/Pages/Relationships/reducers/relationshipActions';
 
 const styles = () => ({
   root: {
@@ -53,51 +53,30 @@ const styles = () => ({
   }
 });
 
-const NodeStyling = (props) => {
+const RelationshipStylling = (props) => {
   const dispatch = useDispatch();
   const { classes } = props;
   const [selectedSize, setSelectedSize] = useState('Medium');
 
-  const [displayColorPickerBackground, setDisplayColorPickerBackground] = useState(false);
-  const [colorBackground, setColorBackground] = useState({
+  const [displayColorPickerColor, setDisplayColorPickerColor] = useState(false);
+  const [color, setColor] = useState({
     r: '230',
     g: '230',
     b: '230',
     a: '1',
   });
 
-  const handleClickBackground = () => {
-    setDisplayColorPickerBackground(prevVal => !prevVal);
+  const handleClickColor = () => {
+    setDisplayColorPickerColor(prevVal => !prevVal);
   };
 
-  const handleCloseBackground = () => {
-    setDisplayColorPickerBackground(false);
+  const handleCloseColor = () => {
+    setDisplayColorPickerColor(false);
   };
 
-  const handleChangeBackground = (col) => {
-    setColorBackground(col.rgb);
-    dispatch(backgroundChange(col.rgb));
-  };
-
-  const [displayColorPickerBorder, setDisplayColorPickerBorder] = useState(false);
-  const [colorBorder, setColorBorder] = useState({
-    r: '0',
-    g: '0',
-    b: '0',
-    a: '1',
-  });
-
-  const handleClickBorder = () => {
-    setDisplayColorPickerBorder(prevVal => !prevVal);
-  };
-
-  const handleCloseBorder = () => {
-    setDisplayColorPickerBorder(false);
-  };
-
-  const handleChangeBorder = (col) => {
-    setColorBorder(col.rgb);
-    dispatch(borderChange(col.rgb));
+  const handleChangeColor = (col) => {
+    setColor(col.rgb);
+    dispatch(colorChange(col.rgb));
   };
 
   const handleSizeClick = (e) => {
@@ -109,11 +88,11 @@ const NodeStyling = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Style Your Node
+        Style Your Relationship
       </Typography>
       <div className={classes.row}>
         <Typography variant="subtitle2" component="h3">
-        Pick a size
+        Pick a label size
         </Typography>
         <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Small' ? 'secondary' : ''}>Small</Button>
         <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Medium' ? 'secondary' : ''}>Medium</Button>
@@ -121,29 +100,15 @@ const NodeStyling = (props) => {
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
-        Pick a Color for the Backgroud
+        Pick a Color
         </Typography>
-        <div className={classes.swatch} onClick={handleClickBackground}>
-          <div className={classes.color} style={{ backgroundColor: `rgba(${colorBackground.r}, ${colorBackground.g}, ${colorBackground.b}, ${colorBackground.a})` }} />
+        <div className={classes.swatch} onClick={handleClickColor}>
+          <div className={classes.color} style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})` }} />
         </div>
-        { displayColorPickerBackground ? (
+        { displayColorPickerColor ? (
           <div className={classes.popover}>
-            <div className={classes.cover} onClick={handleCloseBackground} />
-            <SketchPicker color={colorBackground} onChange={handleChangeBackground} />
-          </div>
-        ) : null }
-      </div>
-      <div className={classes.row}>
-        <Typography variant="subtitle2">
-        Pick a Color for the Border
-        </Typography>
-        <div className={classes.swatch} onClick={handleClickBorder}>
-          <div className={classes.color} style={{ backgroundColor: `rgba(${colorBorder.r}, ${colorBorder.g}, ${colorBorder.b}, ${colorBorder.a})` }} />
-        </div>
-        { displayColorPickerBorder ? (
-          <div className={classes.popover}>
-            <div className={classes.cover} onClick={handleCloseBorder} />
-            <SketchPicker color={colorBorder} onChange={handleChangeBorder} />
+            <div className={classes.cover} onClick={handleCloseColor} />
+            <SketchPicker color={color} onChange={handleChangeColor} />
           </div>
         ) : null }
       </div>
@@ -151,8 +116,8 @@ const NodeStyling = (props) => {
   );
 };
 
-NodeStyling.propTypes = {
+RelationshipStylling.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NodeStyling);
+export default withStyles(styles)(RelationshipStylling);

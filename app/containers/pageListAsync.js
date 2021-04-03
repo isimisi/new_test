@@ -28,7 +28,7 @@ export const ComingSoon = loadable(() =>
     fallback: <Loading />,
   });
 
-export const Pricing = loadable(() =>
+export const ChoosePlan = loadable(() =>
   import ('./Pages/CreateOrganization/ChoosePlan'), {
     fallback: <Loading />,
   });
@@ -94,6 +94,11 @@ export const Alerts = loadable(() =>
 
 export const Relationships = loadable(() =>
   import ('./Pages/Relationships'), {
+    fallback: <Loading />,
+  });
+
+export const Relationship = loadable(() =>
+  import ('./Pages/Relationships/Relationship'), {
     fallback: <Loading />,
   });
 

@@ -2,18 +2,16 @@
 
 const shelljs = require('shelljs');
 const animateProgress = require('./helpers/progress');
-const chalk = require('chalk');
 const addCheckMark = require('./helpers/checkmark');
 
 const progress = animateProgress('Generating stats');
 
-// Generate stats.json file with webpack
-shelljs.exec(
-  'npm run build',
-  addCheckMark.bind(null, callback), // Output a checkmark on completion
-);
+function callback2() {
+  shelljs.exec(
+    'npm run build:clean'
+  );
+}
 
-// Called after webpack has finished generating the stats.json file
 function callback() {
   clearInterval(progress);
   shelljs.exec(
@@ -22,10 +20,11 @@ function callback() {
   );
 }
 
-function callback() {
-    shelljs.exec(
-      'npm run build:clean'
-    );
-  }
 
+// Generate stats.json file with webpack
+shelljs.exec(
+  'npm run build',
+  addCheckMark.bind(null, callback), // Output a checkmark on completion
+);
 
+// Called after webpack has finished generating the stats.json file

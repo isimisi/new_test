@@ -17,6 +17,7 @@ import auth from '../containers/Pages/Users/reducers/authReducer';
 import groups from '../containers/Pages/Groups/reducers/ecommerceReducer';
 import createOrganization from '../containers/Pages/CreateOrganization/reducers/createOrganizationReducer';
 import node from '../containers/Pages/Nodes/reducers/nodeReducer';
+import relationship from '../containers/Pages/Relationships/reducers/relationshipReducer';
 
 
 /**
@@ -26,6 +27,7 @@ export default function createReducer() {
   const rootReducer = combineReducers({
     auth,
     node,
+    relationship,
     createOrganization,
     form,
     ui: uiReducer,

@@ -1,0 +1,77 @@
+import React from 'react';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import Tooltip from '@material-ui/core/Tooltip';
+
+const styles = () => ({
+  root: {
+    flexGrow: 1,
+    padding: 30,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  relationshipContainer: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  relationship: {
+    height: 118,
+    width: 3,
+    backgroundColor: 'black'
+  },
+});
+
+const RelationshipDemo = (props) => {
+  const { classes } = props;
+  const reducer = 'relationship';
+  const label = useSelector(state => state.getIn([reducer, 'label']));
+  const description = useSelector(state => state.getIn([reducer, 'description']));
+  const colorSelector = useSelector(state => state.getIn([reducer, 'color']));
+  const color = `rgba(${colorSelector.get('r')}, ${colorSelector.get('g')}, ${colorSelector.get('b')}, ${colorSelector.get('a')})`;
+  const size = useSelector(state => state.getIn([reducer, 'size']));
+
+  const getLabelSize = () => {
+    switch (size) {
+      case 'Small':
+        return 'body1';
+      case 'Medium':
+        return 'h6';
+      case 'Large':
+        return 'h4';
+      default:
+        return 'body1';
+    }
+  };
+
+  return (
+    <Paper className={classes.root}>
+      <Typography variant="h5" component="h3">
+        Your Relationship
+      </Typography>
+      <Tooltip title={description}>
+        <div className={classes.relationshipContainer}>
+          <div className={classes.relationship} style={{ backgroundColor: color }} />
+          <div style={{ width: '60%' }}>
+            <Typography variant={getLabelSize()} style={{ textAlign: 'center' }}>
+              {label}
+            </Typography>
+          </div>
+          <div className={classes.relationship} style={{ backgroundColor: color }} />
+        </div>
+      </Tooltip>
+    </Paper>
+  );
+};
+
+RelationshipDemo.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+
+export default withStyles(styles)(RelationshipDemo);

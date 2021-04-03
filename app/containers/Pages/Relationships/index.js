@@ -58,7 +58,7 @@ function Relationships(props) {
       options: {
         filter: true,
         customBodyRender: (value) => (
-          <Button variant="contained" color="primary" href={`/app/Relationships/${value}`}>
+          <Button variant="contained" color="primary" href={`/app/relationships/${value}`}>
               Open
           </Button>
         )

@@ -11,9 +11,13 @@ export const login = (email, password, history, locationState) => async dispatch
   try {
     const response = await axios.post(url, body);
     console.log(response);
-    const { user, access_token } = response.data;
+    const {
+      user, access_token, organization
+    } = response.data;
     dispatch({ type: types.LOGIN_SUCCESS, user, access_token });
-    saveToLocalStorage({ ...access_token, ...user });
+    saveToLocalStorage({
+      ...access_token, ...user, ...organization
+    });
     history.push(locationState?.from?.path || '/app');
   } catch (error) {
     const { message } = error.response.data[0];

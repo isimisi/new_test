@@ -14,7 +14,7 @@ const styles = theme => ({
     flexDirection: 'column',
   },
   node: {
-    border: '2px solid',
+    border: '3px solid',
     borderRadius: theme.rounded.small,
     display: 'flex',
     padding: 10,

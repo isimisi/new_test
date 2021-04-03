@@ -1,0 +1,7 @@
+export const LABEL_CHANGE = 'LABEL_CHANGE';
+export const DESCRIPTION_CHANGE = 'DESCRIPTION_CHANGE';
+export const ADD_GROUP = 'ADD_GROUP';
+
+// STYLE
+export const CHANGE_SIZE = 'CHANGE_SIZE';
+export const CHANGE_COLOR = 'CHANGE_COLOR';

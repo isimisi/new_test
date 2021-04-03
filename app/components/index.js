@@ -1,3 +1,6 @@
+import RelationshipDemo from './Relationships/RelationshipDemo';
+import RelationshipStylling from './Relationships/RelationshipStylling';
+
 // Main Components
 export Header from './Header/Header';
 export HeaderMenu from './Header/HeaderMenu';
@@ -73,6 +76,8 @@ export Review from './Forms/Review';
 export SideReview from './Forms/SideReview';
 export CreateOrganizationForm from './Forms/CreateOrganizationForm';
 export NodeForm from './Forms/NodeForm';
+export RelationshipForm from './Forms/RelationshipForm';
+
 // Texteditor Toolbar
 export HeadlinesButton from './TextEditor/HeadlinesButton';
 // UI
@@ -143,3 +148,7 @@ export ErrorWrap from './Error/ErrorWrap';
 // node
 export NodeDemo from './Nodes/NodeDemo';
 export NodeStyling from './Nodes/NodeStyling';
+
+// relationship
+export RelationshipDemo from './Relationships/RelationshipDemo';
+export RelationshipStylling from './Relationships/RelationshipStylling';

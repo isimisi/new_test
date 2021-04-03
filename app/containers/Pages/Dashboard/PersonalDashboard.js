@@ -26,8 +26,9 @@ import NoOrganization from './NoOrganization';
 function PersonalDashboard() {
   const title = brand.name + ' - Personal Dashboard';
   const description = brand.desc;
-  const organization = loadFromLocalStorage().organization_id;
-  const plan = loadFromLocalStorage().plan_id;
+  const localStorage = loadFromLocalStorage();
+  const organization = localStorage.organization_id;
+  const plan = localStorage.plan_id;
   const history = useHistory();
 
   useEffect(() => {
