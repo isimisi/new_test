@@ -1,109 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import MUIDataTable from 'mui-datatables';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
-
-const styles = theme => ({
-  table: {
-    '& > div': {
-      overflow: 'auto'
-    },
-    '& table': {
-      '& td': {
-        wordBreak: 'keep-all'
-      },
-      [theme.breakpoints.down('md')]: {
-        '& td': {
-          height: 60,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis'
-        }
-      }
-    }
-  },
-  addBtn: {
-    position: 'fixed',
-    bottom: 30,
-    right: 50,
-    zIndex: 100,
-  },
-});
-
+import { useSelector, useDispatch } from 'react-redux';
+import { Notification } from '@components';
+import {
+  useHistory
+} from 'react-router-dom';
+import {
+  tableColumns, tableOptions, reducer
+} from './constants';
+import styles from './node-jss';
+import { getNodes, postNode, closeNotifAction } from './reducers/nodeActions';
 
 function Nodes(props) {
-  const columns = [
-    {
-      name: 'Title',
-      options: {
-        filter: true
-      }
-    },
-    {
-      name: 'Description',
-      options: {
-        filter: true,
-      }
-    },
-    {
-      name: 'Group',
-      options: {
-        filter: true,
-      }
-    },
-    {
-      name: 'See Node',
-      options: {
-        filter: true,
-        customBodyRender: (value) => (
-          <Button variant="contained" color="primary" href={`/app/nodes/${value}`}>
-              Open
-          </Button>
-        )
-      }
-    },
-    {
-      name: 'Last edited',
-      options: {
-        filter: true,
-      }
-    },
-  ];
-
-  const data = [
-    ['Test Node', 'This is a test of a Node', 'Test Group', 1, 'Friday at 3:59 pm'],
-    ['Test Node', 'This is a test of a Node', 'Test Group', 2, 'Friday at 3:59 pm'],
-    ['Test Node', 'This is a test of a Node', 'Test Group', 3, 'Friday at 3:59 pm'],
-    ['Test Node', 'This is a test of a Node', 'Test Group', 4, 'Friday at 3:59 pm'],
-    ['Test Node', 'This is a test of a Node', 'Test Group', 5, 'Friday at 3:59 pm'],
-    ['Test Node', 'This is a test of a Node', 'Test Group', 6, 'Friday at 3:59 pm'],
-    ['Test Node', 'This is a test of a Node', 'Test Group', 7, 'Friday at 3:59 pm'],
-    ['Test Node', 'This is a test of a Node', 'Test Group', 8, 'Friday at 3:59 pm'],
-  ];
-
-  const options = {
-    filterType: 'dropdown',
-    responsive: 'stacked',
-    print: true,
-    rowsPerPage: 10,
-    page: 0
-  };
-
   const { classes } = props;
+  const dispatch = useDispatch();
+  const nodes = useSelector(state => state.getIn([reducer, 'nodes']));
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const history = useHistory();
+
+  useEffect(() => {
+    dispatch(getNodes());
+  }, []);
 
   return (
     <div className={classes.table}>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
         title="Your Node"
-        data={data}
-        columns={columns}
-        options={options}
+        data={nodes.toJS()}
+        columns={tableColumns}
+        options={tableOptions}
         elevation={10}
       />
       <Tooltip title="New Node">
-        <Fab variant="extended" color="primary" className={classes.addBtn}>
+        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postNode(history))}>
             Create new Node
         </Fab>
       </Tooltip>
