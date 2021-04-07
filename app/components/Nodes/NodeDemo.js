@@ -17,7 +17,7 @@ const styles = theme => ({
     border: '3px solid',
     borderRadius: theme.rounded.small,
     display: 'flex',
-    padding: 10,
+    padding: 18,
     flexGrow: 1,
     marginTop: 20,
     justifyContent: 'center',
@@ -76,16 +76,16 @@ const NodeDemo = (props) => {
               {title}
             </Typography>
           </div>
-          {attributes.map((attribute => (
+          {attributes.toJS().map((attribute => (
             <div className={classes.attributes}>
               <div>
                 <Typography variant="subtitle2">
-                  {attribute.get('attributType')}
+                  {attribute.label}
                 </Typography>
               </div>
               <div className={classes.attributValue}>
                 <Typography variant="body2">
-                  {attribute.get('attributValue')}
+                  {attribute.attributValue}
                 </Typography>
               </div>
             </div>

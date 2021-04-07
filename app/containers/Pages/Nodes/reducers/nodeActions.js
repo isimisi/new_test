@@ -41,7 +41,8 @@ export const showNode = (id) => async dispatch => {
     const response = await axios.get(url, header);
     const node = response.data;
     const {
-      label: title, description, type: nodeType, style: _style
+      label: title, description, type: nodeType, style: _style, group,
+      attributes
     } = node;
     const style = JSON.parse(_style);
     const { width, backgroundColor, borderColor } = style;
@@ -53,7 +54,9 @@ export const showNode = (id) => async dispatch => {
       nodeType,
       backgroundColor,
       borderColor,
-      size
+      size,
+      group,
+      attributes
     });
   } catch (error) {
     const message = genericErrorMessage;

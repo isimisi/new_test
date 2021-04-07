@@ -6,9 +6,8 @@ import Grid from '@material-ui/core/Grid';
 import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   titleChange, descriptionChange, addAtrribut, addType, addGroup
 } from '../../containers/Pages/Nodes/reducers/nodeActions';
@@ -86,24 +85,25 @@ function NodeForm(props) {
       },
     }),
   };
-
-  const [title, setTitle] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
+  const reducer = 'node';
+  const title = useSelector(state => state.getIn([reducer, 'title']));
+  const description = useSelector(state => state.getIn([reducer, 'description']));
+  const reduxAttributes = useSelector(state => state.getIn([reducer, 'attributes']));
   const [group, setGroup] = React.useState(null);
   const [type, setType] = React.useState(null);
-  const [attributes, setAttributes] = React.useState([{
+  const [attributes, setAttributes] = React.useState([...reduxAttributes.toJS(), {
     attribute: null,
     attributeValue: ''
   }]);
 
+  console.log(attributes);
+
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
-    setTitle(e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
     dispatch(descriptionChange(e.target.value));
-    setDescription(e.target.value);
   };
 
 
@@ -145,6 +145,7 @@ function NodeForm(props) {
                 label="Title"
                 className={classes.field}
                 onChange={handleTitleChange}
+                value={title}
               />
             </div>
             <div className={classes.field}>
@@ -156,9 +157,10 @@ function NodeForm(props) {
                 multiline
                 rows={2}
                 onChange={handleDescriptionChange}
+                value={description}
               />
             </div>
-            {attributes.map((attribute, index) => (
+            {attributes.map((attribut, index) => (
               <div className={classes.inlineWrap}>
                 <div className={classes.field}>
                   <Select
@@ -167,22 +169,22 @@ function NodeForm(props) {
                     inputId="react-select-single"
                     options={attributeOptions}
                     placeholder="attribute"
-                    value={attribute.attribute}
+                    value={attribut.label}
                     onChange={(value) => {
-                      if (attribute.attribute) {
+                      if (attribut.label) {
                         handleChange(value, index, 'attribute');
                       } else {
-                        const newRow = { ...attribute };
-                        newRow.attribute = value;
+                        const newRow = { ...attribut };
+                        newRow.label = value;
                         setAttributes([newRow, ...attributes]);
                       }
                     }}
                   />
                 </div>
-                {attribute.attribute && (
+                {attribut.label && (
                   <div className={classes.field} style={{ marginLeft: 20 }}>
                     <TextField
-                      value={attribute.attributeValue}
+                      value={attribut.attributValue}
                       placeholder="Value"
                       onChange={(e) => handleChange(e.target.value, index, 'attributeValue')}
                     />
