@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
+import { CommentSharp } from '@material-ui/icons';
 
 const styles = theme => ({
   root: {
@@ -47,7 +48,7 @@ const NodeDemo = (props) => {
   const borderColorSelector = useSelector(state => state.getIn([reducer, 'borderColor']));
   const borderColor = `rgba(${borderColorSelector.get('r')}, ${borderColorSelector.get('g')}, ${borderColorSelector.get('b')}, ${borderColorSelector.get('a')})`;
   const size = useSelector(state => state.getIn([reducer, 'size']));
-
+  console.log(attributes.toJS());
   const getWidth = () => {
     switch (size) {
       case 'Small':
@@ -80,7 +81,7 @@ const NodeDemo = (props) => {
             <div className={classes.attributes}>
               <div>
                 <Typography variant="subtitle2">
-                  {attribute.label}
+                  {attribute.attributType}
                 </Typography>
               </div>
               <div className={classes.attributValue}>

@@ -71,8 +71,7 @@ function NodeForm(props) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const {
-    classes,
-    onSave
+    classes
   } = props;
 
 
@@ -88,15 +87,14 @@ function NodeForm(props) {
   const reducer = 'node';
   const title = useSelector(state => state.getIn([reducer, 'title']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
-  const reduxAttributes = useSelector(state => state.getIn([reducer, 'attributes']));
+  // const reduxAttributes = useSelector(state => state.getIn([reducer, 'attributes']));
   const [group, setGroup] = React.useState(null);
   const [type, setType] = React.useState(null);
-  const [attributes, setAttributes] = React.useState([...reduxAttributes.toJS(), {
+  const [attributes, setAttributes] = React.useState([{
     attribute: null,
     attributeValue: ''
   }]);
 
-  console.log(attributes);
 
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
@@ -111,7 +109,7 @@ function NodeForm(props) {
     const newArray = [...attributes];
     newArray[index] = { ...newArray[index], [changeType]: value };
     setAttributes(newArray);
-
+    console.log(newArray);
     const reduxArray = [...newArray];
     reduxArray.splice(-1, 1);
     const dispatchableArray = reduxArray.map(v => ({ attributType: v.attribute.label, attributValue: v.attributeValue }));
@@ -169,19 +167,19 @@ function NodeForm(props) {
                     inputId="react-select-single"
                     options={attributeOptions}
                     placeholder="attribute"
-                    value={attribut.label}
+                    value={attribut.attribute}
                     onChange={(value) => {
                       if (attribut.label) {
                         handleChange(value, index, 'attribute');
                       } else {
                         const newRow = { ...attribut };
-                        newRow.label = value;
+                        newRow.attribute = value;
                         setAttributes([newRow, ...attributes]);
                       }
                     }}
                   />
                 </div>
-                {attribut.label && (
+                {attribut.attribute && (
                   <div className={classes.field} style={{ marginLeft: 20 }}>
                     <TextField
                       value={attribut.attributValue}
@@ -243,7 +241,6 @@ function NodeForm(props) {
 
 NodeForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  onSave: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(NodeForm);

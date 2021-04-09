@@ -77,7 +77,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
 
         mutableState.set('title', title);
         mutableState.set('description', description);
-        mutableState.set('attributes', attributes);
+        // mutableState.set('attributes', attributes);
         mutableState.set('type', nodeType);
         mutableState.set('group', group);
         mutableState.set('size', size);
