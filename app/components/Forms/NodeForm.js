@@ -95,7 +95,7 @@ function NodeForm(props) {
     attributeValue: ''
   }]);
 
-  console.log(attributes);
+
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
   };
@@ -174,7 +174,10 @@ function NodeForm(props) {
                       } else {
                         const newRow = { ...attribute };
                         newRow.attribute = value;
-                        setAttributes([newRow, ...attributes]);
+                        const i = attributes.length - 1;
+                        const mutableArray = [...attributes];
+                        mutableArray.splice(i, 0, newRow);
+                        setAttributes(mutableArray);
                       }
                     }}
                   />

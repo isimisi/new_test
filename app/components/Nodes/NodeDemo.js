@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
-import { CommentSharp } from '@material-ui/icons';
 
 const styles = theme => ({
   root: {
