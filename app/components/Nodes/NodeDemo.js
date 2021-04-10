@@ -48,7 +48,7 @@ const NodeDemo = (props) => {
   const borderColorSelector = useSelector(state => state.getIn([reducer, 'borderColor']));
   const borderColor = `rgba(${borderColorSelector.get('r')}, ${borderColorSelector.get('g')}, ${borderColorSelector.get('b')}, ${borderColorSelector.get('a')})`;
   const size = useSelector(state => state.getIn([reducer, 'size']));
-  console.log(attributes.toJS());
+
   const getWidth = () => {
     switch (size) {
       case 'Small':
@@ -77,16 +77,16 @@ const NodeDemo = (props) => {
               {title}
             </Typography>
           </div>
-          {attributes.toJS().map((attribute => (
+          {attributes.map((attribute => (
             <div className={classes.attributes}>
               <div>
                 <Typography variant="subtitle2">
-                  {attribute.attributType}
+                  {attribute.get('attributType')}
                 </Typography>
               </div>
               <div className={classes.attributValue}>
                 <Typography variant="body2">
-                  {attribute.attributValue}
+                  {attribute.get('attributValue')}
                 </Typography>
               </div>
             </div>

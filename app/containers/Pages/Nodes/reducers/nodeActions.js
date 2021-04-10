@@ -106,9 +106,9 @@ export const descriptionChange = description => ({
   description,
 });
 
-export const addAtrribut = attributs => ({
+export const addAtrribut = attributes => ({
   type: types.ADD_ATTRIBUT,
-  attributs
+  attributes
 });
 
 export const addType = value => ({

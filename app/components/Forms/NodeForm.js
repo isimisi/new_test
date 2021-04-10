@@ -95,7 +95,7 @@ function NodeForm(props) {
     attributeValue: ''
   }]);
 
-
+  console.log(attributes);
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
   };
@@ -109,7 +109,7 @@ function NodeForm(props) {
     const newArray = [...attributes];
     newArray[index] = { ...newArray[index], [changeType]: value };
     setAttributes(newArray);
-    console.log(newArray);
+
     const reduxArray = [...newArray];
     reduxArray.splice(-1, 1);
     const dispatchableArray = reduxArray.map(v => ({ attributType: v.attribute.label, attributValue: v.attributeValue }));
@@ -158,7 +158,7 @@ function NodeForm(props) {
                 value={description}
               />
             </div>
-            {attributes.map((attribut, index) => (
+            {attributes.map((attribute, index) => (
               <div className={classes.inlineWrap}>
                 <div className={classes.field}>
                   <Select
@@ -167,22 +167,22 @@ function NodeForm(props) {
                     inputId="react-select-single"
                     options={attributeOptions}
                     placeholder="attribute"
-                    value={attribut.attribute}
+                    value={attribute.attribute}
                     onChange={(value) => {
-                      if (attribut.label) {
+                      if (attribute.attribute) {
                         handleChange(value, index, 'attribute');
                       } else {
-                        const newRow = { ...attribut };
+                        const newRow = { ...attribute };
                         newRow.attribute = value;
                         setAttributes([newRow, ...attributes]);
                       }
                     }}
                   />
                 </div>
-                {attribut.attribute && (
+                {attribute.attribute && (
                   <div className={classes.field} style={{ marginLeft: 20 }}>
                     <TextField
-                      value={attribut.attributValue}
+                      value={attribute.attributeValue}
                       placeholder="Value"
                       onChange={(e) => handleChange(e.target.value, index, 'attributeValue')}
                     />

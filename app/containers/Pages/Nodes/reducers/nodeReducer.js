@@ -121,7 +121,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case ADD_ATTRIBUT:
       return state.withMutations((mutableState) => {
-        const attributes = fromJS(action.attributs);
+        const attributes = fromJS(action.attributes);
         mutableState.set('attributes', attributes);
       });
     case ADD_TYPE:
