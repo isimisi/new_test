@@ -3,7 +3,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
@@ -37,16 +36,19 @@ const styles = theme => ({
 });
 
 const NodeDemo = (props) => {
-  const { classes } = props;
-  const reducer = 'node';
-  const title = useSelector(state => state.getIn([reducer, 'title']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const attributes = useSelector(state => state.getIn([reducer, 'attributes']));
-  const backgroundColorSelector = useSelector(state => state.getIn([reducer, 'backgroundColor']));
+  const {
+    classes,
+    title,
+    description,
+    attributes,
+    size,
+    backgroundColorSelector,
+    borderColorSelector
+  } = props;
+
+
   const backgroundColor = `rgba(${backgroundColorSelector.get('r')}, ${backgroundColorSelector.get('g')}, ${backgroundColorSelector.get('b')}, ${backgroundColorSelector.get('a')})`;
-  const borderColorSelector = useSelector(state => state.getIn([reducer, 'borderColor']));
   const borderColor = `rgba(${borderColorSelector.get('r')}, ${borderColorSelector.get('g')}, ${borderColorSelector.get('b')}, ${borderColorSelector.get('a')})`;
-  const size = useSelector(state => state.getIn([reducer, 'size']));
 
   const getWidth = () => {
     switch (size) {
@@ -80,12 +82,12 @@ const NodeDemo = (props) => {
             <div className={classes.attributes}>
               <div>
                 <Typography variant="subtitle2">
-                  {attribute.get('attributType')}
+                  {attribute.label}
                 </Typography>
               </div>
               <div className={classes.attributValue}>
                 <Typography variant="body2">
-                  {attribute.get('attributValue')}
+                  {attribute.value}
                 </Typography>
               </div>
             </div>
@@ -98,6 +100,12 @@ const NodeDemo = (props) => {
 
 NodeDemo.propTypes = {
   classes: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  attributes: PropTypes.any.isRequired,
+  size: PropTypes.string.isRequired,
+  backgroundColorSelector: PropTypes.any.isRequired,
+  borderColorSelector: PropTypes.any.isRequired,
 };
 
 

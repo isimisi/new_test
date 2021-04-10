@@ -13,12 +13,14 @@ import {
   tableColumns, tableOptions, reducer
 } from './constants';
 import styles from './node-jss';
-import { getNodes, postNode, closeNotifAction } from './reducers/nodeActions';
+import {
+  getNodes, postNode, closeNotifAction, deleteNode
+} from './reducers/nodeActions';
 
 function Nodes(props) {
   const { classes } = props;
   const dispatch = useDispatch();
-  const nodes = useSelector(state => state.getIn([reducer, 'nodes']));
+  const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
 
@@ -26,14 +28,22 @@ function Nodes(props) {
     dispatch(getNodes());
   }, []);
 
+  const onDelete = ({ data }) => {
+    const deletedNodes = data.map(v => ({ id: nodes[v.index][3], title: nodes[v.index][0] }));
+    deletedNodes.forEach(e => {
+      dispatch(deleteNode(e.id, e.title));
+    });
+  };
+
+
   return (
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
         title="Your Node"
-        data={nodes.toJS()}
+        data={nodes}
         columns={tableColumns}
-        options={tableOptions}
+        options={tableOptions(onDelete)}
         elevation={10}
       />
       <Tooltip title="New Node">

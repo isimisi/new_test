@@ -1,7 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-/* eslint-disable import/prefer-default-export */
 export const tableColumns = [
   {
     name: 'Title',
@@ -39,13 +38,14 @@ export const tableColumns = [
     }
   },
 ];
-export const tableOptions = {
+export const tableOptions = (onDelete) => ({
   filterType: 'dropdown',
   responsive: 'stacked',
   print: true,
   rowsPerPage: 10,
-  page: 0
-};
+  page: 0,
+  onRowsDelete: onDelete
+});
 
 export const reducer = 'node';
 

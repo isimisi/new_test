@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
@@ -40,6 +41,9 @@ export const showNode = (id) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const node = response.data;
+    if (!node.label) {
+      return null;
+    }
     const {
       label: title, description, type: nodeType, style: _style, group,
       attributes
@@ -47,6 +51,11 @@ export const showNode = (id) => async dispatch => {
     const style = JSON.parse(_style);
     const { width, backgroundColor, borderColor } = style;
     const size = getSize(width);
+    const emptyAttribut = {
+      label: null,
+      value: ''
+    };
+    attributes.push(emptyAttribut);
     dispatch({
       type: types.SHOW_NODE_SUCCESS,
       title,
@@ -59,15 +68,16 @@ export const showNode = (id) => async dispatch => {
       attributes
     });
   } catch (error) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_NODE_FAILED, message });
   }
 };
 
-export const putNode = (id, label, description, type, group_id, style, history) => async dispatch => {
+export const putNode = (id, label, description, attributes, type, group, style, history) => async dispatch => {
   const url = `${baseUrl}/${NODES}/${id}`;
   const body = {
-    label, description, type, group_id, style
+    label, description, type, group, style, attributes
   };
   const header = authHeader();
   console.log(url, body, header);
@@ -77,7 +87,6 @@ export const putNode = (id, label, description, type, group_id, style, history) 
     dispatch({ type: types.PUT_NODE_SUCCESS, message });
     history.push('/app/nodes');
   } catch (error) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_NODE_FAILED, message });
   }
@@ -88,11 +97,38 @@ export const deleteNode = (id, title) => async dispatch => {
   const header = authHeader();
   try {
     await axios.delete(url, header);
-    const message = `You have deleted your ${title}`;
+    const message = `You have deleted ${title}`;
     dispatch({ type: types.DELETE_NODE_SUCCESS, message });
+    dispatch(getNodes());
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_NODE_FAILED, message });
+  }
+};
+
+export const getAttributeDropDown = () => async dispatch => {
+  const url = `${baseUrl}/attributs/dropDownValues`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const attributes = response.data;
+    dispatch({ type: types.GET_ATTRIBUTE_DROPDOWN_SUCCESS, attributes });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_ATTRIBUTE_DROPDOWN_FAILED, message });
+  }
+};
+
+export const getGroupDropDown = () => async dispatch => {
+  const url = `${baseUrl}/groups/dropDownValues`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const groups = response.data;
+    dispatch({ type: types.GET_GROUP_DROPDOWN_SUCCESS, groups });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_GROUP_DROPDOWN_FAILED, message });
   }
 };
 

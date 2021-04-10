@@ -55,16 +55,14 @@ const styles = () => ({
 
 const NodeStyling = (props) => {
   const dispatch = useDispatch();
-  const { classes } = props;
-  const [selectedSize, setSelectedSize] = useState('Medium');
+  const {
+    classes,
+    size,
+    backgroundColor,
+    borderColor
+  } = props;
 
   const [displayColorPickerBackground, setDisplayColorPickerBackground] = useState(false);
-  const [colorBackground, setColorBackground] = useState({
-    r: '230',
-    g: '230',
-    b: '230',
-    a: '1',
-  });
 
   const handleClickBackground = () => {
     setDisplayColorPickerBackground(prevVal => !prevVal);
@@ -75,17 +73,10 @@ const NodeStyling = (props) => {
   };
 
   const handleChangeBackground = (col) => {
-    setColorBackground(col.rgb);
     dispatch(backgroundChange(col.rgb));
   };
 
   const [displayColorPickerBorder, setDisplayColorPickerBorder] = useState(false);
-  const [colorBorder, setColorBorder] = useState({
-    r: '0',
-    g: '0',
-    b: '0',
-    a: '1',
-  });
 
   const handleClickBorder = () => {
     setDisplayColorPickerBorder(prevVal => !prevVal);
@@ -96,12 +87,10 @@ const NodeStyling = (props) => {
   };
 
   const handleChangeBorder = (col) => {
-    setColorBorder(col.rgb);
     dispatch(borderChange(col.rgb));
   };
 
   const handleSizeClick = (e) => {
-    setSelectedSize(e.target.textContent);
     dispatch(sizeChange(e.target.textContent));
   };
 
@@ -115,21 +104,21 @@ const NodeStyling = (props) => {
         <Typography variant="subtitle2" component="h3">
         Pick a size
         </Typography>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Small' ? 'secondary' : ''}>Small</Button>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Medium' ? 'secondary' : ''}>Medium</Button>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Large' ? 'secondary' : ''}>Large</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Small' ? 'secondary' : ''}>Small</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Medium' ? 'secondary' : ''}>Medium</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Large' ? 'secondary' : ''}>Large</Button>
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
         Pick a Color for the Backgroud
         </Typography>
         <div className={classes.swatch} onClick={handleClickBackground}>
-          <div className={classes.color} style={{ backgroundColor: `rgba(${colorBackground.r}, ${colorBackground.g}, ${colorBackground.b}, ${colorBackground.a})` }} />
+          <div className={classes.color} style={{ backgroundColor: `rgba(${backgroundColor.r}, ${backgroundColor.g}, ${backgroundColor.b}, ${backgroundColor.a})` }} />
         </div>
         { displayColorPickerBackground ? (
           <div className={classes.popover}>
             <div className={classes.cover} onClick={handleCloseBackground} />
-            <SketchPicker color={colorBackground} onChange={handleChangeBackground} />
+            <SketchPicker color={backgroundColor} onChange={handleChangeBackground} />
           </div>
         ) : null }
       </div>
@@ -138,12 +127,12 @@ const NodeStyling = (props) => {
         Pick a Color for the Border
         </Typography>
         <div className={classes.swatch} onClick={handleClickBorder}>
-          <div className={classes.color} style={{ backgroundColor: `rgba(${colorBorder.r}, ${colorBorder.g}, ${colorBorder.b}, ${colorBorder.a})` }} />
+          <div className={classes.color} style={{ backgroundColor: `rgba(${borderColor.r}, ${borderColor.g}, ${borderColor.b}, ${borderColor.a})` }} />
         </div>
         { displayColorPickerBorder ? (
           <div className={classes.popover}>
             <div className={classes.cover} onClick={handleCloseBorder} />
-            <SketchPicker color={colorBorder} onChange={handleChangeBorder} />
+            <SketchPicker color={borderColor} onChange={handleChangeBorder} />
           </div>
         ) : null }
       </div>
@@ -153,6 +142,9 @@ const NodeStyling = (props) => {
 
 NodeStyling.propTypes = {
   classes: PropTypes.object.isRequired,
+  size: PropTypes.string.isRequired,
+  backgroundColor: PropTypes.any.isRequired,
+  borderColor: PropTypes.any.isRequired,
 };
 
 export default withStyles(styles)(NodeStyling);

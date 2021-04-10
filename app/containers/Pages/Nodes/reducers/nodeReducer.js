@@ -18,20 +18,31 @@ import {
   PUT_NODE_SUCCESS,
   PUT_NODE_FAILED,
   DELETE_NODE_SUCCESS,
-  DELETE_NODE_FAILED
+  DELETE_NODE_FAILED,
+  GET_ATTRIBUTE_DROPDOWN_SUCCESS,
+  GET_ATTRIBUTE_DROPDOWN_FAILED,
+  GET_GROUP_DROPDOWN_SUCCESS,
+  GET_GROUP_DROPDOWN_FAILED
 } from './nodeConstants';
+
+const initialAttribute = [Map({
+  label: null,
+  value: ''
+})];
 
 const initialState = {
   nodes: List(),
   title: '',
   description: '',
-  attributes: List(),
+  attributes: List(initialAttribute),
   type: '',
-  group: Map(),
+  group: '',
   size: 'Medium',
   backgroundColor: Map(),
   borderColor: Map(),
   message: '',
+  attributesDropDownOptions: List(),
+  groupsDropDownOptions: List()
 };
 
 
@@ -52,9 +63,9 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         mutableState.set('title', '');
         mutableState.set('description', '');
-        mutableState.set('attributes', List());
+        mutableState.set('attributes', List(initialAttribute));
         mutableState.set('type', '');
-        mutableState.set('group', Map());
+        mutableState.set('group', '');
         mutableState.set('size', 'Medium');
         mutableState.set('backgroundColor', Map());
         mutableState.set('borderColor', Map());
@@ -75,9 +86,10 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const backgroundColor = fromJS(action.backgroundColor);
         const borderColor = fromJS(action.borderColor);
 
+
         mutableState.set('title', title);
         mutableState.set('description', description);
-        // mutableState.set('attributes', attributes);
+        mutableState.set('attributes', attributes);
         mutableState.set('type', nodeType);
         mutableState.set('group', group);
         mutableState.set('size', size);
@@ -105,6 +117,26 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('message', message);
       });
     case DELETE_NODE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_ATTRIBUTE_DROPDOWN_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const attributesDropDownOptions = fromJS(action.attributes);
+        mutableState.set('attributesDropDownOptions', attributesDropDownOptions);
+      });
+    case GET_ATTRIBUTE_DROPDOWN_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_GROUP_DROPDOWN_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const groupsDropDownOptions = fromJS(action.groups);
+        mutableState.set('groupsDropDownOptions', groupsDropDownOptions);
+      });
+    case GET_GROUP_DROPDOWN_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
