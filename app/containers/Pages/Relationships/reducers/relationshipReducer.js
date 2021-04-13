@@ -7,7 +7,17 @@ import {
   CHANGE_COLOR,
   CHANGE_SIZE,
   GET_RELATIONSHIPS_SUCCESS,
-  GET_RELATIONSHIPS_FAILED
+  GET_RELATIONSHIPS_FAILED,
+  POST_RELATIONSHIP_SUCCESS,
+  POST_RELATIONSHIP_FAILED,
+  SHOW_RELATIONSHIP_SUCCESS,
+  SHOW_RELATIONSHIP_FAILED,
+  PUT_RELATIONSHIP_SUCCESS,
+  PUT_RELATIONSHIP_FAILED,
+  DELETE_RELATIONSHIP_SUCCESS,
+  DELETE_RELATIONSHIP_FAILED,
+  GET_GROUP_DROPDOWN_SUCCESS,
+  GET_GROUP_DROPDOWN_FAILED
 } from './relationshipConstants';
 
 const initialState = {
@@ -19,7 +29,6 @@ const initialState = {
   size: 'Medium',
   color: Map(),
   message: '',
-  attributesDropDownOptions: List(),
   groupsDropDownOptions: List()
 };
 
@@ -33,6 +42,71 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('relationships', relationships);
       });
     case GET_RELATIONSHIPS_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case POST_RELATIONSHIP_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set('label', '');
+        mutableState.set('description', '');
+        mutableState.set('type', '');
+        mutableState.set('group', '');
+        mutableState.set('size', 'Medium');
+        mutableState.set('color', Map());
+      });
+    case POST_RELATIONSHIP_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case SHOW_RELATIONSHIP_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const label = fromJS(action.label);
+        const description = fromJS(action.description);
+        const relationshipType = fromJS(action.relationshipType);
+        const group = fromJS(action.group);
+        const size = fromJS(action.size);
+        const color = fromJS(action.color);
+
+        mutableState.set('label', label);
+        mutableState.set('description', description);
+        mutableState.set('type', relationshipType);
+        mutableState.set('group', group);
+        mutableState.set('size', size);
+        mutableState.set('color', color);
+      });
+    case SHOW_RELATIONSHIP_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case PUT_RELATIONSHIP_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case PUT_RELATIONSHIP_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case DELETE_RELATIONSHIP_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case DELETE_RELATIONSHIP_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_GROUP_DROPDOWN_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const groupsDropDownOptions = fromJS(action.groups);
+        mutableState.set('groupsDropDownOptions', groupsDropDownOptions);
+      });
+    case GET_GROUP_DROPDOWN_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

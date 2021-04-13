@@ -4,6 +4,8 @@ import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import * as types from './relationshipConstants';
+import { getSize } from '../constants';
+
 const RELATIONSHIPS = 'relationships';
 
 export const getRelationships = () => async dispatch => {
@@ -45,20 +47,20 @@ export const showRelationship = (id) => async dispatch => {
       return null;
     }
     const {
-      label, description, type: relationshipType, style: _style, group,
+      label, description, style: _style, label_style, group,
     } = relationship;
     const style = JSON.parse(_style);
-    const { width, backgroundColor: color } = style;
-    // const size = getSize(width);
-
+    const labelStyle = JSON.parse(label_style);
+    const { color } = style;
+    const { fontSize } = labelStyle;
+    const size = getSize(fontSize);
 
     dispatch({
       type: types.SHOW_RELATIONSHIP_SUCCESS,
       label,
       description,
-      relationshipType,
       color,
-      // size,
+      size,
       group,
     });
   } catch (error) {
@@ -67,9 +69,12 @@ export const showRelationship = (id) => async dispatch => {
   }
 };
 
-export const putRelationship = (id, history/* changable values */) => async dispatch => {
+export const putRelationship = (id, label, description, style, label_style, group, history,) => async dispatch => {
   const url = `${baseUrl}/${RELATIONSHIPS}/${id}`;
-  const body = {};
+  const body = {
+    label, description, style, label_style// , group wait for group dropdown
+  };
+  console.log(body);
   const header = authHeader();
   try {
     await axios.put(url, body, header);
@@ -93,19 +98,6 @@ export const deleteRelationship = (id, title) => async dispatch => {
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_RELATIONSHIP_FAILED, message });
-  }
-};
-
-export const getAttributeDropDown = () => async dispatch => {
-  const url = `${baseUrl}/attributs/dropDownValues`;
-  const header = authHeader();
-  try {
-    const response = await axios.get(url, header);
-    const attributes = response.data;
-    dispatch({ type: types.GET_ATTRIBUTE_DROPDOWN_SUCCESS, attributes });
-  } catch (error) {
-    const message = genericErrorMessage;
-    dispatch({ type: types.GET_ATTRIBUTE_DROPDOWN_FAILED, message });
   }
 };
 

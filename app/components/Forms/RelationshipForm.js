@@ -6,9 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { useDispatch } from 'react-redux';
+import Tooltip from '@material-ui/core/Tooltip';
 import {
   labelChange, descriptionChange, addGroup
 } from '../../containers/Pages/Relationships/reducers/relationshipActions';
@@ -23,15 +23,28 @@ const suggestions = [
   label: suggestion.label,
 }));
 
+// TODO: v2
+// const typeSuggestions = [
+//   { label: 'bezier' },
+//   { label: 'straight' },
+//   { label: 'step' },
+//   { label: 'smoothstep' },
+// ].map(suggestion => ({
+//   value: suggestion.label,
+//   label: suggestion.label,
+// }));
 
-const typeSuggestions = [
-  { label: 'bezier' },
-  { label: 'straight' },
-  { label: 'step' },
-  { label: 'smoothstep' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
+const mapSelectOptions = (options) => options.map(suggestion => ({
+  value: suggestion.value,
+  label: (
+    <>
+      <Tooltip title={suggestion.label}>
+        <div style={{ width: '100%', height: '100%' }}>
+          <span style={{ paddingRight: '5px' }}>{suggestion.value}</span>
+        </div>
+      </Tooltip>
+    </>
+  ),
 }));
 
 
@@ -65,7 +78,10 @@ function NodeForm(props) {
   const dispatch = useDispatch();
   const {
     classes,
-    onSave
+    label,
+    description,
+    group,
+    groupsDropDownOptions
   } = props;
 
 
@@ -79,24 +95,16 @@ function NodeForm(props) {
     }),
   };
 
-  const [label, setLabel] = React.useState(null);
-  const [description, setDescription] = React.useState(null);
-  const [group, setGroup] = React.useState(null);
-
-
   const handleLabelChange = (e) => {
     dispatch(labelChange(e.target.value));
-    setLabel(e.target.value);
   };
 
   const handleDescriptionChange = (e) => {
     dispatch(descriptionChange(e.target.value));
-    setDescription(e.target.value);
   };
 
   const handleChangeGroups = (value) => {
-    setGroup(value);
-    dispatch(addGroup(value));
+    dispatch(addGroup(value.value));
   };
 
 
@@ -117,6 +125,7 @@ function NodeForm(props) {
                 label="Label"
                 className={classes.field}
                 onChange={handleLabelChange}
+                value={label}
               />
             </div>
             <div className={classes.field}>
@@ -128,6 +137,7 @@ function NodeForm(props) {
                 multiline
                 rows={2}
                 onChange={handleDescriptionChange}
+                value={description}
               />
             </div>
             <div className={classes.field}>
@@ -145,16 +155,11 @@ function NodeForm(props) {
                     placeholder: 'groups',
                   }}
                   placeholder="groups"
-                  options={suggestions}
-                  value={group}
+                  options={mapSelectOptions(groupsDropDownOptions)}
+                  value={group && { label: group, value: group }}
                   onChange={handleChangeGroups}
                 />
               </NoSsr>
-            </div>
-            <div>
-              <Button variant="contained" color="secondary" onClick={() => onSave(label, description, type, group)}>
-                  Save
-              </Button>
             </div>
           </Paper>
         </Grid>
@@ -165,7 +170,10 @@ function NodeForm(props) {
 
 NodeForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  onSave: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  group: PropTypes.string.isRequired,
+  groupsDropDownOptions: PropTypes.any.isRequired,
 };
 
 export default withStyles(styles)(NodeForm);

@@ -3,7 +3,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = () => ({
@@ -28,13 +27,14 @@ const styles = () => ({
 });
 
 const RelationshipDemo = (props) => {
-  const { classes } = props;
-  const reducer = 'relationship';
-  const label = useSelector(state => state.getIn([reducer, 'label']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const colorSelector = useSelector(state => state.getIn([reducer, 'color']));
+  const {
+    classes,
+    label,
+    description,
+    colorSelector,
+    size
+  } = props;
   const color = `rgba(${colorSelector.get('r')}, ${colorSelector.get('g')}, ${colorSelector.get('b')}, ${colorSelector.get('a')})`;
-  const size = useSelector(state => state.getIn([reducer, 'size']));
 
   const getLabelSize = () => {
     switch (size) {
@@ -71,6 +71,10 @@ const RelationshipDemo = (props) => {
 
 RelationshipDemo.propTypes = {
   classes: PropTypes.object.isRequired,
+  label: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  colorSelector: PropTypes.any.isRequired,
+  size: PropTypes.number.isRequired,
 };
 
 

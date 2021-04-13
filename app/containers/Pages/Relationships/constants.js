@@ -49,3 +49,53 @@ export const tableColumns = [
 ];
 
 export const reducer = 'relationship';
+
+export const getSize = (fontSize) => {
+  switch (fontSize) {
+    case '1rem':
+      return 'Small';
+    case '1.25rem':
+      return 'Medium';
+    case '2.125rem':
+      return 'Large';
+    default:
+      return 'Medium';
+  }
+};
+
+export const generateLabelStyle = (size) => {
+  switch (size) {
+    case 'Small':
+      return {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        fontWeight: 400,
+        fontSize: '1rem',
+        lineHeight: 1.5,
+        letterSpacing: '0.00938em'
+      };
+    case 'Medium':
+      return {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        fontWeight: 500,
+        fontSize: '1.25rem',
+        lineHeight: 1.6,
+        letterSpacing: '0.0075em'
+      };
+    case 'Large':
+      return {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        fontWeight: 400,
+        fontSize: '2.125rem',
+        lineHeight: 1.235,
+        letterSpacing: '0.00735em'
+      };
+    default:
+      return {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+        fontWeight: 500,
+        fontSize: '1.25rem',
+        lineHeight: 1.6,
+        letterSpacing: '0.0075em'
+      };
+  }
+};

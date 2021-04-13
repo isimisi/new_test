@@ -55,16 +55,9 @@ const styles = () => ({
 
 const RelationshipStylling = (props) => {
   const dispatch = useDispatch();
-  const { classes } = props;
-  const [selectedSize, setSelectedSize] = useState('Medium');
+  const { classes, color, size } = props;
 
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState(false);
-  const [color, setColor] = useState({
-    r: '230',
-    g: '230',
-    b: '230',
-    a: '1',
-  });
 
   const handleClickColor = () => {
     setDisplayColorPickerColor(prevVal => !prevVal);
@@ -75,12 +68,10 @@ const RelationshipStylling = (props) => {
   };
 
   const handleChangeColor = (col) => {
-    setColor(col.rgb);
     dispatch(colorChange(col.rgb));
   };
 
   const handleSizeClick = (e) => {
-    setSelectedSize(e.target.textContent);
     dispatch(sizeChange(e.target.textContent));
   };
 
@@ -94,9 +85,9 @@ const RelationshipStylling = (props) => {
         <Typography variant="subtitle2" component="h3">
         Pick a label size
         </Typography>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Small' ? 'secondary' : ''}>Small</Button>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Medium' ? 'secondary' : ''}>Medium</Button>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={selectedSize === 'Large' ? 'secondary' : ''}>Large</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Small' ? 'secondary' : ''}>Small</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Medium' ? 'secondary' : ''}>Medium</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Large' ? 'secondary' : ''}>Large</Button>
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
@@ -118,6 +109,8 @@ const RelationshipStylling = (props) => {
 
 RelationshipStylling.propTypes = {
   classes: PropTypes.object.isRequired,
+  color: PropTypes.object.isRequired,
+  size: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(RelationshipStylling);
