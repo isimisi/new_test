@@ -47,7 +47,7 @@ function Nodes(props) {
         elevation={10}
       />
       <Tooltip title="New Node">
-        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postNode(history))}>
+        <Fab variant="extended" color="secondary" className={classes.addBtn} onClick={() => dispatch(postNode(history))}>
             Create new Node
         </Fab>
       </Tooltip>

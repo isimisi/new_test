@@ -5,10 +5,13 @@ import {
   DESCRIPTION_CHANGE,
   ADD_GROUP,
   CHANGE_COLOR,
-  CHANGE_SIZE
+  CHANGE_SIZE,
+  GET_RELATIONSHIPS_SUCCESS,
+  GET_RELATIONSHIPS_FAILED
 } from './relationshipConstants';
 
 const initialState = {
+  relationships: List(),
   label: '',
   description: '',
   type: '',
@@ -16,12 +19,24 @@ const initialState = {
   size: 'Medium',
   color: Map(),
   message: '',
+  attributesDropDownOptions: List(),
+  groupsDropDownOptions: List()
 };
 
 
 const initialImmutableState = fromJS(initialState);
 export default function reducer(state = initialImmutableState, action = {}) {
   switch (action.type) {
+    case GET_RELATIONSHIPS_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const relationships = fromJS(action.relationships);
+        mutableState.set('relationships', relationships);
+      });
+    case GET_RELATIONSHIPS_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
     case LABEL_CHANGE:
       return state.withMutations((mutableState) => {
         const label = fromJS(action.label);
