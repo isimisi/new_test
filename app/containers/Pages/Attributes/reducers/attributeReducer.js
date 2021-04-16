@@ -11,6 +11,7 @@ import {
   SHOW_ATTRIBUTE_FAILED,
   PUT_ATTRIBUTE_SUCCESS,
   PUT_ATTRIBUTE_FAILED,
+  CURRENT_ATTRIBUTE,
   LABEL_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_TYPE,
@@ -22,6 +23,7 @@ import {
 const initialState = {
   attributes: List(),
   message: '',
+  id: null,
   label: '',
   description: '',
   type: 'Value',
@@ -64,10 +66,15 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const selectionOptions = fromJS(action.selectionOptions);
         const group = fromJS(action.group);
 
+        if (selectionOptions) {
+          mutableState.set('selectionOptions', selectionOptions);
+        } else {
+          mutableState.set('selectionOptions', List());
+        }
+
         mutableState.set('label', label);
         mutableState.set('description', description);
         mutableState.set('type', valueType);
-        mutableState.set('selectionOptions', selectionOptions);
         mutableState.set('group', group);
       });
     case SHOW_ATTRIBUTE_FAILED:
@@ -94,6 +101,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+      });
+    case CURRENT_ATTRIBUTE:
+      return state.withMutations((mutableState) => {
+        const id = fromJS(action.id);
+        mutableState.set('id', id);
       });
     case LABEL_CHANGE:
       return state.withMutations((mutableState) => {

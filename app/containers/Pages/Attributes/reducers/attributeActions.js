@@ -56,16 +56,18 @@ export const showAttribute = (id) => async dispatch => {
   }
 };
 
-export const putAttribute = (id, /* other values */ history) => async dispatch => {
+export const putAttribute = (id, label, description, type, group, selectionOptions) => async dispatch => {
   const url = `${baseUrl}/${ATTRIBUTS}/${id}`;
-  const body = {};
+  const body = {
+    label, description, type, group
+  };
+  body.selectionOptions = type === 'Selection' && JSON.stringify(selectionOptions);
   const header = authHeader();
-
+  console.log(body);
   try {
     await axios.put(url, body, header);
     const message = 'You have updated your node';
     dispatch({ type: types.PUT_ATTRIBUTE_SUCCESS, message });
-    history.push('/app/attributes');
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_ATTRIBUTE_FAILED, message });
@@ -82,7 +84,10 @@ export const deleteAttribute = (id, title) => async dispatch => {
     dispatch({ type: types.PUT_ATTRIBUTE_SUCCESS, message });
     dispatch(getAttributes());
   } catch (error) {
-    const message = genericErrorMessage;
+    let message = genericErrorMessage;
+    if (error.response.data.errno === 1451) {
+      message = 'You cannot delete an attribute, which you are actively using in nodes or workflows';
+    }
     dispatch({ type: types.PUT_ATTRIBUTE_FAILED, message });
   }
 };
@@ -103,6 +108,11 @@ export const getGroupDropDown = () => async dispatch => {
 export const labelChange = label => ({
   type: types.LABEL_CHANGE,
   label,
+});
+
+export const changeCurrentAttribute = id => ({
+  type: types.CURRENT_ATTRIBUTE,
+  id,
 });
 
 export const descriptionChange = description => ({

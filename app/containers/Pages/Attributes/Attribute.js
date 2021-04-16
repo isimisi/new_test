@@ -16,7 +16,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { useDispatch } from 'react-redux';
 import styles from './attribute-jss';
 import {
-  addType, addGroup, descriptionChange, labelChange
+  addType, addGroup, descriptionChange, labelChange, changeSelectionValues
 } from './reducers/attributeActions';
 
 const typeSuggestions = [
@@ -50,6 +50,7 @@ const Attribute = (props) => {
     classes,
     open,
     handleClose,
+    handleSave,
     groupsDropDownOptions,
     group,
     label,
@@ -60,16 +61,15 @@ const Attribute = (props) => {
 
   const theme = useTheme();
   const [inputValue, setInputValue] = useState('');
-  const [value, setValue] = useState([]);
   const dispatch = useDispatch();
-  console.log(selectionOptions);
+
   const handleKeyDown = event => {
     if (!inputValue) return;
     switch (event.key) {
       case 'Enter':
       case 'Tab':
         setInputValue('');
-        setValue([...value, createOption(inputValue)]);
+        dispatch(changeSelectionValues([...selectionOptions.toJS(), createOption(inputValue)]));
         event.preventDefault();
     }
   };
@@ -101,7 +101,6 @@ const Attribute = (props) => {
               <Select
                 classes={classes}
                 styles={selectStyles}
-                menuPosition="fixed"
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'type',
@@ -114,7 +113,7 @@ const Attribute = (props) => {
                 placeholder="type"
                 options={typeSuggestions}
                 value={{ label: type, value: type }}
-                onChange={(v) => dispatch(addType(v))}
+                onChange={(v) => dispatch(addType(v.value))}
               />
             </NoSsr>
           </div>
@@ -123,7 +122,6 @@ const Attribute = (props) => {
               <Select
                 classes={classes}
                 styles={selectStyles}
-                menuPosition="fixed"
                 inputId="react-select-single"
                 TextFieldProps={{
                   label: 'group',
@@ -135,8 +133,8 @@ const Attribute = (props) => {
                 }}
                 placeholder="group"
                 options={mapSelectOptions(groupsDropDownOptions)}
-                value={group}
-                onChange={(v) => addGroup(v)}
+                value={group && { label: group, value: group }}
+                onChange={(v) => dispatch(addGroup(v.value))}
               />
             </NoSsr>
           </div>
@@ -157,11 +155,11 @@ const Attribute = (props) => {
             isClearable
             isMulti
             menuIsOpen={false}
-            onChange={(v) => setValue(v)}
+            onChange={(v) => dispatch(changeSelectionValues(v))}
             onInputChange={(v) => setInputValue(v)}
             onKeyDown={handleKeyDown}
             placeholder="Type your selection values"
-            value={selectionOptions}
+            value={selectionOptions.toJS()}
           />
         )}
         <div className={classes.field}>
@@ -179,7 +177,7 @@ const Attribute = (props) => {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleSave} color="primary">
                 Save
         </Button>
       </DialogActions>
@@ -191,12 +189,13 @@ Attribute.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
   groupsDropDownOptions: PropTypes.any.isRequired,
   group: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  selectionOptions: PropTypes.array.isRequired
+  selectionOptions: PropTypes.any.isRequired
 };
 
 

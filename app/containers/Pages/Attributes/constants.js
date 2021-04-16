@@ -39,12 +39,13 @@ export const columns = (onOpen) => [
   },
 ];
 
-export const options = {
+export const tableOptions = (onDelete) => ({
   filterType: 'dropdown',
   responsive: 'stacked',
   print: true,
   rowsPerPage: 10,
-  page: 0
-};
+  page: 0,
+  onRowsDelete: onDelete
+});
 
 export const reducer = 'attribute';

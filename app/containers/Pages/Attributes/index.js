@@ -8,11 +8,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import styles from './attribute-jss';
 import Attribute from './Attribute';
 import {
-  options, columns, reducer
+  tableOptions, columns, reducer
 } from './constants';
 import { Notification } from '@components';
 import {
-  getAttributes, closeNotifAction, postAttribute, getGroupDropDown, putAttribute, showAttribute, deleteAttribute
+  getAttributes, closeNotifAction, postAttribute, getGroupDropDown, putAttribute, showAttribute, deleteAttribute, changeCurrentAttribute
 } from './reducers/attributeActions';
 
 function Attributes(props) {
@@ -21,11 +21,12 @@ function Attributes(props) {
   const attributes = useSelector(state => state.getIn([reducer, 'attributes'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
+  const id = useSelector(state => state.getIn([reducer, 'id']));
   const label = useSelector(state => state.getIn([reducer, 'label']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const type = useSelector(state => state.getIn([reducer, 'type']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
-  const selectionOptions = useSelector(state => state.getIn([reducer, 'selectionOptions'])).toJS();
+  const selectionOptions = useSelector(state => state.getIn([reducer, 'selectionOptions']));
 
   const { classes } = props;
 
@@ -34,9 +35,17 @@ function Attributes(props) {
     dispatch(getGroupDropDown());
   }, []);
 
-  const onOpen = (id) => {
+  const onOpen = () => {
     setOpen(true);
+    dispatch(changeCurrentAttribute(id));
     dispatch(showAttribute(id));
+  };
+
+  const onDelete = ({ data }) => {
+    const deletedAttributes = data.map(v => ({ id: attributes[v.index][3], title: attributes[v.index][0] }));
+    deletedAttributes.forEach(e => {
+      dispatch(deleteAttribute(e.id, e.title));
+    });
   };
 
   return (
@@ -46,7 +55,7 @@ function Attributes(props) {
         title="Your Attributes"
         data={attributes}
         columns={columns(onOpen)}
-        options={options}
+        options={tableOptions(onDelete)}
         elevation={10}
       />
       <Tooltip title="New Attribut">
@@ -66,7 +75,17 @@ function Attributes(props) {
         open={open}
         handleClose={() => {
           setOpen(false);
-          // dispatch(putAttribute())
+        }}
+        handleSave={() => {
+          setOpen(false);
+          dispatch(putAttribute(
+            id,
+            label,
+            description,
+            type,
+            group,
+            selectionOptions.toJS()
+          ));
         }}
         groupsDropDownOptions={groupsDropDownOptions}
         group={group}
