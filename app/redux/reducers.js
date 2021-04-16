@@ -18,7 +18,7 @@ import groups from '../containers/Pages/Groups/reducers/ecommerceReducer';
 import createOrganization from '../containers/Pages/CreateOrganization/reducers/createOrganizationReducer';
 import node from '../containers/Pages/Nodes/reducers/nodeReducer';
 import relationship from '../containers/Pages/Relationships/reducers/relationshipReducer';
-
+import attribute from '../containers/Pages/Attributes/reducers/attributeReducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -26,6 +26,7 @@ import relationship from '../containers/Pages/Relationships/reducers/relationshi
 export default function createReducer() {
   const rootReducer = combineReducers({
     auth,
+    attribute,
     node,
     relationship,
     createOrganization,
