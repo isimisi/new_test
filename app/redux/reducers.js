@@ -14,11 +14,12 @@ import taskboard from '../containers/Pages/TaskBoard/reducers/taskboardReducer';
 
 
 import auth from '../containers/Pages/Users/reducers/authReducer';
-import groups from '../containers/Pages/Groups/reducers/ecommerceReducer';
+import groups from '../containers/Pages/Groups/reducers/groupReducer';
 import createOrganization from '../containers/Pages/CreateOrganization/reducers/createOrganizationReducer';
 import node from '../containers/Pages/Nodes/reducers/nodeReducer';
 import relationship from '../containers/Pages/Relationships/reducers/relationshipReducer';
 import attribute from '../containers/Pages/Attributes/reducers/attributeReducer';
+import conditions from '../containers/Pages/Conditions/reducers/conditionReducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -29,6 +30,7 @@ export default function createReducer() {
     attribute,
     node,
     relationship,
+    conditions,
     createOrganization,
     form,
     ui: uiReducer,

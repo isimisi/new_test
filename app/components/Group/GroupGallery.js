@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import ProductCard from '../CardPaper/ProductCard';
-import ProductDetail from './ProductDetail';
+import GroupCard from '../CardPaper/GroupCard';
+import GroupDetail from './GroupDetail';
 
-function ProductGallery(props) {
+function GroupGallery(props) {
   const [open, setOpen] = useState(false);
   const {
     dataProduct,
@@ -26,12 +26,13 @@ function ProductGallery(props) {
 
   return (
     <div>
-      <ProductDetail
+      <GroupDetail
         open={open}
         close={handleClose}
         detailContent={dataProduct}
         productIndex={productIndex}
         handleAddToCart={handleAddToCart}
+        listView={listView}
       />
       <Grid
         container
@@ -52,7 +53,7 @@ function ProductGallery(props) {
             };
             return (
               <Grid item md={listView === 'list' ? 12 : 4} sm={listView === 'list' ? 12 : 6} xs={12} key={index.toString()}>
-                <ProductCard
+                <GroupCard
                   list={listView === 'list'}
                   name={product.get('name')}
                   thumbnail={product.get('thumbnail')}
@@ -69,7 +70,7 @@ function ProductGallery(props) {
   );
 }
 
-ProductGallery.propTypes = {
+GroupGallery.propTypes = {
   dataProduct: PropTypes.object.isRequired,
   handleAddToCart: PropTypes.func.isRequired,
   showDetail: PropTypes.func.isRequired,
@@ -78,4 +79,4 @@ ProductGallery.propTypes = {
   listView: PropTypes.string.isRequired
 };
 
-export default ProductGallery;
+export default GroupGallery;

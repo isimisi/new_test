@@ -7,13 +7,13 @@ import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
 
 import CardMedia from '@material-ui/core/CardMedia';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 
 import Button from '@material-ui/core/Button';
 import styles from './cardStyle-jss';
 
-function ProductCard(props) {
+function GroupCard(props) {
   const {
     classes,
     thumbnail,
@@ -21,7 +21,7 @@ function ProductCard(props) {
     desc,
     list,
     width,
-    detailOpen,
+    detailOpen
   } = props;
   return (
     <Card className={classNames(classes.cardProduct, isWidthUp('sm', width) && list ? classes.cardList : '')}>
@@ -49,7 +49,7 @@ function ProductCard(props) {
   );
 }
 
-ProductCard.propTypes = {
+GroupCard.propTypes = {
   classes: PropTypes.object.isRequired,
   thumbnail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
@@ -59,11 +59,11 @@ ProductCard.propTypes = {
   width: PropTypes.string.isRequired
 };
 
-ProductCard.defaultProps = {
+GroupCard.defaultProps = {
   list: false,
   detailOpen: () => (false),
   addToCart: () => (false),
 };
 
-const ProductCardResponsive = withWidth()(ProductCard);
-export default withStyles(styles)(ProductCardResponsive);
+const GroupCardResponsive = withWidth()(GroupCard);
+export default withStyles(styles)(GroupCardResponsive);

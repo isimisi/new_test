@@ -1,5 +1,5 @@
 import * as notification from '@redux/constants/notifConstants';
-import * as types from './ecommerceConstants';
+import * as types from './groupConstants';
 
 export const fetchAction = items => ({
   type: types.FETCH_PRODUCT_DATA,

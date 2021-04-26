@@ -104,17 +104,17 @@ export NewsCard from './CardPaper/NewsCard';
 export HorizontalNewsCard from './CardPaper/HorizontalNewsCard';
 export PlayerCard from './CardPaper/PlayerCard';
 export PostCard from './CardPaper/PostCard';
-export ProductCard from './CardPaper/ProductCard';
+export GroupCard from './CardPaper/GroupCard';
 export VideoCard from './CardPaper/VideoCard';
 export IdentityCard from './CardPaper/IdentityCard';
 export PricingCard from './CardPaper/PricingCard';
 export ShowcaseCard from './CardPaper/ShowcaseCard';
 export HeadlineCard from './CardPaper/HeadlineCard';
 // Search
-export SearchProduct from './Search/SearchProduct';
+export SearchGroup from './Search/SearchGroup';
 // Product
-export ProductGallery from './Product/ProductGallery';
-export ProductDesc from './Product/ProductDesc';
+export GroupGallery from './Group/GroupGallery';
+export GroupDesc from './Group/GroupDesc';
 // Gallery
 export PhotoGallery from './Gallery/PhotoGallery';
 // Invoice

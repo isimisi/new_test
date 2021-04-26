@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import { useSelector, useDispatch } from 'react-redux';
-import { SearchProduct, ProductGallery, Notification } from '@components';
+import { SearchGroup, GroupGallery, Notification } from '@components';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,7 +15,7 @@ import {
   detailAction,
   searchAction,
   closeNotifAction
-} from './reducers/ecommerceActions';
+} from './reducers/groupActions';
 import data from './api/productData';
 
 const styles = () => ({
@@ -73,7 +73,7 @@ function Ecommerce(props) {
         <meta property="twitter:description" content={description} />
       </Helmet>
       <Notification close={() => closeNotif(closeNotifAction)} message={messageNotif} />
-      <SearchProduct
+      <SearchGroup
         dataCart={dataCart}
         dataProduct={dataProduct}
         removeItem={(payload) => removeItem(removeAction(payload))}
@@ -85,7 +85,7 @@ function Ecommerce(props) {
         listView={listView}
         handleSwitchView={handleSwitchView}
       />
-      <ProductGallery
+      <GroupGallery
         listView={listView}
         dataProduct={dataProduct}
         showDetail={(payload) => showDetail(detailAction(payload))}

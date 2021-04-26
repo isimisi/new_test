@@ -8,7 +8,7 @@ import {
   CHECKOUT,
   SHOW_DETAIL_PRODUCT,
   SEARCH_PRODUCT
-} from './ecommerceConstants';
+} from './groupConstants';
 
 const initialState = {
   productList: List([]),

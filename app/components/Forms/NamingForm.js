@@ -27,17 +27,6 @@ const suggestions = [
   label: suggestion.label,
 }));
 
-
-const typeSuggestions = [
-  { label: 'input' },
-  { label: 'output' },
-  { label: 'selectorNode' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
-
-
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -132,27 +121,6 @@ function ReduxFormDemo(props) {
                     styles={selectStyles}
                     inputId="react-select-single"
                     TextFieldProps={{
-                      label: 'type',
-                      InputLabelProps: {
-                        htmlFor: 'react-select-single',
-                        shrink: true,
-                      },
-                      placeholder: 'type',
-                    }}
-                    placeholder="type"
-                    options={typeSuggestions}
-                    value={group}
-                    onChange={handleChangeGroups}
-                  />
-                </NoSsr>
-              </div>
-              <div className={classes.field}>
-                <NoSsr>
-                  <Select
-                    classes={classes}
-                    styles={selectStyles}
-                    inputId="react-select-single"
-                    TextFieldProps={{
                       label: 'groups',
                       InputLabelProps: {
                         htmlFor: 'react-select-single',
@@ -166,18 +134,6 @@ function ReduxFormDemo(props) {
                     onChange={handleChangeGroups}
                   />
                 </NoSsr>
-              </div>
-              <div>
-                <Button variant="contained" color="secondary" type="submit" disabled={submitting}>
-                  Save
-                </Button>
-                <Button
-                  type="button"
-                  disabled={pristine || submitting}
-                  onClick={reset}
-                >
-                  Reset
-                </Button>
               </div>
             </form>
           </Paper>

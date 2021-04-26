@@ -18,7 +18,7 @@ import {
 
 const initialState = {
   /* Settings for Themes and layout */
-  theme: 'purpleRedTheme',
+  theme: 'greyTheme',
   direction: 'ltr',
   type: 'light', // light or dark
   gradient: true, // true or false
@@ -27,22 +27,6 @@ const initialState = {
   layout: 'left-sidebar', // big-sidebar, left-sidebar, top-navigation, mega-menu
   /* End settings */
   palette: List([
-    { name: 'Ocean Sky', value: 'skyBlueTheme' },
-    { name: 'Purple', value: 'purpleRedTheme' },
-    { name: 'Rose Gold', value: 'magentaTheme' },
-    { name: 'Leaf', value: 'cyanTheme' },
-    { name: 'Mint', value: 'blueCyanTheme' },
-    { name: 'Ubuntu', value: 'orangeTheme' },
-    { name: 'Ultra Violet', value: 'purpleTheme' },
-    { name: 'Vintage', value: 'yellowCyanTheme' },
-    { name: 'Fruit', value: 'greenOrangeTheme' },
-    { name: 'Botani', value: 'pinkGreenTheme' },
-    { name: 'Deep Ocean', value: 'blueTheme' },
-    { name: 'School', value: 'yellowBlueTheme' },
-    { name: 'Queen', value: 'pinkBlueTheme' },
-    { name: 'Joker', value: 'greenPurpleTheme' },
-    { name: 'Ruby', value: 'redTheme' },
-    { name: 'Sultan', value: 'goldTheme' },
     { name: 'Monochrome', value: 'greyTheme' },
   ]),
   sidebarOpen: true,

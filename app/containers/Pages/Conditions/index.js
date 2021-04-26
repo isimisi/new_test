@@ -1,100 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import MUIDataTable from 'mui-datatables';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
-
-const styles = theme => ({
-  table: {
-    '& > div': {
-      overflow: 'auto'
-    },
-    '& table': {
-      '& td': {
-        wordBreak: 'keep-all'
-      },
-      [theme.breakpoints.down('md')]: {
-        '& td': {
-          height: 60,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis'
-        }
-      }
-    }
-  },
-  addBtn: {
-    position: 'fixed',
-    bottom: 30,
-    right: 50,
-    zIndex: 100,
-  },
-});
-
+import { useSelector, useDispatch } from 'react-redux';
+// import {
+//   useHistory
+// } from 'react-router-dom';
+import {
+  columns, data, options, reducer
+} from './constants';
+import styles from './conditions-jss';
+import { Notification } from '@components';
+import {
+  closeNotifAction, getConditions
+} from './reducers/conditionActions';
 
 function Conditions(props) {
-  const columns = [
-    {
-      name: 'Title',
-      options: {
-        filter: true
-      }
-    },
-    {
-      name: 'Description',
-      options: {
-        filter: true,
-      }
-    },
-    {
-      name: 'Group',
-      options: {
-        filter: true,
-      }
-    },
-    {
-      name: 'See Condition',
-      options: {
-        filter: true,
-        customBodyRender: (value) => (
-          <Button variant="contained" color="primary" href={`/app/conditions/${value}`}>
-              Open
-          </Button>
-        )
-      }
-    },
-    {
-      name: 'Last edited',
-      options: {
-        filter: true,
-      }
-    },
-  ];
-
-  const data = [
-    ['Test condition', 'This is a test of a condition', 'Test Group', 1, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 2, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 3, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 4, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 5, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 6, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 7, 'Friday at 3:59 pm'],
-    ['Test condition', 'This is a test of a condition', 'Test Group', 8, 'Friday at 3:59 pm'],
-  ];
-
-  const options = {
-    filterType: 'dropdown',
-    responsive: 'stacked',
-    print: true,
-    rowsPerPage: 10,
-    page: 0
-  };
-
   const { classes } = props;
+  const dispatch = useDispatch();
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  // const history = useHistory();
+
+
+  useEffect(() => {
+    dispatch(getConditions());
+  }, []);
 
   return (
     <div className={classes.table}>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
         title="Your Conditions"
         data={data}

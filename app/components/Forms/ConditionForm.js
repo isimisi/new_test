@@ -11,8 +11,6 @@ import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { initAction, clearAction } from '@redux/actions/reduxFormActions';
-import Tooltip from '@material-ui/core/Tooltip';
-import Fab from '@material-ui/core/Fab';
 
 
 const andOrOption = [
@@ -93,15 +91,7 @@ const styles = theme => ({
     alignItems: 'center',
     marginBottom: 20,
     whiteSpace: 'nowrap'
-  },
-  addBtn: {
-    position: 'fixed',
-    bottom: 30,
-    right: 50,
-    width: 200,
-    height: 60,
-    zIndex: 100,
-  },
+  }
 });
 
 
@@ -111,9 +101,6 @@ function ReduxFormDemo(props) {
   const {
     classes,
     handleSubmit,
-    pristine,
-    reset,
-    submitting,
   } = props;
   const [andOrOptionValues, setAndOrOptionValues] = React.useState(andOrOption[0]);
   const [rows, setRows] = React.useState([
@@ -229,30 +216,10 @@ function ReduxFormDemo(props) {
                   }
                 </div>
               ))}
-
-              <div>
-                <Button variant="contained" color="secondary" type="submit" disabled={submitting}>
-                  Save
-                </Button>
-                <Button
-                  type="button"
-                  disabled={pristine || submitting}
-                  onClick={reset}
-                >
-                  Reset
-                </Button>
-              </div>
             </form>
           </Paper>
         </Grid>
       </Grid>
-      <div>
-        <Tooltip title="Analyser">
-          <Fab variant="extended" color="primary" className={classes.addBtn}>
-            Save Condition
-          </Fab>
-        </Tooltip>
-      </div>
     </div>
   );
 }
@@ -260,9 +227,6 @@ function ReduxFormDemo(props) {
 ReduxFormDemo.propTypes = {
   classes: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  pristine: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = dispatch => ({
