@@ -1,14 +1,77 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
-import NamingForm from '../../../components/Forms/NamingForm';
-import ConditionForm from '../../../components/Forms/ConditionForm';
+import {
+  Notification, ConditionNamingForm, ConditionForm
+} from '@components';
+import {
+  useHistory
+} from 'react-router-dom';
+import { useSelector, useDispatch, } from 'react-redux';
+import {
+  closeNotifAction,
+  showCondition,
+  getGroupDropDown,
+  putCondition,
+  getBuildTypeValueOptions
+} from './reducers/conditionActions';
+import {
+  reducer,
+  andOrOption,
+  buildTypeOptions,
+  comparisonsOptions
+} from './constants';
 
-function Condition() {
+const Condition = () => {
+  const dispatch = useDispatch();
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const history = useHistory();
+  const id = history.location.pathname.split('/').pop();
+  const title = useSelector(state => state.getIn([reducer, 'title']));
+  const description = useSelector(state => state.getIn([reducer, 'description']));
+  const group = useSelector(state => state.getIn([reducer, 'group']));
+  const type = useSelector(state => state.getIn([reducer, 'type']));
+  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
+  const conditionValues = useSelector(state => state.getIn([reducer, 'conditionValues'])).toJS();
+  // build type values
+  const nodeLabels = useSelector(state => state.getIn([reducer, 'nodeLabels'])).toJS();
+  const nodeDescriptions = useSelector(state => state.getIn([reducer, 'nodeDescriptions'])).toJS();
+  const nodeAttributes = useSelector(state => state.getIn([reducer, 'nodeAttributes'])).toJS();
+  const relationshipLabels = useSelector(state => state.getIn([reducer, 'relationshipLabels'])).toJS();
+
+  const onSave = () => {
+    const values = [...conditionValues];
+    values.pop();
+    console.log(values);
+    dispatch(putCondition(id, title, description, type, group, JSON.stringify(values), history));
+  };
+
+  useEffect(() => {
+    dispatch(showCondition(id));
+    dispatch(getGroupDropDown());
+    dispatch(getBuildTypeValueOptions());
+  }, []);
+
   return (
     <div>
-      <NamingForm type="Condition" />
-      <ConditionForm />
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+      <ConditionNamingForm
+        title={title}
+        description={description}
+        group={group}
+        groupsDropDownOptions={groupsDropDownOptions}
+      />
+      <ConditionForm
+        conditionValues={conditionValues}
+        type={type}
+        andOrOption={andOrOption}
+        buildTypeOptions={buildTypeOptions}
+        nodeLabels={nodeLabels}
+        nodeDescriptions={nodeDescriptions}
+        nodeAttributes={nodeAttributes}
+        relationshipLabels={relationshipLabels}
+        comparisonsOptions={comparisonsOptions}
+      />
       <div>
         <Tooltip title="Save Condition">
           <Fab
@@ -20,6 +83,7 @@ function Condition() {
               right: 30,
               zIndex: 100
             }}
+            onClick={onSave}
           >
             Save Condition
           </Fab>
@@ -27,6 +91,6 @@ function Condition() {
       </div>
     </div>
   );
-}
+};
 
 export default Condition;

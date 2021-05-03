@@ -1,17 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-export const data = [
-  ['Test condition', 'This is a test of a condition', 'Test Group', 1, 'Friday at 3:59 pm'],
-  ['Test condition', 'This is a test of a condition', 'Test Group', 2, 'Friday at 3:59 pm'],
-  ['Test condition', 'This is a test of a condition', 'Test Group', 3, 'Friday at 3:59 pm'],
-  ['Test condition', 'This is a test of a condition', 'Test Group', 4, 'Friday at 3:59 pm'],
-  ['Test condition', 'This is a test of a condition', 'Test Group', 5, 'Friday at 3:59 pm'],
-  ['Test condition', 'This is a test of a condition', 'Test Group', 6, 'Friday at 3:59 pm'],
-  ['Test condition', 'This is a test of a condition', 'Test Group', 7, 'Friday at 3:59 pm'],
-  ['Test condition', 'This is a test of a condition', 'Test Group', 8, 'Friday at 3:59 pm'],
-];
-
 export const options = {
   filterType: 'dropdown',
   responsive: 'stacked',
@@ -59,3 +48,38 @@ export const columns = [
 ];
 
 export const reducer = 'conditions';
+
+export const andOrOption = [
+  { label: 'All' },
+  { label: 'At Least One' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));
+
+export const buildTypeOptions = [
+  { label: 'Node Title' },
+  { label: 'Node Attribut' },
+  { label: 'Node Description' },
+  { label: 'Relationship Label' },
+  // { label: 'All (AND)' },
+  // { label: 'At Least One (OR)' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));
+
+
+export const comparisonsOptions = [
+  { label: 'is equal to' },
+  { label: 'is not equal to' },
+  { label: 'is greater than' },
+  { label: 'is less than' },
+  { label: 'exists' },
+  { label: 'does not exist' },
+  { label: 'contains' },
+  { label: 'does not contain' },
+].map(suggestion => ({
+  value: suggestion.label,
+  label: suggestion.label,
+}));

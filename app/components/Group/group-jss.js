@@ -60,7 +60,7 @@ const styles = theme => ({
     },
     [theme.breakpoints.down('sm')]: {
       overflowX: 'hidden',
-    }
+    },
   },
   chipDiscount: {
     background: theme.palette.primary.light,

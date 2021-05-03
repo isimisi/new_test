@@ -5,24 +5,24 @@ import MUIDataTable from 'mui-datatables';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import { useSelector, useDispatch } from 'react-redux';
-// import {
-//   useHistory
-// } from 'react-router-dom';
 import {
-  columns, data, options, reducer
+  useHistory
+} from 'react-router-dom';
+import {
+  columns, options, reducer
 } from './constants';
 import styles from './conditions-jss';
 import { Notification } from '@components';
 import {
-  closeNotifAction, getConditions
+  closeNotifAction, getConditions, postCondition
 } from './reducers/conditionActions';
 
 function Conditions(props) {
   const { classes } = props;
   const dispatch = useDispatch();
+  const conditions = useSelector(state => state.getIn([reducer, 'conditions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  // const history = useHistory();
-
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(getConditions());
@@ -33,13 +33,13 @@ function Conditions(props) {
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
         title="Your Conditions"
-        data={data}
+        data={conditions}
         columns={columns}
         options={options}
         elevation={10}
       />
       <Tooltip title="New Condition">
-        <Fab variant="extended" color="primary" className={classes.addBtn}>
+        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postCondition(history))}>
             Create new Condition
         </Fab>
       </Tooltip>

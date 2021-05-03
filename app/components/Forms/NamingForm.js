@@ -9,7 +9,6 @@ import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import {
   TextFieldRedux,
 } from '@components/Forms/ReduxFormMUI';

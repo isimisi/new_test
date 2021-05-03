@@ -77,6 +77,9 @@ export SideReview from './Forms/SideReview';
 export CreateOrganizationForm from './Forms/CreateOrganizationForm';
 export NodeForm from './Forms/NodeForm';
 export RelationshipForm from './Forms/RelationshipForm';
+export NamingForm from './Forms/NamingForm';
+export ConditionForm from './Forms/ConditionForm';
+export ConditionNamingForm from './Forms/ConditionNamingForm';
 
 // Texteditor Toolbar
 export HeadlinesButton from './TextEditor/HeadlinesButton';

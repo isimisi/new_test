@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
-import OndemandVideo from '@material-ui/icons/OndemandVideo';
 import colorfull from '@api/palette/colorfull';
 import CounterWidget from '../Counter/CounterWidget';
 import '@styles/vendors/slick-carousel/slick-carousel.css';

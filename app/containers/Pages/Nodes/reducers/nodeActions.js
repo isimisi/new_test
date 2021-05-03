@@ -68,7 +68,6 @@ export const showNode = (id) => async dispatch => {
       attributes
     });
   } catch (error) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_NODE_FAILED, message });
   }
@@ -80,7 +79,7 @@ export const putNode = (id, label, description, attributes, type, group, style, 
     label, description, type, group, style, attributes
   };
   const header = authHeader();
-  console.log(url, body, header);
+
   try {
     await axios.put(url, body, header);
     const message = 'You have updated your node';

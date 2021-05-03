@@ -1,17 +1,10 @@
-import pink from '@material-ui/core/colors/pink';
-import purple from '@material-ui/core/colors/purple';
-import orange from '@material-ui/core/colors/orange';
-import teal from '@material-ui/core/colors/teal';
-import lightGreen from '@material-ui/core/colors/lightGreen';
-import lightBlue from '@material-ui/core/colors/lightBlue';
-import indigo from '@material-ui/core/colors/indigo';
 const colorfull = [
-  pink[400],
-  purple[500],
-  lightBlue[500],
-  teal[500],
-  orange[600],
-  lightGreen[600],
-  indigo.A200,
+  '#D9A3AC',
+  '#F2CED8',
+  '#8BD1D9',
+  '#AEEBF2',
+  '#0C2617',
+  '#D1D98B',
+  '#F2CED8',
 ];
 export default colorfull;

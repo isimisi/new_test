@@ -1,14 +1,29 @@
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   GET_CONDITIONS_SUCCESS,
   GET_CONDITIONS_FAILED,
+  POST_CONDITION_SUCCESS,
+  POST_CONDITION_FAILED,
+  GET_BUILD_TYPES_VALUES_SUCCESS,
+  GET_BUILD_TYPES_VALUES_FAILED,
+  SHOW_CONDITION_SUCCESS,
+  SHOW_CONDITION_FAILED,
   TITLE_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
+  ADD_TYPE,
+  ADD_CONDITION_ROW,
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED
 } from './conditionConstants';
+
+const initionConditionValue = [Map({
+  build_type: null,
+  build_value: null,
+  comparison_type: 'is equal to',
+  comparison_value: ''
+})];
 
 const initialState = {
   conditions: List(),
@@ -16,8 +31,13 @@ const initialState = {
   description: '',
   type: '',
   group: '',
+  conditionValues: List(initionConditionValue),
   message: '',
-  groupsDropDownOptions: List()
+  groupsDropDownOptions: List(),
+  nodeLabels: List(),
+  nodeDescriptions: List(),
+  nodeAttributes: List(),
+  relationshipLabels: List(),
 };
 
 
@@ -30,6 +50,54 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('conditions', conditions);
       });
     case GET_CONDITIONS_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case POST_CONDITION_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set('title', '');
+        mutableState.set('description', '');
+        mutableState.set('type', '');
+        mutableState.set('group', '');
+      });
+    case POST_CONDITION_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case SHOW_CONDITION_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const title = fromJS(action.title);
+        const description = fromJS(action.description);
+        const group = fromJS(action.group);
+        const type = fromJS(action.conditionType);
+        const values = fromJS(action.values);
+
+        mutableState.set('title', title);
+        mutableState.set('description', description);
+        mutableState.set('group', group);
+        mutableState.set('type', type);
+        mutableState.set('conditionValues', values);
+      });
+    case SHOW_CONDITION_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_BUILD_TYPES_VALUES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const nodeLabels = fromJS(action.nodeLabels);
+        const nodeDescriptions = fromJS(action.nodeDescriptions);
+        const nodeAttributes = fromJS(action.nodeAttributes);
+        const relationshipLabels = fromJS(action.relationshipLabels);
+
+        mutableState.set('nodeLabels', nodeLabels);
+        mutableState.set('nodeDescriptions', nodeDescriptions);
+        mutableState.set('nodeAttributes', nodeAttributes);
+        mutableState.set('relationshipLabels', relationshipLabels);
+      });
+    case GET_BUILD_TYPES_VALUES_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
@@ -58,6 +126,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const group = fromJS(action.group);
         mutableState.set('group', group);
+      });
+    case ADD_TYPE:
+      return state.withMutations((mutableState) => {
+        const value = fromJS(action.value);
+        mutableState.set('type', value);
+      });
+    case ADD_CONDITION_ROW:
+      return state.withMutations((mutableState) => {
+        const condition = fromJS(action.condition);
+        mutableState.set('conditionValues', condition);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

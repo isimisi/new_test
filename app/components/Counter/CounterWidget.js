@@ -11,11 +11,11 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     padding: 10,
-    height: 190,
+    height: 190 * 2,
     marginBottom: 6,
     display: 'flex',
     [theme.breakpoints.up('sm')]: {
-      height: 126,
+      height: 126 * 2,
       marginBottom: -1,
       alignItems: 'flex-end',
     },
