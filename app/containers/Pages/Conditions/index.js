@@ -9,12 +9,12 @@ import {
   useHistory
 } from 'react-router-dom';
 import {
-  columns, options, reducer
+  columns, tableOptions, reducer
 } from './constants';
 import styles from './conditions-jss';
 import { Notification } from '@components';
 import {
-  closeNotifAction, getConditions, postCondition
+  closeNotifAction, getConditions, postCondition, deleteCondition
 } from './reducers/conditionActions';
 
 function Conditions(props) {
@@ -28,6 +28,13 @@ function Conditions(props) {
     dispatch(getConditions());
   }, []);
 
+  const onDelete = ({ data }) => {
+    const deletedNodes = data.map(v => ({ id: conditions[v.index][3], title: conditions[v.index][0] }));
+    deletedNodes.forEach(e => {
+      dispatch(deleteCondition(e.id, e.title));
+    });
+  };
+
   return (
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -35,7 +42,7 @@ function Conditions(props) {
         title="Your Conditions"
         data={conditions}
         columns={columns}
-        options={options}
+        options={tableOptions(onDelete)}
         elevation={10}
       />
       <Tooltip title="New Condition">

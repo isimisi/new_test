@@ -9,6 +9,8 @@ import {
   GET_BUILD_TYPES_VALUES_FAILED,
   SHOW_CONDITION_SUCCESS,
   SHOW_CONDITION_FAILED,
+  DELETE_CONDITION_SUCCESS,
+  DELETE_CONDITION_FAILED,
   TITLE_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
@@ -98,6 +100,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('relationshipLabels', relationshipLabels);
       });
     case GET_BUILD_TYPES_VALUES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case DELETE_CONDITION_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case DELETE_CONDITION_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

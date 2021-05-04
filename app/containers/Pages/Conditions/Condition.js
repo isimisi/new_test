@@ -42,7 +42,6 @@ const Condition = () => {
   const onSave = () => {
     const values = [...conditionValues];
     values.pop();
-    console.log(values);
     dispatch(putCondition(id, title, description, type, group, JSON.stringify(values), history));
   };
 

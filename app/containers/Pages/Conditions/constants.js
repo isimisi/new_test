@@ -1,13 +1,14 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-export const options = {
+export const tableOptions = (onDelete) => ({
   filterType: 'dropdown',
   responsive: 'stacked',
   print: true,
   rowsPerPage: 10,
-  page: 0
-};
+  page: 0,
+  onRowsDelete: onDelete
+});
 
 export const columns = [
   {

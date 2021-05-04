@@ -104,6 +104,20 @@ export const putCondition = (id, title, description, type, group, conditionValue
   }
 };
 
+export const deleteCondition = (id, title) => async dispatch => {
+  const url = `${baseUrl}/${CONDITIONS}/${id}`;
+  const header = authHeader();
+  try {
+    await axios.delete(url, header);
+    const message = `You have deleted ${title}`;
+    dispatch({ type: types.DELETE_CONDITION_SUCCESS, message });
+    dispatch(getConditions());
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.DELETE_CONDITION_FAILED, message });
+  }
+};
+
 
 export const getGroupDropDown = () => async dispatch => {
   const url = `${baseUrl}/groups/dropDownValues`;
