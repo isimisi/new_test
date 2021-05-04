@@ -1,83 +1,73 @@
 import { fromJS, List } from 'immutable';
-import notif from '@api/ui/notifMessage';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
-  FETCH_PRODUCT_DATA,
-  ADD_TO_CART,
-  DELETE_CART_ITEM,
-  CHECKOUT,
+  GET_GROUPS_SUCCESS,
+  GET_GROUPS_FAILED,
+  POST_GROUP_SUCCESS,
+  POST_GROUP_FAILED,
+  TITLE_CHANGE,
+  DESCRIPTION_CHANGE,
+  IMAGE_CHANGE,
   SHOW_DETAIL_PRODUCT,
   SEARCH_PRODUCT
 } from './groupConstants';
 
 const initialState = {
-  productList: List([]),
+  groups: List([]),
   cart: List([]),
   totalItems: 0,
   totalPrice: 0,
   productIndex: 0,
   keywordValue: '',
-  notifMsg: '',
+  title: '',
+  description: '',
+  image: List(),
+  message: '',
 };
-
-let itemId = [];
 
 const initialImmutableState = fromJS(initialState);
 export default function reducer(state = initialImmutableState, action = {}) {
   switch (action.type) {
-    case FETCH_PRODUCT_DATA:
+    case GET_GROUPS_SUCCESS:
       return state.withMutations((mutableState) => {
-        const items = fromJS(action.items);
-        mutableState.set('productList', items);
+        const groups = fromJS(action.groups);
+        mutableState.set('groups', groups);
+      });
+    case GET_GROUPS_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case POST_GROUP_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case POST_GROUP_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case TITLE_CHANGE:
+      return state.withMutations((mutableState) => {
+        const title = action.item;
+        mutableState.set('title', title);
+      });
+    case DESCRIPTION_CHANGE:
+      return state.withMutations((mutableState) => {
+        const description = action.item;
+        mutableState.set('description', description);
+      });
+    case IMAGE_CHANGE:
+      return state.withMutations((mutableState) => {
+        const image = fromJS(action.item);
+        mutableState.set('image', image);
       });
     case SEARCH_PRODUCT:
       return state.withMutations((mutableState) => {
         action.keyword.persist();
         const keyword = action.keyword.target.value.toLowerCase();
         mutableState.set('keywordValue', keyword);
-      });
-    case ADD_TO_CART:
-      return state.withMutations((mutableState) => {
-        const item = fromJS(action.item);
-        const qty = Number(item.get('quantity'));
-        const price = item.get('price');
-        const index = itemId.indexOf(action.item.id);
-        if (index > -1) {
-          // If item already added to cart
-          mutableState.update('cart', cart => cart.setIn(
-            [index, 'quantity'],
-            state.getIn(['cart', index, 'quantity']) + qty
-          ));
-        } else {
-          // item not exist in cart
-          itemId.push(action.item.id);
-          mutableState.update('cart', cart => cart.push(item));
-        }
-        mutableState
-          .set('totalItems', state.get('totalItems') + qty)
-          .set('totalPrice', state.get('totalPrice') + (price * qty))
-          .set('notifMsg', notif.addCart);
-      });
-    case DELETE_CART_ITEM:
-      return state.withMutations((mutableState) => {
-        const index = state.get('cart').indexOf(action.item);
-        const qty = Number(action.item.get('quantity'));
-        const price = action.item.get('price');
-        itemId = itemId.filter(item => item !== action.item.get('id'));
-        mutableState
-          .update('cart', cart => cart.splice(index, 1))
-          .set('totalItems', state.get('totalItems') - qty)
-          .set('totalPrice', state.get('totalPrice') - (price * qty))
-          .set('notifMsg', notif.removed);
-      });
-    case CHECKOUT:
-      itemId = [];
-      return state.withMutations((mutableState) => {
-        mutableState
-          .set('cart', List([]))
-          .set('totalItems', 0)
-          .set('totalPrice', 0)
-          .set('notifMsg', notif.checkout);
       });
     case SHOW_DETAIL_PRODUCT:
       return state.withMutations((mutableState) => {
@@ -86,7 +76,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {
-        mutableState.set('notifMsg', '');
+        mutableState.set('message', '');
       });
     default:
       return state;

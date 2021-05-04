@@ -15,7 +15,7 @@ import { useDropzone } from 'react-dropzone';
 import NoteAdd from '@material-ui/icons/NoteAdd';
 import { useSpring, animated } from 'react-spring';
 import { Editor } from 'react-draft-wysiwyg';
-import { convertFromRaw, EditorState, convertToRaw } from 'draft-js';
+import { convertFromRaw, EditorState } from 'draft-js';
 
 const AnimatedNoteAdd = animated(NoteAdd);
 
@@ -171,6 +171,7 @@ bytes
               </div>
               <Typography variant="p">Choose a condition</Typography>
             </div>
+            {/** TODO: use FileUpload instead */}
             <div
               {...getRootProps({ className: classes.dropzone })}
               onMouseMove={({ clientX: x, clientY: y }) => {

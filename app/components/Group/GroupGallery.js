@@ -8,7 +8,6 @@ function GroupGallery(props) {
   const [open, setOpen] = useState(false);
   const {
     dataProduct,
-    handleAddToCart,
     productIndex,
     keyword,
     listView,
@@ -31,7 +30,6 @@ function GroupGallery(props) {
         close={handleClose}
         detailContent={dataProduct}
         productIndex={productIndex}
-        handleAddToCart={handleAddToCart}
         listView={listView}
       />
       <Grid
@@ -43,23 +41,22 @@ function GroupGallery(props) {
       >
         {
           dataProduct.map((product, index) => {
-            if (product.get('name').toLowerCase().indexOf(keyword) === -1) {
+            if (product.get('title').toLowerCase().indexOf(keyword) === -1) {
               return false;
             }
             const itemAttr = {
               id: product.get('id'),
-              name: product.get('name'),
-              thumbnail: product.get('thumbnail'),
+              title: product.get('title'),
+              image: product.get('image'),
             };
             return (
               <Grid item md={listView === 'list' ? 12 : 4} sm={listView === 'list' ? 12 : 6} xs={12} key={index.toString()}>
                 <GroupCard
                   list={listView === 'list'}
-                  name={product.get('name')}
-                  thumbnail={product.get('thumbnail')}
-                  desc={product.get('desc')}
+                  title={product.get('title')}
+                  image={product.get('image')}
+                  description={product.get('description')}
                   detailOpen={() => handleDetailOpen(product)}
-                  addToCart={() => handleAddToCart(itemAttr)}
                 />
               </Grid>
             );
@@ -72,7 +69,6 @@ function GroupGallery(props) {
 
 GroupGallery.propTypes = {
   dataProduct: PropTypes.object.isRequired,
-  handleAddToCart: PropTypes.func.isRequired,
   showDetail: PropTypes.func.isRequired,
   productIndex: PropTypes.number.isRequired,
   keyword: PropTypes.string.isRequired,

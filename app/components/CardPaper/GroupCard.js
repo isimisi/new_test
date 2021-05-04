@@ -16,9 +16,9 @@ import styles from './cardStyle-jss';
 function GroupCard(props) {
   const {
     classes,
-    thumbnail,
-    name,
-    desc,
+    image,
+    title,
+    description,
     list,
     width,
     detailOpen
@@ -27,15 +27,15 @@ function GroupCard(props) {
     <Card className={classNames(classes.cardProduct, isWidthUp('sm', width) && list ? classes.cardList : '')}>
       <CardMedia
         className={classes.mediaProduct}
-        image={thumbnail}
-        title={name}
+        image={image}
+        title={title}
       />
       <CardContent className={classes.floatingButtonWrap}>
         <Typography noWrap gutterBottom variant="h5" className={classes.title} component="h2">
-          {name}
+          {title}
         </Typography>
         <Typography component="p" className={classes.desc}>
-          {desc}
+          {description}
         </Typography>
       </CardContent>
       <CardActions className={classes.price}>
@@ -51,9 +51,9 @@ function GroupCard(props) {
 
 GroupCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  thumbnail: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  desc: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
   list: PropTypes.bool,
   detailOpen: PropTypes.func,
   width: PropTypes.string.isRequired
@@ -62,7 +62,6 @@ GroupCard.propTypes = {
 GroupCard.defaultProps = {
   list: false,
   detailOpen: () => (false),
-  addToCart: () => (false),
 };
 
 const GroupCardResponsive = withWidth()(GroupCard);

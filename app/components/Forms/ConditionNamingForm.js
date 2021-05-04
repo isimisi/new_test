@@ -106,10 +106,12 @@ function NamingForm(props) {
             </div>
             <div className={classes.field}>
               <TextField
-                name="title"
-                placeholder="Title"
-                label="Title"
+                name="description"
                 className={classes.field}
+                placeholder="Description"
+                label="Description"
+                multiline
+                rows={2}
                 onChange={handleDescriptionChange}
                 value={description}
               />

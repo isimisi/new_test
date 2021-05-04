@@ -115,9 +115,10 @@ export ShowcaseCard from './CardPaper/ShowcaseCard';
 export HeadlineCard from './CardPaper/HeadlineCard';
 // Search
 export SearchGroup from './Search/SearchGroup';
-// Product
+// Group
 export GroupGallery from './Group/GroupGallery';
 export GroupDesc from './Group/GroupDesc';
+export GroupModal from './Group/GroupModal';
 // Gallery
 export PhotoGallery from './Gallery/PhotoGallery';
 // Invoice
