@@ -63,13 +63,13 @@ const FileUpload = props => {
     height,
     onlyImage,
     files,
-    handleChangeFile
+    handleChangeFile,
+    minimal
   } = props;
   const [useSpringProps, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 5, tension: 350, friction: 40 } }));
   const [hover, setHover] = useState(false);
 
-  const imgCallback = {
-    accept: 'image/*',
+  const callback = {
     onDrop: acceptedFiles => {
       handleChangeFile(acceptedFiles.map(_file => Object.assign(_file, {
         preview: URL.createObjectURL(_file)
@@ -77,19 +77,9 @@ const FileUpload = props => {
     }
   };
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone(onlyImage && imgCallback);
+  callback.accept = onlyImage ? 'image/*' : null;
 
-  const renderFiles = acceptedFiles.map(_file => (
-    <li key={_file.path}>
-      {_file.path}
-      {' '}
--
-      {' '}
-      {_file.size}
-      {' '}
-bytes
-    </li>
-  ));
+  const { getRootProps, getInputProps } = useDropzone(callback);
 
   const thumbs = files.map(_file => (
     <div className={classes.thumb} key={_file.name}>
@@ -110,8 +100,8 @@ bytes
   return (
     <>
       <div
-        style={{ height }}
         {...getRootProps({ className: classes.dropzone })}
+        style={{ height, width: minimal && 100 }}
         onMouseMove={({ clientX: x, clientY: y }) => {
           set({ xys: calc(x, y) });
           setHover(true);
@@ -130,19 +120,11 @@ bytes
             transform: useSpringProps.xys.interpolate(trans)
           }}
         />
-        <Typography variant="h5">Upload your Output</Typography>
+        {!minimal && <Typography variant="h5">Upload your Output</Typography>}
       </div>
-      {onlyImage
-        ? (
-          <aside className={classes.thumbsContainer}>
-            {thumbs}
-          </aside>
-        )
-        : (
-          <div>
-            <ul>{renderFiles}</ul>
-          </div>
-        )}
+      <aside className={classes.thumbsContainer}>
+        {onlyImage && thumbs}
+      </aside>
     </>
   );
 };
@@ -153,6 +135,7 @@ FileUpload.propTypes = {
   onlyImage: PropTypes.bool.isRequired,
   files: PropTypes.object.isRequired,
   handleChangeFile: PropTypes.func.isRequired,
+  minimal: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(FileUpload);

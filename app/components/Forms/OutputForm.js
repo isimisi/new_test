@@ -2,22 +2,19 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { reduxForm } from 'redux-form/immutable';
 import Grid from '@material-ui/core/Grid';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { initAction, clearAction } from '@redux/actions/reduxFormActions';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
-import { useDropzone } from 'react-dropzone';
-import NoteAdd from '@material-ui/icons/NoteAdd';
-import { useSpring, animated } from 'react-spring';
 import { Editor } from 'react-draft-wysiwyg';
 import { convertFromRaw, EditorState } from 'draft-js';
-
-const AnimatedNoteAdd = animated(NoteAdd);
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import EditIcon from '@material-ui/icons/Edit';
+import Iframe from 'react-iframe';
+import FileUpload from '../FileUpload/FileUpload';
 
 
 const conditionOptions = [
@@ -65,7 +62,13 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 40,
+  },
+  conditionWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   textEditor: {
     background: theme.palette.background.paper,
@@ -94,10 +97,6 @@ const styles = theme => ({
   },
 });
 
-
-const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWidth / 2) / 20, 1.1];
-const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
-
 const content = {
   blocks: [{
     key: '637gr',
@@ -111,14 +110,18 @@ const content = {
   entityMap: {}
 };
 
-function ReduxFormDemo(props) {
+const OutputForm = (props) => {
   const theme = useTheme();
   const [conditionValue, setConditionValue] = useState(null);
-  const [hover, setHover] = useState(false);
-  const [useSpringProps, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 5, tension: 350, friction: 40 } }));
   const contentBlock = convertFromRaw(content);
   const tempEditorState = EditorState.createWithContent(contentBlock);
   const [dataEditorState, setEditorState] = useState(tempEditorState);
+  const [files, setFiles] = useState([]);
+  const [activeToggleButton, setActiveToggleButton] = React.useState('Upload a document');
+
+  const handleChange = (event, value) => {
+    setActiveToggleButton(value);
+  };
 
   const onEditorStateChange = editorStateParam => {
     setEditorState(editorStateParam);
@@ -138,81 +141,76 @@ function ReduxFormDemo(props) {
     }),
   };
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
-
-  const files = acceptedFiles.map(file => (
-    <li key={file.path}>
-      {file.path}
-      {' '}
--
-      {' '}
-      {file.size}
-      {' '}
-bytes
-    </li>
-  ));
-
-
   return (
     <div style={{ marginBottom: 20 }}>
       <Grid container spacing={3} alignItems="flex-start" direction="row" justify="center">
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <div className={classes.inlineWrap}>
-              <div className={classes.select}>
-                <Select
-                  classes={classes}
-                  styles={selectStyles}
-                  inputId="react-select-single"
-                  options={conditionOptions}
-                  value={conditionValue}
-                  onChange={(value) => setConditionValue(value)}
-                />
+              <div className={classes.conditionWrap} style={{ width: '100%' }}>
+                <div className={classes.select}>
+                  <Select
+                    classes={classes}
+                    styles={selectStyles}
+                    inputId="react-select-single"
+                    options={conditionOptions}
+                    value={conditionValue}
+                    onChange={(value) => setConditionValue(value)}
+                  />
+                </div>
+                <Typography variant="p">Choose a condition</Typography>
               </div>
-              <Typography variant="p">Choose a condition</Typography>
+              <div className={classes.conditionWrap}>
+                {files.length > 0 && (
+                  <FileUpload
+                    minimal
+                    files={files}
+                    handleChangeFile={(_files) => {
+                      setFiles(_files);
+                    }}
+                  />
+                )}
+                <ToggleButtonGroup size="large" value={activeToggleButton} exclusive onChange={handleChange} style={{ marginLeft: 20 }}>
+                  <ToggleButton value="Upload a document">
+                    <InsertDriveFileIcon />
+                  </ToggleButton>
+                  <ToggleButton value="Draft a document">
+                    <EditIcon />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </div>
             </div>
-            {/** TODO: use FileUpload instead */}
-            <div
-              {...getRootProps({ className: classes.dropzone })}
-              onMouseMove={({ clientX: x, clientY: y }) => {
-                set({ xys: calc(x, y) });
-                setHover(true);
-              }}
-              onMouseLeave={() => {
-                set({ xys: [0, 0, 1] });
-                setHover(false);
-              }}
-            >
-              <input {...getInputProps()} />
-              <AnimatedNoteAdd
-                className={classes.addCircle}
-                style={{
-                  opacity: hover ? 1 : 0.5,
-                  color: hover ? theme.palette.primary.main : 'black',
-                  transform: useSpringProps.xys.interpolate(trans)
-                }}
-              />
-              <Typography variant="h5">Upload your Output</Typography>
-            </div>
-            <div>
-              <ul>{files}</ul>
-            </div>
-            <div
-              className={classes.inlineWrap}
-              style={{
-                alignItems: 'center', justifyContent: 'center', marginTop: 20, marginBottom: 20
-              }}
-            >
-              <Typography variant="h4">
-                Or
-              </Typography>
-            </div>
-            <Editor
-              editorState={dataEditorState}
-              editorClassName={classes.textEditor}
-              toolbarClassName={classes.toolbarEditor}
-              onEditorStateChange={onEditorStateChange}
-            />
+            {activeToggleButton === 'Upload a document' ? (
+              files.length > 0
+                ? (
+                  <Iframe
+                    url={files[0].preview}
+                    width="100%"
+                    height="900"
+                    id="myId"
+                    className="myClassname"
+                    display="initial"
+                    position="relative"
+                  />
+                )
+                : (
+                  <FileUpload
+                    height={485}
+                    files={files}
+                    handleChangeFile={(_files) => {
+                      setFiles(_files);
+                    }}
+                  />
+                )
+            )
+              : (
+                <Editor
+                  editorState={dataEditorState}
+                  editorClassName={classes.textEditor}
+                  toolbarClassName={classes.toolbarEditor}
+                  onEditorStateChange={onEditorStateChange}
+                />
+              )}
           </Paper>
         </Grid>
       </Grid>
@@ -225,33 +223,10 @@ bytes
       </div>
     </div>
   );
-}
-
-ReduxFormDemo.propTypes = {
-  classes: PropTypes.object.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  pristine: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  init: bindActionCreators(initAction, dispatch),
-  clear: () => dispatch(clearAction),
-});
+OutputForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
-const ReduxFormMapped = reduxForm({
-  form: 'immutableExample',
-  enableReinitialize: true,
-})(ReduxFormDemo);
-
-const reducer = 'initval';
-const FormInit = connect(
-  state => ({
-    force: state,
-    initialValues: state.getIn([reducer, 'formValues'])
-  }),
-  mapDispatchToProps,
-)(ReduxFormMapped);
-
-export default withStyles(styles)(FormInit);
+export default withStyles(styles)(OutputForm);
