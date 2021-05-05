@@ -91,11 +91,11 @@ const styles = theme => ({
       marginLeft: 'auto',
       display: 'flex',
       alignItems: 'center'
-    }
+    },
   },
   floatingButtonWrap: {
     position: 'relative',
-    paddingTop: 50
+    paddingTop: 30,
   },
   buttonAdd: {
     position: 'absolute',
@@ -128,7 +128,7 @@ const styles = theme => ({
     }
   },
   desc: {
-    height: 45,
+    height: 50,
     overflow: 'hidden'
   },
   chipDiscount: {
@@ -178,7 +178,7 @@ const styles = theme => ({
     width: '100%',
   },
   price: {
-    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px ${theme.spacing(3)}px`
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px ${theme.spacing(3)}px`,
   },
   verified: {
     fontSize: 16,

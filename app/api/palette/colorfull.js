@@ -5,6 +5,6 @@ const colorfull = [
   '#AEEBF2',
   '#0C2617',
   '#D1D98B',
-  '#F2CED8',
+  '#1e603a',
 ];
 export default colorfull;

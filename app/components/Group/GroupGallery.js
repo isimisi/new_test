@@ -8,10 +8,12 @@ function GroupGallery(props) {
   const [open, setOpen] = useState(false);
   const {
     dataProduct,
-    productIndex,
     keyword,
     listView,
-    showDetail
+    showDetail,
+    activeGroup,
+    updateDetail,
+    deleteGroup
   } = props;
 
   const handleDetailOpen = (product) => {
@@ -28,9 +30,9 @@ function GroupGallery(props) {
       <GroupDetail
         open={open}
         close={handleClose}
-        detailContent={dataProduct}
-        productIndex={productIndex}
         listView={listView}
+        activeGroup={activeGroup}
+        updateDetail={updateDetail}
       />
       <Grid
         container
@@ -44,11 +46,6 @@ function GroupGallery(props) {
             if (product.get('title').toLowerCase().indexOf(keyword) === -1) {
               return false;
             }
-            const itemAttr = {
-              id: product.get('id'),
-              title: product.get('title'),
-              image: product.get('image'),
-            };
             return (
               <Grid item md={listView === 'list' ? 12 : 4} sm={listView === 'list' ? 12 : 6} xs={12} key={index.toString()}>
                 <GroupCard
@@ -57,6 +54,7 @@ function GroupGallery(props) {
                   image={product.get('image')}
                   description={product.get('description')}
                   detailOpen={() => handleDetailOpen(product)}
+                  deleteGroup={() => deleteGroup(product.get('id'))}
                 />
               </Grid>
             );
@@ -70,9 +68,11 @@ function GroupGallery(props) {
 GroupGallery.propTypes = {
   dataProduct: PropTypes.object.isRequired,
   showDetail: PropTypes.func.isRequired,
-  productIndex: PropTypes.number.isRequired,
   keyword: PropTypes.string.isRequired,
-  listView: PropTypes.string.isRequired
+  listView: PropTypes.string.isRequired,
+  activeGroup: PropTypes.object.isRequired,
+  updateDetail: PropTypes.func.isRequired,
+  deleteGroup: PropTypes.func.isRequired,
 };
 
 export default GroupGallery;

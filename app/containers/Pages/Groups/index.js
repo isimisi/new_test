@@ -12,7 +12,9 @@ import { withStyles } from '@material-ui/core/styles';
 import {
   getGroups,
   postGroup,
-  detailAction,
+  showGroup,
+  putGroup,
+  deleteGroup,
   searchAction,
   closeNotifAction
 } from './reducers/groupActions';
@@ -34,7 +36,7 @@ function Groups(props) {
   const reducer = 'groups';
   const keyword = useSelector(state => state.getIn([reducer, 'keywordValue']));
   const groups = useSelector(state => state.getIn([reducer, 'groups']));
-  const productIndex = useSelector(state => state.getIn([reducer, 'productIndex']));
+  const activeGroup = useSelector(state => state.getIn([reducer, 'activeGroup'])).toJS();
   const title = useSelector(state => state.getIn([reducer, 'title']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const image = useSelector(state => state.getIn([reducer, 'image'])).toJS();
@@ -79,9 +81,13 @@ function Groups(props) {
       <GroupGallery
         listView={listView}
         dataProduct={groups}
-        showDetail={(payload) => dispatch(detailAction(payload))}
-        productIndex={productIndex}
+        showDetail={(payload) => {
+          dispatch(showGroup(payload.get('id')));
+        }}
+        updateDetail={(t, d) => dispatch(putGroup(activeGroup.id, t, d))}
+        activeGroup={activeGroup}
         keyword={keyword}
+        deleteGroup={(id) => dispatch(deleteGroup(id))}
       />
       <Tooltip title="New Group">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => setOpen(true)}>

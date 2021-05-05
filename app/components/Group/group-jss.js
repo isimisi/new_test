@@ -49,6 +49,7 @@ const styles = theme => ({
   },
   detailContainer: {
     margin: '-16px auto 0',
+    width: 1000,
     maxWidth: '100%',
     [theme.breakpoints.up('lg')]: {
       maxWidth: 1080,
@@ -60,7 +61,7 @@ const styles = theme => ({
     },
     [theme.breakpoints.down('sm')]: {
       overflowX: 'hidden',
-    },
+    }
   },
   chipDiscount: {
     background: theme.palette.primary.light,
@@ -168,6 +169,17 @@ const styles = theme => ({
   },
   purpleAvatar: {
     backgroundColor: purple[500],
+  },
+  detailDescription: {
+    marginTop: 10,
+    maxWidth: '30%',
+    padding: 10,
+    marginLeft: 40
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });
 

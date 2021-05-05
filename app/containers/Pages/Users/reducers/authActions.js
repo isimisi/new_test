@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable camelcase */
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
@@ -20,7 +21,13 @@ export const login = (email, password, history, locationState) => async dispatch
     });
     history.push(locationState?.from?.path || '/app');
   } catch (error) {
-    const { message } = error.response.data[0];
+    let message = 'Oops there was some trouble with your login';
+    if (Array.isArray(error.response.data)) {
+      message = error.response.data[0].message;
+    } else {
+      message = error.response.data.message;
+    }
+
     dispatch({ type: types.LOGIN_FAILED, message });
   }
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -10,10 +10,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
 import colorfull from '@api/palette/colorfull';
+import TextField from '@material-ui/core/TextField';
 import CounterWidget from '../Counter/CounterWidget';
-import '@styles/vendors/slick-carousel/slick-carousel.css';
-import '@styles/vendors/slick-carousel/slick.css';
-import '@styles/vendors/slick-carousel/slick-theme.css';
 import styles from './group-jss';
 
 
@@ -22,23 +20,28 @@ const Transition = React.forwardRef(function Transition(props, ref) { // eslint-
 });
 
 const categories = [
-  'Output',
-  'Alerts',
-  'Relationships',
-  'Conditions',
-  'Nodes',
-  'Workspaces'
+  'output',
+  'alerts',
+  'relationships',
+  'conditions',
+  'nodes',
+  'attributs',
+  'workspaces'
 ];
 
-function ProductDetail(props) { // eslint-disable-line
+function GroupDetail(props) { // eslint-disable-line
   const {
     classes,
     open,
     close,
-    detailContent,
-    productIndex,
-    listView
+    listView,
+    activeGroup,
+    updateDetail
   } = props;
+
+  const [isTitleFocused, setIsTitleFocused] = useState(false);
+  const [title, setTitle] = useState(activeGroup.title);
+  const [description, setDescription] = useState(activeGroup.description);
 
   return (
     <Dialog
@@ -49,14 +52,48 @@ function ProductDetail(props) { // eslint-disable-line
     >
       <AppBar className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" noWrap color="inherit" className={classes.flex}>
-            {detailContent.getIn([productIndex, 'name'])}
-          </Typography>
+          {!isTitleFocused ? (
+            <Typography
+              variant="h6"
+              noWrap
+              color="inherit"
+              className={classes.flex}
+              onClick={() => {
+                setIsTitleFocused(true);
+              }}
+            >
+              {title}
+            </Typography>
+          ) : (
+            <TextField
+              className={classes.flex}
+              autoFocus
+              inputProps={{ className: classes.header }}
+              value={title}
+              onChange={event => setTitle(event.target.value)}
+              onBlur={() => {
+                setIsTitleFocused(false);
+                updateDetail(title, description);
+              }}
+            />
+          )}
           <IconButton color="inherit" onClick={() => close()} aria-label="Close">
             <CloseIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
+      <div className={classes.detailDescription}>
+        <TextField
+          style={{ width: '100%' }}
+          variant="outlined"
+          multiline
+          onChange={event => setDescription(event.target.value)}
+          value={description}
+          onBlur={() => {
+            updateDetail(title, description);
+          }}
+        />
+      </div>
       <div className={classes.detailContainer}>
         <Grid
           container
@@ -71,9 +108,10 @@ function ProductDetail(props) { // eslint-disable-line
                 <CounterWidget
                   color={colorfull[index]}
                   start={0}
-                  end={index + 1 * 10}
+                  end={activeGroup[`${category}`] && activeGroup[`${category}`].length}
                   duration={3}
                   title={category}
+                  onClick={() => console.log('sdsn')/** TODO: skal man kunne se yderligere detaljer om hvilke noder? */}
                 />
               </Grid>
             ))
@@ -85,17 +123,13 @@ function ProductDetail(props) { // eslint-disable-line
   );
 }
 
-ProductDetail.propTypes = {
+GroupDetail.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  detailContent: PropTypes.object.isRequired,
-  productIndex: PropTypes.number,
-  listView: PropTypes.string.isRequired
+  listView: PropTypes.string.isRequired,
+  activeGroup: PropTypes.object.isRequired,
+  updateDetail: PropTypes.func.isRequired,
 };
 
-ProductDetail.defaultProps = {
-  productIndex: undefined
-};
-
-export default withStyles(styles)(ProductDetail);
+export default withStyles(styles)(GroupDetail);

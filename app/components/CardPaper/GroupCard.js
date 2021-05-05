@@ -5,6 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
@@ -21,7 +23,8 @@ function GroupCard(props) {
     description,
     list,
     width,
-    detailOpen
+    detailOpen,
+    deleteGroup
   } = props;
   return (
     <Card className={classNames(classes.cardProduct, isWidthUp('sm', width) && list ? classes.cardList : '')}>
@@ -44,6 +47,11 @@ function GroupCard(props) {
             See Detail
           </Button>
         </div>
+        <div className={classes.rightAction}>
+          <IconButton aria-label="delete" onClick={deleteGroup}>
+            <DeleteIcon />
+          </IconButton>
+        </div>
       </CardActions>
     </Card>
   );
@@ -56,7 +64,8 @@ GroupCard.propTypes = {
   description: PropTypes.string.isRequired,
   list: PropTypes.bool,
   detailOpen: PropTypes.func,
-  width: PropTypes.string.isRequired
+  width: PropTypes.string.isRequired,
+  deleteGroup: PropTypes.func.isRequired
 };
 
 GroupCard.defaultProps = {
