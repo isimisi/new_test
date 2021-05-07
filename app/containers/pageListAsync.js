@@ -92,6 +92,11 @@ export const Alerts = loadable(() =>
     fallback: <Loading />,
   });
 
+export const Alert = loadable(() =>
+  import ('./Pages/Alerts/Alert'), {
+    fallback: <Loading />,
+  });
+
 export const Relationships = loadable(() =>
   import ('./Pages/Relationships'), {
     fallback: <Loading />,

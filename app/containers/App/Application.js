@@ -7,8 +7,8 @@ import {
   Invoice, Error, Settings,
   HelpSupport, NotFound, Workspaces, Workspace,
   Conditions, Condition, Outputs, Output,
-  Nodes, Node, Groups, Alerts, Relationships,
-  Relationship,
+  Nodes, Node, Groups, Alerts, Alert,
+  Relationships, Relationship,
   Attributes, CreateOrganization, ChoosePlan
 } from '../pageListAsync';
 
@@ -23,7 +23,8 @@ function Application() {
         <Route exact path="/app" component={PersonalDashboard} />
         <Route exact path="/app/outputs" component={Outputs} />
         <Route exact path="/app/outputs/:id" component={Output} />
-        <Route exact path="/app/alerts" component={Alerts} />
+        <Route exact path="/app/red flags" component={Alerts} />
+        <Route exact path="/app/red flags/:id" component={Alert} />
         <Route exact path="/app/attributes" component={Attributes} />
         <Route exact path="/app/relationships" component={Relationships} />
         <Route exact path="/app/relationships/:id" component={Relationship} />

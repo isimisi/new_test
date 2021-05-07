@@ -22,9 +22,9 @@ module.exports = [
         icon: 'ios-document-outline',
       },
       {
-        key: 'alerts',
-        name: 'Alerts',
-        link: '/app/alerts',
+        key: 'redFlags',
+        name: 'Red Flags',
+        link: '/app/red flags',
         icon: 'ios-document-outline',
       },
       {
