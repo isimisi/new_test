@@ -5,28 +5,35 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
+import { Map } from 'immutable';
 import Tooltip from '@material-ui/core/Tooltip';
-import Fab from '@material-ui/core/Fab';
 import { Editor } from 'react-draft-wysiwyg';
-import { convertFromRaw, EditorState } from 'draft-js';
+// import draftToHtml from 'draftjs-to-html';
+// import htmlToDraft from 'html-to-draftjs';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import EditIcon from '@material-ui/icons/Edit';
 import Iframe from 'react-iframe';
+import Lottie from 'lottie-react';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import FileUpload from '../FileUpload/FileUpload';
+import Word from './word.json';
 
 
-const conditionOptions = [
-  { label: 'Condition 1' },
-  { label: 'Condition 2' },
-  { label: 'Condition 3' },
-  { label: 'Condition 4' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
+const mapSelectOptions = (options) => options.map(suggestion => ({
+  value: suggestion.value,
+  label: (
+    <>
+      <Tooltip title={suggestion.label}>
+        <div style={{ width: '100%', height: '100%' }}>
+          <span style={{ paddingRight: '5px' }}>{suggestion.value}</span>
+        </div>
+      </Tooltip>
+    </>
+  ),
 }));
-
 
 const styles = theme => ({
   root: {
@@ -36,12 +43,6 @@ const styles = theme => ({
   select: {
     width: '20%',
     marginRight: 20
-  },
-  addBtn: {
-    position: 'fixed',
-    bottom: 30,
-    right: 50,
-    zIndex: 100,
   },
   dropzone: {
     display: 'flex',
@@ -95,41 +96,43 @@ const styles = theme => ({
       }
     }
   },
+  lottie: {
+    width: 700 / 1.5,
+    height: 700 / 1.5,
+    [theme.breakpoints.down('sm')]: {
+      width: 400 / 1.5,
+      height: 400 / 1.5,
+    },
+  },
+  lottieContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+  }
 });
 
-const content = {
-  blocks: [{
-    key: '637gr',
-    text: '',
-    type: 'unstyled',
-    depth: 0,
-    inlineStyleRanges: [],
-    entityRanges: [],
-    data: {}
-  }],
-  entityMap: {}
-};
-
 const OutputForm = (props) => {
+  const {
+    classes,
+    title,
+    outputFile,
+    fileType,
+    editorState,
+    onFileTypeChange,
+    onOutputChange,
+    condition,
+    onConditionChange,
+    conditionsDropDownOptions,
+    onEditorStateChange
+  } = props;
+
   const theme = useTheme();
-  const [conditionValue, setConditionValue] = useState(null);
-  const contentBlock = convertFromRaw(content);
-  const tempEditorState = EditorState.createWithContent(contentBlock);
-  const [dataEditorState, setEditorState] = useState(tempEditorState);
-  const [files, setFiles] = useState([]);
-  const [activeToggleButton, setActiveToggleButton] = React.useState('Upload a document');
+  const [activeToggleButton, setActiveToggleButton] = useState('Upload a document');
 
   const handleChange = (event, value) => {
     setActiveToggleButton(value);
   };
-
-  const onEditorStateChange = editorStateParam => {
-    setEditorState(editorStateParam);
-  };
-
-  const {
-    classes,
-  } = props;
 
   const selectStyles = {
     input: base => ({
@@ -139,6 +142,13 @@ const OutputForm = (props) => {
         font: 'inherit',
       },
     }),
+  };
+
+  const downloadFile = () => {
+    const link = document.createElement('a');
+    link.href = outputFile;
+    link.download = `${title}`;
+    link.click();
   };
 
   return (
@@ -153,22 +163,38 @@ const OutputForm = (props) => {
                     classes={classes}
                     styles={selectStyles}
                     inputId="react-select-single"
-                    options={conditionOptions}
-                    value={conditionValue}
-                    onChange={(value) => setConditionValue(value)}
+                    options={mapSelectOptions(conditionsDropDownOptions)}
+                    value={condition && { label: condition, value: condition }}
+                    onChange={(value) => onConditionChange(value.value)}
                   />
                 </div>
                 <Typography variant="p">Choose a condition</Typography>
               </div>
               <div className={classes.conditionWrap}>
-                {files.length > 0 && (
-                  <FileUpload
-                    minimal
-                    files={files}
-                    handleChangeFile={(_files) => {
-                      setFiles(_files);
-                    }}
-                  />
+                {outputFile.length > 0 && (
+                  <div className={classes.conditionWrap}>
+                    <Tooltip title="Delete uploaded file">
+                      <IconButton
+                        color="primary"
+                        aria-label="download file"
+                        component="span"
+                        style={{ marginRight: 20 }}
+                        onClick={() => {
+                          onFileTypeChange('');
+                          onOutputChange(Map(), '');
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <FileUpload
+                      minimal
+                      handleChangeFile={(_files) => {
+                        onFileTypeChange(_files[0].name.split('.')[1]);
+                        onOutputChange(_files[0], _files[0].preview);
+                      }}
+                    />
+                  </div>
                 )}
                 <ToggleButtonGroup size="large" value={activeToggleButton} exclusive onChange={handleChange} style={{ marginLeft: 20 }}>
                   <ToggleButton value="Upload a document">
@@ -181,31 +207,40 @@ const OutputForm = (props) => {
               </div>
             </div>
             {activeToggleButton === 'Upload a document' ? (
-              files.length > 0
-                ? (
-                  <Iframe
-                    url={files[0].preview}
-                    width="100%"
-                    height="900"
-                    id="myId"
-                    className="myClassname"
-                    display="initial"
-                    position="relative"
-                  />
-                )
+              outputFile.length > 0
+                ? fileType === 'pdf' || outputFile.includes('https://')
+                  ? (
+                    <Iframe
+                      url={fileType === 'pdf' ? outputFile : `https://docs.google.com/gview?url=${outputFile}&embedded=true`}
+                      width="100%"
+                      height="900"
+                      id={title}
+                      style={{ borderRadius: 10 }}
+                      display="initial"
+                      position="relative"
+                    />
+                  )
+                  : (
+                    <div className={classes.lottieContainer}>
+                      <Typography variant="h4" component="h2">
+                        Press save to preview your document
+                      </Typography>
+                      <Lottie animationData={Word} className={classes.lottie} loop={false} onClick={downloadFile} />
+                    </div>
+                  )
                 : (
                   <FileUpload
                     height={485}
-                    files={files}
                     handleChangeFile={(_files) => {
-                      setFiles(_files);
+                      onFileTypeChange(_files[0].name.split('.')[1]);
+                      onOutputChange(_files[0], _files[0].preview);
                     }}
                   />
                 )
             )
               : (
                 <Editor
-                  editorState={dataEditorState}
+                  editorState={editorState}
                   editorClassName={classes.textEditor}
                   toolbarClassName={classes.toolbarEditor}
                   onEditorStateChange={onEditorStateChange}
@@ -214,19 +249,23 @@ const OutputForm = (props) => {
           </Paper>
         </Grid>
       </Grid>
-      <div>
-        <Tooltip title="Save">
-          <Fab variant="extended" color="primary" className={classes.addBtn}>
-            Save Condition
-          </Fab>
-        </Tooltip>
-      </div>
+
     </div>
   );
 };
 
 OutputForm.propTypes = {
   classes: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  outputFile: PropTypes.string.isRequired,
+  fileType: PropTypes.string.isRequired,
+  editorState: PropTypes.any.isRequired,
+  onFileTypeChange: PropTypes.func.isRequired,
+  onOutputChange: PropTypes.func.isRequired,
+  condition: PropTypes.string.isRequired,
+  onConditionChange: PropTypes.func.isRequired,
+  onEditorStateChange: PropTypes.func.isRequired,
+  conditionsDropDownOptions: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default withStyles(styles)(OutputForm);

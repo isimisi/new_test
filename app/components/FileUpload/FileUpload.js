@@ -77,7 +77,7 @@ const FileUpload = props => {
     }
   };
 
-  callback.accept = onlyImage ? 'image/*' : null;
+  callback.accept = onlyImage ? 'image/*' : '.docx, .pdf';
 
   const { getRootProps, getInputProps } = useDropzone(callback);
 
@@ -131,11 +131,17 @@ const FileUpload = props => {
 
 FileUpload.propTypes = {
   classes: PropTypes.object.isRequired,
-  height: PropTypes.number.isRequired,
-  onlyImage: PropTypes.bool.isRequired,
-  files: PropTypes.object.isRequired,
+  height: PropTypes.number,
+  onlyImage: PropTypes.bool,
+  files: PropTypes.object,
   handleChangeFile: PropTypes.func.isRequired,
   minimal: PropTypes.bool.isRequired,
+};
+
+FileUpload.defaultProps = {
+  height: null,
+  onlyImage: false,
+  files: []
 };
 
 export default withStyles(styles)(FileUpload);

@@ -20,6 +20,7 @@ import node from '../containers/Pages/Nodes/reducers/nodeReducer';
 import relationship from '../containers/Pages/Relationships/reducers/relationshipReducer';
 import attribute from '../containers/Pages/Attributes/reducers/attributeReducer';
 import conditions from '../containers/Pages/Conditions/reducers/conditionReducer';
+import output from '../containers/Pages/Outputs/reducers/outputReducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -31,6 +32,7 @@ export default function createReducer() {
     node,
     relationship,
     conditions,
+    output,
     createOrganization,
     form,
     ui: uiReducer,

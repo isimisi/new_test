@@ -164,7 +164,7 @@ const styles = theme => ({
     }
   },
   active: {
-    backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.primary.main, 0.24) : theme.palette.primary.light,
+    backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
     '& $primary': {
       color: theme.palette.type === 'dark' ? theme.palette.common.white : theme.palette.primary.dark,
     },

@@ -130,7 +130,7 @@ const styles = theme => ({
       },
     },
     '& $menuButton': {
-      backgroundColor: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.light,
+      backgroundColor: theme.palette.type === 'dark' ? theme.palette.secondary.main : theme.palette.secondary.light,
       boxShadow: theme.glow.medium,
     },
     '& $headerAction': {
