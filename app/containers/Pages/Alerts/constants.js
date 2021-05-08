@@ -39,23 +39,12 @@ export const columns = [
   },
 ];
 
-export const data = [
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 1, 'Friday at 3:59 pm'],
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 2, 'Friday at 3:59 pm'],
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 3, 'Friday at 3:59 pm'],
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 4, 'Friday at 3:59 pm'],
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 5, 'Friday at 3:59 pm'],
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 6, 'Friday at 3:59 pm'],
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 7, 'Friday at 3:59 pm'],
-  ['Test Alert', 'This is a test of a Alert', 'Test Group', 8, 'Friday at 3:59 pm'],
-];
-
-export const options = {
+export const tableOptions = (onDelete) => ({
   filterType: 'dropdown',
   responsive: 'stacked',
   print: true,
   rowsPerPage: 10,
-  page: 0
-};
-
+  page: 0,
+  onRowsDelete: onDelete
+});
 export const reducer = 'alert';

@@ -82,6 +82,7 @@ export OutputForm from './Forms/OutputForm';
 export OutputNamingForm from './Forms/OutputNamingForm';
 export ConditionForm from './Forms/ConditionForm';
 export ConditionNamingForm from './Forms/ConditionNamingForm';
+export AlertNamingForm from './Forms/AlertNamingForm';
 
 // Texteditor Toolbar
 export HeadlinesButton from './TextEditor/HeadlinesButton';
@@ -158,3 +159,6 @@ export NodeStyling from './Nodes/NodeStyling';
 // relationship
 export RelationshipDemo from './Relationships/RelationshipDemo';
 export RelationshipStylling from './Relationships/RelationshipStylling';
+
+// alert
+export AlertDemo from './Alerts/AlertDemo';

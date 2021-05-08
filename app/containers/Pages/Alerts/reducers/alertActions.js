@@ -19,6 +19,87 @@ export const getAlerts = () => async dispatch => {
   }
 };
 
+export const postAlert = (history) => async dispatch => {
+  const url = `${baseUrl}/${ALERTS}`;
+  const body = {};
+  const header = authHeader();
+  try {
+    const response = await axios.post(url, body, header);
+    const { id } = response.data;
+    dispatch({ type: types.POST_ALERT_SUCCESS });
+    history.push(`red flags/${id}`);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_ALERT_FAILED, message });
+  }
+};
+
+export const showAlert = (id) => async dispatch => {
+  const url = `${baseUrl}/${ALERTS}/${id}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const {
+      label: title, description, group, condition
+    } = response.data;
+    dispatch({
+      type: types.SHOW_ALERT_SUCCESS, title, description, group, condition
+    });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.SHOW_ALERT_FAILED, message });
+  }
+};
+
+export const putAlert = (history, id, label, description, group, condition) => async dispatch => {
+  const url = `${baseUrl}/${ALERTS}/${id}`;
+  const body = {
+    label, description, group, condition
+  };
+  const header = authHeader();
+  try {
+    await axios.put(url, body, header);
+    const message = 'Your red flag has now been updated';
+    dispatch({
+      type: types.PUT_ALERT_SUCCESS, message
+    });
+
+    history.push('/app/red flags');
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.PUT_ALERT_FAILED, message });
+  }
+};
+
+export const deleteAlert = (id, title) => async dispatch => {
+  const url = `${baseUrl}/${ALERTS}/${id}`;
+  const header = authHeader();
+  try {
+    await axios.delete(url, header);
+    const message = `You have deleted ${title}`;
+    dispatch({
+      type: types.DELETE_ALERT_SUCCESS, message
+    });
+    dispatch(getAlerts());
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.DELETE_ALERT_FAILED, message });
+  }
+};
+
+export const getConditionsDropDown = () => async dispatch => {
+  const url = `${baseUrl}/conditions/dropDownValues`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const conditions = response.data;
+    dispatch({ type: types.GET_CONDITION_DROPDOWN_SUCCESS, conditions });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_CONDITION_DROPDOWN_FAILED, message });
+  }
+};
+
 export const getGroupDropDown = () => async dispatch => {
   const url = `${baseUrl}/groups/dropDownValues`;
   const header = authHeader();
@@ -45,6 +126,11 @@ export const descriptionChange = description => ({
 export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
+});
+
+export const addCondition = condition => ({
+  type: types.ADD_CONDITION,
+  condition
 });
 
 export const closeNotifAction = {
