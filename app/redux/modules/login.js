@@ -3,8 +3,8 @@ import { INIT } from '../constants/reduxFormConstants';
 
 const initialState = {
   usersLogin: Map({
-    email: 'kno@juristic.io',
-    password: '1235',
+    email: '',
+    password: '',
     remember: false
   })
 };
