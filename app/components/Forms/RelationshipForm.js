@@ -13,16 +13,6 @@ import {
   labelChange, descriptionChange, addGroup
 } from '../../containers/Pages/Relationships/reducers/relationshipActions';
 
-const suggestions = [
-  { label: 'Test1' },
-  { label: 'Test2' },
-  { label: 'Test3' },
-  { label: 'Test4' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
-
 // TODO: v2
 // const typeSuggestions = [
 //   { label: 'bezier' },

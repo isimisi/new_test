@@ -63,7 +63,7 @@ const ErrorWrap = (props) => (
       if (staticContext) {
         staticContext.status = 404; // eslint-disable-line
       }
-      const { classes, title, desc } = props;
+      const { classes, desc } = props;
       return (
         <div className={classes.errorWrap}>
           <Lottie animationData={notFound} className={classes.lottie} />
@@ -86,7 +86,6 @@ const ErrorWrap = (props) => (
 ErrorWrap.propTypes = {
   classes: PropTypes.object.isRequired,
   desc: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(ErrorWrap);

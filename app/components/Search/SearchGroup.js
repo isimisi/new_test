@@ -1,39 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Hidden from '@material-ui/core/Hidden';
 import Typography from '@material-ui/core/Typography';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import SearchIcon from '@material-ui/icons/Search';
 import ViewList from '@material-ui/icons/ViewList';
 import GridOn from '@material-ui/icons/GridOn';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import Cart from '../Cart/Cart';
 import styles from './search-jss';
 
 function SearchProduct(props) {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const {
     classes,
-    dataCart,
-    removeItem,
-    checkout,
-    totalItems,
-    totalPrice,
     search,
     keyword,
     dataProduct,
@@ -91,12 +72,7 @@ function SearchProduct(props) {
 
 SearchProduct.propTypes = {
   classes: PropTypes.object.isRequired,
-  dataCart: PropTypes.object.isRequired,
-  removeItem: PropTypes.func.isRequired,
   search: PropTypes.func.isRequired,
-  checkout: PropTypes.func.isRequired,
-  totalItems: PropTypes.number.isRequired,
-  totalPrice: PropTypes.number.isRequired,
   keyword: PropTypes.string.isRequired,
   dataProduct: PropTypes.object.isRequired,
   handleSwitchView: PropTypes.func.isRequired,

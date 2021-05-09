@@ -9,7 +9,6 @@ import React, { useReducer, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import '@styles/vendors/invoice/style.css';
-import { getDate } from '../../containers/helpers/dateTimeHelper';
 
 const styles = {
   whitePaper: {
@@ -41,7 +40,7 @@ Phone: (555) 555-5555
 c/o Steve Widget
     `,
     number: '123456',
-    date: getDate(),
+    date: Date(),
     paid: 0,
     note: 'NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.',
     dataTable: [

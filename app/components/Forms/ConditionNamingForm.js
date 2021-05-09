@@ -51,7 +51,7 @@ const styles = theme => ({
 });
 
 
-function NamingForm(props) {
+function ConditionNamingForm(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -144,7 +144,7 @@ function NamingForm(props) {
   );
 }
 
-NamingForm.propTypes = {
+ConditionNamingForm.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
@@ -153,4 +153,4 @@ NamingForm.propTypes = {
 };
 
 
-export default withStyles(styles)(NamingForm);
+export default withStyles(styles)(ConditionNamingForm);

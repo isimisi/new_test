@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
 
-const styles = themes => ({
+const styles = () => ({
   root: {
     flexGrow: 1,
     padding: 30,

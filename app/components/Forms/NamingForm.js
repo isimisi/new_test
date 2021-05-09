@@ -58,9 +58,6 @@ function ReduxFormDemo(props) {
   const {
     classes,
     handleSubmit,
-    pristine,
-    reset,
-    submitting,
     type
   } = props;
   const [group, setGroup] = React.useState(null);
@@ -145,9 +142,6 @@ function ReduxFormDemo(props) {
 ReduxFormDemo.propTypes = {
   classes: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-  pristine: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
 };
 
