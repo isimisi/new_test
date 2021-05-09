@@ -1,23 +1,23 @@
 module.exports = [
   {
     key: 'dashboard',
-    name: 'Dashboard',
+    name: 'Forside',
     icon: 'ios-analytics-outline',
     linkParent: '/app',
   },
   {
     key: 'dataBuilder',
-    name: 'Data Builder',
+    name: 'Indhold',
     icon: 'ios-paper-outline',
     child: [
       {
         key: 'report',
-        name: 'Reports',
+        name: 'Rapportering',
         title: true,
       },
       {
         key: 'output',
-        name: 'Ouput',
+        name: 'Rapportindhold',
         link: '/app/outputs',
         icon: 'ios-document-outline',
       },
@@ -29,62 +29,62 @@ module.exports = [
       },
       {
         key: 'build',
-        name: 'Builds',
+        name: 'Byggeklodser',
         title: true,
       },
       {
-        key: 'relationships',
-        name: 'Relationships',
-        link: '/app/relationships',
-        icon: 'ios-list-box-outline',
-      },
-      {
-        key: 'attributes',
-        name: 'Attributes',
-        link: '/app/attributes',
-        icon: 'ios-list-box-outline',
-      },
-      {
         key: 'conditions',
-        name: 'Conditions',
+        name: 'Byg jura',
         link: '/app/conditions',
         icon: 'ios-grid-outline',
       },
       {
         key: 'groups',
-        name: 'Groups',
+        name: 'Grupper',
         link: '/app/groups',
         icon: 'ios-grid-outline',
       },
       {
         key: 'nodes',
-        name: 'Nodes',
+        name: 'Elementer',
         link: '/app/nodes',
         icon: 'ios-grid-outline',
-      }
+      },
+      {
+        key: 'attributes',
+        name: 'Kendetegn',
+        link: '/app/attributes',
+        icon: 'ios-list-box-outline',
+      },
+      {
+        key: 'relationships',
+        name: 'Forbindelser',
+        link: '/app/relationships',
+        icon: 'ios-list-box-outline',
+      },
     ]
   },
   {
     key: 'workspace',
-    name: 'Workspaces',
+    name: 'Arbejdsområder',
     icon: 'ios-paw-outline',
     linkParent: '/app/workspaces',
   },
-  {
-    key: 'taskBoard',
-    name: 'Task Board',
-    icon: 'md-time',
-    linkParent: '/app/taskboard',
-  },
+  // {
+  //   key: 'taskBoard',
+  //   name: 'Task Board',
+  //   icon: 'md-time',
+  //   linkParent: '/app/taskboard',
+  // },
   {
     key: 'settings',
-    name: 'Settings',
+    name: 'Indstillinger',
     icon: 'ios-settings-outline',
     linkParent: '/app/settings',
   },
   {
     key: 'help',
-    name: 'Help',
+    name: 'Hjælp',
     icon: 'md-help',
     linkParent: '/app/help-support',
   }
