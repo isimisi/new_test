@@ -9,122 +9,14 @@ import ReactFlow, {
   Controls,
   Background,
 } from 'react-flow-renderer';
+import {
+  WorkspaceMeta, /** WorkspaceFab, */ CustomNode,
+  CustomConnectionLine,
+  CustomEdge
+} from '@components';
 import PropTypes from 'prop-types';
-import Tooltip from '@material-ui/core/Tooltip';
-import Fab from '@material-ui/core/Fab';
 import styles from './workspace-jss';
-import DrapAndDropPanel from './DragAndDropPanel';
-import NamingForm from '../../../components/Forms/NamingForm';
 
-const initElement = [
-  {
-    id: '1',
-    type: 'input',
-    data: {
-      label: (
-        <>
-          <strong>Virksomhed A</strong>
-        </>
-      ),
-    },
-    position: { x: 250, y: 0 },
-  },
-  {
-    id: '2',
-    data: {
-      label: (
-        <>
-          <strong>Datter</strong>
-        </>
-      ),
-    },
-    position: { x: 100, y: 100 },
-  },
-  {
-    id: '3',
-    data: {
-      label: (
-        <>
-          <strong>Datter med leverandør</strong>
-        </>
-      ),
-    },
-    position: { x: 400, y: 100 },
-    style: {
-      background: '#D6D5E6',
-      color: '#333',
-      border: '1px solid #222138',
-      width: 180,
-    },
-  },
-  {
-    id: '4',
-    position: { x: 250, y: 200 },
-    data: {
-      label: 'Leverandør',
-    },
-  },
-  {
-    id: '5',
-    data: {
-      label: 'Data lagring',
-    },
-    position: { x: 250, y: 325 },
-  },
-  {
-    id: '6',
-    type: 'output',
-    data: {
-      label: (
-        <>
-          <strong>AWS</strong>
-        </>
-      ),
-    },
-    position: { x: 100, y: 480 },
-  },
-  {
-    id: '7',
-    type: 'output',
-    data: { label: 'Google Cloud' },
-    position: { x: 400, y: 450 },
-  },
-  {
-    id: 'e1-2', source: '1', target: '2', label: 'Ingen Data'
-  },
-  { id: 'e1-3', source: '1', target: '3' },
-  {
-    id: 'e3-4',
-    source: '3',
-    target: '4',
-    animated: true,
-    label: 'Data',
-  },
-  {
-    id: 'e4-5',
-    source: '4',
-    target: '5',
-    arrowHeadType: 'arrowclosed',
-    label: 'Data',
-  },
-  {
-    id: 'e5-6',
-    source: '5',
-    target: '6',
-    type: 'smoothstep',
-    label: 'krypteret',
-  },
-  {
-    id: 'e5-7',
-    source: '5',
-    target: '7',
-    type: 'step',
-    style: { stroke: '#f6ab6c' },
-    label: 'Ukrypteret',
-    animated: true,
-    labelStyle: { fill: '#f6ab6c', fontWeight: 700 },
-  },
-];
 
 const onDragOver = (event) => {
   event.preventDefault();
@@ -135,11 +27,190 @@ const onDragOver = (event) => {
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const OverviewFlow = (props) => {
+const nodeTypes = {
+  custom: CustomNode
+};
+
+const Workspace = (props) => {
   const { classes } = props;
   const reactFlowWrapper = useRef(null);
+  const [metaOpen, setMetaOpen] = useState(false);
+
+  const initElement = [
+    {
+      id: '1',
+      type: 'custom',
+      data: {
+        label: (
+          <>
+            <strong>Lux Fund</strong>
+          </>
+        ),
+      },
+      position: { x: 250, y: 0 },
+    },
+    {
+      id: '2',
+      type: 'custom',
+      data: {
+        label: (
+          <>
+            <strong>DK HoldCo</strong>
+          </>
+        ),
+      },
+      position: { x: 245, y: 200 },
+    },
+    {
+      id: '3',
+      type: 'custom',
+      data: {
+        label: (
+          <>
+            <strong>Seller</strong>
+          </>
+        ),
+      },
+      position: { x: 540, y: 200 },
+    },
+    {
+      id: '4',
+      type: 'custom',
+      data: {
+        label: (
+          <>
+            <strong>Target</strong>
+          </>
+        ),
+      },
+      position: { x: 260, y: 350 },
+    },
+    {
+      id: '5',
+      type: 'custom',
+      data: {
+        label: (
+          <>
+            <strong>Investors</strong>
+          </>
+        ),
+      },
+      position: { x: 450, y: 0 },
+    },
+    {
+      id: '6',
+      type: 'custom',
+      data: {
+        label: (
+          <>
+            <strong>Investors</strong>
+          </>
+        ),
+      },
+      position: { x: 600, y: 0 },
+    },
+    {
+      id: '11',
+      source: '5',
+      target: '3',
+      sourceHandle: 'bottom',
+      targetHandle: 'top',
+      style: { stroke: '#000' },
+      type: 'smoothstep'
+    },
+    {
+      id: '12',
+      source: '6',
+      target: '3',
+      sourceHandle: 'bottom',
+      targetHandle: 'top',
+      style: { stroke: '#000' },
+      type: 'smoothstep'
+    },
+    {
+      id: '13',
+      source: '1',
+      target: '2',
+      sourceHandle: 'bottom',
+      targetHandle: 'top',
+      style: { stroke: '#000' },
+      label: '100%',
+      type: 'straight'
+    },
+    {
+      id: '14',
+      source: '2',
+      target: '3',
+      sourceHandle: 'right',
+      targetHandle: '1left',
+      style: { stroke: '#F00' },
+      label: 'SHARES',
+      animated: true,
+      labelStyle: { fontSize: '8' },
+      arrowHeadType: 'arrowclosed',
+      type: 'straight'
+    },
+    {
+      id: '15',
+      source: '3',
+      target: '2',
+      sourceHandle: 'left',
+      targetHandle: '1right',
+      style: { stroke: '#F00' },
+      labelBgPadding: [0, 0],
+      label: 'CASH',
+      labelStyle: { fontSize: '8' },
+      animated: true,
+      arrowHeadType: 'arrowclosed',
+      type: 'straight'
+    },
+    {
+      id: '16',
+      source: '2',
+      target: '4',
+      sourceHandle: 'bottom',
+      targetHandle: 'top',
+      style: { stroke: '#000' },
+      label: '100%',
+      type: 'straight'
+    },
+    // {
+    //   id: '17',
+    //   source: '1',
+    //   target: '2',
+    //   sourceHandle: 'right',
+    //   targetHandle: '1right',
+    //   style: { stroke: '#000' },
+    //   label: 'SHL',
+    // },
+    // {
+    //   id: '18',
+    //   source: '4',
+    //   target: '2',
+    //   sourceHandle: 'left',
+    //   targetHandle: '1left',
+    //   style: { stroke: '#334FFF' },
+    //   label: 'dividends',
+    //   type: 'smoothstep'
+    // },
+    {
+      id: '19',
+      source: '2',
+      target: '1',
+      sourceHandle: 'left',
+      targetHandle: '1left',
+      style: { stroke: '#334FFF' },
+      data: {
+        text: 'Interest (4%)',
+        click: () => { setMetaOpen(true); }
+      },
+      type: 'custom',
+    },
+  ];
+
   const [elements, setElements] = useState(initElement);
   const [reactFlowInstance, setReactFlowInstance] = useState();
+
 
   const onConnect = (params) => setElements((els) => addEdge(params, els));
   const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
@@ -169,10 +240,8 @@ const OverviewFlow = (props) => {
 
   return (
     <div>
-      <NamingForm type="condition" />
       <ReactFlowProvider>
         <div className={classes.root}>
-          <DrapAndDropPanel />
           <div
             className={classes.content}
             ref={reactFlowWrapper}
@@ -181,6 +250,9 @@ const OverviewFlow = (props) => {
               elements={elements}
               onElementsRemove={onElementsRemove}
               onConnect={onConnect}
+              nodeTypes={nodeTypes}
+              edgeTypes={{ custom: CustomEdge }}
+              connectionLineComponent={CustomConnectionLine}
               onLoad={onLoad}
               onDrop={onDrop}
               onDragOver={onDragOver}
@@ -191,19 +263,22 @@ const OverviewFlow = (props) => {
           </div>
         </div>
       </ReactFlowProvider>
-      <div>
-        <Tooltip title="Analyser">
-          <Fab variant="extended" color="primary" className={classes.addBtn}>
-            Analyse
-          </Fab>
-        </Tooltip>
-      </div>
+      <WorkspaceMeta
+        open={metaOpen}
+        to="Interest rate"
+        subject="4%"
+        validMail=""
+        closeForm={() => setMetaOpen(false)}
+        sendEmail={() => {}}
+        inputChange={() => {}}
+      />
+      {/* <WorkspaceFab /> */}
     </div>
   );
 };
 
-OverviewFlow.propTypes = {
+Workspace.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(OverviewFlow);
+export default withStyles(styles)(Workspace);

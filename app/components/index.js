@@ -70,6 +70,14 @@ import RelationshipStylling from './Relationships/RelationshipStylling';
 // alert
 import AlertDemo from './Alerts/AlertDemo';
 
+// Workspace
+import WorkspaceForm from './Workspace/WorkspaceForm';
+import WorkspaceMeta from './Workspace/WorkspaceMeta';
+import WorkspaceFab from './Workspace/WorkspaceFab';
+import CustomConnectionLine from './Workspace/CustomConnectionLine';
+import CustomEdge from './Workspace/CustomEdge';
+import CustomNode from './Workspace/CustomNode';
+
 export {
   Header,
   HeaderMenu,
@@ -121,5 +129,11 @@ export {
   NodeStyling,
   RelationshipDemo,
   RelationshipStylling,
-  AlertDemo
+  AlertDemo,
+  WorkspaceForm,
+  WorkspaceMeta,
+  WorkspaceFab,
+  CustomConnectionLine,
+  CustomEdge,
+  CustomNode,
 };
