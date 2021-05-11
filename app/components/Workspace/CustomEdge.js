@@ -1,6 +1,27 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { getSmoothStepPath, getMarkerEnd } from 'react-flow-renderer';
+import { getBezierPath, getMarkerEnd } from 'react-flow-renderer';
+
+const drawCurve = (sourceX, sourceY, targetX, targetY) => {
+  // mid-point of line:
+  const mpx = (targetX + sourceX) * 0.5;
+  const mpy = (targetY + sourceY) * 0.5;
+
+  // angle of perpendicular to line:
+  const theta = Math.atan2(targetY - sourceY, targetX - sourceX) - Math.PI / 2;
+
+  // distance of control point from mid-point of line:
+  const offset = 100;
+
+  // location of control point:
+  const c1x = mpx + offset * Math.cos(theta);
+  const c1y = mpy + offset * Math.sin(theta);
+
+  // construct the command to draw a quadratic curve
+  const curve = 'M' + sourceX + ' ' + sourceY + ' Q ' + c1x + ' ' + c1y + ' ' + targetX + ' ' + targetY;
+  return curve;
+};
 
 export default function CustomEdge({
   id,
@@ -15,11 +36,10 @@ export default function CustomEdge({
   arrowHeadType,
   markerEndId,
 }) {
-  const edgePath = getSmoothStepPath({
-    sourceX, sourceY, sourcePosition, targetX, targetY, targetPosition
-  });
+  const edgePath = drawCurve(
+    sourceX, sourceY, targetX, targetY
+  );
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
-
 
   return (
     <>

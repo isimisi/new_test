@@ -10,7 +10,7 @@ import ReactFlow, {
   Background,
 } from 'react-flow-renderer';
 import {
-  WorkspaceMeta, /** WorkspaceFab, */ CustomNode,
+  WorkspaceMeta, WorkspaceFab, CustomNode,
   CustomConnectionLine,
   CustomEdge
 } from '@components';
@@ -35,6 +35,8 @@ const Workspace = (props) => {
   const { classes } = props;
   const reactFlowWrapper = useRef(null);
   const [metaOpen, setMetaOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
   const initElement = [
     {
@@ -58,6 +60,11 @@ const Workspace = (props) => {
             <strong>DK HoldCo</strong>
           </>
         ),
+        click: () => {
+          setTitle('DK HoldCo');
+          setDescription('Dette er DK HoldCO');
+          setMetaOpen(true);
+        }
       },
       position: { x: 245, y: 200 },
     },
@@ -174,25 +181,40 @@ const Workspace = (props) => {
       label: '100%',
       type: 'straight'
     },
-    // {
-    //   id: '17',
-    //   source: '1',
-    //   target: '2',
-    //   sourceHandle: 'right',
-    //   targetHandle: '1right',
-    //   style: { stroke: '#000' },
-    //   label: 'SHL',
-    // },
-    // {
-    //   id: '18',
-    //   source: '4',
-    //   target: '2',
-    //   sourceHandle: 'left',
-    //   targetHandle: '1left',
-    //   style: { stroke: '#334FFF' },
-    //   label: 'dividends',
-    //   type: 'smoothstep'
-    // },
+    {
+      id: '17',
+      source: '1',
+      target: '2',
+      sourceHandle: 'right',
+      targetHandle: '1right',
+      style: { stroke: '#334FFF' },
+      data: {
+        text: 'SHL',
+        click: () => {
+          setTitle('SHL');
+          setDescription('Terms');
+          setMetaOpen(true);
+        }
+      },
+      type: 'custom'
+    },
+    {
+      id: '18',
+      source: '4',
+      target: '2',
+      sourceHandle: 'left',
+      targetHandle: '1left',
+      style: { stroke: '#334FFF' },
+      data: {
+        text: 'Remuneration of Dividends',
+        click: () => {
+          setTitle('Dividends');
+          setDescription('2.500.000');
+          setMetaOpen(true);
+        }
+      },
+      type: 'custom'
+    },
     {
       id: '19',
       source: '2',
@@ -202,7 +224,11 @@ const Workspace = (props) => {
       style: { stroke: '#334FFF' },
       data: {
         text: 'Interest (4%)',
-        click: () => { setMetaOpen(true); }
+        click: () => {
+          setTitle('Interest');
+          setDescription('4%');
+          setMetaOpen(true);
+        }
       },
       type: 'custom',
     },
@@ -265,14 +291,14 @@ const Workspace = (props) => {
       </ReactFlowProvider>
       <WorkspaceMeta
         open={metaOpen}
-        to="Interest rate"
-        subject="4%"
+        to={title}
+        subject={description}
         validMail=""
         closeForm={() => setMetaOpen(false)}
         sendEmail={() => {}}
         inputChange={() => {}}
       />
-      {/* <WorkspaceFab /> */}
+      <WorkspaceFab />
     </div>
   );
 };
