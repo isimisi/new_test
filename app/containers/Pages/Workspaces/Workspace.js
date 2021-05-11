@@ -298,7 +298,7 @@ const Workspace = (props) => {
         sendEmail={() => {}}
         inputChange={() => {}}
       />
-      <WorkspaceFab />
+      {!metaOpen && <WorkspaceFab />}
     </div>
   );
 };
