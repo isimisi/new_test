@@ -35,37 +35,37 @@ const groupsDropDownOptions = [
 
 const relationshipTypeOptions = [
   {
-    value: 'page_visited',
+    value: 'Lige linje',
     label: (
       <>
-        <span style={{ paddingRight: '5px' }}>Page Visited</span>
+        <span style={{ paddingRight: '5px' }}>Lige linje</span>
         <img src={StraightLine} alt="straight line" style={{ height: 36 }} />
       </>
     )
   },
   {
-    value: 'page_visited',
+    value: 'Beizer Kurve',
     label: (
       <>
-        <span style={{ paddingRight: '5px' }}>Page Visited</span>
+        <span style={{ paddingRight: '5px' }}>Beizer Kurve</span>
         <img src={BeizerCurve} alt="beizer curve" style={{ height: 36 }} />
       </>
     )
   },
   {
-    value: 'page_visited',
+    value: 'Step kurve',
     label: (
       <>
-        <span style={{ paddingRight: '5px' }}>Page Visited</span>
-        <img src={SmoothStep} alt="smooth steo" style={{ height: 36 }} />
+        <span style={{ paddingRight: '5px' }}>Step kurve</span>
+        <img src={SmoothStep} alt="smooth step" style={{ height: 36 }} />
       </>
     )
   },
   {
-    value: 'page_visited',
+    value: 'Kurvet kurve',
     label: (
       <>
-        <span style={{ paddingRight: '5px' }}>Page Visited</span>
+        <span style={{ paddingRight: '5px' }}>Kurvet kurve</span>
         <img src={Curve} alt="curve" style={{ height: 36 }} />
       </>
     )
@@ -83,6 +83,8 @@ const EdgeForm = (props) => {
     handleChangeValue,
     description,
     handleDescriptionChange,
+    type,
+    handleTypeChange,
     color,
     handleColorChange,
     showArrow,
@@ -94,6 +96,7 @@ const EdgeForm = (props) => {
     handleSave
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
+  const editable = relationshipLabel.length === 0;
 
   return (
     <div>
@@ -117,7 +120,7 @@ const EdgeForm = (props) => {
             onChange={handleChangeLabel}
           />
         </div>
-        {!relationshipLabel && (
+        {!editable && (
           <div className={classes.field} style={{ marginTop: 20 }}>
             <CreatableSelect
               isClearable
@@ -138,26 +141,7 @@ const EdgeForm = (props) => {
             />
           </div>
         )}
-        <div className={classes.field} style={{ marginTop: 20 }}>
-          <Select
-            classes={classes}
-            styles={selectStyles('relative')}
-            inputId="react-select-single"
-            TextFieldProps={{
-              label: 'type',
-              InputLabelProps: {
-                htmlFor: 'react-select-single',
-                shrink: true,
-              },
-              placeholder: 'type',
-            }}
-            placeholder="type"
-            options={relationshipTypeOptions}
-            value={relationshipLabel && { label: relationshipLabel, value: relationshipLabel }}
-            onChange={handleChangeLabel}
-          />
-        </div>
-        {!relationshipLabel && (
+        {!editable && (
           <div>
             <TextField
               name="description"
@@ -171,12 +155,32 @@ const EdgeForm = (props) => {
             />
           </div>
         )}
+        <div className={classes.field} style={{ marginTop: 20 }}>
+          <Select
+            classes={classes}
+            isDisabled={editable}
+            styles={selectStyles('relative')}
+            inputId="react-select-single"
+            TextFieldProps={{
+              label: 'type',
+              InputLabelProps: {
+                htmlFor: 'react-select-single',
+                shrink: true,
+              },
+              placeholder: 'type',
+            }}
+            placeholder="type"
+            options={relationshipTypeOptions}
+            value={type && { label: type, value: type }}
+            onChange={handleTypeChange}
+          />
+        </div>
 
         <div className={classes.row}>
           <Typography variant="subtitle2">
                 Pick a Color
           </Typography>
-          <div className={classes.swatch} onClick={() => setDisplayColorPickerColor(prevVal => !prevVal)}>
+          <div className={classes.swatch} onClick={() => !editable && setDisplayColorPickerColor(prevVal => !prevVal)}>
             <div className={classes.color} style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})` }} />
           </div>
           { displayColorPickerColor ? (
@@ -193,6 +197,7 @@ const EdgeForm = (props) => {
             onChange={handleShowArrowChange}
             name="arrow"
             color="primary"
+            disabled={editable}
           />
           <Typography variant="subtitle2">
                 Vis som pil
@@ -204,6 +209,7 @@ const EdgeForm = (props) => {
             onChange={handleAnimatedLineChange}
             name="animated"
             color="primary"
+            disabled={editable}
           />
           <Typography variant="subtitle2">
                 Animeret linje
@@ -215,6 +221,7 @@ const EdgeForm = (props) => {
             onChange={handleShowLabelChange}
             name="show label"
             color="primary"
+            disabled={editable}
           />
           <Typography variant="subtitle2">
                 Vis label
@@ -230,6 +237,7 @@ const EdgeForm = (props) => {
           color="secondary"
           type="button"
           onClick={handleSave}
+          disabled
         >
             Save
         </Button>
@@ -247,6 +255,8 @@ EdgeForm.propTypes = {
   handleChangeValue: PropTypes.func.isRequired,
   description: PropTypes.string.isRequired,
   handleDescriptionChange: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  handleTypeChange: PropTypes.func.isRequired,
   color: PropTypes.object.isRequired,
   handleColorChange: PropTypes.func.isRequired,
   showArrow: PropTypes.bool.isRequired,

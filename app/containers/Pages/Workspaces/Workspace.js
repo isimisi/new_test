@@ -11,12 +11,13 @@ import ReactFlow, {
   Background,
 } from 'react-flow-renderer';
 import {
-  WorkspaceMeta, WorkspaceFab, CustomNode,
+  WorkspaceFab, CustomNode,
   DefineEdge, CustomEdge
 } from '@components';
 import PropTypes from 'prop-types';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import styles from './workspace-jss';
+import { initElement } from './constants';
 
 
 const onDragOver = (event) => {
@@ -35,211 +36,23 @@ const nodeTypes = {
 const Workspace = (props) => {
   const { classes } = props;
   const reactFlowWrapper = useRef(null);
-  const [metaOpen, setMetaOpen] = useState(false);
-  const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-
-  const initElement = [
-    {
-      id: '1',
-      type: 'custom',
-      data: {
-        label: (
-          <>
-            <strong>Lux Fund</strong>
-          </>
-        ),
-      },
-      position: { x: 250, y: 0 },
-    },
-    {
-      id: '2',
-      type: 'custom',
-      data: {
-        label: (
-          <>
-            <strong>DK HoldCo</strong>
-          </>
-        ),
-        click: () => {
-          setTitle('DK HoldCo');
-          setDescription('Dette er DK HoldCO');
-          setMetaOpen(true);
-        }
-      },
-      position: { x: 245, y: 200 },
-    },
-    {
-      id: '3',
-      type: 'custom',
-      data: {
-        label: (
-          <>
-            <strong>Seller</strong>
-          </>
-        ),
-      },
-      position: { x: 540, y: 200 },
-    },
-    {
-      id: '4',
-      type: 'custom',
-      data: {
-        label: (
-          <>
-            <strong>Target</strong>
-          </>
-        ),
-      },
-      position: { x: 260, y: 350 },
-    },
-    {
-      id: '5',
-      type: 'custom',
-      data: {
-        label: (
-          <>
-            <strong>Investors</strong>
-          </>
-        ),
-      },
-      position: { x: 450, y: 0 },
-    },
-    {
-      id: '6',
-      type: 'custom',
-      data: {
-        label: (
-          <>
-            <strong>Investors</strong>
-          </>
-        ),
-      },
-      position: { x: 600, y: 0 },
-    },
-    {
-      id: '11',
-      source: '5',
-      target: '3',
-      sourceHandle: 'bottom',
-      targetHandle: 'top',
-      style: { stroke: '#000' },
-      type: 'smoothstep'
-    },
-    {
-      id: '12',
-      source: '6',
-      target: '3',
-      sourceHandle: 'bottom',
-      targetHandle: 'top',
-      style: { stroke: '#000' },
-      type: 'smoothstep'
-    },
-    {
-      id: '13',
-      source: '1',
-      target: '2',
-      sourceHandle: 'bottom',
-      targetHandle: 'top',
-      style: { stroke: '#000' },
-      label: '100%',
-      type: 'straight'
-    },
-    {
-      id: '14',
-      source: '2',
-      target: '3',
-      sourceHandle: 'right',
-      targetHandle: '1left',
-      style: { stroke: '#F00' },
-      label: 'SHARES',
-      animated: true,
-      labelStyle: { fontSize: '8' },
-      arrowHeadType: 'arrowclosed',
-      type: 'straight'
-    },
-    {
-      id: '15',
-      source: '3',
-      target: '2',
-      sourceHandle: 'left',
-      targetHandle: '1right',
-      style: { stroke: '#F00' },
-      labelBgPadding: [0, 0],
-      label: 'CASH',
-      labelStyle: { fontSize: '8' },
-      animated: true,
-      arrowHeadType: 'arrowclosed',
-      type: 'straight'
-    },
-    {
-      id: '16',
-      source: '2',
-      target: '4',
-      sourceHandle: 'bottom',
-      targetHandle: 'top',
-      style: { stroke: '#000' },
-      label: '100%',
-      type: 'straight'
-    },
-    {
-      id: '17',
-      source: '1',
-      target: '2',
-      sourceHandle: 'right',
-      targetHandle: '1right',
-      style: { stroke: '#334FFF' },
-      data: {
-        text: 'SHL',
-        click: () => {
-          setTitle('SHL');
-          setDescription('Terms');
-          setMetaOpen(true);
-        }
-      },
-      type: 'custom'
-    },
-    {
-      id: '18',
-      source: '4',
-      target: '2',
-      sourceHandle: 'left',
-      targetHandle: '1left',
-      style: { stroke: '#334FFF' },
-      data: {
-        text: 'Remuneration of Dividends',
-        click: () => {
-          setTitle('Dividends');
-          setDescription('2.500.000');
-          setMetaOpen(true);
-        }
-      },
-      type: 'custom'
-    },
-    {
-      id: '19',
-      source: '2',
-      target: '1',
-      sourceHandle: 'left',
-      targetHandle: '1left',
-      style: { stroke: '#334FFF' },
-      data: {
-        text: 'Interest (4%)',
-        click: () => {
-          setTitle('Interest');
-          setDescription('4%');
-          setMetaOpen(true);
-        }
-      },
-      type: 'custom',
-      arrowHeadType: 'arrowclosed',
-    },
-  ];
-
+  // const [metaOpen, setMetaOpen] = useState(false);
   const [elements, setElements] = useState(initElement);
   const [reactFlowInstance, setReactFlowInstance] = useState();
 
+  // EDGE
+  const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
+  const [relationshipLabel, setRelationshipLabel] = useState('');
+  const [relationshipValue, setRelationshipValue] = useState('');
+  const [relationshipDescription, setRelationshipDescription] = useState('');
+  const [relationshipType, setRelationshipType] = useState('');
+  const [relationshipColor, setRelationshipColor] = useState({
+    r: 0, g: 0, b: 0, a: 0
+  });
+  const [showArrow, setShowArrow] = useState(false);
+  const [animatedLine, setAnimatedLine] = useState(false);
+  const [showLabel, setShowlabel] = useState(false);
+  console.log(relationshipColor);
 
   const onConnect = () => {
     setDefineEdgeOpen(true);
@@ -275,6 +88,10 @@ const Workspace = (props) => {
     setElements((es) => es.concat(newNode));
   };
 
+  const onElementClick = (event, element) => {
+    console.log(event, element);
+  };
+
   return (
     <div>
       <ReactFlowProvider>
@@ -293,7 +110,7 @@ const Workspace = (props) => {
               onDrop={onDrop}
               onDragOver={onDragOver}
               connectionMode="loose"
-              onElementClick={(event, element) => element.data.click()}
+              onElementClick={onElementClick}
             >
               <Controls>
                 <ControlButton onClick={() => console.log('another action')}>
@@ -305,7 +122,7 @@ const Workspace = (props) => {
           </div>
         </div>
       </ReactFlowProvider>
-      <WorkspaceMeta
+      {/* <WorkspaceMeta
         open={metaOpen}
         to={title}
         subject={description}
@@ -313,13 +130,29 @@ const Workspace = (props) => {
         closeForm={() => setMetaOpen(false)}
         sendEmail={() => {}}
         inputChange={() => {}}
-      />
+      /> */}
       <DefineEdge
         open={defineEdgeOpen}
         close={() => setDefineEdgeOpen(false)}
+        relationshipLabel={relationshipLabel}
+        handleChangeLabel={(label) => setRelationshipLabel(label.value)}
+        relationshipValue={relationshipValue}
+        handleChangeValue={(value) => setRelationshipValue(value.value)}
+        description={relationshipDescription}
+        handleDescriptionChange={(e) => setRelationshipDescription(e.target.value)}
+        type={relationshipType}
+        handleTypeChange={(type) => setRelationshipType(type.value)}
+        color={relationshipColor}
+        handleColorChange={(color) => setRelationshipColor(color.rgb)}
+        showArrow={showArrow}
+        handleShowArrowChange={(e) => setShowArrow(e.target.checked)}
+        animatedLine={animatedLine}
+        handleAnimatedLineChange={(e) => setAnimatedLine(e.target.checked)}
+        showLabel={showLabel}
+        handleShowLabelChange={(e) => setShowlabel(e.target.checked)}
         handleSave={(edge) => handleSave(edge)}
       />
-      {!metaOpen && !defineEdgeOpen && <WorkspaceFab />}
+      {/** !metaOpen && */!defineEdgeOpen && <WorkspaceFab />}
     </div>
   );
 };

@@ -5,14 +5,18 @@ import EdgeForm from './EdgeForm';
 import FloatingPanel from '../../Panel/FloatingPanel';
 import styles from '../workspace-jss';
 
-function EdgePopUp(props) {
+function DefineEdge(props) {
   const {
     open,
     close,
     relationshipLabel,
     handleChangeLabel,
+    relationshipValue,
+    handleChangeValue,
     description,
     handleDescriptionChange,
+    type,
+    handleTypeChange,
     color,
     handleColorChange,
     showArrow,
@@ -23,6 +27,7 @@ function EdgePopUp(props) {
     handleShowLabelChange,
     handleSave
   } = props;
+
   return (
     <div>
       <FloatingPanel
@@ -33,11 +38,13 @@ function EdgePopUp(props) {
         <EdgeForm
           relationshipLabel={relationshipLabel}
           handleChangeLabel={handleChangeLabel}
+          relationshipValue={relationshipValue}
+          handleChangeValue={handleChangeValue}
           description={description}
           handleDescriptionChange={handleDescriptionChange}
-          color={color || {
-            r: 0, g: 0, b: 0, a: 0
-          }}
+          type={type}
+          handleTypeChange={handleTypeChange}
+          color={color}
           handleColorChange={handleColorChange}
           showArrow={showArrow}
           handleShowArrowChange={handleShowArrowChange}
@@ -53,13 +60,17 @@ function EdgePopUp(props) {
   );
 }
 
-EdgePopUp.propTypes = {
+DefineEdge.propTypes = {
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   relationshipLabel: PropTypes.string.isRequired,
   handleChangeLabel: PropTypes.func.isRequired,
+  relationshipValue: PropTypes.string.isRequired,
+  handleChangeValue: PropTypes.func.isRequired,
   description: PropTypes.string.isRequired,
   handleDescriptionChange: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  handleTypeChange: PropTypes.func.isRequired,
   color: PropTypes.object.isRequired,
   handleColorChange: PropTypes.func.isRequired,
   showArrow: PropTypes.bool.isRequired,
@@ -71,4 +82,4 @@ EdgePopUp.propTypes = {
   handleSave: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(EdgePopUp);
+export default withStyles(styles)(DefineEdge);

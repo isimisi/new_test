@@ -103,6 +103,7 @@ function RelationshipForm(props) {
                 className={classes.field}
                 placeholder="Description"
                 label="Description"
+
                 multiline
                 rows={2}
                 onChange={handleDescriptionChange}
