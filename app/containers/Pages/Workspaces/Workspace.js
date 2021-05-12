@@ -7,14 +7,15 @@ import ReactFlow, {
   removeElements,
   addEdge,
   Controls,
+  ControlButton,
   Background,
 } from 'react-flow-renderer';
 import {
   WorkspaceMeta, WorkspaceFab, CustomNode,
-  CustomConnectionLine,
-  CustomEdge
+  DefineEdge, CustomEdge
 } from '@components';
 import PropTypes from 'prop-types';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import styles from './workspace-jss';
 
 
@@ -35,6 +36,7 @@ const Workspace = (props) => {
   const { classes } = props;
   const reactFlowWrapper = useRef(null);
   const [metaOpen, setMetaOpen] = useState(false);
+  const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -231,6 +233,7 @@ const Workspace = (props) => {
         }
       },
       type: 'custom',
+      arrowHeadType: 'arrowclosed',
     },
   ];
 
@@ -238,7 +241,15 @@ const Workspace = (props) => {
   const [reactFlowInstance, setReactFlowInstance] = useState();
 
 
-  const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const onConnect = () => {
+    setDefineEdgeOpen(true);
+  };
+
+  const handleSave = (edge) => {
+    setElements((els) => addEdge(edge, els));
+  };
+
+
   const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
   const onLoad = (_reactFlowInstance) => {
     setReactFlowInstance(_reactFlowInstance);
@@ -278,12 +289,17 @@ const Workspace = (props) => {
               onConnect={onConnect}
               nodeTypes={nodeTypes}
               edgeTypes={{ custom: CustomEdge }}
-              connectionLineComponent={CustomConnectionLine}
               onLoad={onLoad}
               onDrop={onDrop}
               onDragOver={onDragOver}
+              connectionMode="loose"
+              onElementClick={(event, element) => element.data.click()}
             >
-              <Controls />
+              <Controls>
+                <ControlButton onClick={() => console.log('another action')}>
+                  <PhotoCameraIcon />
+                </ControlButton>
+              </Controls>
               <Background color="#aaa" gap={16} />
             </ReactFlow>
           </div>
@@ -298,7 +314,12 @@ const Workspace = (props) => {
         sendEmail={() => {}}
         inputChange={() => {}}
       />
-      {!metaOpen && <WorkspaceFab />}
+      <DefineEdge
+        open={defineEdgeOpen}
+        close={() => setDefineEdgeOpen(false)}
+        handleSave={(edge) => handleSave(edge)}
+      />
+      {!metaOpen && !defineEdgeOpen && <WorkspaceFab />}
     </div>
   );
 };

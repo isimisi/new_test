@@ -2,6 +2,7 @@ import { fromJS, List, Map } from 'immutable';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   LABEL_CHANGE,
+  VALUES_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
   CHANGE_COLOR,
@@ -23,6 +24,7 @@ import {
 const initialState = {
   relationships: List(),
   label: '',
+  values: List(),
   description: '',
   type: '',
   group: '',
@@ -49,6 +51,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case POST_RELATIONSHIP_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set('label', '');
+        mutableState.set('values', '');
         mutableState.set('description', '');
         mutableState.set('type', '');
         mutableState.set('group', '');
@@ -63,6 +66,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case SHOW_RELATIONSHIP_SUCCESS:
       return state.withMutations((mutableState) => {
         const label = fromJS(action.label);
+        const values = fromJS(action.values);
         const description = fromJS(action.description);
         const relationshipType = fromJS(action.relationshipType);
         const group = fromJS(action.group);
@@ -70,6 +74,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const color = fromJS(action.color);
 
         mutableState.set('label', label);
+        mutableState.set('values', values);
         mutableState.set('description', description);
         mutableState.set('type', relationshipType);
         mutableState.set('group', group);
@@ -120,6 +125,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const description = fromJS(action.description);
         mutableState.set('description', description);
+      });
+    case VALUES_CHANGE:
+      return state.withMutations((mutableState) => {
+        const values = fromJS(action.values);
+        mutableState.set('values', values);
       });
     case ADD_GROUP:
       return state.withMutations((mutableState) => {

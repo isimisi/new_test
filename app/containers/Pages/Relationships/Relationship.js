@@ -22,6 +22,7 @@ const Relationship = () => {
 
   const id = history.location.pathname.split('/').pop();
   const label = useSelector(state => state.getIn([reducer, 'label']));
+  const values = useSelector(state => state.getIn([reducer, 'values'])).toJS();
   const description = useSelector(state => state.getIn([reducer, 'description']));
   // const type = useSelector(state => state.getIn([reducer, 'type']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
@@ -32,7 +33,7 @@ const Relationship = () => {
   const onSave = () => {
     const style = JSON.stringify({ color: colorSelector.toJS() });
     const labelStyle = JSON.stringify(generateLabelStyle(size));
-    dispatch(putRelationship(id, label, description, style, labelStyle, group, history));
+    dispatch(putRelationship(id, label, JSON.stringify(values), description, style, labelStyle, group, history));
   };
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const Relationship = () => {
             label={label}
             description={description}
             group={group}
+            values={values}
             groupsDropDownOptions={groupsDropDownOptions}
           />
         </Grid>

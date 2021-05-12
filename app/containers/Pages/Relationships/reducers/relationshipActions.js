@@ -47,7 +47,7 @@ export const showRelationship = (id) => async dispatch => {
       return null;
     }
     const {
-      label, description, style: _style, label_style, group,
+      label, description, style: _style, label_style, group, values
     } = relationship;
     const style = JSON.parse(_style);
     const labelStyle = JSON.parse(label_style);
@@ -62,6 +62,7 @@ export const showRelationship = (id) => async dispatch => {
       color,
       size,
       group,
+      values
     });
   } catch (error) {
     const message = genericErrorMessage;
@@ -69,12 +70,11 @@ export const showRelationship = (id) => async dispatch => {
   }
 };
 
-export const putRelationship = (id, label, description, style, label_style, group, history,) => async dispatch => {
+export const putRelationship = (id, label, values, description, style, label_style, group, history,) => async dispatch => {
   const url = `${baseUrl}/${RELATIONSHIPS}/${id}`;
   const body = {
-    label, description, style, label_style// , group wait for group dropdown
+    label, values, description, style, label_style, group
   };
-  console.log(body);
   const header = authHeader();
   try {
     await axios.put(url, body, header);
@@ -125,11 +125,10 @@ export const descriptionChange = description => ({
   description,
 });
 
-export const addAtrribut = attributs => ({
-  type: types.ADD_ATTRIBUT,
-  attributs
+export const valuesChange = values => ({
+  type: types.VALUES_CHANGE,
+  values
 });
-
 
 export const addGroup = group => ({
   type: types.ADD_GROUP,

@@ -74,9 +74,11 @@ import AlertDemo from './Alerts/AlertDemo';
 import WorkspaceForm from './Workspace/WorkspaceForm';
 import WorkspaceMeta from './Workspace/WorkspaceMeta';
 import WorkspaceFab from './Workspace/WorkspaceFab';
-import CustomConnectionLine from './Workspace/CustomConnectionLine';
-import CustomEdge from './Workspace/CustomEdge';
 import CustomNode from './Workspace/CustomNode';
+
+import CustomConnectionLine from './Workspace/Edge/CustomConnectionLine';
+import CustomEdge from './Workspace/Edge/CustomEdge';
+import DefineEdge from './Workspace/Edge/DefineEdge';
 
 export {
   Header,
@@ -136,4 +138,5 @@ export {
   CustomConnectionLine,
   CustomEdge,
   CustomNode,
+  DefineEdge
 };

@@ -3,27 +3,44 @@
 import React from 'react';
 import { getBezierPath, getMarkerEnd } from 'react-flow-renderer';
 
-const drawCurve = (sourceX, sourceY, targetX, targetY) => {
+const drawCurve = (sourceX, sourceY, targetX, targetY, convert) => {
   // mid-point of line:
-  const mpx = (targetX + sourceX) * 0.5;
-  const mpy = (targetY + sourceY) * 0.5;
+  let mpx = (targetX + sourceX) * 0.5;
+  let mpy = (targetY + sourceY) * 0.5;
+
+  if (convert) {
+    mpx = (sourceX + targetX) * 0.5;
+    mpy = (sourceY + targetY) * 0.5;
+  }
 
   // angle of perpendicular to line:
-  const theta = Math.atan2(targetY - sourceY, targetX - sourceX) - Math.PI / 2;
+  let theta = Math.atan2(targetY - sourceY, targetX - sourceX) - Math.PI / 2;
+
+  if (convert) {
+    theta = Math.atan2(sourceY - targetY, sourceX - targetX) - Math.PI / 2;
+  }
 
   // distance of control point from mid-point of line:
-  const offset = 100;
+  let offset = 100;
+
+  if (convert) {
+    offset = 50;
+  }
 
   // location of control point:
   const c1x = mpx + offset * Math.cos(theta);
   const c1y = mpy + offset * Math.sin(theta);
-
   // construct the command to draw a quadratic curve
-  const curve = 'M' + sourceX + ' ' + sourceY + ' Q ' + c1x + ' ' + c1y + ' ' + targetX + ' ' + targetY;
+  let curve = 'M' + sourceX + ' ' + sourceY + ' Q ' + c1x + ' ' + c1y + ' ' + targetX + ' ' + targetY;
+
+  if (convert) {
+    curve = 'M' + targetX + ' ' + targetY + ' Q ' + c1x + ' ' + c1y + ' ' + sourceX + ' ' + sourceY;
+  }
+
   return curve;
 };
 
-export default function CustomEdge({
+const CustomEdge = ({
   id,
   sourceX,
   sourceY,
@@ -35,20 +52,22 @@ export default function CustomEdge({
   data,
   arrowHeadType,
   markerEndId,
-}) {
+}) => {
   const edgePath = drawCurve(
-    sourceX, sourceY, targetX, targetY
+    sourceX, sourceY, targetX, targetY, data.convert
   );
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
 
   return (
     <>
       <path id={id} style={style} className="react-flow__edge-path" d={edgePath} markerEnd={markerEnd} />
-      <text onClick={data.click}>
+      <text dy="-10">
         <textPath href={`#${id}`} style={{ fontSize: '12px' }} startOffset="50%" textAnchor="middle">
           {data.text}
         </textPath>
       </text>
     </>
   );
-}
+};
+
+export default CustomEdge;

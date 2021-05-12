@@ -3,39 +3,16 @@ import PropTypes from 'prop-types';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useDispatch } from 'react-redux';
-import Tooltip from '@material-ui/core/Tooltip';
+import { mapSelectOptions, selectStyles } from '@api/ui/helper';
+import ReactTagInput from '@pathofdev/react-tag-input';
+import '@pathofdev/react-tag-input/build/index.css';
 import {
-  labelChange, descriptionChange, addGroup
+  labelChange, descriptionChange, addGroup, valuesChange
 } from '../../containers/Pages/Relationships/reducers/relationshipActions';
-
-// TODO: v2
-// const typeSuggestions = [
-//   { label: 'bezier' },
-//   { label: 'straight' },
-//   { label: 'step' },
-//   { label: 'smoothstep' },
-// ].map(suggestion => ({
-//   value: suggestion.label,
-//   label: suggestion.label,
-// }));
-
-const mapSelectOptions = (options) => options.map(suggestion => ({
-  value: suggestion.value,
-  label: (
-    <>
-      <Tooltip title={suggestion.label}>
-        <div style={{ width: '100%', height: '100%' }}>
-          <span style={{ paddingRight: '5px' }}>{suggestion.value}</span>
-        </div>
-      </Tooltip>
-    </>
-  ),
-}));
 
 
 const styles = theme => ({
@@ -63,27 +40,17 @@ const styles = theme => ({
 });
 
 
-function NodeForm(props) {
-  const theme = useTheme();
+function RelationshipForm(props) {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const {
     classes,
     label,
     description,
     group,
-    groupsDropDownOptions
+    groupsDropDownOptions,
+    values
   } = props;
-
-
-  const selectStyles = {
-    input: base => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
-  };
 
   const handleLabelChange = (e) => {
     dispatch(labelChange(e.target.value));
@@ -97,6 +64,10 @@ function NodeForm(props) {
     dispatch(addGroup(value.value));
   };
 
+  const onValueChanged = (_values) => {
+    dispatch(valuesChange(_values));
+  };
+  console.log(values.map((v, i) => ({ id: i + 1, displayValue: v })));
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -118,6 +89,14 @@ function NodeForm(props) {
                 value={label}
               />
             </div>
+            <div>
+              <ReactTagInput
+                tags={values}
+                onChange={onValueChanged}
+                removeOnBackspace
+                placeholder={`Mulige værdier ${label.length > 0 ? 'for ' + label : ''}`}
+              />
+            </div>
             <div className={classes.field}>
               <TextField
                 name="description"
@@ -131,25 +110,23 @@ function NodeForm(props) {
               />
             </div>
             <div className={classes.field}>
-              <NoSsr>
-                <Select
-                  classes={classes}
-                  styles={selectStyles}
-                  inputId="react-select-single"
-                  TextFieldProps={{
-                    label: 'groups',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single',
-                      shrink: true,
-                    },
-                    placeholder: 'groups',
-                  }}
-                  placeholder="groups"
-                  options={mapSelectOptions(groupsDropDownOptions)}
-                  value={group && { label: group, value: group }}
-                  onChange={handleChangeGroups}
-                />
-              </NoSsr>
+              <Select
+                classes={classes}
+                styles={selectStyles()}
+                inputId="react-select-single"
+                TextFieldProps={{
+                  label: 'groups',
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single',
+                    shrink: true,
+                  },
+                  placeholder: 'groups',
+                }}
+                placeholder="groups"
+                options={mapSelectOptions(groupsDropDownOptions)}
+                value={group && { label: group, value: group }}
+                onChange={handleChangeGroups}
+              />
             </div>
           </Paper>
         </Grid>
@@ -158,12 +135,13 @@ function NodeForm(props) {
   );
 }
 
-NodeForm.propTypes = {
+RelationshipForm.propTypes = {
   classes: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
+  values: PropTypes.array.isRequired,
   description: PropTypes.string.isRequired,
   group: PropTypes.string.isRequired,
   groupsDropDownOptions: PropTypes.any.isRequired,
 };
 
-export default withStyles(styles)(NodeForm);
+export default withStyles(styles)(RelationshipForm);
