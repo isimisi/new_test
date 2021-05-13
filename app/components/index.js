@@ -73,7 +73,7 @@ import AlertDemo from './Alerts/AlertDemo';
 // Workspace
 import WorkspaceForm from './Workspace/WorkspaceForm';
 import WorkspaceMeta from './Workspace/WorkspaceMeta';
-import WorkspaceFab from './Workspace/WorkspaceFab';
+import WorkspaceFabs from './Workspace/WorkspaceFabs';
 import CustomNode from './Workspace/CustomNode';
 
 import CustomConnectionLine from './Workspace/Edge/CustomConnectionLine';
@@ -134,7 +134,7 @@ export {
   AlertDemo,
   WorkspaceForm,
   WorkspaceMeta,
-  WorkspaceFab,
+  WorkspaceFabs,
   CustomConnectionLine,
   CustomEdge,
   CustomNode,

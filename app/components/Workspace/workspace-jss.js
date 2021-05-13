@@ -283,7 +283,7 @@ const styles = theme => ({
   row: {
     display: 'flex',
     flexDirection: 'row',
-    marginTop: 15,
+    marginTop: 5,
     marginLeft: 5,
     alignItems: 'center',
   },

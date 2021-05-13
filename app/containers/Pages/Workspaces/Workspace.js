@@ -11,7 +11,7 @@ import ReactFlow, {
   Background,
 } from 'react-flow-renderer';
 import {
-  WorkspaceFab, CustomNode,
+  WorkspaceFabs, CustomNode,
   DefineEdge, CustomEdge
 } from '@components';
 import PropTypes from 'prop-types';
@@ -180,7 +180,7 @@ const Workspace = (props) => {
         handleShowLabelChange={(e) => setShowlabel(e.target.checked)}
         handleSave={() => handleSave()}
       />
-      {/** !metaOpen && */!defineEdgeOpen && <WorkspaceFab />}
+      {/** !metaOpen && */!defineEdgeOpen && <WorkspaceFabs />}
     </div>
   );
 };

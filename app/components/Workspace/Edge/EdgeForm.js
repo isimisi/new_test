@@ -176,7 +176,6 @@ const EdgeForm = (props) => {
             </div>
           ) : null }
         </div>
-
         <div className={classes.row}>
           <Checkbox
             checked={showArrow}
