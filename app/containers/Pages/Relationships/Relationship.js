@@ -24,7 +24,6 @@ const Relationship = () => {
   const label = useSelector(state => state.getIn([reducer, 'label']));
   const values = useSelector(state => state.getIn([reducer, 'values'])).toJS();
   const description = useSelector(state => state.getIn([reducer, 'description']));
-  // const type = useSelector(state => state.getIn([reducer, 'type']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const colorSelector = useSelector(state => state.getIn([reducer, 'color']));
   const size = useSelector(state => state.getIn([reducer, 'size']));

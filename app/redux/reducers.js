@@ -22,6 +22,7 @@ import attribute from '../containers/Pages/Attributes/reducers/attributeReducer'
 import conditions from '../containers/Pages/Conditions/reducers/conditionReducer';
 import output from '../containers/Pages/Outputs/reducers/outputReducer';
 import alert from '../containers/Pages/Alerts/reducers/alertReducer';
+import workspace from '../containers/Pages/Workspaces/reducers/workspaceReducer';
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -32,6 +33,7 @@ export default function createReducer() {
     attribute,
     node,
     relationship,
+    workspace,
     conditions,
     output,
     alert,

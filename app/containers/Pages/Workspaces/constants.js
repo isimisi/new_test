@@ -1,6 +1,5 @@
 import React from 'react';
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable import/prefer-default-export */
+
 export const initElement = [
   {
     id: '1',
@@ -177,3 +176,5 @@ export const initElement = [
     arrowHeadType: 'arrowclosed',
   },
 ];
+
+export const reducer = 'workspace';

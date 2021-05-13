@@ -13,8 +13,6 @@ function DefineEdge(props) {
     handleChangeLabel,
     relationshipValue,
     handleChangeValue,
-    description,
-    handleDescriptionChange,
     type,
     handleTypeChange,
     color,
@@ -25,7 +23,8 @@ function DefineEdge(props) {
     handleAnimatedLineChange,
     showLabel,
     handleShowLabelChange,
-    handleSave
+    handleSave,
+    relationships
   } = props;
 
   return (
@@ -36,12 +35,11 @@ function DefineEdge(props) {
         title="Ændre din Relation"
       >
         <EdgeForm
+          relationships={relationships}
           relationshipLabel={relationshipLabel}
           handleChangeLabel={handleChangeLabel}
           relationshipValue={relationshipValue}
           handleChangeValue={handleChangeValue}
-          description={description}
-          handleDescriptionChange={handleDescriptionChange}
           type={type}
           handleTypeChange={handleTypeChange}
           color={color}
@@ -67,8 +65,6 @@ DefineEdge.propTypes = {
   handleChangeLabel: PropTypes.func.isRequired,
   relationshipValue: PropTypes.string.isRequired,
   handleChangeValue: PropTypes.func.isRequired,
-  description: PropTypes.string.isRequired,
-  handleDescriptionChange: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   handleTypeChange: PropTypes.func.isRequired,
   color: PropTypes.object.isRequired,
@@ -79,7 +75,8 @@ DefineEdge.propTypes = {
   handleAnimatedLineChange: PropTypes.func.isRequired,
   showLabel: PropTypes.bool.isRequired,
   handleShowLabelChange: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired
+  handleSave: PropTypes.func.isRequired,
+  relationships: PropTypes.array.isRequired,
 };
 
 export default withStyles(styles)(DefineEdge);

@@ -51,7 +51,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case POST_RELATIONSHIP_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set('label', '');
-        mutableState.set('values', '');
+        mutableState.set('values', List());
         mutableState.set('description', '');
         mutableState.set('type', '');
         mutableState.set('group', '');

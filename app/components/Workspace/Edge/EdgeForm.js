@@ -19,23 +19,9 @@ import StraightLine from './straightLine.svg';
 import SmoothStep from './smoothStep.svg';
 import Curve from './curve.svg';
 
-const groupsDropDownOptions = [
-  { label: 'Test1' },
-  { label: 'Test2' },
-  { label: 'Test3' },
-  { label: 'Test4' },
-  { label: 'Test1' },
-  { label: 'Test2' },
-  { label: 'Test3' },
-  { label: 'Test4' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
-
 const relationshipTypeOptions = [
   {
-    value: 'Lige linje',
+    value: 'straight',
     label: (
       <>
         <span style={{ paddingRight: '5px' }}>Lige linje</span>
@@ -44,7 +30,7 @@ const relationshipTypeOptions = [
     )
   },
   {
-    value: 'Beizer Kurve',
+    value: 'default',
     label: (
       <>
         <span style={{ paddingRight: '5px' }}>Beizer Kurve</span>
@@ -53,7 +39,7 @@ const relationshipTypeOptions = [
     )
   },
   {
-    value: 'Step kurve',
+    value: 'smoothstep',
     label: (
       <>
         <span style={{ paddingRight: '5px' }}>Step kurve</span>
@@ -62,7 +48,7 @@ const relationshipTypeOptions = [
     )
   },
   {
-    value: 'Kurvet kurve',
+    value: 'custom',
     label: (
       <>
         <span style={{ paddingRight: '5px' }}>Kurvet kurve</span>
@@ -81,8 +67,6 @@ const EdgeForm = (props) => {
     handleChangeLabel,
     relationshipValue,
     handleChangeValue,
-    description,
-    handleDescriptionChange,
     type,
     handleTypeChange,
     color,
@@ -93,11 +77,13 @@ const EdgeForm = (props) => {
     handleAnimatedLineChange,
     showLabel,
     handleShowLabelChange,
-    handleSave
+    handleSave,
+    relationships
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const editable = relationshipLabel.length === 0;
-
+  const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
+  console.log(type.length > 0 && relationshipTypeOptions.find(x => x.value === type));
   return (
     <div>
       <section className={css.bodyForm}>
@@ -115,7 +101,7 @@ const EdgeForm = (props) => {
               placeholder: 'label',
             }}
             placeholder="label"
-            options={mapSelectOptions(groupsDropDownOptions)}
+            options={mapSelectOptions(relationships.map(r => ({ value: r.label, label: r.description })))}
             value={relationshipLabel && { label: relationshipLabel, value: relationshipLabel }}
             onChange={handleChangeLabel}
           />
@@ -135,9 +121,9 @@ const EdgeForm = (props) => {
                 placeholder: 'Værdi',
               }}
               placeholder="Værdi"
+              options={choosenRelationship.values.map(r => ({ value: r, label: r }))}
               value={relationshipValue && { label: relationshipValue, value: relationshipValue }}
               onChange={handleChangeValue}
-              options={mapSelectOptions(groupsDropDownOptions)}
             />
           </div>
         )}
@@ -150,8 +136,8 @@ const EdgeForm = (props) => {
               label="Description"
               multiline
               rows={2}
-              onChange={handleDescriptionChange}
-              value={description}
+              disabled
+              value={choosenRelationship.description}
             />
           </div>
         )}
@@ -171,7 +157,7 @@ const EdgeForm = (props) => {
             }}
             placeholder="type"
             options={relationshipTypeOptions}
-            value={type && { label: type, value: type }}
+            value={type.length > 0 && relationshipTypeOptions.find(x => x.value === type)}
             onChange={handleTypeChange}
           />
         </div>
@@ -237,7 +223,7 @@ const EdgeForm = (props) => {
           color="secondary"
           type="button"
           onClick={handleSave}
-          disabled
+          disabled={relationshipLabel.length === 0 && relationshipValue === 0}
         >
             Save
         </Button>
@@ -253,8 +239,6 @@ EdgeForm.propTypes = {
   handleChangeLabel: PropTypes.func.isRequired,
   relationshipValue: PropTypes.string.isRequired,
   handleChangeValue: PropTypes.func.isRequired,
-  description: PropTypes.string.isRequired,
-  handleDescriptionChange: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   handleTypeChange: PropTypes.func.isRequired,
   color: PropTypes.object.isRequired,
@@ -265,7 +249,8 @@ EdgeForm.propTypes = {
   handleAnimatedLineChange: PropTypes.func.isRequired,
   showLabel: PropTypes.bool.isRequired,
   handleShowLabelChange: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired
+  handleSave: PropTypes.func.isRequired,
+  relationships: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(EdgeForm);

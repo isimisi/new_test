@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
   ReactFlowProvider,
@@ -16,9 +16,13 @@ import {
 } from '@components';
 import PropTypes from 'prop-types';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  useHistory
+} from 'react-router-dom';
 import styles from './workspace-jss';
-import { initElement } from './constants';
-
+import { initElement, reducer } from './constants';
+import { getRelationships, postEdge } from './reducers/workspaceActions';
 
 const onDragOver = (event) => {
   event.preventDefault();
@@ -35,31 +39,56 @@ const nodeTypes = {
 
 const Workspace = (props) => {
   const { classes } = props;
+  const dispatch = useDispatch();
   const reactFlowWrapper = useRef(null);
+  const history = useHistory();
+  const id = history.location.pathname.split('/').pop();
   // const [metaOpen, setMetaOpen] = useState(false);
   const [elements, setElements] = useState(initElement);
   const [reactFlowInstance, setReactFlowInstance] = useState();
 
-  // EDGE
+  // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
+  const [currentConnectionData, setCurrentConnectionData] = useState({});
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
-  const [relationshipDescription, setRelationshipDescription] = useState('');
   const [relationshipType, setRelationshipType] = useState('');
   const [relationshipColor, setRelationshipColor] = useState({
-    r: 0, g: 0, b: 0, a: 0
+    r: 0, g: 0, b: 0, a: 1
   });
   const [showArrow, setShowArrow] = useState(false);
   const [animatedLine, setAnimatedLine] = useState(false);
   const [showLabel, setShowlabel] = useState(false);
-  console.log(relationshipColor);
 
-  const onConnect = () => {
-    setDefineEdgeOpen(true);
+  const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
+
+  useEffect(() => {
+    dispatch(getRelationships());
+  }, []);
+
+  const onConnect = (data) => {
+    if (data.source !== data.target) {
+      setCurrentConnectionData(data);
+      setDefineEdgeOpen(true);
+    }
   };
 
-  const handleSave = (edge) => {
-    setElements((els) => addEdge(edge, els));
+  const handleSave = () => {
+    const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
+    const edge = {
+      relationship_id: choosenRelationship.id,
+      relationshipValue,
+      relationshipColor,
+      relationshipType,
+      showArrow,
+      animatedLine,
+      showLabel,
+      ...currentConnectionData
+    };
+
+    dispatch(postEdge(id, edge, setDefineEdgeOpen));
+
+    setElements((els) => addEdge(currentConnectionData, els));
   };
 
 
@@ -134,12 +163,11 @@ const Workspace = (props) => {
       <DefineEdge
         open={defineEdgeOpen}
         close={() => setDefineEdgeOpen(false)}
+        relationships={relationships}
         relationshipLabel={relationshipLabel}
         handleChangeLabel={(label) => setRelationshipLabel(label.value)}
         relationshipValue={relationshipValue}
-        handleChangeValue={(value) => setRelationshipValue(value.value)}
-        description={relationshipDescription}
-        handleDescriptionChange={(e) => setRelationshipDescription(e.target.value)}
+        handleChangeValue={(value) => setRelationshipValue(value ? value.value : value)}
         type={relationshipType}
         handleTypeChange={(type) => setRelationshipType(type.value)}
         color={relationshipColor}
@@ -150,7 +178,7 @@ const Workspace = (props) => {
         handleAnimatedLineChange={(e) => setAnimatedLine(e.target.checked)}
         showLabel={showLabel}
         handleShowLabelChange={(e) => setShowlabel(e.target.checked)}
-        handleSave={(edge) => handleSave(edge)}
+        handleSave={() => handleSave()}
       />
       {/** !metaOpen && */!defineEdgeOpen && <WorkspaceFab />}
     </div>
