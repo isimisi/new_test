@@ -3,9 +3,11 @@ import React, { memo } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
+import { useSelector } from 'react-redux';
 
 const CustomNode = (data) => {
   const theme = useTheme();
+  const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
   const nodeStyle = {
     border: '1px solid',
     display: 'flex',
@@ -25,8 +27,8 @@ const CustomNode = (data) => {
       <Handle
         style={{
           backgroundColor: theme.palette.secondary.main,
-          height: 8,
-          width: 8,
+          height: handleVisability ? 8 : 0,
+          width: handleVisability ? 8 : 0,
         }}
         type="target"
         id="top"
@@ -35,8 +37,8 @@ const CustomNode = (data) => {
       <Handle
         style={{
           top: 37,
-          height: 8,
-          width: 8,
+          height: handleVisability ? 8 : 0,
+          width: handleVisability ? 8 : 0,
         }}
         type="source"
         id="left"
@@ -46,8 +48,8 @@ const CustomNode = (data) => {
         style={{
           top: 27,
           backgroundColor: theme.palette.secondary.main,
-          height: 8,
-          width: 8,
+          height: handleVisability ? 8 : 0,
+          width: handleVisability ? 8 : 0,
         }}
         type="target"
         id="1left"
@@ -56,8 +58,8 @@ const CustomNode = (data) => {
       <Handle
         style={{
           top: 27,
-          height: 8,
-          width: 8,
+          height: handleVisability ? 8 : 0,
+          width: handleVisability ? 8 : 0,
         }}
         type="source"
         id="right"
@@ -67,8 +69,8 @@ const CustomNode = (data) => {
         style={{
           top: 37,
           backgroundColor: theme.palette.secondary.main,
-          height: 8,
-          width: 8,
+          height: handleVisability ? 8 : 0,
+          width: handleVisability ? 8 : 0,
         }}
         type="target"
         id="1right"
@@ -76,8 +78,8 @@ const CustomNode = (data) => {
       />
       <Handle
         style={{
-          height: 8,
-          width: 8,
+          height: handleVisability ? 8 : 0,
+          width: handleVisability ? 8 : 0,
         }}
         type="source"
         id="bottom"

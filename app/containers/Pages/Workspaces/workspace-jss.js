@@ -10,6 +10,23 @@ const drawerWidth = 300;
 const drawerHeight = '90vh';
 
 const styles = theme => ({
+  table: {
+    '& > div': {
+      overflow: 'auto'
+    },
+    '& table': {
+      '& td': {
+        wordBreak: 'keep-all'
+      },
+      [theme.breakpoints.down('md')]: {
+        '& td': {
+          height: 60,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
+        }
+      }
+    }
+  },
   root: {
     flexGrow: 1,
     height: drawerHeight,

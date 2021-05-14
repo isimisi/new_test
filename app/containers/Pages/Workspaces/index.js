@@ -1,145 +1,60 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Chip from '@material-ui/core/Chip';
-import Button from '@material-ui/core/Button';
 import MUIDataTable from 'mui-datatables';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  useHistory
+} from 'react-router-dom';
+import {
+  tableOptions,
+  columns,
+  reducer
+} from './constants';
+import styles from './workspace-jss';
+import {
+  getWorkspaces, closeNotifAction, postWorkspace, deleteWorkspaces
+} from './reducers/workspaceActions';
+import { Notification } from '@components';
 
-const styles = theme => ({
-  table: {
-    '& > div': {
-      overflow: 'auto'
-    },
-    '& table': {
-      '& td': {
-        wordBreak: 'keep-all'
-      },
-      [theme.breakpoints.down('md')]: {
-        '& td': {
-          height: 60,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis'
-        }
-      }
-    }
-  },
-  addBtn: {
-    position: 'fixed',
-    bottom: 30,
-    right: 50,
-    zIndex: 100,
-  },
-});
-/*
-  It uses npm mui-datatables. It's easy to use, you just describe columns and data collection.
-  Checkout full documentation here :
-  https://github.com/gregnb/mui-datatables/blob/master/README.md
-*/
-function Workspaces(props) {
-  const columns = [
-    {
-      name: 'Title',
-      options: {
-        filter: true
-      }
-    },
-    {
-      name: 'Description',
-      options: {
-        filter: true,
-      }
-    },
-    {
-      name: 'Group',
-      options: {
-        filter: true,
-      }
-    },
-    {
-      name: 'Tags',
-      options: {
-        filter: true,
-        customBodyRender: (value) => {
-          if (value === 'active') {
-            return (<Chip label="Active" />);
-          }
-          if (value === 'non-active') {
-            return (<Chip label="Non Active" color="primary" />);
-          }
-          return (<Chip label="Unknown" />);
-        }
-      }
-    },
-    {
-      name: 'See Workspace',
-      options: {
-        filter: true,
-        customBodyRender: (value) => (
-          <Button variant="contained" color="primary" href={`/app/workspaces/${value}`}>
-              Open
-          </Button>
-        )
-      }
-    },
-    {
-      name: 'See Report',
-      options: {
-        filter: true,
-        customBodyRender: (value) => (
-          <Button variant="contained" color="secondary" href={`/app/conditions/${value}`}>
-              Open
-          </Button>
-        )
-      }
-    },
-    {
-      name: 'Last Edited',
-      options: {
-        filter: true,
-      }
-    },
-  ];
-
-  const data = [
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 1, 1, 'Friday at 3:59 pm'],
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 2, 2, 'Friday at 3:59 pm'],
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 3, 3, 'Friday at 3:59 pm'],
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 4, 4, 'Friday at 3:59 pm'],
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 5, 5, 'Friday at 3:59 pm'],
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 6, 6, 'Friday at 3:59 pm'],
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 7, 7, 'Friday at 3:59 pm'],
-    ['Test Workspace', 'This is a test of a workspace', 'Test group', 'active', 8, 8, 'Friday at 3:59 pm'],
-  ];
-
-  const options = {
-    filterType: 'dropdown',
-    responsive: 'stacked',
-    print: true,
-    rowsPerPage: 10,
-    page: 0
-  };
-
+const Workspaces = (props) => {
   const { classes } = props;
+  const dispatch = useDispatch();
+  const workspaces = useSelector(state => state.getIn([reducer, 'workspaces'])).toJS();
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const history = useHistory();
+
+  useEffect(() => {
+    dispatch(getWorkspaces());
+  }, []);
+
+  const onDelete = ({ data }) => {
+    const deletedWorkspaces = data.map(v => ({ id: workspaces[v.index][3], title: workspaces[v.index][0] }));
+    deletedWorkspaces.forEach(e => {
+      dispatch(deleteWorkspaces(e.id, e.title));
+    });
+  };
 
   return (
     <div className={classes.table}>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
         title="Your Workspaces"
-        data={data}
+        data={workspaces}
         columns={columns}
-        options={options}
+        options={tableOptions(onDelete)}
         elevation={10}
       />
       <Tooltip title="New Workspace">
-        <Fab variant="extended" color="primary" className={classes.addBtn}>
+        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postWorkspace(history))}>
             Create new Workspace
         </Fab>
       </Tooltip>
     </div>
   );
-}
+};
 
 Workspaces.propTypes = {
   classes: PropTypes.object.isRequired

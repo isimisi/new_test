@@ -312,6 +312,10 @@ const styles = theme => ({
     bottom: '0px',
     left: '0px',
   },
+  inlineWrap: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
 });
 
 export default styles;

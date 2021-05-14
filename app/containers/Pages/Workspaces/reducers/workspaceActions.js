@@ -5,10 +5,92 @@ import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import * as types from './workspaceConstants';
 
-// const WORKSPACE = 'workspace';
+const WORKSPACES = 'workspaces';
+
+export const getWorkspaces = () => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}`;
+  const header = authHeader();
+
+  try {
+    const response = await axios.get(url, header);
+    const workspaces = response.data;
+    dispatch({ type: types.GET_WORKSPACES_SUCCESS, workspaces });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_WORKSPACES_FAILED, message });
+  }
+};
+
+export const postWorkspace = (history) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}`;
+  const body = {};
+  const header = authHeader();
+
+  try {
+    const response = await axios.post(url, body, header);
+    const { id } = response.data;
+    dispatch({ type: types.POST_WORKSPACE_SUCCESS });
+    history.push(`${WORKSPACES}/${id}`);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_WORKSPACE_FAILED, message });
+  }
+};
+
+
+export const putWorkspace = (workspace_id, label, description, group, setMetaOpen) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/${workspace_id}`;
+  const body = {
+    label, description, group
+  };
+  const header = authHeader();
+
+  try {
+    await axios.put(url, body, header);
+    const message = 'Metatekst er nu opdateret';
+    dispatch({ type: types.PUT_WORKSPACE_SUCCESS, message });
+    setMetaOpen(false);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.PUT_WORKSPACE_FAILED, message });
+  }
+};
+
+export const deleteWorkspaces = (id, title) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/${id}`;
+  const header = authHeader();
+  try {
+    await axios.delete(url, header);
+    const message = `You have deleted ${title}`;
+    dispatch({ type: types.DELETE_WORKSPACE_SUCCESS, message });
+    dispatch(getWorkspaces());
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.DELETE_WORKSPACE_FAILED, message });
+  }
+};
+
+export const postNode = (workspace_id, node_id, node, setDefineNodeOpen) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/nodes`;
+  const body = {
+    workspace_id,
+    node_id
+  };
+  const header = authHeader();
+
+  try {
+    await axios.post(url, body, header);
+    dispatch({ type: types.POST_NODE_SUCCESS, node });
+    setDefineNodeOpen(false);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_NODE_FAILED, message });
+  }
+};
+
 
 export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatch => {
-  const url = `${baseUrl}/workspaces/relationship`;
+  const url = `${baseUrl}/${WORKSPACES}/relationship`;
   const body = {
     workspace_id,
     source_id: edge.source,
@@ -34,6 +116,19 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatc
     console.log(body);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_EDGE_FAILED, message });
+  }
+};
+
+export const getNodes = () => async dispatch => {
+  const url = `${baseUrl}/nodes/workspace`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const nodes = response.data;
+    dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
   }
 };
 
@@ -81,6 +176,11 @@ export const addGroup = group => ({
 export const addEdge = edge => ({
   type: types.ADD_EDGE,
   edge,
+});
+
+export const changeHandleVisability = bool => ({
+  type: types.SHOW_HANDLES_CHANGE,
+  bool,
 });
 
 export const closeNotifAction = {

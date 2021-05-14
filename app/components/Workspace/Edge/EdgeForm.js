@@ -83,7 +83,7 @@ const EdgeForm = (props) => {
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const editable = relationshipLabel.length === 0;
   const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
-  console.log(type.length > 0 && relationshipTypeOptions.find(x => x.value === type));
+
   return (
     <div>
       <section className={css.bodyForm}>

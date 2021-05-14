@@ -10,17 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useDispatch } from 'react-redux';
 import {
-  titleChange, descriptionChange, addAtrribut, addType, addGroup
+  titleChange, descriptionChange, addAtrribut, addGroup
 } from '../../containers/Pages/Nodes/reducers/nodeActions';
-
-const typeSuggestions = [
-  { label: 'input' },
-  { label: 'output' },
-  { label: 'selectorNode' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
 
 const mapSelectOptions = (options) => options.map(suggestion => ({
   value: suggestion.value,
@@ -69,7 +60,6 @@ function NodeForm(props) {
     title,
     description,
     attributes,
-    type,
     group,
     attributesDropDownOptions,
     groupsDropDownOptions
@@ -111,10 +101,6 @@ function NodeForm(props) {
     dispatch(addAtrribut(mutableArray));
   };
 
-
-  const handleChangeType = (value) => {
-    dispatch(addType(value.value));
-  };
   const handleChangeGroups = (value) => {
     dispatch(addGroup(value.value));
   };
@@ -192,28 +178,6 @@ function NodeForm(props) {
                   styles={selectStyles}
                   inputId="react-select-single"
                   TextFieldProps={{
-                    label: 'type',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single',
-                      shrink: true,
-                    },
-                    placeholder: 'type',
-                  }}
-                  placeholder="type"
-                  options={typeSuggestions}
-                  value={type && { label: type, value: type }}
-                  onChange={handleChangeType}
-
-                />
-              </NoSsr>
-            </div>
-            <div className={classes.field}>
-              <NoSsr>
-                <Select
-                  classes={classes}
-                  styles={selectStyles}
-                  inputId="react-select-single"
-                  TextFieldProps={{
                     label: 'groups',
                     InputLabelProps: {
                       htmlFor: 'react-select-single',
@@ -240,7 +204,6 @@ NodeForm.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   attributes: PropTypes.any.isRequired,
-  type: PropTypes.string.isRequired,
   group: PropTypes.string.isRequired,
   attributesDropDownOptions: PropTypes.any.isRequired,
   groupsDropDownOptions: PropTypes.any.isRequired

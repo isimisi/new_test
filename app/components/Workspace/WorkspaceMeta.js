@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import ComposeEmailForm from './WorkspaceForm';
+import WorkspaceForm from './WorkspaceForm';
 import FloatingPanel from '../Panel/FloatingPanel';
 import styles from './workspace-jss';
 
@@ -9,11 +9,14 @@ function WorkspaceMeta(props) {
   const {
     open,
     closeForm,
-    sendEmail,
-    to,
-    subject,
-    validMail,
-    inputChange,
+    label,
+    description,
+    group,
+    labelChange,
+    descriptionChange,
+    addGroup,
+    groupsDropDownOptions,
+    onSave
   } = props;
   const branch = '';
   return (
@@ -22,15 +25,18 @@ function WorkspaceMeta(props) {
         openForm={open}
         branch={branch}
         closeForm={closeForm}
-        title="Edit Properties"// "Name your Workspace"
+        title="Name your Workspace"
       >
-        <ComposeEmailForm
-          to={to}
-          subject={subject}
-          validMail={validMail}
-          sendEmail={sendEmail}
+        <WorkspaceForm
+          label={label}
+          description={description}
+          group={group}
+          labelChange={labelChange}
+          descriptionChange={descriptionChange}
+          addGroup={addGroup}
+          groupsDropDownOptions={groupsDropDownOptions}
           closeForm={closeForm}
-          inputChange={inputChange}
+          onSave={onSave}
         />
       </FloatingPanel>
     </div>
@@ -39,12 +45,15 @@ function WorkspaceMeta(props) {
 
 WorkspaceMeta.propTypes = {
   open: PropTypes.bool.isRequired,
-  to: PropTypes.string.isRequired,
-  subject: PropTypes.string.isRequired,
-  validMail: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  group: PropTypes.string.isRequired,
+  labelChange: PropTypes.func.isRequired,
+  descriptionChange: PropTypes.func.isRequired,
+  addGroup: PropTypes.func.isRequired,
+  groupsDropDownOptions: PropTypes.array.isRequired,
   closeForm: PropTypes.func.isRequired,
-  sendEmail: PropTypes.func.isRequired,
-  inputChange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(WorkspaceMeta);

@@ -10,7 +10,7 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import PropTypes from 'prop-types';
 
 const WorkspaceFab = (props) => {
-  const { nodeClick } = props;
+  const { nodeClick, metaClick } = props;
   const theme = useTheme();
 
   return (
@@ -34,6 +34,7 @@ const WorkspaceFab = (props) => {
         <Action
           text="Metadata"
           style={{ backgroundColor: theme.palette.secondary.light }}
+          onClick={metaClick}
         >
           <TextFieldsIcon />
         </Action>
@@ -50,6 +51,7 @@ const WorkspaceFab = (props) => {
 
 WorkspaceFab.propTypes = {
   nodeClick: PropTypes.func.isRequired,
+  metaClick: PropTypes.func.isRequired,
 };
 
 export default WorkspaceFab;

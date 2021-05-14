@@ -12,7 +12,8 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import {
   WorkspaceFabs, CustomNode,
-  DefineEdge, CustomEdge, DefineNode
+  DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
+  Notification
 } from '@components';
 import PropTypes from 'prop-types';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
@@ -20,18 +21,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import styles from './workspace-jss';
 import { initElement, reducer } from './constants';
-import { getRelationships, postEdge } from './reducers/workspaceActions';
+import {
+  getRelationships, getNodes, postEdge, postNode,
+  changeHandleVisability, labelChange, descriptionChange,
+  addGroup, getGroupDropDown, putWorkspace, closeNotifAction
+} from './reducers/workspaceActions';
+import { getSize } from '../Nodes/constants';
 
 const onDragOver = (event) => {
   event.preventDefault();
   event.dataTransfer.dropEffect = 'move';
 };
-
-
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 
 const nodeTypes = {
   custom: CustomNode
@@ -43,9 +48,8 @@ const Workspace = (props) => {
   const reactFlowWrapper = useRef(null);
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
-  // const [metaOpen, setMetaOpen] = useState(false);
+  const [metaOpen, setMetaOpen] = useState(false);
   const [elements, setElements] = useState(initElement);
-  const [reactFlowInstance, setReactFlowInstance] = useState();
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
@@ -60,11 +64,23 @@ const Workspace = (props) => {
   const [animatedLine, setAnimatedLine] = useState(false);
   const [showLabel, setShowlabel] = useState(false);
 
+  // REDUX
   const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
+  const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
+  const handleVisability = useSelector(state => state.getIn([reducer, 'handleVisability']));
+  const label = useSelector(state => state.getIn([reducer, 'label']));
+  const description = useSelector(state => state.getIn([reducer, 'description']));
+  const group = useSelector(state => state.getIn([reducer, 'group']));
+  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
 
-  const [defineNodeOpen, setDefineNodeOpen] = useState(true);
+
+  const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
-  const [attribues, setAttributes] = useState([]);
+  const [attributes, setAttributes] = useState([{
+    label: null,
+    value: ''
+  }]);
   const [nodeSize, setNodeSize] = useState('Medium');
   const [nodeColor, setNodeColor] = useState({
     r: 255, g: 255, b: 255, a: 1
@@ -73,8 +89,26 @@ const Workspace = (props) => {
     r: 0, g: 0, b: 0, a: 1
   });
 
+
+  const choosenNode = nodes.find(r => r.label === nodeLabel);
+  const choosenNodeStyle = choosenNode && JSON.parse(choosenNode.style);
+
+  useEffect(() => {
+    if (choosenNode) {
+      setNodeColor(choosenNodeStyle.backgroundColor);
+      setNodeBorderColor(choosenNodeStyle.borderColor);
+      setNodeSize(getSize(choosenNodeStyle.width));
+    }
+  }, [nodeLabel]);
+
   useEffect(() => {
     dispatch(getRelationships());
+    dispatch(getNodes());
+    dispatch(getGroupDropDown());
+
+    if (label.length === 0 || description.length === 0 || group.length === 0) {
+      setMetaOpen(true);
+    }
   }, []);
 
   const onConnect = (data) => {
@@ -84,7 +118,7 @@ const Workspace = (props) => {
     }
   };
 
-  const handleSave = () => {
+  const handleRelationshipSave = () => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
     const edge = {
       relationship_id: choosenRelationship.id,
@@ -112,30 +146,30 @@ const Workspace = (props) => {
     setElements((els) => addEdge(currentConnectionData, els));
   };
 
+  const handleNodeSave = () => {
+    const newNode = {
+      id: Math.random() * 10000, // TODO: make logic for this,
+      type: 'custom',
+      data: {
+        label: (
+          <>
+            <Typography variant="subtitle1">{choosenNode.label}</Typography>
+          </>
+        ),
+      },
+      position: { x: 0, y: 0 },
+    };
+
+    dispatch(postNode(id, choosenNode.id, newNode, setDefineNodeOpen));
+
+    setNodeLabel('');
+    setElements((els) => els.concat(newNode));
+  };
+
 
   const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
   const onLoad = (_reactFlowInstance) => {
-    setReactFlowInstance(_reactFlowInstance);
     _reactFlowInstance.fitView();
-  };
-
-  const onDrop = (event) => {
-    event.preventDefault();
-
-    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-    const type = event.dataTransfer.getData('application/reactflow');
-    const position = reactFlowInstance.project({
-      x: event.clientX - reactFlowBounds.left,
-      y: event.clientY - reactFlowBounds.top,
-    });
-    const newNode = {
-      id: getId(),
-      type,
-      position,
-      data: { label: `${type} node` },
-    };
-
-    setElements((es) => es.concat(newNode));
   };
 
   const onElementClick = (event, element) => {
@@ -144,6 +178,7 @@ const Workspace = (props) => {
 
   return (
     <div>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <ReactFlowProvider>
         <div className={classes.root}>
           <div
@@ -157,7 +192,6 @@ const Workspace = (props) => {
               nodeTypes={nodeTypes}
               edgeTypes={{ custom: CustomEdge }}
               onLoad={onLoad}
-              onDrop={onDrop}
               onDragOver={onDragOver}
               connectionMode="loose"
               onElementClick={onElementClick}
@@ -166,27 +200,33 @@ const Workspace = (props) => {
                 <ControlButton onClick={() => console.log('another action')}>
                   <PhotoCameraIcon />
                 </ControlButton>
+                <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
+                  {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </ControlButton>
               </Controls>
               <Background color="#aaa" gap={16} />
             </ReactFlow>
           </div>
         </div>
       </ReactFlowProvider>
-      {/* <WorkspaceMeta
+      <WorkspaceMeta
         open={metaOpen}
-        to={title}
-        subject={description}
-        validMail=""
+        label={label}
+        description={description}
+        group={group}
+        labelChange={(e) => dispatch(labelChange(e.target.value))}
+        descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
+        addGroup={(_group) => dispatch(addGroup(_group.value))}
+        groupsDropDownOptions={groupsDropDownOptions}
+        onSave={() => dispatch(putWorkspace(id, label, description, group, setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
-        sendEmail={() => {}}
-        inputChange={() => {}}
-      /> */}
+      />
       <DefineEdge
         open={defineEdgeOpen}
         close={() => setDefineEdgeOpen(false)}
         relationships={relationships}
         relationshipLabel={relationshipLabel}
-        handleChangeLabel={(label) => setRelationshipLabel(label.value)}
+        handleChangeLabel={(_label) => setRelationshipLabel(_label.value)}
         relationshipValue={relationshipValue}
         handleChangeValue={(value) => setRelationshipValue(value ? value.value : value)}
         type={relationshipType}
@@ -199,24 +239,25 @@ const Workspace = (props) => {
         handleAnimatedLineChange={(e) => setAnimatedLine(e.target.checked)}
         showLabel={showLabel}
         handleShowLabelChange={(e) => setShowlabel(e.target.checked)}
-        handleSave={() => handleSave()}
+        handleSave={() => handleRelationshipSave()}
       />
       <DefineNode
         open={defineNodeOpen}
         close={() => { setDefineNodeOpen(false); }}
-        nodes={[]}
+        nodes={nodes}
         nodeLabel={nodeLabel}
-        handleChangeLabel={(label) => setNodeLabel(label.value)}
-        attribues={attribues}
-        handleChangeAttributes={(attributes) => setAttributes(attributes)}
+        handleChangeLabel={(_label) => setNodeLabel(_label.value)}
+        attributes={attributes}
+        handleChangeAttributes={(_attributes) => setAttributes(_attributes)}
         nodeSize={nodeSize}
         handleChangeSize={(size) => setNodeSize(size)}
         nodeColor={nodeColor}
         handleChangeColor={(color) => setNodeColor(color.rgb)}
         nodeBorderColor={nodeBorderColor}
-        handleBorderColorChange={(color) => setNodeBorderColor(color)}
+        handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
+        handleNodeSave={handleNodeSave}
       />
-      {/** !metaOpen && */!defineEdgeOpen && !defineNodeOpen && <WorkspaceFabs />}
+      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && <WorkspaceFabs nodeClick={() => setDefineNodeOpen(true)} metaClick={() => setMetaOpen(true)} />}
     </div>
   );
 };

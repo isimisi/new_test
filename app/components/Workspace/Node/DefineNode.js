@@ -5,21 +5,22 @@ import WorkspaceNodeForm from './WorkspaceNodeForm';
 import FloatingPanel from '../../Panel/FloatingPanel';
 import styles from '../workspace-jss';
 
-function DefineEdge(props) {
+function DefineNode(props) {
   const {
     open,
     close,
     nodes,
     nodeLabel,
     handleChangeLabel,
-    attribues,
+    attributes,
     handleChangeAttributes,
     nodeSize,
     handleChangeSize,
     nodeColor,
     handleChangeColor,
     nodeBorderColor,
-    handleBorderColorChange
+    handleBorderColorChange,
+    handleNodeSave
   } = props;
 
   return (
@@ -33,7 +34,7 @@ function DefineEdge(props) {
           nodes={nodes}
           nodeLabel={nodeLabel}
           handleChangeLabel={handleChangeLabel}
-          attribues={attribues}
+          attributes={attributes}
           handleChangeAttributes={handleChangeAttributes}
           nodeSize={nodeSize}
           handleChangeSize={handleChangeSize}
@@ -41,19 +42,20 @@ function DefineEdge(props) {
           handleChangeColor={handleChangeColor}
           nodeBorderColor={nodeBorderColor}
           handleBorderColorChange={handleBorderColorChange}
+          handleNodeSave={handleNodeSave}
         />
       </FloatingPanel>
     </div>
   );
 }
 
-DefineEdge.propTypes = {
+DefineNode.propTypes = {
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   nodes: PropTypes.array.isRequired,
   nodeLabel: PropTypes.string.isRequired,
   handleChangeLabel: PropTypes.func.isRequired,
-  attribues: PropTypes.array.isRequired,
+  attributes: PropTypes.array.isRequired,
   handleChangeAttributes: PropTypes.func.isRequired,
   nodeSize: PropTypes.string.isRequired,
   handleChangeSize: PropTypes.func.isRequired,
@@ -61,6 +63,7 @@ DefineEdge.propTypes = {
   handleChangeColor: PropTypes.func.isRequired,
   nodeBorderColor: PropTypes.object.isRequired,
   handleBorderColorChange: PropTypes.func.isRequired,
+  handleNodeSave: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(DefineEdge);
+export default withStyles(styles)(DefineNode);

@@ -27,8 +27,8 @@ function Relationships(props) {
   }, []);
 
   const onDelete = ({ data }) => {
-    const deletedNodes = data.map(v => ({ id: relationships[v.index][3], title: relationships[v.index][0] }));
-    deletedNodes.forEach(e => {
+    const deletedRelationships = data.map(v => ({ id: relationships[v.index][3], title: relationships[v.index][0] }));
+    deletedRelationships.forEach(e => {
       dispatch(deleteRelationship(e.id, e.title));
     });
   };
