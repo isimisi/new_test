@@ -12,7 +12,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import {
   WorkspaceFabs, CustomNode,
-  DefineEdge, CustomEdge
+  DefineEdge, CustomEdge, DefineNode
 } from '@components';
 import PropTypes from 'prop-types';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
@@ -62,6 +62,17 @@ const Workspace = (props) => {
 
   const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
 
+  const [defineNodeOpen, setDefineNodeOpen] = useState(true);
+  const [nodeLabel, setNodeLabel] = useState('');
+  const [attribues, setAttributes] = useState([]);
+  const [nodeSize, setNodeSize] = useState('Medium');
+  const [nodeColor, setNodeColor] = useState({
+    r: 255, g: 255, b: 255, a: 1
+  });
+  const [nodeBorderColor, setNodeBorderColor] = useState({
+    r: 0, g: 0, b: 0, a: 1
+  });
+
   useEffect(() => {
     dispatch(getRelationships());
   }, []);
@@ -87,6 +98,16 @@ const Workspace = (props) => {
     };
 
     dispatch(postEdge(id, edge, setDefineEdgeOpen));
+
+    setRelationshipLabel('');
+    setRelationshipValue('');
+    setRelationshipType('');
+    setRelationshipColor({
+      r: 0, g: 0, b: 0, a: 1
+    });
+    setShowArrow(false);
+    setAnimatedLine(false);
+    setShowlabel(false);
 
     setElements((els) => addEdge(currentConnectionData, els));
   };
@@ -180,7 +201,22 @@ const Workspace = (props) => {
         handleShowLabelChange={(e) => setShowlabel(e.target.checked)}
         handleSave={() => handleSave()}
       />
-      {/** !metaOpen && */!defineEdgeOpen && <WorkspaceFabs />}
+      <DefineNode
+        open={defineNodeOpen}
+        close={() => { setDefineNodeOpen(false); }}
+        nodes={[]}
+        nodeLabel={nodeLabel}
+        handleChangeLabel={(label) => setNodeLabel(label.value)}
+        attribues={attribues}
+        handleChangeAttributes={(attributes) => setAttributes(attributes)}
+        nodeSize={nodeSize}
+        handleChangeSize={(size) => setNodeSize(size)}
+        nodeColor={nodeColor}
+        handleChangeColor={(color) => setNodeColor(color.rgb)}
+        nodeBorderColor={nodeBorderColor}
+        handleBorderColorChange={(color) => setNodeBorderColor(color)}
+      />
+      {/** !metaOpen && */!defineEdgeOpen && !defineNodeOpen && <WorkspaceFabs />}
     </div>
   );
 };

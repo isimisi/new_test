@@ -48,6 +48,8 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case POST_ATTRIBUTE_SUCCESS:
       return state.withMutations((mutableState) => {
+        const id = fromJS(action.id);
+        mutableState.set('id', id);
         mutableState.set('label', '');
         mutableState.set('description', '');
         mutableState.set('type', 'Value');

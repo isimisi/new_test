@@ -1,4 +1,5 @@
 import React from 'react';
+import Typography from '@material-ui/core/Typography';
 
 export const initElement = [
   {
@@ -7,7 +8,7 @@ export const initElement = [
     data: {
       label: (
         <>
-          <strong>Lux Fund</strong>
+          <Typography variant="subtitle1">Lux Fund</Typography>
         </>
       ),
     },
@@ -19,7 +20,7 @@ export const initElement = [
     data: {
       label: (
         <>
-          <strong>DK HoldCo</strong>
+          <Typography variant="subtitle1">DK HoldCo</Typography>
         </>
       ),
     },
@@ -31,7 +32,7 @@ export const initElement = [
     data: {
       label: (
         <>
-          <strong>Seller</strong>
+          <Typography variant="subtitle1">Seller</Typography>
         </>
       ),
     },
@@ -43,7 +44,7 @@ export const initElement = [
     data: {
       label: (
         <>
-          <strong>Target</strong>
+          <Typography variant="subtitle1">Target</Typography>
         </>
       ),
     },
@@ -55,7 +56,7 @@ export const initElement = [
     data: {
       label: (
         <>
-          <strong>Investors</strong>
+          <Typography variant="subtitle1">Investors</Typography>
         </>
       ),
     },
@@ -67,7 +68,7 @@ export const initElement = [
     data: {
       label: (
         <>
-          <strong>Investors</strong>
+          <Typography variant="subtitle1">Investors</Typography>
         </>
       ),
     },

@@ -35,10 +35,10 @@ function Attributes(props) {
     dispatch(getGroupDropDown());
   }, []);
 
-  const onOpen = () => {
+  const onOpen = (value) => {
     setOpen(true);
-    dispatch(changeCurrentAttribute(id));
-    dispatch(showAttribute(id));
+    dispatch(changeCurrentAttribute(value));
+    dispatch(showAttribute(value));
   };
 
   const onDelete = ({ data }) => {

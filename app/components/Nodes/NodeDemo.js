@@ -13,7 +13,7 @@ const styles = theme => ({
     flexDirection: 'column',
   },
   node: {
-    border: '3px solid',
+    border: '1px solid',
     borderRadius: theme.rounded.small,
     display: 'flex',
     padding: 18,
@@ -74,7 +74,7 @@ const NodeDemo = (props) => {
           style={{ backgroundColor, borderColor, width: getWidth() }}
         >
           <div>
-            <Typography variant="h7" component="h3">
+            <Typography variant="h6" component="h3">
               {title}
             </Typography>
           </div>

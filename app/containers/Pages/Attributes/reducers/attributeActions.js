@@ -24,8 +24,9 @@ export const postAttribute = () => async dispatch => {
   const body = {};
   const header = authHeader();
   try {
-    await axios.post(url, body, header);
-    dispatch({ type: types.POST_ATTRIBUTE_SUCCESS });
+    const response = await axios.post(url, body, header);
+    const { id } = response.data;
+    dispatch({ type: types.POST_ATTRIBUTE_SUCCESS, id });
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.POST_ATTRIBUTE_FAILED, message });
@@ -58,17 +59,20 @@ export const showAttribute = (id) => async dispatch => {
 
 export const putAttribute = (id, label, description, type, group, selectionOptions) => async dispatch => {
   const url = `${baseUrl}/${ATTRIBUTS}/${id}`;
+  console.log(id);
   const body = {
     label, description, type, group
   };
-  body.selectionOptions = type === 'Selection' && JSON.stringify(selectionOptions);
+  body.selectionOptions = type === 'Selection' ? JSON.stringify(selectionOptions) : null;
   const header = authHeader();
-  console.log(body);
+
   try {
     await axios.put(url, body, header);
     const message = 'You have updated your node';
     dispatch({ type: types.PUT_ATTRIBUTE_SUCCESS, message });
+    dispatch(getAttributes());
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_ATTRIBUTE_FAILED, message });
   }

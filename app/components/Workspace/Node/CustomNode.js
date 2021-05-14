@@ -2,11 +2,12 @@
 import React, { memo } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { Handle, Position } from 'react-flow-renderer';
+import Typography from '@material-ui/core/Typography';
 
 const CustomNode = (data) => {
   const theme = useTheme();
   const nodeStyle = {
-    border: '2px solid',
+    border: '1px solid',
     display: 'flex',
     borderRadius: 10,
     padding: 18,
