@@ -21,6 +21,7 @@ export const LABEL_CHANGE = 'LABEL_CHANGE';
 export const VALUES_CHANGE = 'VALUES_CHANGE';
 export const DESCRIPTION_CHANGE = 'DESCRIPTION_CHANGE';
 export const ADD_GROUP = 'ADD_GROUP';
+export const SET_ELEMENTS = 'SET_ELEMENTS';
 
 // Edges
 export const ADD_EDGE = 'ADD_EDGE';

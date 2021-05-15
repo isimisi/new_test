@@ -45,10 +45,10 @@ export const showWorkspace = (id) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const {
-      label, description, group, initElement
+      label, description, group, elements
     } = response.data;
     dispatch({
-      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, initElement
+      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements
     });
   } catch (error) {
     const message = genericErrorMessage;
@@ -89,16 +89,21 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
   }
 };
 
-export const postNode = (workspace_id, node_id, node, setDefineNodeOpen) => async dispatch => {
+export const postNode = (workspace_id, node_id, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
     workspace_id,
-    node_id
+    node_id,
+    backgroundColor,
+    borderColor,
+    'x-value': 0,
+    'y-value': 0
   };
   const header = authHeader();
 
   try {
-    await axios.post(url, body, header);
+    const response = await axios.post(url, body, header);
+    const node = response.data;
     dispatch({ type: types.POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
@@ -127,12 +132,11 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatc
   const header = authHeader();
 
   try {
-    await axios.post(url, body, header);
-    dispatch({ type: types.POST_EDGE_SUCCESS, edge });
+    const response = await axios.post(url, body, header);
+    const responseEdge = response.data;
+    dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
   } catch (error) {
-    console.log(error.response.data);
-    console.log(body);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
@@ -191,6 +195,12 @@ export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
 });
+
+export const setElements = element => ({
+  type: types.SET_ELEMENTS,
+  element
+});
+
 
 export const addEdge = edge => ({
   type: types.ADD_EDGE,

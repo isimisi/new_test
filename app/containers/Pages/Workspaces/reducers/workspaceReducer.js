@@ -26,7 +26,8 @@ import {
   POST_WORKSPACE_SUCCESS,
   POST_WORKSPACE_FAILED,
   DELETE_WORKSPACE_SUCCESS,
-  DELETE_WORKSPACE_FAILED
+  DELETE_WORKSPACE_FAILED,
+  SET_ELEMENTS
 } from './workspaceConstants';
 
 const initialState = {
@@ -34,7 +35,7 @@ const initialState = {
   label: '',
   description: '',
   group: '',
-  initElement: List(),
+  elements: List(),
   message: '',
   groupsDropDownOptions: List(),
   relationships: List(),
@@ -65,7 +66,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('label', '');
         mutableState.set('description', '');
         mutableState.set('group', '');
-        mutableState.set('initElement', List());
+        mutableState.set('elements', List());
       });
     case POST_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
@@ -77,12 +78,12 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const label = fromJS(action.label);
         const description = fromJS(action.description);
         const group = fromJS(action.group);
-        const initElement = fromJS(action.initElement);
+        const elements = fromJS(action.elements);
 
         mutableState.set('label', label);
         mutableState.set('description', description);
-        mutableState.set('group', group);
-        mutableState.set('initElement', initElement);
+        mutableState.set('group', group || '');
+        mutableState.set('elements', elements);
       });
     case SHOW_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
@@ -129,6 +130,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const description = fromJS(action.description);
         mutableState.set('description', description);
       });
+    case SET_ELEMENTS:
+      return state.withMutations((mutableState) => {
+        const elements = fromJS(action.elements);
+        mutableState.set('elements', elements);
+      });
     case VALUES_CHANGE:
       return state.withMutations((mutableState) => {
         const values = fromJS(action.values);
@@ -141,7 +147,9 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case POST_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
-        // TODO: add edge til workspace
+        const edge = fromJS(action.edge);
+        console.log(mutableState);
+        mutableState.update('elements', myList => myList.push(edge));
       });
     case POST_EDGE_FAILED:
       return state.withMutations((mutableState) => {
@@ -150,7 +158,8 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
-        // TODO: add node til workspace
+        const node = fromJS(action.node);
+        mutableState.update('elements', myList => myList.push(node));
       });
     case POST_NODE_FAILED:
       return state.withMutations((mutableState) => {

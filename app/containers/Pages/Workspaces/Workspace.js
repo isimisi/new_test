@@ -25,11 +25,11 @@ import Typography from '@material-ui/core/Typography';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import styles from './workspace-jss';
-import { reducer, initElement as testing } from './constants';
+import { reducer } from './constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
-  addGroup, getGroupDropDown, putWorkspace, closeNotifAction, showWorkspace
+  addGroup, getGroupDropDown, putWorkspace, closeNotifAction, showWorkspace, setElements
 } from './reducers/workspaceActions';
 import { getSize } from '../Nodes/constants';
 
@@ -68,16 +68,12 @@ const Workspace = (props) => {
   const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
   const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
   const handleVisability = useSelector(state => state.getIn([reducer, 'handleVisability']));
-  const initElement = useSelector(state => state.getIn([reducer, 'initElement'])).toJS();
+  const elements = useSelector(state => state.getIn([reducer, 'elements'])).toJS();
   const label = useSelector(state => state.getIn([reducer, 'label']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-
-
-  const [elements, setElements] = useState(initElement);
-  console.log(elements, initElement, testing);
 
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
@@ -147,32 +143,15 @@ const Workspace = (props) => {
     setShowArrow(false);
     setAnimatedLine(false);
     setShowlabel(false);
-
-    setElements((els) => addEdge(currentConnectionData, els));
   };
 
   const handleNodeSave = () => {
-    const newNode = {
-      id: Math.random() * 10000, // TODO: make logic for this,
-      type: 'custom',
-      data: {
-        label: (
-          <>
-            <Typography variant="subtitle1">{choosenNode.label}</Typography>
-          </>
-        ),
-      },
-      position: { x: 0, y: 0 },
-    };
-
-    dispatch(postNode(id, choosenNode.id, newNode, setDefineNodeOpen));
-
+    dispatch(postNode(id, choosenNode.id, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
     setNodeLabel('');
-    setElements((els) => els.concat(newNode));
   };
 
 
-  const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
+  const onElementsRemove = (elementsToRemove) => dispatch(setElements(removeElements(elementsToRemove, elements)));
   const onLoad = (_reactFlowInstance) => {
     _reactFlowInstance.fitView();
   };
@@ -191,7 +170,7 @@ const Workspace = (props) => {
             ref={reactFlowWrapper}
           >
             <ReactFlow
-              elements={initElement}
+              elements={elements}
               onElementsRemove={onElementsRemove}
               onConnect={onConnect}
               nodeTypes={nodeTypes}
