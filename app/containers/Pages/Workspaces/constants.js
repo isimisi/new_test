@@ -8,11 +8,19 @@ export const initElement = [
     id: '1',
     type: 'custom',
     data: {
-      label: (
-        <>
-          <Typography variant="subtitle1">Lux Fund</Typography>
-        </>
-      ),
+      label: 'Lux Fund',
+      attributes: [{
+        label: 'test',
+        value: 'test',
+      }, {
+        label: 'test',
+        value: 'test',
+      }, {
+        label: 'test',
+        value: 'test',
+      }],
+      backgroundColor: 'pink',
+      borderColor: 'green'
     },
     position: { x: 250, y: 0 },
   },
@@ -108,8 +116,8 @@ export const initElement = [
     id: '14',
     source: '3',
     target: '2',
-    sourceHandle: 'left',
-    targetHandle: '1right',
+    sourceHandle: 'sourceLeft',
+    targetHandle: 'targetRight',
     style: { stroke: '#F00' },
     label: 'SHARES',
     animated: true,
@@ -121,8 +129,8 @@ export const initElement = [
     id: '15',
     source: '2',
     target: '3',
-    sourceHandle: 'right',
-    targetHandle: '1left',
+    sourceHandle: 'sourceRight',
+    targetHandle: 'targetLeft',
     style: { stroke: '#F00' },
     labelBgPadding: [0, 0],
     label: 'CASH',
@@ -145,8 +153,8 @@ export const initElement = [
     id: '17',
     source: '1',
     target: '2',
-    sourceHandle: 'right',
-    targetHandle: '1right',
+    sourceHandle: 'sourceRight',
+    targetHandle: 'targetRight',
     style: { stroke: '#334FFF' },
     data: {
       text: 'SHL',
@@ -157,8 +165,8 @@ export const initElement = [
     id: '18',
     source: '4',
     target: '2',
-    sourceHandle: 'left',
-    targetHandle: '1left',
+    sourceHandle: 'sourceLeft',
+    targetHandle: 'targetLeft',
     style: { stroke: '#334FFF' },
     data: {
       text: 'Remuneration of Dividends',
@@ -169,11 +177,13 @@ export const initElement = [
     id: '19',
     source: '2',
     target: '1',
-    sourceHandle: 'left',
-    targetHandle: '1left',
+    sourceHandle: 'sourceLeft',
+    targetHandle: 'targetLeft',
     style: { stroke: '#334FFF' },
     data: {
-      text: 'Interest (4%)',
+      label: 'Interest',
+      value: '4%',
+      showLabel: true,
     },
     type: 'custom',
     arrowHeadType: 'arrowclosed',

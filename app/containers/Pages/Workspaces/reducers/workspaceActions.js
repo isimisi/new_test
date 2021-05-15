@@ -38,6 +38,25 @@ export const postWorkspace = (history) => async dispatch => {
 };
 
 
+export const showWorkspace = (id) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/${id}`;
+  const header = authHeader();
+
+  try {
+    const response = await axios.get(url, header);
+    const {
+      label, description, group, initElement
+    } = response.data;
+    dispatch({
+      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, initElement
+    });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
+  }
+};
+
+
 export const putWorkspace = (workspace_id, label, description, group, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}`;
   const body = {

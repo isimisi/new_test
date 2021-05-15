@@ -50,6 +50,7 @@ const CustomEdge = ({
   targetPosition,
   style = {},
   data,
+  label,
   arrowHeadType,
   markerEndId,
 }) => {
@@ -63,7 +64,7 @@ const CustomEdge = ({
       <path id={id} style={style} className="react-flow__edge-path" d={edgePath} markerEnd={markerEnd} />
       <text dy="-10">
         <textPath href={`#${id}`} style={{ fontSize: '12px' }} startOffset="50%" textAnchor="middle">
-          {data.text}
+          {`${data.showLabel ? data.label : ''}${data.showLabel ? ': ' : ''}${data.value}`}
         </textPath>
       </text>
     </>

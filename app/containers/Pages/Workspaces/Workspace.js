@@ -25,11 +25,11 @@ import Typography from '@material-ui/core/Typography';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import styles from './workspace-jss';
-import { initElement, reducer } from './constants';
+import { reducer, initElement as testing } from './constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
-  addGroup, getGroupDropDown, putWorkspace, closeNotifAction
+  addGroup, getGroupDropDown, putWorkspace, closeNotifAction, showWorkspace
 } from './reducers/workspaceActions';
 import { getSize } from '../Nodes/constants';
 
@@ -49,7 +49,7 @@ const Workspace = (props) => {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
   const [metaOpen, setMetaOpen] = useState(false);
-  const [elements, setElements] = useState(initElement);
+
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
@@ -68,12 +68,16 @@ const Workspace = (props) => {
   const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
   const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
   const handleVisability = useSelector(state => state.getIn([reducer, 'handleVisability']));
+  const initElement = useSelector(state => state.getIn([reducer, 'initElement'])).toJS();
   const label = useSelector(state => state.getIn([reducer, 'label']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
 
+
+  const [elements, setElements] = useState(initElement);
+  console.log(elements, initElement, testing);
 
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
@@ -102,6 +106,7 @@ const Workspace = (props) => {
   }, [nodeLabel]);
 
   useEffect(() => {
+    dispatch(showWorkspace(id));
     dispatch(getRelationships());
     dispatch(getNodes());
     dispatch(getGroupDropDown());
@@ -186,7 +191,7 @@ const Workspace = (props) => {
             ref={reactFlowWrapper}
           >
             <ReactFlow
-              elements={elements}
+              elements={initElement}
               onElementsRemove={onElementsRemove}
               onConnect={onConnect}
               nodeTypes={nodeTypes}

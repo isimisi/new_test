@@ -5,6 +5,8 @@ import {
   GET_WORKSPACES_FAILED,
   PUT_WORKSPACE_SUCCESS,
   PUT_WORKSPACE_FAILED,
+  SHOW_WORKSPACE_SUCCESS,
+  SHOW_WORKSPACE_FAILED,
   LABEL_CHANGE,
   VALUES_CHANGE,
   DESCRIPTION_CHANGE,
@@ -32,6 +34,7 @@ const initialState = {
   label: '',
   description: '',
   group: '',
+  initElement: List(),
   message: '',
   groupsDropDownOptions: List(),
   relationships: List(),
@@ -62,8 +65,26 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('label', '');
         mutableState.set('description', '');
         mutableState.set('group', '');
+        mutableState.set('initElement', List());
       });
     case POST_WORKSPACE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case SHOW_WORKSPACE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const label = fromJS(action.label);
+        const description = fromJS(action.description);
+        const group = fromJS(action.group);
+        const initElement = fromJS(action.initElement);
+
+        mutableState.set('label', label);
+        mutableState.set('description', description);
+        mutableState.set('group', group);
+        mutableState.set('initElement', initElement);
+      });
+    case SHOW_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

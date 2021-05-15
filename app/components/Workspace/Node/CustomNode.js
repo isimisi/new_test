@@ -5,20 +5,22 @@ import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
 import { useSelector } from 'react-redux';
 
-const CustomNode = (data) => {
+const CustomNode = ({ data }) => {
   const theme = useTheme();
   const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
+
   const nodeStyle = {
     border: '1px solid',
+    borderRadius: theme.rounded.small,
     display: 'flex',
-    borderRadius: 10,
-    padding: 18,
+    padding: 10,
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     alignSelf: 'center',
-    backgroundColor: 'white'
+    backgroundColor: data.backgroundColor ? data.backgroundColor : '#ffffff',
+    borderColor: data.borderColor ? data.borderColor : '#000000'
   };
 
 
@@ -36,44 +38,44 @@ const CustomNode = (data) => {
       />
       <Handle
         style={{
-          top: 37,
+          top: 30,
           height: handleVisability ? 8 : 0,
           width: handleVisability ? 8 : 0,
         }}
         type="source"
-        id="left"
+        id="sourceLeft"
         position={Position.Left}
       />
       <Handle
         style={{
-          top: 27,
+          top: 20,
           backgroundColor: theme.palette.secondary.main,
           height: handleVisability ? 8 : 0,
           width: handleVisability ? 8 : 0,
         }}
         type="target"
-        id="1left"
+        id="targetLeft"
         position={Position.Left}
       />
       <Handle
         style={{
-          top: 27,
+          top: 20,
           height: handleVisability ? 8 : 0,
           width: handleVisability ? 8 : 0,
         }}
         type="source"
-        id="right"
+        id="sourceRight"
         position={Position.Right}
       />
       <Handle
         style={{
-          top: 37,
+          top: 30,
           backgroundColor: theme.palette.secondary.main,
           height: handleVisability ? 8 : 0,
           width: handleVisability ? 8 : 0,
         }}
         type="target"
-        id="1right"
+        id="targetRight"
         position={Position.Right}
       />
       <Handle
@@ -85,7 +87,7 @@ const CustomNode = (data) => {
         id="bottom"
         position={Position.Bottom}
       />
-      {data.data.label}
+      <Typography variant="subtitle1">{data.label}</Typography>
     </div>
   );
 };
