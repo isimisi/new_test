@@ -75,6 +75,24 @@ export const putWorkspace = (workspace_id, label, description, group, setMetaOpe
   }
 };
 
+
+export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, workspaceYPosition, nodes, history) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/${workspace_id}/position`;
+  const body = {
+    workspaceZoom, workspaceXPosition, workspaceYPosition, nodes
+  };
+  const header = authHeader();
+
+  try {
+    await axios.put(url, body, header);
+    dispatch({ type: types.SAVE_WORKSPACE_SUCCESS });
+    history.push(`/app/${WORKSPACES}`);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.SAVE_WORKSPACE_FAILED, message });
+  }
+};
+
 export const deleteWorkspaces = (id, title) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   const header = authHeader();
@@ -86,6 +104,18 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_WORKSPACE_FAILED, message });
+  }
+};
+
+export const deleteWorkspaceElement = (id, isNode, elements) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/${isNode ? 'nodes' : 'relationship'}/${id}`;
+  const header = authHeader();
+  try {
+    await axios.delete(url, header);
+    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, elements });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
   }
 };
 
@@ -195,12 +225,6 @@ export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
 });
-
-export const setElements = element => ({
-  type: types.SET_ELEMENTS,
-  element
-});
-
 
 export const addEdge = edge => ({
   type: types.ADD_EDGE,

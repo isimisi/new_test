@@ -46,7 +46,7 @@ function UserMenu(props) {
   const { anchorEl, openMenu } = menuState;
   return (
     <div>
-      <IconButton
+      {/* <IconButton
         aria-haspopup="true"
         onClick={handleMenu('notification')}
         color="inherit"
@@ -55,7 +55,7 @@ function UserMenu(props) {
         <Badge className={classes.badge} badgeContent={4} color="secondary">
           <i className="ion-ios-bell-outline" />
         </Badge>
-      </IconButton>
+      </IconButton> */}
       <Menu
         id="menu-notification"
         anchorEl={anchorEl}

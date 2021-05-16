@@ -5,10 +5,10 @@ import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
   ReactFlowProvider,
   removeElements,
-  addEdge,
   Controls,
   ControlButton,
   Background,
+  isNode
 } from 'react-flow-renderer';
 import {
   WorkspaceFabs, CustomNode,
@@ -21,15 +21,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { Prompt } from 'react-router';
 import styles from './workspace-jss';
 import { reducer } from './constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
-  addGroup, getGroupDropDown, putWorkspace, closeNotifAction, showWorkspace, setElements
+  addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
+  showWorkspace, saveWorkspace, deleteWorkspaceElement
 } from './reducers/workspaceActions';
 import { getSize } from '../Nodes/constants';
 
@@ -49,6 +50,7 @@ const Workspace = (props) => {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
   const [metaOpen, setMetaOpen] = useState(false);
+  const [rfInstance, setRfInstance] = useState(null);
 
 
   // relationship
@@ -151,13 +153,27 @@ const Workspace = (props) => {
   };
 
 
-  const onElementsRemove = (elementsToRemove) => dispatch(setElements(removeElements(elementsToRemove, elements)));
+  const onElementsRemove = (elementsToRemove) => {
+    const _elements = removeElements(elementsToRemove, elements);
+    dispatch(deleteWorkspaceElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements));
+  };
+
   const onLoad = (_reactFlowInstance) => {
+    setRfInstance(_reactFlowInstance);
     _reactFlowInstance.fitView();
   };
 
   const onElementClick = (event, element) => {
     console.log(event, element);
+  };
+
+  const onWorkspaceSave = () => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      const _nodes = flow.elements.filter(n => isNode(n));
+      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
+      dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
+    }
   };
 
   return (
@@ -241,7 +257,13 @@ const Workspace = (props) => {
         handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
         handleNodeSave={handleNodeSave}
       />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && <WorkspaceFabs nodeClick={() => setDefineNodeOpen(true)} metaClick={() => setMetaOpen(true)} />}
+      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
+        <WorkspaceFabs
+          nodeClick={() => setDefineNodeOpen(true)}
+          metaClick={() => setMetaOpen(true)}
+          saveClick={onWorkspaceSave}
+        />
+      )}
     </div>
   );
 };

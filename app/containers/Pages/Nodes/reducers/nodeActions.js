@@ -45,7 +45,7 @@ export const showNode = (id) => async dispatch => {
       return null;
     }
     const {
-      label: title, description, type: nodeType, style: _style, group,
+      label: title, description, style: _style, group,
       attributes
     } = node;
     const style = JSON.parse(_style);
@@ -60,7 +60,6 @@ export const showNode = (id) => async dispatch => {
       type: types.SHOW_NODE_SUCCESS,
       title,
       description,
-      nodeType,
       backgroundColor,
       borderColor,
       size,
@@ -73,10 +72,10 @@ export const showNode = (id) => async dispatch => {
   }
 };
 
-export const putNode = (id, label, description, attributes, type, group, style, history) => async dispatch => {
+export const putNode = (id, label, description, attributes, group, style, history) => async dispatch => {
   const url = `${baseUrl}/${NODES}/${id}`;
   const body = {
-    label, description, type, group, style, attributes
+    label, description, group, style, attributes
   };
   const header = authHeader();
 
@@ -144,11 +143,6 @@ export const descriptionChange = description => ({
 export const addAtrribut = attributes => ({
   type: types.ADD_ATTRIBUT,
   attributes
-});
-
-export const addType = value => ({
-  type: types.ADD_TYPE,
-  value
 });
 
 export const addGroup = group => ({

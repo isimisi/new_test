@@ -24,7 +24,6 @@ const Node = () => {
   const title = useSelector(state => state.getIn([reducer, 'title']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const attributes = useSelector(state => state.getIn([reducer, 'attributes'])).toJS();
-  const type = useSelector(state => state.getIn([reducer, 'type']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
@@ -36,7 +35,7 @@ const Node = () => {
 
   const onSave = () => {
     const nodeStyle = generateNodeStyle(size, backgroundColor.toJS(), borderColor.toJS(), theme);
-    dispatch(putNode(id, title, description, JSON.stringify(attributes), type, group, nodeStyle, history));
+    dispatch(putNode(id, title, description, JSON.stringify(attributes), group, nodeStyle, history));
   };
 
   useEffect(() => {
@@ -54,7 +53,6 @@ const Node = () => {
             title={title}
             description={description}
             attributes={attributes}
-            type={type}
             group={group}
             attributesDropDownOptions={attributesDropDownOptions}
             groupsDropDownOptions={groupsDropDownOptions}

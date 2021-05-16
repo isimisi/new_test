@@ -35,7 +35,6 @@ const initialState = {
   title: '',
   description: '',
   attributes: List(initialAttribute),
-  type: '',
   group: '',
   size: 'Medium',
   backgroundColor: Map(),
@@ -64,7 +63,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('title', '');
         mutableState.set('description', '');
         mutableState.set('attributes', List(initialAttribute));
-        mutableState.set('type', '');
         mutableState.set('group', '');
         mutableState.set('size', 'Medium');
         mutableState.set('backgroundColor', Map());
@@ -80,7 +78,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const title = fromJS(action.title);
         const description = fromJS(action.description);
         const attributes = fromJS(action.attributes);
-        const nodeType = fromJS(action.nodeType);
         const group = fromJS(action.group);
         const size = fromJS(action.size);
         const backgroundColor = fromJS(action.backgroundColor);
@@ -90,7 +87,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('title', title);
         mutableState.set('description', description);
         mutableState.set('attributes', attributes);
-        mutableState.set('type', nodeType);
         mutableState.set('group', group);
         mutableState.set('size', size);
         mutableState.set('backgroundColor', backgroundColor);
@@ -155,11 +151,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const attributes = fromJS(action.attributes);
         mutableState.set('attributes', attributes);
-      });
-    case ADD_TYPE:
-      return state.withMutations((mutableState) => {
-        const type = fromJS(action.value);
-        mutableState.set('type', type);
       });
     case ADD_GROUP:
       return state.withMutations((mutableState) => {

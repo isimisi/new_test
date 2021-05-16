@@ -27,7 +27,10 @@ import {
   POST_WORKSPACE_FAILED,
   DELETE_WORKSPACE_SUCCESS,
   DELETE_WORKSPACE_FAILED,
-  SET_ELEMENTS
+  SAVE_WORKSPACE_SUCCESS,
+  SAVE_WORKSPACE_FAILED,
+  DELETE_WORKSPACE_ELEMENTS_SUCCESS,
+  DELETE_WORKSPACE_ELEMENTS_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -57,6 +60,25 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('workspaces', workspaces);
       });
     case GET_WORKSPACES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case SAVE_WORKSPACE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        // TODO: do something
+      });
+    case SAVE_WORKSPACE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case DELETE_WORKSPACE_ELEMENTS_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const elements = fromJS(action.elements);
+        mutableState.set('elements', elements);
+      });
+    case DELETE_WORKSPACE_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
@@ -129,11 +151,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const description = fromJS(action.description);
         mutableState.set('description', description);
-      });
-    case SET_ELEMENTS:
-      return state.withMutations((mutableState) => {
-        const elements = fromJS(action.elements);
-        mutableState.set('elements', elements);
       });
     case VALUES_CHANGE:
       return state.withMutations((mutableState) => {

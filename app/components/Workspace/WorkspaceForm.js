@@ -25,7 +25,7 @@ const WorkspaceForm = (props) => {
     groupsDropDownOptions,
     onSave
   } = props;
-  console.log(group);
+
   return (
     <div>
       <section className={css.bodyForm}>
