@@ -197,9 +197,9 @@ const Workspace = (props) => {
               onElementClick={onElementClick}
             >
               <Controls>
-                <ControlButton onClick={() => console.log('another action')}>
+                {/* <ControlButton onClick={() => console.log('another action')}>
                   <PhotoCameraIcon />
-                </ControlButton>
+                </ControlButton> */}
                 <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
                   {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </ControlButton>

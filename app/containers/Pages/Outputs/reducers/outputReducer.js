@@ -81,7 +81,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('group', '');
         mutableState.set('condition', '');
         mutableState.set('fileType', '');
-        mutableState.set('outputFileUrl', Map());
+        mutableState.set('outputFileUrl', '');
       });
     case POST_OUTPUT_FAILED:
       return state.withMutations((mutableState) => {

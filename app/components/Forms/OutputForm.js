@@ -171,7 +171,7 @@ const OutputForm = (props) => {
                 <Typography variant="p">Choose a condition</Typography>
               </div>
               <div className={classes.conditionWrap}>
-                {outputFile.length > 0 && (
+                {outputFile && outputFile.length > 0 && (
                   <div className={classes.conditionWrap}>
                     <Tooltip title="Delete uploaded file">
                       <IconButton
@@ -207,7 +207,7 @@ const OutputForm = (props) => {
               </div>
             </div>
             {activeToggleButton === 'Upload a document' ? (
-              outputFile.length > 0
+              outputFile && outputFile.length > 0
                 ? fileType === 'pdf' || outputFile.includes('https://')
                   ? (
                     <Iframe
