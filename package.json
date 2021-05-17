@@ -136,6 +136,7 @@
     "react-clock": "^2.3.0",
     "react-color": "^2.19.3",
     "react-countup": "^3.0.3",
+    "react-d3-tree": "^2.0.1",
     "react-dnd": "^14.0.2",
     "react-dnd-html5-backend": "^14.0.0",
     "react-dom": "^16.8.6",

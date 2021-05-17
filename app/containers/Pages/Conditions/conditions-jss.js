@@ -22,6 +22,9 @@ const styles = theme => ({
     right: 50,
     zIndex: 100,
   },
+  rootItem: {
+    fill: 'yellow'
+  }
 });
 
 export default styles;

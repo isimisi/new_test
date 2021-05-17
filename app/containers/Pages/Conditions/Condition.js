@@ -8,6 +8,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import { useSelector, useDispatch, } from 'react-redux';
+import Tree from 'react-d3-tree';
 import {
   closeNotifAction,
   showCondition,
@@ -21,6 +22,73 @@ import {
   buildTypeOptions,
   comparisonsOptions
 } from './constants';
+
+const orgChart = {
+  name: 'CEO',
+  keanTest: 'hejmeddig',
+  children: [
+    {
+      name: 'Manager',
+      attributes: {
+        Department: 'Production'
+      },
+      children: [
+        {
+          name: 'Foreman',
+          attributes: {
+            Department: 'Fabrication'
+          },
+          children: [
+            {
+              name: 'Workers'
+            }
+          ]
+        },
+        {
+          name: 'Foreman',
+          attributes: {
+            Department: 'Assembly'
+          },
+          children: [
+            {
+              name: 'Workers'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'Manager',
+      attributes: {
+        Department: 'Marketing'
+      },
+      children: [
+        {
+          name: 'Sales Officer',
+          attributes: {
+            Department: 'A'
+          },
+          children: [
+            {
+              name: 'Salespeople'
+            }
+          ]
+        },
+        {
+          name: 'Sales Officer',
+          attributes: {
+            Department: 'B'
+          },
+          children: [
+            {
+              name: 'Salespeople'
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
 
 const Condition = () => {
   const dispatch = useDispatch();
@@ -50,6 +118,25 @@ const Condition = () => {
     dispatch(getGroupDropDown());
     dispatch(getBuildTypeValueOptions());
   }, []);
+
+  const renderRectSvgNode = (props) => {
+    console.log(props);
+    return (
+      <g>
+        <rect width="20" height="20" x="-10" onClick={props.toggleNode} />
+        <text fill="black" strokeWidth="1" x="20">
+          {props.nodeDatum.name}
+        </text>
+        {props.nodeDatum.attributes?.department && (
+          <text fill="black" x="20" dy="20" strokeWidth="1">
+          Department:
+            {' '}
+            {props.nodeDatum.attributes?.department}
+          </text>
+        )}
+      </g>
+    );
+  };
 
   return (
     <div>
