@@ -243,7 +243,7 @@ const Workspace = (props) => {
       />
       <DefineNode
         open={defineNodeOpen}
-        close={() => { setDefineNodeOpen(false); }}
+        close={() => setDefineNodeOpen(false)}
         nodes={nodes}
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => setNodeLabel(_label.value)}

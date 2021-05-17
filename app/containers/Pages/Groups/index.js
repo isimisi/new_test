@@ -8,6 +8,9 @@ import {
 } from '@components';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
+import Alert from '@material-ui/lab/Alert';
+import Button from '@material-ui/core/Button';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { withStyles } from '@material-ui/core/styles';
 import {
   getGroups,

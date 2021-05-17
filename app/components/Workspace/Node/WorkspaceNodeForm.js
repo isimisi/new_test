@@ -165,7 +165,7 @@ const WorkspaceNodeForm = (props) => {
         )}
       </section>
       <div className={css.buttonArea}>
-        <Button type="button" onClick={() => close()}>
+        <Button type="button" onClick={close}>
             Discard
         </Button>
         <Button
