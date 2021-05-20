@@ -82,6 +82,11 @@ import DefineEdge from './Workspace/Edge/DefineEdge';
 
 import DefineNode from './Workspace/Node/DefineNode';
 
+// Condition
+import ConditionDemo from './Condition/ConditionDemo';
+import ConditionNodeForm from './Condition/NodeForm';
+import ConditionEdgeForm from './Condition/EdgeForm';
+
 export {
   Header,
   HeaderMenu,
@@ -141,5 +146,8 @@ export {
   CustomEdge,
   CustomNode,
   DefineEdge,
-  DefineNode
+  DefineNode,
+  ConditionDemo,
+  ConditionNodeForm,
+  ConditionEdgeForm
 };

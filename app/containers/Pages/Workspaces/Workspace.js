@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
-  ReactFlowProvider,
   removeElements,
   Controls,
   ControlButton,
@@ -16,14 +15,12 @@ import {
   Notification
 } from '@components';
 import PropTypes from 'prop-types';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { Prompt } from 'react-router';
 import styles from './workspace-jss';
 import { reducer } from './constants';
 import {
@@ -34,11 +31,6 @@ import {
 } from './reducers/workspaceActions';
 import { getSize } from '../Nodes/constants';
 
-const onDragOver = (event) => {
-  event.preventDefault();
-  event.dataTransfer.dropEffect = 'move';
-};
-
 const nodeTypes = {
   custom: CustomNode
 };
@@ -46,7 +38,6 @@ const nodeTypes = {
 const Workspace = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
-  const reactFlowWrapper = useRef(null);
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
   const [metaOpen, setMetaOpen] = useState(false);
@@ -179,36 +170,32 @@ const Workspace = (props) => {
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <ReactFlowProvider>
-        <div className={classes.root}>
-          <div
-            className={classes.content}
-            ref={reactFlowWrapper}
+      <div className={classes.root}>
+        <div
+          className={classes.content}
+        >
+          <ReactFlow
+            elements={elements}
+            onElementsRemove={onElementsRemove}
+            onConnect={onConnect}
+            nodeTypes={nodeTypes}
+            edgeTypes={{ custom: CustomEdge }}
+            onLoad={onLoad}
+            connectionMode="loose"
+            onElementClick={onElementClick}
           >
-            <ReactFlow
-              elements={elements}
-              onElementsRemove={onElementsRemove}
-              onConnect={onConnect}
-              nodeTypes={nodeTypes}
-              edgeTypes={{ custom: CustomEdge }}
-              onLoad={onLoad}
-              onDragOver={onDragOver}
-              connectionMode="loose"
-              onElementClick={onElementClick}
-            >
-              <Controls>
-                {/* <ControlButton onClick={() => console.log('another action')}>
+            <Controls>
+              {/* <ControlButton onClick={() => console.log('another action')}>
                   <PhotoCameraIcon />
                 </ControlButton> */}
-                <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
-                  {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </ControlButton>
-              </Controls>
-              <Background color="#aaa" gap={16} />
-            </ReactFlow>
-          </div>
+              <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
+                {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </ControlButton>
+            </Controls>
+            <Background color="#aaa" gap={16} />
+          </ReactFlow>
         </div>
-      </ReactFlowProvider>
+      </div>
       <WorkspaceMeta
         open={metaOpen}
         label={label}

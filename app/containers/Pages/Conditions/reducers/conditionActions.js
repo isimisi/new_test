@@ -72,12 +72,10 @@ export const getBuildTypeValueOptions = () => async dispatch => {
     const response = await axios.get(url, header);
     const buildTypeOptions = response.data;
     const {
-      nodeLabels, nodeDescriptions, nodeAttributes, relationshipLabels
+      nodeAttributes, relationshipLabels
     } = buildTypeOptions;
     dispatch({
       type: types.GET_BUILD_TYPES_VALUES_SUCCESS,
-      nodeLabels,
-      nodeDescriptions,
       nodeAttributes,
       relationshipLabels
     });
@@ -152,9 +150,18 @@ export const addGroup = group => ({
   group
 });
 
-export const addConditionValue = condition => ({
-  type: types.ADD_CONDITION_ROW,
+export const changeConditionValue = condition => ({
+  type: types.CHANGE_CONDITION_ROW,
   condition
+});
+
+export const addConditionValue = () => ({
+  type: types.ADD_CONDITION_ROW
+});
+
+export const deleteConditionValue = (index) => ({
+  type: types.DELETE_CONDITION_ROW,
+  index
 });
 
 export const closeNotifAction = {

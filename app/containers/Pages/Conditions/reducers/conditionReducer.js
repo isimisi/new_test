@@ -16,12 +16,13 @@ import {
   ADD_GROUP,
   ADD_TYPE,
   ADD_CONDITION_ROW,
+  CHANGE_CONDITION_ROW,
   GET_GROUP_DROPDOWN_SUCCESS,
-  GET_GROUP_DROPDOWN_FAILED
+  GET_GROUP_DROPDOWN_FAILED,
+  DELETE_CONDITION_ROW
 } from './conditionConstants';
 
 const initionConditionValue = [Map({
-  build_type: null,
   build_value: null,
   comparison_type: 'is equal to',
   comparison_value: ''
@@ -36,8 +37,6 @@ const initialState = {
   conditionValues: List(initionConditionValue),
   message: '',
   groupsDropDownOptions: List(),
-  nodeLabels: List(),
-  nodeDescriptions: List(),
   nodeAttributes: List(),
   relationshipLabels: List(),
 };
@@ -89,13 +88,9 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case GET_BUILD_TYPES_VALUES_SUCCESS:
       return state.withMutations((mutableState) => {
-        const nodeLabels = fromJS(action.nodeLabels);
-        const nodeDescriptions = fromJS(action.nodeDescriptions);
         const nodeAttributes = fromJS(action.nodeAttributes);
         const relationshipLabels = fromJS(action.relationshipLabels);
 
-        mutableState.set('nodeLabels', nodeLabels);
-        mutableState.set('nodeDescriptions', nodeDescriptions);
         mutableState.set('nodeAttributes', nodeAttributes);
         mutableState.set('relationshipLabels', relationshipLabels);
       });
@@ -144,10 +139,18 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const value = fromJS(action.value);
         mutableState.set('type', value);
       });
-    case ADD_CONDITION_ROW:
+    case CHANGE_CONDITION_ROW:
       return state.withMutations((mutableState) => {
         const condition = fromJS(action.condition);
         mutableState.set('conditionValues', condition);
+      });
+    case ADD_CONDITION_ROW:
+      return state.withMutations((mutableState) => {
+        mutableState.update('conditionValues', myList => myList.push(initionConditionValue));
+      });
+    case DELETE_CONDITION_ROW:
+      return state.withMutations((mutableState) => {
+        mutableState.update('conditionValues', myList => myList.filter((v, i) => i !== action.index));
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {
