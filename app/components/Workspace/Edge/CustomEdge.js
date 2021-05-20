@@ -2,6 +2,9 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { getBezierPath, getMarkerEnd } from 'react-flow-renderer';
+import {
+  useHistory
+} from 'react-router-dom';
 
 const drawCurve = (sourceX, sourceY, targetX, targetY, convert) => {
   // mid-point of line:
@@ -58,13 +61,20 @@ const CustomEdge = ({
     sourceX, sourceY, targetX, targetY, data.convert
   );
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+  const history = useHistory();
+  const isCondition = history.location.pathname.includes('conditions');
+  let text = `${data.showLabel ? data.label : ''}${data.showLabel ? ': ' : ''}${data.value}`;
+
+  if (isCondition) {
+    text = data.label;
+  }
 
   return (
     <>
       <path id={id} style={style} className="react-flow__edge-path" d={edgePath} markerEnd={markerEnd} />
       <text dy="-10">
         <textPath href={`#${id}`} style={{ fontSize: '12px' }} startOffset="50%" textAnchor="middle">
-          {`${data.showLabel ? data.label : ''}${data.showLabel ? ': ' : ''}${data.value}`}
+          {text}
         </textPath>
       </text>
     </>

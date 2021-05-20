@@ -80,6 +80,7 @@ export const comparisonsOptions = [
   { label: 'does not exist' },
   { label: 'contains' },
   { label: 'does not contain' },
+  { label: 'any' },
 ].map(suggestion => ({
   value: suggestion.label,
   label: suggestion.label,

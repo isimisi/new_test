@@ -40,24 +40,17 @@ export const showCondition = (id) => async dispatch => {
 
   try {
     const response = await axios.get(url, header);
+
     const {
-      title, description, group, type: conditionType, values
+      label, description, group, elements
     } = response.data;
 
-    const emptyConditionValue = {
-      build_type: null,
-      build_value: null,
-      comparison_type: 'is equal to',
-      comparison_value: ''
-    };
-    values.push(emptyConditionValue);
     dispatch({
       type: types.SHOW_CONDITION_SUCCESS,
-      title,
+      label,
       description,
       group,
-      conditionType,
-      values
+      elements
     });
   } catch (error) {
     const message = genericErrorMessage;
@@ -116,6 +109,81 @@ export const deleteCondition = (id, title) => async dispatch => {
   }
 };
 
+export const getNodes = () => async dispatch => {
+  const url = `${baseUrl}/nodes/workspace`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const nodes = response.data;
+    dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
+  }
+};
+
+export const postNode = (condition_id, node_id, values, setDefineNodeOpen) => async dispatch => {
+  const url = `${baseUrl}/conditionNodes`;
+  const body = {
+    condition_id,
+    node_id,
+    'x-value': 0,
+    'y-value': 0,
+    values,
+  };
+  const header = authHeader();
+
+  try {
+    const response = await axios.post(url, body, header);
+    const node = response.data;
+    dispatch({ type: types.POST_NODE_SUCCESS, node });
+    setDefineNodeOpen(false);
+  } catch (error) {
+    console.log(error.response);
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_NODE_FAILED, message });
+  }
+};
+
+export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatch => {
+  const url = `${baseUrl}/conditionRelationships`;
+  const body = {
+    condition_id,
+    source_id: edge.source,
+    target_id: edge.target,
+    source_handle: edge.sourceHandle,
+    target_handle: edge.targetHandle,
+    relationship_id: edge.relationship_id,
+    comparison_type: edge.comparisonType,
+    comparison_value: edge.comparisonValue,
+    type: edge.relationshipType,
+  };
+  const header = authHeader();
+
+  try {
+    const response = await axios.post(url, body, header);
+    const responseEdge = response.data;
+    dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
+    setDefineEdgeOpen(false);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_EDGE_FAILED, message });
+  }
+};
+
+export const getRelationships = () => async dispatch => {
+  const url = `${baseUrl}/relationships/workspace`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const relationships = response.data;
+    dispatch({ type: types.GET_RELATIONSHIP_VALUES_SUCCESS, relationships });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_RELATIONSHIP_VALUES_FAILED, message });
+  }
+};
+
 
 export const getGroupDropDown = () => async dispatch => {
   const url = `${baseUrl}/groups/dropDownValues`;
@@ -148,20 +216,6 @@ export const addType = value => ({
 export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
-});
-
-export const changeConditionValue = condition => ({
-  type: types.CHANGE_CONDITION_ROW,
-  condition
-});
-
-export const addConditionValue = () => ({
-  type: types.ADD_CONDITION_ROW
-});
-
-export const deleteConditionValue = (index) => ({
-  type: types.DELETE_CONDITION_ROW,
-  index
 });
 
 export const closeNotifAction = {

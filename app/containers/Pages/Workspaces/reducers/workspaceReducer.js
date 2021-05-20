@@ -165,7 +165,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case POST_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
         const edge = fromJS(action.edge);
-        console.log(mutableState);
         mutableState.update('elements', myList => myList.push(edge));
       });
     case POST_EDGE_FAILED:

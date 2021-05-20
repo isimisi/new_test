@@ -1,4 +1,4 @@
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List } from 'immutable';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   GET_CONDITIONS_SUCCESS,
@@ -14,31 +14,30 @@ import {
   TITLE_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
-  ADD_TYPE,
-  ADD_CONDITION_ROW,
-  CHANGE_CONDITION_ROW,
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
-  DELETE_CONDITION_ROW
+  GET_NODE_VALUES_SUCCESS,
+  GET_NODE_VALUES_FAILED,
+  GET_RELATIONSHIP_VALUES_SUCCESS,
+  GET_RELATIONSHIP_VALUES_FAILED,
+  POST_NODE_SUCCESS,
+  POST_NODE_FAILED,
+  POST_EDGE_SUCCESS,
+  POST_EDGE_FAILED
 } from './conditionConstants';
-
-const initionConditionValue = [Map({
-  build_value: null,
-  comparison_type: 'is equal to',
-  comparison_value: ''
-})];
 
 const initialState = {
   conditions: List(),
-  title: '',
+  label: '',
   description: '',
-  type: '',
   group: '',
-  conditionValues: List(initionConditionValue),
+  elements: List(),
   message: '',
   groupsDropDownOptions: List(),
   nodeAttributes: List(),
   relationshipLabels: List(),
+  nodes: List(),
+  relationships: List(),
 };
 
 
@@ -57,7 +56,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case POST_CONDITION_SUCCESS:
       return state.withMutations((mutableState) => {
-        mutableState.set('title', '');
+        mutableState.set('label', '');
         mutableState.set('description', '');
         mutableState.set('type', '');
         mutableState.set('group', '');
@@ -69,17 +68,15 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case SHOW_CONDITION_SUCCESS:
       return state.withMutations((mutableState) => {
-        const title = fromJS(action.title);
+        const label = fromJS(action.label);
         const description = fromJS(action.description);
         const group = fromJS(action.group);
-        const type = fromJS(action.conditionType);
-        const values = fromJS(action.values);
+        const elements = fromJS(action.elements);
 
-        mutableState.set('title', title);
+        mutableState.set('label', label);
         mutableState.set('description', description);
         mutableState.set('group', group);
-        mutableState.set('type', type);
-        mutableState.set('conditionValues', values);
+        mutableState.set('elements', elements);
       });
     case SHOW_CONDITION_FAILED:
       return state.withMutations((mutableState) => {
@@ -119,10 +116,30 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
+    case GET_NODE_VALUES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const nodes = fromJS(action.nodes);
+        mutableState.set('nodes', nodes);
+      });
+    case GET_NODE_VALUES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_RELATIONSHIP_VALUES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const relationships = fromJS(action.relationships);
+        mutableState.set('relationships', relationships);
+      });
+    case GET_RELATIONSHIP_VALUES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
     case TITLE_CHANGE:
       return state.withMutations((mutableState) => {
         const title = fromJS(action.title);
-        mutableState.set('title', title);
+        mutableState.set('label', title);
       });
     case DESCRIPTION_CHANGE:
       return state.withMutations((mutableState) => {
@@ -134,23 +151,25 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const group = fromJS(action.group);
         mutableState.set('group', group);
       });
-    case ADD_TYPE:
+    case POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
-        const value = fromJS(action.value);
-        mutableState.set('type', value);
+        const node = fromJS(action.node);
+        mutableState.update('elements', myList => myList.push(node));
       });
-    case CHANGE_CONDITION_ROW:
+    case POST_NODE_FAILED:
       return state.withMutations((mutableState) => {
-        const condition = fromJS(action.condition);
-        mutableState.set('conditionValues', condition);
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
       });
-    case ADD_CONDITION_ROW:
+    case POST_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
-        mutableState.update('conditionValues', myList => myList.push(initionConditionValue));
+        const edge = fromJS(action.edge);
+        mutableState.update('elements', myList => myList.push(edge));
       });
-    case DELETE_CONDITION_ROW:
+    case POST_EDGE_FAILED:
       return state.withMutations((mutableState) => {
-        mutableState.update('conditionValues', myList => myList.filter((v, i) => i !== action.index));
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {
