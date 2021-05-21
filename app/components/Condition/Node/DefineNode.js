@@ -18,7 +18,9 @@ function DefineNode(props) {
     nodeAttributes,
     comparisonsOptions,
     addConditionValue,
-    deleteConditionValue
+    deleteConditionValue,
+    isUpdatingElement,
+    handleDeleteNode
   } = props;
 
   return (
@@ -27,7 +29,7 @@ function DefineNode(props) {
         openForm={open}
         closeForm={close}
         extraSize
-        title="Definer dit element for et scenarie"
+        title={isUpdatingElement ? 'Ændre dit element' : 'Definer dit element for et scenarie'}
       >
         <NodeForm
           nodes={nodes}
@@ -40,6 +42,8 @@ function DefineNode(props) {
           comparisonsOptions={comparisonsOptions}
           addConditionValue={addConditionValue}
           deleteConditionValue={deleteConditionValue}
+          isUpdatingElement={isUpdatingElement}
+          handleDeleteNode={handleDeleteNode}
         />
       </FloatingPanel>
     </div>
@@ -59,6 +63,8 @@ DefineNode.propTypes = {
   comparisonsOptions: PropTypes.array.isRequired,
   addConditionValue: PropTypes.func.isRequired,
   deleteConditionValue: PropTypes.func.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteNode: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(DefineNode);

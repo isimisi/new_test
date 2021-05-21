@@ -66,7 +66,7 @@ const CustomEdge = ({
   let text = `${data.showLabel ? data.label : ''}${data.showLabel ? ': ' : ''}${data.value}`;
 
   if (isCondition) {
-    text = data.label;
+    text = `${data.label} ${data.comparison_type} ${data.comparison_value}`;
   }
 
   return (

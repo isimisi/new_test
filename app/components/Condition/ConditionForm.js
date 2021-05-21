@@ -81,7 +81,6 @@ const ConditionForm = (props) => {
           variant="contained"
           color="secondary"
           type="button"
-          disabled={label.length === 0 || description.length === 0 || group}
           onClick={onSave}
         >
             Save

@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
   removeElements,
   Background,
-  isNode
+  isNode,
 } from 'react-flow-renderer';
 import {
   CustomNode, ConditionDefineEdge,
@@ -24,7 +24,8 @@ import {
   addGroup, getGroupDropDown, getNodes,
   getBuildTypeValueOptions,
   getRelationships, postNode, postEdge,
-  showCondition
+  showCondition, putConditionMeta, saveCondition,
+  putNode, putEdge, deleteConditionElement
 } from './reducers/conditionActions';
 
 
@@ -60,16 +61,15 @@ const Condition = (props) => {
   const [nodeLabel, setNodeLabel] = useState('');
   const [conditionValues, setConditionValues] = useState([]);
 
+  const [isUpdatingElement, setIsUpdatingElement] = useState(false);
+  const [elementToUpdate, setElementToUpdate] = useState(null);
+
   useEffect(() => {
     dispatch(getGroupDropDown());
     dispatch(getNodes());
     dispatch(getRelationships());
     dispatch(getBuildTypeValueOptions());
     dispatch(showCondition(id));
-
-    if (label.length === 0 || description.length === 0 || group) {
-      // setMetaOpen(true);
-    }
   }, []);
 
 
@@ -84,24 +84,40 @@ const Condition = (props) => {
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
-    const edge = {
-      relationship_id: choosenRelationship.id,
-      relationshipType,
-      comparisonType,
-      comparisonValue,
-      ...currentConnectionData
-    };
 
-    dispatch(postEdge(id, edge, setDefineEdgeOpen));
+    if (isUpdatingElement) {
+      dispatch(putEdge(elementToUpdate.id, choosenRelationship.id, comparisonType, comparisonValue, relationshipType, setDefineEdgeOpen));
+    } else {
+      const edge = {
+        relationship_id: choosenRelationship.id,
+        relationshipType,
+        comparisonType,
+        comparisonValue,
+        ...currentConnectionData
+      };
+      dispatch(postEdge(id, edge, setDefineEdgeOpen));
+    }
   };
 
   const handleNodeSave = () => {
-    dispatch(postNode(id, choosenNode.id, JSON.stringify(conditionValues), setDefineNodeOpen));
+    if (isUpdatingElement) {
+      const originalElementIds = elementToUpdate.data.conditionValues.map(cv => cv.id);
+      const newConditionValueIds = conditionValues.map(cv => cv.conditionNodeValueId);
+      const deletedConditionValues = originalElementIds.filter(x => !newConditionValueIds.includes(x));
+      dispatch(putNode(elementToUpdate.id, choosenNode.id, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), setDefineNodeOpen));
+    } else {
+      dispatch(postNode(id, choosenNode.id, JSON.stringify(conditionValues), setDefineNodeOpen));
+    }
+    setIsUpdatingElement(false);
   };
 
 
   const onElementsRemove = (elementsToRemove) => {
-    //
+    const _elements = removeElements(elementsToRemove, elements);
+    setIsUpdatingElement(false);
+    setElementToUpdate(null);
+
+    dispatch(deleteConditionElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements, setDefineNodeOpen, setDefineEdgeOpen));
   };
 
   const onLoad = (_reactFlowInstance) => {
@@ -110,7 +126,25 @@ const Condition = (props) => {
   };
 
   const onElementClick = (event, element) => {
-    console.log(event, element);
+    setIsUpdatingElement(true);
+    setElementToUpdate(element);
+
+    if (isNode(element)) {
+      setNodeLabel(element.data.label);
+      setConditionValues(element.data.conditionValues.map(e => ({
+        conditionNodeValueId: e.id,
+        attribut: e.attribut.label,
+        comparison_type: e.comparison_type,
+        comparison_value: e.comparison_value
+      })));
+      setDefineNodeOpen(true);
+    } else {
+      setRelationshipLabel(element.data.label);
+      setRelationshipType(element.type);
+      setComparisonType(element.data.comparison_type);
+      setComparisonValue(element.data.comparison_value);
+      setDefineEdgeOpen(true);
+    }
   };
 
   const onConditionSave = () => {
@@ -118,7 +152,7 @@ const Condition = (props) => {
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      console.log(mappedNodes);
+      dispatch(saveCondition(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes)));
     }
   };
 
@@ -158,12 +192,15 @@ const Condition = (props) => {
         descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
         addGroup={(_group) => dispatch(addGroup(_group.value))}
         groupsDropDownOptions={groupsDropDownOptions}
-        onSave={() => console.log('hej')}
+        onSave={() => dispatch(putConditionMeta(id, label, description, group, setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
       />
       <ConditionDefineEdge
         open={defineEdgeOpen}
-        close={() => setDefineEdgeOpen(false)}
+        close={() => {
+          setDefineEdgeOpen(false);
+          setIsUpdatingElement(false);
+        }}
         relationships={relationships}
         relationshipLabel={relationshipLabel}
         handleChangeLabel={(_label) => setRelationshipLabel(_label.value)}
@@ -178,7 +215,10 @@ const Condition = (props) => {
       />
       <ConditionDefineNode
         open={defineNodeOpen}
-        close={() => setDefineNodeOpen(false)}
+        close={() => {
+          setDefineNodeOpen(false);
+          setIsUpdatingElement(false);
+        }}
         nodes={nodes}
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => setNodeLabel(_label.value)}
@@ -189,12 +229,14 @@ const Condition = (props) => {
         comparisonsOptions={comparisonsOptions}
         addConditionValue={() => setConditionValues([...conditionValues, { attribut: null, comparison_type: 'is equal to', comparison_value: '' }])}
         deleteConditionValue={(index) => setConditionValues(values => values.filter((v, i) => i !== index))}
+        isUpdatingElement={isUpdatingElement}
+        handleDeleteNode={() => onElementsRemove([elementToUpdate])}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
         <ConditionFabs
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
-          saveClick={() => console.log('hej')}
+          saveClick={onConditionSave}
         />
       )}
     </div>

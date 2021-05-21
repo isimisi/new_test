@@ -78,20 +78,36 @@ export const getBuildTypeValueOptions = () => async dispatch => {
   }
 };
 
-export const putCondition = (id, title, description, type, group, conditionValues, history) => async dispatch => {
+export const putConditionMeta = (id, label, description, group, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${CONDITIONS}/${id}`;
   const body = {
-    title, description, type, group, conditionValues
+    label, description, group,
   };
   const header = authHeader();
   try {
     await axios.put(url, body, header);
-    const message = 'You have updated your node';
-    dispatch({ type: types.PUT_CONDITION_SUCCESS, message });
-    history.push('/app/conditions');
+    dispatch({ type: types.PUT_CONDITION_SUCCESS });
+    setMetaOpen(false);
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_CONDITION_FAILED, message });
+  }
+};
+
+export const saveCondition = (condition_id, conditionZoom, conditionXPosition, conditionYPosition, nodes) => async dispatch => {
+  const url = `${baseUrl}/${CONDITIONS}/${condition_id}/position`;
+  const body = {
+    conditionZoom, conditionXPosition, conditionYPosition, nodes
+  };
+  const header = authHeader();
+
+  try {
+    await axios.put(url, body, header);
+    const message = 'Vi har gemt dit scenarie';
+    dispatch({ type: types.SAVE_CONDITION_SUCCESS, message });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.SAVE_CONDITION_FAILED, message });
   }
 };
 
@@ -106,6 +122,24 @@ export const deleteCondition = (id, title) => async dispatch => {
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_CONDITION_FAILED, message });
+  }
+};
+
+export const deleteConditionElement = (id, isNode, elements, setDefineNodeOpen, setDefineEdgeOpen) => async dispatch => {
+  const url = `${baseUrl}/condition${isNode ? 'Nodes' : 'Relationships'}/${id}`;
+  const header = authHeader();
+  try {
+    await axios.delete(url, header);
+    dispatch({ type: types.DELETE_CONDITION_ELEMENTS_SUCCESS, elements });
+    if (isNode) {
+      setDefineNodeOpen(false);
+    } else {
+      setDefineEdgeOpen(false);
+    }
+  } catch (error) {
+    console.log(error.response);
+    const message = genericErrorMessage;
+    dispatch({ type: types.DELETE_CONDITION_ELEMENTS_FAILED, message });
   }
 };
 
@@ -145,6 +179,27 @@ export const postNode = (condition_id, node_id, values, setDefineNodeOpen) => as
   }
 };
 
+export const putNode = (conditionNodeId, node_id, nodeValues, deletedConditionValues, setDefineNodeOpen) => async dispatch => {
+  const url = `${baseUrl}/conditionNodes/${conditionNodeId}`;
+  const body = {
+    node_id,
+    nodeValues,
+    deletedConditionValues
+  };
+  const header = authHeader();
+
+  try {
+    const response = await axios.put(url, body, header);
+    const node = response.data;
+    dispatch({ type: types.PUT_NODE_SUCCESS, node });
+    setDefineNodeOpen(false);
+  } catch (error) {
+    console.log(error.response);
+    const message = genericErrorMessage;
+    dispatch({ type: types.PUT_NODE_FAILED, message });
+  }
+};
+
 export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatch => {
   const url = `${baseUrl}/conditionRelationships`;
   const body = {
@@ -168,6 +223,28 @@ export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatc
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.POST_EDGE_FAILED, message });
+  }
+};
+
+export const putEdge = (edgeId, relationship_id, comparison_type, comparison_value, type, setDefineEdgeOpen) => async dispatch => {
+  const url = `${baseUrl}/conditionRelationships/${edgeId}`;
+  const body = {
+    relationship_id,
+    comparison_type,
+    comparison_value,
+    type,
+  };
+  const header = authHeader();
+
+  try {
+    const response = await axios.put(url, body, header);
+    const edge = response.data;
+    dispatch({ type: types.PUT_EDGE_SUCCESS, edge });
+    setDefineEdgeOpen(false);
+  } catch (error) {
+    console.log(error.response);
+    const message = genericErrorMessage;
+    dispatch({ type: types.PUT_EDGE_FAILED, message });
   }
 };
 

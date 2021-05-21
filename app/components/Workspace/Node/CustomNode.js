@@ -87,7 +87,16 @@ const CustomNode = ({ data }) => {
         id="bottom"
         position={Position.Bottom}
       />
-      <Typography variant="subtitle1">{data.label}</Typography>
+      <Typography variant="subtitle1" style={{ fontSize: 10 }}>{data.label}</Typography>
+      {data.conditionValues && data.conditionValues.map(cv => (
+        <Typography variant="body2" style={{ fontSize: 6 }}>
+          {cv.attribut.label}
+          {' '}
+          {cv.comparison_type}
+          {' '}
+          {cv.comparison_value}
+        </Typography>
+      ))}
     </div>
   );
 };

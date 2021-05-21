@@ -12,6 +12,7 @@ import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import DeleteIcon from '@material-ui/icons/Delete';
 import QueueIcon from '@material-ui/icons/Queue';
 import IconButton from '@material-ui/core/IconButton';
+import { red } from '@api/palette/colorfull';
 import styles from '../condition-jss';
 
 const WorkspaceNodeForm = (props) => {
@@ -28,6 +29,8 @@ const WorkspaceNodeForm = (props) => {
     comparisonsOptions,
     addConditionValue,
     deleteConditionValue,
+    isUpdatingElement,
+    handleDeleteNode
   } = props;
 
   const choosenNode = nodes.find(r => r.label === nodeLabel);
@@ -92,7 +95,7 @@ const WorkspaceNodeForm = (props) => {
                   onChange={(value) => handleNodeChange(value.value, index, 'comparison_type')}
                 />
               </div>
-              <IconButton style={{ color: 'red', bottom: 10, marginLeft: 5 }} onClick={() => deleteConditionValue(index)}>
+              <IconButton style={{ color: `${red}55`, bottom: 10, marginLeft: 5 }} onClick={() => deleteConditionValue(index)}>
                 <DeleteIcon />
               </IconButton>
               <IconButton color="primary" style={{ bottom: 10, marginLeft: 5 }} onClick={addConditionValue}>
@@ -119,6 +122,16 @@ const WorkspaceNodeForm = (props) => {
         )}
       </section>
       <div className={css.buttonArea}>
+        {isUpdatingElement && (
+          <Button
+            variant="contained"
+            type="button"
+            onClick={handleDeleteNode}
+            style={{ backgroundColor: red, color: 'white' }}
+          >
+            Delete
+          </Button>
+        )}
         <Button type="button" onClick={close}>
             Discard
         </Button>
@@ -149,6 +162,8 @@ WorkspaceNodeForm.propTypes = {
   comparisonsOptions: PropTypes.array.isRequired,
   addConditionValue: PropTypes.func.isRequired,
   deleteConditionValue: PropTypes.func.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteNode: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(WorkspaceNodeForm);

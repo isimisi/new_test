@@ -1,8 +1,14 @@
 import { fromJS, List } from 'immutable';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
+  isNode,
+  isEdge
+} from 'react-flow-renderer';
+import {
   GET_CONDITIONS_SUCCESS,
   GET_CONDITIONS_FAILED,
+  PUT_CONDITION_SUCCESS,
+  PUT_CONDITION_FAILED,
   POST_CONDITION_SUCCESS,
   POST_CONDITION_FAILED,
   GET_BUILD_TYPES_VALUES_SUCCESS,
@@ -23,7 +29,15 @@ import {
   POST_NODE_SUCCESS,
   POST_NODE_FAILED,
   POST_EDGE_SUCCESS,
-  POST_EDGE_FAILED
+  POST_EDGE_FAILED,
+  SAVE_CONDITION_SUCCESS,
+  SAVE_CONDITION_FAILED,
+  PUT_NODE_SUCCESS,
+  PUT_NODE_FAILED,
+  PUT_EDGE_SUCCESS,
+  PUT_EDGE_FAILED,
+  DELETE_CONDITION_ELEMENTS_SUCCESS,
+  DELETE_CONDITION_ELEMENTS_FAILED
 } from './conditionConstants';
 
 const initialState = {
@@ -66,6 +80,25 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
+    case PUT_CONDITION_SUCCESS:
+      return state.withMutations((mutableState) => {
+        // do something
+      });
+    case PUT_CONDITION_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case SAVE_CONDITION_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case SAVE_CONDITION_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
     case SHOW_CONDITION_SUCCESS:
       return state.withMutations((mutableState) => {
         const label = fromJS(action.label);
@@ -79,6 +112,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('elements', elements);
       });
     case SHOW_CONDITION_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case DELETE_CONDITION_ELEMENTS_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const elements = fromJS(action.elements);
+        mutableState.set('elements', elements);
+      });
+    case DELETE_CONDITION_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
@@ -157,6 +200,31 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.update('elements', myList => myList.push(node));
       });
     case POST_NODE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case PUT_NODE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const elements = mutableState.get('elements').toJS();
+        const index = elements.findIndex(e => e.id === action.node.id && isNode(e));
+        elements[index] = action.node;
+
+        mutableState.set('elements', fromJS(elements));
+      });
+    case PUT_NODE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case PUT_EDGE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const elements = mutableState.get('elements').toJS();
+        const index = elements.findIndex(e => e.id === action.edge.id && isEdge(e));
+        elements[index] = action.edge;
+        mutableState.set('elements', fromJS(elements));
+      });
+    case PUT_EDGE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

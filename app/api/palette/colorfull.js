@@ -7,4 +7,7 @@ const colorfull = [
   '#D1D98B',
   '#1e603a',
 ];
+
+export const red = '#BF0426';
+
 export default colorfull;
