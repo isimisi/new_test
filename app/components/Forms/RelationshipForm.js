@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable default-case */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -8,8 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useDispatch } from 'react-redux';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
-import ReactTagInput from '@pathofdev/react-tag-input';
-import '@pathofdev/react-tag-input/build/index.css';
+import CreatableSelect from 'react-select/creatable';
+import { valuesIn } from 'lodash-es';
 import {
   labelChange, descriptionChange, addGroup, valuesChange
 } from '../../containers/Pages/Relationships/reducers/relationshipActions';
@@ -42,6 +43,7 @@ const styles = theme => ({
 
 function RelationshipForm(props) {
   const dispatch = useDispatch();
+  const [inputValue, setInputValue] = useState('');
   const theme = useTheme();
   const {
     classes,
@@ -65,9 +67,24 @@ function RelationshipForm(props) {
   };
 
   const onValueChanged = (_values) => {
-    dispatch(valuesChange(_values));
+    dispatch(valuesChange(_values || []));
   };
-  console.log(values.map((v, i) => ({ id: i + 1, displayValue: v })));
+
+  const createOption = (_label) => ({
+    label: _label,
+    value: _label,
+  });
+
+  const handleKeyDown = event => {
+    if (!inputValue) return;
+    switch (event.key) {
+      case 'Enter':
+      case 'Tab':
+        setInputValue('');
+        dispatch(valuesChange([...values, createOption(inputValue)]));
+        event.preventDefault();
+    }
+  };
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -90,11 +107,17 @@ function RelationshipForm(props) {
               />
             </div>
             <div>
-              <ReactTagInput
-                tags={values}
+              <CreatableSelect
+                style={selectStyles}
+                inputValue={inputValue}
+                isClearable
+                isMulti
+                menuIsOpen={false}
                 onChange={onValueChanged}
-                removeOnBackspace
+                onInputChange={(v) => setInputValue(v)}
+                onKeyDown={handleKeyDown}
                 placeholder={`Mulige værdier ${label.length > 0 ? 'for ' + label : ''}`}
+                value={values}
               />
             </div>
             <div className={classes.field}>
