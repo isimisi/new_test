@@ -20,7 +20,9 @@ function DefineNode(props) {
     handleChangeColor,
     nodeBorderColor,
     handleBorderColorChange,
-    handleNodeSave
+    handleNodeSave,
+    nodeDisplayName,
+    handleDisplayNameChange
   } = props;
 
   return (
@@ -43,6 +45,8 @@ function DefineNode(props) {
           nodeBorderColor={nodeBorderColor}
           handleBorderColorChange={handleBorderColorChange}
           handleNodeSave={handleNodeSave}
+          nodeDisplayName={nodeDisplayName}
+          handleDisplayNameChange={handleDisplayNameChange}
         />
       </FloatingPanel>
     </div>
@@ -63,7 +67,9 @@ DefineNode.propTypes = {
   handleChangeColor: PropTypes.func.isRequired,
   nodeBorderColor: PropTypes.object.isRequired,
   handleBorderColorChange: PropTypes.func.isRequired,
-  handleNodeSave: PropTypes.func.isRequired
+  handleNodeSave: PropTypes.func.isRequired,
+  nodeDisplayName: PropTypes.string.isRequired,
+  handleDisplayNameChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(DefineNode);

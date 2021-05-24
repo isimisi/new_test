@@ -29,7 +29,9 @@ const WorkspaceNodeForm = (props) => {
     handleChangeColor,
     nodeBorderColor,
     handleBorderColorChange,
-    handleNodeSave
+    handleNodeSave,
+    nodeDisplayName,
+    handleDisplayNameChange
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
@@ -59,18 +61,30 @@ const WorkspaceNodeForm = (props) => {
           />
         </div>
         {choosenNode && (
-          <div>
-            <TextField
-              name="description"
-              className={classes.field}
-              placeholder="Description"
-              label="Description"
-              multiline
-              rows={2}
-              disabled
-              value={choosenNode.description}
-            />
-          </div>
+          <>
+            <div>
+              <TextField
+                name="displayName"
+                className={classes.field}
+                placeholder="Alias"
+                label="Alias"
+                value={nodeDisplayName}
+                onChange={handleDisplayNameChange}
+              />
+            </div>
+            <div>
+              <TextField
+                name="description"
+                className={classes.field}
+                placeholder="Description"
+                label="Description"
+                multiline
+                rows={2}
+                disabled
+                value={choosenNode.description}
+              />
+            </div>
+          </>
         )}
         {choosenNode && choosenNode.attributes.map((attribut, index) => (
           <div className={classes.inlineWrap} style={{ marginTop: 15 }} key={attribut.value}>
@@ -196,7 +210,9 @@ WorkspaceNodeForm.propTypes = {
   handleChangeColor: PropTypes.func.isRequired,
   nodeBorderColor: PropTypes.object.isRequired,
   handleBorderColorChange: PropTypes.func.isRequired,
-  handleNodeSave: PropTypes.func.isRequired
+  handleNodeSave: PropTypes.func.isRequired,
+  nodeDisplayName: PropTypes.string.isRequired,
+  handleDisplayNameChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(WorkspaceNodeForm);

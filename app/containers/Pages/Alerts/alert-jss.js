@@ -14,7 +14,8 @@ const styles = theme => ({
           textOverflow: 'ellipsis'
         }
       }
-    }
+    },
+    marginBottom: 50
   },
   addBtn: {
     position: 'fixed',

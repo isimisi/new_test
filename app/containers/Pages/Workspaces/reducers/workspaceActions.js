@@ -119,11 +119,12 @@ export const deleteWorkspaceElement = (id, isNode, elements) => async dispatch =
   }
 };
 
-export const postNode = (workspace_id, node_id, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
+export const postNode = (workspace_id, node_id, display_name, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
     workspace_id,
     node_id,
+    display_name,
     backgroundColor,
     borderColor,
     'x-value': 0,

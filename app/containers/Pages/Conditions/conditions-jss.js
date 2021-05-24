@@ -25,7 +25,8 @@ const styles = theme => ({
           textOverflow: 'ellipsis'
         }
       }
-    }
+    },
+    marginBottom: 50
   },
   root: {
     flexGrow: 1,

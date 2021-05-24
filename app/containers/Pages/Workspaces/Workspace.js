@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
   removeElements,
@@ -70,6 +70,7 @@ const Workspace = (props) => {
 
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
+  const [nodeDisplayName, setNodeDisplayName] = useState('');
   const [attributes, setAttributes] = useState([{
     label: null,
     value: ''
@@ -139,7 +140,7 @@ const Workspace = (props) => {
   };
 
   const handleNodeSave = () => {
-    dispatch(postNode(id, choosenNode.id, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
+    dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
     setNodeLabel('');
   };
 
@@ -243,6 +244,8 @@ const Workspace = (props) => {
         nodeBorderColor={nodeBorderColor}
         handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
         handleNodeSave={handleNodeSave}
+        nodeDisplayName={nodeDisplayName}
+        handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
         <WorkspaceFabs
