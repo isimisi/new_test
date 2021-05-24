@@ -20,7 +20,6 @@ export const createOrganization = (cvr, country, history) => async dispatch => {
     history.push('/app/create/organiazation/choose/plan');
   } catch (error) {
     let message = genericErrorMessage;
-    console.log(error);
     if (error.response) {
       const { message: validatorMessage } = error.response.data;
       message = validatorMessage;
@@ -42,7 +41,6 @@ export const choosePlan = (plan, history) => async dispatch => {
     history.push('/app');
   } catch (error) {
     const message = genericErrorMessage;
-    console.log(error);
     dispatch({ type: types.SAVE_PLAN_FAILED, message });
   }
 };

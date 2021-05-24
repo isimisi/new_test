@@ -111,7 +111,6 @@ function GroupDetail(props) { // eslint-disable-line
                   end={activeGroup[`${category}`] && activeGroup[`${category}`].length}
                   duration={3}
                   title={category}
-                  onClick={() => console.log('sdsn')/** TODO: skal man kunne se yderligere detaljer om hvilke noder? */}
                 />
               </Grid>
             ))

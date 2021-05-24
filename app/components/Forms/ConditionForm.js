@@ -94,9 +94,7 @@ function ConditionForm(props) {
 
   const handleChange = (value, index, _type) => {
     const newArray = [...conditionValues];
-    console.log(newArray[index]);
     newArray[index] = { ...newArray[index], [_type]: value };
-    console.log(newArray[index]);
     dispatch(addConditionValue(newArray));
   };
 

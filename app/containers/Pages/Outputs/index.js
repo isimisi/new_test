@@ -24,7 +24,7 @@ function Outputs(props) {
   const outputs = useSelector(state => state.getIn([reducer, 'outputs'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
-  console.log(outputs);
+
   useEffect(() => {
     dispatch(getOutput());
   }, []);

@@ -12,7 +12,7 @@ function ResetPassword(props) {
   const submitForm = useCallback((values) => {
     setValueForm(values);
     setTimeout(() => {
-      console.log(`You submitted:\n\n${valueForm}`); // eslint-disable-line
+
     }, 500); // simulate server latency
   }, [valueForm]);
 

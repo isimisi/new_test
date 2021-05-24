@@ -137,7 +137,6 @@ export const deleteConditionElement = (id, isNode, elements, setDefineNodeOpen, 
       setDefineEdgeOpen(false);
     }
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_CONDITION_ELEMENTS_FAILED, message });
   }
@@ -173,7 +172,6 @@ export const postNode = (condition_id, node_id, values, setDefineNodeOpen) => as
     dispatch({ type: types.POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_NODE_FAILED, message });
   }
@@ -194,7 +192,6 @@ export const putNode = (conditionNodeId, node_id, nodeValues, deletedConditionVa
     dispatch({ type: types.PUT_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_NODE_FAILED, message });
   }
@@ -242,7 +239,6 @@ export const putEdge = (edgeId, relationship_id, comparison_type, comparison_val
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge });
     setDefineEdgeOpen(false);
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_EDGE_FAILED, message });
   }

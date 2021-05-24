@@ -59,7 +59,7 @@ export const showAttribute = (id) => async dispatch => {
 
 export const putAttribute = (id, label, description, type, group, selectionOptions) => async dispatch => {
   const url = `${baseUrl}/${ATTRIBUTS}/${id}`;
-  console.log(id);
+
   const body = {
     label, description, type, group
   };
@@ -72,7 +72,6 @@ export const putAttribute = (id, label, description, type, group, selectionOptio
     dispatch({ type: types.PUT_ATTRIBUTE_SUCCESS, message });
     dispatch(getAttributes());
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_ATTRIBUTE_FAILED, message });
   }

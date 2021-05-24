@@ -30,7 +30,7 @@ export const postGroup = (title, description, image, closeModal) => async dispat
     closeModal(false);
   } catch (error) {
     const message = genericErrorMessage;
-    console.log(error.response);
+
 
     dispatch({ type: types.POST_GROUP_FAILED, message });
   }
@@ -55,7 +55,6 @@ export const putGroup = (id, title, description) => async dispatch => {
   const header = authHeader();
   try {
     await axios.put(url, body, header);
-    console.log('success');
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_GROUP_FAILED, message });

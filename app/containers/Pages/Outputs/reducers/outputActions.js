@@ -80,7 +80,7 @@ export const putOutput = (id, label, description, output, fileType, outputType, 
     dispatch({ type: types.PUT_OUTPUT_SUCCESS, message });
   } catch (error) {
     const message = genericErrorMessage;
-    console.log(error.response);
+
     dispatch({ type: types.PUT_OUTPUT_FAILED, message });
   }
 };

@@ -16,7 +16,6 @@ export const getRelationships = () => async dispatch => {
     const relationships = response.data;
     dispatch({ type: types.GET_RELATIONSHIPS_SUCCESS, relationships });
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.GET_RELATIONSHIPS_FAILED, message });
   }
@@ -96,7 +95,6 @@ export const deleteRelationship = (id, title) => async dispatch => {
     dispatch({ type: types.DELETE_RELATIONSHIP_SUCCESS, message });
     dispatch(getRelationships());
   } catch (error) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_RELATIONSHIP_FAILED, message });
   }
