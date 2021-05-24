@@ -105,9 +105,9 @@ const Workspace = (props) => {
     _reactFlowInstance.fitView();
   };
 
-  // const onElementClick = (event, element) => {
-  //   // console.log(event, element);
-  // };
+  const onElementClick = (event, element) => {
+    console.log(event, element);
+  };
 
   // WORKSPACE GENERAL
 
