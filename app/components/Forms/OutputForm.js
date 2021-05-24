@@ -162,7 +162,6 @@ const OutputForm = (props) => {
                   <Select
                     classes={classes}
                     styles={selectStyles}
-                    inputId="react-select-single"
                     options={mapSelectOptions(conditionsDropDownOptions)}
                     value={condition && { label: condition, value: condition }}
                     onChange={(value) => onConditionChange(value.value)}

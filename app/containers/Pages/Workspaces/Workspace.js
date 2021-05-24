@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
   removeElements,
@@ -40,9 +40,20 @@ const Workspace = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
+
+  // REDUX
+  const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
+  const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
+  const handleVisability = useSelector(state => state.getIn([reducer, 'handleVisability']));
+  const elements = useSelector(state => state.getIn([reducer, 'elements'])).toJS();
+  const label = useSelector(state => state.getIn([reducer, 'label']));
+  const description = useSelector(state => state.getIn([reducer, 'description']));
+  const group = useSelector(state => state.getIn([reducer, 'group']));
+  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
+  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
-
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
@@ -57,17 +68,7 @@ const Workspace = (props) => {
   const [animatedLine, setAnimatedLine] = useState(false);
   const [showLabel, setShowlabel] = useState(false);
 
-  // REDUX
-  const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
-  const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
-  const handleVisability = useSelector(state => state.getIn([reducer, 'handleVisability']));
-  const elements = useSelector(state => state.getIn([reducer, 'elements'])).toJS();
-  const label = useSelector(state => state.getIn([reducer, 'label']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-
+  // NODE
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
   const [nodeDisplayName, setNodeDisplayName] = useState('');
@@ -82,18 +83,42 @@ const Workspace = (props) => {
   const [nodeBorderColor, setNodeBorderColor] = useState({
     r: 0, g: 0, b: 0, a: 1
   });
-
-
   const choosenNode = nodes.find(r => r.label === nodeLabel);
   const choosenNodeStyle = choosenNode && JSON.parse(choosenNode.style);
 
-  useEffect(() => {
-    if (choosenNode) {
-      setNodeColor(choosenNodeStyle.backgroundColor);
-      setNodeBorderColor(choosenNodeStyle.borderColor);
-      setNodeSize(getSize(choosenNodeStyle.width));
+  // REACT FLOW SPECIFIC
+
+  const onConnect = (data) => {
+    if (data.source !== data.target) {
+      setCurrentConnectionData(data);
+      setDefineEdgeOpen(true);
     }
-  }, [nodeLabel]);
+  };
+
+  const onElementsRemove = (elementsToRemove) => {
+    const _elements = removeElements(elementsToRemove, elements);
+    dispatch(deleteWorkspaceElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements));
+  };
+
+  const onLoad = (_reactFlowInstance) => {
+    setRfInstance(_reactFlowInstance);
+    _reactFlowInstance.fitView();
+  };
+
+  const onElementClick = (event, element) => {
+    console.log(event, element);
+  };
+
+  // WORKSPACE GENERAL
+
+  const onWorkspaceSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      const _nodes = flow.elements.filter(n => isNode(n));
+      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
+      dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
+    }
+  }, [rfInstance]);
 
   useEffect(() => {
     dispatch(showWorkspace(id));
@@ -106,14 +131,24 @@ const Workspace = (props) => {
     }
   }, []);
 
-  const onConnect = (data) => {
-    if (data.source !== data.target) {
-      setCurrentConnectionData(data);
-      setDefineEdgeOpen(true);
-    }
-  };
+  // NODE
 
-  const handleRelationshipSave = () => {
+  const handleNodeSave = useCallback(() => {
+    dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
+    setNodeLabel('');
+  }, [choosenNode]);
+
+  useEffect(() => {
+    if (choosenNode) {
+      setNodeColor(choosenNodeStyle.backgroundColor);
+      setNodeBorderColor(choosenNodeStyle.borderColor);
+      setNodeSize(getSize(choosenNodeStyle.width));
+    }
+  }, [nodeLabel]);
+
+  // RELATIONSHIP
+
+  const handleRelationshipSave = useCallback(() => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
     const edge = {
       relationship_id: choosenRelationship.id,
@@ -137,36 +172,8 @@ const Workspace = (props) => {
     setShowArrow(false);
     setAnimatedLine(false);
     setShowlabel(false);
-  };
+  }, [relationshipLabel]);
 
-  const handleNodeSave = () => {
-    dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
-    setNodeLabel('');
-  };
-
-
-  const onElementsRemove = (elementsToRemove) => {
-    const _elements = removeElements(elementsToRemove, elements);
-    dispatch(deleteWorkspaceElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements));
-  };
-
-  const onLoad = (_reactFlowInstance) => {
-    setRfInstance(_reactFlowInstance);
-    _reactFlowInstance.fitView();
-  };
-
-  const onElementClick = (event, element) => {
-    console.log(event, element);
-  };
-
-  const onWorkspaceSave = () => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      const _nodes = flow.elements.filter(n => isNode(n));
-      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
-    }
-  };
 
   return (
     <div>

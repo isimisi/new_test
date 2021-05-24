@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import css from '@styles/Form.scss';
 import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
 import Select from 'react-select';
-import { mapSelectOptions, selectStyles } from '@api/ui/helper';
+import { selectStyles } from '@api/ui/helper';
 import { SketchPicker } from 'react-color';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -45,17 +45,17 @@ const WorkspaceNodeForm = (props) => {
           <Select
             classes={classes}
             styles={selectStyles('relative')}
-            inputId="react-select-single"
+            inputId="react-select-single-workspace-node"
             TextFieldProps={{
               label: 'Element',
               InputLabelProps: {
-                htmlFor: 'react-select-single',
+                htmlFor: 'react-select-single-workspace-node',
                 shrink: true,
               },
               placeholder: 'Element',
             }}
             placeholder="Vælg dit element"
-            options={mapSelectOptions(nodes.map(n => ({ value: n.label, label: n.description })))}
+            options={nodes.map(n => ({ value: n.label, label: n.label }))}
             value={nodeLabel && { label: nodeLabel, value: nodeLabel }}
             onChange={handleChangeLabel}
           />
@@ -81,7 +81,7 @@ const WorkspaceNodeForm = (props) => {
                 multiline
                 rows={2}
                 disabled
-                value={choosenNode.description}
+                value={choosenNode.description || ''}
               />
             </div>
           </>
@@ -93,7 +93,6 @@ const WorkspaceNodeForm = (props) => {
                 <Select
                   classes={classes}
                   styles={selectStyles('relative')}
-                  inputId="react-select-single"
                   options={[]}
                   placeholder="attribut"
                   value={attribut.label && { label: attribut.label, value: attribut.label }}

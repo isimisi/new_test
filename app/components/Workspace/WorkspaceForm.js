@@ -56,11 +56,11 @@ const WorkspaceForm = (props) => {
             <Select
               classes={classes}
               styles={selectStyles('relative')}
-              inputId="react-select-single"
+              inputId="react-select-single-workspace"
               TextFieldProps={{
                 label: 'groups',
                 InputLabelProps: {
-                  htmlFor: 'react-select-single',
+                  htmlFor: 'react-select-single-workspace',
                   shrink: true,
                 },
                 placeholder: 'groups',

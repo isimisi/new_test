@@ -107,11 +107,11 @@ function OutputNamingForm(props) {
                 <Select
                   classes={classes}
                   styles={selectStyles}
-                  inputId="react-select-single"
+                  inputId="react-select-single-output"
                   TextFieldProps={{
                     label: 'groups',
                     InputLabelProps: {
-                      htmlFor: 'react-select-single',
+                      htmlFor: 'react-select-single-output',
                       shrink: true,
                     },
                     placeholder: 'groups',

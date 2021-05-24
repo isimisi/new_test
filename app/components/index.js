@@ -9,6 +9,8 @@ import SearchUi from './Search/SearchUi';
 // Dashboard and Widget
 import CounterWidget from './Counter/CounterWidget';
 
+import PapperBlock from './PapperBlock/PapperBlock';
+
 // Guide
 import GuideSlider from './GuideSlider';
 // Form
@@ -51,9 +53,6 @@ import GroupModal from './Group/GroupModal';
 // Invoice
 import CommercialInvoice from './DynamicInvoice/CommercialInvoice';
 
-// TaskBoard
-import TaskBoard from './TaskBoard/TaskBoard';
-import AddBoard from './TaskBoard/AddBoard';
 // Error
 import ErrorWrap from './Error/ErrorWrap';
 // Theme an Layout Settings
@@ -96,6 +95,7 @@ export {
   BreadCrumb,
   SearchUi,
   CounterWidget,
+  PapperBlock,
   GuideSlider,
   Notification,
   MaterialDropZone,
@@ -130,8 +130,6 @@ export {
   GroupGallery,
   GroupModal,
   CommercialInvoice,
-  TaskBoard,
-  AddBoard,
   ErrorWrap,
   NodeDemo,
   NodeStyling,

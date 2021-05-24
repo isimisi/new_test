@@ -127,11 +127,11 @@ const AlertNamingForm = (props) => {
                 <Select
                   classes={classes}
                   styles={selectStyles}
-                  inputId="react-select-single"
+                  inputId="react-select-single-alert-group"
                   TextFieldProps={{
                     label: 'groups',
                     InputLabelProps: {
-                      htmlFor: 'react-select-single',
+                      htmlFor: 'react-select-single-alert-group',
                       shrink: true,
                     },
                     placeholder: 'groups',
@@ -148,11 +148,11 @@ const AlertNamingForm = (props) => {
                 <Select
                   classes={classes}
                   styles={selectStyles}
-                  inputId="react-select-single"
+                  inputId="react-select-single-alert-condition"
                   TextFieldProps={{
                     label: 'condition',
                     InputLabelProps: {
-                      htmlFor: 'react-select-single',
+                      htmlFor: 'react-select-single-alert-condition',
                       shrink: true,
                     },
                     placeholder: 'condition',

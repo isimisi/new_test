@@ -10,8 +10,6 @@ import languageProviderReducer from 'containers/LanguageProvider/reducer';
 import uiReducer from './modules/ui';
 import initval from './modules/initForm';
 import login from './modules/login';
-import taskboard from '../containers/Pages/TaskBoard/reducers/taskboardReducer';
-
 
 import auth from '../containers/Pages/Users/reducers/authReducer';
 import groups from '../containers/Pages/Groups/reducers/groupReducer';
@@ -42,7 +40,6 @@ export default function createReducer() {
     ui: uiReducer,
     initval,
     login,
-    taskboard,
     groups,
     language: languageProviderReducer,
     router: connectRouter(history)

@@ -3,7 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import { ThemeContext } from './ThemeWrapper';
 import Dashboard from '../Templates/Dashboard';
 import {
-  PersonalDashboard, TaskBoard,
+  PersonalDashboard,
   Invoice, Error, Settings,
   HelpSupport, NotFound, Workspaces, Workspace,
   Conditions, Condition, Outputs, Output,
@@ -35,7 +35,6 @@ function Application() {
         <Route exact path="/app/nodes/:id" component={Node} />
         <Route exact path="/app/workspaces" component={Workspaces} />
         <Route exact path="/app/workspaces/:id" component={Workspace} />
-        <Route exact path="/app/taskboard" component={TaskBoard} />
         <Route exact path="/app/settings" component={Settings} />
         <Route exact path="/app/create/organization" component={CreateOrganization} />
         <Route exact path="/app/create/organiazation/choose/plan" component={ChoosePlan} />

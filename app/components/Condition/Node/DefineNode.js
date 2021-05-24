@@ -44,6 +44,7 @@ function DefineNode(props) {
           deleteConditionValue={deleteConditionValue}
           isUpdatingElement={isUpdatingElement}
           handleDeleteNode={handleDeleteNode}
+          close={close}
         />
       </FloatingPanel>
     </div>

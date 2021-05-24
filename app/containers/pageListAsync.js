@@ -73,10 +73,6 @@ export const Node = loadable(() =>
     fallback: <Loading />,
   })
   
-export const TaskBoard = loadable(() =>
-  import ('./Pages/TaskBoard'), {
-    fallback: <Loading />,
-  });
 export const Invoice = loadable(() =>
   import ('./Pages/Invoice'), {
     fallback: <Loading />,

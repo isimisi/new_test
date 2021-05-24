@@ -7,13 +7,16 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { routerMiddleware } from 'connected-react-router';
 import { fromJS } from 'immutable';
+import LogRocket from 'logrocket';
 import createReducer from './reducers';
+
+const _logger = process.env.NODE_ENV === 'production' ? LogRocket.reduxMiddleware() : logger;
 
 export default function configureStore(initialState = {}, history) {
   const store = createStore(
     createReducer(),
     fromJS(initialState),
-    compose(applyMiddleware(thunk, routerMiddleware(history), logger))
+    compose(applyMiddleware(thunk, routerMiddleware(history), _logger))
   );
 
   // Make reducers hot reloadable, see http://mxs.is/googmo

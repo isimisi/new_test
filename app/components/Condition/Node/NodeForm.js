@@ -43,11 +43,11 @@ const WorkspaceNodeForm = (props) => {
           <Select
             classes={classes}
             styles={selectStyles('relative')}
-            inputId="react-select-single"
+            inputId="react-select-single-node-choose"
             TextFieldProps={{
               label: 'Element',
               InputLabelProps: {
-                htmlFor: 'react-select-single',
+                htmlFor: 'react-select-single-node-choose',
                 shrink: true,
               },
               placeholder: 'Element',
@@ -79,7 +79,6 @@ const WorkspaceNodeForm = (props) => {
                 <Select
                   classes={classes}
                   styles={selectStyles('relative')}
-                  inputId="react-select-single"
                   options={mapSelectOptions(nodeAttributes)}
                   value={row.attribut && { label: row.attribut, value: row.attribut }}
                   onChange={(value) => handleNodeChange(value.value, index, 'attribut')}
@@ -89,7 +88,6 @@ const WorkspaceNodeForm = (props) => {
                 <Select
                   classes={classes}
                   styles={selectStyles('relative')}
-                  inputId="react-select-single"
                   options={comparisonsOptions}
                   value={row.comparison_type && { label: row.comparison_type, value: row.comparison_type }}
                   onChange={(value) => handleNodeChange(value.value, index, 'comparison_type')}

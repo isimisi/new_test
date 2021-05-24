@@ -137,11 +137,11 @@ function RelationshipForm(props) {
               <Select
                 classes={classes}
                 styles={selectStyles()}
-                inputId="react-select-single"
+                inputId="react-select-single-relationship"
                 TextFieldProps={{
                   label: 'groups',
                   InputLabelProps: {
-                    htmlFor: 'react-select-single',
+                    htmlFor: 'react-select-single-relationship',
                     shrink: true,
                   },
                   placeholder: 'groups',

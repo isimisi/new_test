@@ -285,11 +285,6 @@ export const descriptionChange = description => ({
   description,
 });
 
-export const addType = value => ({
-  type: types.ADD_TYPE,
-  value
-});
-
 export const addGroup = group => ({
   type: types.ADD_GROUP,
   group

@@ -91,11 +91,11 @@ const EdgeForm = (props) => {
           <Select
             classes={classes}
             styles={selectStyles('relative')}
-            inputId="react-select-single"
+            inputId="react-select-single-edgelabel"
             TextFieldProps={{
               label: 'label',
               InputLabelProps: {
-                htmlFor: 'react-select-single',
+                htmlFor: 'react-select-single-edgelabel',
                 shrink: true,
               },
               placeholder: 'label',
@@ -111,11 +111,11 @@ const EdgeForm = (props) => {
             <CreatableSelect
               isClearable
               styles={selectStyles('relative')}
-              inputId="react-select-single"
+              inputId="react-select-single-edge-value"
               TextFieldProps={{
                 label: 'Værdi',
                 InputLabelProps: {
-                  htmlFor: 'react-select-single',
+                  htmlFor: 'react-select-single-edge-value',
                   shrink: true,
                 },
                 placeholder: 'Værdi',
@@ -146,11 +146,11 @@ const EdgeForm = (props) => {
             classes={classes}
             isDisabled={editable}
             styles={selectStyles('relative')}
-            inputId="react-select-single"
+            inputId="react-select-single-edge-workspace-type"
             TextFieldProps={{
               label: 'type',
               InputLabelProps: {
-                htmlFor: 'react-select-single',
+                htmlFor: 'react-select-single-edge-workspace-type',
                 shrink: true,
               },
               placeholder: 'type',

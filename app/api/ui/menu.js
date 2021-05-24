@@ -70,12 +70,6 @@ module.exports = [
     icon: 'ios-paw-outline',
     linkParent: '/app/workspaces',
   },
-  // {
-  //   key: 'taskBoard',
-  //   name: 'Task Board',
-  //   icon: 'md-time',
-  //   linkParent: '/app/taskboard',
-  // },
   {
     key: 'settings',
     name: 'Indstillinger',

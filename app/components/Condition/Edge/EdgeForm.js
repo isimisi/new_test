@@ -83,11 +83,11 @@ const EdgeForm = (props) => {
             <Select
               classes={classes}
               styles={selectStyles('relative')}
-              inputId="react-select-single"
+              inputId="react-select-single-edge"
               TextFieldProps={{
                 label: 'label',
                 InputLabelProps: {
-                  htmlFor: 'react-select-single',
+                  htmlFor: 'react-select-single-edge',
                   shrink: true,
                 },
                 placeholder: 'label',
@@ -102,7 +102,6 @@ const EdgeForm = (props) => {
             <Select
               classes={classes}
               styles={selectStyles('relative')}
-              inputId="react-select-single"
               options={comparisonsOptions}
               value={comparisonType && { label: comparisonType, value: comparisonType }}
               onChange={(value) => handleComparisonTypeChange(value.value)}
@@ -138,11 +137,11 @@ const EdgeForm = (props) => {
             classes={classes}
             isDisabled={editable}
             styles={selectStyles('relative')}
-            inputId="react-select-single"
+            inputId="react-select-single-edge-type"
             TextFieldProps={{
               label: 'type',
               InputLabelProps: {
-                htmlFor: 'react-select-single',
+                htmlFor: 'react-select-single-edge-type',
                 shrink: true,
               },
               placeholder: 'type',

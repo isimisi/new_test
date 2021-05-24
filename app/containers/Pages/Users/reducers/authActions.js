@@ -4,7 +4,9 @@ import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl } from '@api/constants';
 import { saveToLocalStorage } from '@api/localStorage/localStorage';
+import LogRocket from 'logrocket';
 import * as types from './authConstants';
+
 export const login = (email, password, history, locationState) => async dispatch => {
   const url = `${baseUrl}/login`;
   const body = { email, password };
@@ -18,6 +20,11 @@ export const login = (email, password, history, locationState) => async dispatch
     dispatch({ type: types.LOGIN_SUCCESS, user, access_token });
     saveToLocalStorage({
       ...access_token, ...user, ...organization
+    });
+    LogRocket.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
+      organization: organization.name,
     });
     history.push(locationState?.from?.path || '/app');
   } catch (error) {

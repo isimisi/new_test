@@ -115,11 +115,11 @@ function ReduxFormDemo(props) {
                   <Select
                     classes={classes}
                     styles={selectStyles}
-                    inputId="react-select-single"
+                    inputId="react-select-single-namingform"
                     TextFieldProps={{
                       label: 'groups',
                       InputLabelProps: {
-                        htmlFor: 'react-select-single',
+                        htmlFor: 'react-select-single-namingform',
                         shrink: true,
                       },
                       placeholder: 'groups',

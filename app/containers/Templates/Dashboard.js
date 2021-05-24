@@ -82,7 +82,7 @@ function Dashboard(props) {
         )
       }
     >
-      <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
+      {/* <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} /> */}
       { /* Left Sidebar Layout */
         layout === 'left-sidebar' && (
           <LeftSidebarLayout

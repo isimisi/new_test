@@ -121,11 +121,11 @@ function ConditionNamingForm(props) {
                 <Select
                   classes={classes}
                   styles={selectStyles}
-                  inputId="react-select-single"
+                  inputId="react-select-single-condition-naming"
                   TextFieldProps={{
                     label: 'groups',
                     InputLabelProps: {
-                      htmlFor: 'react-select-single',
+                      htmlFor: 'react-select-single-condition-naming',
                       shrink: true,
                     },
                     placeholder: 'groups',

@@ -145,7 +145,6 @@ function NodeForm(props) {
                     <Select
                       classes={classes}
                       styles={selectStyles}
-                      inputId="react-select-single"
                       options={mapSelectOptions(attributesDropDownOptions)}
                       placeholder="attribut"
                       value={attribut.label && { label: attribut.label, value: attribut.label }}
@@ -176,11 +175,11 @@ function NodeForm(props) {
                 <Select
                   classes={classes}
                   styles={selectStyles}
-                  inputId="react-select-single"
+                  inputId="react-select-single-nodeform"
                   TextFieldProps={{
                     label: 'groups',
                     InputLabelProps: {
-                      htmlFor: 'react-select-single',
+                      htmlFor: 'react-select-single-nodeform',
                       shrink: true,
                     },
                     placeholder: 'groups',

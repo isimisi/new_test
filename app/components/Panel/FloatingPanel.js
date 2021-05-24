@@ -17,7 +17,6 @@ function FloatingPanel(props) {
     openForm,
     closeForm,
     children,
-    branch,
     title,
     extraSize,
     width
@@ -53,7 +52,7 @@ function FloatingPanel(props) {
               </IconButton>
             </Tooltip>
             <Tooltip title="Close">
-              <IconButton className={classes.closeButton} onClick={() => closeForm(branch)} aria-label="Close">
+              <IconButton className={classes.closeButton} onClick={() => closeForm()} aria-label="Close">
                 <CloseIcon />
               </IconButton>
             </Tooltip>
@@ -70,7 +69,6 @@ FloatingPanel.propTypes = {
   openForm: PropTypes.bool.isRequired,
   closeForm: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
-  branch: PropTypes.string.isRequired,
   width: PropTypes.string.isRequired,
   title: PropTypes.string,
   extraSize: PropTypes.bool,

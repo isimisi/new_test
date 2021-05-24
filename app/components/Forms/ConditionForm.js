@@ -135,7 +135,6 @@ function ConditionForm(props) {
               <Select
                 classes={classes}
                 styles={selectStyles}
-                inputId="react-select-single"
                 options={andOrOption}
                 value={type && { label: type, value: type }}
                 onChange={(value) => dispatch(addType(value.value))}
@@ -158,7 +157,6 @@ function ConditionForm(props) {
                   <Select
                     classes={classes}
                     styles={selectStyles}
-                    inputId="react-select-single"
                     options={buildTypeOptions}
                     value={row.build_type && { label: row.build_type, value: row.build_type }}
                     placeholder="Build Type"
@@ -178,7 +176,6 @@ function ConditionForm(props) {
                         <Select
                           classes={classes}
                           styles={selectStyles}
-                          inputId="react-select-single"
                           options={mapSelectOptions(getListFromType(row.build_type))}
                           value={row.build_value && { label: row.build_value, value: row.build_value }}
                           onChange={(value) => handleChange(value.value, index, 'build_value')}
@@ -188,7 +185,6 @@ function ConditionForm(props) {
                         <Select
                           classes={classes}
                           styles={selectStyles}
-                          inputId="react-select-single"
                           options={comparisonsOptions}
                           value={row.comparison_type && { label: row.comparison_type, value: row.comparison_type }}
                           onChange={(value) => handleChange(value.value, index, 'comparison_type')}

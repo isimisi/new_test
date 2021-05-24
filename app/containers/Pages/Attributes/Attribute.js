@@ -101,11 +101,11 @@ const Attribute = (props) => {
               <Select
                 classes={classes}
                 styles={selectStyles}
-                inputId="react-select-single"
+                inputId="react-select-single-attribute"
                 TextFieldProps={{
                   label: 'type',
                   InputLabelProps: {
-                    htmlFor: 'react-select-single',
+                    htmlFor: 'react-select-single-attribute',
                     shrink: true,
                   },
                   placeholder: 'type',
@@ -122,11 +122,11 @@ const Attribute = (props) => {
               <Select
                 classes={classes}
                 styles={selectStyles}
-                inputId="react-select-single"
+                inputId="react-select-single-attr-group"
                 TextFieldProps={{
                   label: 'group',
                   InputLabelProps: {
-                    htmlFor: 'react-select-single',
+                    htmlFor: 'react-select-single-attr-group',
                     shrink: true,
                   },
                   placeholder: 'group',
