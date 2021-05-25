@@ -97,7 +97,8 @@ const Workspace = (props) => {
 
   const onElementsRemove = (elementsToRemove) => {
     const _elements = removeElements(elementsToRemove, elements);
-    dispatch(deleteWorkspaceElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements));
+    console.log(_elements);
+    // dispatch(deleteWorkspaceElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements));
   };
 
   const onLoad = (_reactFlowInstance) => {
@@ -107,6 +108,7 @@ const Workspace = (props) => {
 
   const onElementClick = (event, element) => {
     console.log(event, element);
+    // event.persist();
   };
 
   // WORKSPACE GENERAL
@@ -133,10 +135,10 @@ const Workspace = (props) => {
 
   // NODE
 
-  const handleNodeSave = useCallback(() => {
+  const handleNodeSave = () => {
     dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
     setNodeLabel('');
-  }, [choosenNode]);
+  };
 
   useEffect(() => {
     if (choosenNode) {
@@ -148,7 +150,7 @@ const Workspace = (props) => {
 
   // RELATIONSHIP
 
-  const handleRelationshipSave = useCallback(() => {
+  const handleRelationshipSave = () => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
     const edge = {
       relationship_id: choosenRelationship.id,
@@ -172,7 +174,7 @@ const Workspace = (props) => {
     setShowArrow(false);
     setAnimatedLine(false);
     setShowlabel(false);
-  }, [relationshipLabel]);
+  };
 
 
   return (
