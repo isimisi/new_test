@@ -7,7 +7,8 @@ import ReactFlow, {
   Controls,
   ControlButton,
   Background,
-  isNode
+  isNode,
+  ConnectionMode
 } from 'react-flow-renderer';
 import {
   WorkspaceFabs, CustomNode,
@@ -89,6 +90,7 @@ const Workspace = (props) => {
   // REACT FLOW SPECIFIC
 
   const onConnect = (data) => {
+    console.log(data);
     if (data.source !== data.target) {
       setCurrentConnectionData(data);
       setDefineEdgeOpen(true);
@@ -96,9 +98,9 @@ const Workspace = (props) => {
   };
 
   const onElementsRemove = (elementsToRemove) => {
-    const _elements = removeElements(elementsToRemove, elements);
-    console.log(_elements);
-    // dispatch(deleteWorkspaceElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements));
+    const remainingElements = removeElements(elementsToRemove, elements);
+
+    dispatch(deleteWorkspaceElement(elementsToRemove, remainingElements));
   };
 
   const onLoad = (_reactFlowInstance) => {
@@ -108,7 +110,6 @@ const Workspace = (props) => {
 
   const onElementClick = (event, element) => {
     console.log(event, element);
-    // event.persist();
   };
 
   // WORKSPACE GENERAL
@@ -191,7 +192,7 @@ const Workspace = (props) => {
             nodeTypes={nodeTypes}
             edgeTypes={{ custom: CustomEdge }}
             onLoad={onLoad}
-            connectionMode="loose"
+            connectionMode={ConnectionMode.Loose}
             onElementClick={onElementClick}
           >
             <Controls>

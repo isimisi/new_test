@@ -28,54 +28,29 @@ const CustomNode = ({ data }) => {
     <div style={nodeStyle}>
       <Handle
         style={{
-          backgroundColor: theme.palette.secondary.main,
           height: handleVisability ? 8 : 0,
           width: handleVisability ? 8 : 0,
         }}
-        type="target"
+        type="source"
         id="top"
         position={Position.Top}
       />
       <Handle
         style={{
-          top: 30,
           height: handleVisability ? 8 : 0,
           width: handleVisability ? 8 : 0,
         }}
         type="source"
-        id="sourceLeft"
+        id="left"
         position={Position.Left}
       />
       <Handle
         style={{
-          top: 20,
-          backgroundColor: theme.palette.secondary.main,
-          height: handleVisability ? 8 : 0,
-          width: handleVisability ? 8 : 0,
-        }}
-        type="target"
-        id="targetLeft"
-        position={Position.Left}
-      />
-      <Handle
-        style={{
-          top: 20,
           height: handleVisability ? 8 : 0,
           width: handleVisability ? 8 : 0,
         }}
         type="source"
-        id="sourceRight"
-        position={Position.Right}
-      />
-      <Handle
-        style={{
-          top: 30,
-          backgroundColor: theme.palette.secondary.main,
-          height: handleVisability ? 8 : 0,
-          width: handleVisability ? 8 : 0,
-        }}
-        type="target"
-        id="targetRight"
+        id="right"
         position={Position.Right}
       />
       <Handle

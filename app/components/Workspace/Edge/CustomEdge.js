@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+
 import React from 'react';
 import { getBezierPath, getMarkerEnd } from 'react-flow-renderer';
 import {
@@ -27,12 +28,13 @@ const drawCurve = (sourceX, sourceY, targetX, targetY, convert) => {
   let offset = 100;
 
   if (convert) {
-    offset = 50;
+    offset = 40;
   }
 
   // location of control point:
   const c1x = mpx + offset * Math.cos(theta);
   const c1y = mpy + offset * Math.sin(theta);
+
   // construct the command to draw a quadratic curve
   let curve = 'M' + sourceX + ' ' + sourceY + ' Q ' + c1x + ' ' + c1y + ' ' + targetX + ' ' + targetY;
 
@@ -42,6 +44,7 @@ const drawCurve = (sourceX, sourceY, targetX, targetY, convert) => {
 
   return curve;
 };
+
 
 const CustomEdge = ({
   id,
@@ -58,8 +61,9 @@ const CustomEdge = ({
   markerEndId,
 }) => {
   const edgePath = drawCurve(
-    sourceX, sourceY, targetX, targetY, data.convert
+    sourceX, sourceY, targetX, targetY, data.label === 'Ownership'
   );
+
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
   const history = useHistory();
   const isCondition = history.location.pathname.includes('conditions');

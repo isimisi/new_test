@@ -3,6 +3,9 @@
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
+import {
+  isNode,
+} from 'react-flow-renderer';
 import * as types from './workspaceConstants';
 
 const WORKSPACES = 'workspaces';
@@ -107,16 +110,22 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
   }
 };
 
-export const deleteWorkspaceElement = (id, isNode, elements) => async dispatch => {
-  const url = `${baseUrl}/${WORKSPACES}/${isNode ? 'nodes' : 'relationship'}/${id}`;
-  const header = authHeader();
-  try {
-    await axios.delete(url, header);
-    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, elements });
-  } catch (error) {
+export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => async dispatch => {
+  console.log(elementsToRemove);
+  Promise.all(elementsToRemove.forEach(async (e) => {
+    console.log(isNode(e));
+    console.log(e.id);
+    // const url = `${baseUrl}/${WORKSPACES}/${isNode(e) ? 'nodes' : 'relationship'}/${e.id}`;
+    // const header = authHeader();
+    // await axios.delete(url, header);
+  })).then((res) => {
+    console.log(res, 'sdnosimnsdkljm');
+    // dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
+  }).catch((e) => {
+    console.log(e, 'sds');
     const message = genericErrorMessage;
-    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
-  }
+    // dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
+  });
 };
 
 export const postNode = (workspace_id, node_id, display_name, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {

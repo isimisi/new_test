@@ -79,6 +79,7 @@
     "compression": "1.7.4",
     "connected-react-router": "6.6.1",
     "cross-env": "^5.2.1",
+    "dagre": "^0.8.5",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.9.1",
     "express": "4.16.4",
