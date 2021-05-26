@@ -24,6 +24,7 @@ const Workspaces = (props) => {
   const dispatch = useDispatch();
   const workspaces = useSelector(state => state.getIn([reducer, 'workspaces'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const loading = useSelector(state => state.getIn([reducer, 'loading']));
   const history = useHistory();
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Workspaces = (props) => {
         title="Your Workspaces"
         data={workspaces}
         columns={columns}
-        options={tableOptions(onDelete)}
+        options={tableOptions(onDelete, loading)}
         elevation={10}
       />
       <Tooltip title="New Workspace">

@@ -8,9 +8,7 @@ import ReactFlow, {
   ControlButton,
   Background,
   isNode,
-  isEdge,
   ConnectionMode,
-  getConnectedEdges
 } from 'react-flow-renderer';
 import {
   WorkspaceFabs, CustomNode,
@@ -55,6 +53,7 @@ const Workspace = (props) => {
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const loading = useSelector(state => state.getIn([reducer, 'loading']));
   // const zoom = useSelector(state => state.getIn([reducer, 'zoom']));
   // const xPosition = useSelector(state => state.getIn([reducer, 'xPosition']));
   // const yPosition = useSelector(state => state.getIn([reducer, 'yPosition']));
@@ -302,6 +301,7 @@ const Workspace = (props) => {
         handleSave={() => handleRelationshipSave()}
         isUpdatingElement={isUpdatingElement}
         handleDeleteEdge={() => onElementsRemove([elementToUpdate])}
+        loading={loading}
       />
       <DefineNode
         open={defineNodeOpen}
@@ -325,6 +325,7 @@ const Workspace = (props) => {
         isUpdatingElement={isUpdatingElement}
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
         handleDeleteNode={() => onElementsRemove([elementToUpdate])}
+        loading={loading}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
         <WorkspaceFabs

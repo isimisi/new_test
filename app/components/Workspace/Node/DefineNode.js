@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Loader from '@api/ui/Loader';
 import WorkspaceNodeForm from './WorkspaceNodeForm';
 import FloatingPanel from '../../Panel/FloatingPanel';
 import styles from '../workspace-jss';
@@ -24,7 +25,8 @@ function DefineNode(props) {
     nodeDisplayName,
     handleDisplayNameChange,
     isUpdatingElement,
-    handleDeleteNode
+    handleDeleteNode,
+    loading
   } = props;
 
   return (
@@ -34,24 +36,28 @@ function DefineNode(props) {
         closeForm={close}
         title={isUpdatingElement ? 'Ændre dit element' : 'Definer dit element'}
       >
-        <WorkspaceNodeForm
-          nodes={nodes}
-          nodeLabel={nodeLabel}
-          handleChangeLabel={handleChangeLabel}
-          attributes={attributes}
-          handleChangeAttributes={handleChangeAttributes}
-          nodeSize={nodeSize}
-          handleChangeSize={handleChangeSize}
-          nodeColor={nodeColor}
-          handleChangeColor={handleChangeColor}
-          nodeBorderColor={nodeBorderColor}
-          handleBorderColorChange={handleBorderColorChange}
-          handleNodeSave={handleNodeSave}
-          nodeDisplayName={nodeDisplayName}
-          isUpdatingElement={isUpdatingElement}
-          handleDisplayNameChange={handleDisplayNameChange}
-          handleDeleteNode={handleDeleteNode}
-        />
+        {loading ? <Loader />
+          : (
+            <WorkspaceNodeForm
+              nodes={nodes}
+              nodeLabel={nodeLabel}
+              handleChangeLabel={handleChangeLabel}
+              attributes={attributes}
+              handleChangeAttributes={handleChangeAttributes}
+              nodeSize={nodeSize}
+              handleChangeSize={handleChangeSize}
+              nodeColor={nodeColor}
+              handleChangeColor={handleChangeColor}
+              nodeBorderColor={nodeBorderColor}
+              handleBorderColorChange={handleBorderColorChange}
+              handleNodeSave={handleNodeSave}
+              nodeDisplayName={nodeDisplayName}
+              isUpdatingElement={isUpdatingElement}
+              handleDisplayNameChange={handleDisplayNameChange}
+              handleDeleteNode={handleDeleteNode}
+            />
+          )}
+
       </FloatingPanel>
     </div>
   );
@@ -76,6 +82,7 @@ DefineNode.propTypes = {
   handleDisplayNameChange: PropTypes.func.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
   handleDeleteNode: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles)(DefineNode);

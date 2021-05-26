@@ -11,9 +11,9 @@ import * as types from './workspaceConstants';
 const WORKSPACES = 'workspaces';
 
 export const getWorkspaces = () => async dispatch => {
+  dispatch({ type: types.GET_WORKSPACES_LOADING });
   const url = `${baseUrl}/${WORKSPACES}`;
   const header = authHeader();
-
   try {
     const response = await axios.get(url, header);
     const workspaces = response.data;
@@ -117,6 +117,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
 };
 
 export const postNode = (workspace_id, node_id, display_name, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
+  dispatch({ type: types.POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
     workspace_id,
@@ -140,6 +141,7 @@ export const postNode = (workspace_id, node_id, display_name, backgroundColor, b
 };
 
 export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
+  dispatch({ type: types.PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
     node_id,
@@ -148,7 +150,6 @@ export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor,
     borderColor,
   };
   const header = authHeader();
-
   try {
     const response = await axios.put(url, body, header);
     const node = response.data;
@@ -161,6 +162,7 @@ export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor,
 
 
 export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatch => {
+  dispatch({ type: types.POST_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship`;
   const body = {
     workspace_id,
@@ -199,6 +201,7 @@ export const putEdge = (
   showLabel,
   setDefineEdgeOpen
 ) => async dispatch => {
+  dispatch({ type: types.PUT_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
   const body = {
     relationship_id,

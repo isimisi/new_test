@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Loader from '@api/ui/Loader';
 import EdgeForm from './EdgeForm';
 import FloatingPanel from '../../Panel/FloatingPanel';
 import styles from '../workspace-jss';
@@ -27,7 +28,8 @@ function DefineEdge(props) {
     handleSave,
     relationships,
     isUpdatingElement,
-    handleDeleteEdge
+    handleDeleteEdge,
+    loading
   } = props;
 
   return (
@@ -37,27 +39,29 @@ function DefineEdge(props) {
         closeForm={close}
         title={isUpdatingElement ? 'Ændre din Relation' : 'Lav din relation'}
       >
-        <EdgeForm
-          relationships={relationships}
-          relationshipLabel={relationshipLabel}
-          handleChangeLabel={handleChangeLabel}
-          relationshipValue={relationshipValue}
-          handleChangeValue={handleChangeValue}
-          type={type}
-          handleTypeChange={handleTypeChange}
-          color={color}
-          handleColorChange={handleColorChange}
-          showArrow={showArrow}
-          handleShowArrowChange={handleShowArrowChange}
-          animatedLine={animatedLine}
-          handleAnimatedLineChange={handleAnimatedLineChange}
-          showLabel={showLabel}
-          handleShowLabelChange={handleShowLabelChange}
-          close={close}
-          handleSave={handleSave}
-          isUpdatingElement={isUpdatingElement}
-          handleDeleteEdge={handleDeleteEdge}
-        />
+        {loading ? <Loader /> : (
+          <EdgeForm
+            relationships={relationships}
+            relationshipLabel={relationshipLabel}
+            handleChangeLabel={handleChangeLabel}
+            relationshipValue={relationshipValue}
+            handleChangeValue={handleChangeValue}
+            type={type}
+            handleTypeChange={handleTypeChange}
+            color={color}
+            handleColorChange={handleColorChange}
+            showArrow={showArrow}
+            handleShowArrowChange={handleShowArrowChange}
+            animatedLine={animatedLine}
+            handleAnimatedLineChange={handleAnimatedLineChange}
+            showLabel={showLabel}
+            handleShowLabelChange={handleShowLabelChange}
+            close={close}
+            handleSave={handleSave}
+            isUpdatingElement={isUpdatingElement}
+            handleDeleteEdge={handleDeleteEdge}
+          />
+        )}
       </FloatingPanel>
     </div>
   );
@@ -84,6 +88,7 @@ DefineEdge.propTypes = {
   relationships: PropTypes.array.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
   handleDeleteEdge: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(DefineEdge);

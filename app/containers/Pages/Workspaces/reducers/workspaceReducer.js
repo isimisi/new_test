@@ -5,6 +5,7 @@ import {
 } from 'react-flow-renderer';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
+  GET_WORKSPACES_LOADING,
   GET_WORKSPACES_SUCCESS,
   GET_WORKSPACES_FAILED,
   PUT_WORKSPACE_SUCCESS,
@@ -20,12 +21,15 @@ import {
   ADD_EDGE,
   GET_RELATIONSHIP_VALUES_SUCCESS,
   GET_RELATIONSHIP_VALUES_FAILED,
+  POST_EDGE_LOADING,
   POST_EDGE_SUCCESS,
   POST_EDGE_FAILED,
+  PUT_EDGE_LOADING,
   PUT_EDGE_SUCCESS,
   PUT_EDGE_FAILED,
   GET_NODE_VALUES_SUCCESS,
   GET_NODE_VALUES_FAILED,
+  POST_NODE_LOADING,
   POST_NODE_SUCCESS,
   POST_NODE_FAILED,
   SHOW_HANDLES_CHANGE,
@@ -37,11 +41,13 @@ import {
   SAVE_WORKSPACE_FAILED,
   DELETE_WORKSPACE_ELEMENTS_SUCCESS,
   DELETE_WORKSPACE_ELEMENTS_FAILED,
+  PUT_NODE_LOADING,
   PUT_NODE_SUCCESS,
   PUT_NODE_FAILED
 } from './workspaceConstants';
 
 const initialState = {
+  loading: false,
   workspaces: List(),
   label: '',
   description: '',
@@ -65,15 +71,21 @@ const initialState = {
 const initialImmutableState = fromJS(initialState);
 export default function reducer(state = initialImmutableState, action = {}) {
   switch (action.type) {
+    case GET_WORKSPACES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
     case GET_WORKSPACES_SUCCESS:
       return state.withMutations((mutableState) => {
         const workspaces = fromJS(action.workspaces);
         mutableState.set('workspaces', workspaces);
+        mutableState.set('loading', false);
       });
     case GET_WORKSPACES_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
       });
     case SAVE_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {
@@ -179,15 +191,25 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const group = fromJS(action.group);
         mutableState.set('group', group);
       });
+    case POST_EDGE_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
     case POST_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
         const edge = fromJS(action.edge);
         mutableState.update('elements', myList => myList.push(edge));
+        mutableState.set('loading', false);
       });
     case POST_EDGE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
+      });
+    case PUT_EDGE_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
       });
     case PUT_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
@@ -195,21 +217,33 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const index = elements.findIndex(e => e.id === action.edge.id && isEdge(e));
         elements[index] = action.edge;
         mutableState.set('elements', fromJS(elements));
+        mutableState.set('loading', false);
       });
     case PUT_EDGE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
+      });
+    case POST_NODE_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
       });
     case POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const node = fromJS(action.node);
         mutableState.update('elements', myList => myList.push(node));
+        mutableState.set('loading', false);
       });
     case POST_NODE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
+      });
+    case PUT_NODE_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
       });
     case PUT_NODE_SUCCESS:
       return state.withMutations((mutableState) => {

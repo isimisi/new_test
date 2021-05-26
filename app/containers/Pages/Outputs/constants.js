@@ -5,14 +5,22 @@ import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlDocx from 'html-docx-js/dist/html-docx';
+import Loader from '@api/ui/Loader';
 
-export const tableOptions = (onDelete) => ({
+export const tableOptions = (onDelete, loading) => ({
   filterType: 'dropdown',
   responsive: 'stacked',
   print: true,
   rowsPerPage: 10,
   page: 0,
-  onRowsDelete: onDelete
+  onRowsDelete: onDelete,
+  textLabels: {
+    body: {
+      noMatch: loading
+        ? <Loader />
+        : 'Det ser vidst ud som om du ikke har lavet noget rapportindhold endnu',
+    },
+  }
 });
 
 const downloadFile = (label, file) => {
