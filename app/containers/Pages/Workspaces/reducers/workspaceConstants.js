@@ -36,6 +36,8 @@ export const POST_EDGE_FAILED = 'POST_EDGE_FAILED';
 // nodes
 export const POST_NODE_SUCCESS = 'POST_NODE_SUCCESS';
 export const POST_NODE_FAILED = 'POST_NODE_FAILED';
+export const PUT_NODE_SUCCESS = 'PUT_NODE_SUCCESS';
+export const PUT_NODE_FAILED = 'PUT_NODE_FAILED';
 
 
 // CONTROL

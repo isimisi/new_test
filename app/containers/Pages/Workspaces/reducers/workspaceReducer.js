@@ -1,4 +1,8 @@
 import { fromJS, List, Map } from 'immutable';
+import {
+  isNode,
+  isEdge
+} from 'react-flow-renderer';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   GET_WORKSPACES_SUCCESS,
@@ -30,7 +34,9 @@ import {
   SAVE_WORKSPACE_SUCCESS,
   SAVE_WORKSPACE_FAILED,
   DELETE_WORKSPACE_ELEMENTS_SUCCESS,
-  DELETE_WORKSPACE_ELEMENTS_FAILED
+  DELETE_WORKSPACE_ELEMENTS_FAILED,
+  PUT_NODE_SUCCESS,
+  PUT_NODE_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -44,6 +50,9 @@ const initialState = {
   relationships: List(),
   nodes: List(),
   handleVisability: true,
+  zoom: 0,
+  xPosition: 0,
+  yPosition: 0,
 
   // EDGE
   edges: List(),
@@ -75,7 +84,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case DELETE_WORKSPACE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
-        const elements = fromJS(action.elements);
+        const elements = fromJS(action.remainingElements);
         mutableState.set('elements', elements);
       });
     case DELETE_WORKSPACE_ELEMENTS_FAILED:
@@ -101,11 +110,17 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const description = fromJS(action.description);
         const group = fromJS(action.group);
         const elements = fromJS(action.elements);
+        const zoom = fromJS(action.zoom);
+        const xPosition = fromJS(action.x_position);
+        const yPosition = fromJS(action.y_position);
 
         mutableState.set('label', label);
         mutableState.set('description', description);
         mutableState.set('group', group || '');
         mutableState.set('elements', elements);
+        mutableState.set('zoom', zoom);
+        mutableState.set('xPosition', xPosition);
+        mutableState.set('yPosition', yPosition);
       });
     case SHOW_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
@@ -178,6 +193,19 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.update('elements', myList => myList.push(node));
       });
     case POST_NODE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case PUT_NODE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const elements = mutableState.get('elements').toJS();
+        const index = elements.findIndex(e => e.id === action.node.id && isNode(e));
+        elements[index] = action.node;
+
+        mutableState.set('elements', fromJS(elements));
+      });
+    case PUT_NODE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

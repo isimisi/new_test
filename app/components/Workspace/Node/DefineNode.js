@@ -22,7 +22,9 @@ function DefineNode(props) {
     handleBorderColorChange,
     handleNodeSave,
     nodeDisplayName,
-    handleDisplayNameChange
+    handleDisplayNameChange,
+    isUpdatingElement,
+    handleDeleteNode
   } = props;
 
   return (
@@ -30,7 +32,7 @@ function DefineNode(props) {
       <FloatingPanel
         openForm={open}
         closeForm={close}
-        title="Ændre dit element"
+        title={isUpdatingElement ? 'Ændre dit element' : 'Definer dit element'}
       >
         <WorkspaceNodeForm
           nodes={nodes}
@@ -46,7 +48,9 @@ function DefineNode(props) {
           handleBorderColorChange={handleBorderColorChange}
           handleNodeSave={handleNodeSave}
           nodeDisplayName={nodeDisplayName}
+          isUpdatingElement={isUpdatingElement}
           handleDisplayNameChange={handleDisplayNameChange}
+          handleDeleteNode={handleDeleteNode}
         />
       </FloatingPanel>
     </div>
@@ -70,6 +74,8 @@ DefineNode.propTypes = {
   handleNodeSave: PropTypes.func.isRequired,
   nodeDisplayName: PropTypes.string.isRequired,
   handleDisplayNameChange: PropTypes.func.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteNode: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(DefineNode);

@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
-import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
+import { baseUrl, authHeader, genericErrorMessage as message } from '@api/constants';
 import {
   isNode,
 } from 'react-flow-renderer';
@@ -19,7 +19,6 @@ export const getWorkspaces = () => async dispatch => {
     const workspaces = response.data;
     dispatch({ type: types.GET_WORKSPACES_SUCCESS, workspaces });
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.GET_WORKSPACES_FAILED, message });
   }
 };
@@ -35,7 +34,6 @@ export const postWorkspace = (history) => async dispatch => {
     dispatch({ type: types.POST_WORKSPACE_SUCCESS });
     history.push(`${WORKSPACES}/${id}`);
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.POST_WORKSPACE_FAILED, message });
   }
 };
@@ -48,13 +46,12 @@ export const showWorkspace = (id) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const {
-      label, description, group, elements
+      elements, label, description, group, zoom, x_position, y_position
     } = response.data;
     dispatch({
-      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements
+      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
     });
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
   }
 };
@@ -69,11 +66,10 @@ export const putWorkspace = (workspace_id, label, description, group, setMetaOpe
 
   try {
     await axios.put(url, body, header);
-    const message = 'Metatekst er nu opdateret';
-    dispatch({ type: types.PUT_WORKSPACE_SUCCESS, message });
+    const _message = 'Metatekst er nu opdateret';
+    dispatch({ type: types.PUT_WORKSPACE_SUCCESS, message: _message });
     setMetaOpen(false);
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.PUT_WORKSPACE_FAILED, message });
   }
 };
@@ -91,7 +87,6 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
     dispatch({ type: types.SAVE_WORKSPACE_SUCCESS });
     history.push(`/app/${WORKSPACES}`);
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.SAVE_WORKSPACE_FAILED, message });
   }
 };
@@ -101,30 +96,23 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
   const header = authHeader();
   try {
     await axios.delete(url, header);
-    const message = `You have deleted ${title}`;
-    dispatch({ type: types.DELETE_WORKSPACE_SUCCESS, message });
+    const _message = `You have deleted ${title}`;
+    dispatch({ type: types.DELETE_WORKSPACE_SUCCESS, message: _message });
     dispatch(getWorkspaces());
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.DELETE_WORKSPACE_FAILED, message });
   }
 };
 
 export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => async dispatch => {
-  console.log(elementsToRemove);
-  Promise.all(elementsToRemove.forEach(async (e) => {
-    console.log(isNode(e));
-    console.log(e.id);
-    // const url = `${baseUrl}/${WORKSPACES}/${isNode(e) ? 'nodes' : 'relationship'}/${e.id}`;
-    // const header = authHeader();
-    // await axios.delete(url, header);
-  })).then((res) => {
-    console.log(res, 'sdnosimnsdkljm');
-    // dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
-  }).catch((e) => {
-    console.log(e, 'sds');
-    const message = genericErrorMessage;
-    // dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
+  Promise.all(elementsToRemove.map(async (e) => {
+    const url = `${baseUrl}/${WORKSPACES}/${isNode(e) ? 'nodes' : 'relationship'}/${e.id}`;
+    const header = authHeader();
+    await axios.delete(url, header);
+  })).then(() => {
+    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
+  }).catch(() => {
+    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
   });
 };
 
@@ -147,8 +135,27 @@ export const postNode = (workspace_id, node_id, display_name, backgroundColor, b
     dispatch({ type: types.POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.POST_NODE_FAILED, message });
+  }
+};
+
+export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
+  const body = {
+    node_id,
+    display_name,
+    backgroundColor,
+    borderColor,
+  };
+  const header = authHeader();
+
+  try {
+    const response = await axios.put(url, body, header);
+    const node = response.data;
+    dispatch({ type: types.PUT_NODE_SUCCESS, node });
+    setDefineNodeOpen(false);
+  } catch (error) {
+    dispatch({ type: types.PUT_NODE_FAILED, message });
   }
 };
 
@@ -177,7 +184,6 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatc
     dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
 };
@@ -190,7 +196,6 @@ export const getNodes = () => async dispatch => {
     const nodes = response.data;
     dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
   }
 };
@@ -203,7 +208,6 @@ export const getRelationships = () => async dispatch => {
     const relationships = response.data;
     dispatch({ type: types.GET_RELATIONSHIP_VALUES_SUCCESS, relationships });
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.GET_RELATIONSHIP_VALUES_FAILED, message });
   }
 };
@@ -216,7 +220,6 @@ export const getGroupDropDown = () => async dispatch => {
     const groups = response.data;
     dispatch({ type: types.GET_GROUP_DROPDOWN_SUCCESS, groups });
   } catch (error) {
-    const message = genericErrorMessage;
     dispatch({ type: types.GET_GROUP_DROPDOWN_FAILED, message });
   }
 };

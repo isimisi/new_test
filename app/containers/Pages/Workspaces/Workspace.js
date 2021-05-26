@@ -8,7 +8,9 @@ import ReactFlow, {
   ControlButton,
   Background,
   isNode,
-  ConnectionMode
+  isEdge,
+  ConnectionMode,
+  getConnectedEdges
 } from 'react-flow-renderer';
 import {
   WorkspaceFabs, CustomNode,
@@ -28,7 +30,8 @@ import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
   addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
-  showWorkspace, saveWorkspace, deleteWorkspaceElement
+  showWorkspace, saveWorkspace, deleteWorkspaceElement,
+  putNode
 } from './reducers/workspaceActions';
 import { getSize } from '../Nodes/constants';
 
@@ -52,9 +55,15 @@ const Workspace = (props) => {
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  // const zoom = useSelector(state => state.getIn([reducer, 'zoom']));
+  // const xPosition = useSelector(state => state.getIn([reducer, 'xPosition']));
+  // const yPosition = useSelector(state => state.getIn([reducer, 'yPosition']));
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
+
+  const [isUpdatingElement, setIsUpdatingElement] = useState(false);
+  const [elementToUpdate, setElementToUpdate] = useState(null);
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
@@ -99,17 +108,46 @@ const Workspace = (props) => {
 
   const onElementsRemove = (elementsToRemove) => {
     const remainingElements = removeElements(elementsToRemove, elements);
+    setIsUpdatingElement(false);
+    setElementToUpdate(null);
+
+    if (elementsToRemove.length === 1) {
+      if (isNode(elementsToRemove[0])) {
+        setDefineNodeOpen(false);
+      } else {
+        setDefineEdgeOpen(false);
+      }
+    }
 
     dispatch(deleteWorkspaceElement(elementsToRemove, remainingElements));
   };
 
   const onLoad = (_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
-    _reactFlowInstance.fitView();
   };
 
   const onElementClick = (event, element) => {
-    console.log(event, element);
+    setIsUpdatingElement(true);
+    setElementToUpdate(element);
+
+    if (isNode(element)) {
+      setNodeLabel(element.data.label);
+      setNodeDisplayName(element.data.displayName);
+      // setAttributes(element.attributes);
+      setNodeColor(element.data.backgroundColor);
+      setNodeBorderColor(element.data.borderColor);
+      setDefineNodeOpen(true);
+    } else {
+      event.persist();
+      // setRelationshipLabel(element.data.label);
+      // setRelationshipValue(element.data.value);
+      // setRelationshipType(element.type);
+      // setRelationshipColor(element.data.)
+      // setShowArrow(element.data.show)
+      // setAnimatedLine(element.data.)
+      // setShowlabel(element.data.)
+      // setDefineEdgeOpen(true);
+    }
   };
 
   // WORKSPACE GENERAL
@@ -133,12 +171,29 @@ const Workspace = (props) => {
       setMetaOpen(true);
     }
   }, []);
+  // TODO: DOes not work
+  // useEffect(() => {
+  //   if (rfInstance) {
+  //     rfInstance.zoomTo(zoom);
+  //   }
+  // }, [zoom]);
+
+  // useEffect(() => {
+  //   if (rfInstance) {
+  //     rfInstance.project({ x: xPosition, y: yPosition });
+  //   }
+  // }, [xPosition, yPosition]);
 
   // NODE
 
   const handleNodeSave = () => {
-    dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
-    setNodeLabel('');
+    if (isUpdatingElement) {
+      dispatch(putNode(elementToUpdate.id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
+    } else {
+      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
+      setNodeLabel('');
+    }
+    setIsUpdatingElement(false);
   };
 
   useEffect(() => {
@@ -221,7 +276,10 @@ const Workspace = (props) => {
       />
       <DefineEdge
         open={defineEdgeOpen}
-        close={() => setDefineEdgeOpen(false)}
+        close={() => {
+          setDefineEdgeOpen(false);
+          setIsUpdatingElement(false);
+        }}
         relationships={relationships}
         relationshipLabel={relationshipLabel}
         handleChangeLabel={(_label) => setRelationshipLabel(_label.value)}
@@ -241,7 +299,10 @@ const Workspace = (props) => {
       />
       <DefineNode
         open={defineNodeOpen}
-        close={() => setDefineNodeOpen(false)}
+        close={() => {
+          setDefineNodeOpen(false);
+          setIsUpdatingElement(false);
+        }}
         nodes={nodes}
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => setNodeLabel(_label.value)}
@@ -255,7 +316,9 @@ const Workspace = (props) => {
         handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
         handleNodeSave={handleNodeSave}
         nodeDisplayName={nodeDisplayName}
+        isUpdatingElement={isUpdatingElement}
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
+        handleDeleteNode={() => onElementsRemove([elementToUpdate])}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
         <WorkspaceFabs

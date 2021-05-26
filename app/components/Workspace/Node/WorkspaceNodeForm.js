@@ -12,6 +12,7 @@ import { selectStyles } from '@api/ui/helper';
 import { SketchPicker } from 'react-color';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
+import { red } from '@api/palette/colorfull';
 import styles from '../workspace-jss';
 
 const WorkspaceNodeForm = (props) => {
@@ -23,15 +24,17 @@ const WorkspaceNodeForm = (props) => {
     handleChangeLabel,
     attributes,
     handleChangeAttributes,
-    nodeSize,
-    handleChangeSize,
+    // nodeSize,
+    // handleChangeSize,
     nodeColor,
     handleChangeColor,
     nodeBorderColor,
     handleBorderColorChange,
     handleNodeSave,
     nodeDisplayName,
-    handleDisplayNameChange
+    handleDisplayNameChange,
+    isUpdatingElement,
+    handleDeleteNode
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
@@ -156,7 +159,7 @@ const WorkspaceNodeForm = (props) => {
               </div>
             ) : null }
           </div>
-          <div className={classes.row} style={{ marginTop: 10, display: 'flex' }}>
+          {/* <div className={classes.row} style={{ marginTop: 10, display: 'flex' }}>
             <Typography variant="subtitle2" component="h3">
         Vælg en størrelse
             </Typography>
@@ -173,11 +176,21 @@ const WorkspaceNodeForm = (props) => {
               <Button onClick={() => handleChangeSize('Medium')} className={classes.size} size="small" variant="contained" color={nodeSize === 'Medium' ? 'secondary' : 'inherit'}>Medium</Button>
               <Button onClick={() => handleChangeSize('Large')} className={classes.size} size="small" variant="contained" color={nodeSize === 'Large' ? 'secondary' : 'inherit'}>Large</Button>
             </div>
-          </div>
+          </div> */}
         </>
         )}
       </section>
       <div className={css.buttonArea}>
+        {isUpdatingElement && (
+          <Button
+            variant="contained"
+            type="button"
+            onClick={handleDeleteNode}
+            style={{ backgroundColor: red, color: 'white' }}
+          >
+            Delete
+          </Button>
+        )}
         <Button type="button" onClick={close}>
             Discard
         </Button>
@@ -203,8 +216,8 @@ WorkspaceNodeForm.propTypes = {
   handleChangeLabel: PropTypes.func.isRequired,
   attributes: PropTypes.array.isRequired,
   handleChangeAttributes: PropTypes.func.isRequired,
-  nodeSize: PropTypes.string.isRequired,
-  handleChangeSize: PropTypes.func.isRequired,
+  // nodeSize: PropTypes.string.isRequired,
+  // handleChangeSize: PropTypes.func.isRequired,
   nodeColor: PropTypes.object.isRequired,
   handleChangeColor: PropTypes.func.isRequired,
   nodeBorderColor: PropTypes.object.isRequired,
@@ -212,6 +225,8 @@ WorkspaceNodeForm.propTypes = {
   handleNodeSave: PropTypes.func.isRequired,
   nodeDisplayName: PropTypes.string.isRequired,
   handleDisplayNameChange: PropTypes.func.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteNode: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(WorkspaceNodeForm);
