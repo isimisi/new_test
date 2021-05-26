@@ -13,6 +13,7 @@ import CreatableSelect from 'react-select/creatable';
 import { SketchPicker } from 'react-color';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
+import { red } from '@api/palette/colorfull';
 import styles from '../workspace-jss';
 import BeizerCurve from './beizerCurve.svg';
 import StraightLine from './straightLine.svg';
@@ -78,7 +79,9 @@ const EdgeForm = (props) => {
     showLabel,
     handleShowLabelChange,
     handleSave,
-    relationships
+    relationships,
+    isUpdatingElement,
+    handleDeleteEdge
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const editable = relationshipLabel.length === 0;
@@ -157,7 +160,7 @@ const EdgeForm = (props) => {
             }}
             placeholder="type"
             options={relationshipTypeOptions}
-            value={type.length > 0 && relationshipTypeOptions.find(x => x.value === type)}
+            value={type && relationshipTypeOptions.find(x => x.value === type)}
             onChange={handleTypeChange}
           />
         </div>
@@ -214,6 +217,16 @@ const EdgeForm = (props) => {
         </div>
       </section>
       <div className={css.buttonArea}>
+        {isUpdatingElement && (
+          <Button
+            variant="contained"
+            type="button"
+            onClick={handleDeleteEdge}
+            style={{ backgroundColor: red, color: 'white' }}
+          >
+            Delete
+          </Button>
+        )}
         <Button type="button" onClick={() => close()}>
             Discard
         </Button>
@@ -249,7 +262,9 @@ EdgeForm.propTypes = {
   showLabel: PropTypes.bool.isRequired,
   handleShowLabelChange: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
-  relationships: PropTypes.array.isRequired
+  relationships: PropTypes.array.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteEdge: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(EdgeForm);

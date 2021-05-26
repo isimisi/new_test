@@ -32,6 +32,8 @@ export const ADD_GROUP = 'ADD_GROUP';
 export const ADD_EDGE = 'ADD_EDGE';
 export const POST_EDGE_SUCCESS = 'POST_EDGE_SUCCESS';
 export const POST_EDGE_FAILED = 'POST_EDGE_FAILED';
+export const PUT_EDGE_SUCCESS = 'PUT_EDGE_SUCCESS';
+export const PUT_EDGE_FAILED = 'PUT_EDGE_FAILED';
 
 // nodes
 export const POST_NODE_SUCCESS = 'POST_NODE_SUCCESS';

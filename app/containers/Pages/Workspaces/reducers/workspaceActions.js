@@ -188,6 +188,39 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatc
   }
 };
 
+export const putEdge = (
+  edgeId,
+  relationship_id,
+  relationshipValue,
+  relationshipColor,
+  relationshipType,
+  showArrow,
+  animatedLine,
+  showLabel,
+  setDefineEdgeOpen
+) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
+  const body = {
+    relationship_id,
+    relationship_value: relationshipValue,
+    color: JSON.stringify(relationshipColor),
+    type: relationshipType,
+    arrow: showArrow,
+    animated: animatedLine,
+    show_label: showLabel,
+  };
+  const header = authHeader();
+
+  try {
+    const response = await axios.put(url, body, header);
+    const responseEdge = response.data;
+    dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
+    setDefineEdgeOpen(false);
+  } catch (error) {
+    dispatch({ type: types.PUT_EDGE_FAILED, message });
+  }
+};
+
 export const getNodes = () => async dispatch => {
   const url = `${baseUrl}/nodes/workspace`;
   const header = authHeader();

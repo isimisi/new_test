@@ -22,6 +22,8 @@ import {
   GET_RELATIONSHIP_VALUES_FAILED,
   POST_EDGE_SUCCESS,
   POST_EDGE_FAILED,
+  PUT_EDGE_SUCCESS,
+  PUT_EDGE_FAILED,
   GET_NODE_VALUES_SUCCESS,
   GET_NODE_VALUES_FAILED,
   POST_NODE_SUCCESS,
@@ -183,6 +185,18 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.update('elements', myList => myList.push(edge));
       });
     case POST_EDGE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case PUT_EDGE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const elements = mutableState.get('elements').toJS();
+        const index = elements.findIndex(e => e.id === action.edge.id && isEdge(e));
+        elements[index] = action.edge;
+        mutableState.set('elements', fromJS(elements));
+      });
+    case PUT_EDGE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

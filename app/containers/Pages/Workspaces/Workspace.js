@@ -31,7 +31,7 @@ import {
   changeHandleVisability, labelChange, descriptionChange,
   addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
-  putNode
+  putNode, putEdge
 } from './reducers/workspaceActions';
 import { getSize } from '../Nodes/constants';
 
@@ -70,7 +70,7 @@ const Workspace = (props) => {
   const [currentConnectionData, setCurrentConnectionData] = useState({});
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
-  const [relationshipType, setRelationshipType] = useState('');
+  const [relationshipType, setRelationshipType] = useState(null);
   const [relationshipColor, setRelationshipColor] = useState({
     r: 0, g: 0, b: 0, a: 1
   });
@@ -99,7 +99,6 @@ const Workspace = (props) => {
   // REACT FLOW SPECIFIC
 
   const onConnect = (data) => {
-    console.log(data);
     if (data.source !== data.target) {
       setCurrentConnectionData(data);
       setDefineEdgeOpen(true);
@@ -139,14 +138,14 @@ const Workspace = (props) => {
       setDefineNodeOpen(true);
     } else {
       event.persist();
-      // setRelationshipLabel(element.data.label);
-      // setRelationshipValue(element.data.value);
-      // setRelationshipType(element.type);
-      // setRelationshipColor(element.data.)
-      // setShowArrow(element.data.show)
-      // setAnimatedLine(element.data.)
-      // setShowlabel(element.data.)
-      // setDefineEdgeOpen(true);
+      setRelationshipLabel(element.data.label);
+      setRelationshipValue(element.data.value);
+      setRelationshipType(element.type);
+      setRelationshipColor(element.data.color);
+      setShowArrow(element.data.showArrow);
+      setAnimatedLine(element.data.animated);
+      setShowlabel(element.data.showLabel);
+      setDefineEdgeOpen(true);
     }
   };
 
@@ -208,28 +207,33 @@ const Workspace = (props) => {
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
-    const edge = {
-      relationship_id: choosenRelationship.id,
-      relationshipValue,
-      relationshipColor,
-      relationshipType,
-      showArrow,
-      animatedLine,
-      showLabel,
-      ...currentConnectionData
-    };
 
-    dispatch(postEdge(id, edge, setDefineEdgeOpen));
-
-    setRelationshipLabel('');
-    setRelationshipValue('');
-    setRelationshipType('');
-    setRelationshipColor({
-      r: 0, g: 0, b: 0, a: 1
-    });
-    setShowArrow(false);
-    setAnimatedLine(false);
-    setShowlabel(false);
+    if (isUpdatingElement) {
+      dispatch(putEdge(
+        elementToUpdate.id,
+        choosenRelationship.id,
+        relationshipValue,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        setDefineEdgeOpen
+      ));
+    } else {
+      const edge = {
+        relationship_id: choosenRelationship.id,
+        relationshipValue,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        ...currentConnectionData
+      };
+      dispatch(postEdge(id, edge, setDefineEdgeOpen));
+    }
+    setIsUpdatingElement(false);
   };
 
 
@@ -296,6 +300,8 @@ const Workspace = (props) => {
         showLabel={showLabel}
         handleShowLabelChange={(e) => setShowlabel(e.target.checked)}
         handleSave={() => handleRelationshipSave()}
+        isUpdatingElement={isUpdatingElement}
+        handleDeleteEdge={() => onElementsRemove([elementToUpdate])}
       />
       <DefineNode
         open={defineNodeOpen}

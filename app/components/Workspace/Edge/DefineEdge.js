@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -24,7 +25,9 @@ function DefineEdge(props) {
     showLabel,
     handleShowLabelChange,
     handleSave,
-    relationships
+    relationships,
+    isUpdatingElement,
+    handleDeleteEdge
   } = props;
 
   return (
@@ -32,7 +35,7 @@ function DefineEdge(props) {
       <FloatingPanel
         openForm={open}
         closeForm={close}
-        title="Ændre din Relation"
+        title={isUpdatingElement ? 'Ændre din Relation' : 'Lav din relation'}
       >
         <EdgeForm
           relationships={relationships}
@@ -52,6 +55,8 @@ function DefineEdge(props) {
           handleShowLabelChange={handleShowLabelChange}
           close={close}
           handleSave={handleSave}
+          isUpdatingElement={isUpdatingElement}
+          handleDeleteEdge={handleDeleteEdge}
         />
       </FloatingPanel>
     </div>
@@ -65,7 +70,7 @@ DefineEdge.propTypes = {
   handleChangeLabel: PropTypes.func.isRequired,
   relationshipValue: PropTypes.string.isRequired,
   handleChangeValue: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   handleTypeChange: PropTypes.func.isRequired,
   color: PropTypes.object.isRequired,
   handleColorChange: PropTypes.func.isRequired,
@@ -77,6 +82,8 @@ DefineEdge.propTypes = {
   handleShowLabelChange: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   relationships: PropTypes.array.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteEdge: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(DefineEdge);
