@@ -155,7 +155,7 @@ const Attribute = (props) => {
             isClearable
             isMulti
             menuIsOpen={false}
-            onChange={(v) => dispatch(changeSelectionValues(v))}
+            onChange={(v) => dispatch(changeSelectionValues(v || []))}
             onInputChange={(v) => setInputValue(v)}
             onKeyDown={handleKeyDown}
             placeholder="Type your selection values"

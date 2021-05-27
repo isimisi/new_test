@@ -4,7 +4,7 @@ import {
   TITLE_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_ATTRIBUT,
-  ADD_TYPE,
+  REMOVE_ATTRIBUT,
   ADD_GROUP,
   CHANGE_BACKGROUND_COLOR,
   CHANGE_BORDER_COLOR,
@@ -22,12 +22,13 @@ import {
   GET_ATTRIBUTE_DROPDOWN_SUCCESS,
   GET_ATTRIBUTE_DROPDOWN_FAILED,
   GET_GROUP_DROPDOWN_SUCCESS,
-  GET_GROUP_DROPDOWN_FAILED
+  GET_GROUP_DROPDOWN_FAILED,
 } from './nodeConstants';
 
 const initialAttribute = [Map({
   label: null,
-  value: ''
+  value: '',
+  type: 'Value'
 })];
 
 const initialState = {
@@ -35,6 +36,7 @@ const initialState = {
   title: '',
   description: '',
   attributes: List(initialAttribute),
+  deletedAttributes: List(),
   group: '',
   size: 'Medium',
   backgroundColor: Map(),
@@ -151,6 +153,13 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const attributes = fromJS(action.attributes);
         mutableState.set('attributes', attributes);
+      });
+    case REMOVE_ATTRIBUT:
+      return state.withMutations((mutableState) => {
+        mutableState.update('attributes', myList => myList.filter((v, i) => i !== action.index));
+        if (action.id) {
+          mutableState.update('deletedAttributes', list => list.push(action.id));
+        }
       });
     case ADD_GROUP:
       return state.withMutations((mutableState) => {

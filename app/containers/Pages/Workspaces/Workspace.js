@@ -29,9 +29,8 @@ import {
   changeHandleVisability, labelChange, descriptionChange,
   addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
-  putNode, putEdge
+  putNode, putEdge, getAttributeDropDown
 } from './reducers/workspaceActions';
-import { getSize } from '../Nodes/constants';
 
 const nodeTypes = {
   custom: CustomNode
@@ -52,6 +51,7 @@ const Workspace = (props) => {
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
+  const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const loading = useSelector(state => state.getIn([reducer, 'loading']));
   // const zoom = useSelector(state => state.getIn([reducer, 'zoom']));
@@ -85,7 +85,7 @@ const Workspace = (props) => {
     label: null,
     value: ''
   }]);
-  const [nodeSize, setNodeSize] = useState('Medium');
+  const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [nodeColor, setNodeColor] = useState({
     r: 255, g: 255, b: 255, a: 1
   });
@@ -164,10 +164,7 @@ const Workspace = (props) => {
     dispatch(getRelationships());
     dispatch(getNodes());
     dispatch(getGroupDropDown());
-
-    if (label.length === 0 || description.length === 0 || group.length === 0) {
-      setMetaOpen(true);
-    }
+    dispatch(getAttributeDropDown());
   }, []);
   // TODO: DOes not work
   // useEffect(() => {
@@ -188,7 +185,7 @@ const Workspace = (props) => {
     if (isUpdatingElement) {
       dispatch(putNode(elementToUpdate.id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
+      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(attributes.filter(a => a.label)), setDefineNodeOpen));
       setNodeLabel('');
     }
     setIsUpdatingElement(false);
@@ -198,7 +195,10 @@ const Workspace = (props) => {
     if (choosenNode) {
       setNodeColor(choosenNodeStyle.backgroundColor);
       setNodeBorderColor(choosenNodeStyle.borderColor);
-      setNodeSize(getSize(choosenNodeStyle.width));
+      setAttributes([...choosenNode.attributes, {
+        label: null,
+        value: ''
+      }]);
     }
   }, [nodeLabel]);
 
@@ -314,8 +314,6 @@ const Workspace = (props) => {
         handleChangeLabel={(_label) => setNodeLabel(_label.value)}
         attributes={attributes}
         handleChangeAttributes={(_attributes) => setAttributes(_attributes)}
-        nodeSize={nodeSize}
-        handleChangeSize={(size) => setNodeSize(size)}
         nodeColor={nodeColor}
         handleChangeColor={(color) => setNodeColor(color.rgb)}
         nodeBorderColor={nodeBorderColor}
@@ -326,6 +324,13 @@ const Workspace = (props) => {
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
         handleDeleteNode={() => onElementsRemove([elementToUpdate])}
         loading={loading}
+        attributesDropDownOptions={attributesDropDownOptions}
+        handleRemoveAttributes={(_id, index) => {
+          setAttributes(att => att.filter((v, i) => i !== index));
+          if (_id) {
+            setDeletedAttributes(attr => attr.push(_id));
+          }
+        }}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
         <WorkspaceFabs

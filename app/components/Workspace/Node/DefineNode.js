@@ -15,8 +15,6 @@ function DefineNode(props) {
     handleChangeLabel,
     attributes,
     handleChangeAttributes,
-    nodeSize,
-    handleChangeSize,
     nodeColor,
     handleChangeColor,
     nodeBorderColor,
@@ -26,7 +24,9 @@ function DefineNode(props) {
     handleDisplayNameChange,
     isUpdatingElement,
     handleDeleteNode,
-    loading
+    loading,
+    attributesDropDownOptions,
+    handleRemoveAttributes
   } = props;
 
   return (
@@ -44,8 +44,6 @@ function DefineNode(props) {
               handleChangeLabel={handleChangeLabel}
               attributes={attributes}
               handleChangeAttributes={handleChangeAttributes}
-              nodeSize={nodeSize}
-              handleChangeSize={handleChangeSize}
               nodeColor={nodeColor}
               handleChangeColor={handleChangeColor}
               nodeBorderColor={nodeBorderColor}
@@ -55,6 +53,8 @@ function DefineNode(props) {
               isUpdatingElement={isUpdatingElement}
               handleDisplayNameChange={handleDisplayNameChange}
               handleDeleteNode={handleDeleteNode}
+              attributesDropDownOptions={attributesDropDownOptions}
+              handleRemoveAttributes={handleRemoveAttributes}
             />
           )}
 
@@ -71,8 +71,6 @@ DefineNode.propTypes = {
   handleChangeLabel: PropTypes.func.isRequired,
   attributes: PropTypes.array.isRequired,
   handleChangeAttributes: PropTypes.func.isRequired,
-  nodeSize: PropTypes.string.isRequired,
-  handleChangeSize: PropTypes.func.isRequired,
   nodeColor: PropTypes.object.isRequired,
   handleChangeColor: PropTypes.func.isRequired,
   nodeBorderColor: PropTypes.object.isRequired,
@@ -82,7 +80,9 @@ DefineNode.propTypes = {
   handleDisplayNameChange: PropTypes.func.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
   handleDeleteNode: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  attributesDropDownOptions: PropTypes.array.isRequired,
+  handleRemoveAttributes: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(DefineNode);

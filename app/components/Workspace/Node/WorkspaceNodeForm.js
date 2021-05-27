@@ -11,8 +11,10 @@ import Select from 'react-select';
 import { selectStyles } from '@api/ui/helper';
 import { SketchPicker } from 'react-color';
 import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
 import { red } from '@api/palette/colorfull';
+import CreatableSelect from 'react-select/creatable';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
 import styles from '../workspace-jss';
 
 const WorkspaceNodeForm = (props) => {
@@ -24,8 +26,6 @@ const WorkspaceNodeForm = (props) => {
     handleChangeLabel,
     attributes,
     handleChangeAttributes,
-    // nodeSize,
-    // handleChangeSize,
     nodeColor,
     handleChangeColor,
     nodeBorderColor,
@@ -34,7 +34,9 @@ const WorkspaceNodeForm = (props) => {
     nodeDisplayName,
     handleDisplayNameChange,
     isUpdatingElement,
-    handleDeleteNode
+    handleDeleteNode,
+    attributesDropDownOptions,
+    handleRemoveAttributes
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
@@ -89,42 +91,64 @@ const WorkspaceNodeForm = (props) => {
             </div>
           </>
         )}
-        {choosenNode && choosenNode.attributes.map((attribut, index) => (
-          <div className={classes.inlineWrap} style={{ marginTop: 15 }} key={attribut.value}>
-            <Tooltip title={attribut.label}>
-              <div className={classes.field}>
-                <Select
-                  classes={classes}
-                  styles={selectStyles('relative')}
-                  options={[]}
-                  placeholder="attribut"
-                  value={attribut.label && { label: attribut.label, value: attribut.label }}
-                  onChange={(value) => {
-                    if (attribut.value) {
-                      const newArray = [...attributes];
-                      newArray[index] = { ...newArray[index], label: value.value };
-                      handleChangeAttributes(newArray);
-                    }
-                    const newRow = { ...attribut };
-                    newRow.label = value.value;
-                    const i = attributes.length - 1;
-                    const mutableArray = [...attributes];
-                    mutableArray.splice(i, 0, newRow);
-                    handleChangeAttributes(mutableArray);
-                  }}
-                />
-              </div>
-            </Tooltip>
+        {choosenNode && attributes.map((attribut, index) => (
+          <div className={classes.inlineWrap} style={{ marginTop: 15 }}>
+            <div className={classes.field}>
+              <CreatableSelect
+                styles={selectStyles('relative')}
+                placeholder="Kendetegn"
+                options={attributesDropDownOptions}
+                value={attribut.label && { label: attribut.label, value: attribut.label }}
+                isDisabled={Boolean(attribut.label)}
+                isOptionDisabled={(option) => attributes.map(a => a.label).includes(option.label)}
+                onChange={(value) => {
+                  const newRow = { ...attribut };
+                  newRow.label = value.label;
+                  newRow.type = value.type;
+                  newRow.selectionOptions = value.selectionOptions;
+
+                  const i = attributes.length - 1;
+                  const mutableArray = [...attributes];
+                  mutableArray.splice(i, 0, newRow);
+                  handleChangeAttributes(mutableArray);
+                }}
+              />
+            </div>
             {attribut.label && (
-              <Tooltip title={attribut.value}>
+              <>
                 <div className={classes.field} style={{ marginLeft: 20 }}>
-                  <TextField
-                    value={attribut.value}
-                    placeholder="Value"
-                    onChange={(e) => handleChangeAttributes(e.target.value, index, 'value')}
-                  />
+                  {attribut.type === 'Value' ? (
+                    <TextField
+                      value={attribut.value}
+                      placeholder="Værdi"
+                      onChange={(e) => {
+                        const newArray = [...attributes];
+                        newArray[index] = { ...newArray[index], value: e.target.value };
+                        console.log(newArray);
+                        handleChangeAttributes(newArray);
+                      }}
+                    />
+                  )
+                    : (
+                      <CreatableSelect
+                        styles={selectStyles('relative')}
+                        placeholder="Værdi"
+                        options={JSON.parse(attribut.selectionOptions)}
+                        value={attribut.value && { label: attribut.value, value: attribut.value }}
+                        onChange={(value) => {
+                          const newArray = [...attributes];
+                          newArray[index] = { ...newArray[index], value: value.value };
+                          console.log(newArray);
+                          handleChangeAttributes(newArray);
+                        }}
+                      />
+                    )
+                  }
                 </div>
-              </Tooltip>
+                <IconButton style={{ color: `${red}55`, bottom: 5, marginLeft: 2 }} onClick={() => handleRemoveAttributes(attribut.workspace_node_attribut_id, index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </>
             )}
           </div>
         ))}
@@ -159,24 +183,6 @@ const WorkspaceNodeForm = (props) => {
               </div>
             ) : null }
           </div>
-          {/* <div className={classes.row} style={{ marginTop: 10, display: 'flex' }}>
-            <Typography variant="subtitle2" component="h3">
-        Vælg en størrelse
-            </Typography>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: '70%',
-              marginLeft: 20
-            }}
-            >
-              <Button onClick={() => handleChangeSize('Small')} className={classes.size} size="small" variant="contained" color={nodeSize === 'Small' ? 'secondary' : 'inherit'}>Small</Button>
-              <Button onClick={() => handleChangeSize('Medium')} className={classes.size} size="small" variant="contained" color={nodeSize === 'Medium' ? 'secondary' : 'inherit'}>Medium</Button>
-              <Button onClick={() => handleChangeSize('Large')} className={classes.size} size="small" variant="contained" color={nodeSize === 'Large' ? 'secondary' : 'inherit'}>Large</Button>
-            </div>
-          </div> */}
         </>
         )}
       </section>
@@ -216,8 +222,6 @@ WorkspaceNodeForm.propTypes = {
   handleChangeLabel: PropTypes.func.isRequired,
   attributes: PropTypes.array.isRequired,
   handleChangeAttributes: PropTypes.func.isRequired,
-  // nodeSize: PropTypes.string.isRequired,
-  // handleChangeSize: PropTypes.func.isRequired,
   nodeColor: PropTypes.object.isRequired,
   handleChangeColor: PropTypes.func.isRequired,
   nodeBorderColor: PropTypes.object.isRequired,
@@ -227,6 +231,8 @@ WorkspaceNodeForm.propTypes = {
   handleDisplayNameChange: PropTypes.func.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
   handleDeleteNode: PropTypes.func.isRequired,
+  attributesDropDownOptions: PropTypes.array.isRequired,
+  handleRemoveAttributes: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(WorkspaceNodeForm);

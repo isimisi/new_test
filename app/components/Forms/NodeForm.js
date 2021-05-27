@@ -1,31 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
 import { useDispatch } from 'react-redux';
+import { mapSelectOptions, selectStyles } from '@api/ui/helper';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+import { red } from '@api/palette/colorfull';
+import CreatableSelect from 'react-select/creatable';
 import {
-  titleChange, descriptionChange, addAtrribut, addGroup
+  titleChange, descriptionChange, addAtrribut, addGroup, removeAtrribut
 } from '../../containers/Pages/Nodes/reducers/nodeActions';
-
-const mapSelectOptions = (options) => options.map(suggestion => ({
-  value: suggestion.value,
-  label: (
-    <>
-      <Tooltip title={suggestion.label}>
-        <div style={{ width: '100%', height: '100%' }}>
-          <span style={{ paddingRight: '5px' }}>{suggestion.value}</span>
-        </div>
-      </Tooltip>
-    </>
-  ),
-}));
-
 
 const styles = theme => ({
   root: {
@@ -43,7 +33,7 @@ const styles = theme => ({
   },
   inlineWrap: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   buttonInit: {
     margin: theme.spacing(4),
@@ -53,7 +43,6 @@ const styles = theme => ({
 
 
 function NodeForm(props) {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const {
     classes,
@@ -64,17 +53,6 @@ function NodeForm(props) {
     attributesDropDownOptions,
     groupsDropDownOptions
   } = props;
-
-
-  const selectStyles = {
-    input: base => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
-  };
 
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
@@ -91,9 +69,12 @@ function NodeForm(props) {
     dispatch(addAtrribut(newArray));
   };
 
-  const handleNewRow = (attribut, label) => {
+  const handleNewRow = (attribut, value) => {
     const newRow = { ...attribut };
-    newRow.label = label;
+    newRow.label = value.label;
+    newRow.type = value.type;
+    newRow.selectionOptions = value.selectionOptions;
+
     const i = attributes.length - 1;
     const mutableArray = [...attributes];
     mutableArray.splice(i, 0, newRow);
@@ -105,6 +86,9 @@ function NodeForm(props) {
     dispatch(addGroup(value.value));
   };
 
+  const handleDeleteAttribute = (a, i) => {
+    dispatch(removeAtrribut(i, a.node_attribut_id));
+  };
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -140,33 +124,41 @@ function NodeForm(props) {
             </div>
             {attributes.map((attribut, index) => (
               <div className={classes.inlineWrap}>
-                <Tooltip title={attribut.label}>
-                  <div className={classes.field}>
-                    <Select
-                      classes={classes}
-                      styles={selectStyles}
-                      options={mapSelectOptions(attributesDropDownOptions)}
-                      placeholder="attribut"
-                      value={attribut.label && { label: attribut.label, value: attribut.label }}
-                      onChange={(value) => {
-                        if (attribut.value) {
-                          handleChange(value.value, index, 'label');
-                        }
-                        handleNewRow(attribut, value.value);
-                      }}
-                    />
-                  </div>
-                </Tooltip>
+                <div className={classes.field}>
+                  <CreatableSelect
+                    styles={selectStyles()}
+                    placeholder="Kendetegn"
+                    options={attributesDropDownOptions}
+                    value={attribut.label && { label: attribut.label, value: attribut.label }}
+                    isDisabled={Boolean(attribut.label)}
+                    isOptionDisabled={(option) => attributes.map(a => a.label).includes(option.label)}
+                    onChange={(value) => handleNewRow(attribut, value)}
+                  />
+                </div>
                 {attribut.label && (
-                  <Tooltip title={attribut.value}>
+                  <>
                     <div className={classes.field} style={{ marginLeft: 20 }}>
-                      <TextField
-                        value={attribut.value}
-                        placeholder="Value"
-                        onChange={(e) => handleChange(e.target.value, index, 'value')}
-                      />
+                      {attribut.type === 'Value' ? (
+                        <TextField
+                          value={attribut.value}
+                          placeholder="Værdi"
+                          onChange={(e) => handleChange(e.target.value, index, 'value')}
+                        />
+                      )
+                        : (
+                          <CreatableSelect
+                            placeholder="Værdi"
+                            options={JSON.parse(attribut.selectionOptions)}
+                            value={attribut.value && { label: attribut.value, value: attribut.value }}
+                            onChange={(value) => handleChange(value.value, index, 'value')}
+                          />
+                        )
+                      }
                     </div>
-                  </Tooltip>
+                    <IconButton style={{ color: `${red}55`, bottom: 5 }} onClick={() => handleDeleteAttribute(attribut, index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </>
                 )}
               </div>
             ))}

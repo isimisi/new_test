@@ -1,4 +1,4 @@
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List } from 'immutable';
 import {
   isNode,
   isEdge
@@ -18,6 +18,8 @@ import {
   ADD_GROUP,
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
+  GET_ATTRIBUTE_DROPDOWN_SUCCESS,
+  GET_ATTRIBUTE_DROPDOWN_FAILED,
   ADD_EDGE,
   GET_RELATIONSHIP_VALUES_SUCCESS,
   GET_RELATIONSHIP_VALUES_FAILED,
@@ -55,6 +57,7 @@ const initialState = {
   elements: List(),
   message: '',
   groupsDropDownOptions: List(),
+  attributesDropDownOptions: List(),
   relationships: List(),
   nodes: List(),
   handleVisability: true,
@@ -167,6 +170,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('groupsDropDownOptions', groupsDropDownOptions);
       });
     case GET_GROUP_DROPDOWN_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_ATTRIBUTE_DROPDOWN_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const attributesDropDownOptions = fromJS(action.attributes);
+        mutableState.set('attributesDropDownOptions', attributesDropDownOptions);
+      });
+    case GET_ATTRIBUTE_DROPDOWN_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

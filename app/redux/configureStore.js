@@ -16,7 +16,7 @@ export default function configureStore(initialState = {}, history) {
   const store = createStore(
     createReducer(),
     fromJS(initialState),
-    compose(applyMiddleware(thunk, routerMiddleware(history), _logger))
+    compose(applyMiddleware(thunk, routerMiddleware(history)))
   );
 
   // Make reducers hot reloadable, see http://mxs.is/googmo

@@ -116,15 +116,16 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
   });
 };
 
-export const postNode = (workspace_id, node_id, display_name, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
+export const postNode = (workspace_id, node_id, display_name, background_color, border_color, attributes, setDefineNodeOpen) => async dispatch => {
   dispatch({ type: types.POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
     workspace_id,
     node_id,
     display_name,
-    backgroundColor,
-    borderColor,
+    background_color,
+    border_color,
+    attributes,
     'x-value': 0,
     'y-value': 0
   };
@@ -136,6 +137,7 @@ export const postNode = (workspace_id, node_id, display_name, backgroundColor, b
     dispatch({ type: types.POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.POST_NODE_FAILED, message });
   }
 };
@@ -257,6 +259,18 @@ export const getGroupDropDown = () => async dispatch => {
     dispatch({ type: types.GET_GROUP_DROPDOWN_SUCCESS, groups });
   } catch (error) {
     dispatch({ type: types.GET_GROUP_DROPDOWN_FAILED, message });
+  }
+};
+
+export const getAttributeDropDown = () => async dispatch => {
+  const url = `${baseUrl}/attributs/dropDownValues`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const attributes = response.data;
+    dispatch({ type: types.GET_ATTRIBUTE_DROPDOWN_SUCCESS, attributes });
+  } catch (error) {
+    dispatch({ type: types.GET_ATTRIBUTE_DROPDOWN_FAILED, message });
   }
 };
 

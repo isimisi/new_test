@@ -72,10 +72,10 @@ export const showNode = (id) => async dispatch => {
   }
 };
 
-export const putNode = (id, label, description, attributes, group, style, history) => async dispatch => {
+export const putNode = (id, label, description, attributes, deletedAttributes, group, style, history) => async dispatch => {
   const url = `${baseUrl}/${NODES}/${id}`;
   const body = {
-    label, description, group, style, attributes
+    label, description, group, style, attributes, deletedAttributes
   };
   const header = authHeader();
 
@@ -143,6 +143,12 @@ export const descriptionChange = description => ({
 export const addAtrribut = attributes => ({
   type: types.ADD_ATTRIBUT,
   attributes
+});
+
+export const removeAtrribut = (index, id) => ({
+  type: types.REMOVE_ATTRIBUT,
+  index,
+  id
 });
 
 export const addGroup = group => ({

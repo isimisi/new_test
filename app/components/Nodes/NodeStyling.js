@@ -15,7 +15,8 @@ import {
 const styles = () => ({
   root: {
     flexGrow: 1,
-    padding: 30
+    padding: 30,
+    marginTop: 10
   },
   row: {
     display: 'flex',

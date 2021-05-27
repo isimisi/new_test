@@ -24,6 +24,7 @@ const Node = () => {
   const title = useSelector(state => state.getIn([reducer, 'title']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const attributes = useSelector(state => state.getIn([reducer, 'attributes'])).toJS();
+  const deletedAttributes = useSelector(state => state.getIn([reducer, 'deletedAttributes'])).toJS();
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
@@ -35,7 +36,7 @@ const Node = () => {
 
   const onSave = () => {
     const nodeStyle = generateNodeStyle(size, backgroundColor.toJS(), borderColor.toJS(), theme);
-    dispatch(putNode(id, title, description, JSON.stringify(attributes), group, nodeStyle, history));
+    dispatch(putNode(id, title, description, JSON.stringify(attributes), JSON.stringify(deletedAttributes), group, nodeStyle, history));
   };
 
   useEffect(() => {
@@ -43,12 +44,11 @@ const Node = () => {
     dispatch(getAttributeDropDown());
     dispatch(getGroupDropDown());
   }, []);
-
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <Grid container spacing={1}>
-        <Grid item md={4}>
+        <Grid item md={6}>
           <NodeForm
             title={title}
             description={description}
@@ -58,7 +58,7 @@ const Node = () => {
             groupsDropDownOptions={groupsDropDownOptions}
           />
         </Grid>
-        <Grid item md={4}>
+        <Grid item md={6}>
           <NodeDemo
             title={title}
             description={description}
@@ -67,8 +67,6 @@ const Node = () => {
             backgroundColorSelector={backgroundColor}
             borderColorSelector={borderColor}
           />
-        </Grid>
-        <Grid item md={4}>
           <NodeStyling
             size={size}
             backgroundColor={backgroundColor.toJS()}
