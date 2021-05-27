@@ -142,7 +142,7 @@ export const postNode = (workspace_id, node_id, display_name, background_color, 
   }
 };
 
-export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor, borderColor, setDefineNodeOpen) => async dispatch => {
+export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor, borderColor, attributes, deletedAttributes, setDefineNodeOpen) => async dispatch => {
   dispatch({ type: types.PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
@@ -150,6 +150,8 @@ export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor,
     display_name,
     backgroundColor,
     borderColor,
+    attributes,
+    deletedAttributes,
   };
   const header = authHeader();
   try {
@@ -158,6 +160,7 @@ export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor,
     dispatch({ type: types.PUT_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.PUT_NODE_FAILED, message });
   }
 };

@@ -265,11 +265,13 @@ export default function reducer(state = initialImmutableState, action = {}) {
         elements[index] = action.node;
 
         mutableState.set('elements', fromJS(elements));
+        mutableState.set('loading', false);
       });
     case PUT_NODE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
       });
     case GET_NODE_VALUES_SUCCESS:
       return state.withMutations((mutableState) => {

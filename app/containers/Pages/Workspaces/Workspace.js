@@ -36,6 +36,11 @@ const nodeTypes = {
   custom: CustomNode
 };
 
+const initialAttribut = {
+  label: null,
+  value: ''
+};
+
 const Workspace = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
@@ -81,10 +86,8 @@ const Workspace = (props) => {
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
   const [nodeDisplayName, setNodeDisplayName] = useState('');
-  const [attributes, setAttributes] = useState([{
-    label: null,
-    value: ''
-  }]);
+  const [attributes, setAttributes] = useState([initialAttribut]);
+  console.log(attributes);
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [nodeColor, setNodeColor] = useState({
     r: 255, g: 255, b: 255, a: 1
@@ -130,8 +133,8 @@ const Workspace = (props) => {
 
     if (isNode(element)) {
       setNodeLabel(element.data.label);
-      setNodeDisplayName(element.data.displayName);
-      // setAttributes(element.attributes);
+      setNodeDisplayName(element.data.displayName || '');
+      setAttributes([...element.data.attributes, initialAttribut]);
       setNodeColor(element.data.backgroundColor);
       setNodeBorderColor(element.data.borderColor);
       setDefineNodeOpen(true);
@@ -182,10 +185,11 @@ const Workspace = (props) => {
   // NODE
 
   const handleNodeSave = () => {
+    const _attributes = JSON.stringify(attributes.filter(a => a.label));
     if (isUpdatingElement) {
-      dispatch(putNode(elementToUpdate.id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), setDefineNodeOpen));
+      dispatch(putNode(elementToUpdate.id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(attributes.filter(a => a.label)), setDefineNodeOpen));
+      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen));
       setNodeLabel('');
     }
     setIsUpdatingElement(false);
@@ -195,10 +199,7 @@ const Workspace = (props) => {
     if (choosenNode) {
       setNodeColor(choosenNodeStyle.backgroundColor);
       setNodeBorderColor(choosenNodeStyle.borderColor);
-      setAttributes([...choosenNode.attributes, {
-        label: null,
-        value: ''
-      }]);
+      setAttributes([...choosenNode.attributes, initialAttribut]);
     }
   }, [nodeLabel]);
 
@@ -328,7 +329,7 @@ const Workspace = (props) => {
         handleRemoveAttributes={(_id, index) => {
           setAttributes(att => att.filter((v, i) => i !== index));
           if (_id) {
-            setDeletedAttributes(attr => attr.push(_id));
+            setDeletedAttributes(attr => [attr, _id]);
           }
         }}
       />
