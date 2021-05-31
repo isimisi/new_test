@@ -31,6 +31,7 @@ function LeftSidebarLayout(props) {
     titleException,
     handleOpenGuide
   } = props;
+
   return (
     <Fragment>
       <Header
@@ -60,7 +61,7 @@ function LeftSidebarLayout(props) {
           horizontalMenu={false}
         />
         <section className={classNames(classes.mainWrap, classes.sidebarLayout)}>
-          {titleException.indexOf(history.location.pathname) < 0 && (
+          {titleException.indexOf(history.location.pathname) < 0 && !history.location.pathname.includes('workspace') && !history.location.pathname.includes('condition') && (
             <div className={classes.pageTitle}>
               <Typography component="h4" className={bgPosition === 'header' ? classes.darkTitle : classes.lightTitle} variant="h4">{place}</Typography>
               <BreadCrumb separator=" / " theme={bgPosition === 'header' ? 'dark' : 'light'} location={history.location} />

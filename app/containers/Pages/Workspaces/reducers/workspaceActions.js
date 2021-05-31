@@ -39,7 +39,7 @@ export const postWorkspace = (history) => async dispatch => {
 };
 
 
-export const showWorkspace = (id) => async dispatch => {
+export const showWorkspace = (id, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   const header = authHeader();
 
@@ -51,6 +51,10 @@ export const showWorkspace = (id) => async dispatch => {
     dispatch({
       type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
     });
+
+    if (label.length === 0 && description.length === 0 && !group) {
+      setMetaOpen(true);
+    }
   } catch (error) {
     dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
   }

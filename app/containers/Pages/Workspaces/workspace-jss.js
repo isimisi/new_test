@@ -7,7 +7,7 @@ import red from '@material-ui/core/colors/red';
 import { lighten, darken, fade } from '@material-ui/core/styles/colorManipulator';
 
 const drawerWidth = 300;
-const drawerHeight = '90vh';
+const drawerHeight = '84vh';
 
 const styles = theme => ({
   table: {

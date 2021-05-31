@@ -23,41 +23,57 @@ const CustomNode = ({ data }) => {
     borderColor: data.borderColor ? data.borderColor : '#000000'
   };
 
+  const handleStyle = {
+    height: handleVisability ? 8 : 0,
+    width: handleVisability ? 8 : 0,
+  };
 
   return (
     <div style={nodeStyle}>
       <Handle
-        style={{
-          height: handleVisability ? 8 : 0,
-          width: handleVisability ? 8 : 0,
-        }}
+        style={handleStyle}
         type="source"
         id="top"
         position={Position.Top}
       />
       <Handle
         style={{
-          height: handleVisability ? 8 : 0,
-          width: handleVisability ? 8 : 0,
+          top: '30%',
+          ...handleStyle
         }}
         type="source"
-        id="left"
+        id="leftTop"
         position={Position.Left}
       />
       <Handle
         style={{
-          height: handleVisability ? 8 : 0,
-          width: handleVisability ? 8 : 0,
+          top: '70%',
+          ...handleStyle
         }}
         type="source"
-        id="right"
+        id="leftBottom"
+        position={Position.Left}
+      />
+      <Handle
+        style={{
+          top: '30%',
+          ...handleStyle
+        }}
+        type="source"
+        id="rightBottom"
         position={Position.Right}
       />
       <Handle
         style={{
-          height: handleVisability ? 8 : 0,
-          width: handleVisability ? 8 : 0,
+          top: '70%',
+          ...handleStyle
         }}
+        type="source"
+        id="rightTop"
+        position={Position.Right}
+      />
+      <Handle
+        style={handleStyle}
         type="source"
         id="bottom"
         position={Position.Bottom}

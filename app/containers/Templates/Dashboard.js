@@ -22,7 +22,7 @@ function Dashboard(props) {
     const { history, loadTransition } = props;
 
     // Adjust min height
-    setAppHeight(window.innerHeight + 112);
+    setAppHeight(window.innerHeight);
 
     // Set expanded sidebar menu
     const currentPath = history.location.pathname;
@@ -83,111 +83,23 @@ function Dashboard(props) {
       }
     >
       {/* <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} /> */}
-      { /* Left Sidebar Layout */
-        layout === 'left-sidebar' && (
-          <LeftSidebarLayout
-            history={history}
-            toggleDrawer={toggleDrawer}
-            loadTransition={loadTransition}
-            changeMode={changeMode}
-            sidebarOpen={sidebarOpen}
-            pageLoaded={pageLoaded}
-            mode={mode}
-            gradient={gradient}
-            deco={deco}
-            bgPosition={bgPosition}
-            place={place}
-            titleException={titleException}
-            handleOpenGuide={handleOpenGuide}
-          >
-            { children }
-          </LeftSidebarLayout>
-        )
-      }
-      { /* Left Big-Sidebar Layout */
-        layout === 'big-sidebar' && (
-          <LeftSidebarBigLayout
-            history={history}
-            toggleDrawer={toggleDrawer}
-            loadTransition={loadTransition}
-            changeMode={changeMode}
-            sidebarOpen={sidebarOpen}
-            pageLoaded={pageLoaded}
-            gradient={gradient}
-            deco={deco}
-            bgPosition={bgPosition}
-            mode={mode}
-            place={place}
-            titleException={titleException}
-            handleOpenGuide={handleOpenGuide}
-          >
-            { children }
-          </LeftSidebarBigLayout>
-        )
-      }
-      { /* Right Sidebar Layout */
-        layout === 'right-sidebar' && (
-          <RightSidebarLayout
-            history={history}
-            toggleDrawer={toggleDrawer}
-            loadTransition={loadTransition}
-            changeMode={changeMode}
-            sidebarOpen={sidebarOpen}
-            pageLoaded={pageLoaded}
-            mode={mode}
-            gradient={gradient}
-            deco={deco}
-            bgPosition={bgPosition}
-            place={place}
-            titleException={titleException}
-            handleOpenGuide={handleOpenGuide}
-          >
-            { children }
-          </RightSidebarLayout>
-        )
-      }
-      { /* Top Bar with Dropdown Menu */
-        layout === 'top-navigation' && (
-          <DropMenuLayout
-            history={history}
-            toggleDrawer={toggleDrawer}
-            loadTransition={loadTransition}
-            changeMode={changeMode}
-            sidebarOpen={sidebarOpen}
-            pageLoaded={pageLoaded}
-            mode={mode}
-            gradient={gradient}
-            deco={deco}
-            bgPosition={bgPosition}
-            place={place}
-            titleException={titleException}
-            handleOpenGuide={handleOpenGuide}
-          >
-            { children }
-          </DropMenuLayout>
-        )
-      }
-      { /* Top Bar with Mega Menu */
-        layout === 'mega-menu' && (
-          <MegaMenuLayout
-            history={history}
-            toggleDrawer={toggleDrawer}
-            loadTransition={loadTransition}
-            changeMode={changeMode}
-            sidebarOpen={sidebarOpen}
-            pageLoaded={pageLoaded}
-            mode={mode}
-            gradient={gradient}
-            deco={deco}
-            bgPosition={bgPosition}
-            place={place}
-            titleException={titleException}
-            handleOpenGuide={handleOpenGuide}
-          >
-            { children }
-          </MegaMenuLayout>
-        )
-      }
+      <LeftSidebarLayout
+        history={history}
+        toggleDrawer={toggleDrawer}
+        loadTransition={loadTransition}
+        changeMode={changeMode}
+        sidebarOpen={sidebarOpen}
+        pageLoaded={pageLoaded}
+        mode={mode}
+        gradient={gradient}
+        deco={deco}
+        bgPosition={bgPosition}
+        place={place}
+        titleException={titleException}
+        handleOpenGuide={handleOpenGuide}
+      >
+        { children }
+      </LeftSidebarLayout>
     </div>
   );
 }
@@ -233,3 +145,89 @@ const DashboardMaped = connect(
 )(Dashboard);
 
 export default (withStyles(styles)(DashboardMaped));
+
+// SIde bar options
+// { /* Right Sidebar Layout */
+//   layout === 'right-sidebar' && (
+//     <RightSidebarLayout
+//       history={history}
+//       toggleDrawer={toggleDrawer}
+//       loadTransition={loadTransition}
+//       changeMode={changeMode}
+//       sidebarOpen={sidebarOpen}
+//       pageLoaded={pageLoaded}
+//       mode={mode}
+//       gradient={gradient}
+//       deco={deco}
+//       bgPosition={bgPosition}
+//       place={place}
+//       titleException={titleException}
+//       handleOpenGuide={handleOpenGuide}
+//     >
+//       { children }
+//     </RightSidebarLayout>
+//   )
+// }
+// { /* Top Bar with Dropdown Menu */
+//   layout === 'top-navigation' && (
+//     <DropMenuLayout
+//       history={history}
+//       toggleDrawer={toggleDrawer}
+//       loadTransition={loadTransition}
+//       changeMode={changeMode}
+//       sidebarOpen={sidebarOpen}
+//       pageLoaded={pageLoaded}
+//       mode={mode}
+//       gradient={gradient}
+//       deco={deco}
+//       bgPosition={bgPosition}
+//       place={place}
+//       titleException={titleException}
+//       handleOpenGuide={handleOpenGuide}
+//     >
+//       { children }
+//     </DropMenuLayout>
+//   )
+// }
+// { /* Top Bar with Mega Menu */
+//   layout === 'mega-menu' && (
+//     <MegaMenuLayout
+//       history={history}
+//       toggleDrawer={toggleDrawer}
+//       loadTransition={loadTransition}
+//       changeMode={changeMode}
+//       sidebarOpen={sidebarOpen}
+//       pageLoaded={pageLoaded}
+//       mode={mode}
+//       gradient={gradient}
+//       deco={deco}
+//       bgPosition={bgPosition}
+//       place={place}
+//       titleException={titleException}
+//       handleOpenGuide={handleOpenGuide}
+//     >
+//       { children }
+//     </MegaMenuLayout>
+//   )
+// }
+// { /* Left Big-Sidebar Layout */
+//   layout === 'big-sidebar' && (
+//     <LeftSidebarBigLayout
+//       history={history}
+//       toggleDrawer={toggleDrawer}
+//       loadTransition={loadTransition}
+//       changeMode={changeMode}
+//       sidebarOpen={sidebarOpen}
+//       pageLoaded={pageLoaded}
+//       gradient={gradient}
+//       deco={deco}
+//       bgPosition={bgPosition}
+//       mode={mode}
+//       place={place}
+//       titleException={titleException}
+//       handleOpenGuide={handleOpenGuide}
+//     >
+//       { children }
+//     </LeftSidebarBigLayout>
+//   )
+// }

@@ -169,7 +169,7 @@ const Workspace = (props) => {
   }, [rfInstance]);
 
   useEffect(() => {
-    dispatch(showWorkspace(id));
+    dispatch(showWorkspace(id, setMetaOpen));
     dispatch(getRelationships());
     dispatch(getNodes());
     dispatch(getGroupDropDown());
