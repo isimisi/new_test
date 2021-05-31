@@ -268,7 +268,7 @@ const Workspace = (props) => {
                 {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
               </ControlButton>
             </Controls>
-            <Background color="#aaa" gap={16} />
+            {handleVisability && <Background color="#aaa" gap={16} />}
           </ReactFlow>
         </div>
       </div>

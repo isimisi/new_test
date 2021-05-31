@@ -4,13 +4,8 @@ import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { GuideSlider } from '@components';
 import { toggleAction, openAction, playTransitionAction } from '@redux/actions/uiActions';
 import LeftSidebarLayout from './layouts/LeftSidebarLayout';
-import RightSidebarLayout from './layouts/RightSidebarLayout';
-import LeftSidebarBigLayout from './layouts/LeftSidebarBigLayout';
-import DropMenuLayout from './layouts/DropMenuLayout';
-import MegaMenuLayout from './layouts/MegaMenuLayout';
 import styles from './appStyles-jss';
 
 function Dashboard(props) {
@@ -49,9 +44,9 @@ function Dashboard(props) {
     setOpenGuide(true);
   };
 
-  const handleCloseGuide = () => {
-    setOpenGuide(false);
-  };
+  // const handleCloseGuide = () => {
+  //   setOpenGuide(false);
+  // };
 
   const {
     classes,
