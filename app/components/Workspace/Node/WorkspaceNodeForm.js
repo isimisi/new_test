@@ -124,7 +124,7 @@ const WorkspaceNodeForm = (props) => {
                       onChange={(e) => {
                         const newArray = [...attributes];
                         newArray[index] = { ...newArray[index], value: e.target.value };
-                        console.log(newArray);
+
                         handleChangeAttributes(newArray);
                       }}
                     />
@@ -138,7 +138,7 @@ const WorkspaceNodeForm = (props) => {
                         onChange={(value) => {
                           const newArray = [...attributes];
                           newArray[index] = { ...newArray[index], value: value.value };
-                          console.log(newArray);
+
                           handleChangeAttributes(newArray);
                         }}
                       />

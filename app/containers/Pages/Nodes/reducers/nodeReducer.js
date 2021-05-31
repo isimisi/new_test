@@ -39,8 +39,12 @@ const initialState = {
   deletedAttributes: List(),
   group: '',
   size: 'Medium',
-  backgroundColor: Map(),
-  borderColor: Map(),
+  backgroundColor: Map({
+    r: 255, g: 255, b: 255, a: 1
+  }),
+  borderColor: Map({
+    r: 0, g: 0, b: 0, a: 1
+  }),
   message: '',
   attributesDropDownOptions: List(),
   groupsDropDownOptions: List()

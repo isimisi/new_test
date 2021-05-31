@@ -87,7 +87,7 @@ const Workspace = (props) => {
   const [nodeLabel, setNodeLabel] = useState('');
   const [nodeDisplayName, setNodeDisplayName] = useState('');
   const [attributes, setAttributes] = useState([initialAttribut]);
-  console.log(attributes);
+
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [nodeColor, setNodeColor] = useState({
     r: 255, g: 255, b: 255, a: 1
@@ -130,13 +130,19 @@ const Workspace = (props) => {
   const onElementClick = (event, element) => {
     setIsUpdatingElement(true);
     setElementToUpdate(element);
-
+    setDeletedAttributes([]);
+    const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
+    const borderColor = element.data.backgroundColor ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
     if (isNode(element)) {
       setNodeLabel(element.data.label);
       setNodeDisplayName(element.data.displayName || '');
       setAttributes([...element.data.attributes, initialAttribut]);
-      setNodeColor(element.data.backgroundColor);
-      setNodeBorderColor(element.data.borderColor);
+      setNodeColor({
+        r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
+      });
+      setNodeBorderColor({
+        r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
+      });
       setDefineNodeOpen(true);
     } else {
       event.persist();
@@ -329,7 +335,7 @@ const Workspace = (props) => {
         handleRemoveAttributes={(_id, index) => {
           setAttributes(att => att.filter((v, i) => i !== index));
           if (_id) {
-            setDeletedAttributes(attr => [attr, _id]);
+            setDeletedAttributes(attr => [...attr, _id]);
           }
         }}
       />
