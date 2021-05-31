@@ -13,7 +13,7 @@ export const login = (email, password, history, locationState) => async dispatch
 
   try {
     const response = await axios.post(url, body);
-
+    console.log(response);
     const {
       user, access_token, organization
     } = response.data;
@@ -24,11 +24,12 @@ export const login = (email, password, history, locationState) => async dispatch
     LogRocket.identify(user.id, {
       name: user.first_name + ' ' + user.last_name,
       email: user.email,
-      organization: organization.name,
+      organization: organization && organization.name,
     });
     history.push(locationState?.from?.path || '/app');
   } catch (error) {
     let message = 'Oops there was some trouble with your login';
+    console.log(error);
     if (Array.isArray(error.response.data)) {
       message = error.response.data[0].message;
     } else {
