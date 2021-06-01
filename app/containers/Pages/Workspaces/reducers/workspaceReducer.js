@@ -4,6 +4,8 @@ import {
   isEdge
 } from 'react-flow-renderer';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
+import { toast } from 'react-toastify';
+
 import {
   GET_WORKSPACES_LOADING,
   GET_WORKSPACES_SUCCESS,
@@ -45,7 +47,9 @@ import {
   DELETE_WORKSPACE_ELEMENTS_FAILED,
   PUT_NODE_LOADING,
   PUT_NODE_SUCCESS,
-  PUT_NODE_FAILED
+  PUT_NODE_FAILED,
+  GET_ALERTS_SUCCESS,
+  GET_ALERTS_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -64,6 +68,7 @@ const initialState = {
   zoom: 0,
   xPosition: 0,
   yPosition: 0,
+  alerts: List(),
 
   // EDGE
   edges: List(),
@@ -289,6 +294,23 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('relationships', relationships);
       });
     case GET_RELATIONSHIP_VALUES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_ALERTS_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const knownAlerts = mutableState.get('alerts').toJS().map(alert => alert.id);
+        const newAlerts = action.alerts.filter(x => !knownAlerts.includes(x.id));
+        newAlerts.forEach(element => {
+          toast.info(element.label, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false
+          });
+        });
+        mutableState.set('alerts', fromJS([...knownAlerts, ...newAlerts]));
+      });
+    case GET_ALERTS_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

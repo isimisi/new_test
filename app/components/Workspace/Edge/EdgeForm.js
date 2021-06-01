@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
@@ -251,7 +252,7 @@ EdgeForm.propTypes = {
   handleChangeLabel: PropTypes.func.isRequired,
   relationshipValue: PropTypes.string.isRequired,
   handleChangeValue: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   handleTypeChange: PropTypes.func.isRequired,
   color: PropTypes.object.isRequired,
   handleColorChange: PropTypes.func.isRequired,

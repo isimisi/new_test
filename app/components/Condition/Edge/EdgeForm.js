@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
@@ -176,7 +177,7 @@ EdgeForm.propTypes = {
   close: PropTypes.func.isRequired,
   relationshipLabel: PropTypes.string.isRequired,
   handleChangeLabel: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
+  type: PropTypes.string,
   handleTypeChange: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   relationships: PropTypes.array.isRequired,

@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
@@ -216,7 +217,7 @@ const WorkspaceNodeForm = (props) => {
 
 WorkspaceNodeForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  close: PropTypes.func.isRequired,
+  close: PropTypes.func,
   nodes: PropTypes.array.isRequired,
   nodeLabel: PropTypes.string.isRequired,
   handleChangeLabel: PropTypes.func.isRequired,

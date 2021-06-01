@@ -19,6 +19,9 @@ import 'sanitize.css/sanitize.css';
 // Import root app
 import App from 'containers/App';
 import './styles/layout/base.scss';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.min.css';
 
 
 // Import Language Provider
@@ -60,6 +63,7 @@ const render = messages => {
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
           <App />
+          <ToastContainer />
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,

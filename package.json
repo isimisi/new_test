@@ -118,6 +118,7 @@
     "react-spring": "8.0.5",
     "react-swipeable-views": "^0.12.13",
     "react-tiny-fab": "^4.0.2",
+    "react-toastify": "^7.0.4",
     "redux": "4.0.1",
     "redux-form": "8.2.0",
     "redux-immutable": "4.0.0",

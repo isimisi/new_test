@@ -13,7 +13,7 @@ import ReactFlow, {
 import {
   WorkspaceFabs, CustomNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
-  Notification
+  Notification, CustomConnectionLine
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -258,6 +258,7 @@ const Workspace = (props) => {
             edgeTypes={{ custom: CustomEdge }}
             onLoad={onLoad}
             connectionMode={ConnectionMode.Loose}
+            connectionLineComponent={CustomConnectionLine}
             onElementClick={onElementClick}
           >
             <Controls>

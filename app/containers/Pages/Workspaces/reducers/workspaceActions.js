@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 import axios from 'axios';
@@ -20,6 +21,18 @@ export const getWorkspaces = () => async dispatch => {
     dispatch({ type: types.GET_WORKSPACES_SUCCESS, workspaces });
   } catch (error) {
     dispatch({ type: types.GET_WORKSPACES_FAILED, message });
+  }
+};
+
+export const analyseAlerts = (workspaceId) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/analyse/alerts/${workspaceId}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const alerts = response.data;
+    dispatch({ type: types.GET_ALERTS_SUCCESS, alerts });
+  } catch (error) {
+    dispatch({ type: types.GET_ALERTS_FAILED, message });
   }
 };
 
@@ -140,6 +153,7 @@ export const postNode = (workspace_id, node_id, display_name, background_color, 
     const node = response.data;
     dispatch({ type: types.POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
+    dispatch(analyseAlerts(workspace_id));
   } catch (error) {
     console.log(error.response);
     dispatch({ type: types.POST_NODE_FAILED, message });
@@ -194,6 +208,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatc
     const responseEdge = response.data;
     dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
+    dispatch(analyseAlerts(workspace_id));
   } catch (error) {
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
