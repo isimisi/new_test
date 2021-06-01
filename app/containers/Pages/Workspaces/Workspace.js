@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable no-plusplus */
 import React, { useState, useEffect, useCallback } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import ReactFlow, {
@@ -87,6 +86,7 @@ const Workspace = (props) => {
   const [nodeLabel, setNodeLabel] = useState('');
   const [nodeDisplayName, setNodeDisplayName] = useState('');
   const [attributes, setAttributes] = useState([initialAttribut]);
+  const [choosenNode, setChoosenNode] = useState(null);
 
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [nodeColor, setNodeColor] = useState({
@@ -95,8 +95,6 @@ const Workspace = (props) => {
   const [nodeBorderColor, setNodeBorderColor] = useState({
     r: 0, g: 0, b: 0, a: 1
   });
-  const choosenNode = nodes.find(r => r.label === nodeLabel);
-  const choosenNodeStyle = choosenNode && JSON.parse(choosenNode.style);
 
   // REACT FLOW SPECIFIC
 
@@ -202,10 +200,12 @@ const Workspace = (props) => {
   };
 
   useEffect(() => {
-    if (choosenNode) {
-      setNodeColor(choosenNodeStyle.backgroundColor);
-      setNodeBorderColor(choosenNodeStyle.borderColor);
-      setAttributes([...choosenNode.attributes, initialAttribut]);
+    const _node = nodes.find(r => r.label === nodeLabel);
+    if (_node) {
+      setChoosenNode(_node);
+      setNodeColor(JSON.parse(_node.style).backgroundColor);
+      setNodeBorderColor(JSON.parse(_node.style).borderColor);
+      setAttributes([..._node.attributes, initialAttribut]);
     }
   }, [nodeLabel]);
 
