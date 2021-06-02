@@ -80,12 +80,13 @@ const EdgeForm = (props) => {
     showLabel,
     handleShowLabelChange,
     handleSave,
-    relationships,
+    relationships: iRelationships,
     isUpdatingElement,
     handleDeleteEdge
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const editable = relationshipLabel.length === 0;
+  const relationships = iRelationships.toJS();
   const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
 
   return (

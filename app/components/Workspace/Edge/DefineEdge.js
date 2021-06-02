@@ -7,7 +7,7 @@ import EdgeForm from './EdgeForm';
 import FloatingPanel from '../../Panel/FloatingPanel';
 import styles from '../workspace-jss';
 
-function DefineEdge(props) {
+const DefineEdge = (props) => {
   const {
     open,
     close,
@@ -65,7 +65,7 @@ function DefineEdge(props) {
       </FloatingPanel>
     </div>
   );
-}
+};
 
 DefineEdge.propTypes = {
   open: PropTypes.bool.isRequired,

@@ -8,9 +8,12 @@ import SaveIcon from '@material-ui/icons/Save';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import PropTypes from 'prop-types';
+import FlagIcon from '@material-ui/icons/Flag';
 
 const WorkspaceFab = (props) => {
-  const { nodeClick, metaClick, saveClick } = props;
+  const {
+    nodeClick, metaClick, saveClick, onAlertClick
+  } = props;
   const theme = useTheme();
 
   return (
@@ -45,6 +48,13 @@ const WorkspaceFab = (props) => {
         >
           <AssessmentIcon />
         </Action>
+        <Action
+          text="Red flags"
+          style={{ backgroundColor: theme.palette.secondary.main }}
+          onClick={onAlertClick}
+        >
+          <FlagIcon />
+        </Action>
       </Fab>
     </>
   );
@@ -54,6 +64,7 @@ WorkspaceFab.propTypes = {
   nodeClick: PropTypes.func.isRequired,
   metaClick: PropTypes.func.isRequired,
   saveClick: PropTypes.func.isRequired,
+  onAlertClick: PropTypes.func.isRequired,
 };
 
 export default WorkspaceFab;

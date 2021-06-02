@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import React from 'react';
+import React, { memo } from 'react';
 import { getBezierPath, getMarkerEnd } from 'react-flow-renderer';
 import {
   useHistory
@@ -85,4 +85,4 @@ const CustomEdge = ({
   );
 };
 
-export default CustomEdge;
+export default memo(CustomEdge);

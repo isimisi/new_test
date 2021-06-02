@@ -24,15 +24,15 @@ export const getWorkspaces = () => async dispatch => {
   }
 };
 
-export const analyseAlerts = (workspaceId) => async dispatch => {
+export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/analyse/alerts/${workspaceId}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
     const alerts = response.data;
-    dispatch({ type: types.GET_ALERTS_SUCCESS, alerts });
+    setAlerts(alerts, initial);
   } catch (error) {
-    dispatch({ type: types.GET_ALERTS_FAILED, message });
+    // do something
   }
 };
 
@@ -52,7 +52,7 @@ export const postWorkspace = (history) => async dispatch => {
 };
 
 
-export const showWorkspace = (id, setMetaOpen) => async dispatch => {
+export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   const header = authHeader();
 
@@ -68,6 +68,7 @@ export const showWorkspace = (id, setMetaOpen) => async dispatch => {
     if (label.length === 0 && description.length === 0 && !group) {
       setMetaOpen(true);
     }
+    dispatch(analyseAlerts(id, setAlerts, true));
   } catch (error) {
     dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
   }
@@ -133,7 +134,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
   });
 };
 
-export const postNode = (workspace_id, node_id, display_name, background_color, border_color, attributes, setDefineNodeOpen) => async dispatch => {
+export const postNode = (workspace_id, node_id, display_name, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {
   dispatch({ type: types.POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
@@ -153,7 +154,7 @@ export const postNode = (workspace_id, node_id, display_name, background_color, 
     const node = response.data;
     dispatch({ type: types.POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
-    dispatch(analyseAlerts(workspace_id));
+    dispatch(analyseAlerts(workspace_id, setAlerts));
   } catch (error) {
     console.log(error.response);
     dispatch({ type: types.POST_NODE_FAILED, message });
@@ -184,7 +185,7 @@ export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor,
 };
 
 
-export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatch => {
+export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => async dispatch => {
   dispatch({ type: types.POST_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship`;
   const body = {
@@ -208,7 +209,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen) => async dispatc
     const responseEdge = response.data;
     dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
-    dispatch(analyseAlerts(workspace_id));
+    dispatch(analyseAlerts(workspace_id, setAlert));
   } catch (error) {
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }

@@ -66,6 +66,8 @@ import RelationshipStylling from './Relationships/RelationshipStylling';
 
 // alert
 import AlertDemo from './Alerts/AlertDemo';
+import AlertModal from './Alerts/AlertModal';
+import AlertLog from './Alerts/AlertLog';
 
 // Workspace
 import WorkspaceForm from './Workspace/WorkspaceForm';
@@ -136,6 +138,8 @@ export {
   RelationshipDemo,
   RelationshipStylling,
   AlertDemo,
+  AlertModal,
+  AlertLog,
   WorkspaceForm,
   WorkspaceMeta,
   WorkspaceFabs,

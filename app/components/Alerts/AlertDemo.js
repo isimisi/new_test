@@ -8,7 +8,6 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
-
 const styles = () => ({
   root: {
     flexGrow: 1,
@@ -21,10 +20,17 @@ const styles = () => ({
 
 
 const AlertDemo = props => {
-  const { classes, title, description } = props;
+  const {
+    classes,
+    title,
+    description,
+    border,
+    disabled,
+    handleSeeCondition
+  } = props;
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={classes.root} variant={border ? 'outlined' : 'elevation'}>
       <DialogTitle id="alert-dialog-title">
         {title}
       </DialogTitle>
@@ -34,21 +40,36 @@ const AlertDemo = props => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button disabled color="primary" variant="outlined" size="large">
-            Ignore
+        <Button
+          disabled={!disabled}
+          color="primary"
+          variant="outlined"
+          size="large"
+          onClick={handleSeeCondition}
+        >
+            Se betingelse
         </Button>
         <Button disabled color="secondary" variant="outlined" size="large">
-            Use
+            Luk
         </Button>
       </DialogActions>
     </Paper>
   );
 };
 
+AlertDemo.defaultProps = {
+  border: false,
+  disabled: false,
+  handleSeeCondition: () => {}
+};
+
 AlertDemo.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
+  border: PropTypes.bool,
+  disabled: PropTypes.bool,
+  handleSeeCondition: PropTypes.func
 };
 
 

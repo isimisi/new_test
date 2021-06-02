@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useCallback } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
   removeElements,
   Controls,
@@ -12,7 +12,8 @@ import ReactFlow, {
 import {
   WorkspaceFabs, CustomNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
-  Notification, CustomConnectionLine
+  Notification, CustomConnectionLine, AlertModal,
+  AlertLog
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,6 +22,7 @@ import {
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { toast } from 'react-toastify';
 import styles from './workspace-jss';
 import { reducer } from './constants';
 import {
@@ -44,10 +46,11 @@ const Workspace = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
   const history = useHistory();
+  const theme = useTheme();
   const id = history.location.pathname.split('/').pop();
 
   // REDUX
-  const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
+  const relationships = useSelector(state => state.getIn([reducer, 'relationships']));
   const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
   const handleVisability = useSelector(state => state.getIn([reducer, 'handleVisability']));
   const elements = useSelector(state => state.getIn([reducer, 'elements'])).toJS();
@@ -65,6 +68,11 @@ const Workspace = (props) => {
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
 
+  const [showAlertLog, setShowAlertLog] = useState(false);
+  const [alerts, setAlerts] = useState([]);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertId, setAlertId] = useState(null);
+  console.log(alerts);
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
   const [elementToUpdate, setElementToUpdate] = useState(null);
 
@@ -166,13 +174,43 @@ const Workspace = (props) => {
     }
   }, [rfInstance]);
 
+  const handleAlerts = (_alerts, initial) => {
+    if (initial) {
+      setAlerts([..._alerts]);
+    } else {
+      const newAlerts = _alerts.filter(x => !alerts.some(y => y.id === x.id));
+
+      newAlerts.forEach((element, index) => {
+        toast(element.label, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+          toastId: alerts.length + index,
+          style: {
+            backgroundColor: theme.palette.secondary.main,
+            color: 'white'
+          },
+          onClick: (e) => {
+            setAlertId(e.currentTarget.id);
+          }
+        });
+        setAlerts(list => [...list, element]);
+      });
+    }
+  };
+
   useEffect(() => {
-    dispatch(showWorkspace(id, setMetaOpen));
+    dispatch(showWorkspace(id, setMetaOpen, handleAlerts));
     dispatch(getRelationships());
     dispatch(getNodes());
     dispatch(getGroupDropDown());
     dispatch(getAttributeDropDown());
   }, []);
+
+  useEffect(() => {
+    if (alertId) {
+      setAlertOpen(true);
+    }
+  }, [alertId]);
   // TODO: DOes not work
   // useEffect(() => {
   //   if (rfInstance) {
@@ -193,7 +231,7 @@ const Workspace = (props) => {
     if (isUpdatingElement) {
       dispatch(putNode(elementToUpdate.id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen));
+      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen, handleAlerts));
       setNodeLabel('');
     }
     setIsUpdatingElement(false);
@@ -212,7 +250,7 @@ const Workspace = (props) => {
   // RELATIONSHIP
 
   const handleRelationshipSave = () => {
-    const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
+    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
 
     if (isUpdatingElement) {
       dispatch(putEdge(
@@ -237,12 +275,26 @@ const Workspace = (props) => {
         showLabel,
         ...currentConnectionData
       };
-      dispatch(postEdge(id, edge, setDefineEdgeOpen));
+      dispatch(postEdge(id, edge, setDefineEdgeOpen, handleAlerts));
     }
     setIsUpdatingElement(false);
   };
 
+  const closeDefineEdge = useCallback(() => {
+    setDefineEdgeOpen(false);
+    setIsUpdatingElement(false);
+  }, []);
 
+  const handleChangeLabel = useCallback((_label) => setRelationshipLabel(_label.value), []);
+  const handleChangeValue = useCallback((value) => setRelationshipValue(value ? value.value : value), []);
+  const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
+  const handleColorChange = useCallback((color) => setRelationshipColor(color.rgb), []);
+  const handleShowArrowChange = useCallback((e) => setShowArrow(e.target.checked), []);
+  const handleAnimatedLineChange = useCallback((e) => setAnimatedLine(e.target.checked), []);
+  const handleShowLabelChange = useCallback((e) => setShowlabel(e.target.checked), []);
+  const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), []);
+
+  console.log(relationships);
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -287,28 +339,25 @@ const Workspace = (props) => {
       />
       <DefineEdge
         open={defineEdgeOpen}
-        close={() => {
-          setDefineEdgeOpen(false);
-          setIsUpdatingElement(false);
-        }}
+        close={closeDefineEdge}
         relationships={relationships}
         relationshipLabel={relationshipLabel}
-        handleChangeLabel={(_label) => setRelationshipLabel(_label.value)}
+        handleChangeLabel={handleChangeLabel}
         relationshipValue={relationshipValue}
-        handleChangeValue={(value) => setRelationshipValue(value ? value.value : value)}
+        handleChangeValue={handleChangeValue}
         type={relationshipType}
-        handleTypeChange={(type) => setRelationshipType(type.value)}
+        handleTypeChange={handleTypeChange}
         color={relationshipColor}
-        handleColorChange={(color) => setRelationshipColor(color.rgb)}
+        handleColorChange={handleColorChange}
         showArrow={showArrow}
-        handleShowArrowChange={(e) => setShowArrow(e.target.checked)}
+        handleShowArrowChange={handleShowArrowChange}
         animatedLine={animatedLine}
-        handleAnimatedLineChange={(e) => setAnimatedLine(e.target.checked)}
+        handleAnimatedLineChange={handleAnimatedLineChange}
         showLabel={showLabel}
-        handleShowLabelChange={(e) => setShowlabel(e.target.checked)}
-        handleSave={() => handleRelationshipSave()}
+        handleShowLabelChange={handleShowLabelChange}
+        handleSave={handleRelationshipSave}
         isUpdatingElement={isUpdatingElement}
-        handleDeleteEdge={() => onElementsRemove([elementToUpdate])}
+        handleDeleteEdge={handleDeleteEdge}
         loading={loading}
       />
       <DefineNode
@@ -340,11 +389,33 @@ const Workspace = (props) => {
           }
         }}
       />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
+      <AlertModal
+        title={alerts[alertId]?.label}
+        description={alerts[alertId]?.description}
+        handleSeeCondition={() => {
+          const location = window.location.href.replace(
+            history.location.pathname,
+            `/app/conditions/${alerts[alertId]?.condition_id}`
+          );
+          const win = window.open(location, '_blank');
+          win.focus();
+        }
+        }
+        open={alertOpen}
+        handleClose={() => setAlertOpen(false)}
+      />
+      <AlertLog
+        open={showAlertLog}
+        close={() => setShowAlertLog(false)}
+        alerts={alerts}
+        history={history}
+      />
+      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
           saveClick={onWorkspaceSave}
+          onAlertClick={() => setShowAlertLog(true)}
         />
       )}
     </div>
