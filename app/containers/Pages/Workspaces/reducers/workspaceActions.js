@@ -36,6 +36,18 @@ export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async 
   }
 };
 
+export const analyseOutput = (workspaceId) => async dispatch => {
+  const url = `${baseUrl}/${WORKSPACES}/analyse/actions/${workspaceId}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const outputs = response.data;
+    dispatch({ type: types.ANALYSE_OUTPUT_SUCCESS, outputs });
+  } catch (error) {
+    dispatch({ type: types.ANALYSE_OUTPUT_FAILED, message });
+  }
+};
+
 export const postWorkspace = (history) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}`;
   const body = {};

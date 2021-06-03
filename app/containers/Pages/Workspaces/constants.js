@@ -49,17 +49,6 @@ export const columns = [
     }
   },
   {
-    name: 'See Report',
-    options: {
-      filter: true,
-      customBodyRender: (value) => (
-        <Button variant="contained" color="secondary" href={`/app/conditions/${value}`}>
-            Open
-        </Button>
-      )
-    }
-  },
-  {
     name: 'Last Edited',
     options: {
       filter: true,

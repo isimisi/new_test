@@ -43,6 +43,11 @@ export const Workspace = loadable(() =>
     fallback: <Loading />,
   });
 
+export const WorkspaceAnalysis = loadable(() =>
+  import ('./Pages/Workspaces/WorkspaceAnalysis'), {
+    fallback: <Loading />,
+  });
+
 export const Conditions = loadable(() =>
   import ('./Pages/Conditions'), {
     fallback: <Loading />,

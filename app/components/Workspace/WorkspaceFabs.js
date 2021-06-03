@@ -12,7 +12,7 @@ import FlagIcon from '@material-ui/icons/Flag';
 
 const WorkspaceFab = (props) => {
   const {
-    nodeClick, metaClick, saveClick, onAlertClick
+    nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick
   } = props;
   const theme = useTheme();
 
@@ -45,6 +45,7 @@ const WorkspaceFab = (props) => {
         <Action
           text="Analyser"
           style={{ backgroundColor: theme.palette.secondary.main }}
+          onClick={onAnalysisClick}
         >
           <AssessmentIcon />
         </Action>
@@ -65,6 +66,7 @@ WorkspaceFab.propTypes = {
   metaClick: PropTypes.func.isRequired,
   saveClick: PropTypes.func.isRequired,
   onAlertClick: PropTypes.func.isRequired,
+  onAnalysisClick: PropTypes.func.isRequired,
 };
 
 export default WorkspaceFab;

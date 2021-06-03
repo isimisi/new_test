@@ -9,7 +9,8 @@ import {
   Conditions, Condition, Outputs, Output,
   Nodes, Node, Groups, Alerts, Alert,
   Relationships, Relationship,
-  Attributes, CreateOrganization, ChoosePlan
+  Attributes, CreateOrganization, ChoosePlan,
+  WorkspaceAnalysis
 } from '../pageListAsync';
 
 function Application() {
@@ -34,6 +35,7 @@ function Application() {
         <Route exact path="/app/nodes" component={Nodes} />
         <Route exact path="/app/nodes/:id" component={Node} />
         <Route exact path="/app/workspaces" component={Workspaces} />
+        <Route exact path="/app/workspaces/analysis/:id" component={WorkspaceAnalysis} />
         <Route exact path="/app/workspaces/:id" component={Workspace} />
         <Route exact path="/app/settings" component={Settings} />
         <Route exact path="/app/create/organization" component={CreateOrganization} />

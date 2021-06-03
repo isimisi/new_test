@@ -399,6 +399,7 @@ const Workspace = (props) => {
           metaClick={() => setMetaOpen(true)}
           saveClick={onWorkspaceSave}
           onAlertClick={() => setShowAlertLog(true)}
+          onAnalysisClick={() => history.push(`analysis/${id}`)}
         />
       )}
     </div>

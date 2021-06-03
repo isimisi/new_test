@@ -47,6 +47,8 @@ import {
   PUT_NODE_LOADING,
   PUT_NODE_SUCCESS,
   PUT_NODE_FAILED,
+  ANALYSE_OUTPUT_SUCCESS,
+  ANALYSE_OUTPUT_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -68,6 +70,7 @@ const initialState = {
   alerts: List(),
   alertId: null,
   alertOpen: false,
+  outputs: List(),
 
   // EDGE
   edges: List(),
@@ -293,6 +296,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('relationships', relationships);
       });
     case GET_RELATIONSHIP_VALUES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case ANALYSE_OUTPUT_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const outputs = fromJS(action.outputs);
+        mutableState.set('outputs', outputs);
+      });
+    case ANALYSE_OUTPUT_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
