@@ -26,16 +26,16 @@ import {
   GET_NODE_VALUES_FAILED,
   GET_RELATIONSHIP_VALUES_SUCCESS,
   GET_RELATIONSHIP_VALUES_FAILED,
-  POST_NODE_SUCCESS,
-  POST_NODE_FAILED,
-  POST_EDGE_SUCCESS,
-  POST_EDGE_FAILED,
+  CONDITION_POST_NODE_SUCCESS,
+  CONDITION_POST_NODE_FAILED,
+  CONDITION_PUT_EDGE_SUCCESS,
+  CONDITION_PUT_EDGE_FAILED,
   SAVE_CONDITION_SUCCESS,
   SAVE_CONDITION_FAILED,
-  PUT_NODE_SUCCESS,
-  PUT_NODE_FAILED,
-  PUT_EDGE_SUCCESS,
-  PUT_EDGE_FAILED,
+  CONDITION_PUT_NODE_SUCCESS,
+  CONDITION_PUT_NODE_FAILED,
+  CONDITION_POST_EDGE_SUCCESS,
+  CONDITION_POST_EDGE_FAILED,
   DELETE_CONDITION_ELEMENTS_SUCCESS,
   DELETE_CONDITION_ELEMENTS_FAILED
 } from './conditionConstants';
@@ -118,7 +118,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case DELETE_CONDITION_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
-        const elements = fromJS(action.elements);
+        const elements = fromJS(action.remainingElements);
         mutableState.set('elements', elements);
       });
     case DELETE_CONDITION_ELEMENTS_FAILED:
@@ -194,17 +194,17 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const group = fromJS(action.group);
         mutableState.set('group', group);
       });
-    case POST_NODE_SUCCESS:
+    case CONDITION_POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const node = fromJS(action.node);
         mutableState.update('elements', myList => myList.push(node));
       });
-    case POST_NODE_FAILED:
+    case CONDITION_POST_NODE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
-    case PUT_NODE_SUCCESS:
+    case CONDITION_PUT_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const elements = mutableState.get('elements').toJS();
         const index = elements.findIndex(e => e.id === action.node.id && isNode(e));
@@ -212,29 +212,29 @@ export default function reducer(state = initialImmutableState, action = {}) {
 
         mutableState.set('elements', fromJS(elements));
       });
-    case PUT_NODE_FAILED:
+    case CONDITION_PUT_NODE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
-    case PUT_EDGE_SUCCESS:
+    case CONDITION_PUT_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
         const elements = mutableState.get('elements').toJS();
         const index = elements.findIndex(e => e.id === action.edge.id && isEdge(e));
         elements[index] = action.edge;
         mutableState.set('elements', fromJS(elements));
       });
-    case PUT_EDGE_FAILED:
+    case CONDITION_PUT_EDGE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
-    case POST_EDGE_SUCCESS:
+    case CONDITION_POST_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
         const edge = fromJS(action.edge);
         mutableState.update('elements', myList => myList.push(edge));
       });
-    case POST_EDGE_FAILED:
+    case CONDITION_POST_EDGE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

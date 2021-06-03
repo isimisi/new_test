@@ -122,11 +122,19 @@ const Condition = (props) => {
 
 
   const onElementsRemove = (elementsToRemove) => {
-    const _elements = removeElements(elementsToRemove, elements);
+    const remainingElements = removeElements(elementsToRemove, elements);
     setIsUpdatingElement(false);
     setElementToUpdate(null);
 
-    dispatch(deleteConditionElement(Number(elementsToRemove[0].id), isNode(elementsToRemove[0]), _elements, setDefineNodeOpen, setDefineEdgeOpen));
+    if (elementsToRemove.length === 1) {
+      if (isNode(elementsToRemove[0])) {
+        setDefineNodeOpen(false);
+      } else {
+        setDefineEdgeOpen(false);
+      }
+    }
+
+    dispatch(deleteConditionElement(elementsToRemove, remainingElements));
   };
 
   const onLoad = (_reactFlowInstance) => {
@@ -222,6 +230,8 @@ const Condition = (props) => {
         handleComparisonTypeChange={(v) => setComparisonType(v)}
         comparisonValue={comparisonValue}
         handleComparisonValueChange={(v) => setComparisonValue(v)}
+        isUpdatingElement={isUpdatingElement}
+        handleDeleteEdge={() => onElementsRemove([elementToUpdate])}
       />
       <ConditionDefineNode
         open={defineNodeOpen}

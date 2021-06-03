@@ -19,7 +19,9 @@ function DefineEdge(props) {
     comparisonType,
     handleComparisonTypeChange,
     comparisonValue,
-    handleComparisonValueChange
+    handleComparisonValueChange,
+    isUpdatingElement,
+    handleDeleteEdge
   } = props;
 
   return (
@@ -28,7 +30,7 @@ function DefineEdge(props) {
         openForm={open}
         closeForm={close}
         extraSize
-        title="Specificer en relation for dit scenarie"
+        title={isUpdatingElement ? 'Ændre i din relation' : 'Specificer en relation for dit scenarie'}
       >
         <EdgeForm
           relationships={relationships}
@@ -43,6 +45,8 @@ function DefineEdge(props) {
           handleComparisonValueChange={handleComparisonValueChange}
           close={close}
           handleSave={handleSave}
+          handleDeleteEdge={handleDeleteEdge}
+          isUpdatingElement={isUpdatingElement}
         />
       </FloatingPanel>
     </div>
@@ -63,6 +67,8 @@ DefineEdge.propTypes = {
   handleComparisonTypeChange: PropTypes.func.isRequired,
   comparisonValue: PropTypes.any.isRequired,
   handleComparisonValueChange: PropTypes.func.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteEdge: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(DefineEdge);

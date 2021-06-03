@@ -10,6 +10,7 @@ import css from '@styles/Form.scss';
 import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
 import Select from 'react-select';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
+import { red } from '@api/palette/colorfull';
 import styles from '../condition-jss';
 import BeizerCurve from '../../Workspace/Edge/beizerCurve.svg';
 import StraightLine from '../../Workspace/Edge/straightLine.svg';
@@ -70,7 +71,9 @@ const EdgeForm = (props) => {
     comparisonType,
     handleComparisonTypeChange,
     comparisonValue,
-    handleComparisonValueChange
+    handleComparisonValueChange,
+    handleDeleteEdge,
+    isUpdatingElement
   } = props;
 
   const editable = relationshipLabel.length === 0;
@@ -155,6 +158,16 @@ const EdgeForm = (props) => {
         </div>
       </section>
       <div className={css.buttonArea}>
+        {isUpdatingElement && (
+          <Button
+            variant="contained"
+            type="button"
+            onClick={handleDeleteEdge}
+            style={{ backgroundColor: red, color: 'white' }}
+          >
+            Delete
+          </Button>
+        )}
         <Button type="button" onClick={() => close()}>
             Discard
         </Button>
@@ -186,6 +199,8 @@ EdgeForm.propTypes = {
   handleComparisonTypeChange: PropTypes.func.isRequired,
   comparisonValue: PropTypes.any.isRequired,
   handleComparisonValueChange: PropTypes.func.isRequired,
+  isUpdatingElement: PropTypes.bool.isRequired,
+  handleDeleteEdge: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(EdgeForm);

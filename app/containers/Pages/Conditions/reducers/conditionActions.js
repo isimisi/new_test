@@ -3,6 +3,9 @@
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
+import {
+  isNode,
+} from 'react-flow-renderer';
 import * as types from './conditionConstants';
 const CONDITIONS = 'conditions';
 
@@ -126,21 +129,19 @@ export const deleteCondition = (id, title) => async dispatch => {
   }
 };
 
-export const deleteConditionElement = (id, isNode, elements, setDefineNodeOpen, setDefineEdgeOpen) => async dispatch => {
-  const url = `${baseUrl}/condition${isNode ? 'Nodes' : 'Relationships'}/${id}`;
-  const header = authHeader();
-  try {
+export const deleteConditionElement = (elementsToRemove, remainingElements) => async dispatch => {
+  console.log(elementsToRemove);
+  Promise.all(elementsToRemove.map(async (e) => {
+    const url = `${baseUrl}/condition${isNode(e) ? 'Nodes' : 'Relationships'}/${e.id}`;
+    const header = authHeader();
     await axios.delete(url, header);
-    dispatch({ type: types.DELETE_CONDITION_ELEMENTS_SUCCESS, elements });
-    if (isNode) {
-      setDefineNodeOpen(false);
-    } else {
-      setDefineEdgeOpen(false);
-    }
-  } catch (error) {
+  })).then(() => {
+    dispatch({ type: types.DELETE_CONDITION_ELEMENTS_SUCCESS, remainingElements });
+  }).catch((error) => {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_CONDITION_ELEMENTS_FAILED, message });
-  }
+  });
 };
 
 export const getNodes = () => async dispatch => {
@@ -170,11 +171,11 @@ export const postNode = (condition_id, node_id, values, setDefineNodeOpen) => as
   try {
     const response = await axios.post(url, body, header);
     const node = response.data;
-    dispatch({ type: types.POST_NODE_SUCCESS, node });
+    dispatch({ type: types.CONDITION_POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
     const message = genericErrorMessage;
-    dispatch({ type: types.POST_NODE_FAILED, message });
+    dispatch({ type: types.CONDITION_POST_NODE_FAILED, message });
   }
 };
 
@@ -190,11 +191,11 @@ export const putNode = (conditionNodeId, node_id, nodeValues, deletedConditionVa
   try {
     const response = await axios.put(url, body, header);
     const node = response.data;
-    dispatch({ type: types.PUT_NODE_SUCCESS, node });
+    dispatch({ type: types.CONDITION_PUT_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
     const message = genericErrorMessage;
-    dispatch({ type: types.PUT_NODE_FAILED, message });
+    dispatch({ type: types.CONDITION_PUT_NODE_FAILED, message });
   }
 };
 
@@ -216,11 +217,11 @@ export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatc
   try {
     const response = await axios.post(url, body, header);
     const responseEdge = response.data;
-    dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
+    dispatch({ type: types.CONDITION_POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
   } catch (error) {
     const message = genericErrorMessage;
-    dispatch({ type: types.POST_EDGE_FAILED, message });
+    dispatch({ type: types.CONDITION_POST_EDGE_FAILED, message });
   }
 };
 
@@ -237,11 +238,11 @@ export const putEdge = (edgeId, relationship_id, comparison_type, comparison_val
   try {
     const response = await axios.put(url, body, header);
     const edge = response.data;
-    dispatch({ type: types.PUT_EDGE_SUCCESS, edge });
+    dispatch({ type: types.CONDITION_PUT_EDGE_SUCCESS, edge });
     setDefineEdgeOpen(false);
   } catch (error) {
     const message = genericErrorMessage;
-    dispatch({ type: types.PUT_EDGE_FAILED, message });
+    dispatch({ type: types.CONDITION_PUT_EDGE_FAILED, message });
   }
 };
 
