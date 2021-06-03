@@ -162,13 +162,13 @@ const Workspace = (props) => {
     }
   };
 
-  window.onbeforeunload = () => {
-    if (dismissPopup) {
-      // eslint-disable-next-line no-useless-return
-      return;
-    }
-    return 'Dine ændringer vil måske ikke blive gemt';
-  };
+  // window.onbeforeunload = () => {
+  //   if (dismissPopup) {
+  //     // eslint-disable-next-line no-useless-return
+  //     return;
+  //   }
+  //   return 'Dine ændringer vil måske ikke blive gemt';
+  // };
 
   // WORKSPACE GENERAL
 

@@ -73,13 +73,13 @@ const Condition = (props) => {
     dispatch(showCondition(id));
   }, []);
 
-  window.onbeforeunload = () => {
-    if (dismissPopup) {
-      // eslint-disable-next-line no-useless-return
-      return;
-    }
-    return 'Dine ændringer vil måske ikke blive gemt';
-  };
+  // window.onbeforeunload = () => {
+  //   if (dismissPopup) {
+  //     // eslint-disable-next-line no-useless-return
+  //     return;
+  //   }
+  //   return 'Dine ændringer vil måske ikke blive gemt';
+  // };
 
 
   const choosenNode = nodes.find(r => r.label === nodeLabel);
