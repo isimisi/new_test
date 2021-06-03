@@ -96,7 +96,10 @@ export const deleteRelationship = (id, title) => async dispatch => {
     dispatch({ type: types.DELETE_RELATIONSHIP_SUCCESS, message });
     dispatch(getRelationships());
   } catch (error) {
-    const message = genericErrorMessage;
+    let message = genericErrorMessage;
+    if (error?.response?.status === 403) {
+      message = 'Hov det ser vidst ud til, at du bruger denne forbindelse i arbejdsområder eller betingelser, derfor kan du ikke slette den.';
+    }
     dispatch({ type: types.DELETE_RELATIONSHIP_FAILED, message });
   }
 };

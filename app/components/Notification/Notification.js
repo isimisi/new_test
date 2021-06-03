@@ -30,7 +30,7 @@ function Notification(props) {
         horizontal: 'left',
       }}
       open={message !== ''}
-      autoHideDuration={3000}
+      autoHideDuration={7000}
       onClose={() => handleClose()}
       ContentProps={{
         'aria-describedby': 'message-id',

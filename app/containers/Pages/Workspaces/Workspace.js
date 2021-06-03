@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useCallback } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
@@ -64,6 +65,7 @@ const Workspace = (props) => {
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
+  const [dismissPopup, setDismissPopup] = useState(false);
 
   const [showAlertLog, setShowAlertLog] = useState(false);
   const [alerts, setAlerts] = useState([]);
@@ -160,10 +162,19 @@ const Workspace = (props) => {
     }
   };
 
+  window.onbeforeunload = () => {
+    if (dismissPopup) {
+      // eslint-disable-next-line no-useless-return
+      return;
+    }
+    return 'Dine ændringer vil måske ikke blive gemt';
+  };
+
   // WORKSPACE GENERAL
 
   const onWorkspaceSave = useCallback(() => {
     if (rfInstance) {
+      setDismissPopup(true);
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));

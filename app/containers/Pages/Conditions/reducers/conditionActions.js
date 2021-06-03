@@ -94,7 +94,7 @@ export const putConditionMeta = (id, label, description, group, setMetaOpen) => 
   }
 };
 
-export const saveCondition = (condition_id, conditionZoom, conditionXPosition, conditionYPosition, nodes) => async dispatch => {
+export const saveCondition = (condition_id, conditionZoom, conditionXPosition, conditionYPosition, nodes, history) => async dispatch => {
   const url = `${baseUrl}/${CONDITIONS}/${condition_id}/position`;
   const body = {
     conditionZoom, conditionXPosition, conditionYPosition, nodes
@@ -105,6 +105,7 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
     await axios.put(url, body, header);
     const message = 'Vi har gemt dit scenarie';
     dispatch({ type: types.SAVE_CONDITION_SUCCESS, message });
+    history.push(`/app/${CONDITIONS}`);
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.SAVE_CONDITION_FAILED, message });

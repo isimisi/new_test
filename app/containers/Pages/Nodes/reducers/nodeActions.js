@@ -100,7 +100,12 @@ export const deleteNode = (id, title) => async dispatch => {
     dispatch({ type: types.DELETE_NODE_SUCCESS, message });
     dispatch(getNodes());
   } catch (error) {
-    const message = genericErrorMessage;
+    let message = genericErrorMessage;
+
+    if (error?.response?.status === 403) {
+      message = 'Hov det ser vidst ud til, at du bruger dette element i arbejdsområder eller betingelser, derfor kan du ikke slette den.';
+    }
+
     dispatch({ type: types.DELETE_NODE_FAILED, message });
   }
 };

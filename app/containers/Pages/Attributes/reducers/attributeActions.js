@@ -88,8 +88,8 @@ export const deleteAttribute = (id, title) => async dispatch => {
     dispatch(getAttributes());
   } catch (error) {
     let message = genericErrorMessage;
-    if (error.response.data.errno === 1451) {
-      message = 'You cannot delete an attribute, which you are actively using in nodes or workflows';
+    if (error.response.status === 403) {
+      message = 'Hov det ser vidst ud til, at du bruger dette kendetegn i arbejdsområder eller betingelser, derfor kan du ikke slette den.';
     }
     dispatch({ type: types.PUT_ATTRIBUTE_FAILED, message });
   }
