@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Info from '@material-ui/icons/Info';
 import Warning from '@material-ui/icons/Warning';
 import Check from '@material-ui/icons/CheckCircle';
 import Error from '@material-ui/icons/RemoveCircle';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import Badge from '@material-ui/core/Badge';
 import Divider from '@material-ui/core/Divider';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -22,6 +19,7 @@ import dummy from '@api/dummy/dummyContents';
 import messageStyles from '@styles/Messages.scss';
 import avatarApi from '@api/images/avatars';
 import link from '@api/ui/link';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './header-jss';
 
 function UserMenu(props) {
@@ -44,6 +42,10 @@ function UserMenu(props) {
 
   const { classes, dark } = props;
   const { anchorEl, openMenu } = menuState;
+  const {
+    first_name, last_name
+  } = loadFromLocalStorage();
+  const name = `${first_name} ${last_name}`;
   return (
     <div>
       {/* <IconButton
@@ -131,7 +133,7 @@ function UserMenu(props) {
       </Menu>
       <Button onClick={handleMenu('user-setting')}>
         <Avatar
-          alt={dummy.user.name}
+          alt={name}
           src={dummy.user.avatar}
         />
       </Button>

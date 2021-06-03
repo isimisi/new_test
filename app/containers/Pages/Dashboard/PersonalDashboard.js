@@ -22,6 +22,7 @@ import {
 } from 'react-router-dom';
 import styles from './dashboard-jss';
 import NoOrganization from './NoOrganization';
+import TempDemo from './TempDemo';
 
 function PersonalDashboard() {
   const title = brand.name + ' - Personal Dashboard';
@@ -48,6 +49,7 @@ function PersonalDashboard() {
         <meta property="twitter:description" content={description} />
       </Helmet>
       {!organization && <NoOrganization />}
+      <TempDemo />
     </div>
   );
 }
