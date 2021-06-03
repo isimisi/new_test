@@ -32,9 +32,9 @@ import {
   PUT_EDGE_FAILED,
   GET_NODE_VALUES_SUCCESS,
   GET_NODE_VALUES_FAILED,
-  POST_NODE_LOADING,
-  POST_NODE_SUCCESS,
-  POST_NODE_FAILED,
+  WORKSPACE_POST_NODE_LOADING,
+  WORKSPACE_POST_NODE_SUCCESS,
+  WORKSPACE_POST_NODE_FAILED,
   SHOW_HANDLES_CHANGE,
   POST_WORKSPACE_SUCCESS,
   POST_WORKSPACE_FAILED,
@@ -44,9 +44,9 @@ import {
   SAVE_WORKSPACE_FAILED,
   DELETE_WORKSPACE_ELEMENTS_SUCCESS,
   DELETE_WORKSPACE_ELEMENTS_FAILED,
-  PUT_NODE_LOADING,
-  PUT_NODE_SUCCESS,
-  PUT_NODE_FAILED,
+  WORKSPACE_PUT_NODE_LOADING,
+  WORKSPACE_PUT_NODE_SUCCESS,
+  WORKSPACE_PUT_NODE_FAILED,
   ANALYSE_OUTPUT_SUCCESS,
   ANALYSE_OUTPUT_FAILED
 } from './workspaceConstants';
@@ -245,27 +245,27 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('message', message);
         mutableState.set('loading', false);
       });
-    case POST_NODE_LOADING:
+    case WORKSPACE_POST_NODE_LOADING:
       return state.withMutations((mutableState) => {
         mutableState.set('loading', true);
       });
-    case POST_NODE_SUCCESS:
+    case WORKSPACE_POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const node = fromJS(action.node);
         mutableState.update('elements', myList => myList.push(node));
         mutableState.set('loading', false);
       });
-    case POST_NODE_FAILED:
+    case WORKSPACE_POST_NODE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
         mutableState.set('loading', false);
       });
-    case PUT_NODE_LOADING:
+    case WORKSPACE_PUT_NODE_LOADING:
       return state.withMutations((mutableState) => {
         mutableState.set('loading', true);
       });
-    case PUT_NODE_SUCCESS:
+    case WORKSPACE_PUT_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const elements = mutableState.get('elements').toJS();
         const index = elements.findIndex(e => e.id === action.node.id && isNode(e));
@@ -274,7 +274,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('elements', fromJS(elements));
         mutableState.set('loading', false);
       });
-    case PUT_NODE_FAILED:
+    case WORKSPACE_PUT_NODE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

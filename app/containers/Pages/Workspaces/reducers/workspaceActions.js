@@ -147,7 +147,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
 };
 
 export const postNode = (workspace_id, node_id, display_name, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {
-  dispatch({ type: types.POST_NODE_LOADING });
+  dispatch({ type: types.WORKSPACE_POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
     workspace_id,
@@ -164,17 +164,17 @@ export const postNode = (workspace_id, node_id, display_name, background_color, 
   try {
     const response = await axios.post(url, body, header);
     const node = response.data;
-    dispatch({ type: types.POST_NODE_SUCCESS, node });
+    dispatch({ type: types.WORKSPACE_POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
     dispatch(analyseAlerts(workspace_id, setAlerts));
   } catch (error) {
     console.log(error.response);
-    dispatch({ type: types.POST_NODE_FAILED, message });
+    dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
   }
 };
 
 export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor, borderColor, attributes, deletedAttributes, setDefineNodeOpen) => async dispatch => {
-  dispatch({ type: types.PUT_NODE_LOADING });
+  dispatch({ type: types.WORKSPACE_PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
     node_id,
@@ -188,11 +188,11 @@ export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor,
   try {
     const response = await axios.put(url, body, header);
     const node = response.data;
-    dispatch({ type: types.PUT_NODE_SUCCESS, node });
+    dispatch({ type: types.WORKSPACE_PUT_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
     console.log(error.response);
-    dispatch({ type: types.PUT_NODE_FAILED, message });
+    dispatch({ type: types.WORKSPACE_PUT_NODE_FAILED, message });
   }
 };
 

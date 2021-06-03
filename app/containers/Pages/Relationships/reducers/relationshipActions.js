@@ -81,6 +81,7 @@ export const putRelationship = (id, label, values, description, style, label_sty
     dispatch({ type: types.PUT_RELATIONSHIP_SUCCESS, message });
     history.push(`/app/${RELATIONSHIPS}`);
   } catch (error) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_RELATIONSHIP_FAILED, message });
   }

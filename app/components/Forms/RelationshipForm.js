@@ -10,7 +10,6 @@ import TextField from '@material-ui/core/TextField';
 import { useDispatch } from 'react-redux';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import CreatableSelect from 'react-select/creatable';
-import { valuesIn } from 'lodash-es';
 import {
   labelChange, descriptionChange, addGroup, valuesChange
 } from '../../containers/Pages/Relationships/reducers/relationshipActions';
@@ -44,7 +43,7 @@ const styles = theme => ({
 function RelationshipForm(props) {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
-  const theme = useTheme();
+
   const {
     classes,
     label,
