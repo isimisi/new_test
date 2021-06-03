@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
@@ -23,10 +23,30 @@ const CustomNode = ({ data }) => {
     borderColor: data.borderColor ? data.borderColor : '#000000'
   };
 
-  const handleStyle = {
+  const handleStyle = useMemo(() => ({
     height: handleVisability ? 8 : 0,
     width: handleVisability ? 8 : 0,
-  };
+  }), [handleVisability]);
+
+  const handleStyleSideBottom = useMemo(() => ({
+    height: handleVisability ? 8 : 0,
+    width: handleVisability ? 8 : 0,
+    top: '70%',
+  }), [handleVisability]);
+
+  const handleStyleSideTop = useMemo(() => ({
+    height: handleVisability ? 8 : 0,
+    width: handleVisability ? 8 : 0,
+    top: '30%',
+  }), [handleVisability]);
+
+  const header = useMemo(() => ({
+    fontSize: 10
+  }), []);
+
+  const attr = useMemo(() => ({
+    fontSize: 6
+  }), []);
 
   return (
     <div style={nodeStyle}>
@@ -37,37 +57,25 @@ const CustomNode = ({ data }) => {
         position={Position.Top}
       />
       <Handle
-        style={{
-          top: '30%',
-          ...handleStyle
-        }}
+        style={handleStyleSideTop}
         type="source"
         id="leftTop"
         position={Position.Left}
       />
       <Handle
-        style={{
-          top: '70%',
-          ...handleStyle
-        }}
+        style={handleStyleSideBottom}
         type="source"
         id="leftBottom"
         position={Position.Left}
       />
       <Handle
-        style={{
-          top: '30%',
-          ...handleStyle
-        }}
+        style={handleStyleSideBottom}
         type="source"
         id="rightBottom"
         position={Position.Right}
       />
       <Handle
-        style={{
-          top: '70%',
-          ...handleStyle
-        }}
+        style={handleStyleSideTop}
         type="source"
         id="rightTop"
         position={Position.Right}
@@ -78,9 +86,9 @@ const CustomNode = ({ data }) => {
         id="bottom"
         position={Position.Bottom}
       />
-      <Typography variant="subtitle1" style={{ fontSize: 10 }}>{data.displayName || data.label}</Typography>
+      <Typography variant="subtitle1" style={header}>{data.displayName || data.label}</Typography>
       {data.conditionValues && data.conditionValues.map(cv => (
-        <Typography variant="body2" style={{ fontSize: 6 }}>
+        <Typography variant="body2" style={attr}>
           {cv.attribut.label}
           {' '}
           {cv.comparison_type}

@@ -25,7 +25,7 @@ const NoOrganization = ({ classes }) => {
         {' '}
         {firstName}
         {' '}
-        vi er så glade for, at du vil være vores demobruger! Du er med til at skabe noget fantastisk.
+        vi er så glade for, at du vil være vores demobruger!
       </Typography>
       <Typography
         variant="subtitle1"
@@ -33,8 +33,8 @@ const NoOrganization = ({ classes }) => {
           textAlign: 'center', marginRight: '10%', marginLeft: '10%', marginTop: 10
         }}
       >
-        Vi håber du vil nyde produktet og kan se hvor det skal bære hen.
-        Skulle der være nogle ting under vejs, hvor du synes det kunne være mega smart at inkorporere, så tøv endelige ikke med at skrive eller ringe til Christian.
+        Vi håber, du vil nyde produktet og kan se hvor det skal bære hen.
+        Skulle du have nogle forslag eller tanker/idéer, så tøv endelige ikke med at skrive eller ringe til Christian.
         Du kan fange ham på +45 23 41 22 43 eller på mail på ch@juristic.io
       </Typography>
       <div className={classes.lottie}>

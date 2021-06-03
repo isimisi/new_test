@@ -61,9 +61,6 @@ const Workspace = (props) => {
   const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const loading = useSelector(state => state.getIn([reducer, 'loading']));
-  // const zoom = useSelector(state => state.getIn([reducer, 'zoom']));
-  // const xPosition = useSelector(state => state.getIn([reducer, 'xPosition']));
-  // const yPosition = useSelector(state => state.getIn([reducer, 'yPosition']));
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
@@ -72,7 +69,7 @@ const Workspace = (props) => {
   const [alerts, setAlerts] = useState([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertId, setAlertId] = useState(null);
-  console.log(alerts);
+
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
   const [elementToUpdate, setElementToUpdate] = useState(null);
 
@@ -211,20 +208,6 @@ const Workspace = (props) => {
       setAlertOpen(true);
     }
   }, [alertId]);
-  // TODO: DOes not work
-  // useEffect(() => {
-  //   if (rfInstance) {
-  //     rfInstance.zoomTo(zoom);
-  //   }
-  // }, [zoom]);
-
-  // useEffect(() => {
-  //   if (rfInstance) {
-  //     rfInstance.project({ x: xPosition, y: yPosition });
-  //   }
-  // }, [xPosition, yPosition]);
-
-  // NODE
 
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
@@ -294,7 +277,7 @@ const Workspace = (props) => {
   const handleShowLabelChange = useCallback((e) => setShowlabel(e.target.checked), []);
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), []);
 
-  console.log(relationships);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
