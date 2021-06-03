@@ -24,7 +24,7 @@ const NoOrganization = ({ classes }) => {
         Hej
         {' '}
         {firstName}
-        {' '}
+        {', '}
         vi er så glade for, at du vil være vores demobruger!
       </Typography>
       <Typography
