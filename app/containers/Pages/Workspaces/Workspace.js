@@ -286,7 +286,7 @@ const Workspace = (props) => {
   const handleShowArrowChange = useCallback((e) => setShowArrow(e.target.checked), []);
   const handleAnimatedLineChange = useCallback((e) => setAnimatedLine(e.target.checked), []);
   const handleShowLabelChange = useCallback((e) => setShowlabel(e.target.checked), []);
-  const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), []);
+  const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
 
   return (
