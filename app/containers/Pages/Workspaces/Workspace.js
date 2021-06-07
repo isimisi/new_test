@@ -65,7 +65,7 @@ const Workspace = (props) => {
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
-  const [dismissPopup, setDismissPopup] = useState(false);
+  // const [dismissPopup, setDismissPopup] = useState(false);
 
   const [showAlertLog, setShowAlertLog] = useState(false);
   const [alerts, setAlerts] = useState([]);
@@ -174,7 +174,7 @@ const Workspace = (props) => {
 
   const onWorkspaceSave = useCallback(() => {
     if (rfInstance) {
-      setDismissPopup(true);
+      // setDismissPopup(true);
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));

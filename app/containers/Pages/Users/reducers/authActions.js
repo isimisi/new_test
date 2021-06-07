@@ -28,12 +28,13 @@ export const login = (email, password, history, locationState) => async dispatch
     });
     history.push(locationState?.from?.path || '/app');
   } catch (error) {
-    let message = 'Oops there was some trouble with your login';
-    console.log(error);
-    if (Array.isArray(error.response.data)) {
-      message = error.response.data[0].message;
-    } else {
-      message = error.response.data.message;
+    let message = 'Hov, der er vidst nogle problemer med login. Prøv igen senere.';
+    if (error.response) {
+      if (Array.isArray(error?.response?.data)) {
+        message = error.response.data[0].message;
+      } else {
+        message = error?.response?.data?.message;
+      }
     }
 
     dispatch({ type: types.LOGIN_FAILED, message });

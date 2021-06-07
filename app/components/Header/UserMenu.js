@@ -40,6 +40,10 @@ function UserMenu(props) {
     setMenuState({ anchorEl: null, openMenu: null });
   };
 
+  const handleLogOut = () => {
+    localStorage.clear();
+  };
+
   const { classes, dark } = props;
   const { anchorEl, openMenu } = menuState;
   const {
@@ -151,10 +155,10 @@ function UserMenu(props) {
         open={openMenu === 'user-setting'}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} component={Link} to={link.profile}>My Profile</MenuItem>
-        <MenuItem onClick={handleClose} component={Link} to={link.profile}>My Organization</MenuItem>
+        <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>My Profile</MenuItem>
+        <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>My Organization</MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose} component={Link} to="/">
+        <MenuItem onClick={handleLogOut} component={Link} to="/">
           <ListItemIcon>
             <ExitToApp />
           </ListItemIcon>
