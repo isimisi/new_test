@@ -31,7 +31,8 @@ import {
   changeHandleVisability, labelChange, descriptionChange,
   addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
-  putNode, putEdge, getAttributeDropDown
+  putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
+  addEdgeToList
 } from './reducers/workspaceActions';
 
 const nodeTypes = {
@@ -65,7 +66,7 @@ const Workspace = (props) => {
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
-  // const [dismissPopup, setDismissPopup] = useState(false);
+
 
   const [showAlertLog, setShowAlertLog] = useState(false);
   const [alerts, setAlerts] = useState([]);
@@ -162,25 +163,18 @@ const Workspace = (props) => {
     }
   };
 
-  // window.onbeforeunload = () => {
-  //   if (dismissPopup) {
-  //     // eslint-disable-next-line no-useless-return
-  //     return;
-  //   }
-  //   return 'Dine ændringer vil måske ikke blive gemt';
-  // };
 
   // WORKSPACE GENERAL
 
   const onWorkspaceSave = useCallback(() => {
     if (rfInstance) {
-      // setDismissPopup(true);
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
       dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
     }
   }, [rfInstance]);
+
 
   const handleAlerts = (_alerts, initial) => {
     if (initial) {
@@ -223,9 +217,9 @@ const Workspace = (props) => {
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     if (isUpdatingElement) {
-      dispatch(putNode(elementToUpdate.id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
+      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen, handleAlerts));
+      dispatch(postNode(id, choosenNode.id, choosenNode.label, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen, handleAlerts));
       setNodeLabel('');
     }
     setIsUpdatingElement(false);
@@ -245,7 +239,7 @@ const Workspace = (props) => {
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-
+    console.log(relationships.toJS(), choosenRelationship, relationshipLabel);
     if (isUpdatingElement) {
       dispatch(putEdge(
         elementToUpdate.id,
@@ -261,6 +255,7 @@ const Workspace = (props) => {
     } else {
       const edge = {
         relationship_id: choosenRelationship.id,
+        relationshipLabel: choosenRelationship.label,
         relationshipValue,
         relationshipColor,
         relationshipType,
@@ -279,7 +274,18 @@ const Workspace = (props) => {
     setIsUpdatingElement(false);
   }, []);
 
-  const handleChangeLabel = useCallback((_label) => setRelationshipLabel(_label.value), []);
+  const handleChangeLabel = useCallback((_label) => {
+    if (_label.__isNew__) {
+      dispatch(addEdgeToList({
+        id: null,
+        label: _label.value,
+        description: null,
+        values: [],
+        style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
+      }));
+    }
+    setRelationshipLabel(_label.value);
+  }, []);
   const handleChangeValue = useCallback((value) => setRelationshipValue(value ? value.value : value), []);
   const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
   const handleColorChange = useCallback((color) => setRelationshipColor(color.rgb), []);
@@ -304,7 +310,6 @@ const Workspace = (props) => {
             edgeTypes={{ custom: CustomEdge }}
             onLoad={onLoad}
             connectionMode={ConnectionMode.Loose}
-            connectionLineComponent={CustomConnectionLine}
             onElementClick={onElementClick}
           >
             <Controls>
@@ -362,7 +367,18 @@ const Workspace = (props) => {
         }}
         nodes={nodes}
         nodeLabel={nodeLabel}
-        handleChangeLabel={(_label) => setNodeLabel(_label.value)}
+        handleChangeLabel={(_label) => {
+          if (_label.__isNew__) {
+            dispatch(addWorkspaceNodeToList({
+              attributes: [],
+              description: null,
+              id: null,
+              label: _label.value,
+              style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
+            }));
+          }
+          setNodeLabel(_label.value);
+        }}
         attributes={attributes}
         handleChangeAttributes={(_attributes) => setAttributes(_attributes)}
         nodeColor={nodeColor}

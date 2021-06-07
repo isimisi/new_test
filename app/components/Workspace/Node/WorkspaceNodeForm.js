@@ -15,6 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@api/palette/colorfull';
 import CreatableSelect from 'react-select/creatable';
 import DeleteIcon from '@material-ui/icons/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
 import styles from '../workspace-jss';
 
@@ -48,7 +50,7 @@ const WorkspaceNodeForm = (props) => {
     <div>
       <section className={css.bodyForm}>
         <div className={classes.field}>
-          <Select
+          <CreatableSelect
             classes={classes}
             styles={selectStyles('relative')}
             inputId="react-select-single-workspace-node"
@@ -146,7 +148,18 @@ const WorkspaceNodeForm = (props) => {
                     )
                   }
                 </div>
-                <IconButton style={{ color: `${red}55`, bottom: 5, marginLeft: 2 }} onClick={() => handleRemoveAttributes(attribut.workspace_node_attribut_id, index)}>
+                <IconButton
+                  style={{ bottom: 3 }}
+                  onClick={() => {
+                    const newArray = [...attributes];
+                    newArray[index] = { ...newArray[index], show: !newArray[index].show };
+
+                    handleChangeAttributes(newArray);
+                  }}
+                >
+                  {attribut.show ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                </IconButton>
+                <IconButton style={{ color: `${red}55`, bottom: 5 }} onClick={() => handleRemoveAttributes(attribut.workspace_node_attribut_id, index)}>
                   <DeleteIcon />
                 </IconButton>
               </>

@@ -7,7 +7,9 @@ import { baseUrl, authHeader, genericErrorMessage as message } from '@api/consta
 import {
   isNode,
 } from 'react-flow-renderer';
+import _history from '@utils/history';
 import * as types from './workspaceConstants';
+
 
 const WORKSPACES = 'workspaces';
 
@@ -24,7 +26,7 @@ export const getWorkspaces = () => async dispatch => {
   }
 };
 
-export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async dispatch => {
+export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async () => {
   const url = `${baseUrl}/${WORKSPACES}/analyse/alerts/${workspaceId}`;
   const header = authHeader();
   try {
@@ -82,6 +84,10 @@ export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
     }
     dispatch(analyseAlerts(id, setAlerts, true));
   } catch (error) {
+    if (error?.response?.status === 403) {
+      _history.replace('/app/not-found');
+    }
+
     dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
   }
 };
@@ -93,7 +99,7 @@ export const putWorkspace = (workspace_id, label, description, group, setMetaOpe
     label, description, group
   };
   const header = authHeader();
-
+  console.log('nsdms');
   try {
     await axios.put(url, body, header);
     const _message = 'Metatekst er nu opdateret';
@@ -105,7 +111,7 @@ export const putWorkspace = (workspace_id, label, description, group, setMetaOpe
 };
 
 
-export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, workspaceYPosition, nodes, history) => async dispatch => {
+export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, workspaceYPosition, nodes) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}/position`;
   const body = {
     workspaceZoom, workspaceXPosition, workspaceYPosition, nodes
@@ -114,8 +120,8 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
 
   try {
     await axios.put(url, body, header);
-    dispatch({ type: types.SAVE_WORKSPACE_SUCCESS });
-    history.push(`/app/${WORKSPACES}`);
+    const _message = 'Dit workspace er gemt';
+    dispatch({ type: types.SAVE_WORKSPACE_SUCCESS, message: _message });
   } catch (error) {
     dispatch({ type: types.SAVE_WORKSPACE_FAILED, message });
   }
@@ -146,12 +152,13 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
   });
 };
 
-export const postNode = (workspace_id, node_id, display_name, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {
+export const postNode = (workspace_id, node_id, nodeLabel, display_name, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {
   dispatch({ type: types.WORKSPACE_POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
     workspace_id,
     node_id,
+    nodeLabel,
     display_name,
     background_color,
     border_color,
@@ -173,11 +180,12 @@ export const postNode = (workspace_id, node_id, display_name, background_color, 
   }
 };
 
-export const putNode = (workspaceNodeId, node_id, display_name, backgroundColor, borderColor, attributes, deletedAttributes, setDefineNodeOpen) => async dispatch => {
+export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, backgroundColor, borderColor, attributes, deletedAttributes, setDefineNodeOpen) => async dispatch => {
   dispatch({ type: types.WORKSPACE_PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
     node_id,
+    nodeLabel,
     display_name,
     backgroundColor,
     borderColor,
@@ -207,6 +215,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => asy
     source_handle: edge.sourceHandle,
     target_handle: edge.targetHandle,
     relationship_id: edge.relationship_id,
+    relationshipLabel: edge.relationshipLabel,
     relationship_value: edge.relationshipValue,
     color: JSON.stringify(edge.relationshipColor),
     type: edge.relationshipType,
@@ -223,6 +232,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => asy
     setDefineEdgeOpen(false);
     dispatch(analyseAlerts(workspace_id, setAlert));
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
 };
@@ -324,9 +334,14 @@ export const addGroup = group => ({
   group
 });
 
-export const addEdge = edge => ({
-  type: types.ADD_EDGE,
+export const addEdgeToList = edge => ({
+  type: types.EDGE_ADD_TO_LIST,
   edge,
+});
+
+export const addWorkspaceNodeToList = node => ({
+  type: types.WORKSPACE_NODE_ADD_TO_LIST,
+  node,
 });
 
 export const changeHandleVisability = bool => ({

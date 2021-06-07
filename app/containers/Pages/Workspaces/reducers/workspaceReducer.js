@@ -21,7 +21,7 @@ import {
   GET_GROUP_DROPDOWN_FAILED,
   GET_ATTRIBUTE_DROPDOWN_SUCCESS,
   GET_ATTRIBUTE_DROPDOWN_FAILED,
-  ADD_EDGE,
+  EDGE_ADD_TO_LIST,
   GET_RELATIONSHIP_VALUES_SUCCESS,
   GET_RELATIONSHIP_VALUES_FAILED,
   POST_EDGE_LOADING,
@@ -48,7 +48,8 @@ import {
   WORKSPACE_PUT_NODE_SUCCESS,
   WORKSPACE_PUT_NODE_FAILED,
   ANALYSE_OUTPUT_SUCCESS,
-  ANALYSE_OUTPUT_FAILED
+  ANALYSE_OUTPUT_FAILED,
+  WORKSPACE_NODE_ADD_TO_LIST
 } from './workspaceConstants';
 
 const initialState = {
@@ -71,10 +72,6 @@ const initialState = {
   alertId: null,
   alertOpen: false,
   outputs: List(),
-
-  // EDGE
-  edges: List(),
-
 };
 
 
@@ -99,7 +96,8 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case SAVE_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {
-        // TODO: do something
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
       });
     case SAVE_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
@@ -310,12 +308,15 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
-    case ADD_EDGE:
+    case EDGE_ADD_TO_LIST:
       return state.withMutations((mutableState) => {
         const edge = fromJS(action.edge);
-        const currEdges = state.get('edges');
-        const edges = currEdges.concat(edge);
-        mutableState.set('edges', edges);
+        mutableState.update('relationships', myList => myList.push(edge));
+      });
+    case WORKSPACE_NODE_ADD_TO_LIST:
+      return state.withMutations((mutableState) => {
+        const node = fromJS(action.node);
+        mutableState.update('nodes', myList => myList.push(node));
       });
     case SHOW_HANDLES_CHANGE:
       return state.withMutations((mutableState) => {

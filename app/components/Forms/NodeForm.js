@@ -72,8 +72,8 @@ function NodeForm(props) {
   const handleNewRow = (attribut, value) => {
     const newRow = { ...attribut };
     newRow.label = value.label;
-    newRow.type = value.type;
-    newRow.selectionOptions = value.selectionOptions;
+    newRow.type = value.type || 'Value';
+    newRow.selectionOptions = value.selectionOptions || null;
 
     const i = attributes.length - 1;
     const mutableArray = [...attributes];

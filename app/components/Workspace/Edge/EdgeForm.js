@@ -93,7 +93,7 @@ const EdgeForm = (props) => {
     <div>
       <section className={css.bodyForm}>
         <div className={classes.field}>
-          <Select
+          <CreatableSelect
             classes={classes}
             styles={selectStyles('relative')}
             inputId="react-select-single-edgelabel"
@@ -126,7 +126,7 @@ const EdgeForm = (props) => {
                 placeholder: 'Værdi',
               }}
               placeholder="Værdi"
-              options={choosenRelationship.values.map(r => ({ value: r, label: r }))}
+              options={choosenRelationship && choosenRelationship.values.map(r => ({ value: r, label: r }))}
               value={relationshipValue && { label: relationshipValue, value: relationshipValue }}
               onChange={handleChangeValue}
             />
@@ -142,7 +142,7 @@ const EdgeForm = (props) => {
               multiline
               rows={2}
               disabled
-              value={choosenRelationship.description}
+              value={choosenRelationship ? choosenRelationship.description : ''}
             />
           </div>
         )}

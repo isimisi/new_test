@@ -6,6 +6,8 @@ const OfflinePlugin = require('offline-plugin');
 const { HashedModuleIdsPlugin } = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const { BugsnagSourceMapUploaderPlugin } = require('webpack-bugsnag-plugins');
+
 
 module.exports = require('./webpack.base.babel')({
   mode: 'production',
@@ -15,6 +17,7 @@ module.exports = require('./webpack.base.babel')({
     require.resolve('react-app-polyfill/ie11'),
     path.join(process.cwd(), 'app/app.js'),
   ],
+  devtool: 'source-map', // Ensure your webpack build is creating source maps!
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
   output: {
@@ -88,7 +91,12 @@ module.exports = require('./webpack.base.babel')({
       },
       inject: true,
     }),
-
+    // It's a good idea to only run this plugin when you're building a bundle
+    // that will be released, rather than for every development build
+    new BugsnagSourceMapUploaderPlugin({
+      apiKey: '6d9a9a961530851d4c09cac9aa86ada6',
+      appVersion: '1.0.0'
+    }),
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
     new OfflinePlugin({

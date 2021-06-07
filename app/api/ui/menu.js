@@ -6,80 +6,68 @@ module.exports = [
     linkParent: '/app',
   },
   {
+    key: 'workspace',
+    name: 'Arbejdsområder',
+    icon: 'ios-git-network',
+    linkParent: '/app/workspaces',
+  },
+  {
     key: 'dataBuilder',
-    name: 'Indhold',
-    icon: 'ios-paper-outline',
+    name: 'Byggeklodser',
+    icon: 'ios-build-outline',
     child: [
-      {
-        key: 'report',
-        name: 'Rapportering',
-        title: true,
-      },
-      {
-        key: 'output',
-        name: 'Rapportindhold',
-        link: '/app/outputs',
-        icon: 'ios-document-outline',
-      },
-      {
-        key: 'redFlags',
-        name: 'Red Flags',
-        link: '/app/red flags',
-        icon: 'ios-document-outline',
-      },
-      {
-        key: 'build',
-        name: 'Byggeklodser',
-        title: true,
-      },
       {
         key: 'conditions',
         name: 'Byg jura',
         link: '/app/conditions',
-        icon: 'ios-grid-outline',
-      },
-      {
-        key: 'groups',
-        name: 'Grupper',
-        link: '/app/groups',
-        icon: 'ios-grid-outline',
       },
       {
         key: 'nodes',
         name: 'Elementer',
         link: '/app/nodes',
-        icon: 'ios-grid-outline',
       },
       {
         key: 'attributes',
         name: 'Kendetegn',
         link: '/app/attributes',
-        icon: 'ios-list-box-outline',
       },
       {
         key: 'relationships',
         name: 'Forbindelser',
         link: '/app/relationships',
-        icon: 'ios-list-box-outline',
       },
     ]
   },
   {
-    key: 'workspace',
-    name: 'Arbejdsområder',
-    icon: 'ios-paw-outline',
-    linkParent: '/app/workspaces',
+    key: 'output',
+    name: 'Rapportindhold',
+    icon: 'ios-document-outline',
+    linkParent: '/app/outputs',
+  },
+  {
+    key: 'redFlags',
+    name: 'Red Flags',
+    icon: 'ios-flag-outline',
+    linkParent: '/app/red flags',
+  },
+  {
+    key: 'groups',
+    name: 'Grupper',
+    icon: 'ios-folder-outline',
+    linkParent: '/app/groups',
   },
   {
     key: 'settings',
     name: 'Indstillinger',
     icon: 'ios-settings-outline',
     linkParent: '/app/settings',
+    disabled: true
   },
   {
     key: 'help',
     name: 'Hjælp',
-    icon: 'md-help',
+    icon: 'ios-help-circle-outline',
     linkParent: '/app/help-support',
+    disabled: true
   }
 ];

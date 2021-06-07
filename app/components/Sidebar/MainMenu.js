@@ -44,7 +44,7 @@ function MainMenu(props) {
         <div key={index.toString()}>
           <ListItem
             button
-            disabled={!hasOrganization || !hasPlan ? index < menuArray.length - 1 : false}
+            disabled={(!hasOrganization || !hasPlan ? index < menuArray.length - 1 : false) || item.disabled}
             component={LinkBtn}
             to={item.linkParent ? item.linkParent : '#'}
             className={

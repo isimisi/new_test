@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -44,7 +45,7 @@ function UserMenu(props) {
     localStorage.clear();
   };
 
-  const { classes, dark } = props;
+  const { classes } = props;
   const { anchorEl, openMenu } = menuState;
   const {
     first_name, last_name
@@ -171,11 +172,6 @@ function UserMenu(props) {
 
 UserMenu.propTypes = {
   classes: PropTypes.object.isRequired,
-  dark: PropTypes.bool,
-};
-
-UserMenu.defaultProps = {
-  dark: false
 };
 
 export default withStyles(styles)(UserMenu);

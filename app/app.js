@@ -22,6 +22,8 @@ import './styles/layout/base.scss';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.min.css';
+import Bugsnag from '@bugsnag/js';
+import BugsnagPluginReact from '@bugsnag/plugin-react';
 
 
 // Import Language Provider
@@ -40,6 +42,15 @@ import { translationMessages } from './i18n';
 //  logrocket
 LogRocket.init('pm66tw/juristic-web-app');
 
+// bugsnag
+Bugsnag.start({
+  apiKey: '6d9a9a961530851d4c09cac9aa86ada6',
+  plugins: [new BugsnagPluginReact()]
+});
+
+const ErrorBoundary = Bugsnag.getPlugin('react')
+  .createErrorBoundary(React);
+
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -57,16 +68,20 @@ const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
+
 const render = messages => {
   ReactDOM.render(
-    <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-          <ToastContainer />
-        </ConnectedRouter>
-      </LanguageProvider>
-    </Provider>,
+    <ErrorBoundary>
+      <Provider store={store}>
+        <LanguageProvider messages={messages}>
+          <ConnectedRouter history={history}>
+
+            <App />
+            <ToastContainer />
+          </ConnectedRouter>
+        </LanguageProvider>
+      </Provider>
+    </ErrorBoundary>,
     MOUNT_NODE,
   );
 };

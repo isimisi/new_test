@@ -96,6 +96,13 @@ const CustomNode = ({ data }) => {
           {cv.comparison_value}
         </Typography>
       ))}
+      {data.attributes && data.attributes.filter(cv => cv.show).map(cv => (
+        <Typography variant="body2" style={attr}>
+          {cv.label}
+          {': '}
+          {cv.value}
+        </Typography>
+      ))}
     </div>
   );
 };
