@@ -241,7 +241,18 @@ const Condition = (props) => {
         }}
         nodes={nodes}
         nodeLabel={nodeLabel}
-        handleChangeLabel={(_label) => setNodeLabel(_label.value)}
+        handleChangeLabel={(_label) => {
+          if (_label.__isNew__) {
+            // dispatch(addConditionNodeToList({
+            //   attributes: [],
+            //   description: null,
+            //   id: null,
+            //   label: _label.value,
+            //   style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
+            // }));
+          }
+          setNodeLabel(_label.value);
+        }}
         handleNodeSave={handleNodeSave}
         handleNodeChange={handleNodeChange}
         conditionValues={conditionValues}

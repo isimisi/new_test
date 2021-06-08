@@ -88,7 +88,7 @@ const CustomNode = ({ data }) => {
       />
       <Typography variant="subtitle1" style={header}>{data.displayName || data.label}</Typography>
       {data.conditionValues && data.conditionValues.map(cv => (
-        <Typography variant="body2" style={attr}>
+        <Typography variant="body2" style={attr} key={cv.attribut.label}>
           {cv.attribut.label}
           {' '}
           {cv.comparison_type}
@@ -97,7 +97,7 @@ const CustomNode = ({ data }) => {
         </Typography>
       ))}
       {data.attributes && data.attributes.filter(cv => cv.show).map(cv => (
-        <Typography variant="body2" style={attr}>
+        <Typography variant="body2" style={attr} key={cv.label}>
           {cv.label}
           {': '}
           {cv.value}

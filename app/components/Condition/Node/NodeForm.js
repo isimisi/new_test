@@ -13,9 +13,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import QueueIcon from '@material-ui/icons/Queue';
 import IconButton from '@material-ui/core/IconButton';
 import { red } from '@api/palette/colorfull';
+import CreatableSelect from 'react-select/creatable';
 import styles from '../condition-jss';
 
-const WorkspaceNodeForm = (props) => {
+const ConditionNodeForm = (props) => {
   const {
     classes,
     close,
@@ -40,7 +41,7 @@ const WorkspaceNodeForm = (props) => {
     <div>
       <section className={css.bodyForm}>
         <div className={classes.field}>
-          <Select
+          <CreatableSelect
             classes={classes}
             styles={selectStyles('relative')}
             inputId="react-select-single-node-choose"
@@ -147,7 +148,7 @@ const WorkspaceNodeForm = (props) => {
   );
 };
 
-WorkspaceNodeForm.propTypes = {
+ConditionNodeForm.propTypes = {
   classes: PropTypes.object.isRequired,
   close: PropTypes.func.isRequired,
   nodes: PropTypes.array.isRequired,
@@ -164,4 +165,4 @@ WorkspaceNodeForm.propTypes = {
   handleDeleteNode: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(WorkspaceNodeForm);
+export default withStyles(styles)(ConditionNodeForm);

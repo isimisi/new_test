@@ -119,7 +119,7 @@ const Workspace = (props) => {
     setElementToUpdate(null);
 
     if (elementsToRemove.length === 1) {
-      if (isNode(elementsToRemove[0])) {
+      if (isNode(elementsToRemove[0]) || elementsToRemove.length > 1) {
         setDefineNodeOpen(false);
       } else {
         setDefineEdgeOpen(false);

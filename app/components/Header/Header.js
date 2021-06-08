@@ -155,13 +155,13 @@ function Header(props) {
                   <i className="ion-ios-lightbulb-outline" />
                 </IconButton>
               </Tooltip>
-              {isLatestVersion && (
-                <Tooltip title="Opdater" placement="bottom">
-                  <IconButton className={classes.button} onClick={deleteCache}>
-                    <i className="ion-ios-heart-outline" />
-                  </IconButton>
-                </Tooltip>
-              )}
+
+              <Tooltip title="Opdater" placement="bottom">
+                <IconButton className={classes.button} onClick={deleteCache}>
+                  <i className="ion-ios-heart-outline" />
+                </IconButton>
+              </Tooltip>
+
               {/* <Tooltip title="Show Guide" placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
                   <i className="ion-ios-help-outline" />

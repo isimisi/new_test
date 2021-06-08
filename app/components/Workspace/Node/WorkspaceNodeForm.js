@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import css from '@styles/Form.scss';
 import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
-import Select from 'react-select';
 import { selectStyles } from '@api/ui/helper';
 import { SketchPicker } from 'react-color';
 import Typography from '@material-ui/core/Typography';

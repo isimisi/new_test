@@ -146,6 +146,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
     const header = authHeader();
     await axios.delete(url, header);
   })).then(() => {
+    console.log(elementsToRemove, remainingElements);
     dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
   }).catch(() => {
     dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });

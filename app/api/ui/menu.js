@@ -62,5 +62,12 @@ module.exports = [
     icon: 'ios-settings-outline',
     linkParent: '/app/settings',
     disabled: true
+  },
+  {
+    key: 'help',
+    name: 'Hjælp',
+    icon: 'ios-help-circle-outline',
+    linkParent: '/app/help-support',
+    disabled: true
   }
 ];

@@ -43,13 +43,12 @@ import { translationMessages } from './i18n';
 LogRocket.init('pm66tw/juristic-web-app');
 
 // bugsnag
-Bugsnag.start({
-  apiKey: '6d9a9a961530851d4c09cac9aa86ada6',
-  plugins: [new BugsnagPluginReact()]
-});
-
-const ErrorBoundary = Bugsnag.getPlugin('react')
-  .createErrorBoundary(React);
+if (process.env.NODE_ENV === 'production') {
+  Bugsnag.start({
+    apiKey: '6d9a9a961530851d4c09cac9aa86ada6',
+    plugins: [new BugsnagPluginReact()]
+  });
+}
 
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
@@ -69,22 +68,40 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 
-const render = messages => {
+let render = messages => {
   ReactDOM.render(
-    <ErrorBoundary>
-      <Provider store={store}>
-        <LanguageProvider messages={messages}>
-          <ConnectedRouter history={history}>
-
-            <App />
-            <ToastContainer />
-          </ConnectedRouter>
-        </LanguageProvider>
-      </Provider>
-    </ErrorBoundary>,
+    <Provider store={store}>
+      <LanguageProvider messages={messages}>
+        <ConnectedRouter history={history}>
+          <App />
+          <ToastContainer />
+        </ConnectedRouter>
+      </LanguageProvider>
+    </Provider>,
     MOUNT_NODE,
   );
 };
+
+if (process.env.NODE_ENV === 'production') {
+  const ErrorBoundary = Bugsnag.getPlugin('react')
+    .createErrorBoundary(React);
+
+  render = messages => {
+    ReactDOM.render(
+      <ErrorBoundary>
+        <Provider store={store}>
+          <LanguageProvider messages={messages}>
+            <ConnectedRouter history={history}>
+              <App />
+              <ToastContainer />
+            </ConnectedRouter>
+          </LanguageProvider>
+        </Provider>
+      </ErrorBoundary>,
+      MOUNT_NODE,
+    );
+  };
+}
 
 if (module.hot) {
   // Hot reloadable React components and translation json files
