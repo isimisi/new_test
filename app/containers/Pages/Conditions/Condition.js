@@ -36,8 +36,6 @@ const Condition = (props) => {
   const id = history.location.pathname.split('/').pop();
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
-  const [dismissPopup, setDismissPopup] = useState(false);
-
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
@@ -72,15 +70,6 @@ const Condition = (props) => {
     dispatch(getBuildTypeValueOptions());
     dispatch(showCondition(id));
   }, []);
-
-  // window.onbeforeunload = () => {
-  //   if (dismissPopup) {
-  //     // eslint-disable-next-line no-useless-return
-  //     return;
-  //   }
-  //   return 'Dine ændringer vil måske ikke blive gemt';
-  // };
-
 
   const choosenNode = nodes.find(r => r.label === nodeLabel);
 
@@ -166,7 +155,6 @@ const Condition = (props) => {
 
   const onConditionSave = () => {
     if (rfInstance) {
-      setDismissPopup(true);
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));

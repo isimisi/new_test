@@ -13,7 +13,7 @@ import ReactFlow, {
 import {
   WorkspaceFabs, CustomNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
-  Notification, CustomConnectionLine, AlertModal,
+  Notification, AlertModal,
   AlertLog
 } from '@components';
 import PropTypes from 'prop-types';
