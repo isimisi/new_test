@@ -11,6 +11,8 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { useClearCache } from 'react-clear-cache';
+
 import UserMenu from './UserMenu';
 // import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
@@ -22,7 +24,8 @@ function Header(props) {
   const [fullScreen, setFullScreen] = useState(false);
   const [turnDarker, setTurnDarker] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
-
+  const { isLatestVersion, emptyCacheStorage } = useClearCache();
+  console.log(isLatestVersion);
   // Initial header style
   let flagDarker = false;
 
@@ -106,6 +109,10 @@ function Header(props) {
     return classes.left;
   };
 
+  const deleteCache = () => {
+    emptyCacheStorage();
+  };
+
   return (
     <AppBar
       className={
@@ -147,6 +154,11 @@ function Header(props) {
               <Tooltip title="Turn Dark/Light" placement="bottom">
                 <IconButton className={classes.button} onClick={() => turnMode(mode)}>
                   <i className="ion-ios-lightbulb-outline" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Opdater" placement="bottom">
+                <IconButton className={classes.button} onClick={deleteCache}>
+                  <i className="ion-ios-heart-outline" />
                 </IconButton>
               </Tooltip>
               {/* <Tooltip title="Show Guide" placement="bottom">
