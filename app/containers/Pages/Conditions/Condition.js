@@ -25,7 +25,8 @@ import {
   getBuildTypeValueOptions,
   getRelationships, postNode, postEdge,
   showCondition, putConditionMeta, saveCondition,
-  putNode, putEdge, deleteConditionElement
+  putNode, putEdge, deleteConditionElement,
+  addRelationshipToList, addNodeToList, addAttributToList
 } from './reducers/conditionActions';
 
 
@@ -84,10 +85,11 @@ const Condition = (props) => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
 
     if (isUpdatingElement) {
-      dispatch(putEdge(elementToUpdate.id, choosenRelationship.id, comparisonType, comparisonValue, relationshipType, setDefineEdgeOpen));
+      dispatch(putEdge(elementToUpdate.id, choosenRelationship.id, choosenRelationship.label, comparisonType, comparisonValue, relationshipType, setDefineEdgeOpen));
     } else {
       const edge = {
         relationship_id: choosenRelationship.id,
+        relationshipLabel: choosenRelationship.label,
         relationshipType,
         comparisonType,
         comparisonValue,
@@ -102,9 +104,9 @@ const Condition = (props) => {
       const originalElementIds = elementToUpdate.data.conditionValues.map(cv => cv.id);
       const newConditionValueIds = conditionValues.map(cv => cv.conditionNodeValueId);
       const deletedConditionValues = originalElementIds.filter(x => !newConditionValueIds.includes(x));
-      dispatch(putNode(elementToUpdate.id, choosenNode.id, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), setDefineNodeOpen));
+      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, JSON.stringify(conditionValues), setDefineNodeOpen));
+      dispatch(postNode(id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), setDefineNodeOpen));
     }
     setIsUpdatingElement(false);
   };
@@ -162,9 +164,14 @@ const Condition = (props) => {
     }
   };
 
-  const handleNodeChange = (value, index, _type) => {
+  const handleNodeChange = (value, index, _type, isNew = false) => {
     const newArray = [...conditionValues];
     newArray[index] = { ...newArray[index], [_type]: value };
+
+    if (_type === 'attribut' && isNew) {
+      dispatch(addAttributToList({ label: value, value }));
+    }
+
     setConditionValues(newArray);
   };
 
@@ -209,7 +216,18 @@ const Condition = (props) => {
         }}
         relationships={relationships}
         relationshipLabel={relationshipLabel}
-        handleChangeLabel={(_label) => setRelationshipLabel(_label.value)}
+        handleChangeLabel={(_label) => {
+          if (_label.__isNew__) {
+            dispatch(addRelationshipToList({
+              id: null,
+              label: _label.value,
+              description: null,
+              values: [],
+              style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
+            }));
+          }
+          setRelationshipLabel(_label.value);
+        }}
         type={relationshipType}
         handleTypeChange={(_type) => setRelationshipType(_type.value)}
         handleSave={() => handleRelationshipSave()}
@@ -231,13 +249,12 @@ const Condition = (props) => {
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => {
           if (_label.__isNew__) {
-            // dispatch(addConditionNodeToList({
-            //   attributes: [],
-            //   description: null,
-            //   id: null,
-            //   label: _label.value,
-            //   style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
-            // }));
+            dispatch(addNodeToList({
+              attributes: [],
+              description: '',
+              id: null,
+              label: _label.value
+            }));
           }
           setNodeLabel(_label.value);
         }}

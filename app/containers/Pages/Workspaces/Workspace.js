@@ -239,11 +239,12 @@ const Workspace = (props) => {
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-    console.log(relationships.toJS(), choosenRelationship, relationshipLabel);
+
     if (isUpdatingElement) {
       dispatch(putEdge(
         elementToUpdate.id,
         choosenRelationship.id,
+        choosenRelationship.label,
         relationshipValue,
         relationshipColor,
         relationshipType,

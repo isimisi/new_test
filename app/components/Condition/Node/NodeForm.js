@@ -77,12 +77,12 @@ const ConditionNodeForm = (props) => {
           <>
             <div className={classes.inlineWrap}>
               <div className={classes.attrField} style={{ marginLeft: 0 }}>
-                <Select
+                <CreatableSelect
                   classes={classes}
                   styles={selectStyles('relative')}
                   options={mapSelectOptions(nodeAttributes)}
                   value={row.attribut && { label: row.attribut, value: row.attribut }}
-                  onChange={(value) => handleNodeChange(value.value, index, 'attribut')}
+                  onChange={(value) => handleNodeChange(value.value, index, 'attribut', value.__isNew__)}
                 />
               </div>
               <div className={classes.attrField}>

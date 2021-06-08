@@ -241,6 +241,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => asy
 export const putEdge = (
   edgeId,
   relationship_id,
+  relationshipLabel,
   relationshipValue,
   relationshipColor,
   relationshipType,
@@ -253,6 +254,7 @@ export const putEdge = (
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
   const body = {
     relationship_id,
+    relationshipLabel,
     relationship_value: relationshipValue,
     color: JSON.stringify(relationshipColor),
     type: relationshipType,

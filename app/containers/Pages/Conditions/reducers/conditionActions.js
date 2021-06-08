@@ -157,11 +157,12 @@ export const getNodes = () => async dispatch => {
   }
 };
 
-export const postNode = (condition_id, node_id, values, setDefineNodeOpen) => async dispatch => {
+export const postNode = (condition_id, node_id, nodeLabel, values, setDefineNodeOpen) => async dispatch => {
   const url = `${baseUrl}/conditionNodes`;
   const body = {
     condition_id,
     node_id,
+    nodeLabel,
     'x-value': 0,
     'y-value': 0,
     values,
@@ -179,10 +180,11 @@ export const postNode = (condition_id, node_id, values, setDefineNodeOpen) => as
   }
 };
 
-export const putNode = (conditionNodeId, node_id, nodeValues, deletedConditionValues, setDefineNodeOpen) => async dispatch => {
+export const putNode = (conditionNodeId, node_id, nodeLabel, nodeValues, deletedConditionValues, setDefineNodeOpen) => async dispatch => {
   const url = `${baseUrl}/conditionNodes/${conditionNodeId}`;
   const body = {
     node_id,
+    nodeLabel,
     nodeValues,
     deletedConditionValues
   };
@@ -208,6 +210,7 @@ export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatc
     source_handle: edge.sourceHandle,
     target_handle: edge.targetHandle,
     relationship_id: edge.relationship_id,
+    relationshipLabel: edge.relationshipLabel,
     comparison_type: edge.comparisonType,
     comparison_value: edge.comparisonValue,
     type: edge.relationshipType,
@@ -225,10 +228,11 @@ export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatc
   }
 };
 
-export const putEdge = (edgeId, relationship_id, comparison_type, comparison_value, type, setDefineEdgeOpen) => async dispatch => {
+export const putEdge = (edgeId, relationship_id, relationshipLabel, comparison_type, comparison_value, type, setDefineEdgeOpen) => async dispatch => {
   const url = `${baseUrl}/conditionRelationships/${edgeId}`;
   const body = {
     relationship_id,
+    relationshipLabel,
     comparison_type,
     comparison_value,
     type,
@@ -241,6 +245,7 @@ export const putEdge = (edgeId, relationship_id, comparison_type, comparison_val
     dispatch({ type: types.CONDITION_PUT_EDGE_SUCCESS, edge });
     setDefineEdgeOpen(false);
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_PUT_EDGE_FAILED, message });
   }
@@ -286,6 +291,21 @@ export const descriptionChange = description => ({
 export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
+});
+
+export const addRelationshipToList = relationship => ({
+  type: types.CONDITION_RELATIONSHIP_ADD_TO_LIST,
+  relationship
+});
+
+export const addNodeToList = node => ({
+  type: types.CONDITION_NODE_ADD_TO_LIST,
+  node
+});
+
+export const addAttributToList = attribut => ({
+  type: types.CONDITION_NODE_ATTRIBUT_ADD_TO_LIST,
+  attribut
 });
 
 export const closeNotifAction = {

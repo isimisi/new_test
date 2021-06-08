@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import css from '@styles/Form.scss';
 import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import { red } from '@api/palette/colorfull';
 import styles from '../condition-jss';
@@ -84,7 +85,7 @@ const EdgeForm = (props) => {
       <section className={css.bodyForm}>
         <div className={classes.inlineWrap}>
           <div className={classes.attrField} style={{ marginLeft: 0 }}>
-            <Select
+            <CreatableSelect
               classes={classes}
               styles={selectStyles('relative')}
               inputId="react-select-single-edge"

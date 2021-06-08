@@ -37,7 +37,10 @@ import {
   CONDITION_POST_EDGE_SUCCESS,
   CONDITION_POST_EDGE_FAILED,
   DELETE_CONDITION_ELEMENTS_SUCCESS,
-  DELETE_CONDITION_ELEMENTS_FAILED
+  DELETE_CONDITION_ELEMENTS_FAILED,
+  CONDITION_RELATIONSHIP_ADD_TO_LIST,
+  CONDITION_NODE_ADD_TO_LIST,
+  CONDITION_NODE_ATTRIBUT_ADD_TO_LIST
 } from './conditionConstants';
 
 const initialState = {
@@ -238,6 +241,21 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+      });
+    case CONDITION_RELATIONSHIP_ADD_TO_LIST:
+      return state.withMutations((mutableState) => {
+        const relationship = fromJS(action.relationship);
+        mutableState.update('relationships', myList => myList.push(relationship));
+      });
+    case CONDITION_NODE_ADD_TO_LIST:
+      return state.withMutations((mutableState) => {
+        const node = fromJS(action.node);
+        mutableState.update('nodes', myList => myList.push(node));
+      });
+    case CONDITION_NODE_ATTRIBUT_ADD_TO_LIST:
+      return state.withMutations((mutableState) => {
+        const attribut = fromJS(action.attribut);
+        mutableState.update('nodeAttributes', myList => myList.push(attribut));
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {
