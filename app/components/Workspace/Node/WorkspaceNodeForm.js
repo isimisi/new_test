@@ -107,13 +107,13 @@ const WorkspaceNodeForm = (props) => {
                 onChange={(value) => {
                   const newRow = { ...attribut };
                   newRow.label = value.label;
-                  newRow.type = value.type;
-                  newRow.selectionOptions = value.selectionOptions;
+                  newRow.type = value.type || 'Value';
+                  newRow.selectionOptions = value.selectionOptions || null;
 
                   const i = attributes.length - 1;
                   const mutableArray = [...attributes];
                   mutableArray.splice(i, 0, newRow);
-                  handleChangeAttributes(mutableArray);
+                  handleChangeAttributes(mutableArray, { ...newRow }, value.__isNew__);
                 }}
               />
             </div>

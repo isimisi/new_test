@@ -344,6 +344,11 @@ export const addWorkspaceNodeToList = node => ({
   node,
 });
 
+export const addWorkspaceNodeAttributToList = attribut => ({
+  type: types.WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST,
+  attribut,
+});
+
 export const changeHandleVisability = bool => ({
   type: types.SHOW_HANDLES_CHANGE,
   bool,

@@ -49,7 +49,8 @@ import {
   WORKSPACE_PUT_NODE_FAILED,
   ANALYSE_OUTPUT_SUCCESS,
   ANALYSE_OUTPUT_FAILED,
-  WORKSPACE_NODE_ADD_TO_LIST
+  WORKSPACE_NODE_ADD_TO_LIST,
+  WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST
 } from './workspaceConstants';
 
 const initialState = {
@@ -317,6 +318,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const node = fromJS(action.node);
         mutableState.update('nodes', myList => myList.push(node));
+      });
+    case WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST:
+      return state.withMutations((mutableState) => {
+        const attribut = fromJS(action.attribut);
+        mutableState.update('attributesDropDownOptions', myList => myList.push(attribut));
       });
     case SHOW_HANDLES_CHANGE:
       return state.withMutations((mutableState) => {

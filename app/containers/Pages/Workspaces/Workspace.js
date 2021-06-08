@@ -32,7 +32,7 @@ import {
   addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
-  addEdgeToList
+  addEdgeToList, addWorkspaceNodeAttributToList
 } from './reducers/workspaceActions';
 
 const nodeTypes = {
@@ -380,7 +380,13 @@ const Workspace = (props) => {
           setNodeLabel(_label.value);
         }}
         attributes={attributes}
-        handleChangeAttributes={(_attributes) => setAttributes(_attributes)}
+        handleChangeAttributes={(_attributes, newRow, isNew) => {
+          if (isNew) {
+            newRow.value = newRow.label;
+            dispatch(addWorkspaceNodeAttributToList(newRow));
+          }
+          setAttributes(_attributes);
+        }}
         nodeColor={nodeColor}
         handleChangeColor={(color) => setNodeColor(color.rgb)}
         nodeBorderColor={nodeBorderColor}
