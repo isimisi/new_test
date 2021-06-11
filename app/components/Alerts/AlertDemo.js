@@ -14,7 +14,7 @@ const styles = () => ({
     padding: 30,
     display: 'flex',
     flexDirection: 'column',
-    height: 336,
+    height: 384.63,
   },
 });
 

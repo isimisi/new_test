@@ -17,8 +17,8 @@ import {
   SHOW_CONDITION_FAILED,
   DELETE_CONDITION_SUCCESS,
   DELETE_CONDITION_FAILED,
-  TITLE_CHANGE,
-  DESCRIPTION_CHANGE,
+  TITLE_CHANGE_CONDITION,
+  DESCRIPTION_CHANGE_CONDITION,
   ADD_GROUP,
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
@@ -182,12 +182,12 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
-    case TITLE_CHANGE:
+    case TITLE_CHANGE_CONDITION:
       return state.withMutations((mutableState) => {
         const title = fromJS(action.title);
         mutableState.set('label', title);
       });
-    case DESCRIPTION_CHANGE:
+    case DESCRIPTION_CHANGE_CONDITION:
       return state.withMutations((mutableState) => {
         const description = fromJS(action.description);
         mutableState.set('description', description);

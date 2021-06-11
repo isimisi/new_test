@@ -54,7 +54,10 @@ const Output = () => {
   const editorState = useSelector(state => state.getIn([reducer, 'editorState']));
 
   useEffect(() => {
-    dispatch(showOutput(id));
+    if (!history?.location?.state?.fromCondition) {
+      dispatch(showOutput(id));
+    }
+
     dispatch(getConditionsDropDown());
     dispatch(getGroupDropDown());
   }, []);
@@ -117,6 +120,7 @@ const Output = () => {
         onConditionChange={(value) => dispatch(addCondition(value))}
         conditionsDropDownOptions={conditionsDropDownOptions}
         onEditorStateChange={(v) => dispatch(editorStateChange(v))}
+        history={history}
       />
       <div>
         <Tooltip title="Save">

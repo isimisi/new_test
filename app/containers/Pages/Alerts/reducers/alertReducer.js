@@ -118,6 +118,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case TITLE_CHANGE:
       return state.withMutations((mutableState) => {
         const title = fromJS(action.title);
+        console.log('add title');
         mutableState.set('title', title);
       });
     case DESCRIPTION_CHANGE:
@@ -133,6 +134,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
     case ADD_CONDITION:
       return state.withMutations((mutableState) => {
         const condition = fromJS(action.condition);
+        console.log('øaddcondition');
         mutableState.set('condition', condition);
       });
     case CLOSE_NOTIF:

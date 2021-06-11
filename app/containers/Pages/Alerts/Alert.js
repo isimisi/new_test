@@ -29,7 +29,10 @@ const Alert = () => {
   };
 
   useEffect(() => {
-    dispatch(showAlert(id));
+    if (!history?.location?.state?.fromCondition) {
+      dispatch(showAlert(id));
+    }
+
     dispatch(getConditionsDropDown());
     dispatch(getGroupDropDown());
   }, []);
@@ -46,6 +49,7 @@ const Alert = () => {
             groupsDropDownOptions={groupsDropDownOptions}
             condition={condition}
             conditionsDropDownOptions={conditionsDropDownOptions}
+            history={history}
           />
         </Grid>
         <Grid item md={6}>

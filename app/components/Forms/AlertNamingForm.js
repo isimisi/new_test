@@ -1,30 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
 import { useDispatch } from 'react-redux';
+import Button from '@material-ui/core/Button';
+import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import {
   titleChange, descriptionChange, addGroup, addCondition
 } from '../../containers/Pages/Alerts/reducers/alertActions';
-
-const mapSelectOptions = (options) => options.map(suggestion => ({
-  value: suggestion.value,
-  label: (
-    <>
-      <Tooltip title={suggestion.label}>
-        <div style={{ width: '100%', height: '100%' }}>
-          <span style={{ paddingRight: '5px' }}>{suggestion.value}</span>
-        </div>
-      </Tooltip>
-    </>
-  ),
-}));
+import {
+  postCondition
+} from '../../containers/Pages/Conditions/reducers/conditionActions';
 
 const styles = theme => ({
   root: {
@@ -53,7 +44,6 @@ const styles = theme => ({
 
 const AlertNamingForm = (props) => {
   const dispatch = useDispatch();
-  const theme = useTheme();
 
   const {
     classes,
@@ -62,8 +52,10 @@ const AlertNamingForm = (props) => {
     group,
     groupsDropDownOptions,
     condition,
-    conditionsDropDownOptions
+    conditionsDropDownOptions,
+    history
   } = props;
+
 
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
@@ -80,17 +72,6 @@ const AlertNamingForm = (props) => {
   const handleChangeConditions = (value) => {
     dispatch(addCondition(value.value));
   };
-
-  const selectStyles = {
-    input: base => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
-  };
-
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -143,6 +124,7 @@ const AlertNamingForm = (props) => {
                 />
               </NoSsr>
             </div>
+
             <div className={classes.field}>
               <NoSsr>
                 <Select
@@ -164,6 +146,35 @@ const AlertNamingForm = (props) => {
                 />
               </NoSsr>
             </div>
+            <div className={classes.inlineWrap}>
+              <Button
+                variant="contained"
+                color="secondary"
+                style={{
+                  borderRadius: 4,
+                  height: 38,
+                  width: '100%'
+                }}
+                onClick={() => dispatch(postCondition(history, true))}
+              >
+                Opret betingelse
+              </Button>
+              {condition && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{
+                    borderRadius: 4,
+                    height: 38,
+                    marginLeft: 10,
+                    width: '100%'
+                  }}
+                  onClick={() => history.push('/app/conditions/' + conditionsDropDownOptions.find(c => c.value === condition).id)}
+                >
+                Se betingelse
+                </Button>
+              )}
+            </div>
           </Paper>
         </Grid>
       </Grid>
@@ -179,6 +190,7 @@ AlertNamingForm.propTypes = {
   groupsDropDownOptions: PropTypes.any.isRequired,
   condition: PropTypes.string.isRequired,
   conditionsDropDownOptions: PropTypes.any.isRequired,
+  history: PropTypes.any.isRequired,
 };
 
 

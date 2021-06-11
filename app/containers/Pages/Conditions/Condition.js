@@ -37,7 +37,7 @@ const Condition = (props) => {
   const id = history.location.pathname.split('/').pop();
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
-
+  const fromContent = history?.location?.state?.fromContent;
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
   const [currentConnectionData, setCurrentConnectionData] = useState({});
@@ -160,7 +160,7 @@ const Condition = (props) => {
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      dispatch(saveCondition(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
+      dispatch(saveCondition(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history, label));
     }
   };
 
@@ -175,6 +175,10 @@ const Condition = (props) => {
     setConditionValues(newArray);
   };
 
+  const flowStyle = {
+    backgroundColor: 'white'
+  };
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -184,6 +188,7 @@ const Condition = (props) => {
         >
           <ReactFlow
             elements={elements}
+            style={flowStyle}
             onElementsRemove={onElementsRemove}
             onConnect={onConnect}
             nodeTypes={{ custom: CustomNode }}
@@ -273,6 +278,7 @@ const Condition = (props) => {
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
           saveClick={onConditionSave}
+          fromContent={fromContent}
         />
       )}
     </div>

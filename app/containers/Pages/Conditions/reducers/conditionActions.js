@@ -6,6 +6,8 @@ import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import {
   isNode,
 } from 'react-flow-renderer';
+import { addCondition } from '../../Alerts/reducers/alertActions';
+import { addCondition as outputAddCondition } from '../../Outputs/reducers/outputActions';
 import * as types from './conditionConstants';
 const CONDITIONS = 'conditions';
 
@@ -22,7 +24,7 @@ export const getConditions = () => async dispatch => {
   }
 };
 
-export const postCondition = (history) => async dispatch => {
+export const postCondition = (history, fromContent = false) => async dispatch => {
   const url = `${baseUrl}/${CONDITIONS}`;
   const body = {};
   const header = authHeader();
@@ -30,7 +32,9 @@ export const postCondition = (history) => async dispatch => {
     const response = await axios.post(url, body, header);
     const { id } = response.data;
     dispatch({ type: types.POST_CONDITION_SUCCESS });
-    history.push(`conditions/${id}`);
+    const place = history.location.pathname.split('/')[2];
+    const placeId = history.location.pathname.split('/')[3];
+    history.push(`/app/conditions/${id}`, { fromContent, place, placeId });
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.POST_CONDITION_FAILED, message });
@@ -97,7 +101,7 @@ export const putConditionMeta = (id, label, description, group, setMetaOpen) => 
   }
 };
 
-export const saveCondition = (condition_id, conditionZoom, conditionXPosition, conditionYPosition, nodes, history) => async dispatch => {
+export const saveCondition = (condition_id, conditionZoom, conditionXPosition, conditionYPosition, nodes, history, conditionLabel) => async dispatch => {
   const url = `${baseUrl}/${CONDITIONS}/${condition_id}/position`;
   const body = {
     conditionZoom, conditionXPosition, conditionYPosition, nodes
@@ -107,8 +111,19 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
   try {
     await axios.put(url, body, header);
     const message = 'Vi har gemt dit scenarie';
-    dispatch({ type: types.SAVE_CONDITION_SUCCESS, message });
-    history.push(`/app/${CONDITIONS}`);
+
+    if (history.location.state.fromContent) {
+      if (history.location.state.place === 'outputs') {
+        dispatch(outputAddCondition(conditionLabel));
+      } else {
+        dispatch(addCondition(conditionLabel));
+      }
+
+      history.push(`/app/${history.location.state.place}/${history.location.state.placeId}`, { fromCondition: true });
+    } else {
+      dispatch({ type: types.SAVE_CONDITION_SUCCESS, message });
+      history.push(`/app/${CONDITIONS}`);
+    }
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.SAVE_CONDITION_FAILED, message });
@@ -279,12 +294,12 @@ export const getGroupDropDown = () => async dispatch => {
 };
 
 export const titleChange = title => ({
-  type: types.TITLE_CHANGE,
+  type: types.TITLE_CHANGE_CONDITION,
   title,
 });
 
 export const descriptionChange = description => ({
-  type: types.DESCRIPTION_CHANGE,
+  type: types.DESCRIPTION_CHANGE_CONDITION,
   description,
 });
 

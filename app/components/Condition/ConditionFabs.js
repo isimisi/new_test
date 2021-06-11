@@ -6,9 +6,12 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import SaveIcon from '@material-ui/icons/Save';
 import TextFieldsIcon from '@material-ui/icons/TextFields';
 import PropTypes from 'prop-types';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 const ConditionFabs = (props) => {
-  const { nodeClick, saveClick, metaClick } = props;
+  const {
+    nodeClick, saveClick, metaClick, fromContent
+  } = props;
   const theme = useTheme();
 
   return (
@@ -27,7 +30,7 @@ const ConditionFabs = (props) => {
       />
       <Fab
         onClick={saveClick}
-        icon={<SaveIcon />}
+        icon={fromContent ? <ArrowForwardIcon /> : <SaveIcon />}
         event="click"
         mainButtonStyles={{ backgroundColor: theme.palette.secondary.dark }}
       />
@@ -39,6 +42,7 @@ ConditionFabs.propTypes = {
   nodeClick: PropTypes.func.isRequired,
   saveClick: PropTypes.func.isRequired,
   metaClick: PropTypes.func.isRequired,
+  fromContent: PropTypes.bool.isRequired,
 };
 
 export default ConditionFabs;

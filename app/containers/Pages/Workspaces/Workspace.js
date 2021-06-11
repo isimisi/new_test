@@ -295,6 +295,9 @@ const Workspace = (props) => {
   const handleShowLabelChange = useCallback((e) => setShowlabel(e.target.checked), []);
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
+  const flowStyle = {
+    backgroundColor: 'white'
+  };
 
   return (
     <div>
@@ -307,6 +310,7 @@ const Workspace = (props) => {
             elements={elements}
             onElementsRemove={onElementsRemove}
             onConnect={onConnect}
+            style={flowStyle}
             nodeTypes={nodeTypes}
             edgeTypes={{ custom: CustomEdge }}
             onLoad={onLoad}

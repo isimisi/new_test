@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import { Map } from 'immutable';
@@ -18,22 +19,13 @@ import Iframe from 'react-iframe';
 import Lottie from 'lottie-react';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { mapSelectOptions, selectStyles } from '@api/ui/helper';
+import { useDispatch } from 'react-redux';
 import FileUpload from '../FileUpload/FileUpload';
 import Word from './word.json';
-
-
-const mapSelectOptions = (options) => options.map(suggestion => ({
-  value: suggestion.value,
-  label: (
-    <>
-      <Tooltip title={suggestion.label}>
-        <div style={{ width: '100%', height: '100%' }}>
-          <span style={{ paddingRight: '5px' }}>{suggestion.value}</span>
-        </div>
-      </Tooltip>
-    </>
-  ),
-}));
+import {
+  postCondition
+} from '../../containers/Pages/Conditions/reducers/conditionActions';
 
 const styles = theme => ({
   root: {
@@ -41,7 +33,7 @@ const styles = theme => ({
     padding: 30
   },
   select: {
-    width: '20%',
+    width: '40%',
     marginRight: 20
   },
   dropzone: {
@@ -124,24 +116,15 @@ const OutputForm = (props) => {
     condition,
     onConditionChange,
     conditionsDropDownOptions,
-    onEditorStateChange
+    onEditorStateChange,
+    history
   } = props;
+  const dispatch = useDispatch();
 
-  const theme = useTheme();
   const [activeToggleButton, setActiveToggleButton] = useState('Upload a document');
 
   const handleChange = (event, value) => {
     setActiveToggleButton(value);
-  };
-
-  const selectStyles = {
-    input: base => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
   };
 
   const downloadFile = () => {
@@ -161,13 +144,38 @@ const OutputForm = (props) => {
                 <div className={classes.select}>
                   <Select
                     classes={classes}
+                    placeholder="Vælg en betingelse"
                     styles={selectStyles}
                     options={mapSelectOptions(conditionsDropDownOptions)}
                     value={condition && { label: condition, value: condition }}
                     onChange={(value) => onConditionChange(value.value)}
                   />
                 </div>
-                <Typography variant="p">Choose a condition</Typography>
+                {condition && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{
+                      borderRadius: 4,
+                      height: 38,
+                    }}
+                    onClick={() => history.push('/app/conditions/' + conditionsDropDownOptions.find(c => c.value === condition).id)}
+                  >
+                    Se betingelse
+                  </Button>
+                )}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{
+                    borderRadius: 4,
+                    marginLeft: 10,
+                    height: 38,
+                  }}
+                  onClick={() => dispatch(postCondition(history, true))}
+                >
+                Opret betingelse
+                </Button>
               </div>
               <div className={classes.conditionWrap}>
                 {outputFile && outputFile.length > 0 && (
@@ -264,7 +272,8 @@ OutputForm.propTypes = {
   condition: PropTypes.string.isRequired,
   onConditionChange: PropTypes.func.isRequired,
   onEditorStateChange: PropTypes.func.isRequired,
-  conditionsDropDownOptions: PropTypes.arrayOf(PropTypes.string).isRequired
+  conditionsDropDownOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  history: PropTypes.any.isRequired
 };
 
 export default withStyles(styles)(OutputForm);

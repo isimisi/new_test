@@ -158,7 +158,7 @@ function Header(props) {
 
               <Tooltip title="Opdater" placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
-                  <i className="ion-ios-heart-outline" />
+                  <i className="ion-ios-refresh-outline" />
                 </IconButton>
               </Tooltip>
 

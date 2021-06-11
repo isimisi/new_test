@@ -21,9 +21,12 @@ import messageStyles from '@styles/Messages.scss';
 import avatarApi from '@api/images/avatars';
 import link from '@api/ui/link';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import { useClearCache } from 'react-clear-cache';
 import styles from './header-jss';
 
 function UserMenu(props) {
+  const { isLatestVersion, emptyCacheStorage } = useClearCache();
+
   const [menuState, setMenuState] = useState({
     anchorEl: null,
     openMenu: null
@@ -43,6 +46,7 @@ function UserMenu(props) {
 
   const handleLogOut = () => {
     localStorage.clear();
+    emptyCacheStorage();
   };
 
   const { classes } = props;
