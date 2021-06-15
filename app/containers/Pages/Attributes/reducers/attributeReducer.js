@@ -3,6 +3,7 @@ import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
+  GET_ATTRIBUTES_LOADING,
   GET_ATTRIBUTES_SUCCESS,
   GET_ATTRIBUTES_FAILED,
   POST_ATTRIBUTE_SUCCESS,
@@ -21,6 +22,7 @@ import {
 
 
 const initialState = {
+  loading: false,
   attributes: List(),
   message: '',
   id: null,
@@ -36,15 +38,21 @@ const initialState = {
 const initialImmutableState = fromJS(initialState);
 export default function reducer(state = initialImmutableState, action = {}) {
   switch (action.type) {
+    case GET_ATTRIBUTES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
     case GET_ATTRIBUTES_SUCCESS:
       return state.withMutations((mutableState) => {
         const attributes = fromJS(action.attributes);
         mutableState.set('attributes', attributes);
+        mutableState.set('loading', false);
       });
     case GET_ATTRIBUTES_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
       });
     case POST_ATTRIBUTE_SUCCESS:
       return state.withMutations((mutableState) => {

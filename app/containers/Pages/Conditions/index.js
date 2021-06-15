@@ -8,8 +8,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import tableOptions from '@api/ui/tableOptions';
 import {
-  columns, tableOptions, reducer
+  columns, reducer
 } from './constants';
 import styles from './conditions-jss';
 import { Notification } from '@components';
@@ -22,6 +23,7 @@ function Conditions(props) {
   const dispatch = useDispatch();
   const conditions = useSelector(state => state.getIn([reducer, 'conditions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const loading = useSelector(state => state.getIn([reducer, 'loading']));
   const history = useHistory();
 
   useEffect(() => {
@@ -42,7 +44,7 @@ function Conditions(props) {
         title="Your Conditions"
         data={conditions}
         columns={columns}
-        options={tableOptions(onDelete)}
+        options={tableOptions(onDelete, loading)}
         elevation={10}
       />
       <Tooltip title="New Condition">

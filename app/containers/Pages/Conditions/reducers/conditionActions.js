@@ -12,6 +12,7 @@ import * as types from './conditionConstants';
 const CONDITIONS = 'conditions';
 
 export const getConditions = () => async dispatch => {
+  dispatch({ type: types.GET_CONDITIONS_LOADING });
   const url = `${baseUrl}/${CONDITIONS}`;
   const header = authHeader();
   try {

@@ -5,11 +5,10 @@ import MUIDataTable from 'mui-datatables';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import { useSelector, useDispatch } from 'react-redux';
+import tableOptions from '@api/ui/tableOptions';
 import styles from './attribute-jss';
 import Attribute from './Attribute';
-import {
-  tableOptions, columns, reducer
-} from './constants';
+import { columns, reducer } from './constants';
 import { Notification } from '@components';
 import {
   getAttributes, closeNotifAction, postAttribute, getGroupDropDown, putAttribute, showAttribute, deleteAttribute, changeCurrentAttribute
@@ -26,6 +25,7 @@ function Attributes(props) {
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const type = useSelector(state => state.getIn([reducer, 'type']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
+  const loading = useSelector(state => state.getIn([reducer, 'loading']));
   const selectionOptions = useSelector(state => state.getIn([reducer, 'selectionOptions']));
 
   const { classes } = props;
@@ -55,7 +55,7 @@ function Attributes(props) {
         title="Your Attributes"
         data={attributes}
         columns={columns(onOpen)}
-        options={tableOptions(onDelete)}
+        options={tableOptions(onDelete, loading)}
         elevation={10}
       />
       <Tooltip title="New Attribut">

@@ -7,8 +7,10 @@ import Avatar from '@material-ui/core/Avatar';
 import brand from '@api/dummy/brand';
 import dummy from '@api/dummy/dummyContents';
 import logo from '@images/logo.svg';
+import Typography from '@material-ui/core/Typography';
 import MainMenu from './MainMenu';
 import styles from './sidebar-jss';
+
 
 function SidebarContent(props) {
   const [transform, setTransform] = useState(0);
@@ -46,6 +48,9 @@ function SidebarContent(props) {
         <NavLink to="/app" className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}>
           <img src={logo} alt={brand.name} />
         </NavLink>
+
+        <Typography className={classes.beta}>Beta version</Typography>
+
         <div
           className={classNames(classes.profile, classes.user)}
           style={{ opacity: 1 - (transform / 100), marginTop: transform * -0.3 }}

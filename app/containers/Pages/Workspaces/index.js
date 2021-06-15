@@ -9,10 +9,10 @@ import {
   useHistory
 } from 'react-router-dom';
 import {
-  tableOptions,
   columns,
   reducer
 } from './constants';
+import tableOptions from '@api/ui/tableOptions';
 import styles from './workspace-jss';
 import {
   getWorkspaces, closeNotifAction, postWorkspace, deleteWorkspaces

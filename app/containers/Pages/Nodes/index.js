@@ -9,8 +9,9 @@ import { Notification } from '@components';
 import {
   useHistory
 } from 'react-router-dom';
+import tableOptions from '@api/ui/tableOptions';
 import {
-  tableColumns, tableOptions, reducer
+  tableColumns, reducer
 } from './constants';
 import styles from './node-jss';
 import {
@@ -22,6 +23,7 @@ function Nodes(props) {
   const dispatch = useDispatch();
   const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const loading = useSelector(state => state.getIn([reducer, 'loading']));
   const history = useHistory();
 
   useEffect(() => {
@@ -43,7 +45,7 @@ function Nodes(props) {
         title="Your Node"
         data={nodes}
         columns={tableColumns}
-        options={tableOptions(onDelete)}
+        options={tableOptions(onDelete, loading)}
         elevation={10}
       />
       <Tooltip title="New Node">

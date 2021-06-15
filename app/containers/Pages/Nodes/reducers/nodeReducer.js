@@ -9,6 +9,7 @@ import {
   CHANGE_BACKGROUND_COLOR,
   CHANGE_BORDER_COLOR,
   CHANGE_SIZE,
+  GET_NODES_LOADING,
   GET_NODES_SUCCESS,
   GET_NODES_FAILED,
   POST_NODE_SUCCESS,
@@ -32,6 +33,7 @@ const initialAttribute = [Map({
 })];
 
 const initialState = {
+  loading: false,
   nodes: List(),
   title: '',
   description: '',
@@ -54,15 +56,21 @@ const initialState = {
 const initialImmutableState = fromJS(initialState);
 export default function reducer(state = initialImmutableState, action = {}) {
   switch (action.type) {
+    case GET_NODES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
     case GET_NODES_SUCCESS:
       return state.withMutations((mutableState) => {
         const nodes = fromJS(action.nodes);
         mutableState.set('nodes', nodes);
+        mutableState.set('loading', false);
       });
     case GET_NODES_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
       });
     case POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {

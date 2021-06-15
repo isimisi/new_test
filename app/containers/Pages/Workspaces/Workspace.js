@@ -93,6 +93,7 @@ const Workspace = (props) => {
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
   const [nodeDisplayName, setNodeDisplayName] = useState('');
+  const [nodeFigur, setNodeFigur] = useState(null);
   const [attributes, setAttributes] = useState([initialAttribut]);
   const [choosenNode, setChoosenNode] = useState(null);
 
@@ -142,6 +143,7 @@ const Workspace = (props) => {
     if (isNode(element)) {
       setNodeLabel(element.data.label);
       setNodeDisplayName(element.data.displayName || '');
+      setNodeFigur(element.data.figur);
       setAttributes([...element.data.attributes, initialAttribut]);
       setNodeColor({
         r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
@@ -217,9 +219,9 @@ const Workspace = (props) => {
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     if (isUpdatingElement) {
-      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
+      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, choosenNode.label, nodeDisplayName, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen, handleAlerts));
+      dispatch(postNode(id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen, handleAlerts));
       setNodeLabel('');
     }
     setIsUpdatingElement(false);
@@ -368,6 +370,7 @@ const Workspace = (props) => {
         open={defineNodeOpen}
         close={() => {
           setDefineNodeOpen(false);
+          setNodeLabel('');
           setIsUpdatingElement(false);
         }}
         nodes={nodes}
@@ -398,6 +401,8 @@ const Workspace = (props) => {
         handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
         handleNodeSave={handleNodeSave}
         nodeDisplayName={nodeDisplayName}
+        nodeFigur={nodeFigur}
+        handleNodeFigurChange={(_figur) => setNodeFigur(_figur.value)}
         isUpdatingElement={isUpdatingElement}
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
         handleDeleteNode={() => onElementsRemove([elementToUpdate])}

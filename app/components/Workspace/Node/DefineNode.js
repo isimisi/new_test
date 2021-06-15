@@ -26,7 +26,9 @@ function DefineNode(props) {
     handleDeleteNode,
     loading,
     attributesDropDownOptions,
-    handleRemoveAttributes
+    handleRemoveAttributes,
+    nodeFigur,
+    handleNodeFigurChange
   } = props;
 
   return (
@@ -55,6 +57,8 @@ function DefineNode(props) {
               handleDeleteNode={handleDeleteNode}
               attributesDropDownOptions={attributesDropDownOptions}
               handleRemoveAttributes={handleRemoveAttributes}
+              nodeFigur={nodeFigur}
+              handleNodeFigurChange={handleNodeFigurChange}
             />
           )}
 
@@ -83,6 +87,8 @@ DefineNode.propTypes = {
   loading: PropTypes.bool.isRequired,
   attributesDropDownOptions: PropTypes.array.isRequired,
   handleRemoveAttributes: PropTypes.func.isRequired,
+  nodeFigur: PropTypes.string.isRequired,
+  handleNodeFigurChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(DefineNode);

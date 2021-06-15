@@ -8,6 +8,7 @@ import { getSize } from '../constants';
 const NODES = 'nodes';
 
 export const getNodes = () => async dispatch => {
+  dispatch({ type: types.GET_NODES_LOADING });
   const url = `${baseUrl}/${NODES}`;
   const header = authHeader();
   try {

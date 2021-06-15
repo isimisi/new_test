@@ -1,13 +1,32 @@
 /* eslint-disable react/prop-types */
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
 import { useSelector } from 'react-redux';
+import square from './square.svg';
+import triangle from './triangle.svg';
+import circle from './circle.svg';
+import person from './person.svg';
 
 const CustomNode = ({ data }) => {
   const theme = useTheme();
   const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
+
+  const getSVG = useCallback((figur) => {
+    switch (figur) {
+      case 'triangle':
+        return triangle;
+      case 'square':
+        return square;
+      case 'circle':
+        return circle;
+      case 'person':
+        return person;
+      default:
+        return square;
+    }
+  }, []);
 
   const nodeStyle = {
     border: '1px solid',
@@ -21,6 +40,17 @@ const CustomNode = ({ data }) => {
     alignSelf: 'center',
     backgroundColor: data.backgroundColor ? data.backgroundColor : '#ffffff',
     borderColor: data.borderColor ? data.borderColor : '#000000'
+  };
+
+  const inlineWrap = {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  };
+
+  const iconStyle = {
+    height: 10,
+    marginRight: 7,
   };
 
   const handleStyle = useMemo(() => ({
@@ -86,7 +116,16 @@ const CustomNode = ({ data }) => {
         id="bottom"
         position={Position.Bottom}
       />
-      <Typography variant="subtitle1" style={header}>{data.displayName || data.label}</Typography>
+      <div style={inlineWrap}>
+        {data.figur && (
+          <img
+            src={getSVG(data.figur)}
+            alt={data.figur}
+            style={iconStyle}
+          />
+        )}
+        <Typography variant="subtitle1" style={header}>{data.displayName || data.label}</Typography>
+      </div>
       {data.conditionValues && data.conditionValues.map(cv => (
         <Typography variant="body2" style={attr} key={cv.attribut.label}>
           {cv.attribut.label}

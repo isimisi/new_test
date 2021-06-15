@@ -24,6 +24,14 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
+  beta: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    color: fade(theme.palette.primary.main, 0.8),
+    fontStyle: 'italic',
+    fontSize: 12
+  },
   swipeDrawerPaper: {
     width: drawerWidth,
   },

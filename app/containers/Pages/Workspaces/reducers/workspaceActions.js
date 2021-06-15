@@ -153,7 +153,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
   });
 };
 
-export const postNode = (workspace_id, node_id, nodeLabel, display_name, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {
+export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {
   dispatch({ type: types.WORKSPACE_POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
@@ -161,6 +161,7 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, backgro
     node_id,
     nodeLabel,
     display_name,
+    figur,
     background_color,
     border_color,
     attributes,
@@ -181,13 +182,14 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, backgro
   }
 };
 
-export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, backgroundColor, borderColor, attributes, deletedAttributes, setDefineNodeOpen) => async dispatch => {
+export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, figur, backgroundColor, borderColor, attributes, deletedAttributes, setDefineNodeOpen) => async dispatch => {
   dispatch({ type: types.WORKSPACE_PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
     node_id,
     nodeLabel,
     display_name,
+    figur,
     backgroundColor,
     borderColor,
     attributes,

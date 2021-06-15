@@ -5,6 +5,7 @@ import {
   isEdge
 } from 'react-flow-renderer';
 import {
+  GET_CONDITIONS_LOADING,
   GET_CONDITIONS_SUCCESS,
   GET_CONDITIONS_FAILED,
   PUT_CONDITION_SUCCESS,
@@ -44,6 +45,7 @@ import {
 } from './conditionConstants';
 
 const initialState = {
+  loading: false,
   conditions: List(),
   label: '',
   description: '',
@@ -61,15 +63,21 @@ const initialState = {
 const initialImmutableState = fromJS(initialState);
 export default function reducer(state = initialImmutableState, action = {}) {
   switch (action.type) {
+    case GET_CONDITIONS_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
     case GET_CONDITIONS_SUCCESS:
       return state.withMutations((mutableState) => {
         const conditions = fromJS(action.conditions);
         mutableState.set('conditions', conditions);
+        mutableState.set('loading', false);
       });
     case GET_CONDITIONS_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
       });
     case POST_CONDITION_SUCCESS:
       return state.withMutations((mutableState) => {

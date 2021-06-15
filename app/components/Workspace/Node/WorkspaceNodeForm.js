@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import css from '@styles/Form.scss';
@@ -18,6 +19,10 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
 import styles from '../workspace-jss';
+import square from './square.svg';
+import triangle from './triangle.svg';
+import circle from './circle.svg';
+import person from './person.svg';
 
 const WorkspaceNodeForm = (props) => {
   const {
@@ -38,11 +43,48 @@ const WorkspaceNodeForm = (props) => {
     isUpdatingElement,
     handleDeleteNode,
     attributesDropDownOptions,
-    handleRemoveAttributes
+    handleRemoveAttributes,
+    nodeFigur,
+    handleNodeFigurChange
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
   const choosenNode = nodes.find(r => r.label === nodeLabel);
+
+  const figurTypeOptions = [
+    {
+      value: 'triangle',
+      label: (
+        <>
+          <img src={triangle} alt="triangle" style={{ height: 36 }} />
+        </>
+      )
+    },
+    {
+      value: 'square',
+      label: (
+        <>
+          <img src={square} alt="square" style={{ height: 36 }} />
+        </>
+      )
+    },
+    {
+      value: 'circle',
+      label: (
+        <>
+          <img src={circle} alt="circle" style={{ height: 36 }} />
+        </>
+      )
+    },
+    {
+      value: 'person',
+      label: (
+        <>
+          <img src={person} alt="person" style={{ height: 36 }} />
+        </>
+      )
+    }
+  ];
 
 
   return (
@@ -168,6 +210,25 @@ const WorkspaceNodeForm = (props) => {
         {choosenNode
         && (
         <>
+          <div className={classes.field} style={{ marginTop: 20 }}>
+            <Select
+              classes={classes}
+              styles={selectStyles('relative')}
+              inputId="react-select-single-edge-type"
+              TextFieldProps={{
+                label: 'type',
+                InputLabelProps: {
+                  htmlFor: 'react-select-single-edge-type',
+                  shrink: true,
+                },
+                placeholder: 'type',
+              }}
+              placeholder="type"
+              options={figurTypeOptions}
+              value={nodeFigur && figurTypeOptions.find(x => x.value === nodeFigur)}
+              onChange={handleNodeFigurChange}
+            />
+          </div>
           <div className={classes.row} style={{ marginTop: 10 }}>
             <Typography variant="subtitle2">
                 Vælg en farve for dit element
@@ -246,6 +307,8 @@ WorkspaceNodeForm.propTypes = {
   handleDeleteNode: PropTypes.func.isRequired,
   attributesDropDownOptions: PropTypes.array.isRequired,
   handleRemoveAttributes: PropTypes.func.isRequired,
+  nodeFigur: PropTypes.string.isRequired,
+  handleNodeFigurChange: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(WorkspaceNodeForm);

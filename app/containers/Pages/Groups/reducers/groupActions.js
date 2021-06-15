@@ -29,9 +29,7 @@ export const postGroup = (title, description, image, closeModal) => async dispat
     dispatch(getGroups());
     closeModal(false);
   } catch (error) {
-    const message = genericErrorMessage;
-
-
+    const message = 'Vi understøtter desværre ikke det uploadede billede. Prøv igen med et andet';
     dispatch({ type: types.POST_GROUP_FAILED, message });
   }
 };

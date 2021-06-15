@@ -7,6 +7,7 @@ import * as types from './attributeConstants';
 const ATTRIBUTS = 'attributs';
 
 export const getAttributes = () => async dispatch => {
+  dispatch({ type: types.GET_ATTRIBUTES_LOADING });
   const url = `${baseUrl}/${ATTRIBUTS}`;
   const header = authHeader();
   try {
