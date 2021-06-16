@@ -50,7 +50,9 @@ import {
   ANALYSE_OUTPUT_SUCCESS,
   ANALYSE_OUTPUT_FAILED,
   WORKSPACE_NODE_ADD_TO_LIST,
-  WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST
+  WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST,
+  GET_CVR_NODES_SUCCESS,
+  GET_CVR_NODES_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -305,6 +307,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('outputs', outputs);
       });
     case ANALYSE_OUTPUT_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
+    case GET_CVR_NODES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const elements = fromJS(action.elements);
+        mutableState.set('elements', elements);
+      });
+    case GET_CVR_NODES_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

@@ -42,6 +42,7 @@ function DefineNode(props) {
           : (
             <WorkspaceNodeForm
               nodes={nodes}
+              close={close}
               nodeLabel={nodeLabel}
               handleChangeLabel={handleChangeLabel}
               attributes={attributes}

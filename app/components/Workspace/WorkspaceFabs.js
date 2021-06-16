@@ -9,10 +9,11 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import PropTypes from 'prop-types';
 import FlagIcon from '@material-ui/icons/Flag';
+import BusinessIcon from '@material-ui/icons/Business';
 
 const WorkspaceFab = (props) => {
   const {
-    nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick
+    nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick, onCvrClick
   } = props;
   const theme = useTheme();
 
@@ -30,31 +31,38 @@ const WorkspaceFab = (props) => {
       >
         <Action
           text="Gem"
-          style={{ backgroundColor: theme.palette.primary.light }}
+          style={{ backgroundColor: 'white' }}
           onClick={saveClick}
         >
-          <SaveIcon />
+          <SaveIcon style={{ color: theme.palette.primary.main }} />
         </Action>
         <Action
           text="Metadata"
-          style={{ backgroundColor: theme.palette.secondary.light }}
+          style={{ backgroundColor: 'white' }}
           onClick={metaClick}
         >
-          <TextFieldsIcon />
+          <TextFieldsIcon style={{ color: theme.palette.primary.main }} />
         </Action>
         <Action
           text="Analyser"
-          style={{ backgroundColor: theme.palette.secondary.main }}
+          style={{ backgroundColor: 'white' }}
           onClick={onAnalysisClick}
         >
-          <AssessmentIcon />
+          <AssessmentIcon style={{ color: theme.palette.primary.main }} />
         </Action>
         <Action
           text="Red flags"
-          style={{ backgroundColor: theme.palette.secondary.main }}
+          style={{ backgroundColor: 'white' }}
           onClick={onAlertClick}
         >
-          <FlagIcon />
+          <FlagIcon style={{ color: theme.palette.primary.main }} />
+        </Action>
+        <Action
+          text="Hent fra CVR"
+          style={{ backgroundColor: 'white' }}
+          onClick={onCvrClick}
+        >
+          <BusinessIcon style={{ color: theme.palette.primary.main }} />
         </Action>
       </Fab>
     </>
@@ -67,6 +75,7 @@ WorkspaceFab.propTypes = {
   saveClick: PropTypes.func.isRequired,
   onAlertClick: PropTypes.func.isRequired,
   onAnalysisClick: PropTypes.func.isRequired,
+  onCvrClick: PropTypes.func.isRequired,
 };
 
 export default WorkspaceFab;

@@ -11,6 +11,9 @@ import CounterWidget from './Counter/CounterWidget';
 
 import PapperBlock from './PapperBlock/PapperBlock';
 
+// modal
+import FormDialog from './DialogModal/FormDialog';
+
 // Guide
 import GuideSlider from './GuideSlider';
 // Form
@@ -153,4 +156,5 @@ export {
   ConditionFabs,
   ConditionDefineEdge,
   ConditionDefineNode,
+  FormDialog
 };

@@ -14,7 +14,7 @@ import {
   WorkspaceFabs, CustomNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
   Notification, AlertModal,
-  AlertLog
+  AlertLog, FormDialog
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -32,8 +32,10 @@ import {
   addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
-  addEdgeToList, addWorkspaceNodeAttributToList
+  addEdgeToList, addWorkspaceNodeAttributToList,
+  cvrWorkspace
 } from './reducers/workspaceActions';
+
 
 const nodeTypes = {
   custom: CustomNode
@@ -43,6 +45,7 @@ const initialAttribut = {
   label: null,
   value: ''
 };
+
 
 const Workspace = (props) => {
   const { classes } = props;
@@ -66,6 +69,8 @@ const Workspace = (props) => {
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
+
+  const [showCvrModal, setShowCvrModal] = useState(false);
 
 
   const [showAlertLog, setShowAlertLog] = useState(false);
@@ -369,6 +374,7 @@ const Workspace = (props) => {
       <DefineNode
         open={defineNodeOpen}
         close={() => {
+          console.log('sdnlks');
           setDefineNodeOpen(false);
           setNodeLabel('');
           setIsUpdatingElement(false);
@@ -436,6 +442,14 @@ const Workspace = (props) => {
         alerts={alerts}
         history={history}
       />
+      <FormDialog
+        open={showCvrModal}
+        handleClose={() => setShowCvrModal(false)}
+        title="CVR opslag"
+        description="Skriv et cvr nummer og så tegner, vi hele strukturen ind for dig"
+        textFielLabel="CVR nummer"
+        onConfirm={(value) => dispatch(cvrWorkspace(value))}
+      />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
@@ -443,6 +457,7 @@ const Workspace = (props) => {
           saveClick={onWorkspaceSave}
           onAlertClick={() => setShowAlertLog(true)}
           onAnalysisClick={() => history.push(`analysis/${id}`)}
+          onCvrClick={() => setShowCvrModal(true)}
         />
       )}
     </div>

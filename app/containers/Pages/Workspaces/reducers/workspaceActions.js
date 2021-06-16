@@ -9,6 +9,7 @@ import {
 } from 'react-flow-renderer';
 import _history from '@utils/history';
 import * as types from './workspaceConstants';
+import { getLayoutedElements } from '../constants';
 
 
 const WORKSPACES = 'workspaces';
@@ -25,6 +26,20 @@ export const getWorkspaces = () => async dispatch => {
     dispatch({ type: types.GET_WORKSPACES_FAILED, message });
   }
 };
+
+export const cvrWorkspace = (cvr) => async dispatch => {
+  const url = `${baseUrl}/workspaces/cvr?cvr=${cvr}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const elements = getLayoutedElements(response.data);
+
+    dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
+  } catch (error) {
+    dispatch({ type: types.GET_CVR_NODES_FAILED, message });
+  }
+};
+
 
 export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async () => {
   const url = `${baseUrl}/${WORKSPACES}/analyse/alerts/${workspaceId}`;
