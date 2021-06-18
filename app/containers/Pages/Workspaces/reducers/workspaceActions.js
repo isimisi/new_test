@@ -27,7 +27,8 @@ export const getWorkspaces = () => async dispatch => {
   }
 };
 
-export const cvrWorkspace = (cvr) => async dispatch => {
+export const cvrWorkspace = (cvr, close) => async dispatch => {
+  dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/cvr?cvr=${cvr}`;
   const header = authHeader();
   try {
@@ -35,6 +36,7 @@ export const cvrWorkspace = (cvr) => async dispatch => {
     const elements = getLayoutedElements(response.data);
 
     dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
+    close();
   } catch (error) {
     dispatch({ type: types.GET_CVR_NODES_FAILED, message });
   }

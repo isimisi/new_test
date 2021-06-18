@@ -443,12 +443,13 @@ const Workspace = (props) => {
         history={history}
       />
       <FormDialog
+        loading={loading}
         open={showCvrModal}
         handleClose={() => setShowCvrModal(false)}
         title="CVR opslag"
         description="Skriv et cvr nummer og så tegner, vi hele strukturen ind for dig"
         textFielLabel="CVR nummer"
-        onConfirm={(value) => dispatch(cvrWorkspace(value))}
+        onConfirm={(value, close) => dispatch(cvrWorkspace(value, close))}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && (
         <WorkspaceFabs

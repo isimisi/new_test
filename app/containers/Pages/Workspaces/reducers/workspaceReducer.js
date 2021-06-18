@@ -51,6 +51,7 @@ import {
   ANALYSE_OUTPUT_FAILED,
   WORKSPACE_NODE_ADD_TO_LIST,
   WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST,
+  GET_CVR_NODES_LOADING,
   GET_CVR_NODES_SUCCESS,
   GET_CVR_NODES_FAILED
 } from './workspaceConstants';
@@ -311,15 +312,21 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
+    case GET_CVR_NODES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
     case GET_CVR_NODES_SUCCESS:
       return state.withMutations((mutableState) => {
         const elements = fromJS(action.elements);
         mutableState.set('elements', elements);
+        mutableState.set('loading', false);
       });
     case GET_CVR_NODES_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
       });
     case EDGE_ADD_TO_LIST:
       return state.withMutations((mutableState) => {

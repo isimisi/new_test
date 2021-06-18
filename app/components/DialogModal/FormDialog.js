@@ -7,10 +7,11 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
+import Loader from '@api/ui/Loader';
 
 const FormDialog = (props) => {
   const {
-    handleClose, open, title, description, textFielLabel, onConfirm
+    handleClose, open, title, description, textFielLabel, onConfirm, loading
   } = props;
   const [textField, setTextField] = useState('');
   const [error, setError] = useState(false);
@@ -21,8 +22,7 @@ const FormDialog = (props) => {
 
   const confirm = () => {
     if (textField.length === 8 && /^\d+$/.test(textField)) {
-      onConfirm(textField);
-      handleClose();
+      onConfirm(textField, handleClose);
       setError(false);
     } else {
       setError(true);
@@ -33,19 +33,25 @@ const FormDialog = (props) => {
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {description}
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="cvr"
-          label={textFielLabel}
-          value={textField}
-          onChange={changeTextField}
-          fullWidth
-          error={error}
-        />
+        {loading
+          ? <Loader />
+          : (
+            <>
+              <DialogContentText>
+                {description}
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="cvr"
+                label={textFielLabel}
+                value={textField}
+                onChange={changeTextField}
+                fullWidth
+                error={error}
+              />
+            </>
+          )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
@@ -66,6 +72,7 @@ FormDialog.propTypes = {
   description: PropTypes.string.isRequired,
   textFielLabel: PropTypes.string.isRequired,
   onConfirm: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
 
