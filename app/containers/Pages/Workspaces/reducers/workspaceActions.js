@@ -27,9 +27,9 @@ export const getWorkspaces = () => async dispatch => {
   }
 };
 
-export const cvrWorkspace = (cvr, close) => async dispatch => {
+export const cvrWorkspace = (id, cvr, close) => async dispatch => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
-  const url = `${baseUrl}/workspaces/cvr?cvr=${cvr}`;
+  const url = `${baseUrl}/workspaces/${id}/cvr?cvr=${cvr}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
@@ -38,6 +38,7 @@ export const cvrWorkspace = (cvr, close) => async dispatch => {
     dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
     close();
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.GET_CVR_NODES_FAILED, message });
   }
 };

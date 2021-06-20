@@ -449,7 +449,7 @@ const Workspace = (props) => {
         title="CVR opslag"
         description="Skriv et cvr nummer og så tegner, vi hele strukturen ind for dig"
         textFielLabel="CVR nummer"
-        onConfirm={(value, close) => dispatch(cvrWorkspace(value, close))}
+        onConfirm={(value, close) => dispatch(cvrWorkspace(id, value, close))}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && (
         <WorkspaceFabs
