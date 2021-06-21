@@ -7,7 +7,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import { red } from '@api/palette/colorfull';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
-import { mapSelectOptions, selectStyles } from '@api/ui/helper';
+import { mapSelectOptions } from '@api/ui/helper';
 import DeleteIcon from '@material-ui/icons/Delete';
 import QueueIcon from '@material-ui/icons/Queue';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,8 +21,7 @@ const styles = theme => ({
   },
   field: {
     width: '100%',
-    marginBottom: 10,
-    marginTop: 20,
+    marginTop: 10,
   },
   fieldBasic: {
     width: '100%',
@@ -33,18 +32,27 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     marginTop: 8,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonInit: {
     margin: theme.spacing(4),
     textAlign: 'center'
   },
+  number: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    marginRight: 12,
+    marginTop: 17,
+  }
 });
 
 
-const AlertNamingForm = (props) => {
+const ChooseConditions = (props) => {
   const {
     classes,
+
     conditions,
     conditionsDropDownOptions,
     createOrSeeCondition,
@@ -59,15 +67,19 @@ const AlertNamingForm = (props) => {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Betingelser som dit red flag skal reagere på
+              Situationer:
             </Typography>
             {conditions.map((condition, index) => (
               <div className={classes.inlineWrap}>
+                <div className={classes.number}>
+                  <Typography>
+                    {index + 1}
+                  </Typography>
+                </div>
                 <div className={classes.field}>
                   <NoSsr>
                     <Select
                       classes={classes}
-                      styles={selectStyles}
                       inputId="react-select-single-alert-condition"
                       TextFieldProps={{
                         label: 'condition',
@@ -107,7 +119,7 @@ const AlertNamingForm = (props) => {
   );
 };
 
-AlertNamingForm.propTypes = {
+ChooseConditions.propTypes = {
   classes: PropTypes.object.isRequired,
   conditionsDropDownOptions: PropTypes.any.isRequired,
   conditions: PropTypes.array.isRequired,
@@ -118,4 +130,4 @@ AlertNamingForm.propTypes = {
 };
 
 
-export default withStyles(styles)(AlertNamingForm);
+export default withStyles(styles)(ChooseConditions);

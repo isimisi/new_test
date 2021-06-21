@@ -47,6 +47,7 @@ const WorkspaceFab = (props) => {
           text="Analyser"
           style={{ backgroundColor: 'white' }}
           onClick={onAnalysisClick}
+          disabled
         >
           <AssessmentIcon style={{ color: theme.palette.primary.main }} />
         </Action>

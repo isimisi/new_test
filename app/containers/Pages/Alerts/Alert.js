@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
-import { Notification, AlertNamingForm, AlertConditions } from '@components';
+import { Notification, AlertNamingForm, ChooseConditions } from '@components';
 import { useSelector, useDispatch, } from 'react-redux';
 import {
   useHistory
@@ -80,7 +80,7 @@ const Alert = () => {
           />
         </Grid>
         <Grid item md={12}>
-          <AlertConditions
+          <ChooseConditions
             conditions={conditions}
             conditionsDropDownOptions={conditionsDropDownOptions}
             deleteCondition={handleDelteCondition}

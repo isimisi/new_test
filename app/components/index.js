@@ -71,7 +71,6 @@ import RelationshipStylling from './Relationships/RelationshipStylling';
 import AlertDemo from './Alerts/AlertDemo';
 import AlertModal from './Alerts/AlertModal';
 import AlertLog from './Alerts/AlertLog';
-import AlertConditions from './Alerts/AlertConditions';
 
 // Workspace
 import WorkspaceForm from './Workspace/WorkspaceForm';
@@ -89,9 +88,11 @@ import DefineNode from './Workspace/Node/DefineNode';
 import ConditionForm from './Condition/ConditionForm';
 import ConditionMeta from './Condition/ConditionMeta';
 import ConditionFabs from './Condition/ConditionFabs';
+import ChooseConditions from './Condition/ChooseConditions';
 
 import ConditionDefineEdge from './Condition/Edge/DefineEdge';
 import ConditionDefineNode from './Condition/Node/DefineNode';
+
 
 export {
   Header,
@@ -144,7 +145,6 @@ export {
   AlertDemo,
   AlertModal,
   AlertLog,
-  AlertConditions,
   WorkspaceForm,
   WorkspaceMeta,
   WorkspaceFabs,
@@ -158,5 +158,6 @@ export {
   ConditionFabs,
   ConditionDefineEdge,
   ConditionDefineNode,
+  ChooseConditions,
   FormDialog
 };

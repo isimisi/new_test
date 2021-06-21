@@ -38,8 +38,8 @@ export const cvrWorkspace = (id, cvr, close) => async dispatch => {
     dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
     close();
   } catch (error) {
-    console.log(error.response);
-    dispatch({ type: types.GET_CVR_NODES_FAILED, message });
+    const _message = 'Vi har desværre nogle probler med kommunkationen til cvr';
+    dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
   }
 };
 

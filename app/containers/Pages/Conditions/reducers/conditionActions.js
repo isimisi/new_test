@@ -113,7 +113,7 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
     await axios.put(url, body, header);
     const message = 'Vi har gemt dit scenarie';
 
-    if (history.location.state.fromContent) {
+    if (history?.location?.state?.fromContent) {
       if (history.location.state.place === 'outputs') {
         dispatch(outputAddCondition(conditionLabel));
       } else {
@@ -126,6 +126,7 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
       history.push(`/app/${CONDITIONS}`);
     }
   } catch (error) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SAVE_CONDITION_FAILED, message });
   }

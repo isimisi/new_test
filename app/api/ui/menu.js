@@ -43,6 +43,7 @@ module.exports = [
     name: 'Rapportindhold',
     icon: 'ios-document-outline',
     linkParent: '/app/outputs',
+    disabled: true
   },
   {
     key: 'redFlags',

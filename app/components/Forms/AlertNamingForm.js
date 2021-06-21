@@ -69,7 +69,7 @@ const AlertNamingForm = (props) => {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Name your Red Flag
+              Red flag-indhold
             </Typography>
             <div>
               <TextField
