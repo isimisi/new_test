@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
-import { Notification, AlertNamingForm, AlertDemo } from '@components';
+import { Notification, AlertNamingForm, AlertConditions } from '@components';
 import { useSelector, useDispatch, } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
 import {
-  closeNotifAction, showAlert, putAlert, getConditionsDropDown, getGroupDropDown
+  closeNotifAction, showAlert, putAlert, getConditionsDropDown, getGroupDropDown,
+  addCondition,
+  changeCondition,
+  deleteCondition
 } from './reducers/alertActions';
+import { postCondition } from '../Conditions/reducers/conditionActions';
 import { reducer } from './constants';
 
 const Alert = () => {
@@ -21,11 +25,14 @@ const Alert = () => {
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
-  const condition = useSelector(state => state.getIn([reducer, 'condition']));
+  const conditions = useSelector(state => state.getIn([reducer, 'alertConditions'])).toJS();
   const conditionsDropDownOptions = useSelector(state => state.getIn([reducer, 'conditionsDropDownOptions'])).toJS();
 
+  const [deletedConditions, setDeletedConditions] = useState([]);
+
+
   const onSave = () => {
-    dispatch(putAlert(history, id, title, description, group, condition));
+    dispatch(putAlert(history, id, title, description, group, JSON.stringify(conditions), JSON.stringify(deletedConditions)));
   };
 
   useEffect(() => {
@@ -37,25 +44,49 @@ const Alert = () => {
     dispatch(getGroupDropDown());
   }, []);
 
+  const handleDelteCondition = (cond, index) => {
+    dispatch(deleteCondition(index));
+    if (cond.id) {
+      setDeletedConditions([...deletedConditions, cond.id]);
+    }
+  };
+  const handleAddCondition = () => {
+    dispatch(addCondition({ label: null, condition_id: null }));
+  };
+
+  const handleChangeCondition = (cond, index) => {
+    dispatch(changeCondition(cond, index));
+  };
+
+  const handleCreateOrSeeCondition = (condition, see) => {
+    if (see) {
+      history.push('/app/conditions/' + condition.condition_id);
+    } else {
+      dispatch(postCondition(history, true));
+    }
+  };
+  console.log(conditions);
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <Grid container spacing={1}>
-        <Grid item md={6}>
+        <Grid item md={12}>
           <AlertNamingForm
             title={title}
             description={description}
             group={group}
             groupsDropDownOptions={groupsDropDownOptions}
-            condition={condition}
-            conditionsDropDownOptions={conditionsDropDownOptions}
             history={history}
           />
         </Grid>
-        <Grid item md={6}>
-          <AlertDemo
-            title={title}
-            description={description}
+        <Grid item md={12}>
+          <AlertConditions
+            conditions={conditions}
+            conditionsDropDownOptions={conditionsDropDownOptions}
+            deleteCondition={handleDelteCondition}
+            addCondition={handleAddCondition}
+            handleChangeCondition={handleChangeCondition}
+            createOrSeeCondition={handleCreateOrSeeCondition}
           />
         </Grid>
       </Grid>

@@ -6,7 +6,7 @@ import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import {
   isNode,
 } from 'react-flow-renderer';
-import { addCondition } from '../../Alerts/reducers/alertActions';
+import { changeCondition } from '../../Alerts/reducers/alertActions';
 import { addCondition as outputAddCondition } from '../../Outputs/reducers/outputActions';
 import * as types from './conditionConstants';
 const CONDITIONS = 'conditions';
@@ -117,7 +117,7 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
       if (history.location.state.place === 'outputs') {
         dispatch(outputAddCondition(conditionLabel));
       } else {
-        dispatch(addCondition(conditionLabel));
+        dispatch(changeCondition({ id: condition_id, value: conditionLabel }, null));
       }
 
       history.push(`/app/${history.location.state.place}/${history.location.state.placeId}`, { fromCondition: true });

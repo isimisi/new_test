@@ -40,10 +40,11 @@ export const showAlert = (id) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const {
-      label: title, description, group, condition
+      label: title, description, group, conditions
     } = response.data;
+
     dispatch({
-      type: types.SHOW_ALERT_SUCCESS, title, description, group, condition
+      type: types.SHOW_ALERT_SUCCESS, title, description, group, conditions
     });
   } catch (error) {
     const message = genericErrorMessage;
@@ -51,10 +52,10 @@ export const showAlert = (id) => async dispatch => {
   }
 };
 
-export const putAlert = (history, id, label, description, group, condition) => async dispatch => {
+export const putAlert = (history, id, label, description, group, conditions, deletedConditions) => async dispatch => {
   const url = `${baseUrl}/${ALERTS}/${id}`;
   const body = {
-    label, description, group, condition
+    label, description, group, conditions, deletedConditions
   };
   const header = authHeader();
   try {
@@ -66,6 +67,7 @@ export const putAlert = (history, id, label, description, group, condition) => a
 
     history.push('/app/red flags');
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_ALERT_FAILED, message });
   }
@@ -129,8 +131,19 @@ export const addGroup = group => ({
 });
 
 export const addCondition = condition => ({
-  type: types.ADD_CONDITION,
+  type: types.ALERT_ADD_CONDITION,
   condition
+});
+
+export const changeCondition = (condition, index) => ({
+  type: types.ALERT_CHANGE_CONDITION,
+  condition,
+  index
+});
+
+export const deleteCondition = index => ({
+  type: types.ALERT_DELETE_CONDITION,
+  index
 });
 
 export const closeNotifAction = {

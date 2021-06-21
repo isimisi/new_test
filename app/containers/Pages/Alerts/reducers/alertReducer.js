@@ -16,9 +16,11 @@ import {
   ADD_GROUP,
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
-  ADD_CONDITION,
   GET_CONDITION_DROPDOWN_SUCCESS,
   GET_CONDITION_DROPDOWN_FAILED,
+  ALERT_ADD_CONDITION,
+  ALERT_CHANGE_CONDITION,
+  ALERT_DELETE_CONDITION,
 } from './alertConstants';
 
 const initialState = {
@@ -26,7 +28,7 @@ const initialState = {
   title: '',
   description: '',
   group: '',
-  condition: '',
+  alertConditions: List(),
   message: '',
   groupsDropDownOptions: List(),
   conditionsDropDownOptions: List()
@@ -51,7 +53,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('title', '');
         mutableState.set('description', '');
         mutableState.set('group', '');
-        mutableState.set('condition', '');
+        mutableState.set('alertConditions', List());
       });
     case POST_ALERT_FAILED:
       return state.withMutations((mutableState) => {
@@ -63,12 +65,12 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const title = fromJS(action.title);
         const description = fromJS(action.description);
         const group = fromJS(action.group);
-        const condition = fromJS(action.condition);
+        const conditions = fromJS(action.conditions);
 
         mutableState.set('title', title);
         mutableState.set('description', description);
         mutableState.set('group', group);
-        mutableState.set('condition', condition);
+        mutableState.set('alertConditions', conditions);
       });
     case SHOW_ALERT_FAILED:
       return state.withMutations((mutableState) => {
@@ -131,11 +133,30 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const group = fromJS(action.group);
         mutableState.set('group', group);
       });
-    case ADD_CONDITION:
+    case ALERT_ADD_CONDITION:
       return state.withMutations((mutableState) => {
         const condition = fromJS(action.condition);
-        console.log('øaddcondition');
-        mutableState.set('condition', condition);
+        mutableState.update('alertConditions', list => list.push(condition));
+      });
+    case ALERT_CHANGE_CONDITION:
+      return state.withMutations((mutableState) => {
+        const conditions = mutableState.get('alertConditions').toJS();
+
+        let condition = conditions.find(cond => !cond.label);
+
+        if (action.index || action.index === 0) {
+          const index = conditions.findIndex((c, i) => i === action.index);
+          condition = conditions[index];
+        }
+
+        condition.label = action.condition.value;
+        condition.condition_id = action.condition.id;
+
+        mutableState.set('alertConditions', fromJS(conditions));
+      });
+    case ALERT_DELETE_CONDITION:
+      return state.withMutations((mutableState) => {
+        mutableState.update('alertConditions', list => list.filter((l, i) => i !== action.index));
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

@@ -8,14 +8,10 @@ import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { useDispatch } from 'react-redux';
-import Button from '@material-ui/core/Button';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import {
-  titleChange, descriptionChange, addGroup, addCondition
+  titleChange, descriptionChange, addGroup
 } from '../../containers/Pages/Alerts/reducers/alertActions';
-import {
-  postCondition
-} from '../../containers/Pages/Conditions/reducers/conditionActions';
 
 const styles = theme => ({
   root: {
@@ -51,9 +47,6 @@ const AlertNamingForm = (props) => {
     description,
     group,
     groupsDropDownOptions,
-    condition,
-    conditionsDropDownOptions,
-    history
   } = props;
 
 
@@ -69,9 +62,6 @@ const AlertNamingForm = (props) => {
     dispatch(addGroup(value.value));
   };
 
-  const handleChangeConditions = (value) => {
-    dispatch(addCondition(value.value));
-  };
 
   return (
     <div style={{ marginBottom: 20 }}>
@@ -98,7 +88,6 @@ const AlertNamingForm = (props) => {
                 placeholder="Description"
                 label="Description"
                 multiline
-                rows={2}
                 onChange={handleDescriptionChange}
                 value={description}
               />
@@ -124,57 +113,6 @@ const AlertNamingForm = (props) => {
                 />
               </NoSsr>
             </div>
-
-            <div className={classes.field}>
-              <NoSsr>
-                <Select
-                  classes={classes}
-                  styles={selectStyles}
-                  inputId="react-select-single-alert-condition"
-                  TextFieldProps={{
-                    label: 'condition',
-                    InputLabelProps: {
-                      htmlFor: 'react-select-single-alert-condition',
-                      shrink: true,
-                    },
-                    placeholder: 'condition',
-                  }}
-                  placeholder="condition"
-                  options={mapSelectOptions(conditionsDropDownOptions)}
-                  value={condition && { label: condition, value: condition }}
-                  onChange={handleChangeConditions}
-                />
-              </NoSsr>
-            </div>
-            <div className={classes.inlineWrap}>
-              <Button
-                variant="contained"
-                color="secondary"
-                style={{
-                  borderRadius: 4,
-                  height: 38,
-                  width: '100%'
-                }}
-                onClick={() => dispatch(postCondition(history, true))}
-              >
-                Opret betingelse
-              </Button>
-              {condition && (
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  style={{
-                    borderRadius: 4,
-                    height: 38,
-                    marginLeft: 10,
-                    width: '100%'
-                  }}
-                  onClick={() => history.push('/app/conditions/' + conditionsDropDownOptions.find(c => c.value === condition).id)}
-                >
-                Se betingelse
-                </Button>
-              )}
-            </div>
           </Paper>
         </Grid>
       </Grid>
@@ -188,9 +126,6 @@ AlertNamingForm.propTypes = {
   description: PropTypes.string.isRequired,
   group: PropTypes.string.isRequired,
   groupsDropDownOptions: PropTypes.any.isRequired,
-  condition: PropTypes.string.isRequired,
-  conditionsDropDownOptions: PropTypes.any.isRequired,
-  history: PropTypes.any.isRequired,
 };
 
 
