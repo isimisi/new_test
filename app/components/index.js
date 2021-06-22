@@ -76,6 +76,7 @@ import AlertLog from './Alerts/AlertLog';
 import WorkspaceForm from './Workspace/WorkspaceForm';
 import WorkspaceMeta from './Workspace/WorkspaceMeta';
 import WorkspaceFabs from './Workspace/WorkspaceFabs';
+import MapTypesForErst from './Workspace/MapTypesForErst';
 import CustomNode from './Workspace/Node/CustomNode';
 
 import CustomConnectionLine from './Workspace/Edge/CustomConnectionLine';
@@ -148,6 +149,7 @@ export {
   WorkspaceForm,
   WorkspaceMeta,
   WorkspaceFabs,
+  MapTypesForErst,
   CustomConnectionLine,
   CustomEdge,
   CustomNode,

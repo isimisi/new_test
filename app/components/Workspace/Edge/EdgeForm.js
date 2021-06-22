@@ -264,7 +264,7 @@ EdgeForm.propTypes = {
   showLabel: PropTypes.bool.isRequired,
   handleShowLabelChange: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
-  relationships: PropTypes.array.isRequired,
+  relationships: PropTypes.object.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
   handleDeleteEdge: PropTypes.func.isRequired,
 };

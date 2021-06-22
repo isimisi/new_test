@@ -45,8 +45,8 @@ function WorkspaceMeta(props) {
 
 WorkspaceMeta.propTypes = {
   open: PropTypes.bool.isRequired,
-  label: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
   group: PropTypes.string.isRequired,
   labelChange: PropTypes.func.isRequired,
   descriptionChange: PropTypes.func.isRequired,
@@ -54,6 +54,11 @@ WorkspaceMeta.propTypes = {
   groupsDropDownOptions: PropTypes.array.isRequired,
   closeForm: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+};
+
+WorkspaceMeta.defaultProps = {
+  label: '',
+  description: ''
 };
 
 export default withStyles(styles)(WorkspaceMeta);

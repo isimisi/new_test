@@ -81,7 +81,7 @@ const WorkspaceForm = (props) => {
           variant="contained"
           color="secondary"
           type="button"
-          disabled={label.length === 0 || description.length === 0 || group.length === 0}
+          disabled={label?.length === 0 || description?.length === 0 || group?.length === 0}
           onClick={onSave}
         >
             Save
@@ -91,11 +91,17 @@ const WorkspaceForm = (props) => {
   );
 };
 
+WorkspaceForm.defaultProps = {
+  label: '',
+  description: '',
+  group: ''
+};
+
 WorkspaceForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  group: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  group: PropTypes.string,
   labelChange: PropTypes.func.isRequired,
   descriptionChange: PropTypes.func.isRequired,
   addGroup: PropTypes.func.isRequired,
@@ -103,5 +109,6 @@ WorkspaceForm.propTypes = {
   closeForm: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
 };
+
 
 export default withStyles(styles)(WorkspaceForm);

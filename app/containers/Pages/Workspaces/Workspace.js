@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
-  removeElements,
   Controls,
   ControlButton,
   Background,
@@ -14,7 +13,7 @@ import {
   WorkspaceFabs, CustomNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
   Notification, AlertModal,
-  AlertLog, FormDialog
+  AlertLog, FormDialog, MapTypesForErst
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,7 +24,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { toast } from 'react-toastify';
 import styles from './workspace-jss';
-import { reducer } from './constants';
+import { reducer, initErstTypes } from './constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
@@ -71,6 +70,8 @@ const Workspace = (props) => {
   const [rfInstance, setRfInstance] = useState(null);
 
   const [showCvrModal, setShowCvrModal] = useState(false);
+  const [showMapErst, setShowMapErst] = useState(false);
+  const [erstTypes, setErstTypes] = useState(initErstTypes);
 
 
   const [showAlertLog, setShowAlertLog] = useState(false);
@@ -120,7 +121,21 @@ const Workspace = (props) => {
   };
 
   const onElementsRemove = (elementsToRemove) => {
-    const remainingElements = removeElements(elementsToRemove, elements);
+    console.log(elementsToRemove, elements);
+    const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
+    const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
+
+    const remainingElements = elements.filter(el => {
+      if (isNode(el)) {
+        return !(
+          nodeIdsToRemove.includes(el.id)
+          || nodeIdsToRemove.includes(el.target)
+          || nodeIdsToRemove.includes(el.source)
+        );
+      }
+      return !edgeIdsToRemove.includes(el.id);
+    });
+    console.log(remainingElements);
     setIsUpdatingElement(false);
     setElementToUpdate(null);
 
@@ -421,21 +436,23 @@ const Workspace = (props) => {
           }
         }}
       />
-      <AlertModal
-        title={alerts[alertId]?.label}
-        description={alerts[alertId]?.description}
-        handleSeeCondition={() => {
-          const location = window.location.href.replace(
-            history.location.pathname,
-            `/app/conditions/${alerts[alertId]?.condition_id}`
-          );
-          const win = window.open(location, '_blank');
-          win.focus();
-        }
-        }
-        open={alertOpen}
-        handleClose={() => setAlertOpen(false)}
-      />
+      {alerts[alertId] && (
+        <AlertModal
+          title={alerts[alertId]?.label}
+          description={alerts[alertId]?.description}
+          handleSeeCondition={() => {
+            const location = window.location.href.replace(
+              history.location.pathname,
+              `/app/conditions/${alerts[alertId]?.condition_id}`
+            );
+            const win = window.open(location, '_blank');
+            win.focus();
+          }
+          }
+          open={alertOpen}
+          handleClose={() => setAlertOpen(false)}
+        />
+      )}
       <AlertLog
         open={showAlertLog}
         close={() => setShowAlertLog(false)}
@@ -449,7 +466,50 @@ const Workspace = (props) => {
         title="CVR opslag"
         description="Skriv et cvr nummer og så tegner, vi hele strukturen ind for dig"
         textFielLabel="CVR nummer"
-        onConfirm={(value, close) => dispatch(cvrWorkspace(id, value, close))}
+        onConfirm={(value, close) => {
+          const erstNodeArray = Object.values(erstTypes.nodes);
+          const erstEdgeArray = Object.values(erstTypes.edges);
+          const nodeLabels = nodes.map((node) => node.label);
+          const relationshipLabels = relationships.toJS().map((r) => r.label);
+          if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
+            dispatch(cvrWorkspace(id, value, close, erstTypes));
+          } else {
+            setShowMapErst(true);
+          }
+        }}
+      />
+      <MapTypesForErst
+        open={showMapErst}
+        handleClose={() => setShowMapErst(false)}
+        onConfirm={(types) => {
+          setShowMapErst(false);
+          setErstTypes(types);
+        }}
+        handleNodeChange={(_label) => {
+          if (_label.__isNew__) {
+            dispatch(addWorkspaceNodeToList({
+              attributes: [],
+              description: null,
+              id: null,
+              label: _label.value,
+              style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
+            }));
+          }
+        }}
+        handleRelationshipChange={(_label) => {
+          if (_label.__isNew__) {
+            dispatch(addEdgeToList({
+              id: null,
+              label: _label.value,
+              description: null,
+              values: [],
+              style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
+            }));
+          }
+        }}
+        initErstTypes={erstTypes}
+        nodes={nodes}
+        relationships={relationships}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && (
         <WorkspaceFabs

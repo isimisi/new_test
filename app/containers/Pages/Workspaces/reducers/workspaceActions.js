@@ -27,17 +27,19 @@ export const getWorkspaces = () => async dispatch => {
   }
 };
 
-export const cvrWorkspace = (id, cvr, close) => async dispatch => {
+export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
-  const url = `${baseUrl}/workspaces/${id}/cvr?cvr=${cvr}`;
+  const url = `${baseUrl}/workspaces/${id}/cvr`;
+  const body = { cvr, erstTypes };
   const header = authHeader();
   try {
-    const response = await axios.get(url, header);
+    const response = await axios.post(url, body, header);
     const elements = getLayoutedElements(response.data);
 
     dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
     close();
   } catch (error) {
+    console.log(error.response);
     const _message = 'Vi har desværre nogle probler med kommunkationen til cvr';
     dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
   }
@@ -79,6 +81,7 @@ export const postWorkspace = (history) => async dispatch => {
     dispatch({ type: types.POST_WORKSPACE_SUCCESS });
     history.push(`${WORKSPACES}/${id}`);
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.POST_WORKSPACE_FAILED, message });
   }
 };
@@ -97,7 +100,8 @@ export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
       type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
     });
 
-    if (label.length === 0 && description.length === 0 && !group) {
+
+    if ((!label || label?.length === 0) && (!description || description?.length === 0) && !group) {
       setMetaOpen(true);
     }
     dispatch(analyseAlerts(id, setAlerts, true));
@@ -159,16 +163,16 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
 };
 
 export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => async dispatch => {
-  Promise.all(elementsToRemove.map(async (e) => {
-    const url = `${baseUrl}/${WORKSPACES}/${isNode(e) ? 'nodes' : 'relationship'}/${e.id}`;
-    const header = authHeader();
-    await axios.delete(url, header);
-  })).then(() => {
-    console.log(elementsToRemove, remainingElements);
+  const url = `${baseUrl}/${WORKSPACES}/elements`;
+  const elements = elementsToRemove.filter(element => isNode(element)).map(element => element.id);
+  const body = { elements };
+  const header = authHeader();
+  try {
+    await axios.post(url, body, header);
     dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
-  }).catch(() => {
+  } catch (error) {
     dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
-  });
+  }
 };
 
 export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {

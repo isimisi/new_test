@@ -88,8 +88,12 @@ DefineNode.propTypes = {
   loading: PropTypes.bool.isRequired,
   attributesDropDownOptions: PropTypes.array.isRequired,
   handleRemoveAttributes: PropTypes.func.isRequired,
-  nodeFigur: PropTypes.string.isRequired,
+  nodeFigur: PropTypes.string,
   handleNodeFigurChange: PropTypes.func.isRequired,
+};
+
+DefineNode.defaultProps = {
+  nodeFigur: null
 };
 
 export default withStyles(styles)(DefineNode);

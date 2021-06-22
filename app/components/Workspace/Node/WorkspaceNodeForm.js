@@ -307,8 +307,12 @@ WorkspaceNodeForm.propTypes = {
   handleDeleteNode: PropTypes.func.isRequired,
   attributesDropDownOptions: PropTypes.array.isRequired,
   handleRemoveAttributes: PropTypes.func.isRequired,
-  nodeFigur: PropTypes.string.isRequired,
+  nodeFigur: PropTypes.string,
   handleNodeFigurChange: PropTypes.func.isRequired,
+};
+
+WorkspaceNodeForm.defaultProps = {
+  nodeFigur: null
 };
 
 export default withStyles(styles)(WorkspaceNodeForm);

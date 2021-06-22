@@ -83,3 +83,14 @@ export const columns = [
 ];
 
 export const reducer = 'workspace';
+
+export const initErstTypes = {
+  nodes: {
+    VIRKSOMHED: 'Selskab',
+    PERSON: 'Person',
+  },
+  edges: {
+    EJERSKAB: 'Ejerskab',
+  },
+
+};
