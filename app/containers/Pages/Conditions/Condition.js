@@ -69,7 +69,7 @@ const Condition = (props) => {
     dispatch(getNodes());
     dispatch(getRelationships());
     dispatch(getBuildTypeValueOptions());
-    dispatch(showCondition(id));
+    dispatch(showCondition(id, setMetaOpen));
   }, []);
 
   const choosenNode = nodes.find(r => r.label === nodeLabel);

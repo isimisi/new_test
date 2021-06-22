@@ -42,7 +42,7 @@ export const postCondition = (history, fromContent = false) => async dispatch =>
   }
 };
 
-export const showCondition = (id) => async dispatch => {
+export const showCondition = (id, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${CONDITIONS}/${id}`;
   const header = authHeader();
 
@@ -52,6 +52,11 @@ export const showCondition = (id) => async dispatch => {
     const {
       label, description, group, elements
     } = response.data;
+
+
+    if ((!label || label?.length === 0) && (!description || description?.length === 0) && !group) {
+      setMetaOpen(true);
+    }
 
     dispatch({
       type: types.SHOW_CONDITION_SUCCESS,
