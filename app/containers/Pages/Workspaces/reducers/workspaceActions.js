@@ -163,15 +163,26 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
 };
 
 export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => async dispatch => {
-  const url = `${baseUrl}/${WORKSPACES}/elements`;
-  const elements = elementsToRemove.filter(element => isNode(element)).map(element => element.id);
-  const body = { elements };
-  const header = authHeader();
-  try {
-    await axios.post(url, body, header);
-    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
-  } catch (error) {
-    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
+  if (elementsToRemove.length === 1 && !isNode(elementsToRemove[0])) {
+    const url = `${baseUrl}/${WORKSPACES}/relationship/${elementsToRemove[0].id}`;
+    const header = authHeader();
+    try {
+      await axios.delete(url, header);
+      dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
+    } catch (error) {
+      dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
+    }
+  } else {
+    const url = `${baseUrl}/${WORKSPACES}/elements`;
+    const elements = elementsToRemove.filter(element => isNode(element)).map(element => element.id);
+    const body = { elements };
+    const header = authHeader();
+    try {
+      await axios.post(url, body, header);
+      dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
+    } catch (error) {
+      dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
+    }
   }
 };
 
