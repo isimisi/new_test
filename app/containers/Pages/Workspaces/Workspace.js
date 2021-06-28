@@ -38,7 +38,8 @@ import {
 
 
 const nodeTypes = {
-  custom: CustomNode
+  custom: CustomNode,
+  // sticky: StickyNoteNode
 };
 
 const initialAttribut = {
@@ -449,7 +450,7 @@ const Workspace = (props) => {
           handleSeeCondition={() => {
             const location = window.location.href.replace(
               history.location.pathname,
-              `/app/conditions/${alerts[alertId]?.condition_id}`
+              `/app/red%20flags/${alerts[alertId]?.isNode}`
             );
             const win = window.open(location, '_blank');
             win.focus();
@@ -469,9 +470,9 @@ const Workspace = (props) => {
         loading={loading}
         open={showCvrModal}
         handleClose={() => setShowCvrModal(false)}
-        title="CVR opslag"
-        description="Skriv et cvr nummer og så tegner, vi hele strukturen ind for dig"
-        textFielLabel="CVR nummer"
+        title="CVR-opslag"
+        description="Indtast CVR-nummer. Herefter indlæser vi koncernstrukturen for dig."
+        textFielLabel="CVR-nummer"
         onConfirm={(value, close) => {
           const erstNodeArray = Object.values(erstTypes.nodes);
           const erstEdgeArray = Object.values(erstTypes.edges);

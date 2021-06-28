@@ -17,7 +17,7 @@ function AlertLog(props) {
     marginLeft: 10,
     marginRight: 10
   };
-
+  console.log(alerts);
   return (
     <div>
       <FloatingPanel
@@ -34,7 +34,7 @@ function AlertLog(props) {
                 handleSeeCondition={() => {
                   const location = window.location.href.replace(
                     history.location.pathname,
-                    `/app/conditions/${a.condition_id}`
+                    `/app/red%20flags/${a.id}`
                   );
                   const win = window.open(location, '_blank');
                   win.focus();

@@ -78,6 +78,7 @@ import WorkspaceMeta from './Workspace/WorkspaceMeta';
 import WorkspaceFabs from './Workspace/WorkspaceFabs';
 import MapTypesForErst from './Workspace/MapTypesForErst';
 import CustomNode from './Workspace/Node/CustomNode';
+import StickyNoteNode from './Workspace/Node/StickyNoteNode';
 
 import CustomConnectionLine from './Workspace/Edge/CustomConnectionLine';
 import CustomEdge from './Workspace/Edge/CustomEdge';
@@ -153,6 +154,7 @@ export {
   CustomConnectionLine,
   CustomEdge,
   CustomNode,
+  StickyNoteNode,
   DefineEdge,
   DefineNode,
   ConditionForm,
