@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
   Controls,
+  MiniMap,
   ControlButton,
   Background,
   isNode,
@@ -339,6 +340,11 @@ const Workspace = (props) => {
             connectionMode={ConnectionMode.Loose}
             onElementClick={onElementClick}
           >
+            <MiniMap
+              nodeStrokeWidth={3}
+              nodeColor={theme.palette.secondary.light}
+              style={{ top: 0, right: 0 }}
+            />
             <Controls>
               {/* <ControlButton onClick={() => console.log('another action')}>
                   <PhotoCameraIcon />
