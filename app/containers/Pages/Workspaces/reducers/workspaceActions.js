@@ -185,7 +185,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
   }
 };
 
-export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, background_color, border_color, attributes, setDefineNodeOpen, setAlerts) => async dispatch => {
+export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, background_color, border_color, attributes, setDefineNodeOpen, setAlerts, x, y) => async dispatch => {
   dispatch({ type: types.WORKSPACE_POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
@@ -197,8 +197,8 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, 
     background_color,
     border_color,
     attributes,
-    'x-value': 0,
-    'y-value': 0
+    'x-value': x,
+    'y-value': y
   };
   const header = authHeader();
 

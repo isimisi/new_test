@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {
+  useState, useEffect, useCallback, useRef
+} from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
   Controls,
@@ -19,7 +21,7 @@ import {
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  useHistory, useLocation
+  useHistory
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -54,6 +56,8 @@ const Workspace = (props) => {
   const history = useHistory();
   const theme = useTheme();
   const id = history.location.pathname.split('/').pop();
+  const reactFlowContainer = useRef(null);
+  const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
 
   // REDUX
   const relationships = useSelector(state => state.getIn([reducer, 'relationships']));
@@ -240,10 +244,22 @@ const Workspace = (props) => {
 
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
+    const rf = rfInstance.toObject();
+
+    const x = rf.position[0] * -1 + reactFlowDimensions.width - 250;
+    const y = rf.position[1] * -1 + reactFlowDimensions.height - 150;
+
     if (isUpdatingElement) {
       dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, setDefineNodeOpen, handleAlerts));
+      dispatch(postNode(
+        id,
+        choosenNode.id, choosenNode.label,
+        nodeDisplayName, nodeFigur,
+        JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
+        _attributes, setDefineNodeOpen, handleAlerts,
+        x, y
+      ));
       setNodeLabel('');
     }
     setIsUpdatingElement(false);
@@ -326,46 +342,46 @@ const Workspace = (props) => {
   window.onbeforeunload = () => {
     onWorkspaceSave();
   };
-  console.log(rfInstance);
-  useEffect(() => history.listen((location) => {
-    console.log(`You changed the page to: ${location.pathname}`);
-    console.log(rfInstance);
-  }), [history]);
+
+  useEffect(() => {
+    if (reactFlowContainer) {
+      setReactFlowDimensions({
+        height: reactFlowContainer.current.clientHeight,
+        width: reactFlowContainer.current.clientWidth
+      });
+    }
+  }, []);
 
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <div className={classes.root}>
-        <div
-          className={classes.content}
+      <div className={classes.root} ref={reactFlowContainer}>
+        <ReactFlow
+          elements={elements}
+          onElementsRemove={onElementsRemove}
+          onConnect={onConnect}
+          style={flowStyle}
+          nodeTypes={nodeTypes}
+          edgeTypes={{ custom: CustomEdge }}
+          onLoad={onLoad}
+          connectionMode={ConnectionMode.Loose}
+          onElementClick={onElementClick}
         >
-          <ReactFlow
-            elements={elements}
-            onElementsRemove={onElementsRemove}
-            onConnect={onConnect}
-            style={flowStyle}
-            nodeTypes={nodeTypes}
-            edgeTypes={{ custom: CustomEdge }}
-            onLoad={onLoad}
-            connectionMode={ConnectionMode.Loose}
-            onElementClick={onElementClick}
-          >
-            <MiniMap
-              nodeStrokeWidth={3}
-              nodeColor={theme.palette.secondary.light}
-              style={{ top: 0, right: 0 }}
-            />
-            <Controls>
-              {/* <ControlButton onClick={() => console.log('another action')}>
+          <MiniMap
+            nodeStrokeWidth={3}
+            nodeColor={theme.palette.secondary.light}
+            style={{ top: 0, right: 0 }}
+          />
+          <Controls>
+            {/* <ControlButton onClick={() => console.log('another action')}>
                   <PhotoCameraIcon />
                 </ControlButton> */}
-              <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
-                {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
-              </ControlButton>
-            </Controls>
-            {handleVisability && <Background color="#aaa" gap={16} />}
-          </ReactFlow>
-        </div>
+            <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
+              {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
+            </ControlButton>
+          </Controls>
+          {handleVisability && <Background color="#aaa" gap={16} />}
+        </ReactFlow>
       </div>
       <WorkspaceMeta
         open={metaOpen}
