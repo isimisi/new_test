@@ -11,9 +11,10 @@ import ReactFlow, {
   Background,
   isNode,
   ConnectionMode,
+  BackgroundVariant
 } from 'react-flow-renderer';
 import {
-  WorkspaceFabs, CustomNode,
+  WorkspaceFabs, CustomNode, StickyNoteNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
   Notification, AlertModal,
   AlertLog, FormDialog, MapTypesForErst
@@ -21,7 +22,7 @@ import {
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  useHistory
+  useHistory, Prompt
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -41,13 +42,16 @@ import {
 
 const nodeTypes = {
   custom: CustomNode,
-  // sticky: StickyNoteNode
+  sticky: StickyNoteNode
 };
 
 const initialAttribut = {
   label: null,
   value: ''
 };
+
+const BASE_BG_GAP = 32;
+const BASE_BG_STROKE = 1;
 
 
 const Workspace = (props) => {
@@ -58,6 +62,8 @@ const Workspace = (props) => {
   const id = history.location.pathname.split('/').pop();
   const reactFlowContainer = useRef(null);
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
+  const [currentZoom, setCurrentZoom] = useState(1);
+
 
   // REDUX
   const relationships = useSelector(state => state.getIn([reducer, 'relationships']));
@@ -246,8 +252,8 @@ const Workspace = (props) => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const rf = rfInstance.toObject();
 
-    const x = rf.position[0] * -1 + reactFlowDimensions.width - 250;
-    const y = rf.position[1] * -1 + reactFlowDimensions.height - 150;
+    const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+    const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
     if (isUpdatingElement) {
       dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
@@ -362,6 +368,11 @@ const Workspace = (props) => {
           onConnect={onConnect}
           style={flowStyle}
           nodeTypes={nodeTypes}
+          onMove={(flowTransform) => {
+            if (flowTransform) {
+              setCurrentZoom(flowTransform.zoom);
+            }
+          }}
           edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
@@ -380,7 +391,14 @@ const Workspace = (props) => {
               {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
             </ControlButton>
           </Controls>
-          {handleVisability && <Background color="#aaa" gap={16} />}
+          {handleVisability
+               && (
+                 <Background
+                   variant={BackgroundVariant.Lines}
+                   gap={BASE_BG_GAP / currentZoom}
+                   size={BASE_BG_STROKE / currentZoom}
+                 />
+               )}
         </ReactFlow>
       </div>
       <WorkspaceMeta
