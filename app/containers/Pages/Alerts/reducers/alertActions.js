@@ -67,7 +67,6 @@ export const putAlert = (history, id, label, description, group, conditions, del
 
     history.push('/app/red flags');
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_ALERT_FAILED, message });
   }

@@ -65,7 +65,7 @@ const Alert = () => {
       dispatch(postCondition(history, true));
     }
   };
-  console.log(conditions);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />

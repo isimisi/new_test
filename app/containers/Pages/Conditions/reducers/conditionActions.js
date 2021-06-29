@@ -131,7 +131,6 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
       history.push(`/app/${CONDITIONS}`);
     }
   } catch (error) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SAVE_CONDITION_FAILED, message });
   }
@@ -152,7 +151,6 @@ export const deleteCondition = (id, title) => async dispatch => {
 };
 
 export const deleteConditionElement = (elementsToRemove, remainingElements) => async dispatch => {
-  console.log(elementsToRemove);
   Promise.all(elementsToRemove.map(async (e) => {
     const url = `${baseUrl}/condition${isNode(e) ? 'Nodes' : 'Relationships'}/${e.id}`;
     const header = authHeader();
@@ -160,7 +158,6 @@ export const deleteConditionElement = (elementsToRemove, remainingElements) => a
   })).then(() => {
     dispatch({ type: types.DELETE_CONDITION_ELEMENTS_SUCCESS, remainingElements });
   }).catch((error) => {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_CONDITION_ELEMENTS_FAILED, message });
   });
@@ -267,7 +264,6 @@ export const putEdge = (edgeId, relationship_id, relationshipLabel, comparison_t
     dispatch({ type: types.CONDITION_PUT_EDGE_SUCCESS, edge });
     setDefineEdgeOpen(false);
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_PUT_EDGE_FAILED, message });
   }

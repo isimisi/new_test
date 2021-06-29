@@ -8,6 +8,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import { useSpring, animated } from 'react-spring';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Checkbox from '@material-ui/core/Checkbox';
+import { green } from '@api/palette/colorfull';
 import styles from './cardStyle-jss';
 
 
@@ -20,7 +26,6 @@ function PricingCard(props) {
     classes,
     title,
     price,
-    feature,
     tier,
     onClick
   } = props;
@@ -39,6 +44,41 @@ function PricingCard(props) {
     }
   };
 
+  const lite = ['Indlæs fra CVR'];
+  const base = ['Ændre data fra CVR', 'Automatiske red flags'];
+  const structure = ['Design egne red flags', 'Design eget indhold', "Integrer andre API'er"];
+  const pro = ['Automatisk læringsindhold', 'Atuomatisk report builder'];
+
+  const features = [
+    ...lite,
+    ...base,
+    ...structure,
+    ...pro];
+
+  const getTierForWorkspaces = lv => {
+    switch (lv) {
+      case 'cheap':
+        return 50;
+      case 'free':
+        return 1;
+      default:
+        return 'Ubegr.';
+    }
+  };
+
+  const getTierForChecks = lv => {
+    switch (lv) {
+      case 'cheap':
+        return [...lite, ...base];
+      case 'expensive':
+        return [...lite, ...base, ...structure];
+      case 'more-expensive':
+        return features;
+      default:
+        return lite;
+    }
+  };
+
   return (
     <animated.div
       onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
@@ -50,17 +90,29 @@ function PricingCard(props) {
       <Card className={classNames(classes.priceCard, getTier(tier))}>
         <div className={classes.priceHead}>
           <Typography variant="h5">{title}</Typography>
-          <Typography component="h4" variant="h2">{price}</Typography>
+          <Typography component="h4" variant="h3">{price}</Typography>
+          {!['Kontakt os', 'Gratis'].includes(price) && <Typography variant="h7">Pr. bruger om måneden</Typography>}
         </div>
         <CardContent className={classes.featureList}>
-          <ul>
-            {feature.map((item, index) => (
-              <li key={index.toString()}>{item}</li>
+          <List dense>
+            <ListItem>
+              <ListItemText primary="Antal arbejdsområder" />
+              <ListItemSecondaryAction>
+                <Typography style={{ marginRight: 10 }}>{getTierForWorkspaces(tier)}</Typography>
+              </ListItemSecondaryAction>
+            </ListItem>
+            {features.map((item, index) => (
+              <ListItem key={index.toString()}>
+                <ListItemText primary={item} />
+                <ListItemSecondaryAction>
+                  <Checkbox style={{ color: 'white' }} checked={getTierForChecks(tier).includes(item)} />
+                </ListItemSecondaryAction>
+              </ListItem>
             ))}
-          </ul>
+          </List>
         </CardContent>
         <CardActions className={classes.btnArea}>
-          <Button variant="outlined" size="large" className={classes.lightButton} onClick={() => onClick()}>Get in now</Button>
+          <Button variant="outlined" size="large" className={classes.lightButton} onClick={() => onClick()}>Få det nu</Button>
         </CardActions>
       </Card>
     </animated.div>
@@ -72,7 +124,6 @@ PricingCard.propTypes = {
   title: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   tier: PropTypes.string.isRequired,
-  feature: PropTypes.array.isRequired,
   onClick: PropTypes.func.isRequired
 };
 

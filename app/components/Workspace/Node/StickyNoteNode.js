@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { memo } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
@@ -6,7 +7,6 @@ import { Resizable } from 're-resizable';
 
 const StickyNote = ({ data }) => {
   const theme = useTheme();
-
   return (
     <Resizable
       defaultSize={{
@@ -31,7 +31,6 @@ const StickyNote = ({ data }) => {
           width: '100%',
           backgroundColor: `${theme.palette.secondary.light}44`,
           padding: 10,
-          borderTopRightRadius: 30
         }}
       />
     </Resizable>

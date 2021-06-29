@@ -3,6 +3,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { isNode } from 'react-flow-renderer';
 import dagre from 'dagre';
+import { Link } from 'react-router-dom';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -68,9 +69,11 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Button variant="contained" color="primary" href={`/app/workspaces/${value}`}>
+        <Link to={`/app/workspaces/${value}`}>
+          <Button variant="contained" color="primary">
             Open
-        </Button>
+          </Button>
+        </Link>
       )
     }
   },

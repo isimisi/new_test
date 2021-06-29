@@ -80,7 +80,6 @@ export const postWorkspace = (history) => async dispatch => {
     dispatch({ type: types.POST_WORKSPACE_SUCCESS });
     history.push(`${WORKSPACES}/${id}`);
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.POST_WORKSPACE_FAILED, message });
   }
 };
@@ -120,7 +119,7 @@ export const putWorkspace = (workspace_id, label, description, group, setMetaOpe
     label, description, group
   };
   const header = authHeader();
-  console.log('nsdms');
+
   try {
     await axios.put(url, body, header);
     const _message = 'Metatekst er nu opdateret';
@@ -138,7 +137,7 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
     workspaceZoom, workspaceXPosition, workspaceYPosition, nodes
   };
   const header = authHeader();
-
+  console.log('saveWorkspace');
   try {
     await axios.put(url, body, header);
     const _message = 'Dit workspace er gemt';
@@ -169,6 +168,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
       await axios.delete(url, header);
       dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
     } catch (error) {
+      console.log(error.response);
       dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
     }
   } else {
@@ -209,7 +209,6 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, 
     setDefineNodeOpen(false);
     dispatch(analyseAlerts(workspace_id, setAlerts));
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
   }
 };
@@ -234,7 +233,6 @@ export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, figur
     dispatch({ type: types.WORKSPACE_PUT_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.WORKSPACE_PUT_NODE_FAILED, message });
   }
 };
@@ -267,7 +265,6 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => asy
     setDefineEdgeOpen(false);
     dispatch(analyseAlerts(workspace_id, setAlert));
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
 };

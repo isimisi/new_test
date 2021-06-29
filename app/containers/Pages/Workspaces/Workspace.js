@@ -19,7 +19,7 @@ import {
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  useHistory
+  useHistory, useLocation
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -123,7 +123,6 @@ const Workspace = (props) => {
   };
 
   const onElementsRemove = (elementsToRemove) => {
-    console.log(elementsToRemove, elements);
     const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
     const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
 
@@ -137,7 +136,7 @@ const Workspace = (props) => {
       }
       return !edgeIdsToRemove.includes(el.id);
     });
-    console.log(remainingElements);
+
     setIsUpdatingElement(false);
     setElementToUpdate(null);
 
@@ -191,6 +190,7 @@ const Workspace = (props) => {
   // WORKSPACE GENERAL
 
   const onWorkspaceSave = useCallback(() => {
+    console.log(rfInstance);
     if (rfInstance) {
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
@@ -323,6 +323,15 @@ const Workspace = (props) => {
     backgroundColor: 'white'
   };
 
+  window.onbeforeunload = () => {
+    onWorkspaceSave();
+  };
+  console.log(rfInstance);
+  useEffect(() => history.listen((location) => {
+    console.log(`You changed the page to: ${location.pathname}`);
+    console.log(rfInstance);
+  }), [history]);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -396,7 +405,6 @@ const Workspace = (props) => {
       <DefineNode
         open={defineNodeOpen}
         close={() => {
-          console.log('sdnlks');
           setDefineNodeOpen(false);
           setNodeLabel('');
           setIsUpdatingElement(false);

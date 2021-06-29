@@ -9,5 +9,6 @@ const colorfull = [
 ];
 
 export const red = '#BF0426';
+export const green = '#0C2617';
 
 export default colorfull;

@@ -35,7 +35,7 @@ const styles = theme => ({
   },
   divider: {
     margin: theme.spacing(3, 0)
-  }
+  },
 });
 
 export default styles;

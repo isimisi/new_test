@@ -179,6 +179,10 @@ const Condition = (props) => {
     backgroundColor: 'white'
   };
 
+  window.onbeforeunload = () => {
+    onConditionSave();
+  };
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />

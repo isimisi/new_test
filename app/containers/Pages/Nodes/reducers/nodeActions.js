@@ -86,7 +86,6 @@ export const putNode = (id, label, description, attributes, deletedAttributes, g
     dispatch({ type: types.PUT_NODE_SUCCESS, message });
     history.push('/app/nodes');
   } catch (error) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_NODE_FAILED, message });
   }

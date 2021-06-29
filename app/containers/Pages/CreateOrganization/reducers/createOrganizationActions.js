@@ -40,7 +40,6 @@ export const choosePlan = (plan, history) => async dispatch => {
     dispatch({ type: types.SAVE_PLAN_SUCCESS, message: 'Congratulation you are now ready to hack your productivty' });
     history.push('/app');
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.SAVE_PLAN_FAILED, message });
   }

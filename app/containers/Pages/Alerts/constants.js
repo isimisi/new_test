@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 export const columns = [
   {
@@ -25,9 +26,11 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Button variant="contained" color="primary" href={`/app/red flags/${value}`}>
+        <Link to={`/app/red flags/${value}`}>
+          <Button variant="contained" color="primary">
             Open
-        </Button>
+          </Button>
+        </Link>
       )
     }
   },

@@ -17,7 +17,7 @@ function AlertLog(props) {
     marginLeft: 10,
     marginRight: 10
   };
-  console.log(alerts);
+
   return (
     <div>
       <FloatingPanel

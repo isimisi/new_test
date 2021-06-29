@@ -13,7 +13,7 @@ export const login = (email, password, history, locationState) => async dispatch
 
   try {
     const response = await axios.post(url, body);
-    console.log(response);
+
     const {
       user, access_token, organization
     } = response.data;

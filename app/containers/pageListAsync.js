@@ -33,6 +33,11 @@ export const ChoosePlan = loadable(() =>
     fallback: <Loading />,
   });
 
+export const ChoosePlanFront = loadable(() =>
+  import ('./Pages/CreateOrganization/ChoosePlanFront'), {
+    fallback: <Loading />,
+  });
+
 export const Workspaces = loadable(() =>
   import ('./Pages/Workspaces'), {
     fallback: <Loading />,

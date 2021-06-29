@@ -313,7 +313,7 @@ const styles = theme => ({
     }
   },
   featureList: {
-    padding: 0,
+    padding: 5,
     textAlign: 'center',
     color: theme.palette.common.white,
     '& li': {
@@ -328,13 +328,13 @@ const styles = theme => ({
     background: theme.palette.secondary.main,
   },
   cheap: {
-    background: theme.palette.primary.main,
+    background: theme.palette.secondary.dark,
   },
   expensive: {
-    background: darken(theme.palette.primary.dark, 0.2),
+    background: theme.palette.primary.light,
   },
   moreExpensive: {
-    background: darken(theme.palette.secondary.dark, 0.7),
+    background: theme.palette.primary.main,
   },
   mainFeaturedPost: {
     backgroundColor: theme.palette.grey[800],
