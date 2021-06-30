@@ -4,25 +4,25 @@ import { Link } from 'react-router-dom';
 
 export const tableColumns = [
   {
-    name: 'Title',
+    name: 'Titel',
     options: {
       filter: true
     }
   },
   {
-    name: 'Description',
+    name: 'Beskrivelse',
     options: {
       filter: true,
     }
   },
   {
-    name: 'Group',
+    name: 'Gruppe',
     options: {
       filter: true,
     }
   },
   {
-    name: 'See Node',
+    name: 'Se element',
     options: {
       filter: true,
       customBodyRender: (value) => (
@@ -35,7 +35,7 @@ export const tableColumns = [
     }
   },
   {
-    name: 'Last edited',
+    name: 'Sidst ændret',
     options: {
       filter: true,
     }

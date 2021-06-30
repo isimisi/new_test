@@ -3,25 +3,25 @@ import Button from '@material-ui/core/Button';
 
 export const columns = (onOpen) => [
   {
-    name: 'Title',
+    name: 'Titel',
     options: {
       filter: true
     }
   },
   {
-    name: 'Description',
+    name: 'Beskrivelse',
     options: {
       filter: true,
     }
   },
   {
-    name: 'Group',
+    name: 'Gruppe',
     options: {
       filter: true,
     }
   },
   {
-    name: 'See Attribut',
+    name: 'Se kendetegn',
     options: {
       filter: true,
       customBodyRender: (value) => (
@@ -32,7 +32,7 @@ export const columns = (onOpen) => [
     }
   },
   {
-    name: 'Last edited',
+    name: 'Sidst ændret',
     options: {
       filter: true,
     }

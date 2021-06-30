@@ -13,25 +13,25 @@ export const tableOptions = (onDelete) => ({
 
 export const tableColumns = [
   {
-    name: 'Title',
+    name: 'Titel',
     options: {
       filter: true
     }
   },
   {
-    name: 'Description',
+    name: 'Beskrivelse',
     options: {
       filter: true,
     }
   },
   {
-    name: 'Group',
+    name: 'Gruppe',
     options: {
       filter: true,
     }
   },
   {
-    name: 'See Relationship',
+    name: 'Se forbindelse',
     options: {
       filter: true,
       customBodyRender: (value) => (
@@ -44,7 +44,7 @@ export const tableColumns = [
     }
   },
   {
-    name: 'Last edited',
+    name: 'Sidst ændret',
     options: {
       filter: true,
     }

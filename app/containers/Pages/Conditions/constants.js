@@ -4,25 +4,25 @@ import { Link } from 'react-router-dom';
 
 export const columns = [
   {
-    name: 'Title',
+    name: 'Titel',
     options: {
       filter: true
     }
   },
   {
-    name: 'Description',
+    name: 'Beskrivelse',
     options: {
       filter: true,
     }
   },
   {
-    name: 'Group',
+    name: 'Gruppe',
     options: {
       filter: true,
     }
   },
   {
-    name: 'See Condition',
+    name: 'Se betingelse',
     options: {
       filter: true,
       customBodyRender: (value) => (
@@ -35,7 +35,7 @@ export const columns = [
     }
   },
   {
-    name: 'Last edited',
+    name: 'Sidst ændret',
     options: {
       filter: true,
     }

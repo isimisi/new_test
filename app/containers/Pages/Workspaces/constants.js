@@ -47,25 +47,25 @@ export const getLayoutedElements = (elements, direction = 'TB') => {
 
 export const columns = [
   {
-    name: 'Title',
+    name: 'Titel',
     options: {
       filter: true
     }
   },
   {
-    name: 'Description',
+    name: 'Beskrivelse',
     options: {
       filter: true,
     }
   },
   {
-    name: 'Group',
+    name: 'Gruppe',
     options: {
       filter: true,
     }
   },
   {
-    name: 'See Workspace',
+    name: 'Se arbejdsområde',
     options: {
       filter: true,
       customBodyRender: (value) => (
@@ -78,7 +78,7 @@ export const columns = [
     }
   },
   {
-    name: 'Last Edited',
+    name: 'Sidst ændret',
     options: {
       filter: true,
     }

@@ -52,7 +52,7 @@ function Attributes(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Your Attributes"
+        title="Dine kendetegn"
         data={attributes}
         columns={columns(onOpen)}
         options={tableOptions(onDelete, loading)}

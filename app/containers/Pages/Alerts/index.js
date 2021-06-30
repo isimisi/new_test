@@ -39,7 +39,7 @@ const Alerts = (props) => {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Your Red Flags"
+        title="Dine Red Flags"
         data={alerts}
         columns={columns}
         options={tableOptions(onDelete)}

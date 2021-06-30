@@ -42,13 +42,13 @@ const Workspaces = (props) => {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Your Workspaces"
+        title="Dine arbejdsområder"
         data={workspaces}
         columns={columns}
         options={tableOptions(onDelete, loading)}
         elevation={10}
       />
-      <Tooltip title="New Workspace">
+      <Tooltip title="Opret nyt">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postWorkspace(history))}>
             Create new Workspace
         </Fab>

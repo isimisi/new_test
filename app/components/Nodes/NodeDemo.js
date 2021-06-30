@@ -66,7 +66,7 @@ const NodeDemo = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Your Node
+        Dine elementer
       </Typography>
       <Tooltip title={description}>
         <div

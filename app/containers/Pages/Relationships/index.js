@@ -37,13 +37,13 @@ function Relationships(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Your Relationships"
+        title="Dine forbindelser"
         data={relationships}
         columns={tableColumns}
         options={tableOptions(onDelete)}
         elevation={10}
       />
-      <Tooltip title="New Relationship">
+      <Tooltip title="Ny forbindelse">
         <Fab variant="extended" color="secondary" className={classes.addBtn} onClick={() => dispatch(postRelationship(history))}>
             Create new Relationship
         </Fab>
