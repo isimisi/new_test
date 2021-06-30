@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import brand from '@api/dummy/brand';
 import { Helmet } from 'react-helmet';
+import { useDispatch } from 'react-redux';
+import { showUser } from '../Users/reducers/authActions';
 
 
 function PersonalDashboard() {
   const title = brand.name + ' - Personal Dashboard';
   const description = brand.desc;
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(showUser());
+  }, []);
 
   return (
     <div>

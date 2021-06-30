@@ -2,8 +2,8 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
-import { baseUrl } from '@api/constants';
-import { saveToLocalStorage } from '@api/localStorage/localStorage';
+import { baseUrl, authHeader } from '@api/constants';
+import { saveToLocalStorage, loadFromLocalStorage } from '@api/localStorage/localStorage';
 import LogRocket from 'logrocket';
 import * as types from './authConstants';
 
@@ -19,7 +19,7 @@ export const login = (email, password, history, locationState) => async dispatch
     } = response.data;
     dispatch({ type: types.LOGIN_SUCCESS, user, access_token });
     saveToLocalStorage({
-      ...access_token, ...user, ...organization
+      ...access_token, ...user, ...organization, user_id: user.id
     });
     LogRocket.identify(user.id, {
       name: user.first_name + ' ' + user.last_name,
@@ -58,6 +58,21 @@ export const register = (name, phone, employer, email, password, history) => asy
   } catch (error) {
     const { message } = error.response.data[0];
     dispatch({ type: types.REGISTER_FAILED, message });
+  }
+};
+
+export const showUser = () => async dispatch => {
+  const ls = loadFromLocalStorage();
+  const url = `${baseUrl}/user/${ls.user_id}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const user = response.data;
+
+    console.log(user);
+    saveToLocalStorage({ ...ls, ...user });
+  } catch (error) {
+    // DO SOMETHING
   }
 };
 

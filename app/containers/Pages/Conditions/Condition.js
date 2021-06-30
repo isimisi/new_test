@@ -6,6 +6,7 @@ import ReactFlow, {
   removeElements,
   Background,
   isNode,
+  BackgroundVariant
 } from 'react-flow-renderer';
 import {
   CustomNode, ConditionDefineEdge,
@@ -29,6 +30,9 @@ import {
   addRelationshipToList, addNodeToList, addAttributToList
 } from './reducers/conditionActions';
 
+const BASE_BG_GAP = 32;
+const BASE_BG_STROKE = 1;
+
 
 const Condition = (props) => {
   const { classes } = props;
@@ -45,6 +49,8 @@ const Condition = (props) => {
   const [relationshipType, setRelationshipType] = useState('');
   const [comparisonType, setComparisonType] = useState('default');
   const [comparisonValue, setComparisonValue] = useState('');
+
+  const [currentZoom, setCurrentZoom] = useState(1);
 
   // REDUX
   const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
@@ -200,8 +206,17 @@ const Condition = (props) => {
             onLoad={onLoad}
             connectionMode="loose"
             onElementClick={onElementClick}
+            onMove={(flowTransform) => {
+              if (flowTransform) {
+                setCurrentZoom(flowTransform.zoom);
+              }
+            }}
           >
-            <Background color="#aaa" gap={16} />
+            <Background
+              variant={BackgroundVariant.Lines}
+              gap={BASE_BG_GAP / currentZoom}
+              size={BASE_BG_STROKE / currentZoom}
+            />
           </ReactFlow>
         </div>
       </div>

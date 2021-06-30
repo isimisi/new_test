@@ -3,7 +3,8 @@ import React, { memo, useMemo } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Typography from '@material-ui/core/Typography';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { Resizable } from 're-resizable';
 
 
@@ -46,6 +47,22 @@ const StickyNote = (data) => {
     topLeft: 'nodrag'
   }), []);
 
+  const modules = {
+    toolbar: [
+      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{ list: 'ordered' }, { list: 'bullet' },
+        { indent: '-1' }, { indent: '+1' }],
+      ['link', 'image', 'video'],
+      ['clean']
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    }
+  };
+
   return (
     <Resizable
       minWidth={100}
@@ -57,12 +74,7 @@ const StickyNote = (data) => {
           {data.title}
         </Typography>
       </div>
-      <TextareaAutosize
-        rowsMin={3}
-        placeholder="Note"
-        className="nodrag"
-        style={textArea}
-      />
+      <ReactQuill theme="bubble" style={textArea} modules={modules} className="nodrag" />
     </Resizable>
   );
 };

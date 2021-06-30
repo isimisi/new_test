@@ -571,6 +571,9 @@ const Workspace = (props) => {
           onAlertClick={() => setShowAlertLog(true)}
           onAnalysisClick={() => history.push(`analysis/${id}`)}
           onCvrClick={() => setShowCvrModal(true)}
+          stickyClick={() => {
+            // dispatch(postSticky())
+          }}
         />
       )}
     </div>

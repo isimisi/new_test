@@ -10,15 +10,22 @@ import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import PropTypes from 'prop-types';
 import FlagIcon from '@material-ui/icons/Flag';
 import BusinessIcon from '@material-ui/icons/Business';
+import NotesIcon from '@material-ui/icons/Notes';
 
 const WorkspaceFab = (props) => {
   const {
-    nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick, onCvrClick
+    nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick, onCvrClick, stickyClick
   } = props;
   const theme = useTheme();
 
   return (
     <>
+      {/* <Fab
+        onClick={stickyClick}
+        icon={<NotesIcon />}
+        event="click"
+        mainButtonStyles={{ backgroundColor: theme.palette.primary.main, right: 160 }}
+      /> */}
       <Fab
         onClick={nodeClick}
         icon={<CheckBoxOutlineBlankIcon />}
@@ -77,6 +84,7 @@ WorkspaceFab.propTypes = {
   onAlertClick: PropTypes.func.isRequired,
   onAnalysisClick: PropTypes.func.isRequired,
   onCvrClick: PropTypes.func.isRequired,
+  stickyClick: PropTypes.func.isRequired,
 };
 
 export default WorkspaceFab;
