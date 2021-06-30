@@ -409,6 +409,18 @@ const styles = theme => ({
     justifyContent: 'space-between',
     padding: `0 ${theme.spacing(0.5)}px`
   },
+  paper: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  header: {
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  }
 });
 
 export default styles;

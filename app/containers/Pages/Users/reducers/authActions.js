@@ -41,13 +41,13 @@ export const login = (email, password, history, locationState) => async dispatch
   }
 };
 
-export const register = (name, email, password, history) => async dispatch => {
+export const register = (name, phone, employer, email, password, history) => async dispatch => {
   const url = `${baseUrl}/register`;
   const splittedName = name.split(' ');
   const first_name = splittedName[0];
   const last_name = splittedName[1];
   const body = {
-    first_name, last_name, email, password
+    first_name, last_name, phone, employer, email, password
   };
   try {
     const response = await axios.post(url, body);

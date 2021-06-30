@@ -100,8 +100,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case SAVE_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set('message', message);
+
       });
     case SAVE_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {

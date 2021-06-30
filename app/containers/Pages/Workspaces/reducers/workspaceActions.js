@@ -137,11 +137,9 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
     workspaceZoom, workspaceXPosition, workspaceYPosition, nodes
   };
   const header = authHeader();
-  console.log('saveWorkspace');
   try {
     await axios.put(url, body, header);
-    const _message = 'Dit workspace er gemt';
-    dispatch({ type: types.SAVE_WORKSPACE_SUCCESS, message: _message });
+    dispatch({ type: types.SAVE_WORKSPACE_SUCCESS });
   } catch (error) {
     dispatch({ type: types.SAVE_WORKSPACE_FAILED, message });
   }

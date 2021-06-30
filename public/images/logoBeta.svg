@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 485.85 182.99999"
+   version="1.1"
+   id="svg20"
+   sodipodi:docname="Logo beta.svg"
+   width="485.85001"
+   height="183"
+   inkscape:version="1.0.2 (e86c8708, 2021-01-15)">
+  <metadata
+     id="metadata24">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1680"
+     inkscape:window-height="1050"
+     id="namedview22"
+     showgrid="false"
+     inkscape:zoom="7.6636116"
+     inkscape:cx="344.1311"
+     inkscape:cy="155.87044"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs12">
+    <inkscape:path-effect
+       effect="fillet_chamfer"
+       id="path-effect63"
+       is_visible="true"
+       lpeversion="1"
+       satellites_param="F,0,0,1,0,12,0,1 @ F,0,0,1,0,12,0,1 @ F,0,0,1,0,12,0,1 @ F,0,0,1,0,12,0,1"
+       unit="px"
+       method="auto"
+       mode="F"
+       radius="12"
+       chamfer_steps="1"
+       flexible="false"
+       use_knot_distance="true"
+       apply_no_radius="true"
+       apply_with_radius="true"
+       only_selected="false"
+       hide_knots="false" />
+    <style
+       id="style10">.cls-1{fill:#231f20;}</style>
+  </defs>
+  <g
+     id="Layer_2"
+     data-name="Layer 2"
+     inkscape:export-filename="/Users/christianhjortshoj/OneDrive - juristic/Juristic ApS/Grafisk/Logo/Final/logo_mininmal_text_final_beta.png"
+     inkscape:export-xdpi="1181"
+     inkscape:export-ydpi="1181">
+    <g
+       id="svg8">
+      <g
+         id="layer1">
+        <rect
+           id="rect100"
+           class="cls-1"
+           x="226.84"
+           y="6.5500002"
+           width="152.02"
+           height="3.01"
+           style="fill:#000000;fill-opacity:1" />
+      </g>
+      <g
+         id="layer4">
+        <path
+           id="text14"
+           d="m 220.35,0 a 7.78,7.78 0 0 0 -5.42,2.29 7,7 0 0 0 -2.46,5.58 7.53,7.53 0 0 0 2.46,5.74 7.94,7.94 0 0 0 10.82,0 7.54,7.54 0 0 0 2.47,-5.74 A 7,7 0 0 0 225.75,2.29 7.74,7.74 0 0 0 220.35,0 Z M 386,0 a 7.74,7.74 0 0 0 -5.4,2.29 7,7 0 0 0 -2.47,5.58 7.54,7.54 0 0 0 2.47,5.74 7.94,7.94 0 0 0 10.82,0 7.53,7.53 0 0 0 2.46,-5.74 A 7,7 0 0 0 391.42,2.29 7.78,7.78 0 0 0 386,0 Z M 330.14,15.74 V 37.4 h -15.92 v 9.34 h 15.92 v 47.9 a 25.06,25.06 0 0 0 1.8,10.33 17.74,17.74 0 0 0 4.92,6.24 16.67,16.67 0 0 0 6.39,3.11 28.75,28.75 0 0 0 6.56,0.81 34.17,34.17 0 0 0 6.9,-0.64 28.74,28.74 0 0 0 6.22,-1.65 l -0.48,-9.67 a 23.8,23.8 0 0 1 -4.92,1.8 18.34,18.34 0 0 1 -4.76,0.65 20.26,20.26 0 0 1 -4.59,-0.49 9.87,9.87 0 0 1 -3.77,-2.13 11.23,11.23 0 0 1 -2.3,-4.43 25.69,25.69 0 0 1 -0.83,-7 V 46.74 h 21.65 V 37.4 H 341.28 V 15.74 Z M 191.25,35.43 a 26.5,26.5 0 0 0 -14.76,4.26 26,26 0 0 0 -9.84,10.83 h -0.33 c 0,-1.64 -0.06,-3.72 -0.16,-6.24 -0.1,-2.52 -0.28,-4.81 -0.5,-6.88 H 155 q 0.33,3.93 0.49,8.85 0.16,4.92 0.16,8 v 59.86 h 11.16 V 74.79 a 41.65,41.65 0 0 1 1.8,-13.13 28.15,28.15 0 0 1 4.91,-9 18.76,18.76 0 0 1 7.22,-5.24 22.83,22.83 0 0 1 8.53,-1.64 32.33,32.33 0 0 1 4.6,0.32 20.73,20.73 0 0 1 3.28,0.66 l 1.47,-10.5 a 21.77,21.77 0 0 0 -3.61,-0.66 c -1.09,-0.11 -2.35,-0.15 -3.77,-0.15 z m 86.83,0 a 39.07,39.07 0 0 0 -10.17,1.31 27.32,27.32 0 0 0 -8.86,4.09 19.58,19.58 0 0 0 -6.06,6.9 20.21,20.21 0 0 0 -2.3,10 17.53,17.53 0 0 0 2.13,9 20.59,20.59 0 0 0 5.42,6.06 28.31,28.31 0 0 0 7.05,3.61 q 3.93,1.14 7.37,2 11,2.63 16.74,5.74 5.91,3 5.9,9 a 11.52,11.52 0 0 1 -5.41,10.5 15.73,15.73 0 0 1 -5.74,2.3 35.62,35.62 0 0 1 -6.88,0.65 25,25 0 0 1 -21.33,-12 l -8.86,6.56 a 31.31,31.31 0 0 0 13.45,11.32 41.41,41.41 0 0 0 27.22,2.29 26.43,26.43 0 0 0 9.36,-3.94 21.73,21.73 0 0 0 9.18,-18.52 q 0,-9 -6.56,-14.28 -6.39,-5.4 -20,-8.2 -9.53,-2 -13.94,-4.76 a 9.47,9.47 0 0 1 -4.43,-8.36 10.69,10.69 0 0 1 1.31,-5.42 12.33,12.33 0 0 1 3.77,-3.77 16.18,16.18 0 0 1 5.25,-2.13 27.66,27.66 0 0 1 5.91,-0.66 20.78,20.78 0 0 1 11.32,3.11 19,19 0 0 1 7.54,7.72 L 305,49.21 A 25.1,25.1 0 0 0 293.66,39 35.78,35.78 0 0 0 278.08,35.43 Z m 178.58,0 a 43.82,43.82 0 0 0 -16.89,3.11 37.24,37.24 0 0 0 -13,8.37 39,39 0 0 0 -8.2,12.8 43,43 0 0 0 -2.95,16.07 43,43 0 0 0 2.95,16.07 39,39 0 0 0 8.2,12.8 39.25,39.25 0 0 0 13,8.53 46.19,46.19 0 0 0 16.89,2.94 q 10,0 17.06,-3.6 a 36.34,36.34 0 0 0 12.13,-9.69 l -8.36,-6.22 a 24.48,24.48 0 0 1 -20.83,10 30.75,30.75 0 0 1 -12.13,-2.3 28,28 0 0 1 -9.19,-6.56 31.69,31.69 0 0 1 -5.9,-9.84 38.39,38.39 0 0 1 0,-24.28 29.39,29.39 0 0 1 5.9,-9.83 26.64,26.64 0 0 1 9.34,-6.56 29.05,29.05 0 0 1 12.15,-2.47 23,23 0 0 1 11.47,3 20.52,20.52 0 0 1 8.21,7.23 l 8.69,-6.24 a 30,30 0 0 0 -13,-9.84 38.74,38.74 0 0 0 -15.54,-3.49 z m -437.14,2 v 90.2 a 39.76,39.76 0 0 1 -0.49,6.56 14.07,14.07 0 0 1 -1.48,5.25 7.8,7.8 0 0 1 -3.28,3.28 A 10.5,10.5 0 0 1 8.69,144 21.81,21.81 0 0 1 5.08,143.68 17.55,17.55 0 0 1 1.63,143 L 0,152.38 a 20.55,20.55 0 0 0 4.59,0.81 32.66,32.66 0 0 0 4.26,0.33 23.13,23.13 0 0 0 10.67,-2.13 16.58,16.58 0 0 0 6.72,-5.39 19.72,19.72 0 0 0 3.44,-7.71 39,39 0 0 0 1,-8.85 v -92 z m 40.34,0 v 47.04 q 0,14.27 7.21,23 7.38,8.7 22,8.69 a 31.6,31.6 0 0 0 15.59,-4.1 25.72,25.72 0 0 0 10.65,-11 h 0.34 q 0,2.46 0.15,6.24 0.15,3.78 0.5,6.88 h 10.66 c -0.21,-2.62 -0.38,-5.57 -0.49,-8.85 -0.11,-3.28 -0.17,-6 -0.17,-8 V 37.4 h -11.16 v 39.35 a 41.64,41.64 0 0 1 -2,13.46 28.7,28.7 0 0 1 -5.25,9.34 21.39,21.39 0 0 1 -7.55,5.42 21,21 0 0 1 -8.53,1.8 23.27,23.27 0 0 1 -10.16,-2 17.1,17.1 0 0 1 -6.4,-5.4 24.53,24.53 0 0 1 -3.25,-8.5 56,56 0 0 1 -1,-11 V 37.4 Z m 154.91,0 v 76.75 h 11.15 V 37.4 Z m 165.62,0 v 76.75 h 11.16 V 37.4 Z" />
+      </g>
+    </g>
+  </g>
+  <g
+     id="g61"
+     transform="translate(-10.661836,8.2014125)">
+    <path
+       style="fill:#005c94;stroke-width:1.13018"
+       id="rect32"
+       width="124.66146"
+       height="48.388332"
+       x="372.34415"
+       y="126.30175"
+       inkscape:path-effect="#path-effect63"
+       d="m 384.34415,126.30175 h 100.66146 a 12,12 45 0 1 12,12 v 24.38833 a 12,12 135 0 1 -12,12 H 384.34415 a 12,12 45 0 1 -12,-12 l 0,-24.38833 a 12,12 135 0 1 12,-12 z"
+       sodipodi:type="rect"
+       inkscape:export-filename="/Users/christianhjortshoj/OneDrive - juristic/Juristic ApS/Grafisk/Logo/Final/logo_mininmal_text_final_beta.png"
+       inkscape:export-xdpi="1181"
+       inkscape:export-ydpi="1181" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:33.1833px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.829583"
+       x="391.6759"
+       y="162.74898"
+       id="text28"
+       transform="scale(0.99854221,1.0014599)"
+       inkscape:export-filename="/Users/christianhjortshoj/OneDrive - juristic/Juristic ApS/Grafisk/Logo/Final/logo_mininmal_text_final_beta.png"
+       inkscape:export-xdpi="1181"
+       inkscape:export-ydpi="1181"><tspan
+         sodipodi:role="line"
+         id="tspan26"
+         x="391.6759"
+         y="162.74898"
+         style="stroke-width:0.829583">BETA</tspan></text>
+  </g>
+</svg>

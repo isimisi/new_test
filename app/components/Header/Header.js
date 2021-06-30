@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-// import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@material-ui/icons/Search';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,7 +14,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useClearCache } from 'react-clear-cache';
 
 import UserMenu from './UserMenu';
-// import SearchUi from '../Search/SearchUi';
+import SearchUi from '../Search/SearchUi';
 import styles from './header-jss';
 
 const elem = document.documentElement;
@@ -150,11 +150,11 @@ function Header(props) {
                   </IconButton>
                 </Tooltip>
               )}
-              <Tooltip title="Turn Dark/Light" placement="bottom">
+              {/* <Tooltip title="Turn Dark/Light" placement="bottom">
                 <IconButton className={classes.button} onClick={() => turnMode(mode)}>
                   <i className="ion-ios-lightbulb-outline" />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
 
               <Tooltip title="Opdater" placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
@@ -162,25 +162,25 @@ function Header(props) {
                 </IconButton>
               </Tooltip>
 
-              {/* <Tooltip title="Show Guide" placement="bottom">
+              <Tooltip title="Show Guide" placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
                   <i className="ion-ios-help-outline" />
                 </IconButton>
-              </Tooltip> */}
+              </Tooltip>
             </div>
             <Typography component="h2" className={classNames(classes.headerTitle, showTitle && classes.show)}>
               {title}
             </Typography>
           </div>
         </Hidden>
-        {/* <div className={classes.searchWrapper}>
+        <div className={classes.searchWrapper}>
           <div className={classNames(classes.wrapper, classes.light)}>
             <div className={classes.search}>
               <SearchIcon />
             </div>
             <SearchUi history={history} />
           </div>
-        </div> */}
+        </div>
         {/* <Hidden xsDown>
           <span className={classes.separatorV} />
         </Hidden> */}

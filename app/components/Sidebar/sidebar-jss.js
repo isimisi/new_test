@@ -25,9 +25,6 @@ const styles = theme => ({
     }),
   },
   beta: {
-    position: 'absolute',
-    top: 4,
-    left: 4,
     color: fade(theme.palette.primary.main, 0.8),
     fontStyle: 'italic',
     fontSize: 12
@@ -235,11 +232,12 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: '10px 10px 5px',
-    height: 64,
+    height: 114,
     position: 'relative',
     textDecoration: 'none',
     fontSize: 16,
     margin: 0,
+    marginRight: 10,
     fontWeight: 500,
     color: theme.palette.text.primary,
     '& img': {
@@ -328,7 +326,7 @@ const styles = theme => ({
     display: 'block',
     padding: `${theme.spacing(5)}px 0`,
     '&$withProfile': {
-      paddingTop: theme.spacing(18)
+      paddingTop: 0
     },
     '&$landingNav': {
       [theme.breakpoints.up('lg')]: {
@@ -369,7 +367,22 @@ const styles = theme => ({
   },
   badge: {
     height: 'auto'
-  }
+  },
+  confirmEmail: {
+    width: drawerWidth - 40,
+    backgroundColor: '#EFFDF5',
+    marginTop: 40,
+    marginLeft: 20,
+    borderRadius: theme.rounded.small,
+    padding: 10
+  },
+  inlineWrap: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 18,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
 
 export default styles;

@@ -51,29 +51,26 @@ function Pricing(props) {
       <Grid container spacing={2}>
         <Grid item md={4} sm={6} xs={12}>
           <PricingCard
-            title="Standard"
-            price="$60"
+            title="Lite"
+            price="Gratis"
             tier="free"
-            feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec', 'Pellentesque ac bibendum', 'Vivamus sit amet']}
-            onClick={() => handleGetItem(1)}
+            onClick={handleGetItem(1)}
           />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
           <PricingCard
-            title="Pro"
-            price="$240"
+            title="Base"
+            price="99 DKK"
             tier="cheap"
-            feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec', 'Pellentesque ac bibendum', 'Vivamus sit amet']}
-            onClick={() => handleGetItem(2)}
+            onClick={handleGetItem(2)}
           />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
           <PricingCard
-            title="Enterprice"
-            price="Let's chat"
+            title="Structure"
+            price="499 DKK"
             tier="expensive"
-            feature={['Vel fermentum', 'Aenean facilisis vitae', 'Vestibulum nec', 'Pellentesque ac bibendum', 'Vivamus sit amet']}
-            onClick={() => handleGetItem(3)}
+            onClick={handleGetItem(3)}
           />
         </Grid>
       </Grid>

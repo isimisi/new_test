@@ -34,8 +34,6 @@ function MainMenu(props) {
     openSubMenu,
     open,
     dataMenu,
-    hasOrganization,
-    hasPlan
   } = props;
 
   const getMenus = menuArray => menuArray.map((item, index) => {
@@ -44,7 +42,7 @@ function MainMenu(props) {
         <div key={index.toString()}>
           <ListItem
             button
-            disabled={(!hasOrganization || !hasPlan ? index < menuArray.length - 1 : false) || item.disabled}
+            disabled={item.disabled}
             component={LinkBtn}
             to={item.linkParent ? item.linkParent : '#'}
             className={
@@ -66,6 +64,9 @@ function MainMenu(props) {
               <span>
                 { open.indexOf(item.key) > -1 ? <ExpandLess /> : <ExpandMore /> }
               </span>
+            )}
+            {item.badge && (
+              <Chip color="primary" label={item.badge} className={classes.badge} size="small" />
             )}
           </ListItem>
           { !item.linkParent && (
@@ -131,8 +132,7 @@ MainMenu.propTypes = {
   toggleDrawerOpen: PropTypes.func.isRequired,
   loadTransition: PropTypes.func.isRequired,
   dataMenu: PropTypes.array.isRequired,
-  hasOrganization: PropTypes.bool.isRequired,
-  hasPlan: PropTypes.bool.isRequired
+
 };
 
 const openAction = (key, keyParent) => ({ type: 'OPEN_SUBMENU', key, keyParent });

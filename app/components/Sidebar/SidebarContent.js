@@ -3,13 +3,31 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
 import brand from '@api/dummy/brand';
-import dummy from '@api/dummy/dummyContents';
-import logo from '@images/logo.svg';
+import logoBeta from '@images/logoBeta.svg';
 import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { lightGreen } from '@api/palette/colorfull';
+import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
+import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import MainMenu from './MainMenu';
 import styles from './sidebar-jss';
+
+const BorderLinearProgress = withStyles((theme) => ({
+  root: {
+    height: 10,
+    marginTop: 10,
+    borderRadius: 5,
+  },
+  colorPrimary: {
+    backgroundColor: theme.palette.grey[theme.palette.type === 'light' ? 200 : 700],
+  },
+  bar: {
+    borderRadius: 5,
+    backgroundColor: lightGreen,
+  },
+}))(LinearProgress);
 
 
 function SidebarContent(props) {
@@ -19,6 +37,10 @@ function SidebarContent(props) {
     const scroll = event.target.scrollTop;
     setTransform(scroll);
   };
+
+  const {
+    status
+  } = loadFromLocalStorage();
 
   useEffect(() => {
     const mainContent = document.getElementById('sidebar');
@@ -37,8 +59,7 @@ function SidebarContent(props) {
     leftSidebar,
     dataMenu,
     name,
-    hasOrganization,
-    hasPlan
+
   } = props;
 
 
@@ -46,25 +67,8 @@ function SidebarContent(props) {
     <div className={classNames(classes.drawerInner, !drawerPaper ? classes.drawerPaperClose : '')}>
       <div className={classes.drawerHeader}>
         <NavLink to="/app" className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}>
-          <img src={logo} alt={brand.name} />
+          <img src={logoBeta} alt={brand.name} style={{ width: 120 }} />
         </NavLink>
-
-        <Typography className={classes.beta}>Beta version</Typography>
-
-        <div
-          className={classNames(classes.profile, classes.user)}
-          style={{ opacity: 1 - (transform / 100), marginTop: transform * -0.3 }}
-        >
-          <Avatar
-            alt={name}
-            src={dummy.user.avatar}
-            className={classNames(classes.avatar, classes.bigAvatar)}
-          />
-          <div>
-            <h4>{name}</h4>
-
-          </div>
-        </div>
       </div>
       <div
         id="sidebar"
@@ -76,7 +80,21 @@ function SidebarContent(props) {
           )
         }
       >
-        <MainMenu hasOrganization={hasOrganization} hasPlan={hasPlan} loadTransition={loadTransition} dataMenu={dataMenu} toggleDrawerOpen={toggleDrawerOpen} />
+        <MainMenu loadTransition={loadTransition} dataMenu={dataMenu} toggleDrawerOpen={toggleDrawerOpen} />
+        {status === 'need_confirmation' && (
+          <div className={classes.confirmEmail}>
+            <Typography variant="subheader">Opsætning af konto</Typography>
+            <BorderLinearProgress value={50} variant="indeterminate" />
+            <div className={classes.inlineWrap}>
+              <CheckCircleOutlineOutlinedIcon style={{ color: 'green' }} />
+              <Typography>Profil information</Typography>
+            </div>
+            <div className={classes.inlineWrap}>
+              <RadioButtonUncheckedOutlinedIcon />
+              <Typography>Bekræft din email</Typography>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -91,8 +109,6 @@ SidebarContent.propTypes = {
   leftSidebar: PropTypes.bool.isRequired,
   dataMenu: PropTypes.array.isRequired,
   name: PropTypes.string.isRequired,
-  hasOrganization: PropTypes.bool.isRequired,
-  hasPlan: PropTypes.bool.isRequired,
 };
 
 SidebarContent.defaultProps = {

@@ -19,10 +19,12 @@ function Register(props) {
 
   const submitForm = values => {
     const name = values.get('name');
+    const phone = values.get('phone');
+    const employer = values.get('employer');
     const email = values.get('email');
     const password = values.get('password');
 
-    dispatch(register(name, email, password, history));
+    dispatch(register(name, phone, employer, email, password, history));
   };
 
   const title = brand.name + ' - Register';

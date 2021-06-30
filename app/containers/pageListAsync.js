@@ -17,12 +17,10 @@ export const Login = loadable(() =>
   import ('./Pages/Users/Register'), {
     fallback: <Loading />,
   });
-  export const ResetPassword = loadable(() =>
+export const ResetPassword = loadable(() =>
   import ('./Pages/Users/ResetPassword'), {
     fallback: <Loading />,
   });
-
-
 export const ComingSoon = loadable(() =>
   import ('./Pages/ComingSoon'), {
     fallback: <Loading />,

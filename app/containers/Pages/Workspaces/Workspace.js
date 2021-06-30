@@ -22,7 +22,7 @@ import {
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  useHistory, Prompt
+  useHistory
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
@@ -200,7 +200,6 @@ const Workspace = (props) => {
   // WORKSPACE GENERAL
 
   const onWorkspaceSave = useCallback(() => {
-    console.log(rfInstance);
     if (rfInstance) {
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter(n => isNode(n));
@@ -358,10 +357,14 @@ const Workspace = (props) => {
     }
   }, []);
 
+  const onMouseLeave = useCallback(() => {
+    onWorkspaceSave();
+  }, [rfInstance, elements]);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <div className={classes.root} ref={reactFlowContainer}>
+      <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
         <ReactFlow
           elements={elements}
           onElementsRemove={onElementsRemove}

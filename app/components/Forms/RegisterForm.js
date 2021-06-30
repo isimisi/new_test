@@ -71,15 +71,15 @@ function RegisterForm(props) {
             </NavLink>
             <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/login">
               <Icon className={classes.icon}>arrow_forward</Icon>
-              Already have account ?
+              Har du allerede en bruger ?
             </Button>
           </div>
         </Hidden>
         <Typography variant="h4" className={classes.title} gutterBottom>
-          Register
+          Registrer dig
         </Typography>
         <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
-          And hack your productivity
+          og prøv vores gratis prøve version
         </Typography>
         <Tabs
           value={tab}
@@ -89,7 +89,7 @@ function RegisterForm(props) {
           centered
           className={classes.tab}
         >
-          <Tab label="With Email" />
+          <Tab label="Med Email" />
           {/* <Tab label="With Social Media" /> */}
         </Tabs>
         {tab === 0 && (
@@ -100,8 +100,32 @@ function RegisterForm(props) {
                   <Field
                     name="name"
                     component={TextFieldRedux}
-                    placeholder="Your Name"
-                    label="Your Name"
+                    placeholder="Dit navn"
+                    label="Dit navn"
+                    required
+                    className={classes.field}
+                  />
+                </FormControl>
+              </div>
+              <div>
+                <FormControl className={classes.formControl}>
+                  <Field
+                    name="employer"
+                    component={TextFieldRedux}
+                    placeholder="Employer"
+                    label="Arbejdsgiver"
+                    required
+                    className={classes.field}
+                  />
+                </FormControl>
+              </div>
+              <div>
+                <FormControl className={classes.formControl}>
+                  <Field
+                    name="phone"
+                    component={TextFieldRedux}
+                    placeholder="Telefon"
+                    label="Telefon"
                     required
                     className={classes.field}
                   />
@@ -112,8 +136,8 @@ function RegisterForm(props) {
                   <Field
                     name="email"
                     component={TextFieldRedux}
-                    placeholder="Your Email"
-                    label="Your Email"
+                    placeholder="Din email"
+                    label="Din email"
                     required
                     validate={[required, email]}
                     className={classes.field}
@@ -126,7 +150,7 @@ function RegisterForm(props) {
                     name="password"
                     component={TextFieldRedux}
                     type="password"
-                    label="Your Password"
+                    label="Dit kodeord"
                     required
                     validate={[required, passwordsMatch]}
                     className={classes.field}
@@ -139,7 +163,7 @@ function RegisterForm(props) {
                     name="passwordConfirm"
                     component={TextFieldRedux}
                     type="password"
-                    label="Re-type Password"
+                    label="Skriv dit kodeord igen"
                     required
                     validate={[required, passwordsMatch]}
                     className={classes.field}
@@ -151,13 +175,13 @@ function RegisterForm(props) {
                   control={(
                     <Field name="checkbox" component={CheckboxRedux} required className={classes.agree} />
                   )}
-                  label="Agree with"
+                  label="Accepter vores"
                 />
                 <a href="#" className={classes.link}>Terms &amp; Condition</a>
               </div>
               <div className={classes.btnArea}>
                 <Button variant="contained" color="primary" type="submit">
-                  Continue
+                  Fortsæt
                   <ArrowForward className={classNames(classes.rightIcon, classes.iconSmall)} disabled={submitting || pristine} />
                 </Button>
               </div>

@@ -8,6 +8,11 @@ export const isAuthenticated = () => {
   return tokenMatch.test(token);
 };
 
+export const getStatus = () => {
+  const { status } = loadFromLocalStorage() || {};
+  return status;
+};
+
 const getToken = () => {
   const { token } = loadFromLocalStorage() || {};
   return token;

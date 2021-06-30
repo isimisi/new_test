@@ -16,11 +16,10 @@ function Sidebar(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [turnDarker, setTurnDarker] = useState(false);
   const {
-    first_name, last_name, organization_id, plan_id
+    first_name, last_name
   } = loadFromLocalStorage();
   const name = `${first_name} ${last_name}`;
-  const hasOrganization = !!organization_id;
-  const hasPlan = !!plan_id;
+
 
   let flagDarker = false;
 
@@ -86,8 +85,7 @@ function Sidebar(props) {
               closeMenuStatus={handleClose}
               changeStatus={handleChangeStatus}
               name={name}
-              hasOrganization={hasOrganization}
-              hasPlan={hasPlan}
+
             />
           </div>
         </SwipeableDrawer>
@@ -115,8 +113,6 @@ function Sidebar(props) {
             closeMenuStatus={handleClose}
             changeStatus={handleChangeStatus}
             name={name}
-            hasOrganization={hasOrganization}
-            hasPlan={hasPlan}
           />
         </Drawer>
       </Hidden>

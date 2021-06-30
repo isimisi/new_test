@@ -19,7 +19,7 @@ function Pricing() {
 
 
   return (
-    <div style={{ marginTop: 40, width: '98%' }}>
+    <div style={{ marginTop: 10, width: '98%' }}>
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />

@@ -160,8 +160,8 @@ function UserMenu(props) {
         open={openMenu === 'user-setting'}
         onClose={handleClose}
       >
-        <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>My Profile</MenuItem>
-        <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>My Organization</MenuItem>
+        <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>{name}</MenuItem>
+        <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>Min organisation</MenuItem>
         <Divider />
         <MenuItem onClick={handleLogOut} component={Link} to="/">
           <ListItemIcon>
