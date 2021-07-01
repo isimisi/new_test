@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, {
-  memo, useMemo, useState, useCallback, useRef
+  memo, useMemo, useState, useCallback, useEffect
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactQuill from 'react-quill';
@@ -12,8 +12,11 @@ import { putSticky } from '../../../containers/Pages/Workspaces/reducers/workspa
 const StickyNote = ({ data }) => {
   const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
   const [value, setValue] = useState(data.text);
-
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setValue(data.text);
+  }, [data.text]);
 
   const titleContainer = useMemo(() => ({
     width: '100%',

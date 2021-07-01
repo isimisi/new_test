@@ -94,6 +94,7 @@ export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
     const {
       elements, label, description, group, zoom, x_position, y_position
     } = response.data;
+    console.log(elements);
     dispatch({
       type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
     });
