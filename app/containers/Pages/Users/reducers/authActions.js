@@ -61,6 +61,7 @@ export const register = (name, phone, employer, email, password, history) => asy
   }
 };
 
+// eslint-disable-next-line no-unused-vars
 export const showUser = () => async dispatch => {
   const ls = loadFromLocalStorage();
   const url = `${baseUrl}/user/${ls.user_id}`;
@@ -73,6 +74,19 @@ export const showUser = () => async dispatch => {
     saveToLocalStorage({ ...ls, ...user });
   } catch (error) {
     // DO SOMETHING
+  }
+};
+
+export const resetPassword = (email, setSendPassword) => async dispatch => {
+  const url = `${baseUrl}/forgotPassword`;
+  const body = { email };
+  try {
+    await axios.post(url, body);
+    dispatch({ type: types.RESET_PASSWORD_SUCCESS, email });
+    setSendPassword(true);
+  } catch (error) {
+    const message = 'Vi havde nogle problemer med at sende mailen, prøv igen senere eller kontakt os';
+    dispatch({ type: types.RESET_PASSWORD_SUCCESS, message });
   }
 };
 

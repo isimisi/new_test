@@ -369,6 +369,7 @@ export const postSticky = (workspace_id, x, y) => async dispatch => {
   }
 };
 
+// eslint-disable-next-line no-unused-vars
 export const putSticky = (id, text) => async dispatch => {
   const url = `${baseUrl}/workspaces/sticky/${id}`;
   const body = {

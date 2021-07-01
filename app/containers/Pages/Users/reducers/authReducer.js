@@ -2,7 +2,9 @@ import { fromJS } from 'immutable';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   LOGIN_SUCCESS,
-  LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS
+  LOGIN_FAILED, REGISTER_FAILED, REGISTER_SUCCESS,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILED
 } from './authConstants';
 
 const initialState = {
@@ -49,6 +51,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('lastName', user.get('last_name'));
         mutableState.set('token', accessToken.get('token'));
         mutableState.set('isAuthenticated', true);
+      });
+    case RESET_PASSWORD_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const email = fromJS(action.email);
+        mutableState.set('email', email);
+      });
+    case RESET_PASSWORD_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('errorMessage', message);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

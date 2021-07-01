@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, {
-  memo, useMemo, useState, useCallback
+  memo, useMemo, useState, useCallback, useRef
 } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import ReactQuill from 'react-quill';
@@ -77,6 +77,10 @@ const StickyNote = ({ data }) => {
     dispatch(putSticky(data.id, value));
   }, [value]);
 
+  const handleChange = useCallback((html) => {
+    setValue(html);
+  }, []);
+
 
   return (
     <Resizable
@@ -86,19 +90,19 @@ const StickyNote = ({ data }) => {
       handleClasses={handleClasses}
       className="resizeable"
     >
-      {handleVisability && <div style={titleContainer} />}
-      <div className={`quill-${data.id}`} />
-      <ReactQuill
-        bounds={`.quill-${data.id}`}
-        placeholder="Note"
-        theme="bubble"
-        style={textArea}
-        value={value}
-        onBlur={handleBlur}
-        onChange={setValue}
-        modules={modules}
-        className="nodrag"
-      />
+      <div onBlur={handleBlur}>
+        {handleVisability && <div style={titleContainer} />}
+        <ReactQuill
+          placeholder="Note"
+          theme="bubble"
+          style={textArea}
+          value={value}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          modules={modules}
+          className="nodrag"
+        />
+      </div>
     </Resizable>
   );
 };

@@ -95,6 +95,9 @@ import ChooseConditions from './Condition/ChooseConditions';
 import ConditionDefineEdge from './Condition/Edge/DefineEdge';
 import ConditionDefineNode from './Condition/Node/DefineNode';
 
+// user
+import SendResetPassword from './User/SendResetPassword';
+
 
 export {
   Header,
@@ -163,5 +166,6 @@ export {
   ConditionDefineEdge,
   ConditionDefineNode,
   ChooseConditions,
-  FormDialog
+  FormDialog,
+  SendResetPassword
 };
