@@ -351,6 +351,38 @@ export const getAttributeDropDown = () => async dispatch => {
   }
 };
 
+export const postSticky = (workspace_id, x, y) => async dispatch => {
+  const url = `${baseUrl}/workspaces/sticky`;
+  const body = {
+    workspace_id,
+    'x-value': x,
+    'y-value': y
+  };
+  const header = authHeader();
+  try {
+    const response = await axios.post(url, body, header);
+    const node = response.data;
+    dispatch({ type: types.WORKSPACE_POST_NODE_SUCCESS, node });
+  } catch (error) {
+    console.log(error);
+    dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
+  }
+};
+
+export const putSticky = (id, text) => async dispatch => {
+  const url = `${baseUrl}/workspaces/sticky/${id}`;
+  const body = {
+    text,
+  };
+  const header = authHeader();
+  try {
+    await axios.put(url, body, header);
+  } catch (error) {
+    console.log(error);
+    // do something
+  }
+};
+
 export const labelChange = label => ({
   type: types.LABEL_CHANGE,
   label,

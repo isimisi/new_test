@@ -1,28 +1,38 @@
 /* eslint-disable react/prop-types */
-import React, { memo, useMemo } from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import Typography from '@material-ui/core/Typography';
+import React, {
+  memo, useMemo, useState, useCallback
+} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 import { Resizable } from 're-resizable';
+import { putSticky } from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
 
 
-const StickyNote = (data) => {
-  const theme = useTheme();
+const StickyNote = ({ data }) => {
+  const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
+  const [value, setValue] = useState(data.text);
+
+  const dispatch = useDispatch();
 
   const titleContainer = useMemo(() => ({
     width: '100%',
-    backgroundColor: `${theme.palette.secondary.light}aa`,
+    backgroundColor: '#f1f1f1',
     padding: 5,
-    minHeight: 20
+    minHeight: 20,
   }), []);
 
   const textArea = useMemo(() => ({
     border: 0,
     width: '100%',
-    backgroundColor: `${theme.palette.secondary.light}44`,
-    padding: 10,
+    height: '100%',
+    backgroundColor: '#fdfdfd',
+    borderRadius: 5
+  }), []);
+
+  const container = useMemo(() => ({
+    border: '1px solid #f1f1f1',
+    borderRadius: 5
   }), []);
 
   const handleEnable = useMemo(() => ({
@@ -54,27 +64,41 @@ const StickyNote = (data) => {
       ['bold', 'italic', 'underline', 'strike', 'blockquote'],
       [{ list: 'ordered' }, { list: 'bullet' },
         { indent: '-1' }, { indent: '+1' }],
-      ['link', 'image', 'video'],
+      ['link'],
       ['clean']
     ],
     clipboard: {
       // toggle to add extra line breaks when pasting HTML:
-      matchVisual: false,
+      matchVisual: true,
     }
   };
 
+  const handleBlur = useCallback(() => {
+    dispatch(putSticky(data.id, value));
+  }, [value]);
+
+
   return (
     <Resizable
+      style={container}
       minWidth={100}
       enable={handleEnable}
       handleClasses={handleClasses}
+      className="resizeable"
     >
-      <div style={titleContainer}>
-        <Typography variant="subtitle2">
-          {data.title}
-        </Typography>
-      </div>
-      <ReactQuill theme="bubble" style={textArea} modules={modules} className="nodrag" />
+      {handleVisability && <div style={titleContainer} />}
+      <div className={`quill-${data.id}`} />
+      <ReactQuill
+        bounds={`.quill-${data.id}`}
+        placeholder="Note"
+        theme="bubble"
+        style={textArea}
+        value={value}
+        onBlur={handleBlur}
+        onChange={setValue}
+        modules={modules}
+        className="nodrag"
+      />
     </Resizable>
   );
 };

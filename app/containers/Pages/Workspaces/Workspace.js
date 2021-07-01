@@ -36,7 +36,7 @@ import {
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
-  cvrWorkspace
+  cvrWorkspace, postSticky
 } from './reducers/workspaceActions';
 
 
@@ -340,6 +340,14 @@ const Workspace = (props) => {
   const handleShowLabelChange = useCallback((e) => setShowlabel(e.target.checked), []);
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
+  const handlePostSticky = () => {
+    const rf = rfInstance.toObject();
+    const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+    const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+    console.log(x, y);
+    dispatch(postSticky(id, x, y));
+  };
+
   const flowStyle = {
     backgroundColor: 'white'
   };
@@ -571,9 +579,7 @@ const Workspace = (props) => {
           onAlertClick={() => setShowAlertLog(true)}
           onAnalysisClick={() => history.push(`analysis/${id}`)}
           onCvrClick={() => setShowCvrModal(true)}
-          stickyClick={() => {
-            // dispatch(postSticky())
-          }}
+          stickyClick={handlePostSticky}
         />
       )}
     </div>
