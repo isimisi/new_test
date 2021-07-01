@@ -21,6 +21,10 @@ export const ResetPassword = loadable(() =>
   import ('./Pages/Users/ResetPassword'), {
     fallback: <Loading />,
   });
+export const NewPassword = loadable(() =>
+  import ('./Pages/Users/NewPassword'), {
+    fallback: <Loading />,
+  });
 export const ComingSoon = loadable(() =>
   import ('./Pages/ComingSoon'), {
     fallback: <Loading />,

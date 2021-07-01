@@ -5,6 +5,7 @@ import {
   Login,
   Register,
   ResetPassword,
+  NewPassword,
   ComingSoon,
   NotFound,
   ChoosePlanFront
@@ -18,6 +19,7 @@ function Auth() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/reset-password" component={ResetPassword} />
+        <Route path="/new-password/:id" component={NewPassword} />
         <Route path="/coming-soon" component={ComingSoon} />
         <Route component={NotFound} />
       </Switch>

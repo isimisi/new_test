@@ -7,7 +7,7 @@ import { saveToLocalStorage, loadFromLocalStorage } from '@api/localStorage/loca
 import LogRocket from 'logrocket';
 import * as types from './authConstants';
 
-export const login = (email, password, history, locationState) => async dispatch => {
+export const login = (email, password, history, locationState = null) => async dispatch => {
   const url = `${baseUrl}/login`;
   const body = { email, password };
 
@@ -86,7 +86,41 @@ export const resetPassword = (email, setSendPassword) => async dispatch => {
     setSendPassword(true);
   } catch (error) {
     const message = 'Vi havde nogle problemer med at sende mailen, prøv igen senere eller kontakt os';
-    dispatch({ type: types.RESET_PASSWORD_SUCCESS, message });
+    dispatch({ type: types.RESET_PASSWORD_FAILED, message });
+  }
+};
+
+export const newPassword = (id, password, history) => async dispatch => {
+  const url = `${baseUrl}/newPassword/${id}`;
+  const body = { password };
+
+  try {
+    const response = await axios.post(url, body);
+    const {
+      user, access_token, organization
+    } = response.data;
+    dispatch({ type: types.LOGIN_SUCCESS, user, access_token });
+    saveToLocalStorage({
+      ...access_token, ...user, ...organization, user_id: user.id
+    });
+    LogRocket.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
+      organization: organization && organization.name,
+    });
+    history.push('/app');
+  } catch (error) {
+    console.log(error.response);
+    let message = 'Hov, der er vidst nogle problemer med login. Prøv igen senere.';
+    if (error.response) {
+      if (Array.isArray(error?.response?.data)) {
+        message = error.response.data[0].message;
+      } else {
+        message = error?.response?.data?.message;
+      }
+    }
+
+    dispatch({ type: types.LOGIN_FAILED, message });
   }
 };
 

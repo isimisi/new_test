@@ -34,6 +34,7 @@ import NamingForm from './Forms/NamingForm';
 import OutputForm from './Forms/OutputForm';
 import OutputNamingForm from './Forms/OutputNamingForm';
 import AlertNamingForm from './Forms/AlertNamingForm';
+import NewPasswordForm from './Forms/NewPasswordForm';
 
 // Card
 import ProfileCard from './CardPaper/ProfileCard';
@@ -126,6 +127,7 @@ export {
   OutputForm,
   OutputNamingForm,
   AlertNamingForm,
+  NewPasswordForm,
   ProfileCard,
   GeneralCard,
   NewsCard,
