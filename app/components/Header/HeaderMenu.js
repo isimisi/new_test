@@ -139,7 +139,7 @@ function HeaderMenu(props) {
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title="Full Screen" placement="bottom">
+                <Tooltip title="Fuldskærmsvisning" placement="bottom">
                   <IconButton className={classes.button} onClick={openFullScreen}>
                     <i className="ion-ios-crop" />
                   </IconButton>
@@ -150,7 +150,7 @@ function HeaderMenu(props) {
                   <i className="ion-ios-lightbulb-outline" />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Show Guide" placement="bottom">
+              <Tooltip title="Hjælp" placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
                   <i className="ion-ios-help-outline" />
                 </IconButton>
