@@ -45,9 +45,9 @@ const Alerts = (props) => {
         options={tableOptions(onDelete)}
         elevation={10}
       />
-      <Tooltip title="New Alert">
+      <Tooltip title="Nyt red flag">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postAlert(history))}>
-            Create new Alert
+            Nyt red flag
         </Fab>
       </Tooltip>
     </div>

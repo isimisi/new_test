@@ -45,7 +45,7 @@ function Relationships(props) {
       />
       <Tooltip title="Ny forbindelse">
         <Fab variant="extended" color="secondary" className={classes.addBtn} onClick={() => dispatch(postRelationship(history))}>
-            Create new Relationship
+            Ny forbindelse
         </Fab>
       </Tooltip>
     </div>

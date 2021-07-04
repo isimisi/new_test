@@ -48,9 +48,9 @@ const Workspaces = (props) => {
         options={tableOptions(onDelete, loading)}
         elevation={10}
       />
-      <Tooltip title="Opret nyt">
+      <Tooltip title="Nyt arbejdsområde">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postWorkspace(history))}>
-            Create new Workspace
+            Nyt arbejdsområde
         </Fab>
       </Tooltip>
     </div>

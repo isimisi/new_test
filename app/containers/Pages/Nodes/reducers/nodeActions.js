@@ -82,7 +82,7 @@ export const putNode = (id, label, description, attributes, deletedAttributes, g
 
   try {
     await axios.put(url, body, header);
-    const message = 'You have updated your node';
+    const message = 'Du har opdateret dit element';
     dispatch({ type: types.PUT_NODE_SUCCESS, message });
     history.push('/app/nodes');
   } catch (error) {

@@ -99,7 +99,7 @@ const NodeStyling = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Style Your Node
+        Design elementet
       </Typography>
       <div className={classes.row}>
         <Typography variant="subtitle2" component="h3">

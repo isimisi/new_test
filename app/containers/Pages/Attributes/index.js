@@ -58,7 +58,7 @@ function Attributes(props) {
         options={tableOptions(onDelete, loading)}
         elevation={10}
       />
-      <Tooltip title="New Attribut">
+      <Tooltip title="Nyt kendetegn">
         <Fab
           variant="extended"
           color="secondary"
@@ -68,7 +68,7 @@ function Attributes(props) {
             dispatch(postAttribute());
           }}
         >
-            Create new Attribut
+            Nyt kendetegn
         </Fab>
       </Tooltip>
       <Attribute

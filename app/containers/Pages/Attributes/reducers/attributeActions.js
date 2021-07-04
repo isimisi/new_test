@@ -69,7 +69,7 @@ export const putAttribute = (id, label, description, type, group, selectionOptio
 
   try {
     await axios.put(url, body, header);
-    const message = 'You have updated your node';
+    const message = 'Du har opdateret dit element';
     dispatch({ type: types.PUT_ATTRIBUTE_SUCCESS, message });
     dispatch(getAttributes());
   } catch (error) {

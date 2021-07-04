@@ -41,15 +41,15 @@ function Conditions(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Your Conditions"
+        title="Dine betingelser"
         data={conditions}
         columns={columns}
         options={tableOptions(onDelete, loading)}
         elevation={10}
       />
-      <Tooltip title="New Condition">
+      <Tooltip title="Ny betingelse">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postCondition(history))}>
-            Create new Condition
+            Ny betingelse
         </Fab>
       </Tooltip>
     </div>

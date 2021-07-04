@@ -42,15 +42,15 @@ function Nodes(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Your Node"
+        title="Dine elementer"
         data={nodes}
         columns={tableColumns}
         options={tableOptions(onDelete, loading)}
         elevation={10}
       />
-      <Tooltip title="New Node">
+      <Tooltip title="Nyt element">
         <Fab variant="extended" color="secondary" className={classes.addBtn} onClick={() => dispatch(postNode(history))}>
-            Create new Node
+            Nyt element
         </Fab>
       </Tooltip>
     </div>
