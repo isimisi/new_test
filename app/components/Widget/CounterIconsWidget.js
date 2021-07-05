@@ -17,7 +17,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('nodes') < 20 ? 50 : 0}
-            end={elementCounts.get('nodes')}
+            end={elementCounts.get('nodes') || 0}
             duration={5}
             title="elementer"
           >
@@ -31,7 +31,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('nodes') < 20 ? 50 : 0}
-            end={elementCounts.get('relationships')}
+            end={elementCounts.get('relationships') || 0}
             duration={5}
             title="forbindelser"
           >
@@ -45,7 +45,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('attributes') < 20 ? 50 : 0}
-            end={elementCounts.get('attributes')}
+            end={elementCounts.get('attributes') || 0}
             duration={5}
             title="kendetegn"
           >
@@ -59,7 +59,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('conditions') < 20 ? 50 : 0}
-            end={elementCounts.get('conditions')}
+            end={elementCounts.get('conditions') || 0}
             duration={5}
             title="betingelser"
           >
@@ -73,7 +73,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('nodes') < 20 ? 50 : 0}
-            end={elementCounts.get('workspaces')}
+            end={elementCounts.get('workspaces') || 0}
             duration={5}
             title="områder"
           >
@@ -87,7 +87,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('groups') < 20 ? 50 : 0}
-            end={elementCounts.get('groups')}
+            end={elementCounts.get('groups') || 0}
             duration={5}
             title="grupper"
           >
@@ -101,7 +101,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('outputs') < 20 ? 50 : 0}
-            end={elementCounts.get('outputs')}
+            end={elementCounts.get('outputs') || 0}
             duration={5}
             title="rapporter"
           >
@@ -115,7 +115,7 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('alerts') < 20 ? 50 : 0}
-            end={elementCounts.get('alerts')}
+            end={elementCounts.get('alerts') || 0}
             duration={5}
             title="red flags"
           >

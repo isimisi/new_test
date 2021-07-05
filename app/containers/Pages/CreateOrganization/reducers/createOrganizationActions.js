@@ -41,10 +41,23 @@ export const askForADemo = (id) => async dispatch => {
   }
 };
 
-export const purchase = () => async dispatch => {
+export const purchase = (setLoading) => async dispatch => {
   const url = `${baseUrl}/checkout`;
   const header = authHeader();
-  console.log('hej');
+
+  try {
+    const response = await axios.get(url, header);
+    window.location.href = response.data;
+    setLoading(false);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.PURCHASE_FAILED, message });
+  }
+};
+
+export const customerPortal = (uri) => async dispatch => {
+  const url = `${baseUrl}/customer/portal?url=https://app.juristic.io${uri}`;
+  const header = authHeader();
   try {
     const response = await axios.get(url, header);
     window.location.href = response.data;

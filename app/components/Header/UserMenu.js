@@ -3,7 +3,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  useHistory
+} from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Info from '@material-ui/icons/Info';
@@ -23,7 +26,10 @@ import avatarApi from '@api/images/avatars';
 import link from '@api/ui/link';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { useClearCache } from 'react-clear-cache';
-import AllInboxOutlinedIcon from '@material-ui/icons/AllInboxOutlined';
+import { useDispatch } from 'react-redux';
+import { customerPortal } from '../../containers/Pages/CreateOrganization/reducers/createOrganizationActions';
+
+
 // import classNames from 'classnames';
 // import IconButton from '@material-ui/core/IconButton';
 // import Badge from '@material-ui/core/Badge';
@@ -31,6 +37,8 @@ import styles from './header-jss';
 
 function UserMenu(props) {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const [menuState, setMenuState] = useState({
     anchorEl: null,
@@ -49,6 +57,12 @@ function UserMenu(props) {
     setMenuState({ anchorEl: null, openMenu: null });
   };
 
+  const admonistratePlan = () => {
+    handleClose();
+
+    dispatch(customerPortal(history.location.pathname));
+  };
+
   const handleLogOut = () => {
     localStorage.clear();
     emptyCacheStorage();
@@ -57,7 +71,7 @@ function UserMenu(props) {
   const { classes } = props;
   const { anchorEl, openMenu } = menuState;
   const {
-    first_name, last_name
+    first_name, last_name, stripe_customer_id
   } = loadFromLocalStorage();
   const name = `${first_name} ${last_name}`;
   return (
@@ -165,15 +179,9 @@ function UserMenu(props) {
         open={openMenu === 'user-setting'}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleLogOut} component={Link} to="/">
-          <ListItemIcon>
-            <AllInboxOutlinedIcon />
-          </ListItemIcon>
-          Administrer plan
-        </MenuItem>
-        <Divider />
+
         <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>{name}</MenuItem>
-        <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>Min organisation</MenuItem>
+        <MenuItem disabled={!stripe_customer_id} onClick={admonistratePlan}>Administrer plan</MenuItem>
         <Divider />
         <MenuItem onClick={handleLogOut} component={Link} to="/">
           <ListItemIcon>

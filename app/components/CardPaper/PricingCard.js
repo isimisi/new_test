@@ -2,6 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import Loader from '@api/ui/Loader';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import Card from '@material-ui/core/Card';
@@ -24,7 +25,8 @@ function PricingCard(props) {
     tier,
     onClick,
     active,
-    included
+    included,
+    loading
   } = props;
 
 
@@ -103,7 +105,17 @@ function PricingCard(props) {
           </List>
         </CardContent>
         <CardActions className={classes.btnArea}>
-          <Button variant={active ? 'contained' : 'outlined'} disabled={active || included} size="large" className={classes.lightButton} onClick={() => onClick()}>{included ? 'Inkluderet' : active ? 'Nuværende' : title === 'Pro' || title === 'Draw' ? 'Bestil en demo' : 'Få det nu'}</Button>
+          {loading ? <Loader /> : (
+            <Button
+              variant={active ? 'contained' : 'outlined'}
+              disabled={active || included}
+              size="large"
+              className={classes.lightButton}
+              onClick={() => onClick()}
+            >
+              {included ? 'Inkluderet' : active ? 'Nuværende' : title === 'Pro' || title === 'Draw' ? 'Bestil en demo' : 'Få det nu'}
+            </Button>
+          )}
         </CardActions>
       </Card>
     </div>
@@ -117,7 +129,8 @@ PricingCard.propTypes = {
   tier: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   active: PropTypes.bool,
-  included: PropTypes.bool
+  included: PropTypes.bool,
+  loading: PropTypes.bool
 };
 
 export default withStyles(styles)(PricingCard);

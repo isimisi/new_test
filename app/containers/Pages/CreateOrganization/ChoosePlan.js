@@ -1,8 +1,9 @@
-/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable camelcase */
-import React from 'react';
+/* eslint-disable react/no-unused-prop-types */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
+
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import brand from '@api/dummy/brand';
@@ -21,10 +22,12 @@ function Pricing() {
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const dispatch = useDispatch();
   const { user_id, plan_id } = loadFromLocalStorage();
+  const [loading, setLoading] = useState(false);
 
   const handleGetItem = (item) => {
+    setLoading(true);
     if (item === 1) {
-      dispatch(purchase());
+      dispatch(purchase(setLoading));
     } else {
       dispatch(askForADemo(user_id));
     }
@@ -51,6 +54,7 @@ function Pricing() {
             tier="cheap"
             active={plans[plan_id - 1] === 'Base'}
             included={plans[plan_id - 1] === 'Draw'}
+            loading={loading}
             onClick={() => handleGetItem(1)}
           />
         </Grid>
