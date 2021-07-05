@@ -21,12 +21,12 @@ const Transition = React.forwardRef(function Transition(props, ref) { // eslint-
 
 const categories = [
   'output',
-  'alerts',
-  'relationships',
-  'conditions',
-  'nodes',
-  'attributs',
-  'workspaces'
+  'red flags',
+  'forbindelser',
+  'betingelser',
+  'elementer',
+  'kendetegn',
+  'arbejdsområdet'
 ];
 
 function GroupDetail(props) { // eslint-disable-line

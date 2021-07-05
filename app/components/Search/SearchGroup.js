@@ -44,12 +44,12 @@ function SearchProduct(props) {
               <div className={classes.search}>
                 <SearchIcon />
               </div>
-              <input className={classes.input} placeholder="Search Groups" onChange={(event) => search(event)} />
+              <input className={classes.input} placeholder="Søg blandt grupper" onChange={(event) => search(event)} />
             </div>
           </div>
           <Typography variant="caption" className={classes.result}>
             {getTotalResult(dataProduct)}
-            &nbsp;Results
+            &nbsp;Resultater
           </Typography>
           <Hidden mdDown>
             <div className={classes.toggleContainer}>
