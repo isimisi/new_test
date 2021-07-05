@@ -138,13 +138,13 @@ function Header(props) {
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
               {fullScreen ? (
-                <Tooltip title="Exit Full Screen" placement="bottom">
+                <Tooltip title="Afslut fuldskærmsvisning" placement="bottom">
                   <IconButton className={classes.button} onClick={closeFullScreen}>
                     <i className="ion-ios-crop" />
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title="Full Screen" placement="bottom">
+                <Tooltip title="Fuldskærmsvisning" placement="bottom">
                   <IconButton className={classes.button} onClick={openFullScreen}>
                     <i className="ion-ios-crop" />
                   </IconButton>
