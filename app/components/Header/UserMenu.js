@@ -23,6 +23,7 @@ import avatarApi from '@api/images/avatars';
 import link from '@api/ui/link';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { useClearCache } from 'react-clear-cache';
+import AllInboxOutlinedIcon from '@material-ui/icons/AllInboxOutlined';
 // import classNames from 'classnames';
 // import IconButton from '@material-ui/core/IconButton';
 // import Badge from '@material-ui/core/Badge';
@@ -166,9 +167,9 @@ function UserMenu(props) {
       >
         <MenuItem onClick={handleLogOut} component={Link} to="/">
           <ListItemIcon>
-            <ExitToApp />
+            <AllInboxOutlinedIcon />
           </ListItemIcon>
-          Plan
+          Administrer plan
         </MenuItem>
         <Divider />
         <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>{name}</MenuItem>

@@ -17,9 +17,11 @@ import FormControl from '@material-ui/core/FormControl';
 import Send from '@material-ui/icons/Send';
 
 import Fab from '@material-ui/core/Fab';
-import { Player, ControlBar, BigPlayButton } from 'video-react';
 import TextField from '@material-ui/core/TextField';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  useHistory
+} from 'react-router-dom';
 import styles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -28,6 +30,7 @@ import {
   postFeatureRequest,
   getUserInfo
 } from './reducers/dashboardActions';
+import UpgradeModal from './UpgradeModal';
 
 
 const PersonalDashboard = (props) => {
@@ -35,16 +38,23 @@ const PersonalDashboard = (props) => {
   const description = brand.desc;
   const { classes } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   const reducer = 'dashboard';
   const elementCounts = useSelector(state => state.getIn([reducer, 'elementCounts']));
   const timeline = useSelector(state => state.getIn([reducer, 'timeline']));
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const [featureValue, setFeatureValue] = useState('');
+  const [showUpgrade, setShowUpgrade] = useState(false);
+
 
   useEffect(() => {
     dispatch(getElementCounts());
     dispatch(getTimeline());
     dispatch(getUserInfo());
+
+    if (history.location.search.includes('upgraded')) {
+      setShowUpgrade(true);
+    }
   }, []);
 
   const handleFeatureChange = (e) => {
@@ -103,6 +113,13 @@ const PersonalDashboard = (props) => {
           <Divider className={classes.divider} />
         </Grid>
       </Grid>
+      <UpgradeModal
+        open={showUpgrade}
+        close={() => {
+          dispatch(getUserInfo());
+          setShowUpgrade(false);
+        }}
+      />
     </div>
   );
 };

@@ -23,7 +23,8 @@ function PricingCard(props) {
     price,
     tier,
     onClick,
-    active
+    active,
+    included
   } = props;
 
 
@@ -102,7 +103,7 @@ function PricingCard(props) {
           </List>
         </CardContent>
         <CardActions className={classes.btnArea}>
-          <Button variant={active ? 'contained' : 'outlined'} disabled={active} size="large" className={classes.lightButton} onClick={() => onClick()}>{active ? 'Nuværende' : title === 'Pro' || title === 'Draw' ? 'Få en demo' : 'Få det nu'}</Button>
+          <Button variant={active ? 'contained' : 'outlined'} disabled={active || included} size="large" className={classes.lightButton} onClick={() => onClick()}>{included ? 'Inkluderet' : active ? 'Nuværende' : title === 'Pro' || title === 'Draw' ? 'Bestil en demo' : 'Få det nu'}</Button>
         </CardActions>
       </Card>
     </div>
@@ -116,6 +117,7 @@ PricingCard.propTypes = {
   tier: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   active: PropTypes.bool,
+  included: PropTypes.bool
 };
 
 export default withStyles(styles)(PricingCard);

@@ -41,6 +41,19 @@ export const askForADemo = (id) => async dispatch => {
   }
 };
 
+export const purchase = () => async dispatch => {
+  const url = `${baseUrl}/checkout`;
+  const header = authHeader();
+  console.log('hej');
+  try {
+    const response = await axios.get(url, header);
+    window.location.href = response.data;
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.PURCHASE_FAILED, message });
+  }
+};
+
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF
 };
