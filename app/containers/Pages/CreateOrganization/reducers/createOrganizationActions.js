@@ -28,20 +28,16 @@ export const createOrganization = (cvr, country, history) => async dispatch => {
   }
 };
 
-export const choosePlan = (plan, history) => async dispatch => {
-  const url = `${baseUrl}/organization/plan`;
-  const body = { plan_id: plan };
+export const askForADemo = (id) => async dispatch => {
+  const url = `${baseUrl}/user/demo/${id}`;
   const header = authHeader();
   try {
-    const response = await axios.put(url, body, header);
-    const { plan_id } = response.data;
-    localStorage.plan_id = plan_id;
-    saveToLocalStorage(localStorage);
-    dispatch({ type: types.SAVE_PLAN_SUCCESS, message: 'Congratulation you are now ready to hack your productivty' });
-    history.push('/app');
+    await axios.get(url, header);
+    const message = 'Tak for din interesse. Vi kontakter dig hurtigst muligt angående tid for demo.';
+    dispatch({ type: types.DEMO_SUCCESS, message });
   } catch (error) {
-    const message = genericErrorMessage;
-    dispatch({ type: types.SAVE_PLAN_FAILED, message });
+    const message = 'Hov, vi har nogle problemer, så mailen blev ikke sendt, prøv direkte på hej@juristic.io';
+    dispatch({ type: types.DEMO_FAILED, message });
   }
 };
 

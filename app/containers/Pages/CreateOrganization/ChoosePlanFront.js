@@ -47,7 +47,7 @@ function Pricing() {
         </Grid>
         <Grid item md={3} sm={6} xs={12}>
           <PricingCard
-            title="Structure"
+            title="Draw"
             price="499 DKK"
             tier="expensive"
             onClick={route}

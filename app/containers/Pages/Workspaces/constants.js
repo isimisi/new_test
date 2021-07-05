@@ -71,7 +71,7 @@ export const columns = [
       customBodyRender: (value) => (
         <Link to={`/app/workspaces/${value}`}>
           <Button variant="contained" color="primary">
-            Open
+            Åben
           </Button>
         </Link>
       )

@@ -1,38 +1,43 @@
-import React, { useState, useCallback } from 'react';
+/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable camelcase */
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import brand from '@api/dummy/brand';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { PricingCard, PapperBlock, Notification } from '@components';
+import {
+  PricingCard, Notification
+} from '@components';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import Lottie from 'lottie-react';
+import { plans } from '@api/constants';
 import styles from '../HelpSupport/helpSupport-jss';
-import { choosePlan, closeNotifAction } from './reducers/createOrganizationActions';
+import { closeNotifAction, askForADemo } from './reducers/createOrganizationActions';
+import afterPayment from './afterPayment.json';
 
-function Pricing(props) {
-  const { classes } = props;
-  const [expanded, setExpanded] = useState(null);
+function Pricing() {
+  // const { classes } = props;
   const reducer = 'createOrganization';
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const dispatch = useDispatch();
+  const { user_id, plan_id } = loadFromLocalStorage();
   const history = useHistory();
+  const [purchased, setPurchase] = useState(false);
 
-  const handleChange = useCallback(panel => {
-    const expandedValue = expanded !== panel ? panel : false;
-    setExpanded(expandedValue);
-  }, [expanded]);
 
   const handleGetItem = (item) => {
-    dispatch(choosePlan(item, history));
+    if (item === 1) {
+      setPurchase(true);
+      window.open('https://buy.stripe.com/fZedTY9rC2iseOI7ss', '_blank').focus();
+    } else {
+      dispatch(askForADemo(user_id));
+    }
   };
 
   const title = brand.name + ' - Pricing';
@@ -49,140 +54,57 @@ function Pricing(props) {
       </Helmet>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <Grid container spacing={2}>
-        <Grid item md={4} sm={6} xs={12}>
-          <PricingCard
-            title="Lite"
-            price="Gratis"
-            tier="free"
-            onClick={handleGetItem(1)}
-          />
-        </Grid>
-        <Grid item md={4} sm={6} xs={12}>
-          <PricingCard
-            title="Base"
-            price="99 DKK"
-            tier="cheap"
-            onClick={handleGetItem(2)}
-          />
-        </Grid>
-        <Grid item md={4} sm={6} xs={12}>
-          <PricingCard
-            title="Structure"
-            price="499 DKK"
-            tier="expensive"
-            onClick={handleGetItem(3)}
-          />
-        </Grid>
+        {purchased
+          ? (
+            <div style={{
+              width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh', flexDirection: 'column'
+            }}
+            >
+              <Lottie
+                animationData={afterPayment}
+                style={{
+                  height: '80%',
+                }}
+              />
+              <Button variant="outlined" color="primary" onClick={() => { history.push('/app'); }}>
+                Gå tilbage til dit dashboard
+              </Button>
+            </div>
+          )
+          : (
+            <>
+              {plan_id <= 2 && (
+                <Grid item md={4} sm={6} xs={12}>
+                  <PricingCard
+                    title="Base"
+                    price="99 DKK"
+                    tier="cheap"
+                    active={plans[plan_id - 1] === 'Base'}
+                    onClick={() => handleGetItem(1)}
+                  />
+                </Grid>
+              )}
+              <Grid item md={plan_id <= 2 ? 4 : 6} sm={6} xs={12}>
+                <PricingCard
+                  title="Draw"
+                  price="499 DKK"
+                  tier="expensive"
+                  active={plans[plan_id - 1] === 'Team'}
+                  onClick={() => handleGetItem(2)}
+                />
+              </Grid>
+              <Grid item md={plan_id <= 2 ? 4 : 6} sm={6} xs={12}>
+                <PricingCard
+                  title="Pro"
+                  price="Kontakt os"
+                  tier="more-expensive"
+                  active={plans[plan_id - 1] === 'Pro'}
+                  onClick={() => handleGetItem(3)}
+                />
+              </Grid>
+            </>
+          )}
       </Grid>
-      <Divider className={classes.divider} />
-      <PapperBlock title="Question and Answer" icon="ios-help-circle-outline" whiteBg desc="Sed imperdiet enim ligula, vitae viverra justo porta vel.">
-        <ExpansionPanel expanded={expanded === 'panel1'} onChange={() => handleChange('panel1')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Pellentesque ac bibendum tortor?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-              maximus est, id dignissim quam.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel2'} onChange={() => handleChange('panel2')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Vivamus sit amet interdum elit?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-              diam eros in elit. Pellentesque convallis laoreet laoreet.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel3'} onChange={() => handleChange('panel3')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Vestibulum nec mi suscipit?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-              eros, vitae egestas augue. Duis vel est augue.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel4'} onChange={() => handleChange('panel4')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Cras convallis lacus orci?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-              eros, vitae egestas augue. Duis vel est augue.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel5'} onChange={() => handleChange('panel5')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Quisque ut metus sit amet?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              enean sit amet magna vel magna fringilla fermentum. Donec sit amet nulla sed arcu pulvinar ultricies commodo id ligula.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel6'} onChange={() => handleChange('panel6')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Nulla vehicula leo ut augue tincidunt?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Curabitur egestas consequat lorem, vel fermentum augue porta id. Aliquam lobortis magna neque, gravida consequat velit venenatis at.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel7'} onChange={() => handleChange('panel7')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Vivamus sit amet interdum elit?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Donec dignissim, odio ac imperdiet luctus, ante nisl accumsan justo, et venenatis ante metus pellentesque sem.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel8'} onChange={() => handleChange('panel8')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Maecenas nisl libero, tincidunt id odio id?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Ut sed eros finibus, placerat orci id, dapibus mauris. Vestibulum consequat hendrerit lacus. In id nisi id neque venenatis molestie.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel9'} onChange={() => handleChange('panel9')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Vestibulum nec mi suscipit?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-              eros, vitae egestas augue. Duis vel est augue.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel10'} onChange={() => handleChange('panel10')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>Cras convallis lacus orci?</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-              eros, vitae egestas augue. Duis vel est augue.
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-      </PapperBlock>
     </div>
   );
 }

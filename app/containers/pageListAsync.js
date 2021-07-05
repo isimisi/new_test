@@ -25,6 +25,7 @@ export const NewPassword = loadable(() =>
   import ('./Pages/Users/NewPassword'), {
     fallback: <Loading />,
   });
+  
 export const ComingSoon = loadable(() =>
   import ('./Pages/ComingSoon'), {
     fallback: <Loading />,
@@ -124,7 +125,6 @@ export const CreateOrganization = loadable(() =>
   import ('./Pages/CreateOrganization/CreateOrganization'), {
     fallback: <Loading />,
   });
-
 
 
 // Other

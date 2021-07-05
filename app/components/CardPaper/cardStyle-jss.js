@@ -245,7 +245,7 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       width: 150,
     },
-    height: 150
+    height: 155
   },
   extraRounded: {},
   roundedMedia: {

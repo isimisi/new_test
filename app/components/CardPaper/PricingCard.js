@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -21,7 +22,8 @@ function PricingCard(props) {
     title,
     price,
     tier,
-    onClick
+    onClick,
+    active
   } = props;
 
 
@@ -40,13 +42,13 @@ function PricingCard(props) {
 
   const lite = ['Indlæs fra CVR'];
   const base = ['Ændre data fra CVR', 'Automatiske red flags'];
-  const structure = ['Sikkert virksomhedslogin', 'Design egne red flags', 'Design eget indhold', "Integrer andre API'er", 'Eget subdomæne', 'VPN lås'];
+  const team = ['Sikkert virksomhedslogin', 'Design egne red flags', 'Design eget indhold', "Integrer andre API'er", 'Eget subdomæne', 'VPN lås'];
   const pro = ['Automatisk læringsindhold', 'Atuomatisk report builder'];
 
   const features = [
     ...lite,
     ...base,
-    ...structure,
+    ...team,
     ...pro];
 
   const getTierForWorkspaces = lv => {
@@ -54,7 +56,7 @@ function PricingCard(props) {
       case 'cheap':
         return 50;
       case 'free':
-        return 1;
+        return 10;
       default:
         return 'Ubegr.';
     }
@@ -65,7 +67,7 @@ function PricingCard(props) {
       case 'cheap':
         return [...lite, ...base];
       case 'expensive':
-        return [...lite, ...base, ...structure];
+        return [...lite, ...base, ...team];
       case 'more-expensive':
         return features;
       default:
@@ -79,7 +81,7 @@ function PricingCard(props) {
         <div className={classes.priceHead}>
           <Typography variant="h5">{title}</Typography>
           <Typography component="h4" variant="h3">{price}</Typography>
-          {!['Kontakt os', 'Gratis'].includes(price) && <Typography variant="h7">pr. bruger om måneden</Typography>}
+          {title !== 'Pro' && <Typography>ekskl. moms</Typography>}
         </div>
         <CardContent className={classes.featureList}>
           <List dense>
@@ -100,7 +102,7 @@ function PricingCard(props) {
           </List>
         </CardContent>
         <CardActions className={classes.btnArea}>
-          <Button variant="outlined" size="large" className={classes.lightButton} onClick={() => onClick()}>Få det nu</Button>
+          <Button variant={active ? 'contained' : 'outlined'} disabled={active} size="large" className={classes.lightButton} onClick={() => onClick()}>{active ? 'Nuværende' : title === 'Pro' || title === 'Draw' ? 'Få en demo' : 'Få det nu'}</Button>
         </CardActions>
       </Card>
     </div>
@@ -112,7 +114,8 @@ PricingCard.propTypes = {
   title: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   tier: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  active: PropTypes.bool,
 };
 
 export default withStyles(styles)(PricingCard);

@@ -99,6 +99,14 @@ import ConditionDefineNode from './Condition/Node/DefineNode';
 // user
 import SendResetPassword from './User/SendResetPassword';
 
+import SliderWidget from './Widget/SliderWidget';
+import CounterIconsWidget from './Widget/CounterIconsWidget';
+import TimelineWidget from './Widget/TimelineWidget';
+import NewsListWidget from './Widget/NewsListWidget';
+
+
+// plans
+import PaymentPanel from './Plans/PaymentPanel';
 
 export {
   Header,
@@ -169,5 +177,10 @@ export {
   ConditionDefineNode,
   ChooseConditions,
   FormDialog,
-  SendResetPassword
+  SendResetPassword,
+  SliderWidget,
+  CounterIconsWidget,
+  TimelineWidget,
+  NewsListWidget,
+  PaymentPanel
 };

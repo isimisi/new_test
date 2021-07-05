@@ -23,7 +23,6 @@ const styles = theme => ({
   },
   title: {
     position: 'relative',
-    textTransform: 'capitalize',
     fontSize: 24,
     fontWeight: 400,
     color: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,

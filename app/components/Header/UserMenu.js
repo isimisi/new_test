@@ -1,3 +1,4 @@
+
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -22,6 +23,9 @@ import avatarApi from '@api/images/avatars';
 import link from '@api/ui/link';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { useClearCache } from 'react-clear-cache';
+// import classNames from 'classnames';
+// import IconButton from '@material-ui/core/IconButton';
+// import Badge from '@material-ui/core/Badge';
 import styles from './header-jss';
 
 function UserMenu(props) {
@@ -160,6 +164,13 @@ function UserMenu(props) {
         open={openMenu === 'user-setting'}
         onClose={handleClose}
       >
+        <MenuItem onClick={handleLogOut} component={Link} to="/">
+          <ListItemIcon>
+            <ExitToApp />
+          </ListItemIcon>
+          Plan
+        </MenuItem>
+        <Divider />
         <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>{name}</MenuItem>
         <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>Min organisation</MenuItem>
         <Divider />
@@ -176,6 +187,11 @@ function UserMenu(props) {
 
 UserMenu.propTypes = {
   classes: PropTypes.object.isRequired,
+  // dark: PropTypes.bool,
 };
+
+// UserMenu.defaultProps = {
+//   dark: false
+// };
 
 export default withStyles(styles)(UserMenu);

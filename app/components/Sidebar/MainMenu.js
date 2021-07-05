@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -15,11 +16,14 @@ import Chip from '@material-ui/core/Chip';
 import Ionicon from 'react-ionicons';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import { plans } from '@api/constants';
 import styles from './sidebar-jss';
 
 const LinkBtn = React.forwardRef(function LinkBtn(props, ref) { // eslint-disable-line
   return <NavLink to={props.to} {...props} innerRef={ref} />; // eslint-disable-line
 });
+
 
 // eslint-disable-next-line
 function MainMenu(props) {
@@ -28,6 +32,11 @@ function MainMenu(props) {
     toggleDrawerOpen();
     loadTransition(false);
   };
+
+  const { plan_id } = loadFromLocalStorage();
+
+  const notIncludedPlans = plans.slice(plan_id, plans.length);
+
 
   const {
     classes,
@@ -42,9 +51,9 @@ function MainMenu(props) {
         <div key={index.toString()}>
           <ListItem
             button
-            disabled={item.disabled}
             component={LinkBtn}
-            to={item.linkParent ? item.linkParent : '#'}
+            disabled={item.disabled}
+            to={item.badge && notIncludedPlans.includes(item.badge) ? '/app/plan' : item.linkParent ? item.linkParent : '#'}
             className={
               classNames(
                 classes.head,
@@ -65,7 +74,7 @@ function MainMenu(props) {
                 { open.indexOf(item.key) > -1 ? <ExpandLess /> : <ExpandMore /> }
               </span>
             )}
-            {item.badge && (
+            {item.badge && notIncludedPlans.includes(item.badge) && (
               <Chip color="primary" label={item.badge} className={classes.badge} size="small" />
             )}
           </ListItem>
@@ -108,11 +117,11 @@ function MainMenu(props) {
         className={classes.nested}
         activeClassName={classes.active}
         component={LinkBtn}
-        to={item.link}
+        to={item.badge && notIncludedPlans.includes(item.badge) ? '/app/plan' : item.link}
         onClick={() => handleClick()}
       >
         <ListItemText classes={{ primary: classes.primary }} inset primary={item.name} />
-        {item.badge && (
+        {item.badge && notIncludedPlans.includes(item.badge) && (
           <Chip color="primary" label={item.badge} className={classes.badge} />
         )}
       </ListItem>

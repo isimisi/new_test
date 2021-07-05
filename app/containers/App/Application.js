@@ -39,7 +39,7 @@ function Application() {
         <Route exact path="/app/workspaces/:id" component={Workspace} />
         <Route exact path="/app/settings" component={Settings} />
         <Route exact path="/app/create/organization" component={CreateOrganization} />
-        <Route exact path="/app/create/organiazation/choose/plan" component={ChoosePlan} />
+        <Route exact path="/app/plan" component={ChoosePlan} />
 
         {/* Fremtidig brug */ }
         <Route path="/app/invoice" component={Invoice} />

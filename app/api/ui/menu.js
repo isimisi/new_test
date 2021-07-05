@@ -20,21 +20,25 @@ module.exports = [
         key: 'conditions',
         name: 'Byg jura',
         link: '/app/conditions',
+        badge: 'Base',
       },
       {
         key: 'nodes',
         name: 'Elementer',
         link: '/app/nodes',
+        badge: 'Base',
       },
       {
         key: 'attributes',
         name: 'Kendetegn',
         link: '/app/attributes',
+        badge: 'Base',
       },
       {
         key: 'relationships',
         name: 'Forbindelser',
         link: '/app/relationships',
+        badge: 'Base',
       },
     ]
   },
@@ -43,12 +47,13 @@ module.exports = [
     name: 'Rapportindhold',
     icon: 'ios-document-outline',
     linkParent: '/app/outputs',
-    disabled: true
+    badge: 'Pro',
   },
   {
     key: 'redFlags',
     name: 'Red Flags',
     icon: 'ios-flag-outline',
+    badge: 'Draw',
     linkParent: '/app/red flags',
   },
   {

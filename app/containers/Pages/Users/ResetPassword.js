@@ -13,6 +13,7 @@ function ResetPassword(props) {
   const [sentPassword, setSendPassword] = useState(false);
   const dispatch = useDispatch();
   const messageNotif = useSelector(state => state.getIn(['auth', 'errorMessage']));
+
   const submitForm = useCallback((values) => {
     setValueForm(values);
     const email = values.get('email');

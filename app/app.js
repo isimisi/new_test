@@ -39,6 +39,8 @@ import configureStore from './redux/configureStore';
 // Import i18n messages
 import { translationMessages } from './i18n';
 
+import 'video-react/dist/video-react.css';
+
 //  logrocket
 LogRocket.init('pm66tw/juristic-web-app');
 
@@ -48,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
     apiKey: '6d9a9a961530851d4c09cac9aa86ada6',
     plugins: [new BugsnagPluginReact()]
   });
-}
+} // import css
 
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in

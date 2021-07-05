@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
@@ -8,9 +9,7 @@ import {
 } from '@components';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
-import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { withStyles } from '@material-ui/core/styles';
 import {
   getGroups,
@@ -44,6 +43,7 @@ function Groups(props) {
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const image = useSelector(state => state.getIn([reducer, 'image'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const { plan_id } = loadFromLocalStorage();
 
   const dispatch = useDispatch();
 
@@ -93,7 +93,7 @@ function Groups(props) {
         deleteGroup={(id) => dispatch(deleteGroup(id))}
       />
       <Tooltip title="New Group">
-        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => setOpen(true)}>
+        <Fab disabled={plan_id < 3} variant="extended" color="primary" className={classes.addBtn} onClick={() => setOpen(true)}>
             Create new Group
         </Fab>
       </Tooltip>

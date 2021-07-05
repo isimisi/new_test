@@ -1,11 +1,8 @@
+
+import { fade } from '@material-ui/core/styles/colorManipulator';
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    display: 'flex',
-    justifycontent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    padding: 50
   },
   rootGeneral: {
     padding: theme.spacing(3)
@@ -29,20 +26,29 @@ const styles = theme => ({
       padding: '0 !important'
     }
   },
-  lottie: {
-    height: '50%',
-    width: '50%',
-    alignSelf: 'center'
-  },
-  inlineWrap: {
+  subscribeForm: {
+    marginTop: theme.spacing(1) * -6,
     display: 'flex',
-    flexDirection: 'row',
+    '& > div': {
+      flex: 1
+    },
+    '& button': {
+      marginTop: theme.spacing(4.5),
+      marginLeft: theme.spacing(4)
+    }
   },
-  alignCenter: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
+  whiteInputRoot: {
+    '& label, input': {
+      color: `${theme.palette.common.white} !important`,
+    },
+    '& > div': {
+      borderColor: fade(theme.palette.common.white, 0.6),
+    },
+    color: 'white'
   },
+  whiteInputInput: {
+    color: 'white !important'
+  }
 });
 
 export default styles;

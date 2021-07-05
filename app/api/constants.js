@@ -33,3 +33,5 @@ export const validURL = (str) => {
     + '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
   return !!pattern.test(str);
 };
+
+export const plans = ['Lite', 'Base', 'Draw', 'Pro'];

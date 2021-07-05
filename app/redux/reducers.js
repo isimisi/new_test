@@ -11,6 +11,7 @@ import uiReducer from './modules/ui';
 import initval from './modules/initForm';
 import login from './modules/login';
 
+import dashboard from '../containers/Pages/Dashboard/reducers/dashboardReducer';
 import auth from '../containers/Pages/Users/reducers/authReducer';
 import groups from '../containers/Pages/Groups/reducers/groupReducer';
 import createOrganization from '../containers/Pages/CreateOrganization/reducers/createOrganizationReducer';
@@ -27,6 +28,7 @@ import workspace from '../containers/Pages/Workspaces/reducers/workspaceReducer'
  */
 export default function createReducer() {
   const rootReducer = combineReducers({
+    dashboard,
     auth,
     attribute,
     node,
