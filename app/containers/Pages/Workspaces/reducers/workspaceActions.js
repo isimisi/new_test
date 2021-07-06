@@ -105,6 +105,7 @@ export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
     }
     dispatch(analyseAlerts(id, setAlerts, true));
   } catch (error) {
+    console.log(error.response);
     if (error?.response?.status === 403) {
       _history.replace('/app/not-found');
     }
@@ -297,9 +298,11 @@ export const putEdge = (
   try {
     const response = await axios.put(url, body, header);
     const responseEdge = response.data;
+    console.log(responseEdge);
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.PUT_EDGE_FAILED, message });
   }
 };
@@ -423,3 +426,8 @@ export const changeHandleVisability = bool => ({
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF
 };
+
+export const showNotifAction = _message => ({
+  type: notification.SHOW_NOTIF,
+  message: _message
+});

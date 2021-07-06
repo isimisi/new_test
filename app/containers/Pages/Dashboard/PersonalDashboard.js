@@ -87,7 +87,7 @@ const PersonalDashboard = (props) => {
           <NewsListWidget />
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
-          <TimelineWidget timeline={timeline} />
+          <TimelineWidget timeline={timeline} history={history} />
           <Divider className={classes.divider} />
           <PapperBlock title="Send os et ønske" icon="ion-ios-redo-outline" colorMode whiteBg noMargin desc="Vi er glade for idéer og ser på det straks">
             <div className={classes.subscribeForm}>

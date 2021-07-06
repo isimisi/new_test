@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { Fab, Action } from 'react-tiny-fab';
 import 'react-tiny-fab/dist/styles.css';
@@ -14,9 +15,11 @@ import NotesIcon from '@material-ui/icons/Notes';
 
 const WorkspaceFab = (props) => {
   const {
-    nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick, onCvrClick, stickyClick
+    nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick,
+    onCvrClick, stickyClick, plan_id
   } = props;
   const theme = useTheme();
+
 
   return (
     <>
@@ -54,7 +57,7 @@ const WorkspaceFab = (props) => {
           text="Analyser"
           style={{ backgroundColor: 'white' }}
           onClick={onAnalysisClick}
-          disabled
+          disabled={plan_id !== 4}
         >
           <AssessmentIcon style={{ color: theme.palette.primary.main }} />
         </Action>
@@ -62,6 +65,7 @@ const WorkspaceFab = (props) => {
           text="Red flags"
           style={{ backgroundColor: 'white' }}
           onClick={onAlertClick}
+          disabled={plan_id === 1}
         >
           <FlagIcon style={{ color: theme.palette.primary.main }} />
         </Action>
@@ -85,6 +89,7 @@ WorkspaceFab.propTypes = {
   onAnalysisClick: PropTypes.func.isRequired,
   onCvrClick: PropTypes.func.isRequired,
   stickyClick: PropTypes.func.isRequired,
+  plan_id: PropTypes.number.isRequired
 };
 
 export default WorkspaceFab;

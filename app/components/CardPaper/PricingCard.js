@@ -44,7 +44,7 @@ function PricingCard(props) {
   };
 
   const lite = ['Indlæs fra CVR'];
-  const base = ['Ændre data fra CVR', 'Automatiske red flags'];
+  const base = ['Ændre data fra CVR', 'Tilføj indhold til arbejdsområder', 'Automatiske red flags'];
   const team = ['Sikkert virksomhedslogin', 'Design egne red flags', 'Design eget indhold', "Integrer andre API'er", 'Eget subdomæne', 'VPN lås'];
   const pro = ['Automatisk læringsindhold', 'Atuomatisk report builder'];
 

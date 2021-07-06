@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, {
@@ -27,6 +28,7 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { toast } from 'react-toastify';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './workspace-jss';
 import { reducer, initErstTypes } from './constants';
 import {
@@ -36,7 +38,7 @@ import {
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
-  cvrWorkspace, postSticky
+  cvrWorkspace, postSticky, showNotifAction
 } from './reducers/workspaceActions';
 
 
@@ -63,6 +65,7 @@ const Workspace = (props) => {
   const reactFlowContainer = useRef(null);
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(1);
+  const { plan_id } = loadFromLocalStorage();
 
 
   // REDUX
@@ -254,7 +257,9 @@ const Workspace = (props) => {
     const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
     const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
-    if (isUpdatingElement) {
+    if (plan_id === 1) {
+      dispatch(showNotifAction('At tilføje og ændre elementer i et arbejdsområde er en Base feature. Upgrader til base for at tilføje og ændre elementer'));
+    } else if (isUpdatingElement) {
       dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
     } else {
       dispatch(postNode(
@@ -267,6 +272,7 @@ const Workspace = (props) => {
       ));
       setNodeLabel('');
     }
+
     setIsUpdatingElement(false);
   };
 
@@ -284,8 +290,9 @@ const Workspace = (props) => {
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-
-    if (isUpdatingElement) {
+    if (plan_id === 1) {
+      dispatch(showNotifAction('At tilføje og ændre relationer i et arbejdsområde er en Base feature. Upgrader til base for at tilføje og ændre relationer'));
+    } else if (isUpdatingElement) {
       dispatch(putEdge(
         elementToUpdate.id,
         choosenRelationship.id,
@@ -312,6 +319,7 @@ const Workspace = (props) => {
       };
       dispatch(postEdge(id, edge, setDefineEdgeOpen, handleAlerts));
     }
+
     setIsUpdatingElement(false);
   };
 
@@ -321,7 +329,7 @@ const Workspace = (props) => {
   }, []);
 
   const handleChangeLabel = useCallback((_label) => {
-    if (_label.__isNew__) {
+    if (_label.__isNew__ && plan_id !== 2) {
       dispatch(addEdgeToList({
         id: null,
         label: _label.value,
@@ -330,7 +338,11 @@ const Workspace = (props) => {
         style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
       }));
     }
-    setRelationshipLabel(_label.value);
+    if (_label.__isNew__ && plan_id === 2) {
+      dispatch(showNotifAction('Du kan ikke lave nye relationstyper. Dette er en Draw feature. Kontakt os for mere information.'));
+    } else {
+      setRelationshipLabel(_label.value);
+    }
   }, []);
   const handleChangeValue = useCallback((value) => setRelationshipValue(value ? value.value : value), []);
   const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
@@ -341,11 +353,15 @@ const Workspace = (props) => {
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
   const handlePostSticky = () => {
-    const rf = rfInstance.toObject();
-    const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
-    const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
-    console.log(x, y);
-    dispatch(postSticky(id, x, y));
+    if (plan_id === 1) {
+      dispatch(showNotifAction('At tilføje noter til et arbejdsområde er en Base feature. Upgrader til base for at tilføje noter'));
+    } else {
+      const rf = rfInstance.toObject();
+      const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+      const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+
+      dispatch(postSticky(id, x, y));
+    }
   };
 
   const flowStyle = {
@@ -457,7 +473,7 @@ const Workspace = (props) => {
         nodes={nodes}
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => {
-          if (_label.__isNew__) {
+          if (_label.__isNew__ && plan_id !== 2) {
             dispatch(addWorkspaceNodeToList({
               attributes: [],
               description: null,
@@ -466,15 +482,24 @@ const Workspace = (props) => {
               style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
             }));
           }
-          setNodeLabel(_label.value);
+          if (_label.__isNew__ && plan_id === 2) {
+            dispatch(showNotifAction('Du kan ikke lave nye elementtyper. Dette er en Draw feature. Kontakt os for mere information.'));
+          } else {
+            setNodeLabel(_label.value);
+          }
         }}
         attributes={attributes}
         handleChangeAttributes={(_attributes, newRow, isNew) => {
-          if (isNew) {
+          if (isNew && plan_id !== 2) {
             newRow.value = newRow.label;
             dispatch(addWorkspaceNodeAttributToList(newRow));
           }
-          setAttributes(_attributes);
+
+          if (isNew && plan_id === 2) {
+            dispatch(showNotifAction('Du kan ikke lave nye kendetegnstyper. Dette er en Draw feature. Kontakt os for mere information.'));
+          } else {
+            setAttributes(_attributes);
+          }
         }}
         nodeColor={nodeColor}
         handleChangeColor={(color) => setNodeColor(color.rgb)}
@@ -580,6 +605,7 @@ const Workspace = (props) => {
           onAnalysisClick={() => history.push(`analysis/${id}`)}
           onCvrClick={() => setShowCvrModal(true)}
           stickyClick={handlePostSticky}
+          plan_id={plan_id}
         />
       )}
     </div>

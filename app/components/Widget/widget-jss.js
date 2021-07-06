@@ -216,6 +216,10 @@ const styles = theme => ({
   textCenter: {
     textAlign: 'center'
   },
+  activityButton: {
+    textAlign: 'center',
+    marginTop: 20
+  },
   textRight: {
     textAlign: 'right'
   },

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -18,46 +19,63 @@ import PapperBlock from '../PapperBlock/PapperBlock';
 
 
 function TimelineWidget(props) {
-  const { classes, timeline } = props;
+  const { classes, timeline, history } = props;
 
   return (
     <PapperBlock whiteBg noMargin title="Aktivitet" icon="ion-ios-time-outline" desc="">
 
-      <Timeline align="alternate">
-        {timeline.toJS().map(item => (
-          <TimelineItem>
-            <TimelineOppositeContent>
-              <Typography variant="body2" color="textSecondary">
-                {moment(item.updated_at).fromNow()}
-              </Typography>
-            </TimelineOppositeContent>
-            <TimelineSeparator>
-              <TimelineDot className={classes.timelineConnector}>
-                <Ionicon
-                  icon={item.icon}
-                />
-              </TimelineDot>
-              <TimelineConnector className={classes.timelineConnector} />
-            </TimelineSeparator>
-            <TimelineContent>
-              <Paper elevation={3} className={classes.paper}>
-                <Typography variant="subtitle2" component="h1">
-                  {item.label}
+      {timeline.toJS().length === 0 ? (
+        <div>
+          <Typography variant="h5">Du har endnu ikke brugt juristic endnu. Hop ind i et arbejdsområde og kom godt i gang.</Typography>
+          <div className={classes.activityButton}>
+            <Button
+              variant="outlined"
+              size="large"
+
+              onClick={() => history.push('/app/workspaces')}
+            >
+              Gå til arbejdsområde
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <Timeline align="alternate">
+          {timeline.toJS().map(item => (
+            <TimelineItem>
+              <TimelineOppositeContent>
+                <Typography variant="body2" color="textSecondary">
+                  {moment(item.updated_at).fromNow()}
                 </Typography>
-                <Typography variant="caption">
-                  {item.metaText}
-                </Typography>
-              </Paper>
-            </TimelineContent>
-          </TimelineItem>
-        ))}
-      </Timeline>
+              </TimelineOppositeContent>
+              <TimelineSeparator>
+                <TimelineDot className={classes.timelineConnector}>
+                  <Ionicon
+                    icon={item.icon}
+                  />
+                </TimelineDot>
+                <TimelineConnector className={classes.timelineConnector} />
+              </TimelineSeparator>
+              <TimelineContent>
+                <Paper elevation={3} className={classes.paper}>
+                  <Typography variant="subtitle2" component="h1">
+                    {item.label}
+                  </Typography>
+                  <Typography variant="caption">
+                    {item.metaText}
+                  </Typography>
+                </Paper>
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </Timeline>
+      )}
     </PapperBlock>
   );
 }
 
 TimelineWidget.propTypes = {
   classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   timeline: PropTypes.object.isRequired
 };
 

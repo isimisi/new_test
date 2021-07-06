@@ -3,7 +3,7 @@ import {
   isNode,
   isEdge
 } from 'react-flow-renderer';
-import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
+import { CLOSE_NOTIF, SHOW_NOTIF } from '@redux/constants/notifConstants';
 
 import {
   GET_WORKSPACES_LOADING,
@@ -346,6 +346,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const visability = fromJS(action.bool);
         mutableState.set('handleVisability', visability);
+      });
+    case SHOW_NOTIF:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {
