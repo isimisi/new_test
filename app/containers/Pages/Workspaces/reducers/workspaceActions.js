@@ -39,7 +39,11 @@ export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
     dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
     close();
   } catch (error) {
-    const _message = 'Vi har desværre nogle probler med kommunkationen til cvr';
+    let _message = 'Vi har desværre nogle probler med kommunkationen til cvr';
+
+    if (error?.response?.status === 503) {
+      _message = 'Du skal være på en Draw plan, for at trække selskaber med over 100 elementer';
+    }
     dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
   }
 };
