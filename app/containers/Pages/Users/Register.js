@@ -23,8 +23,9 @@ function Register(props) {
     const employer = values.get('employer');
     const email = values.get('email');
     const password = values.get('password');
+    const marketing = values.get('marketing');
 
-    dispatch(register(name, phone, employer, email, password, history));
+    dispatch(register(name, phone, employer, email, password, marketing, history));
   };
 
   const title = brand.name + ' - Register';

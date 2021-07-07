@@ -1,5 +1,3 @@
-
-import { fade } from '@material-ui/core/styles/colorManipulator';
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -37,18 +35,6 @@ const styles = theme => ({
       marginLeft: theme.spacing(4)
     }
   },
-  whiteInputRoot: {
-    '& label, input': {
-      color: `${theme.palette.common.white} !important`,
-    },
-    '& > div': {
-      borderColor: fade(theme.palette.common.white, 0.6),
-    },
-    color: 'white'
-  },
-  whiteInputInput: {
-    color: 'white !important'
-  }
 });
 
 export default styles;

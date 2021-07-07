@@ -25,12 +25,14 @@ const WorkspaceFab = (props) => {
     <>
       <Fab
         onClick={stickyClick}
+        text="Tilføj post it noter"
         icon={<NotesIcon />}
         event="click"
         mainButtonStyles={{ backgroundColor: theme.palette.primary.main, right: 160 }}
       />
       <Fab
         onClick={nodeClick}
+        text="Tilføj elementer"
         icon={<CheckBoxOutlineBlankIcon />}
         event="click"
         mainButtonStyles={{ backgroundColor: theme.palette.primary.light, right: 80 }}

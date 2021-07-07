@@ -45,6 +45,7 @@ const LinkBtn = React.forwardRef(function LinkBtn(props, ref) { // eslint-disabl
 function RegisterForm(props) {
   const [tab, setTab] = useState(0);
 
+
   const handleChangeTab = (event, value) => {
     setTab(value);
   };
@@ -78,9 +79,6 @@ function RegisterForm(props) {
         <Typography variant="h4" className={classes.title} gutterBottom>
           Registrer dig
         </Typography>
-        <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
-          og prøv vores gratis prøve version
-        </Typography>
         <Tabs
           value={tab}
           onChange={handleChangeTab}
@@ -90,7 +88,7 @@ function RegisterForm(props) {
           className={classes.tab}
         >
           <Tab label="Med Email" />
-          {/* <Tab label="With Social Media" /> */}
+          <Tab label="Virksomhedslogin" disabled />
         </Tabs>
         {tab === 0 && (
           <section className={classes.formWrap}>
@@ -172,12 +170,22 @@ function RegisterForm(props) {
               </div>
               <div>
                 <FormControlLabel
+                  classes={{ label: classes.formLabel }}
                   control={(
                     <Field name="checkbox" component={CheckboxRedux} required className={classes.agree} />
                   )}
                   label="Accepter vores"
                 />
-                <a href="#" className={classes.link}>Terms &amp; Condition</a>
+                <a href="#" className={classes.link}>Vilkår &amp; betingelser</a>
+              </div>
+              <div>
+                <FormControlLabel
+                  classes={{ label: classes.formLabel }}
+                  control={(
+                    <Field name="marketing" component={CheckboxRedux} className={classes.agree} />
+                  )}
+                  label="Ja, jeg vil gerne modtage marketingkommunikation per elektronisk post."
+                />
               </div>
               <div className={classes.btnArea}>
                 <Button variant="contained" color="primary" type="submit">

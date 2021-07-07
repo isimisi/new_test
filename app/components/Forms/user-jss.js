@@ -116,10 +116,10 @@ const styles = theme => ({
   },
   formWrap: {
     [theme.breakpoints.up('sm')]: {
-      padding: '0 100px'
+      padding: '0 77px'
     },
     [theme.breakpoints.up('md')]: {
-      padding: '0 150px'
+      padding: '0 100px'
     },
   },
   pageFormWrap: {
@@ -295,7 +295,7 @@ const styles = theme => ({
     margin: `${theme.spacing(3)}px 0 ${theme.spacing(1)}px`,
   },
   link: {
-    fontSize: '0.875rem',
+    fontSize: '0.775rem',
     color: theme.palette.secondary.main,
     textDecoration: 'none',
     '&:hover': {
@@ -420,6 +420,9 @@ const styles = theme => ({
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 20,
+  },
+  formLabel: {
+    fontSize: '0.775rem',
   }
 });
 

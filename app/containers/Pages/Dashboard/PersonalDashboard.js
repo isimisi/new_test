@@ -80,16 +80,16 @@ const PersonalDashboard = (props) => {
         <Grid item md={6} xs={12}>
           <CounterIconsWidget elementCounts={elementCounts} />
           <Divider className={classes.divider} />
-          <div className={classes.sliderWrap}>
+          {/* <div className={classes.sliderWrap}>
             <SliderWidget />
-          </div>
+          </div> */}
           <Divider className={classes.divider} />
           <NewsListWidget />
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
           <TimelineWidget timeline={timeline} history={history} />
           <Divider className={classes.divider} />
-          <PapperBlock title="Send os et ønske" icon="ion-ios-redo-outline" colorMode whiteBg noMargin desc="Vi er glade for idéer og ser på det straks">
+          <PapperBlock title="Send os et ønske" icon="ion-ios-redo-outline" whiteBg noMargin desc="Vi er glade for idéer og ser på det straks">
             <div className={classes.subscribeForm}>
               <FormControl>
                 <TextField
@@ -99,10 +99,6 @@ const PersonalDashboard = (props) => {
                   onChange={handleFeatureChange}
                   value={featureValue}
                   multiline
-                  classes={{
-                    root: classes.whiteInputRoot,
-                    input: classes.whiteInputInput,
-                  }}
                 />
               </FormControl>
               <Fab size="medium" color="secondary" type="submit" onClick={handleSubmitFeature}>

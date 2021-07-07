@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -8,16 +9,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import tableOptions from '@api/ui/tableOptions';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import {
   columns,
   reducer
 } from './constants';
-import tableOptions from '@api/ui/tableOptions';
 import styles from './workspace-jss';
 import {
-  getWorkspaces, closeNotifAction, postWorkspace, deleteWorkspaces
+  getWorkspaces, closeNotifAction, postWorkspace, deleteWorkspaces, showNotifAction
 } from './reducers/workspaceActions';
 import { Notification } from '@components';
+
+const { plan_id } = loadFromLocalStorage();
 
 const Workspaces = (props) => {
   const { classes } = props;
@@ -38,6 +42,14 @@ const Workspaces = (props) => {
     });
   };
 
+  const createWorkspace = () => {
+    if ((plan_id === 1 && workspaces.length === 10) || (plan_id === 2 && workspaces.length === 50)) {
+      dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Upgrader for at lave flere.'));
+    } else {
+      dispatch(postWorkspace(history));
+    }
+  };
+
   return (
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -49,7 +61,7 @@ const Workspaces = (props) => {
         elevation={10}
       />
       <Tooltip title="Nyt arbejdsområde">
-        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postWorkspace(history))}>
+        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={createWorkspace}>
             Nyt arbejdsområde
         </Fab>
       </Tooltip>

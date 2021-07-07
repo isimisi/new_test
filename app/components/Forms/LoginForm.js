@@ -67,16 +67,14 @@ function LoginForm(props) {
             </NavLink>
             <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/register">
               <Icon className={classes.icon}>arrow_forward</Icon>
-              Create new account
+              Opret ny konto
             </Button>
           </div>
         </Hidden>
         <Typography variant="h4" className={classes.title} gutterBottom>
-          Sign In
+          Log ind
         </Typography>
-        <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
-          And create amazing things
-        </Typography>
+
         <section className={classes.formWrap}>
           <form onSubmit={handleSubmit}>
             <div>
@@ -84,8 +82,8 @@ function LoginForm(props) {
                 <Field
                   name="email"
                   component={TextFieldRedux}
-                  placeholder="Your Email"
-                  label="Your Email"
+                  placeholder="Din Email"
+                  label="Din Email"
                   required
                   validate={[required, email]}
                   className={classes.field}
@@ -98,7 +96,7 @@ function LoginForm(props) {
                   name="password"
                   component={TextFieldRedux}
                   type={showPassword ? 'text' : 'password'}
-                  label="Your Password"
+                  label="Dit Kodeord"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -119,12 +117,12 @@ function LoginForm(props) {
               </FormControl>
             </div>
             <div className={classes.optArea}>
-              <FormControlLabel className={classes.label} control={<Field name="checkbox" component={CheckboxRedux} />} label="Remember" />
-              <Button size="small" component={LinkBtn} to="/reset-password" className={classes.buttonLink}>Forgot Password</Button>
+              <FormControlLabel className={classes.label} control={<Field name="checkbox" component={CheckboxRedux} />} label="Husk mig" />
+              <Button size="small" component={LinkBtn} to="/reset-password" className={classes.buttonLink}>Glemt Kodeord</Button>
             </div>
             <div className={classes.btnArea}>
               <Button variant="contained" color="primary" size="large" type="submit">
-                Continue
+                Fortsæt
                 <ArrowForward className={classNames(classes.rightIcon, classes.iconSmall)} disabled={submitting || pristine} />
               </Button>
             </div>
