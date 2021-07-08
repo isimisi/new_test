@@ -49,6 +49,15 @@ const PersonalDashboard = (props) => {
   const [openGuide, setOpenGuide] = useState(false);
 
 
+  const handleCloseGuide = () => {
+    setOpenGuide(false);
+  };
+
+  const handleOpenGuide = () => {
+    setOpenGuide(true);
+  };
+
+
   useEffect(() => {
     dispatch(getElementCounts());
     dispatch(getTimeline());
@@ -56,6 +65,10 @@ const PersonalDashboard = (props) => {
 
     if (history.location.search.includes('upgraded')) {
       setShowUpgrade(true);
+    }
+
+    if (history.location.search.includes('firstvisit')) {
+      handleOpenGuide();
     }
   }, []);
 
@@ -67,13 +80,6 @@ const PersonalDashboard = (props) => {
     dispatch(postFeatureRequest(featureValue, setFeatureValue));
   };
 
-  const handleCloseGuide = () => {
-    setOpenGuide(false);
-  };
-
-  const handleOpenGuide = () => {
-    setOpenGuide(true);
-  };
 
   return (
     <div>

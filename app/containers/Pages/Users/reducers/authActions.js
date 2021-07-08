@@ -54,7 +54,7 @@ export const register = (name, phone, employer, email, password, marketing, hist
     const { user, access_token } = response.data;
     dispatch({ type: types.REGISTER_SUCCESS, user, access_token });
     saveToLocalStorage({ ...access_token, ...user });
-    history.push('/app');
+    history.push('/app?first_visit');
   } catch (error) {
     const { message } = error.response.data[0];
     dispatch({ type: types.REGISTER_FAILED, message });
