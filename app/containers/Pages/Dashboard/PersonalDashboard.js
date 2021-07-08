@@ -67,7 +67,7 @@ const PersonalDashboard = (props) => {
       setShowUpgrade(true);
     }
 
-    if (history.location.search.includes('firstvisit')) {
+    if (history.location.search.includes('first_visit')) {
       handleOpenGuide();
     }
   }, []);
