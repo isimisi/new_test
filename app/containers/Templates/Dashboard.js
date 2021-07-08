@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { toggleAction, openAction, playTransitionAction } from '@redux/actions/uiActions';
 import LeftSidebarLayout from './layouts/LeftSidebarLayout';
 import styles from './appStyles-jss';
+import { GuideSlider } from '@components';
 
 function Dashboard(props) {
   // Initial header style
@@ -44,9 +45,9 @@ function Dashboard(props) {
     setOpenGuide(true);
   };
 
-  // const handleCloseGuide = () => {
-  //   setOpenGuide(false);
-  // };
+  const handleCloseGuide = () => {
+    setOpenGuide(false);
+  };
 
   const {
     classes,
@@ -63,7 +64,7 @@ function Dashboard(props) {
     layout,
     changeMode
   } = props;
-  const titleException = ['/app', '/app/crm-dashboard', '/app/crypto-dashboard'];
+
   const parts = history.location.pathname.split('/');
   const place = parts[parts.length - 1].replace('-', ' ');
   return (
@@ -77,7 +78,7 @@ function Dashboard(props) {
         )
       }
     >
-      {/* <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} /> */}
+      <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
       <LeftSidebarLayout
         history={history}
         toggleDrawer={toggleDrawer}
@@ -90,7 +91,6 @@ function Dashboard(props) {
         deco={deco}
         bgPosition={bgPosition}
         place={place}
-        titleException={titleException}
         handleOpenGuide={handleOpenGuide}
       >
         { children }

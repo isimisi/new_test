@@ -28,7 +28,6 @@ function LeftSidebarLayout(props) {
     bgPosition,
     changeMode,
     place,
-    titleException,
     handleOpenGuide
   } = props;
 
@@ -61,12 +60,6 @@ function LeftSidebarLayout(props) {
           horizontalMenu={false}
         />
         <section className={classNames(classes.mainWrap, classes.sidebarLayout)}>
-          {titleException.indexOf(history.location.pathname) < 0 && (!history.location.pathname.includes('workspace') || history.location.pathname.includes('workspaces/analysis')) && !history.location.pathname.includes('condition') && (
-            <div className={classes.pageTitle}>
-              <Typography component="h4" className={bgPosition === 'header' ? classes.darkTitle : classes.lightTitle} variant="h4">{place}</Typography>
-              <BreadCrumb separator=" / " theme={bgPosition === 'header' ? 'dark' : 'light'} location={history.location} />
-            </div>
-          )}
           { !pageLoaded && (<img src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/spinner.gif" alt="spinner" className={classes.circularProgress} />) }
           <Fade
             in={pageLoaded}
@@ -97,7 +90,6 @@ LeftSidebarLayout.propTypes = {
   deco: PropTypes.bool.isRequired,
   bgPosition: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
-  titleException: PropTypes.array.isRequired,
   handleOpenGuide: PropTypes.func.isRequired
 };
 

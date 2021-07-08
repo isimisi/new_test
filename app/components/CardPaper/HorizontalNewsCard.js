@@ -14,6 +14,7 @@ function HorizontalNewsCard(props) {
     thumbnail,
     title,
     desc,
+    handleOpenGuide
   } = props;
   return (
     <Card className={classes.newsList}>
@@ -44,6 +45,7 @@ HorizontalNewsCard.propTypes = {
   thumbnail: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
+  handleOpenGuide: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(HorizontalNewsCard);

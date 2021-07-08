@@ -162,11 +162,11 @@ function Header(props) {
                 </IconButton>
               </Tooltip>
 
-              {/* <Tooltip title="Show Guide" placement="bottom">
+              <Tooltip title="Guide" placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
                   <i className="ion-ios-help-outline" />
                 </IconButton>
-              </Tooltip> */}
+              </Tooltip>
             </div>
             <Typography component="h2" className={classNames(classes.headerTitle, showTitle && classes.show)}>
               {title}
@@ -181,9 +181,9 @@ function Header(props) {
             <SearchUi history={history} />
           </div>
         </div>
-        {/* <Hidden xsDown>
+        <Hidden xsDown>
           <span className={classes.separatorV} />
-        </Hidden> */}
+        </Hidden>
         <UserMenu />
       </Toolbar>
     </AppBar>

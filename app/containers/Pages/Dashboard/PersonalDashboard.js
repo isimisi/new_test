@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import {
   SliderWidget,
+  GuideSlider,
   CounterIconsWidget,
   TimelineWidget,
   NewsListWidget,
@@ -45,6 +46,7 @@ const PersonalDashboard = (props) => {
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const [featureValue, setFeatureValue] = useState('');
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [openGuide, setOpenGuide] = useState(false);
 
 
   useEffect(() => {
@@ -65,6 +67,14 @@ const PersonalDashboard = (props) => {
     dispatch(postFeatureRequest(featureValue, setFeatureValue));
   };
 
+  const handleCloseGuide = () => {
+    setOpenGuide(false);
+  };
+
+  const handleOpenGuide = () => {
+    setOpenGuide(true);
+  };
+
   return (
     <div>
       <Helmet>
@@ -76,6 +86,7 @@ const PersonalDashboard = (props) => {
         <meta property="twitter:description" content={description} />
       </Helmet>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+      <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
       <Grid container spacing={3} className={classes.root}>
         <Grid item md={6} xs={12}>
           <CounterIconsWidget elementCounts={elementCounts} />
@@ -84,7 +95,7 @@ const PersonalDashboard = (props) => {
             <SliderWidget />
           </div> */}
           <Divider className={classes.divider} />
-          <NewsListWidget />
+          <NewsListWidget handleOpenGuide={handleOpenGuide} />
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
           <TimelineWidget timeline={timeline} history={history} />
