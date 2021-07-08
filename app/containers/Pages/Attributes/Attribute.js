@@ -20,8 +20,8 @@ import {
 } from './reducers/attributeActions';
 
 const typeSuggestions = [
-  { label: 'Selection' },
-  { label: 'Value' },
+  { label: 'Faste Valgmuligheder' },
+  { label: 'Værdi' },
 ].map(suggestion => ({
   value: suggestion.label,
   label: suggestion.label,
@@ -90,10 +90,10 @@ const Attribute = (props) => {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Create Attribute</DialogTitle>
+      <DialogTitle id="form-dialog-title">Skab ny egenskab</DialogTitle>
       <DialogContent>
         <DialogContentText>
-            Magna sunt occaecat irure culpa occaecat amet fugiat est aliquip amet mollit.
+            Her kan du skabe en ny egenskab. Du skal først vælge, om der skal kunne indtastes en specifik værdi ("Værdi"), eller om brugeren skal kunne vælge mellem nogle specifikke ting ("Valgmugligheder").
         </DialogContentText>
         <div className={classes.inlineWrap}>
           <div className={classes.field} style={{ width: '30%' }}>
@@ -129,9 +129,9 @@ const Attribute = (props) => {
                     htmlFor: 'react-select-single-attr-group',
                     shrink: true,
                   },
-                  placeholder: 'group',
+                  placeholder: 'Vælg gruppe',
                 }}
-                placeholder="group"
+                placeholder="Vælg gruppe"
                 options={mapSelectOptions(groupsDropDownOptions)}
                 value={group && { label: group, value: group }}
                 onChange={(v) => dispatch(addGroup(v.value))}
@@ -143,7 +143,7 @@ const Attribute = (props) => {
           autoFocus
           margin="dense"
           id="attribute"
-          label="Attribute"
+          label="Navn (fx 'Antal medarbejdere' eller 'Land')"
           value={label}
           onChange={(e) => dispatch(labelChange(e.target.value))}
           fullWidth
@@ -158,7 +158,7 @@ const Attribute = (props) => {
             onChange={(v) => dispatch(changeSelectionValues(v || []))}
             onInputChange={(v) => setInputValue(v)}
             onKeyDown={handleKeyDown}
-            placeholder="Type your selection values"
+            placeholder="Indtast faste Valgmuligheder"
             value={selectionOptions.toJS()}
           />
         )}
@@ -166,8 +166,8 @@ const Attribute = (props) => {
           <TextField
             name="description"
             className={classes.field}
-            placeholder="Description"
-            label="Description"
+            placeholder="Beskrivelse"
+            label="Beskrivelse"
             multiline
             onChange={(e) => dispatch(descriptionChange(e.target.value))}
             value={description}
