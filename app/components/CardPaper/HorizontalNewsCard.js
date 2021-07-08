@@ -26,9 +26,6 @@ function HorizontalNewsCard(props) {
         </Typography>
         <div className={classes.actionArea}>
           <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
             Read More
           </Button>
         </div>

@@ -74,6 +74,5 @@ module.exports = [
     name: 'Hjælp',
     icon: 'ios-help-circle-outline',
     linkParent: '/app/help-support',
-    disabled: true
   }
 ];

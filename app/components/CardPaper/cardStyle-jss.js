@@ -128,7 +128,6 @@ const styles = theme => ({
     }
   },
   desc: {
-    height: 50,
     overflow: 'hidden'
   },
   chipDiscount: {
@@ -245,7 +244,8 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       width: 150,
     },
-    height: 155
+    height: 155,
+    alignSelf: 'center'
   },
   extraRounded: {},
   roundedMedia: {
