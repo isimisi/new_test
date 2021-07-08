@@ -22,7 +22,7 @@ import {
 
 const typeSuggestions = [
   { label: 'Valgmuligheder', value: 'Selction' },
-  { label: 'Værdi', value: 'value' },
+  { label: 'Værdi', value: 'Value' },
 ];
 
 const createOption = (label) => ({
