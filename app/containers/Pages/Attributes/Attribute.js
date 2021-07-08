@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable default-case */
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
@@ -20,12 +21,9 @@ import {
 } from './reducers/attributeActions';
 
 const typeSuggestions = [
-  { label: 'Valgmuligheder' },
-  { label: 'Værdi' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
+  { label: 'Valgmuligheder', value: 'Selction' },
+  { label: 'Værdi', value: 'value' },
+];
 
 const createOption = (label) => ({
   label,
