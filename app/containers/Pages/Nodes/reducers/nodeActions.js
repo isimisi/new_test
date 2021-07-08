@@ -96,7 +96,7 @@ export const deleteNode = (id, title) => async dispatch => {
   const header = authHeader();
   try {
     await axios.delete(url, header);
-    const message = `You have deleted ${title}`;
+    const message = `Du har slettet ${title}`;
     dispatch({ type: types.DELETE_NODE_SUCCESS, message });
     dispatch(getNodes());
   } catch (error) {

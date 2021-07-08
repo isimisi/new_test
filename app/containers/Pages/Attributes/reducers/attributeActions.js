@@ -84,7 +84,7 @@ export const deleteAttribute = (id, title) => async dispatch => {
 
   try {
     await axios.delete(url, header);
-    const message = `You have deleted ${title}`;
+    const message = `Du har slettet ${title}`;
     dispatch({ type: types.PUT_ATTRIBUTE_SUCCESS, message });
     dispatch(getAttributes());
   } catch (error) {

@@ -86,7 +86,7 @@ const Node = () => {
           }}
           onClick={onSave}
         >
-            Save Node
+            Gem
         </Fab>
       </Tooltip>
     </div>

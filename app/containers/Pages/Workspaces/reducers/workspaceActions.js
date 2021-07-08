@@ -156,7 +156,7 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
   const header = authHeader();
   try {
     await axios.delete(url, header);
-    const _message = `You have deleted ${title}`;
+    const _message = `Du har slettet ${title}`;
     dispatch({ type: types.DELETE_WORKSPACE_SUCCESS, message: _message });
     dispatch(getWorkspaces());
   } catch (error) {

@@ -141,7 +141,7 @@ export const deleteCondition = (id, title) => async dispatch => {
   const header = authHeader();
   try {
     await axios.delete(url, header);
-    const message = `You have deleted ${title}`;
+    const message = `Du har slettet ${title}`;
     dispatch({ type: types.DELETE_CONDITION_SUCCESS, message });
     dispatch(getConditions());
   } catch (error) {

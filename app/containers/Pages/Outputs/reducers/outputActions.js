@@ -90,7 +90,7 @@ export const deleteOutput = (id, title) => async dispatch => {
   const header = authHeader();
   try {
     await axios.delete(url, header);
-    const message = `You have deleted ${title}`;
+    const message = `Du har slettet ${title}`;
     dispatch({ type: types.DELETE_OUTPUT_SUCCESS, message });
     dispatch(getOutput());
   } catch (error) {
