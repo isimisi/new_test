@@ -32,8 +32,8 @@ const ConditionForm = (props) => {
         <div>
           <TextField
             name="label"
-            placeholder="Label"
-            label="Label"
+            placeholder="Navn"
+            label="Navn"
             className={classes.field}
             value={label}
             onChange={labelChange}
@@ -43,8 +43,8 @@ const ConditionForm = (props) => {
           <TextField
             name="description"
             className={classes.field}
-            placeholder="Description"
-            label="Description"
+            placeholder="Beskrivelse"
+            label="Indtast beskrivelse"
             multiline
             rows={2}
             value={description}
@@ -63,9 +63,9 @@ const ConditionForm = (props) => {
                   htmlFor: 'react-select-single-condition',
                   shrink: true,
                 },
-                placeholder: 'groups',
+                placeholder: 'Vælg gruppe',
               }}
-              placeholder="groups"
+              placeholder="Vælg gruppe"
               options={mapSelectOptions(groupsDropDownOptions)}
               value={group && { label: group, value: group }}
               onChange={addGroup}
@@ -75,7 +75,7 @@ const ConditionForm = (props) => {
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => closeForm()}>
-            Discard
+            Annuller
         </Button>
         <Button
           variant="contained"
@@ -83,7 +83,7 @@ const ConditionForm = (props) => {
           type="button"
           onClick={onSave}
         >
-            Save
+            Gem
         </Button>
       </div>
     </div>

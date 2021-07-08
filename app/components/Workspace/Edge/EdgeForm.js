@@ -230,7 +230,7 @@ const EdgeForm = (props) => {
           </Button>
         )}
         <Button type="button" onClick={() => close()}>
-            Discard
+            Annuller
         </Button>
         <Button
           variant="contained"
@@ -239,7 +239,7 @@ const EdgeForm = (props) => {
           onClick={handleSave}
           disabled={relationshipLabel.length === 0 && relationshipValue === 0}
         >
-            Save
+            Gem
         </Button>
       </div>
     </div>

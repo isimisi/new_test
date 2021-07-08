@@ -272,7 +272,7 @@ const WorkspaceNodeForm = (props) => {
           </Button>
         )}
         <Button type="button" onClick={close}>
-            Discard
+            Annuller
         </Button>
         <Button
           variant="contained"
@@ -281,7 +281,7 @@ const WorkspaceNodeForm = (props) => {
           onClick={handleNodeSave}
           disabled={!choosenNode}
         >
-            Save
+            Gem
         </Button>
       </div>
     </div>
