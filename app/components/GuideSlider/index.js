@@ -84,12 +84,12 @@ function GuideSlider(props) {
           nextButton={
             activeStepSwipe === maxStepsSwipe - 1 ? (
               <Button size="small" color="primary" onClick={handleClose}>
-                Done
+                Afslut
                 {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
               </Button>
             ) : (
               <Button size="small" onClick={handleNextSwipe}>
-                Next
+                Fortsæt
                 {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
               </Button>
             )
@@ -97,7 +97,7 @@ function GuideSlider(props) {
           backButton={(
             <Button size="small" onClick={handleBackSwipe} disabled={activeStepSwipe === 0}>
               {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-              Back
+              Tilbage
             </Button>
           )}
         />

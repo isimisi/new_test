@@ -115,9 +115,9 @@ const CounterIconWidget = (props) => {
           <CounterWidget
             color={colorfull[0]}
             start={elementCounts.get('alerts') < 20 ? 50 : 0}
-            end={elementCounts.get('alerts') || 0}
+            end={/* elementCounts.get('alerts') || */0}
             duration={5}
-            title="red flags"
+            title="egne red flags"
           >
             <Ionicon
               className={classes.counterIcon}

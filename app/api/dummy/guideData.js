@@ -22,7 +22,7 @@ const guideSteps = [
   {
     title: 'Få dit eget indhold eller 1-kliks-rapporter',
     label: 'Opgrader i dag for at få flere funktioner med Base, Draw og Pro.',
-    imgPath: '/images/guide/5.gif',
+    imgPath: '/images/guide/5.jpg',
   },
 ];
 

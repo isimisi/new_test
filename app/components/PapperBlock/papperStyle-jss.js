@@ -73,8 +73,8 @@ const styles = theme => ({
   iconTitle: {
     borderRadius: theme.rounded.small,
     border: theme.palette.type === 'dark' ? 'none' : `1px solid ${lighten(theme.palette.primary.dark, 0.9)}`,
-    boxShadow: `0 2px 15px -5px ${theme.palette.primary.main}`,
-    background: theme.palette.type === 'dark' ? theme.palette.primary.main : lighten(theme.palette.primary.light, 0.5),
+    boxShadow: `0 1px 7px -3px ${theme.palette.primary.main}`,
+    background: 'white',
     width: 48,
     height: 48,
     textAlign: 'center',
