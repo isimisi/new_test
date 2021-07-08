@@ -11,7 +11,7 @@ const guideSteps = [
   },
   {
     title: 'Red flags',
-    label: 'Med red flags får du input, men du drafter.',
+    label: 'Med red flags får du input, mens du drafter.',
     imgPath: '/images/guide/3.gif',
   },
   {
