@@ -91,9 +91,9 @@ function RelationshipForm(props) {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Name your
+              Navngiv din
               {' '}
-              Relationship
+              forbindelse
             </Typography>
             <div>
               <TextField

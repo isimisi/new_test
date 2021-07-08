@@ -40,13 +40,13 @@ function Outputs(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Your Outputs"
+        title="Dit indhold"
         data={outputs}
         columns={columns}
         options={tableOptions(onDelete)}
         elevation={10}
       />
-      <Tooltip title="New Output">
+      <Tooltip title="Nyt indhold">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postOutput(history))}>
             Create new Output
         </Fab>

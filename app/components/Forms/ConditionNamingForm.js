@@ -92,7 +92,7 @@ function ConditionNamingForm(props) {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Name your Condition
+              Navngiv din betingelse
             </Typography>
             <div>
               <TextField

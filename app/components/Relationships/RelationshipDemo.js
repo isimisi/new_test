@@ -52,7 +52,7 @@ const RelationshipDemo = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Your Relationship
+        Din forbindelse
       </Typography>
       <Tooltip title={description}>
         <div className={classes.relationshipContainer}>

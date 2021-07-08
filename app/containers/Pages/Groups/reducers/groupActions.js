@@ -24,7 +24,7 @@ export const postGroup = (title, description, image, closeModal) => async dispat
   const header = authHeader();
   try {
     await axios.post(url, body, header);
-    const message = 'You have created your group';
+    const message = 'Du har lavet en gruppe';
     dispatch({ type: types.POST_GROUP_SUCCESS, message });
     dispatch(getGroups());
     closeModal(false);

@@ -76,7 +76,7 @@ export const putOutput = (id, label, description, output, fileType, outputType, 
 
   try {
     await axios.put(url, body, header);
-    const message = 'Your output has been updated';
+    const message = 'Dit indhold er blevet opdateret';
     dispatch({ type: types.PUT_OUTPUT_SUCCESS, message });
   } catch (error) {
     const message = genericErrorMessage;

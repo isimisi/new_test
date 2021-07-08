@@ -79,7 +79,7 @@ const RelationshipStylling = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Style Your Relationship
+        Standard-udseende
       </Typography>
       <div className={classes.row}>
         <Typography variant="subtitle2" component="h3">

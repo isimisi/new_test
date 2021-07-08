@@ -120,7 +120,7 @@ const FileUpload = props => {
             transform: useSpringProps.xys.interpolate(trans)
           }}
         />
-        {!minimal && <Typography variant="h5">Upload your Output</Typography>}
+        {!minimal && <Typography variant="h5">Upload dit indhold</Typography>}
       </div>
       <aside className={classes.thumbsContainer}>
         {onlyImage && thumbs}

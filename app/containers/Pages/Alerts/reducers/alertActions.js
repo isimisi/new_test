@@ -60,7 +60,7 @@ export const putAlert = (history, id, label, description, group, conditions, del
   const header = authHeader();
   try {
     await axios.put(url, body, header);
-    const message = 'Your red flag has now been updated';
+    const message = 'Dit red flag er nu blevet opdateret';
     dispatch({
       type: types.PUT_ALERT_SUCCESS, message
     });

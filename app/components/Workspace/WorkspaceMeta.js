@@ -25,7 +25,7 @@ function WorkspaceMeta(props) {
         openForm={open}
         branch={branch}
         closeForm={closeForm}
-        title="Name your Workspace"
+        title="Navngiv dit arbejdsområde"
       >
         <WorkspaceForm
           label={label}

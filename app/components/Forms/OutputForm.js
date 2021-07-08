@@ -121,7 +121,7 @@ const OutputForm = (props) => {
   } = props;
   const dispatch = useDispatch();
 
-  const [activeToggleButton, setActiveToggleButton] = useState('Upload a document');
+  const [activeToggleButton, setActiveToggleButton] = useState('Upload et dokumennt');
 
   const handleChange = (event, value) => {
     setActiveToggleButton(value);
@@ -180,10 +180,10 @@ const OutputForm = (props) => {
               <div className={classes.conditionWrap}>
                 {outputFile && outputFile.length > 0 && (
                   <div className={classes.conditionWrap}>
-                    <Tooltip title="Delete uploaded file">
+                    <Tooltip title="Slet indhold">
                       <IconButton
                         color="primary"
-                        aria-label="download file"
+                        aria-label="Download fil"
                         component="span"
                         style={{ marginRight: 20 }}
                         onClick={() => {
@@ -207,13 +207,13 @@ const OutputForm = (props) => {
                   <ToggleButton value="Upload a document">
                     <InsertDriveFileIcon />
                   </ToggleButton>
-                  <ToggleButton value="Draft a document">
+                  <ToggleButton value="Skab et dokument">
                     <EditIcon />
                   </ToggleButton>
                 </ToggleButtonGroup>
               </div>
             </div>
-            {activeToggleButton === 'Upload a document' ? (
+            {activeToggleButton === 'Upload et dokument' ? (
               outputFile && outputFile.length > 0
                 ? fileType === 'pdf' || outputFile.includes('https://')
                   ? (
@@ -230,7 +230,7 @@ const OutputForm = (props) => {
                   : (
                     <div className={classes.lottieContainer}>
                       <Typography variant="h4" component="h2">
-                        Press save to preview your document
+                        Tryk gem for at se et preview af dit inhold
                       </Typography>
                       <Lottie animationData={Word} className={classes.lottie} loop={false} onClick={downloadFile} />
                     </div>
