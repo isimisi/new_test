@@ -1,28 +1,28 @@
 const guideSteps = [
   {
-    title: 'Hi, welcome',
-    label: 'This is Juristic, we help you enhance your productivity',
-    imgPath: '/images/guide/guide1.jpg',
+    title: 'Velkommen til Juristic',
+    label: 'Juristic er en visual platform for rådgivere.',
+    imgPath: '/images/guide/1.jpg',
   },
   {
-    title: 'Dark and Light Mode',
-    label: 'Enjoy your eyes with dark/light mode, just switch the option on the header',
-    imgPath: '/images/guide/guide2.gif',
+    title: 'CVR-import',
+    label: 'Med vores CVR-funktion kan du lynhurtigt få et overblik.',
+    imgPath: '/images/guide/2.gif',
   },
   {
-    title: 'Datamodels',
-    label: 'Define your data models and what to output',
-    imgPath: '/images/guide/guide3.gif',
+    title: 'Red flags',
+    label: 'Med red flags får du input, men du drafter.',
+    imgPath: '/images/guide/3.gif',
   },
   {
-    title: 'Search Components and Pages',
-    label: 'Find any ui component or template page quicker',
-    imgPath: '/images/guide/guide4.gif',
+    title: 'Få et bedre overblik',
+    label: 'Med vores visuelle værktøj får du bedre overblik over problemstillinger.',
+    imgPath: '/images/guide/4.gif',
   },
   {
-    title: 'Workspaces',
-    label: 'Make your workspaces to 10x your productivity',
-    imgPath: '/images/guide/guide5.gif',
+    title: 'Få dit eget indhold eller 1-kliks-rapporter',
+    label: 'Opgrader i dag for at få flere funktioner med Base, Draw og Pro.',
+    imgPath: '/images/guide/5.gif',
   },
 ];
 
