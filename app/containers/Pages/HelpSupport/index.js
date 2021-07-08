@@ -5,21 +5,29 @@ import brand from '@api/dummy/brand';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { Notification } from '@components';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './helpSupport-jss';
 import Qna from './Qna';
 import ContactForm from './ContactForm';
+import { helpMe, closeNotifAction } from '../Dashboard/reducers/dashboardActions';
 
 function Settings(props) {
   const title = brand.name;
   const description = brand.desc;
   const { width } = props;
   const [valueForm, setValueForm] = useState([]);
+  const dispatch = useDispatch();
+  const messageNotif = useSelector(state => state.getIn(['dashboard', 'message']));
 
   const showResult = useCallback((values) => {
-    setTimeout(() => {
-      setValueForm(values);
-      alert(`You submitted:\n\n${valueForm}`);
-    }, 500); // simulate server latency
+    setValueForm(values);
+
+    const name = values.get('name');
+    const email = values.get('email');
+    const message = values.get('message');
+
+    dispatch(helpMe(name, email, message));
   }, [valueForm]);
 
   return (
@@ -32,6 +40,7 @@ function Settings(props) {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <Grid container spacing={2} direction={isWidthUp('md', width) ? 'row' : 'column-reverse'}>
         <Grid item md={6} xs={12}>
           <Qna />

@@ -74,6 +74,20 @@ export const getUserInfo = () => async dispatch => {
   }
 };
 
+export const helpMe = (name, email, mesg) => async dispatch => {
+  const url = `${baseUrl}/helpMe`;
+  const body = { name, email, mesg };
+  const header = authHeader();
+  try {
+    await axios.post(url, body, header);
+    const message = 'Vi har sendt din mail til vores support og vender tilbage hurtigst muligt.';
+    dispatch({ type: types.POST_FEATURE_SUCCESS, message });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_FEATURE_FAILED, message });
+  }
+};
+
 
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF
