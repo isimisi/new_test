@@ -115,7 +115,7 @@ function RelationshipForm(props) {
                 onChange={onValueChanged}
                 onInputChange={(v) => setInputValue(v)}
                 onKeyDown={handleKeyDown}
-                placeholder={`Indtast valgmuligheder, fx en talværdi ${label.length > 0 ? 'for ' + label : ''}`}
+                placeholder={`Indtast valgmuligheder, fx en talværdi`}
                 value={values}
               />
             </div>

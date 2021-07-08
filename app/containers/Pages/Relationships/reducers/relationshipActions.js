@@ -77,7 +77,7 @@ export const putRelationship = (id, label, values, description, style, label_sty
   const header = authHeader();
   try {
     await axios.put(url, body, header);
-    const message = 'Du har opdateret forbindelse';
+    const message = 'Du har opdateret forbindelsen';
     dispatch({ type: types.PUT_RELATIONSHIP_SUCCESS, message });
     history.push(`/app/${RELATIONSHIPS}`);
   } catch (error) {
