@@ -19,113 +19,86 @@ function Qna(props) {
   }, [expanded]);
 
   return (
-    <PapperBlock title="Question and Answer" icon="ios-help-circle-outline" whiteBg desc="Sed imperdiet enim ligula, vitae viverra justo porta vel.">
+    <PapperBlock title="Ofte stillede spørgsmål" whiteBg desc="Vi har samlet de oftest stillede spørgsmål i en overskuelig oversigt nedenfor. Har du andre, er du naturligvis altid velkommen til at sende os en besked via kontaktformularen til højre.">
       <ExpansionPanel expanded={expanded === 'panel1'} onChange={() => handleChange('panel1')}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Pellentesque ac bibendum tortor?</Typography>
+          <Typography className={classes.heading}>Hvad er et red flag?</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography className={classes.bodyText}>
+            Et red flag er en særlig funktion, som kan hjælpe dig med at analysere og identificere visse juridiske problemstillinger.
+          </Typography>
           <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-            maximus est, id dignissim quam.
+            Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Draw-abonnement kan endda designe og skabe deres egne red flags.
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel expanded={expanded === 'panel2'} onChange={() => handleChange('panel2')}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Vivamus sit amet interdum elit?</Typography>
+          <Typography className={classes.heading}>Er det virkelig gratis?</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography className={classes.bodyText}>
+            Afhængigt af det abonnement, du har valgt, vil du have adgang til forskellige funktioner eller udgaver af Juristic.
+          </Typography>
           <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-            diam eros in elit. Pellentesque convallis laoreet laoreet.
+            Du kan selvfølgelig altid fortsætte som gratis-bruger.
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel expanded={expanded === 'panel3'} onChange={() => handleChange('panel3')}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Vestibulum nec mi suscipit?</Typography>
+          <Typography className={classes.heading}>Hvordan kan jeg få yderligere hjælp?</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography className={classes.bodyText}>
+            Du er altid velkommen til at kontakte os for at få hjælp med funktioner eller din bruger. Dette gør du til højre eller via kontaktoplysningerne på vores hjemmeside.
+          </Typography>
           <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-            eros, vitae egestas augue. Duis vel est augue.
+            Vi svarer hurtigst muligt. Draw- og Pro-brugere har adgang til særlige supportfunktioner afhængigt af aftalen.
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel expanded={expanded === 'panel4'} onChange={() => handleChange('panel4')}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Cras convallis lacus orci?</Typography>
+          <Typography className={classes.heading}>Hvordan programmerer man jura?</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography className={classes.bodyText}>
+            Med Juristic Draw og Juristic Pro får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer.
+          </Typography>
           <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-            eros, vitae egestas augue. Duis vel est augue.
+            Det særlige er, at du hverken behøver andre programmer eller at kunne kode. Træk og slip elementer - ligesom du er vant til.
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel expanded={expanded === 'panel5'} onChange={() => handleChange('panel5')}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Quisque ut metus sit amet?</Typography>
+          <Typography className={classes.heading}>Er det sikkert at bruge?</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography className={classes.bodyText}>
+            Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Draw- og Pro-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder.
+          </Typography>
           <Typography>
-            enean sit amet magna vel magna fringilla fermentum. Donec sit amet nulla sed arcu pulvinar ultricies commodo id ligula.
+            Du kan læse mere om, hvordan vi behandler data i vores forrretningsbetingelser og persondatapolitik. Du kan finde begge på vores hjemmeside.
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
       <ExpansionPanel expanded={expanded === 'panel6'} onChange={() => handleChange('panel6')}>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Nulla vehicula leo ut augue tincidunt?</Typography>
+          <Typography className={classes.heading}>Hvorfor er ikke alle funktioner tilgængelige endnu?</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={classes.details}>
+          <Typography className={classes.bodyText}>
+            Juristic er stadig i 'beta'. Det betyder, at platformen stadig er under udvikling - og der er derfor mange flere funktioner på vej.
+          </Typography>
           <Typography>
-            Curabitur egestas consequat lorem, vel fermentum augue porta id. Aliquam lobortis magna neque, gravida consequat velit venenatis at.
+            Det betyder dog også, at du vil opleve visse fejl, som vi stadig arbejder på højtryk for at løse.
           </Typography>
         </ExpansionPanelDetails>
       </ExpansionPanel>
-      <ExpansionPanel expanded={expanded === 'panel7'} onChange={() => handleChange('panel7')}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Vivamus sit amet interdum elit?</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Donec dignissim, odio ac imperdiet luctus, ante nisl accumsan justo, et venenatis ante metus pellentesque sem.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel expanded={expanded === 'panel8'} onChange={() => handleChange('panel8')}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Maecenas nisl libero, tincidunt id odio id?</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Ut sed eros finibus, placerat orci id, dapibus mauris. Vestibulum consequat hendrerit lacus. In id nisi id neque venenatis molestie.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel expanded={expanded === 'panel9'} onChange={() => handleChange('panel9')}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Vestibulum nec mi suscipit?</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-            eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-      <ExpansionPanel expanded={expanded === 'panel10'} onChange={() => handleChange('panel10')}>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className={classes.heading}>Cras convallis lacus orci?</Typography>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-            eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
+
     </PapperBlock>
   );
 }

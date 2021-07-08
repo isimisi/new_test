@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -168,15 +170,22 @@ function RegisterForm(props) {
                   />
                 </FormControl>
               </div>
-              <div>
+              <div style={{
+                display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 7
+              }}
+              >
                 <FormControlLabel
                   classes={{ label: classes.formLabel }}
                   control={(
                     <Field name="checkbox" component={CheckboxRedux} required className={classes.agree} />
                   )}
-                  label="Accepter vores"
+                  label="Jeg accepterer"
                 />
-                <a href="#" className={classes.link}>Vilkår &amp; betingelser</a>
+                <a onClick={() => window.open('https://juristic.io/terms', '_blank').focus()} className={classes.link}>Vilkår &amp; betingelser</a>
+                <Typography style={{ marginLeft: 6, marginRight: 6 }}>
+                    og
+                </Typography>
+                <a href="#" className={classes.link}>Persondatapolitik</a>
               </div>
               <div>
                 <FormControlLabel

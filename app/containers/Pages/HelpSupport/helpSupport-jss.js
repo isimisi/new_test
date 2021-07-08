@@ -18,7 +18,7 @@ const styles = theme => ({
   },
   field: {
     width: '100%',
-    marginBottom: 20
+    marginBottom: 10
   },
   fieldBasic: {
     width: '100%',
@@ -36,6 +36,12 @@ const styles = theme => ({
   divider: {
     margin: theme.spacing(3, 0)
   },
+  bodyText: {
+    marginBottom: 10
+  },
+  details: {
+    flexDirection: 'column'
+  }
 });
 
 export default styles;

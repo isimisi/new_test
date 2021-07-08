@@ -28,14 +28,14 @@ function ContactForm(props) {
     submitting,
   } = props;
   return (
-    <PapperBlock title="Contact Us" whiteBg icon="ios-call-outline" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sed urna in justo euismod condimentum.">
+    <PapperBlock title="Kontakt os" whiteBg>
       <form onSubmit={handleSubmit}>
         <div>
           <Field
             name="name"
             component={TextFieldRedux}
-            placeholder="Name"
-            label="Name"
+            placeholder="Navn"
+            label="Navn"
             validate={required}
             required
             className={classes.field}
@@ -45,8 +45,8 @@ function ContactForm(props) {
           <Field
             name="email"
             component={TextFieldRedux}
-            placeholder="Email Field"
-            label="Email"
+            placeholder="E-mail"
+            label="E-mail"
             required
             validate={[required, email]}
             className={classes.field}
@@ -58,22 +58,22 @@ function ContactForm(props) {
             className={classes.field}
             component={TextFieldRedux}
             validate={required}
-            placeholder="Message"
-            label="Message"
+            placeholder="Besked"
+            label="Besked"
             multiline={trueBool}
             rows={4}
           />
         </div>
         <div>
           <Button variant="contained" color="secondary" type="submit" disabled={submitting}>
-            Submit
+            Send
           </Button>
           <Button
             type="button"
             disabled={pristine || submitting}
             onClick={reset}
           >
-            Reset
+            Nulstil
           </Button>
         </div>
       </form>

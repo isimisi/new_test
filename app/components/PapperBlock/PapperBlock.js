@@ -22,16 +22,20 @@ function PapperBlock(props) {
     <div>
       <Paper className={classNames(classes.root, noMargin && classes.noMargin, colorMode && classes.colorMode)} elevation={0}>
         <div className={classes.descBlock}>
-          <span className={classes.iconTitle}>
-            <i className={icon} />
-          </span>
+          {icon && (
+            <span className={classes.iconTitle}>
+              <i className={icon} />
+            </span>
+          )}
           <div className={classes.titleText}>
             <Typography variant="h6" component="h2" className={classes.title}>
               {title}
             </Typography>
-            <Typography component="p" className={classes.description}>
-              {desc}
-            </Typography>
+            {desc && (
+              <Typography component="p" className={classes.description}>
+                {desc}
+              </Typography>
+            )}
           </div>
         </div>
         <section className={classNames(classes.content, whiteBg && classes.whiteBg, overflowX && classes.overflowX)}>
@@ -45,7 +49,7 @@ function PapperBlock(props) {
 PapperBlock.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  desc: PropTypes.string.isRequired,
+  desc: PropTypes.string,
   icon: PropTypes.string,
   children: PropTypes.node.isRequired,
   whiteBg: PropTypes.bool,
@@ -59,7 +63,8 @@ PapperBlock.defaultProps = {
   noMargin: false,
   colorMode: false,
   overflowX: false,
-  icon: 'ion-ios-bookmark-outline'
+  icon: null,
+  desc: null
 };
 
 export default withStyles(styles)(PapperBlock);
