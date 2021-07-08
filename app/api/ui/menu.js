@@ -18,7 +18,7 @@ module.exports = [
     child: [
       {
         key: 'conditions',
-        name: 'Byg jura',
+        name: 'Betingelser',
         link: '/app/conditions',
         badge: 'Draw',
       },

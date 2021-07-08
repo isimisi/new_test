@@ -202,7 +202,7 @@ function ComposeEmailForm(props) {
         </section>
         <div className={css.buttonArea}>
           <Button type="button" onClick={() => closeForm()}>
-            Discard
+            Annuller
           </Button>
           <Button
             variant="contained"

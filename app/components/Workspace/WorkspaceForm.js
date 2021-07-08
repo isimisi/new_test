@@ -75,7 +75,7 @@ const WorkspaceForm = (props) => {
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => closeForm()}>
-            Discard
+            Annuller
         </Button>
         <Button
           variant="contained"
@@ -84,7 +84,7 @@ const WorkspaceForm = (props) => {
           disabled={label?.length === 0 || description?.length === 0 || group?.length === 0}
           onClick={onSave}
         >
-            Save
+            Gem
         </Button>
       </div>
     </div>

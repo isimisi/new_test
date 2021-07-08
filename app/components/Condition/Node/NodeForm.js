@@ -128,11 +128,11 @@ const ConditionNodeForm = (props) => {
             onClick={handleDeleteNode}
             style={{ backgroundColor: red, color: 'white' }}
           >
-            Delete
+            Slet
           </Button>
         )}
         <Button type="button" onClick={close}>
-            Discard
+            Annuller
         </Button>
         <Button
           variant="contained"
@@ -141,7 +141,7 @@ const ConditionNodeForm = (props) => {
           onClick={handleNodeSave}
           disabled={!choosenNode}
         >
-            Save
+            Gem
         </Button>
       </div>
     </div>
