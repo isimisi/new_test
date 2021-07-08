@@ -25,7 +25,7 @@ function ConditionMeta(props) {
         openForm={open}
         branch={branch}
         closeForm={closeForm}
-        title="Dit Scenarie"
+        title="Dit scenarie"
       >
         <ConditionForm
           label={label}

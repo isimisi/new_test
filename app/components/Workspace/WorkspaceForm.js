@@ -32,7 +32,7 @@ const WorkspaceForm = (props) => {
         <div>
           <TextField
             name="label"
-            placeholder="Label"
+            placeholder="Navn"
             label="Label"
             className={classes.field}
             value={label}
@@ -43,8 +43,8 @@ const WorkspaceForm = (props) => {
           <TextField
             name="description"
             className={classes.field}
-            placeholder="Description"
-            label="Description"
+            placeholder="Indtast beskrivelse"
+            label="Beskrivelse"
             multiline
             rows={2}
             value={description}
@@ -63,9 +63,9 @@ const WorkspaceForm = (props) => {
                   htmlFor: 'react-select-single-workspace',
                   shrink: true,
                 },
-                placeholder: 'groups',
+                placeholder: 'Vælg gruppe',
               }}
-              placeholder="groups"
+              placeholder="Vælg gruppe"
               options={mapSelectOptions(groupsDropDownOptions)}
               value={group && { label: group, value: group }}
               onChange={addGroup}

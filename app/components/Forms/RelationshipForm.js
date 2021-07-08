@@ -98,7 +98,7 @@ function RelationshipForm(props) {
             <div>
               <TextField
                 name="label"
-                placeholder="Label"
+                placeholder="Navn"
                 label="Label"
                 className={classes.field}
                 onChange={handleLabelChange}
@@ -115,7 +115,7 @@ function RelationshipForm(props) {
                 onChange={onValueChanged}
                 onInputChange={(v) => setInputValue(v)}
                 onKeyDown={handleKeyDown}
-                placeholder={`Mulige værdier ${label.length > 0 ? 'for ' + label : ''}`}
+                placeholder={`Indtast valgmuligheder, fx en talværdi ${label.length > 0 ? 'for ' + label : ''}`}
                 value={values}
               />
             </div>
@@ -123,8 +123,8 @@ function RelationshipForm(props) {
               <TextField
                 name="description"
                 className={classes.field}
-                placeholder="Description"
-                label="Description"
+                placeholder="Indtast beskrivelse"
+                label="Beskrivelse"
 
                 multiline
                 rows={2}
@@ -143,9 +143,9 @@ function RelationshipForm(props) {
                     htmlFor: 'react-select-single-relationship',
                     shrink: true,
                   },
-                  placeholder: 'groups',
+                  placeholder: 'Vælg gruppe',
                 }}
-                placeholder="groups"
+                placeholder="Vælg gruppe"
                 options={mapSelectOptions(groupsDropDownOptions)}
                 value={group && { label: group, value: group }}
                 onChange={handleChangeGroups}
