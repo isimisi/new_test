@@ -119,6 +119,7 @@
     "react-clear-cache": "^1.4.12",
     "react-color": "^2.19.3",
     "react-contenteditable": "^3.3.5",
+    "react-cookiebot": "^1.0.10",
     "react-countup": "^3.0.3",
     "react-dom": "^16.8.6",
     "react-draft-wysiwyg": "^1.12.13",
