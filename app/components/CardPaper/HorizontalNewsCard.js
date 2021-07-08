@@ -26,7 +26,7 @@ function HorizontalNewsCard(props) {
           {desc}
         </Typography>
         <div className={classes.actionArea}>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={handleOpenGuide}>
             Se guide her
           </Button>
         </div>
