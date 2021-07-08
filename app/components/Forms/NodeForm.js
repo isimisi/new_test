@@ -103,8 +103,8 @@ function NodeForm(props) {
             <div>
               <TextField
                 name="title"
-                placeholder="Title"
-                label="Title"
+                placeholder="Navn"
+                label="Navn"
                 className={classes.field}
                 onChange={handleTitleChange}
                 value={title}
@@ -114,8 +114,8 @@ function NodeForm(props) {
               <TextField
                 name="description"
                 className={classes.field}
-                placeholder="Description"
-                label="Description"
+                placeholder="Indtast beskrivelse"
+                label="Beskrivelse"
                 multiline
                 rows={2}
                 onChange={handleDescriptionChange}
@@ -127,7 +127,7 @@ function NodeForm(props) {
                 <div className={classes.field}>
                   <CreatableSelect
                     styles={selectStyles()}
-                    placeholder="Kendetegn"
+                    placeholder="Vælg standard-kendetegn for elementet"
                     options={attributesDropDownOptions}
                     value={attribut.label && { label: attribut.label, value: attribut.label }}
                     isDisabled={Boolean(attribut.label)}
@@ -169,7 +169,7 @@ function NodeForm(props) {
                   styles={selectStyles}
                   inputId="react-select-single-nodeform"
                   TextFieldProps={{
-                    label: 'groups',
+                    label: 'Vælg gruppe',
                     InputLabelProps: {
                       htmlFor: 'react-select-single-nodeform',
                       shrink: true,

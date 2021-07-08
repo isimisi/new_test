@@ -20,7 +20,7 @@ import {
 } from './reducers/attributeActions';
 
 const typeSuggestions = [
-  { label: 'Faste Valgmuligheder' },
+  { label: 'Valgmuligheder' },
   { label: 'Værdi' },
 ].map(suggestion => ({
   value: suggestion.label,
@@ -90,10 +90,10 @@ const Attribute = (props) => {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Skab ny egenskab</DialogTitle>
+      <DialogTitle id="form-dialog-title">Skab nyt kendetegn</DialogTitle>
       <DialogContent>
         <DialogContentText>
-            Her kan du skabe en ny egenskab. Du skal først vælge, om der skal kunne indtastes en specifik værdi ("Værdi"), eller om brugeren skal kunne vælge mellem nogle specifikke ting ("Valgmugligheder").
+            Her kan du skabe en nyt kendetegn. Du skal først vælge, om der skal kunne indtastes en specifik værdi ("Værdi"), eller om brugeren skal kunne vælge mellem nogle specifikke ting ("Valgmugligheder").
         </DialogContentText>
         <div className={classes.inlineWrap}>
           <div className={classes.field} style={{ width: '30%' }}>

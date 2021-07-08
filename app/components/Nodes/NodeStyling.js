@@ -99,11 +99,11 @@ const NodeStyling = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Design elementet
+        Standard-udseende
       </Typography>
       <div className={classes.row}>
         <Typography variant="subtitle2" component="h3">
-        Pick a size
+        Størrelse
         </Typography>
         <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Small' ? 'secondary' : ''}>Small</Button>
         <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Medium' ? 'secondary' : ''}>Medium</Button>
@@ -111,7 +111,7 @@ const NodeStyling = (props) => {
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
-        Pick a Color for the Backgroud
+        Farve
         </Typography>
         <div className={classes.swatch} onClick={handleClickBackground}>
           <div className={classes.color} style={{ backgroundColor: `rgba(${backgroundColor.r}, ${backgroundColor.g}, ${backgroundColor.b}, ${backgroundColor.a})` }} />
@@ -125,7 +125,7 @@ const NodeStyling = (props) => {
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
-        Pick a Color for the Border
+        Kantfarve
         </Typography>
         <div className={classes.swatch} onClick={handleClickBorder}>
           <div className={classes.color} style={{ backgroundColor: `rgba(${borderColor.r}, ${borderColor.g}, ${borderColor.b}, ${borderColor.a})` }} />
