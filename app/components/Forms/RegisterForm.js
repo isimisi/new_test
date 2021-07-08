@@ -114,7 +114,6 @@ function RegisterForm(props) {
                     component={TextFieldRedux}
                     placeholder="Employer"
                     label="Arbejdsgiver"
-                    required
                     className={classes.field}
                   />
                 </FormControl>
