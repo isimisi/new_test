@@ -21,6 +21,8 @@ import App from 'containers/App';
 import './styles/layout/base.scss';
 import { ToastContainer } from 'react-toastify';
 
+import CookieBot from 'react-cookiebot/lib/CookieBot';
+
 import 'react-toastify/dist/ReactToastify.min.css';
 import Bugsnag from '@bugsnag/js';
 import BugsnagPluginReact from '@bugsnag/plugin-react';
@@ -62,6 +64,9 @@ openSansObserver.load().then(() => {
   document.body.classList.add('fontLoaded');
 });
 
+const domainGroupId = 'e25f2e52-b958-4868-bb38-05482f232612';
+
+
 // Create redux store with history
 
 // TODO: påsæt reux with loace storage så den bliver initeret med localstorage og jeg dermed aldrig skal kigge i locale storage
@@ -96,6 +101,7 @@ if (process.env.NODE_ENV === 'production') {
             <ConnectedRouter history={history}>
               <App />
               <ToastContainer />
+              <CookieBot domainGroupId={domainGroupId} />
             </ConnectedRouter>
           </LanguageProvider>
         </Provider>
