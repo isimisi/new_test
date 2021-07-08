@@ -21,11 +21,11 @@ const UpgradeModal = (props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Tillykke, med dit køb
+          Tillykke, du har nu opgraderet din bruger!
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Vi er glade for at du finder værdi i juristic. Tøv ikke med at række ud, hvis der skulle opstå nogle problemer undervejs.
+            Du har fået adgang til dine ekstra funktioner! Vi er glade for, at du finder værdi i Juristic. Oplever du problemer, eller har du bare spørgsmål, er du altid velkommen til at ringe eller skrive til os.
           </DialogContentText>
           <div style={{
             width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
