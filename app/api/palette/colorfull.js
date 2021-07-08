@@ -12,5 +12,7 @@ const colorfull = [
 export const red = '#BF0426';
 export const green = '#0C2617';
 export const lightGreen = '#1e603a';
+export const blue = '#24AAE0';
+export const orange = '#FBAF40';
 
 export default colorfull;

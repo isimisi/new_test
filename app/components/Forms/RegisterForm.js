@@ -182,10 +182,10 @@ function RegisterForm(props) {
                   label="Jeg accepterer"
                 />
                 <a onClick={() => window.open('https://juristic.io/terms', '_blank').focus()} className={classes.link}>Vilkår &amp; betingelser</a>
-                <Typography style={{ marginLeft: 6, marginRight: 6 }}>
+                {/* <Typography style={{ marginLeft: 6, marginRight: 6 }}>
                     og
                 </Typography>
-                <a href="#" className={classes.link}>Persondatapolitik</a>
+                <a href="#" className={classes.link}>Persondatapolitik</a> */}
               </div>
               <div>
                 <FormControlLabel

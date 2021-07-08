@@ -31,7 +31,7 @@ const styles = theme => ({
     width: '150%',
     left: '-25%',
     position: 'relative',
-    borderRadius: '0 0 50% 50%',
+    borderRadius: '0 0 20% 50%',
     overflow: 'hidden',
     height: 255,
     margin: '0 auto'
