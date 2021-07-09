@@ -19,7 +19,6 @@ function Dashboard(props) {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();
   const theme = useTheme();
 
-
   useEffect(() => {
     const { history, loadTransition } = props;
 
@@ -31,7 +30,7 @@ function Dashboard(props) {
     props.initialOpen(currentPath);
     // Play page transition
     loadTransition(true);
-
+    console.log(isLatestVersion);
     if (!isLatestVersion) {
       toast('Der er en opdatering af juristic. Tryk her for at være på den nyeste version', {
         position: toast.POSITION.BOTTOM_CENTER,

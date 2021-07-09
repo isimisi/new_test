@@ -50,6 +50,10 @@ const PersonalDashboard = (props) => {
 
 
   const handleCloseGuide = () => {
+    if (history.location.search.includes('first_visit')) {
+      history.push('/app');
+    }
+
     setOpenGuide(false);
   };
 
