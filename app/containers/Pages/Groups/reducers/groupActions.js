@@ -96,3 +96,9 @@ export const searchAction = keyword => ({
 export const closeNotifAction = () => ({
   type: notification.CLOSE_NOTIF
 });
+
+
+export const showNotifAction = _message => ({
+  type: notification.SHOW_NOTIF,
+  message: _message
+});

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -13,12 +14,19 @@ function GroupGallery(props) {
     showDetail,
     activeGroup,
     updateDetail,
-    deleteGroup
+    deleteGroup,
+    plan_id,
+    notif
   } = props;
 
   const handleDetailOpen = (product) => {
-    setOpen(true);
-    showDetail(product);
+    console.log(plan_id);
+    if (plan_id < 3) {
+      notif();
+    } else {
+      setOpen(true);
+      showDetail(product);
+    }
   };
 
   const handleClose = () => {
@@ -73,6 +81,8 @@ GroupGallery.propTypes = {
   activeGroup: PropTypes.object.isRequired,
   updateDetail: PropTypes.func.isRequired,
   deleteGroup: PropTypes.func.isRequired,
+  plan_id: PropTypes.number.isRequired,
+  notif: PropTypes.func.isRequired,
 };
 
 export default GroupGallery;
