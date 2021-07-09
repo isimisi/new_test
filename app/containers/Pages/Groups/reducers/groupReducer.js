@@ -1,5 +1,5 @@
 import { fromJS, List, Map } from 'immutable';
-import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
+import { CLOSE_NOTIF, SHOW_NOTIF } from '@redux/constants/notifConstants';
 import {
   GET_GROUPS_SUCCESS,
   GET_GROUPS_FAILED,
@@ -95,6 +95,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
         action.keyword.persist();
         const keyword = action.keyword.target.value.toLowerCase();
         mutableState.set('keywordValue', keyword);
+      });
+    case SHOW_NOTIF:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

@@ -18,8 +18,10 @@ import {
   putGroup,
   deleteGroup,
   searchAction,
-  closeNotifAction
+  closeNotifAction,
+  showNotifAction
 } from './reducers/groupActions';
+
 
 const styles = () => ({
   addBtn: {
@@ -29,6 +31,8 @@ const styles = () => ({
     zIndex: 100,
   },
 });
+
+const { plan_id } = loadFromLocalStorage();
 
 function Groups(props) {
   const { classes } = props;
@@ -43,7 +47,6 @@ function Groups(props) {
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const image = useSelector(state => state.getIn([reducer, 'image'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const { plan_id } = loadFromLocalStorage();
 
   const dispatch = useDispatch();
 
@@ -84,16 +87,33 @@ function Groups(props) {
       <GroupGallery
         listView={listView}
         dataProduct={groups}
-        showDetail={(payload) => {
-          dispatch(showGroup(payload.get('id')));
-        }}
+        showDetail={(payload) => dispatch(showGroup(payload.get('id')))}
         updateDetail={(t, d) => dispatch(putGroup(activeGroup.id, t, d))}
         activeGroup={activeGroup}
+        plan_id={plan_id}
+        notif={() => dispatch(showNotifAction('At ændre grupper er forbehold brugere på Draw abonnementer.'))}
         keyword={keyword}
-        deleteGroup={(id) => dispatch(deleteGroup(id))}
+        deleteGroup={(id) => {
+          if (plan_id < 3) {
+            dispatch(showNotifAction('At slette grupper er forbehold brugere på Draw abonnementer.'));
+          } else {
+            dispatch(deleteGroup(id));
+          }
+        }}
       />
       <Tooltip title="New Group">
-        <Fab disabled={plan_id < 3} variant="extended" color="primary" className={classes.addBtn} onClick={() => setOpen(true)}>
+        <Fab
+          variant="extended"
+          color="primary"
+          className={classes.addBtn}
+          onClick={() => {
+            if (plan_id < 3) {
+              dispatch(showNotifAction('At oprette grupper er forbehold brugere på Draw abonnementer.'));
+            } else {
+              setOpen(true);
+            }
+          }}
+        >
             Create new Group
         </Fab>
       </Tooltip>
