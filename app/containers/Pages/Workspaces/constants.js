@@ -69,7 +69,7 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Link to={`/app/workspaces/${value}`}>
+        <Link to={`/app/workspaces/${value}`} style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="primary">
             Åben
           </Button>
