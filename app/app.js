@@ -26,6 +26,7 @@ import CookieBot from 'react-cookiebot/lib/CookieBot';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Bugsnag from '@bugsnag/js';
 import BugsnagPluginReact from '@bugsnag/plugin-react';
+import ReactGA from 'react-ga';
 
 
 // Import Language Provider
@@ -43,8 +44,11 @@ import { translationMessages } from './i18n';
 
 import 'video-react/dist/video-react.css';
 
+
 //  logrocket
 LogRocket.init('pm66tw/juristic-web-app');
+ReactGA.initialize('G-6XR41H250L');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 // bugsnag
 if (process.env.NODE_ENV === 'production') {

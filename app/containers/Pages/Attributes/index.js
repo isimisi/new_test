@@ -55,7 +55,7 @@ function Attributes(props) {
         title="Dine kendetegn"
         data={attributes}
         columns={columns(onOpen)}
-        options={tableOptions(onDelete, loading)}
+        options={tableOptions(onDelete, loading, 'kendetegn')}
         elevation={10}
       />
       <Tooltip title="Nyt kendetegn">

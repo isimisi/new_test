@@ -56,7 +56,7 @@ const WorkspaceNodeForm = (props) => {
       value: 'triangle',
       label: (
         <>
-          <img src={triangle} alt="triangle" style={{ height: 36 }} />
+          <img src={triangle} alt="triangle" style={{ height: 26 }} />
         </>
       )
     },
@@ -64,7 +64,7 @@ const WorkspaceNodeForm = (props) => {
       value: 'square',
       label: (
         <>
-          <img src={square} alt="square" style={{ height: 36 }} />
+          <img src={square} alt="square" style={{ height: 26 }} />
         </>
       )
     },
@@ -72,7 +72,7 @@ const WorkspaceNodeForm = (props) => {
       value: 'circle',
       label: (
         <>
-          <img src={circle} alt="circle" style={{ height: 36 }} />
+          <img src={circle} alt="circle" style={{ height: 26 }} />
         </>
       )
     },
@@ -80,7 +80,7 @@ const WorkspaceNodeForm = (props) => {
       value: 'person',
       label: (
         <>
-          <img src={person} alt="person" style={{ height: 36 }} />
+          <img src={person} alt="person" style={{ height: 26 }} />
         </>
       )
     }
@@ -213,7 +213,8 @@ const WorkspaceNodeForm = (props) => {
           <div className={classes.field} style={{ marginTop: 20 }}>
             <Select
               classes={classes}
-              styles={selectStyles('relative')}
+              styles={{ ...selectStyles('relative'), padding: 10 }}
+              isClearable
               inputId="react-select-single-edge-type"
               TextFieldProps={{
                 label: 'type',

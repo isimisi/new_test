@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -125,6 +125,7 @@
     "react-draft-wysiwyg": "^1.12.13",
     "react-dropzone": "^10.2.1",
     "react-flow-renderer": "^9.2.0",
+    "react-ga": "^3.3.0",
     "react-helmet": "6.0.0-beta",
     "react-iframe": "^1.8.0",
     "react-intl": "2.8.0",

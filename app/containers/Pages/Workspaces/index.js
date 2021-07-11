@@ -57,7 +57,7 @@ const Workspaces = (props) => {
         title="Dine arbejdsområder"
         data={workspaces}
         columns={columns}
-        options={tableOptions(onDelete, loading)}
+        options={tableOptions(onDelete, loading, 'arbejdsområder')}
         elevation={10}
       />
       <Tooltip title="Nyt arbejdsområde">

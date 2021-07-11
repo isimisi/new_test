@@ -508,7 +508,8 @@ const Workspace = (props) => {
         handleNodeSave={handleNodeSave}
         nodeDisplayName={nodeDisplayName}
         nodeFigur={nodeFigur}
-        handleNodeFigurChange={(_figur) => setNodeFigur(_figur.value)}
+
+        handleNodeFigurChange={(_figur) => setNodeFigur(_figur ? _figur.value : null)}
         isUpdatingElement={isUpdatingElement}
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
         handleDeleteNode={() => onElementsRemove([elementToUpdate])}

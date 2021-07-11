@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import { isNode } from 'react-flow-renderer';
 import dagre from 'dagre';
 import { Link } from 'react-router-dom';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -69,11 +70,13 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Link to={`/app/workspaces/${value}`} style={{ textDecoration: 'none' }}>
-          <Button variant="contained" color="primary">
-            Åben
-          </Button>
-        </Link>
+        <Tooltip title={!value ? 'Dine arbejdsområder bliver låst efter 7 dage på lite og 90 dage på base' : 'Gå til arbejdsområde'}>
+          <Link to={!value ? '/app/plan' : `/app/workspaces/${value}`} style={{ textDecoration: 'none' }}>
+            <Button variant="contained" color="primary" disabled={!value}>
+              {!value ? 'Låst' : 'Åben'}
+            </Button>
+          </Link>
+        </Tooltip>
       )
     }
   },

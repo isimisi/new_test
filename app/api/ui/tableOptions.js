@@ -1,7 +1,7 @@
 import React from 'react';
 import Loader from './Loader';
 
-const tableOptions = (onDelete, loading) => ({
+const tableOptions = (onDelete, loading, where = 'elementer') => ({
   filterType: 'dropdown',
   responsive: 'stacked',
   print: true,
@@ -12,7 +12,7 @@ const tableOptions = (onDelete, loading) => ({
     body: {
       noMatch: loading
         ? <Loader />
-        : 'Det ser vidst ud som om, at du ikke har lavet nogle arbejdsområder endnu',
+        : 'Det ser vidst ud som om, at du ikke har lavet nogle ' + where + ' endnu',
     },
   }
 });
