@@ -26,7 +26,7 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Link to={`/app/conditions/${value}`}>
+        <Link to={`/app/conditions/${value}`} style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="primary">
               Open
           </Button>
