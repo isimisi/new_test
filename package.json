@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.2.15",
+  "version": "1.2.16",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -97,10 +97,12 @@
     "fontfaceobserver": "2.1.0",
     "history": "4.9.0",
     "html-docx-js": "^0.3.1",
+    "html2canvas": "^1.1.0",
     "immer": "3.0.0",
     "immutable": "3.8.2",
     "intl": "1.2.5",
     "ip": "1.1.5",
+    "jspdf": "^2.3.1",
     "jss": "^10.0.0",
     "jss-rtl": "^0.3.0",
     "lodash": "^4.17.20",
@@ -150,6 +152,7 @@
     "serve-favicon": "^2.4.5",
     "style-loader": "0.23.1",
     "styled-components": "^5.3.0",
+    "use-react-screenshot": "^1.0.2",
     "video-react": "^0.14.1",
     "webpack-bugsnag-plugins": "^1.7.0"
   },

@@ -14,6 +14,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import Ionicon from 'react-ionicons';
 import moment from 'moment';
 import 'moment/locale/da';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
 
@@ -56,14 +57,16 @@ function TimelineWidget(props) {
                 <TimelineConnector className={classes.timelineConnector} />
               </TimelineSeparator>
               <TimelineContent>
-                <Paper elevation={3} className={classes.paper}>
-                  <Typography variant="subtitle2" component="h1">
-                    {item.label}
-                  </Typography>
-                  <Typography variant="caption">
-                    {item.metaText}
-                  </Typography>
-                </Paper>
+                <ButtonBase style={{ borderRadius: 8 }} onClick={() => history.push(item.link)}>
+                  <Paper elevation={3} className={classes.paper}>
+                    <Typography variant="subtitle2" component="h1">
+                      {item.label}
+                    </Typography>
+                    <Typography variant="caption">
+                      {item.metaText}
+                    </Typography>
+                  </Paper>
+                </ButtonBase>
               </TimelineContent>
             </TimelineItem>
           ))}

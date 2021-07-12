@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
@@ -27,8 +28,11 @@ import {
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { toast } from 'react-toastify';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import { useScreenshot, createFileName } from 'use-react-screenshot';
+
 import styles from './workspace-jss';
 import { reducer, initErstTypes } from './constants';
 import {
@@ -63,6 +67,7 @@ const Workspace = (props) => {
   const theme = useTheme();
   const id = history.location.pathname.split('/').pop();
   const reactFlowContainer = useRef(null);
+  const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const { plan_id } = loadFromLocalStorage();
@@ -385,6 +390,15 @@ const Workspace = (props) => {
     onWorkspaceSave();
   }, [rfInstance, elements]);
 
+  useEffect(() => {
+    if (image) {
+      const a = document.createElement('a');
+      a.href = image;
+      a.download = createFileName('jpg', label);
+      a.click();
+    }
+  }, [image]);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -393,6 +407,8 @@ const Workspace = (props) => {
           elements={elements}
           onElementsRemove={onElementsRemove}
           onConnect={onConnect}
+          minZoom={0.3}
+          maxZoom={2}
           style={flowStyle}
           nodeTypes={nodeTypes}
           onMove={(flowTransform) => {
@@ -405,19 +421,26 @@ const Workspace = (props) => {
           connectionMode={ConnectionMode.Loose}
           onElementClick={onElementClick}
         >
-          <MiniMap
-            nodeStrokeWidth={3}
-            nodeColor={theme.palette.secondary.light}
-            style={{ top: 0, right: 0 }}
-          />
-          <Controls>
-            {/* <ControlButton onClick={() => console.log('another action')}>
-                  <PhotoCameraIcon />
-                </ControlButton> */}
-            <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
-              {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
-            </ControlButton>
-          </Controls>
+          <div data-html2canvas-ignore="true">
+            <MiniMap
+              nodeStrokeWidth={3}
+              nodeColor={theme.palette.secondary.light}
+              style={{ top: 0, right: 0 }}
+            />
+          </div>
+          <div data-html2canvas-ignore="true">
+            <Controls>
+              <ControlButton onClick={() => {
+                takeScreenShot(reactFlowContainer?.current);
+              }}
+              >
+                <PhotoCameraIcon />
+              </ControlButton>
+              <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
+                {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </ControlButton>
+            </Controls>
+          </div>
           {handleVisability
                && (
                  <Background
@@ -508,7 +531,6 @@ const Workspace = (props) => {
         handleNodeSave={handleNodeSave}
         nodeDisplayName={nodeDisplayName}
         nodeFigur={nodeFigur}
-
         handleNodeFigurChange={(_figur) => setNodeFigur(_figur ? _figur.value : null)}
         isUpdatingElement={isUpdatingElement}
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
