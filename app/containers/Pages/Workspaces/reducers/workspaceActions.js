@@ -316,7 +316,7 @@ export const getNodes = () => async dispatch => {
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
-    const nodes = response.data;
+    const nodes = response.data.filter(n => n.label !== '*');
     dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
   } catch (error) {
     dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
