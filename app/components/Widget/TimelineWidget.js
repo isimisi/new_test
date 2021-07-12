@@ -57,7 +57,7 @@ function TimelineWidget(props) {
                 <TimelineConnector className={classes.timelineConnector} />
               </TimelineSeparator>
               <TimelineContent>
-                <ButtonBase style={{ borderRadius: 8 }} onClick={() => history.push(item.link)}>
+                <ButtonBase style={{ borderRadius: 8, whiteSpace: 'normal' }} onClick={() => history.push(item.link)}>
                   <Paper elevation={3} className={classes.paper}>
                     <Typography variant="subtitle2" component="h1">
                       {item.label}
