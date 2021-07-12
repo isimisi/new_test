@@ -77,7 +77,7 @@ const CustomEdge = ({
     <>
       <path id={id} style={style} className="react-flow__edge-path" d={edgePath} markerEnd={markerEnd} />
       <text dy="-10">
-        <textPath href={`#${id}`} style={{ fontSize: '12px' }} startOffset="50%" textAnchor="middle">
+        <textPath href={`#${id}`} style={{ fontSize: '12px' }} stroke={data.stroke} textDecoration={data.lineThrough && 'line-through'} startOffset="50%" textAnchor="middle">
           {text}
         </textPath>
       </text>

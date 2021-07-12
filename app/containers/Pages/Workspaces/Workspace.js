@@ -114,6 +114,7 @@ const Workspace = (props) => {
   const [showArrow, setShowArrow] = useState(false);
   const [animatedLine, setAnimatedLine] = useState(false);
   const [showLabel, setShowlabel] = useState(false);
+  const [lineThrough, setLineThrough] = useState(false);
 
   // NODE
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
@@ -200,6 +201,7 @@ const Workspace = (props) => {
       setShowArrow(element.data.showArrow);
       setAnimatedLine(element.data.animated);
       setShowlabel(element.data.showLabel);
+      setLineThrough(element.data.lineThrough);
       setDefineEdgeOpen(true);
     }
   };
@@ -308,6 +310,7 @@ const Workspace = (props) => {
         showArrow,
         animatedLine,
         showLabel,
+        lineThrough,
         setDefineEdgeOpen
       ));
     } else {
@@ -320,6 +323,7 @@ const Workspace = (props) => {
         showArrow,
         animatedLine,
         showLabel,
+        lineThrough,
         ...currentConnectionData
       };
       dispatch(postEdge(id, edge, setDefineEdgeOpen, handleAlerts));
@@ -355,6 +359,7 @@ const Workspace = (props) => {
   const handleShowArrowChange = useCallback((e) => setShowArrow(e.target.checked), []);
   const handleAnimatedLineChange = useCallback((e) => setAnimatedLine(e.target.checked), []);
   const handleShowLabelChange = useCallback((e) => setShowlabel(e.target.checked), []);
+  const handleLineThroughChange = useCallback((e) => setLineThrough(e.target.checked), []);
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
   const handlePostSticky = () => {
@@ -481,6 +486,8 @@ const Workspace = (props) => {
         handleAnimatedLineChange={handleAnimatedLineChange}
         showLabel={showLabel}
         handleShowLabelChange={handleShowLabelChange}
+        lineThrough={lineThrough}
+        handleLineThroughChange={handleLineThroughChange}
         handleSave={handleRelationshipSave}
         isUpdatingElement={isUpdatingElement}
         handleDeleteEdge={handleDeleteEdge}

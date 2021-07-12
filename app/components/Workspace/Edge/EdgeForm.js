@@ -79,6 +79,8 @@ const EdgeForm = (props) => {
     handleAnimatedLineChange,
     showLabel,
     handleShowLabelChange,
+    lineThrough,
+    handleLineThroughChange,
     handleSave,
     relationships: iRelationships,
     isUpdatingElement,
@@ -167,7 +169,7 @@ const EdgeForm = (props) => {
           />
         </div>
 
-        <div className={classes.row}>
+        <div className={classes.colorRow}>
           <Typography variant="subtitle2">
                 Pick a Color
           </Typography>
@@ -203,6 +205,18 @@ const EdgeForm = (props) => {
           />
           <Typography variant="subtitle2">
                 Animeret linje
+          </Typography>
+        </div>
+        <div className={classes.row}>
+          <Checkbox
+            checked={lineThrough}
+            onChange={handleLineThroughChange}
+            name="line through"
+            color="primary"
+            disabled={editable}
+          />
+          <Typography variant="subtitle2">
+                Vis som overstreget
           </Typography>
         </div>
         <div className={classes.row}>
@@ -263,6 +277,8 @@ EdgeForm.propTypes = {
   handleAnimatedLineChange: PropTypes.func.isRequired,
   showLabel: PropTypes.bool.isRequired,
   handleShowLabelChange: PropTypes.func.isRequired,
+  lineThrough: PropTypes.bool.isRequired,
+  handleLineThroughChange: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   relationships: PropTypes.object.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,

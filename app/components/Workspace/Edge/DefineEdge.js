@@ -25,6 +25,8 @@ const DefineEdge = (props) => {
     handleAnimatedLineChange,
     showLabel,
     handleShowLabelChange,
+    lineThrough,
+    handleLineThroughChange,
     handleSave,
     relationships,
     isUpdatingElement,
@@ -56,6 +58,8 @@ const DefineEdge = (props) => {
             handleAnimatedLineChange={handleAnimatedLineChange}
             showLabel={showLabel}
             handleShowLabelChange={handleShowLabelChange}
+            lineThrough={lineThrough}
+            handleLineThroughChange={handleLineThroughChange}
             close={close}
             handleSave={handleSave}
             isUpdatingElement={isUpdatingElement}
@@ -85,6 +89,8 @@ DefineEdge.propTypes = {
   showLabel: PropTypes.bool.isRequired,
   handleShowLabelChange: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
+  lineThrough: PropTypes.bool.isRequired,
+  handleLineThroughChange: PropTypes.func.isRequired,
   relationships: PropTypes.object.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
   handleDeleteEdge: PropTypes.func.isRequired,

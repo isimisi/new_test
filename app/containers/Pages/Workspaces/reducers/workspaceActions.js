@@ -259,6 +259,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => asy
     arrow: edge.showArrow,
     animated: edge.animatedLine,
     show_label: edge.showLabel,
+    line_through: edge.lineThrough
   };
   const header = authHeader();
 
@@ -283,6 +284,7 @@ export const putEdge = (
   showArrow,
   animatedLine,
   showLabel,
+  lineThrough,
   setDefineEdgeOpen
 ) => async dispatch => {
   dispatch({ type: types.PUT_EDGE_LOADING });
@@ -296,6 +298,7 @@ export const putEdge = (
     arrow: showArrow,
     animated: animatedLine,
     show_label: showLabel,
+    line_through: lineThrough
   };
   const header = authHeader();
 
