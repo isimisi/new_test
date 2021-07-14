@@ -89,6 +89,7 @@
     "compression": "1.7.4",
     "connected-react-router": "6.6.1",
     "cross-env": "^5.2.1",
+    "crypto-js": "^4.0.0",
     "dagre": "^0.8.5",
     "debounce": "^1.2.1",
     "draft-js": "^0.10.5",

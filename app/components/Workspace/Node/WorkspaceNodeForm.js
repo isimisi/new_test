@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import styles from '../workspace-jss';
 import square from './square.svg';
 import triangle from './triangle.svg';
@@ -45,7 +46,8 @@ const WorkspaceNodeForm = (props) => {
     attributesDropDownOptions,
     handleRemoveAttributes,
     nodeFigur,
-    handleNodeFigurChange
+    handleNodeFigurChange,
+    showCompanyData
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
@@ -262,19 +264,24 @@ const WorkspaceNodeForm = (props) => {
         )}
       </section>
       <div className={css.buttonArea}>
+        <Button
+          variant="contained"
+          style={{ position: 'absolute', left: 10 }}
+          startIcon={<AssessmentIcon />}
+          onClick={showCompanyData}
+        >
+          selskabsdata
+        </Button>
         {isUpdatingElement && (
           <Button
             variant="contained"
             type="button"
             onClick={handleDeleteNode}
-            style={{ backgroundColor: red, color: 'white' }}
+            style={{ backgroundColor: red, color: 'white', marginRight: 10 }}
           >
-            Delete
+            Slet
           </Button>
         )}
-        <Button type="button" onClick={close}>
-            Annuller
-        </Button>
         <Button
           variant="contained"
           color="secondary"
@@ -310,6 +317,7 @@ WorkspaceNodeForm.propTypes = {
   handleRemoveAttributes: PropTypes.func.isRequired,
   nodeFigur: PropTypes.string,
   handleNodeFigurChange: PropTypes.func.isRequired,
+  showCompanyData: PropTypes.func.isRequired
 };
 
 WorkspaceNodeForm.defaultProps = {

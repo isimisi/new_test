@@ -1,4 +1,4 @@
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import {
   isNode,
   isEdge
@@ -53,7 +53,10 @@ import {
   WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST,
   GET_CVR_NODES_LOADING,
   GET_CVR_NODES_SUCCESS,
-  GET_CVR_NODES_FAILED
+  GET_CVR_NODES_FAILED,
+  GET_WORKSPACE_NODE_COMPANY_DATA_LOADING,
+  GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS,
+  GET_WORKSPACE_NODE_COMPANY_DATA_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -76,6 +79,7 @@ const initialState = {
   alertId: null,
   alertOpen: false,
   outputs: List(),
+  companyData: Map()
 };
 
 
@@ -322,6 +326,22 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('loading', false);
       });
     case GET_CVR_NODES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+        mutableState.set('loading', false);
+      });
+    case GET_WORKSPACE_NODE_COMPANY_DATA_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
+    case GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const companyData = fromJS(action.companyData);
+        mutableState.set('companyData', companyData);
+        mutableState.set('loading', false);
+      });
+    case GET_WORKSPACE_NODE_COMPANY_DATA_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

@@ -28,7 +28,8 @@ function DefineNode(props) {
     attributesDropDownOptions,
     handleRemoveAttributes,
     nodeFigur,
-    handleNodeFigurChange
+    handleNodeFigurChange,
+    showCompanyData
   } = props;
 
   return (
@@ -60,6 +61,7 @@ function DefineNode(props) {
               handleRemoveAttributes={handleRemoveAttributes}
               nodeFigur={nodeFigur}
               handleNodeFigurChange={handleNodeFigurChange}
+              showCompanyData={showCompanyData}
             />
           )}
 
@@ -90,6 +92,7 @@ DefineNode.propTypes = {
   handleRemoveAttributes: PropTypes.func.isRequired,
   nodeFigur: PropTypes.string,
   handleNodeFigurChange: PropTypes.func.isRequired,
+  showCompanyData: PropTypes.func.isRequired,
 };
 
 DefineNode.defaultProps = {

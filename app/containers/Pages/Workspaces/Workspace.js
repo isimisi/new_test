@@ -18,11 +18,12 @@ import ReactFlow, {
 import {
   WorkspaceFabs, CustomNode, StickyNoteNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
-  Notification, AlertModal,
+  Notification, AlertModal, CompanyDataModel,
   AlertLog, FormDialog, MapTypesForErst
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+// import CryptoJS from 'crypto-js';
 import {
   useHistory
 } from 'react-router-dom';
@@ -42,7 +43,8 @@ import {
   showWorkspace, saveWorkspace, deleteWorkspaceElement,
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
-  cvrWorkspace, postSticky, showNotifAction
+  cvrWorkspace, postSticky, showNotifAction,
+  getCompanyData
 } from './reducers/workspaceActions';
 
 
@@ -65,7 +67,8 @@ const Workspace = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const theme = useTheme();
-  const id = history.location.pathname.split('/').pop();
+  const id = history.location.pathname.split('/').pop();// CryptoJS.AES.decrypt(decodeURIComponent(history.location.pathname.split('/').pop()), 'path').toString(CryptoJS.enc.Utf8);
+
   const reactFlowContainer = useRef(null);
   const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
@@ -85,6 +88,7 @@ const Workspace = (props) => {
   const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const loading = useSelector(state => state.getIn([reducer, 'loading']));
+  const companyData = useSelector(state => state.getIn([reducer, 'companyData'])).toJS();
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
@@ -92,6 +96,7 @@ const Workspace = (props) => {
   const [showCvrModal, setShowCvrModal] = useState(false);
   const [showMapErst, setShowMapErst] = useState(false);
   const [erstTypes, setErstTypes] = useState(initErstTypes);
+  const [showCompanyData, setShowCompanyData] = useState(false);
 
 
   const [showAlertLog, setShowAlertLog] = useState(false);
@@ -550,6 +555,9 @@ const Workspace = (props) => {
             setDeletedAttributes(attr => [...attr, _id]);
           }
         }}
+        showCompanyData={() => {
+          dispatch(getCompanyData(elementToUpdate.id, setShowCompanyData, setDefineNodeOpen, setNodeLabel, setIsUpdatingElement));
+        }}
       />
       {alerts[alertId] && (
         <AlertModal
@@ -626,7 +634,7 @@ const Workspace = (props) => {
         nodes={nodes}
         relationships={relationships}
       />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && (
+      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
@@ -638,6 +646,12 @@ const Workspace = (props) => {
           plan_id={plan_id}
         />
       )}
+      <CompanyDataModel
+        open={showCompanyData}
+        close={() => setShowCompanyData(false)}
+        displayName={elementToUpdate?.data?.displayName}
+        companyData={companyData}
+      />
     </div>
   );
 };

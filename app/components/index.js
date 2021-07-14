@@ -86,6 +86,7 @@ import CustomEdge from './Workspace/Edge/CustomEdge';
 import DefineEdge from './Workspace/Edge/DefineEdge';
 
 import DefineNode from './Workspace/Node/DefineNode';
+import CompanyDataModel from './Workspace/CompanyDataModel';
 
 // Condition
 import ConditionForm from './Condition/ConditionForm';
@@ -182,5 +183,6 @@ export {
   CounterIconsWidget,
   TimelineWidget,
   NewsListWidget,
-  PaymentPanel
+  PaymentPanel,
+  CompanyDataModel
 };

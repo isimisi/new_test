@@ -23,6 +23,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import AES from 'crypto-js/aes';
+import CryptoJS from 'crypto-js';
 import styles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -47,7 +49,6 @@ const PersonalDashboard = (props) => {
   const [featureValue, setFeatureValue] = useState('');
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
-
 
   const handleCloseGuide = () => {
     if (history.location.search.includes('first_visit')) {

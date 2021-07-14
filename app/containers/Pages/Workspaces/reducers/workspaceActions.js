@@ -395,6 +395,25 @@ export const putSticky = (id, text) => async dispatch => {
   }
 };
 
+export const getCompanyData = (id, setShowCompanyData, setDefineNodeOpen, setNodeLabel, setIsUpdatingElement) => async dispatch => {
+  dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
+  const url = `${baseUrl}/workspacenodes/company/info/${id}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+
+    const companyData = response.data;
+    dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS, companyData });
+
+    setDefineNodeOpen(false);
+    setNodeLabel('');
+    setIsUpdatingElement(false);
+    setShowCompanyData(true);
+  } catch (error) {
+    dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_FAILED, message });
+  }
+};
+
 export const labelChange = label => ({
   type: types.LABEL_CHANGE,
   label,
