@@ -74,7 +74,7 @@ function CompanyDataModel(props) {
                     : (
 
                       <Typography style={{ textAlign: 'center' }}>
-                        Vi kunne ikke finde noget data på
+                        Vi kunne ikke finde noget data at vise dig her
                         {' '}
                         {displayName}
                       </Typography>
