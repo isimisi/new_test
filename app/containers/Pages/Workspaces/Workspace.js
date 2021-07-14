@@ -88,7 +88,7 @@ const Workspace = (props) => {
   const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const loading = useSelector(state => state.getIn([reducer, 'loading']));
-  const companyData = useSelector(state => state.getIn([reducer, 'companyData'])).toJS();
+  const companyData = useSelector(state => state.getIn([reducer, 'companyData']));
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
@@ -180,6 +180,7 @@ const Workspace = (props) => {
   };
 
   const onElementClick = (event, element) => {
+    setShowCompanyData(false);
     setIsUpdatingElement(true);
     setElementToUpdate(element);
     setDeletedAttributes([]);

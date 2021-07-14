@@ -1,4 +1,4 @@
-import { fromJS, List, Map } from 'immutable';
+import { fromJS, List } from 'immutable';
 import {
   isNode,
   isEdge
@@ -79,7 +79,7 @@ const initialState = {
   alertId: null,
   alertOpen: false,
   outputs: List(),
-  companyData: Map()
+  companyData: {}
 };
 
 
@@ -337,8 +337,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       });
     case GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS:
       return state.withMutations((mutableState) => {
-        const companyData = fromJS(action.companyData);
-        mutableState.set('companyData', companyData);
+        mutableState.set('companyData', action.companyData);
         mutableState.set('loading', false);
       });
     case GET_WORKSPACE_NODE_COMPANY_DATA_FAILED:

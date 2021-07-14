@@ -265,7 +265,7 @@ const WorkspaceNodeForm = (props) => {
       </section>
       <div className={css.buttonArea}>
         <Button
-          variant="contained"
+
           style={{ position: 'absolute', left: 10 }}
           startIcon={<AssessmentIcon />}
           onClick={showCompanyData}

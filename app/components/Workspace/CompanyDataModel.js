@@ -4,13 +4,24 @@ import { withStyles } from '@material-ui/core/styles';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import styles from './workspace-jss';
+import MuiTableCell from '@material-ui/core/TableCell';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import InfoIcon from '@material-ui/icons/Info';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import FloatingPanel from '../Panel/FloatingPanel';
+import styles from './workspace-jss';
+
+const TableCell = withStyles({
+  root: {
+    borderBottom: 'thin solid #eeeeee',
+    padding: 10
+  }
+})(MuiTableCell);
 
 function CompanyDataModel(props) {
   const {
@@ -21,7 +32,12 @@ function CompanyDataModel(props) {
     companyData
   } = props;
   const branch = '';
-  console.log(companyData);
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  console.log(companyData.readableFiancials && Object.keys(companyData.readableFiancials), companyData?.readableFiancials);
   return (
     <div>
       <FloatingPanel
@@ -29,24 +45,54 @@ function CompanyDataModel(props) {
         branch={branch}
         closeForm={close}
         title={'Selskabsdata for ' + displayName}
-
+        extraSize
       >
-        <div style={{ padding: 20 }}>
-          <TableContainer component={Paper}>
-            <Table aria-label="caption table">
-              <caption>A basic table example with a caption</caption>
-              <TableBody>
-                {companyData.readableFiancials && Object.keys(companyData.readableFiancials).map(key => (
-                  <TableRow>
-                    <TableCell component="th" scope="row" variant="head">
-                      {key}
-                    </TableCell>
-                    <TableCell align="right">{companyData.readableFiancials[key]}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="fullWidth"
+          indicatorColor="secondary"
+          textColor="secondary"
+          aria-label="icon label tabs example"
+        >
+          <Tab icon={<InfoIcon />} label="Generelt" />
+          <Tab icon={<AccountBalanceIcon />} label="Seneste regnskabstal" />
+        </Tabs>
+        <div style={{ maxHeight: 600, overflow: 'auto' }}>
+          {value === 1 ? (
+            <TableContainer component={Paper} style={{ padding: 14 }}>
+              <Table aria-label="caption table">
+                <caption>Dette er en eksperimentel feature, og der kan derfor i enkeltstående tilfælde være tale om forkerte nøgletal.</caption>
+                <TableBody>
+                  {companyData.readableFiancials && Object.keys(companyData.readableFiancials).map(key => (
+                    <TableRow key={key} hover>
+                      <TableCell component="th" scope="row" variant="head">
+                        {key}
+                      </TableCell>
+                      <TableCell align="right">{companyData.readableFiancials[key]}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )
+            : (
+              <TableContainer component={Paper} style={{ padding: 14 }}>
+                <Table>
+                  <TableBody>
+                    {companyData.companyMetaData && Object.keys(companyData.companyMetaData).map(key => (
+                      <TableRow key={key} hover>
+                        <TableCell component="th" scope="row" variant="head" width="25%">
+                          {key}
+                        </TableCell>
+                        <TableCell align="right">{companyData.companyMetaData[key]}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )
+          }
         </div>
       </FloatingPanel>
     </div>
