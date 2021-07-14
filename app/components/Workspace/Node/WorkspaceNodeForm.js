@@ -264,14 +264,15 @@ const WorkspaceNodeForm = (props) => {
         )}
       </section>
       <div className={css.buttonArea}>
-        <Button
-
-          style={{ position: 'absolute', left: 10 }}
-          startIcon={<AssessmentIcon />}
-          onClick={showCompanyData}
-        >
+        {isUpdatingElement && nodeLabel === 'Selskab' && (
+          <Button
+            style={{ position: 'absolute', left: 10 }}
+            startIcon={<AssessmentIcon />}
+            onClick={showCompanyData}
+          >
           selskabsdata
-        </Button>
+          </Button>
+        )}
         {isUpdatingElement && (
           <Button
             variant="contained"

@@ -410,7 +410,11 @@ export const getCompanyData = (id, setShowCompanyData, setDefineNodeOpen, setNod
     setIsUpdatingElement(false);
     setShowCompanyData(true);
   } catch (error) {
-    dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_FAILED, message });
+    let _message = message;
+    if (error?.response?.status === 403) {
+      _message = error.response.data;
+    }
+    dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_FAILED, message: _message });
   }
 };
 

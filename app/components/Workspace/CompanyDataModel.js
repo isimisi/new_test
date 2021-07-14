@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
+import Typography from '@material-ui/core/Typography';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import MuiTableCell from '@material-ui/core/TableCell';
@@ -37,7 +36,7 @@ function CompanyDataModel(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(companyData.readableFiancials && Object.keys(companyData.readableFiancials), companyData?.readableFiancials);
+
   return (
     <div>
       <FloatingPanel
@@ -64,14 +63,24 @@ function CompanyDataModel(props) {
               <Table aria-label="caption table">
                 <caption>Dette er en eksperimentel feature, og der kan derfor i enkeltstående tilfælde være tale om forkerte nøgletal.</caption>
                 <TableBody>
-                  {companyData.readableFiancials && Object.keys(companyData.readableFiancials).map(key => (
+                  {companyData.readableFiancials ? Object.keys(companyData.readableFiancials).map(key => (
                     <TableRow key={key} hover>
                       <TableCell component="th" scope="row" variant="head">
                         {key}
                       </TableCell>
                       <TableCell align="right">{companyData.readableFiancials[key]}</TableCell>
                     </TableRow>
-                  ))}
+                  ))
+                    : (
+
+                      <Typography style={{ textAlign: 'center' }}>
+                        Vi kunne ikke finde noget data på
+                        {' '}
+                        {displayName}
+                      </Typography>
+
+                    )
+                  }
                 </TableBody>
               </Table>
             </TableContainer>
