@@ -27,7 +27,7 @@ export const postNode = (history) => async dispatch => {
   const header = authHeader();
   try {
     const response = await axios.post(url, body, header);
-    const { id } = response.data;
+    const id = response.data;
     dispatch({ type: types.POST_NODE_SUCCESS });
     history.push(`nodes/${id}`);
   } catch (error) {

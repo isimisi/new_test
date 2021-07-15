@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
   removeElements,
   Background,
   isNode,
-  BackgroundVariant
+  BackgroundVariant,
+  MiniMap,
+  Controls
 } from 'react-flow-renderer';
 import {
   CustomNode, ConditionDefineEdge,
@@ -18,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import { getId } from '@api/constants';
 import styles from './conditions-jss';
 import { reducer, comparisonsOptions } from './constants';
 import {
@@ -38,7 +41,7 @@ const Condition = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
   const history = useHistory();
-  const id = history.location.pathname.split('/').pop();
+  const id = getId(history);
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
   const fromContent = history?.location?.state?.fromContent;
@@ -51,6 +54,8 @@ const Condition = (props) => {
   const [comparisonValue, setComparisonValue] = useState('');
 
   const [currentZoom, setCurrentZoom] = useState(1);
+
+  const theme = useTheme();
 
   // REDUX
   const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
@@ -217,6 +222,14 @@ const Condition = (props) => {
               gap={BASE_BG_GAP / currentZoom}
               size={BASE_BG_STROKE / currentZoom}
             />
+
+            <MiniMap
+              nodeStrokeWidth={3}
+              nodeColor={theme.palette.secondary.light}
+              style={{ top: 0, right: 0 }}
+            />
+            <Controls />
+
           </ReactFlow>
         </div>
       </div>

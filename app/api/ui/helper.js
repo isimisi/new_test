@@ -1,7 +1,5 @@
 import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
-import { useTheme } from '@material-ui/core/styles';
-
 
 export const mapSelectOptions = (options) => options.map(suggestion => ({
   value: suggestion.value,
@@ -16,19 +14,16 @@ export const mapSelectOptions = (options) => options.map(suggestion => ({
   ),
 }));
 
-export const selectStyles = (menuPosition = 'absolute') => {
-  const theme = useTheme();
-  return {
-    input: base => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
-    menu: (provided, state) => ({
-      ...provided,
-      position: menuPosition,
-    })
-  };
-};
+export const selectStyles = (menuPosition = 'absolute') => ({
+  input: base => ({
+    ...base,
+    color: 'black',
+    '& input': {
+      font: 'inherit',
+    },
+  }),
+  menu: (provided) => ({
+    ...provided,
+    position: menuPosition,
+  })
+});

@@ -7,6 +7,7 @@ import { useSelector, useDispatch, } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import { getId } from '@api/constants';
 import {
   closeNotifAction, showAlert, putAlert, getConditionsDropDown, getGroupDropDown,
   addCondition,
@@ -20,7 +21,7 @@ const Alert = () => {
   const dispatch = useDispatch();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
-  const id = history.location.pathname.split('/').pop();
+  const id = getId(history);
   const title = useSelector(state => state.getIn([reducer, 'title']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
@@ -60,7 +61,7 @@ const Alert = () => {
 
   const handleCreateOrSeeCondition = (condition, see) => {
     if (see) {
-      history.push('/app/conditions/' + condition.condition_id);
+      window.open('/app/conditions/' + condition.condition_id, '_blank');
     } else {
       dispatch(postCondition(history, true));
     }

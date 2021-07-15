@@ -9,6 +9,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import { useSelector, useDispatch, } from 'react-redux';
+import CryptoJS from 'crypto-js';
 import styles from './alert-jss';
 import {
   columns, tableOptions, reducer
@@ -31,7 +32,8 @@ const Alerts = (props) => {
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({ id: alerts[v.index][3], title: alerts[v.index][0] }));
     deletedNodes.forEach(e => {
-      dispatch(deleteAlert(e.id, e.title));
+      const id = CryptoJS.AES.decrypt(decodeURIComponent(e.id), 'path').toString(CryptoJS.enc.Utf8);
+      dispatch(deleteAlert(id, e.title));
     });
   };
 

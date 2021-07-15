@@ -1,3 +1,5 @@
+
+import CryptoJS from 'crypto-js';
 import { loadFromLocalStorage } from './localStorage/localStorage';
 
 export const baseUrl = process.env.NODE_ENV === 'production' ? 'https://juristic-api-gateway.herokuapp.com' : 'http://127.0.0.1:3333';
@@ -35,3 +37,5 @@ export const validURL = (str) => {
 };
 
 export const plans = ['Lite', 'Base', 'Draw', 'Pro'];
+
+export const getId = (history) => CryptoJS.AES.decrypt(decodeURIComponent(history.location.pathname.split('/').pop()), 'path')?.toString(CryptoJS.enc.Utf8) || history.location.pathname.split('/').pop();

@@ -59,6 +59,7 @@
     "__CLIENT__": true,
     "__SERVER__": true,
     "beforeAll": true,
-    "afterAll": true
+    "afterAll": true,
+    "analytics": "readonly"
   }
 }

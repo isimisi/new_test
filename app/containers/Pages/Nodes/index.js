@@ -6,6 +6,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import { useSelector, useDispatch } from 'react-redux';
 import { Notification } from '@components';
+import CryptoJS from 'crypto-js';
 import {
   useHistory
 } from 'react-router-dom';
@@ -33,7 +34,8 @@ function Nodes(props) {
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({ id: nodes[v.index][3], title: nodes[v.index][0] }));
     deletedNodes.forEach(e => {
-      dispatch(deleteNode(e.id, e.title));
+      const id = CryptoJS.AES.decrypt(decodeURIComponent(e.id), 'path').toString(CryptoJS.enc.Utf8);
+      dispatch(deleteNode(id, e.title));
     });
   };
 

@@ -21,11 +21,20 @@ export const login = (email, password, history, locationState = null) => async d
     saveToLocalStorage({
       ...access_token, ...user, ...organization, user_id: user.id
     });
+
     LogRocket.identify(user.id, {
       name: user.first_name + ' ' + user.last_name,
       email: user.email,
       organization: organization && organization.name,
     });
+
+
+    analytics.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
+      organization: organization && organization.name,
+    });
+
     history.push(locationState?.from?.path || '/app');
   } catch (error) {
     let message = 'Hov, der er vidst nogle problemer med login. Prøv igen senere.';
@@ -54,6 +63,18 @@ export const register = (name, phone, employer, email, password, marketing, hist
     const { user, access_token } = response.data;
     dispatch({ type: types.REGISTER_SUCCESS, user, access_token });
     saveToLocalStorage({ ...access_token, ...user });
+
+    LogRocket.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
+    });
+
+
+    analytics.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
+    });
+
     history.push('/app?first_visit');
   } catch (error) {
     const { message } = error.response.data[0];
@@ -70,7 +91,6 @@ export const showUser = () => async dispatch => {
     const response = await axios.get(url, header);
     const user = response.data;
 
-    console.log(user);
     saveToLocalStorage({ ...ls, ...user });
   } catch (error) {
     // DO SOMETHING
@@ -103,11 +123,19 @@ export const newPassword = (id, password, history) => async dispatch => {
     saveToLocalStorage({
       ...access_token, ...user, ...organization, user_id: user.id
     });
+
     LogRocket.identify(user.id, {
       name: user.first_name + ' ' + user.last_name,
       email: user.email,
       organization: organization && organization.name,
     });
+
+    analytics.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
+      organization: organization && organization.name,
+    });
+
     history.push('/app');
   } catch (error) {
     console.log(error.response);

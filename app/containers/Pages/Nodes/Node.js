@@ -10,6 +10,7 @@ import {
 import {
   useHistory
 } from 'react-router-dom';
+import { getId } from '@api/constants';
 import {
   putNode, showNode, getAttributeDropDown, getGroupDropDown, closeNotifAction
 } from './reducers/nodeActions';
@@ -20,7 +21,7 @@ const Node = () => {
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
   const theme = useTheme();
-  const id = history.location.pathname.split('/').pop();
+  const id = getId(history);
   const title = useSelector(state => state.getIn([reducer, 'title']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const attributes = useSelector(state => state.getIn([reducer, 'attributes'])).toJS();

@@ -25,7 +25,7 @@ export const postAlert = (history) => async dispatch => {
   const header = authHeader();
   try {
     const response = await axios.post(url, body, header);
-    const { id } = response.data;
+    const id = response.data;
     dispatch({ type: types.POST_ALERT_SUCCESS });
     history.push(`red flags/${id}`);
   } catch (error) {

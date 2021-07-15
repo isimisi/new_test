@@ -31,7 +31,7 @@ export const postCondition = (history, fromContent = false) => async dispatch =>
   const header = authHeader();
   try {
     const response = await axios.post(url, body, header);
-    const { id } = response.data;
+    const id = response.data;
     dispatch({ type: types.POST_CONDITION_SUCCESS });
     const place = history.location.pathname.split('/')[2];
     const placeId = history.location.pathname.split('/')[3];
@@ -131,6 +131,7 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
       history.push(`/app/${CONDITIONS}`);
     }
   } catch (error) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SAVE_CONDITION_FAILED, message });
   }

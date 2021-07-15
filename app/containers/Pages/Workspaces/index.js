@@ -11,6 +11,7 @@ import {
 } from 'react-router-dom';
 import tableOptions from '@api/ui/tableOptions';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import CryptoJS from 'crypto-js';
 import {
   columns,
   reducer
@@ -38,7 +39,8 @@ const Workspaces = (props) => {
   const onDelete = ({ data }) => {
     const deletedWorkspaces = data.map(v => ({ id: workspaces[v.index][3], title: workspaces[v.index][0] }));
     deletedWorkspaces.forEach(e => {
-      dispatch(deleteWorkspaces(e.id, e.title));
+      const id = CryptoJS.AES.decrypt(decodeURIComponent(e.id), 'path').toString(CryptoJS.enc.Utf8);
+      dispatch(deleteWorkspaces(id, e.title));
     });
   };
 

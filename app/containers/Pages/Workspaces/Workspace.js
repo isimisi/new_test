@@ -23,7 +23,6 @@ import {
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-// import CryptoJS from 'crypto-js';
 import {
   useHistory
 } from 'react-router-dom';
@@ -33,7 +32,7 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { toast } from 'react-toastify';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
-
+import { getId } from '@api/constants';
 import styles from './workspace-jss';
 import { reducer, initErstTypes } from './constants';
 import {
@@ -67,8 +66,7 @@ const Workspace = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const theme = useTheme();
-  const id = history.location.pathname.split('/').pop();// CryptoJS.AES.decrypt(decodeURIComponent(history.location.pathname.split('/').pop()), 'path').toString(CryptoJS.enc.Utf8);
-
+  const id = getId(history);
   const reactFlowContainer = useRef(null);
   const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);

@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import { getId } from '@api/constants';
 import { reducer, generateLabelStyle } from './constants';
 import {
   RelationshipDemo, RelationshipStylling, RelationshipForm, Notification
@@ -20,7 +21,7 @@ const Relationship = () => {
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
 
-  const id = history.location.pathname.split('/').pop();
+  const id = getId(history);
   const label = useSelector(state => state.getIn([reducer, 'label']));
   const values = useSelector(state => state.getIn([reducer, 'values'])).toJS();
   const description = useSelector(state => state.getIn([reducer, 'description']));

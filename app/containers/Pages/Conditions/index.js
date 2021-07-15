@@ -9,6 +9,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import tableOptions from '@api/ui/tableOptions';
+import CryptoJS from 'crypto-js';
 import {
   columns, reducer
 } from './constants';
@@ -33,7 +34,8 @@ function Conditions(props) {
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({ id: conditions[v.index][3], title: conditions[v.index][0] }));
     deletedNodes.forEach(e => {
-      dispatch(deleteCondition(e.id, e.title));
+      const id = CryptoJS.AES.decrypt(decodeURIComponent(e.id), 'path').toString(CryptoJS.enc.Utf8);
+      dispatch(deleteCondition(id, e.title));
     });
   };
 

@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
+import CryptoJS from 'crypto-js';
 import styles from './relationship-jss';
 import { tableColumns, tableOptions, reducer } from './constants';
 import {
@@ -29,7 +30,8 @@ function Relationships(props) {
   const onDelete = ({ data }) => {
     const deletedRelationships = data.map(v => ({ id: relationships[v.index][3], title: relationships[v.index][0] }));
     deletedRelationships.forEach(e => {
-      dispatch(deleteRelationship(e.id, e.title));
+      const id = CryptoJS.AES.decrypt(decodeURIComponent(e.id), 'path').toString(CryptoJS.enc.Utf8);
+      dispatch(deleteRelationship(id, e.title));
     });
   };
 

@@ -80,9 +80,9 @@ export const postWorkspace = (history) => async dispatch => {
 
   try {
     const response = await axios.post(url, body, header);
-    const { id } = response.data;
+
     dispatch({ type: types.POST_WORKSPACE_SUCCESS });
-    history.push(`${WORKSPACES}/${id}`);
+    history.push(`${WORKSPACES}/${response.data}`);
   } catch (error) {
     dispatch({ type: types.POST_WORKSPACE_FAILED, message });
   }
@@ -91,6 +91,7 @@ export const postWorkspace = (history) => async dispatch => {
 
 export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
+
   const header = authHeader();
 
   try {
@@ -98,7 +99,7 @@ export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
     const {
       elements, label, description, group, zoom, x_position, y_position
     } = response.data;
-    console.log(elements);
+
     dispatch({
       type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
     });
@@ -109,12 +110,11 @@ export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
     }
     dispatch(analyseAlerts(id, setAlerts, true));
   } catch (error) {
-    console.log(error.response);
     if (error?.response?.status === 403) {
       _history.replace('/app/not-found');
+    } else {
+      dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
     }
-
-    dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
   }
 };
 
