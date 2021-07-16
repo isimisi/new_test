@@ -56,6 +56,7 @@ const CustomNode = ({ data }) => {
   const handleStyle = useMemo(() => ({
     height: handleVisability ? 8 : 0,
     width: handleVisability ? 8 : 0,
+    backgroundClip: 'padding-box',
   }), [handleVisability]);
 
   const handleStyleSideBottom = useMemo(() => ({

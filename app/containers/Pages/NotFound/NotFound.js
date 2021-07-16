@@ -23,7 +23,7 @@ const NotFound = () => (
             <meta property="twitter:title" content={title} />
             <meta property="twitter:description" content={description} />
           </Helmet>
-          <ErrorWrap title="404" desc="Oops, The page you are looking for does not exist" />
+          <ErrorWrap title="404" desc="Hov, siden du leder efter findes vidst ikke." />
         </div>
       );
     }}

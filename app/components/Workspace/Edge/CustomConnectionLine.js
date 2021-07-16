@@ -1,24 +1,29 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { getBezierPath, getMarkerEnd } from 'react-flow-renderer';
+
 
 export default ({
   sourceX,
   sourceY,
-  //   sourcePosition,
   targetX,
   targetY,
-//   targetPosition,
-//   connectionLineType,
-//   connectionLineStyle,
+  arrowHeadType,
+  markerEndId,
 }) => (
   <g>
     <path
       fill="none"
-      stroke="#222"
-      strokeWidth={1.5}
+      stroke="#B1B1B7"
+      strokeWidth={3}
       className="animated"
-      d={`M${sourceX},${sourceY} C ${sourceX} ${targetY} ${sourceX} ${targetY} ${targetX},${targetY}`}
+      d={getBezierPath({
+        sourceX,
+        sourceY: sourceY - 16,
+        targetX,
+        targetY: targetY + 15,
+      })}
+      markerEnd={getMarkerEnd(arrowHeadType, markerEndId)}
     />
-    <circle cx={targetX} cy={targetY} fill="#fff" r={3} stroke="#222" strokeWidth={1.5} />
   </g>
 );
