@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -11,6 +12,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import tableOptions from '@api/ui/tableOptions';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import {
   tableColumns, reducer
 } from './constants';
@@ -26,9 +28,14 @@ function Nodes(props) {
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const loading = useSelector(state => state.getIn([reducer, 'loading']));
   const history = useHistory();
+  const { plan_id } = loadFromLocalStorage();
 
   useEffect(() => {
     dispatch(getNodes());
+
+    if (plan_id < 3) {
+      history.push('/app/plan');
+    }
   }, []);
 
   const onDelete = ({ data }) => {

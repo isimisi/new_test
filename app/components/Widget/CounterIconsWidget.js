@@ -9,7 +9,12 @@ import styles from './widget-jss';
 
 
 const CounterIconWidget = (props) => {
-  const { classes, elementCounts } = props;
+  const { classes, elementCounts, history } = props;
+
+  const handleClick = (where) => {
+    history.push(`/app/${where}`);
+  };
+
   return (
     <div className={classes.rootCounterFull}>
       <Grid container spacing={2}>
@@ -20,6 +25,7 @@ const CounterIconWidget = (props) => {
             end={elementCounts.get('nodes') || 0}
             duration={5}
             title="elementer"
+            onClick={() => handleClick('nodes')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -34,6 +40,7 @@ const CounterIconWidget = (props) => {
             end={elementCounts.get('relationships') || 0}
             duration={5}
             title="forbindelser"
+            onClick={() => handleClick('relationships')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -48,6 +55,7 @@ const CounterIconWidget = (props) => {
             end={elementCounts.get('attributes') || 0}
             duration={5}
             title="kendetegn"
+            onClick={() => handleClick('attributes')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -62,6 +70,7 @@ const CounterIconWidget = (props) => {
             end={elementCounts.get('conditions') || 0}
             duration={5}
             title="betingelser"
+            onClick={() => handleClick('conditions')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -72,10 +81,11 @@ const CounterIconWidget = (props) => {
         <Grid item xs={3} md={3}>
           <CounterWidget
             color={colorfull[0]}
-            start={elementCounts.get('nodes') < 20 ? 50 : 0}
+            start={elementCounts.get('workspaces') < 20 ? 50 : 0}
             end={elementCounts.get('workspaces') || 0}
             duration={5}
             title="områder"
+            onClick={() => handleClick('workspaces')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -89,6 +99,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('groups') < 20 ? 50 : 0}
             end={elementCounts.get('groups') || 0}
             duration={5}
+            onClick={() => handleClick('groups')}
             title="grupper"
           >
             <Ionicon
@@ -104,6 +115,7 @@ const CounterIconWidget = (props) => {
             end={elementCounts.get('outputs') || 0}
             duration={5}
             title="rapporter"
+            onClick={() => handleClick('outputs')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -118,6 +130,7 @@ const CounterIconWidget = (props) => {
             end={/* elementCounts.get('alerts') || */0}
             duration={5}
             title="egne red flags"
+            onClick={() => handleClick('red flags')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -132,7 +145,8 @@ const CounterIconWidget = (props) => {
 
 CounterIconWidget.propTypes = {
   classes: PropTypes.object.isRequired,
-  elementCounts: PropTypes.object.isRequired
+  elementCounts: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(CounterIconWidget);

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -6,6 +7,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import { useSelector, useDispatch } from 'react-redux';
 import tableOptions from '@api/ui/tableOptions';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import {
+  useHistory
+} from 'react-router-dom';
 import styles from './attribute-jss';
 import Attribute from './Attribute';
 import { columns, reducer } from './constants';
@@ -27,12 +32,18 @@ function Attributes(props) {
   const group = useSelector(state => state.getIn([reducer, 'group']));
   const loading = useSelector(state => state.getIn([reducer, 'loading']));
   const selectionOptions = useSelector(state => state.getIn([reducer, 'selectionOptions']));
+  const { plan_id } = loadFromLocalStorage();
+  const history = useHistory();
 
   const { classes } = props;
 
   useEffect(() => {
     dispatch(getAttributes());
     dispatch(getGroupDropDown());
+
+    if (plan_id !== 3) {
+      history.push('/app/plan');
+    }
   }, []);
 
   const onOpen = (value) => {

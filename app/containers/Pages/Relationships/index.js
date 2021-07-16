@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -9,6 +10,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import CryptoJS from 'crypto-js';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './relationship-jss';
 import { tableColumns, tableOptions, reducer } from './constants';
 import {
@@ -22,9 +24,14 @@ function Relationships(props) {
   const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
+  const { plan_id } = loadFromLocalStorage();
 
   useEffect(() => {
     dispatch(getRelationships());
+
+    if (plan_id < 3) {
+      history.push('/app/plan');
+    }
   }, []);
 
   const onDelete = ({ data }) => {

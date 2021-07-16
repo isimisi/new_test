@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -9,6 +10,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import { Notification } from '@components';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import {
   tableOptions, columns, reducer
 } from './constants';
@@ -24,9 +26,14 @@ function Outputs(props) {
   const outputs = useSelector(state => state.getIn([reducer, 'outputs'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
+  const { plan_id } = loadFromLocalStorage();
 
   useEffect(() => {
     dispatch(getOutput());
+
+    if (plan_id !== 4) {
+      history.push('/app/plan');
+    }
   }, []);
 
   const onDelete = ({ data }) => {

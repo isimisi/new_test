@@ -100,7 +100,7 @@ const PersonalDashboard = (props) => {
       <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
       <Grid container spacing={3} className={classes.root}>
         <Grid item md={6} xs={12}>
-          <CounterIconsWidget elementCounts={elementCounts} />
+          <CounterIconsWidget elementCounts={elementCounts} history={history} />
           <Divider className={classes.divider} />
           {/* <div className={classes.sliderWrap}>
             <SliderWidget />

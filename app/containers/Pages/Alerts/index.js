@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -10,6 +11,7 @@ import {
 } from 'react-router-dom';
 import { useSelector, useDispatch, } from 'react-redux';
 import CryptoJS from 'crypto-js';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './alert-jss';
 import {
   columns, tableOptions, reducer
@@ -24,9 +26,14 @@ const Alerts = (props) => {
   const alerts = useSelector(state => state.getIn([reducer, 'alerts'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const history = useHistory();
+  const { plan_id } = loadFromLocalStorage();
 
   useEffect(() => {
     dispatch(getAlerts());
+
+    if (plan_id < 3) {
+      history.push('/app/plan');
+    }
   }, []);
 
   const onDelete = ({ data }) => {
