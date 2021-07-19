@@ -23,8 +23,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
-import AES from 'crypto-js/aes';
-import CryptoJS from 'crypto-js';
+import { isMobile } from 'react-device-detect';
 import styles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -34,6 +33,7 @@ import {
   getUserInfo
 } from './reducers/dashboardActions';
 import UpgradeModal from './UpgradeModal';
+import MobileDisclaimer from './MobileDisclaimer';
 
 
 const PersonalDashboard = (props) => {
@@ -49,6 +49,7 @@ const PersonalDashboard = (props) => {
   const [featureValue, setFeatureValue] = useState('');
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
+  const [showMobileDisclaimer, setShowMobileDisclaimer] = useState(false);
 
   const handleCloseGuide = () => {
     if (history.location.search.includes('first_visit')) {
@@ -72,8 +73,12 @@ const PersonalDashboard = (props) => {
       setShowUpgrade(true);
     }
 
-    if (history.location.search.includes('first_visit')) {
+    if (history.location.search.includes('first_visit') && !isMobile) {
       handleOpenGuide();
+    }
+
+    if (isMobile) {
+      setShowMobileDisclaimer(true);
     }
   }, []);
 
@@ -136,6 +141,13 @@ const PersonalDashboard = (props) => {
         close={() => {
           dispatch(getUserInfo());
           setShowUpgrade(false);
+        }}
+      />
+
+      <MobileDisclaimer
+        open={showMobileDisclaimer}
+        close={() => {
+          setShowMobileDisclaimer(false);
         }}
       />
     </div>

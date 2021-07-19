@@ -6,13 +6,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 import { Resizable } from 're-resizable';
-import { putSticky } from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
-
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { putSticky, deleteWorkspaceElement } from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
 
 const StickyNote = ({ data }) => {
   const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
   const [value, setValue] = useState(data.text);
+  const [showDelete, setShowDelete] = useState(false);
   const dispatch = useDispatch();
+
+  const elements = useSelector(state => state.getIn(['workspace', 'elements'])).toJS();
 
   useEffect(() => {
     setValue(data.text);
@@ -21,8 +25,10 @@ const StickyNote = ({ data }) => {
   const titleContainer = useMemo(() => ({
     width: '100%',
     backgroundColor: '#f1f1f1',
-    padding: 5,
     minHeight: 20,
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   }), []);
 
   const textArea = useMemo(() => ({
@@ -36,6 +42,17 @@ const StickyNote = ({ data }) => {
   const container = useMemo(() => ({
     border: '1px solid #f1f1f1',
     borderRadius: 5
+  }), []);
+
+  const button = useMemo(() => ({
+    height: 18,
+    width: 18,
+    marginRight: 5
+  }), []);
+
+  const icon = useMemo(() => ({
+    height: 15,
+    width: 15
   }), []);
 
   const handleEnable = useMemo(() => ({
@@ -77,11 +94,30 @@ const StickyNote = ({ data }) => {
   };
 
   const handleBlur = useCallback(() => {
+    setShowDelete(false);
     dispatch(putSticky(data.id, value));
   }, [value]);
 
   const handleChange = useCallback((html) => {
     setValue(html);
+  }, []);
+
+  const handelShowDelete = useCallback(() => {
+    setShowDelete(true);
+  }, []);
+
+  const deleteNote = useCallback(() => {
+    const elementsToRemove = [{ id: `sticky-${data.id}` }];
+
+    const nodeIdsToRemove = elementsToRemove.map((n) => n.id);
+
+    const remainingElements = elements.filter(el => !(
+      nodeIdsToRemove.includes(el.id)
+          || nodeIdsToRemove.includes(el.target)
+          || nodeIdsToRemove.includes(el.source)
+    ));
+
+    dispatch(deleteWorkspaceElement(elementsToRemove, remainingElements));
   }, []);
 
 
@@ -93,8 +129,21 @@ const StickyNote = ({ data }) => {
       handleClasses={handleClasses}
       className="resizeable"
     >
-      <div onBlur={handleBlur}>
-        {handleVisability && <div style={titleContainer} />}
+      <div
+        onMouseOver={handelShowDelete}
+        onFocus={handelShowDelete}
+        onMouseLeave={handleBlur}
+        onBlur={handleBlur}
+      >
+        {handleVisability && (
+          <div style={titleContainer}>
+            {showDelete && (
+              <IconButton aria-label="delete" size="small" className="nodrag" style={button} onClick={deleteNote}>
+                <DeleteIcon style={icon} />
+              </IconButton>
+            )}
+          </div>
+        )}
         <ReactQuill
           placeholder="Note"
           theme="bubble"

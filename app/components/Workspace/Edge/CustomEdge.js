@@ -67,7 +67,7 @@ const CustomEdge = ({
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
   const history = useHistory();
   const isCondition = history.location.pathname.includes('conditions');
-  let text = `${data.showLabel ? data.label : ''}${data.showLabel ? ': ' : ''}${data.value}`;
+  let text = `${data.showLabel || !data.value ? data.label : ''}${data.showLabel ? ': ' : ''}${data.value}`;
 
   if (isCondition) {
     text = `${data.label} ${data.comparison_type} ${data.comparison_value}`;

@@ -42,6 +42,7 @@ const WorkspaceNodeForm = (props) => {
     nodeDisplayName,
     handleDisplayNameChange,
     isUpdatingElement,
+    elementToUpdate,
     handleDeleteNode,
     attributesDropDownOptions,
     handleRemoveAttributes,
@@ -264,7 +265,7 @@ const WorkspaceNodeForm = (props) => {
         )}
       </section>
       <div className={css.buttonArea}>
-        {isUpdatingElement && nodeLabel === 'Selskab' && (
+        {elementToUpdate?.data?.unitNumber && (
           <Button
             style={{ position: 'absolute', left: 10 }}
             startIcon={<AssessmentIcon />}
@@ -313,6 +314,7 @@ WorkspaceNodeForm.propTypes = {
   nodeDisplayName: PropTypes.string.isRequired,
   handleDisplayNameChange: PropTypes.func.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
+  elementToUpdate: PropTypes.object.isRequired,
   handleDeleteNode: PropTypes.func.isRequired,
   attributesDropDownOptions: PropTypes.array.isRequired,
   handleRemoveAttributes: PropTypes.func.isRequired,

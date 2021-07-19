@@ -23,6 +23,7 @@ function DefineNode(props) {
     nodeDisplayName,
     handleDisplayNameChange,
     isUpdatingElement,
+    elementToUpdate,
     handleDeleteNode,
     loading,
     attributesDropDownOptions,
@@ -55,6 +56,7 @@ function DefineNode(props) {
               handleNodeSave={handleNodeSave}
               nodeDisplayName={nodeDisplayName}
               isUpdatingElement={isUpdatingElement}
+              elementToUpdate={elementToUpdate}
               handleDisplayNameChange={handleDisplayNameChange}
               handleDeleteNode={handleDeleteNode}
               attributesDropDownOptions={attributesDropDownOptions}
@@ -86,6 +88,7 @@ DefineNode.propTypes = {
   nodeDisplayName: PropTypes.string.isRequired,
   handleDisplayNameChange: PropTypes.func.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
+  elementToUpdate: PropTypes.object.isRequired,
   handleDeleteNode: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   attributesDropDownOptions: PropTypes.array.isRequired,

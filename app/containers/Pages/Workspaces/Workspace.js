@@ -179,6 +179,8 @@ const Workspace = (props) => {
 
   const onElementClick = (event, element) => {
     setShowCompanyData(false);
+    setDefineEdgeOpen(false);
+    setDefineNodeOpen(false);
     setIsUpdatingElement(true);
     setElementToUpdate(element);
     setDeletedAttributes([]);
@@ -544,6 +546,7 @@ const Workspace = (props) => {
         nodeFigur={nodeFigur}
         handleNodeFigurChange={(_figur) => setNodeFigur(_figur ? _figur.value : null)}
         isUpdatingElement={isUpdatingElement}
+        elementToUpdate={elementToUpdate}
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
         handleDeleteNode={() => onElementsRemove([elementToUpdate])}
         loading={loading}
