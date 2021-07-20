@@ -75,6 +75,20 @@ const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 
+// Include the Crisp code here, without the <script></script> tags
+window.$crisp = [];
+window.CRISP_WEBSITE_ID = '66acbf35-9c41-485f-99dc-b7800897ea4a';
+
+// eslint-disable-next-line func-names
+(function () {
+  const d = document;
+  const s = d.createElement('script');
+  s.src = 'https://client.crisp.chat/l.js';
+  s.async = 1;
+  d.getElementsByTagName('head')[0].appendChild(s);
+}());
+
+
 let render = messages => {
   ReactDOM.render(
     <Provider store={store}>

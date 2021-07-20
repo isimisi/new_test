@@ -589,8 +589,9 @@ const Workspace = (props) => {
         open={showCvrModal}
         handleClose={() => setShowCvrModal(false)}
         title="CVR-opslag"
-        description="Indtast CVR-nummer. Herefter indlæser vi koncernstrukturen for dig."
+        description="Indtast et CVR-nummer eller navn. Herefter indlæser vi koncernstrukturen for dig."
         textFielLabel="CVR-nummer"
+
         onConfirm={(value, close) => {
           const erstNodeArray = Object.values(erstTypes.nodes);
           const erstEdgeArray = Object.values(erstTypes.edges);

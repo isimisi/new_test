@@ -45,14 +45,14 @@ const StickyNote = ({ data }) => {
   }), []);
 
   const button = useMemo(() => ({
-    height: 18,
-    width: 18,
-    marginRight: 5
+    height: 15,
+    width: 15,
+    marginRight: 2
   }), []);
 
   const icon = useMemo(() => ({
-    height: 15,
-    width: 15
+    height: 10,
+    width: 10
   }), []);
 
   const handleEnable = useMemo(() => ({

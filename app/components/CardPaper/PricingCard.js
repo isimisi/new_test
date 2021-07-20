@@ -43,7 +43,7 @@ function PricingCard(props) {
     }
   };
 
-  const lite = ['Indlæs fra CVR'];
+  const lite = ['Indlæs fra CVR', 'Hent regnskabsdata fra CVR'];
   const base = ['Ændre data fra CVR', 'Tilføj indhold til arbejdsområder', 'Automatiske red flags'];
   const team = ['Sikkert virksomhedslogin', 'Design egne red flags', 'Design eget indhold', "Integrer andre API'er", 'Eget subdomæne', 'VPN lås'];
   const pro = ['Automatisk læringsindhold', 'Automatisk report builder'];

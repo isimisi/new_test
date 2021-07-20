@@ -40,13 +40,10 @@ function Application() {
         <Route exact path="/app/settings" component={Settings} />
         <Route exact path="/app/create/organization" component={CreateOrganization} />
         <Route exact path="/app/plan" component={ChoosePlan} />
-
-        {/* Fremtidig brug */ }
         <Route path="/app/invoice" component={Invoice} />
         <Route path="/app/not-found" component={NotFound} />
         <Route path="/app/error" component={Error} />
         <Route path="/app/help-support" component={HelpSupport} />
-        { /* Default */ }
         <Route component={NotFound} />
       </Switch>
     </Dashboard>

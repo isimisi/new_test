@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -8,26 +7,30 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 import Loader from '@api/ui/Loader';
+import AsyncSelect from 'react-select/async';
+import axios from 'axios';
+import { selectStyles } from '@api/ui/helper';
+import debounce from 'lodash/debounce';
 
 const FormDialog = (props) => {
   const {
     handleClose, open, title, description, textFielLabel, onConfirm, loading
   } = props;
   const [textField, setTextField] = useState('');
-  const [error, setError] = useState(false);
 
   const changeTextField = (e) => {
-    setTextField(e.target.value);
+    setTextField(e.value);
   };
 
   const confirm = () => {
-    if (textField.length === 8 && /^\d+$/.test(textField)) {
-      onConfirm(textField, handleClose);
-      setError(false);
-    } else {
-      setError(true);
-    }
+    onConfirm(textField, handleClose);
   };
+
+
+  const getAsyncOptions = inputValue => axios
+    .get(`http://127.0.0.1:3333/workspaces/cvr/dropdown?q=${inputValue}`)
+    .then(res => res.data);
+
 
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -40,15 +43,13 @@ const FormDialog = (props) => {
               <DialogContentText>
                 {description}
               </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="cvr"
-                label={textFielLabel}
-                value={textField}
+              <AsyncSelect
+                styles={selectStyles('relative')}
+                menuPlacement="auto"
+                maxMenuHeight={150}
                 onChange={changeTextField}
-                fullWidth
-                error={error}
+                placeholder="Navn eller CVR-nummer"
+                loadOptions={getAsyncOptions}
               />
             </>
           )}

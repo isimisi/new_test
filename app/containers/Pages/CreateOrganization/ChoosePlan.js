@@ -47,7 +47,16 @@ function Pricing() {
       </Helmet>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <Grid container spacing={2}>
-        <Grid item md={4} sm={6} xs={12}>
+        <Grid item md={3} sm={6} xs={12}>
+          <PricingCard
+            title="Lite"
+            price="Gratis"
+            active={plans[plan_id - 1] === 'Lite'}
+            included={plan_id > 1}
+            tier="free"
+          />
+        </Grid>
+        <Grid item md={3} sm={6} xs={12}>
           <PricingCard
             title="Base"
             price="99 DKK"
@@ -58,7 +67,7 @@ function Pricing() {
             onClick={() => handleGetItem(1)}
           />
         </Grid>
-        <Grid item md={4} sm={6} xs={12}>
+        <Grid item md={3} sm={6} xs={12}>
           <PricingCard
             title="Draw"
             price="499 DKK"
@@ -67,7 +76,7 @@ function Pricing() {
             onClick={() => handleGetItem(2)}
           />
         </Grid>
-        <Grid item md={4} sm={6} xs={12}>
+        <Grid item md={3} sm={6} xs={12}>
           <PricingCard
             title="Pro"
             price="Kontakt os"

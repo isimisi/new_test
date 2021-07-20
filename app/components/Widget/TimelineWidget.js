@@ -27,7 +27,7 @@ function TimelineWidget(props) {
 
       {timeline.toJS().length === 0 ? (
         <div>
-          <Typography variant="h5">Du har endnu ikke brugt juristic endnu. Hop ind i et arbejdsområde og kom godt i gang.</Typography>
+          <Typography variant="h5">Du har endnu ikke brugt Juristic endnu. Hop ind i et arbejdsområde og kom godt i gang.</Typography>
           <div className={classes.activityButton}>
             <img src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/racoon/Screenshot+2021-07-08+at+15.51.40.png" alt="nerdy" style={{ height: 200 }} />
             <Button
