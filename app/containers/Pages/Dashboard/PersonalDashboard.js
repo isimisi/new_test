@@ -166,7 +166,7 @@ const PersonalDashboard = (props) => {
         }}
       />
       <Fab variant="extended" color="primary" className={classes.addBtn} onClick={createWorkspace}>
-        {workspaces.length === 0 ? 'Opret dit første workspace' : 'Opret et nyt arbejdsområde'}
+        Opret et nyt arbejdsområde
       </Fab>
     </div>
   );
