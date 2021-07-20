@@ -10,7 +10,7 @@ import Loader from '@api/ui/Loader';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 import { selectStyles } from '@api/ui/helper';
-import debounce from 'lodash/debounce';
+import { baseUrl } from '@api/constants';
 
 const FormDialog = (props) => {
   const {
@@ -28,7 +28,7 @@ const FormDialog = (props) => {
 
 
   const getAsyncOptions = inputValue => axios
-    .get(`http://127.0.0.1:3333/workspaces/cvr/dropdown?q=${inputValue}`)
+    .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}`)
     .then(res => res.data);
 
 
