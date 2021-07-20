@@ -35,6 +35,12 @@ const styles = theme => ({
       marginLeft: theme.spacing(4)
     }
   },
+  addBtn: {
+    position: 'fixed',
+    bottom: 30,
+    right: 50,
+    zIndex: 100,
+  }
 });
 
 export default styles;

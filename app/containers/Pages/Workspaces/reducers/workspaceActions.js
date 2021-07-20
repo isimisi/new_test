@@ -82,7 +82,7 @@ export const postWorkspace = (history) => async dispatch => {
     const response = await axios.post(url, body, header);
 
     dispatch({ type: types.POST_WORKSPACE_SUCCESS });
-    history.push(`${WORKSPACES}/${response.data}`);
+    history.push(`/app/${WORKSPACES}/${response.data}`);
   } catch (error) {
     dispatch({ type: types.POST_WORKSPACE_FAILED, message });
   }
@@ -160,7 +160,14 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
     dispatch({ type: types.DELETE_WORKSPACE_SUCCESS, message: _message });
     dispatch(getWorkspaces());
   } catch (error) {
-    dispatch({ type: types.DELETE_WORKSPACE_FAILED, message });
+    let _message = message;
+    if (error?.response?.status === 403) {
+      _message = error.response.data;
+    }
+    if (!id) {
+      _message = 'Du kan ikke slette arbejdsområder, som er udløbet.';
+    }
+    dispatch({ type: types.DELETE_WORKSPACE_FAILED, message: _message });
   }
 };
 

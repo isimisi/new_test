@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import brand from '@api/dummy/brand';
@@ -24,6 +25,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -34,7 +36,11 @@ import {
 } from './reducers/dashboardActions';
 import UpgradeModal from './UpgradeModal';
 import MobileDisclaimer from './MobileDisclaimer';
+import {
+  postWorkspace, showNotifAction
+} from '../Workspaces/reducers/workspaceActions';
 
+const { plan_id } = loadFromLocalStorage();
 
 const PersonalDashboard = (props) => {
   const title = brand.name + ' - Personal Dashboard';
@@ -46,6 +52,7 @@ const PersonalDashboard = (props) => {
   const elementCounts = useSelector(state => state.getIn([reducer, 'elementCounts']));
   const timeline = useSelector(state => state.getIn([reducer, 'timeline']));
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const workspaces = useSelector(state => state.getIn(['workspace', 'workspaces'])).toJS();
   const [featureValue, setFeatureValue] = useState('');
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
@@ -90,6 +97,14 @@ const PersonalDashboard = (props) => {
     dispatch(postFeatureRequest(featureValue, setFeatureValue));
   };
 
+
+  const createWorkspace = () => {
+    if ((plan_id === 1 && workspaces.length === 10) || (plan_id === 2 && workspaces.length === 50)) {
+      dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Upgrader for at lave flere.'));
+    } else {
+      dispatch(postWorkspace(history));
+    }
+  };
 
   return (
     <div>
@@ -150,6 +165,9 @@ const PersonalDashboard = (props) => {
           setShowMobileDisclaimer(false);
         }}
       />
+      <Fab variant="extended" color="primary" className={classes.addBtn} onClick={createWorkspace}>
+        {workspaces.length === 0 ? 'Opret dit første workspace' : 'Opret et nyt arbejdsområde'}
+      </Fab>
     </div>
   );
 };

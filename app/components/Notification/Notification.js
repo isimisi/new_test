@@ -27,7 +27,7 @@ function Notification(props) {
     <Snackbar
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'left',
+        horizontal: 'center',
       }}
       open={message !== ''}
       autoHideDuration={7000}

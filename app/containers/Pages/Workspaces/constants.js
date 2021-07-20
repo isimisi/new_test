@@ -81,6 +81,12 @@ export const columns = [
     }
   },
   {
+    name: 'Oprettet',
+    options: {
+      filter: true,
+    }
+  },
+  {
     name: 'Sidst ændret',
     options: {
       filter: true,
