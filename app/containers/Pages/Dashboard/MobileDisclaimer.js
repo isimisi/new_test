@@ -19,11 +19,12 @@ const UpgradeModal = (props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Du bruger Juristic på en telefon
+          Det ser ud til, at du er på en mobil enhed 📱
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Vi anbefaler ikke man bruger Juristic på et telefon. Vi anbefaler i stedet, at du bruger en computer, hvilket de fleste af vores andre brugere også gør.
+              Mange af vores funktioner virker på mobile enheder, men for den bedste oplevelse anbefaler vi, at du bruger en browser på din computer.
+              Har du spørgsmål, så kontakt os gerne.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

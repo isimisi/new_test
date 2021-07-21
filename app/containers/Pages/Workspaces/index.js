@@ -46,7 +46,7 @@ const Workspaces = (props) => {
 
   const createWorkspace = () => {
     if ((plan_id === 1 && workspaces.length === 10) || (plan_id === 2 && workspaces.length === 50)) {
-      dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Upgrader for at lave flere.'));
+      dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.'));
     } else {
       dispatch(postWorkspace(history));
     }

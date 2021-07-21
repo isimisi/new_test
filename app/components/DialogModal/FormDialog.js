@@ -11,6 +11,7 @@ import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 import { selectStyles } from '@api/ui/helper';
 import { baseUrl } from '@api/constants';
+import Typography from '@material-ui/core/Typography';
 
 const FormDialog = (props) => {
   const {
@@ -33,7 +34,7 @@ const FormDialog = (props) => {
 
 
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
       <DialogTitle id="form-dialog-title">{title}</DialogTitle>
       <DialogContent>
         {loading
@@ -46,10 +47,16 @@ const FormDialog = (props) => {
               <AsyncSelect
                 styles={selectStyles('relative')}
                 menuPlacement="auto"
+                autoFocus
                 maxMenuHeight={150}
                 onChange={changeTextField}
                 placeholder="Navn eller CVR-nummer"
                 loadOptions={getAsyncOptions}
+                noOptionsMessage={() => (
+                  <Typography>
+                      Her er intet at vise.
+                  </Typography>
+                )}
               />
             </>
           )}

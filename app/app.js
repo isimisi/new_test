@@ -41,6 +41,7 @@ import configureStore from './redux/configureStore';
 import { translationMessages } from './i18n';
 
 import 'video-react/dist/video-react.css';
+import { isMobile } from 'react-device-detect';
 
 
 //  logrocket
@@ -79,14 +80,17 @@ const MOUNT_NODE = document.getElementById('app');
 window.$crisp = [];
 window.CRISP_WEBSITE_ID = '66acbf35-9c41-485f-99dc-b7800897ea4a';
 
-// eslint-disable-next-line func-names
-(function () {
-  const d = document;
-  const s = d.createElement('script');
-  s.src = 'https://client.crisp.chat/l.js';
-  s.async = 1;
-  d.getElementsByTagName('head')[0].appendChild(s);
-}());
+
+if (!isMobile) {
+  // eslint-disable-next-line func-names
+  (function () {
+    const d = document;
+    const s = d.createElement('script');
+    s.src = 'https://client.crisp.chat/l.js';
+    s.async = 1;
+    d.getElementsByTagName('head')[0].appendChild(s);
+  }());
+}
 
 
 let render = messages => {

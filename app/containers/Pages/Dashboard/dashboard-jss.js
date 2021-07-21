@@ -1,6 +1,7 @@
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    marginBottom: theme.spacing(3),
   },
   rootGeneral: {
     padding: theme.spacing(3)

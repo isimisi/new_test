@@ -271,7 +271,7 @@ const Workspace = (props) => {
     const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
     if (plan_id === 1) {
-      dispatch(showNotifAction('At tilføje og ændre elementer i et arbejdsområde er en Base feature. Upgrader til base for at tilføje og ændre elementer'));
+      dispatch(showNotifAction('At tilføje og ændre elementer i et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje og ændre elementer'));
     } else if (isUpdatingElement) {
       dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
     } else {
@@ -304,7 +304,7 @@ const Workspace = (props) => {
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
     if (plan_id === 1) {
-      dispatch(showNotifAction('At tilføje og ændre relationer i et arbejdsområde er en Base feature. Upgrader til base for at tilføje og ændre relationer'));
+      dispatch(showNotifAction('At tilføje og ændre relationer i et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje og ændre relationer'));
     } else if (isUpdatingElement) {
       dispatch(putEdge(
         elementToUpdate.id,
@@ -354,7 +354,7 @@ const Workspace = (props) => {
       }));
     }
     if (_label.__isNew__ && plan_id === 2) {
-      dispatch(showNotifAction('Du kan ikke lave nye relationstyper. Dette er en Draw feature. Kontakt os for mere information.'));
+      dispatch(showNotifAction('Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
     } else {
       setRelationshipLabel(_label.value);
     }
@@ -370,7 +370,7 @@ const Workspace = (props) => {
 
   const handlePostSticky = () => {
     if (plan_id === 1) {
-      dispatch(showNotifAction('At tilføje noter til et arbejdsområde er en Base feature. Upgrader til base for at tilføje noter'));
+      dispatch(showNotifAction('At tilføje noter til et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje noter'));
     } else {
       const rf = rfInstance.toObject();
       const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
@@ -519,7 +519,7 @@ const Workspace = (props) => {
             }));
           }
           if (_label.__isNew__ && plan_id === 2) {
-            dispatch(showNotifAction('Du kan ikke lave nye elementtyper. Dette er en Draw feature. Kontakt os for mere information.'));
+            dispatch(showNotifAction('Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.'));
           } else {
             setNodeLabel(_label.value);
           }
@@ -532,7 +532,7 @@ const Workspace = (props) => {
           }
 
           if (isNew && plan_id === 2) {
-            dispatch(showNotifAction('Du kan ikke lave nye kendetegnstyper. Dette er en Draw feature. Kontakt os for mere information.'));
+            dispatch(showNotifAction('Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
           } else {
             setAttributes(_attributes);
           }
@@ -588,8 +588,8 @@ const Workspace = (props) => {
         loading={loading}
         open={showCvrModal}
         handleClose={() => setShowCvrModal(false)}
-        title="CVR-opslag"
-        description="Indtast et CVR-nummer eller navn. Herefter indlæser vi koncernstrukturen for dig."
+        title="Indlæs fra CVR"
+        description="Søg på en virksomhed eller et CVR-nummer:"
         textFielLabel="CVR-nummer"
 
         onConfirm={(value, close) => {
