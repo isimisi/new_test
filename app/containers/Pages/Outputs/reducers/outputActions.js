@@ -31,6 +31,7 @@ export const postOutput = (history) => async dispatch => {
     dispatch({ type: types.POST_OUTPUT_SUCCESS });
     history.push(`outputs/${id}`);
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_OUTPUT_FAILED, message });
   }
@@ -42,16 +43,11 @@ export const showOutput = (id) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const {
-      label, description, output, condition, group, file_type, output_type
+      label, description, output, conditions, group, file_type, output_type
     } = response.data;
-    // TODO: handle drafts
-    // const draftAgait = htmlToDraft(html);
-    // const { contentBlocks, entityMap } = draftAgait;
-    // const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-    // const editorState = EditorState.createWithContent(contentState);
 
     dispatch({
-      type: types.SHOW_OUTPUT_SUCCESS, label, description, output, condition, group, file_type, output_type
+      type: types.SHOW_OUTPUT_SUCCESS, label, description, output, conditions, group, file_type, output_type
     });
   } catch (error) {
     const message = genericErrorMessage;
@@ -59,15 +55,16 @@ export const showOutput = (id) => async dispatch => {
   }
 };
 
-export const putOutput = (id, label, description, output, fileType, outputType, condition, group) => async dispatch => {
+export const putOutput = (id, label, description, output, fileType, outputType, group, conditions, deletedConditions, history) => async dispatch => {
   const url = `${baseUrl}/${ACTIONS}/${id}`;
+
   const header = authHeader();
   header.params = {
-    label, description, fileType, outputType, condition, group
+    label, description, fileType, outputType, group, conditions, deletedConditions
   };
 
   let body;
-  if (validURL(output)) {
+  if (validURL(output) || typeof output === 'string') {
     header.params.output = output;
   } else {
     body = new FormData();
@@ -78,9 +75,10 @@ export const putOutput = (id, label, description, output, fileType, outputType, 
     await axios.put(url, body, header);
     const message = 'Dit indhold er blevet opdateret';
     dispatch({ type: types.PUT_OUTPUT_SUCCESS, message });
+    history.push('/app/outputs');
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
-
     dispatch({ type: types.PUT_OUTPUT_FAILED, message });
   }
 };
@@ -126,6 +124,22 @@ export const getGroupDropDown = () => async dispatch => {
   }
 };
 
+export const addCondition = condition => ({
+  type: types.OUTPUT_ADD_CONDITION,
+  condition
+});
+
+export const changeCondition = (condition, index) => ({
+  type: types.OUTPUT_CHANGE_CONDITION,
+  condition,
+  index
+});
+
+export const deleteCondition = index => ({
+  type: types.OUTPUT_DELETE_CONDITION,
+  index
+});
+
 export const titleChange = title => ({
   type: types.TITLE_CHANGE,
   title,
@@ -151,10 +165,6 @@ export const addGroup = group => ({
   group
 });
 
-export const addCondition = condition => ({
-  type: types.ADD_CONDITION,
-  condition
-});
 
 export const addOutput = (file) => ({
   type: types.ADD_OUTPUT,

@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import { Map } from 'immutable';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Editor } from 'react-draft-wysiwyg';
-// import draftToHtml from 'draftjs-to-html';
-// import htmlToDraft from 'html-to-draftjs';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
@@ -19,13 +15,8 @@ import Iframe from 'react-iframe';
 import Lottie from 'lottie-react';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { mapSelectOptions, selectStyles } from '@api/ui/helper';
-import { useDispatch } from 'react-redux';
 import FileUpload from '../FileUpload/FileUpload';
 import Word from './word.json';
-import {
-  postCondition
-} from '../../containers/Pages/Conditions/reducers/conditionActions';
 
 const styles = theme => ({
   root: {
@@ -55,7 +46,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     marginBottom: 40,
   },
   conditionWrap: {
@@ -113,15 +104,16 @@ const OutputForm = (props) => {
     editorState,
     onFileTypeChange,
     onOutputChange,
-    condition,
-    onConditionChange,
-    conditionsDropDownOptions,
     onEditorStateChange,
-    history
   } = props;
-  const dispatch = useDispatch();
 
-  const [activeToggleButton, setActiveToggleButton] = useState('Upload et dokumennt');
+  const [activeToggleButton, setActiveToggleButton] = useState('Upload et dokument');
+
+  useEffect(() => {
+    if (editorState.getCurrentContent().hasText()) {
+      setActiveToggleButton('Skab et dokument');
+    }
+  }, []);
 
   const handleChange = (event, value) => {
     setActiveToggleButton(value);
@@ -140,43 +132,6 @@ const OutputForm = (props) => {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <div className={classes.inlineWrap}>
-              <div className={classes.conditionWrap} style={{ width: '100%' }}>
-                <div className={classes.select}>
-                  <Select
-                    classes={classes}
-                    placeholder="Vælg en betingelse"
-                    styles={selectStyles}
-                    options={mapSelectOptions(conditionsDropDownOptions)}
-                    value={condition && { label: condition, value: condition }}
-                    onChange={(value) => onConditionChange(value.value)}
-                  />
-                </div>
-                {condition && (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    style={{
-                      borderRadius: 4,
-                      height: 38,
-                    }}
-                    onClick={() => history.push('/app/conditions/' + conditionsDropDownOptions.find(c => c.value === condition).id)}
-                  >
-                    Se betingelse
-                  </Button>
-                )}
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  style={{
-                    borderRadius: 4,
-                    marginLeft: 10,
-                    height: 38,
-                  }}
-                  onClick={() => dispatch(postCondition(history, true))}
-                >
-                Opret betingelse
-                </Button>
-              </div>
               <div className={classes.conditionWrap}>
                 {outputFile && outputFile.length > 0 && (
                   <div className={classes.conditionWrap}>
@@ -204,7 +159,7 @@ const OutputForm = (props) => {
                   </div>
                 )}
                 <ToggleButtonGroup size="large" value={activeToggleButton} exclusive onChange={handleChange} style={{ marginLeft: 20 }}>
-                  <ToggleButton value="Upload a document">
+                  <ToggleButton value="Upload et dokument">
                     <InsertDriveFileIcon />
                   </ToggleButton>
                   <ToggleButton value="Skab et dokument">
@@ -269,11 +224,7 @@ OutputForm.propTypes = {
   editorState: PropTypes.any.isRequired,
   onFileTypeChange: PropTypes.func.isRequired,
   onOutputChange: PropTypes.func.isRequired,
-  condition: PropTypes.string.isRequired,
-  onConditionChange: PropTypes.func.isRequired,
   onEditorStateChange: PropTypes.func.isRequired,
-  conditionsDropDownOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-  history: PropTypes.any.isRequired
 };
 
 export default withStyles(styles)(OutputForm);

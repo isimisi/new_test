@@ -3,10 +3,8 @@ import { PropTypes } from 'prop-types';
 import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { toggleAction, openAction, playTransitionAction } from '@redux/actions/uiActions';
-import { toast } from 'react-toastify';
-import { useClearCache } from 'react-clear-cache';
 import LeftSidebarLayout from './layouts/LeftSidebarLayout';
 import styles from './appStyles-jss';
 import { GuideSlider } from '@components';
@@ -16,8 +14,6 @@ function Dashboard(props) {
   // Initial header style
   const [openGuide, setOpenGuide] = useState(false);
   const [appHeight, setAppHeight] = useState(0);
-  const { isLatestVersion, emptyCacheStorage } = useClearCache();
-  const theme = useTheme();
 
   useEffect(() => {
     const { history, loadTransition } = props;
@@ -30,20 +26,6 @@ function Dashboard(props) {
     props.initialOpen(currentPath);
     // Play page transition
     loadTransition(true);
-
-    if (!isLatestVersion) {
-      toast('Der er en opdatering af juristic. Tryk her for at være på den nyeste version', {
-        position: toast.POSITION.BOTTOM_CENTER,
-        autoClose: false,
-        style: {
-          backgroundColor: theme.palette.secondary.main,
-          color: 'white'
-        },
-        onClick: () => {
-          emptyCacheStorage();
-        }
-      });
-    }
 
     // Execute all arguments when page changes
     const unlisten = history.listen(() => {

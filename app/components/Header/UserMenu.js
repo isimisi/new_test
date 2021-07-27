@@ -25,7 +25,6 @@ import messageStyles from '@styles/Messages.scss';
 import avatarApi from '@api/images/avatars';
 import link from '@api/ui/link';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
-import { useClearCache } from 'react-clear-cache';
 import { useDispatch } from 'react-redux';
 import { customerPortal } from '../../containers/Pages/CreateOrganization/reducers/createOrganizationActions';
 
@@ -36,7 +35,6 @@ import { customerPortal } from '../../containers/Pages/CreateOrganization/reduce
 import styles from './header-jss';
 
 function UserMenu(props) {
-  const { isLatestVersion, emptyCacheStorage } = useClearCache();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -65,7 +63,6 @@ function UserMenu(props) {
 
   const handleLogOut = () => {
     localStorage.clear();
-    emptyCacheStorage();
   };
 
   const { classes } = props;

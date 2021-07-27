@@ -1,8 +1,12 @@
 import { fromJS, List, Map } from 'immutable';
 import {
-  convertFromRaw, EditorState
+  convertFromRaw, EditorState, ContentState
 } from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
 import { CLOSE_NOTIF, SHOW_NOTIF } from '@redux/constants/notifConstants';
+import {
+  validURL
+} from '@api/constants';
 import {
   GET_OUTPUTS_SUCCESS,
   GET_OUTPUTS_FAILED,
@@ -26,7 +30,9 @@ import {
   GET_CONDITION_DROPDOWN_FAILED,
   EDITOR_STATE_CHANGE,
   ADD_OUTPUT_URL,
-
+  OUTPUT_ADD_CONDITION,
+  OUTPUT_CHANGE_CONDITION,
+  OUTPUT_DELETE_CONDITION
 } from './outputConstants';
 
 const content = {
@@ -53,7 +59,7 @@ const initialState = {
   fileType: '',
   outputType: '',
   group: '',
-  condition: '',
+  outputConditions: List(),
   message: '',
   editorState: initEditorState,
   conditionsDropDownOptions: List(),
@@ -79,7 +85,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('title', '');
         mutableState.set('description', '');
         mutableState.set('group', '');
-        mutableState.set('condition', '');
+        mutableState.set('outputConditions', List());
         mutableState.set('fileType', '');
         mutableState.set('outputFileUrl', '');
       });
@@ -93,17 +99,29 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const label = fromJS(action.label);
         const description = fromJS(action.description);
         const output = fromJS(action.output);
-        const condition = fromJS(action.condition);
+        const conditions = fromJS(action.conditions);
+
         const group = fromJS(action.group);
         const fileType = fromJS(action.file_type);
         const outputType = fromJS(action.output_type);
 
+        if (output) {
+          if (validURL(output)) {
+            mutableState.set('outputFileUrl', output);
+          } else {
+            const blocksFromHtml = htmlToDraft(output);
+            const { contentBlocks, entityMap } = blocksFromHtml;
+            const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+            const editorState = EditorState.createWithContent(contentState);
+            mutableState.set('editorState', editorState);
+          }
+        }
+
         mutableState.set('title', label);
         mutableState.set('description', description);
-        mutableState.set('outputFileUrl', output);
         mutableState.set('fileType', fileType);
         mutableState.set('outputType', outputType);
-        mutableState.set('condition', condition);
+        mutableState.set('outputConditions', conditions);
         mutableState.set('group', group);
       });
     case SHOW_OUTPUT_FAILED:
@@ -190,6 +208,31 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const editor = fromJS(action.editor);
         mutableState.set('editorState', editor);
+      });
+    case OUTPUT_ADD_CONDITION:
+      return state.withMutations((mutableState) => {
+        const condition = fromJS(action.condition);
+        mutableState.update('outputConditions', list => list.push(condition));
+      });
+    case OUTPUT_CHANGE_CONDITION:
+      return state.withMutations((mutableState) => {
+        const conditions = mutableState.get('outputConditions').toJS();
+
+        let condition = conditions.find(cond => !cond.label);
+
+        if (action.index || action.index === 0) {
+          const index = conditions.findIndex((c, i) => i === action.index);
+          condition = conditions[index];
+        }
+
+        condition.label = action.condition.value;
+        condition.condition_id = action.condition.id;
+
+        mutableState.set('outputConditions', fromJS(conditions));
+      });
+    case OUTPUT_DELETE_CONDITION:
+      return state.withMutations((mutableState) => {
+        mutableState.update('outputConditions', list => list.filter((l, i) => i !== action.index));
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

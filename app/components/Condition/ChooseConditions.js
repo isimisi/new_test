@@ -13,6 +13,7 @@ import QueueIcon from '@material-ui/icons/Queue';
 import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { generateRandomString } from '@api/constants';
 
 const styles = theme => ({
   root: {
@@ -70,7 +71,7 @@ const ChooseConditions = (props) => {
               Situationer:
             </Typography>
             {conditions.map((condition, index) => (
-              <div className={classes.inlineWrap}>
+              <div className={classes.inlineWrap} key={`${condition.label}${generateRandomString()}`}>
                 <div className={classes.number}>
                   <Typography>
                     {index + 1}
@@ -80,7 +81,6 @@ const ChooseConditions = (props) => {
                   <NoSsr>
                     <Select
                       classes={classes}
-                      inputId="react-select-single-alert-condition"
                       TextFieldProps={{
                         label: 'condition',
                         InputLabelProps: {

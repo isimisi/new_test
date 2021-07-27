@@ -12,7 +12,104 @@ import Divider from '@material-ui/core/Divider';
 import { reducer } from './constants';
 import { analyseOutput } from './reducers/workspaceActions';
 import styles from './workspace-jss';
-import test from './test.jpg';
+import { MiniFlow } from '@components';
+
+const elements = [{
+  id: '279',
+  type: 'custom',
+  data: {
+    label: 'Selskab', displayName: 'KNO Holding ApS', figur: null, unitNumber: '4008840832', attributes: [], backgroundColor: 'rgba(255, 255, 255, 1)', borderColor: 'rgba(0, 0, 0, 1)'
+  },
+  position: { x: 21, y: 152 }
+}, {
+  id: '280',
+  type: 'custom',
+  data: {
+    label: 'Person', displayName: 'Kean Nøbølle Ottesen', figur: null, unitNumber: '4008840831', attributes: [], backgroundColor: 'rgba(255, 255, 255, 1)', borderColor: 'rgba(0, 0, 0, 1)'
+  },
+  position: { x: 30, y: 32 }
+}, {
+  id: '281',
+  type: 'custom',
+  data: {
+    label: 'Selskab', displayName: 'Juristic ApS', figur: null, unitNumber: '4008862861', attributes: [], backgroundColor: 'rgba(255, 255, 255, 1)', borderColor: 'rgba(0, 0, 0, 1)'
+  },
+  position: { x: 28, y: 250 }
+}, {
+  arrowHeadType: false,
+  animated: false,
+  sourceHandle: 'bottom',
+  data: {
+    label: 'Ejerskab',
+    value: '100%',
+    showLabel: false,
+    color: {
+      r: 0, g: 0, b: 0, a: 1
+    },
+    showArrow: false,
+    animated: false,
+    lineThrough: false,
+    stroke: false
+  },
+  target: '279',
+  style: { stroke: 'rgba(0, 0, 0, 1)' },
+  label: '100%',
+  labelBgPadding: [0, 0],
+  targetHandle: 'top',
+  type: 'default',
+  source: '280',
+  id: '273',
+  labelStyle: {}
+}, {
+  arrowHeadType: false,
+  animated: true,
+  sourceHandle: 'bottom',
+  data: {
+    label: 'Ejerskab',
+    value: '33,33-49,99%',
+    showLabel: false,
+    color: {
+      r: 0, g: 0, b: 0, a: 1
+    },
+    showArrow: false,
+    animated: true,
+    lineThrough: false,
+    stroke: false
+  },
+  target: '281',
+  style: { stroke: 'rgba(0, 0, 0, 1)' },
+  label: '33,33-49,99%',
+  labelBgPadding: [0, 0],
+  targetHandle: 'top',
+  type: 'default',
+  source: '279',
+  id: '274',
+  labelStyle: {}
+}, {
+  arrowHeadType: false,
+  animated: false,
+  sourceHandle: 'rightTop',
+  data: {
+    label: 'hej med dig',
+    value: 'nej',
+    showLabel: true,
+    color: {
+      r: 0, g: 0, b: 0, a: 1
+    },
+    showArrow: false,
+    animated: false,
+    lineThrough: false,
+    stroke: false
+  },
+  target: '281',
+  style: { stroke: 'rgba(0, 0, 0, 1)' },
+  labelBgPadding: [0, 0],
+  targetHandle: 'rightBottom',
+  type: 'custom',
+  source: '279',
+  id: '279',
+  labelStyle: {}
+}];
 
 
 const WorkspaceAnalysis = (props) => {
@@ -27,6 +124,7 @@ const WorkspaceAnalysis = (props) => {
     dispatch(analyseOutput(id));
   }, []);
 
+  const test = [1, 2, 3, 4];
 
   return (
     <Paper style={{
@@ -37,35 +135,28 @@ const WorkspaceAnalysis = (props) => {
       minHeight: '87vh'
     }}
     >
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <Typography>
+      {[1, 2].map(output => (
+        <>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Typography>
           Condition name
-          </Typography>
-          <img src={test} />
-        </Grid>
-        <Grid item xs={6}>
-          <Typography>
-        orem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquam sagittis nisi, in sollicitudin metus tempus eget. Sed at arcu lectus. Donec nulla tellus, lacinia ac dolor at, mattis commodo lectus. Donec cursus velit in pretium ullamcorper. Nullam at venenatis libero. In hac habitasse platea dictumst. Ut at elementum ex. Proin lacus sapien, fermentum finibus magna sed, lacinia vestibulum felis. Etiam sem nunc, aliquet ac velit quis, efficitur iaculis nisi. Nulla sagittis sapien eu ornare facilisis. Mauris suscipit diam quam, eget semper mauris dignissim sit amet. Vivamus luctus, augue congue lacinia consequat, nisi velit mollis nisl, quis tempus purus augue ac tellus. Vivamus efficitur ante in odio mattis, sed ultricies lectus auctor. Nam vehicula mauris at erat faucibus hendrerit. Nam eu tempor lacus. Pellentesque sit amet mi erat.
+              </Typography>
+              <MiniFlow elements={elements} />
+            </Grid>
+            <Grid item xs={6}>
+              {/* <div dangerouslySetInnerHTML={{ __html: output.output }} /> */}
+              <div>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce interdum congue ipsum sed dictum. Cras lacinia diam id aliquam tristique. Nam sed venenatis quam. Phasellus augue elit, ullamcorper hendrerit sem ut, efficitur volutpat purus. Nulla cursus malesuada metus, ac ultricies est. Aenean ut pellentesque lorem. Donec vel mi ac lorem lacinia cursus. Nam lobortis tempus ultricies. Nulla id lacus ipsum. Aliquam ut tincidunt libero, sit amet facilisis mi. Proin quis blandit ipsum. Suspendisse cursus semper scelerisque. Mauris rutrum velit augue, at pharetra ex suscipit id.
 
-In enim neque, consectetur varius auctor vitae, gravida ac tellus. Vestibulum a rutrum lectus, in semper tellus. Nullam placerat tortor vitae arcu finibus, sed feugiat dui dapibus. Duis nulla massa, consequat in sodales convallis, commodo vitae arcu. Sed faucibus eros non tellus interdum, ultrices ullamcorper tellus faucibus. Morbi ex lorem, congue sit amet varius vel, ultrices sit amet dui. Proin enim nisi, congue eu tellus ut, rutrum tempus justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent ac elementum leo. Ut rhoncus, massa efficitur malesuada viverra, erat erat efficitur enim, in laoreet lorem mi ac ipsum. Maecenas eget quam id tellus tempus consectetur a non leo. In finibus eu enim at elementum. In eget urna quam. Integer finibus feugiat dolor id auctor. Pellentesque tempor erat eget massa facilisis, eget commodo nisl euismod.
-          </Typography>
-        </Grid>
-      </Grid>
-      <Divider style={{ margin: 20 }} />
-      <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <img src={test} />
-        </Grid>
-        <Grid item xs={6}>
-          <Typography>
-        orem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquam sagittis nisi, in sollicitudin metus tempus eget. Sed at arcu lectus. Donec nulla tellus, lacinia ac dolor at, mattis commodo lectus. Donec cursus velit in pretium ullamcorper. Nullam at venenatis libero. In hac habitasse platea dictumst. Ut at elementum ex. Proin lacus sapien, fermentum finibus magna sed, lacinia vestibulum felis. Etiam sem nunc, aliquet ac velit quis, efficitur iaculis nisi. Nulla sagittis sapien eu ornare facilisis. Mauris suscipit diam quam, eget semper mauris dignissim sit amet. Vivamus luctus, augue congue lacinia consequat, nisi velit mollis nisl, quis tempus purus augue ac tellus. Vivamus efficitur ante in odio mattis, sed ultricies lectus auctor. Nam vehicula mauris at erat faucibus hendrerit. Nam eu tempor lacus. Pellentesque sit amet mi erat.
+Mauris dapibus suscipit dui eu faucibus. Nullam id fringilla est. Proin ornare diam nec nisl placerat rutrum. Aliquam erat volutpat. Phasellus maximus accumsan eleifend. Mauris ullamcorper velit nec ante accumsan, a mattis libero tristique. In vel imperdiet dui, ut gravida mauris. Nam lacinia magna a enim dapibus faucibus. Cras posuere nisi et urna tristique ultricies. Nunc mauris purus, pharetra et ultricies sed, aliquet a orci. Donec tellus tellus, convallis vitae rhoncus eget, commodo nec erat.
+              </div>
 
-In enim neque, consectetur varius auctor vitae, gravida ac tellus. Vestibulum a rutrum lectus, in semper tellus. Nullam placerat tortor vitae arcu finibus, sed feugiat dui dapibus. Duis nulla massa, consequat in sodales convallis, commodo vitae arcu. Sed faucibus eros non tellus interdum, ultrices ullamcorper tellus faucibus. Morbi ex lorem, congue sit amet varius vel, ultrices sit amet dui. Proin enim nisi, congue eu tellus ut, rutrum tempus justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent ac elementum leo. Ut rhoncus, massa efficitur malesuada viverra, erat erat efficitur enim, in laoreet lorem mi ac ipsum. Maecenas eget quam id tellus tempus consectetur a non leo. In finibus eu enim at elementum. In eget urna quam. Integer finibus feugiat dolor id auctor. Pellentesque tempor erat eget massa facilisis, eget commodo nisl euismod.
-          </Typography>
-        </Grid>
-      </Grid>
-
+            </Grid>
+          </Grid>
+          <Divider style={{ margin: 20 }} />
+        </>
+      ))}
     </Paper>
   );
 };

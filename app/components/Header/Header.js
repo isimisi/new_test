@@ -11,7 +11,6 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { useClearCache } from 'react-clear-cache';
 
 import UserMenu from './UserMenu';
 import SearchUi from '../Search/SearchUi';
@@ -24,7 +23,7 @@ function Header(props) {
   const [fullScreen, setFullScreen] = useState(false);
   const [turnDarker, setTurnDarker] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
-  const { isLatestVersion, emptyCacheStorage } = useClearCache();
+
   // Initial header style
   let flagDarker = false;
 
@@ -109,7 +108,7 @@ function Header(props) {
   };
 
   const deleteCache = () => {
-    emptyCacheStorage();
+    window.location.reload();
   };
 
   return (

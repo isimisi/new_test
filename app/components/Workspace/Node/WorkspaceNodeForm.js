@@ -265,7 +265,7 @@ const WorkspaceNodeForm = (props) => {
         )}
       </section>
       <div className={css.buttonArea}>
-        {elementToUpdate?.data?.unitNumber && (
+        {Boolean(elementToUpdate?.data?.unitNumber) && (
           <Button
             style={{ position: 'absolute', left: 10 }}
             startIcon={<AssessmentIcon />}

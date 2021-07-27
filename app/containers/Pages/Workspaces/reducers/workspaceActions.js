@@ -58,6 +58,7 @@ export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async 
     setAlerts(alerts, initial);
   } catch (error) {
     // do something
+
   }
 };
 
@@ -69,6 +70,7 @@ export const analyseOutput = (workspaceId) => async dispatch => {
     const outputs = response.data;
     dispatch({ type: types.ANALYSE_OUTPUT_SUCCESS, outputs });
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.ANALYSE_OUTPUT_FAILED, message });
   }
 };

@@ -7,7 +7,7 @@ import {
   isNode,
 } from 'react-flow-renderer';
 import { changeCondition } from '../../Alerts/reducers/alertActions';
-import { addCondition as outputAddCondition } from '../../Outputs/reducers/outputActions';
+import { changeCondition as outputAddCondition } from '../../Outputs/reducers/outputActions';
 import * as types from './conditionConstants';
 const CONDITIONS = 'conditions';
 
@@ -120,7 +120,7 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
 
     if (history?.location?.state?.fromContent) {
       if (history.location.state.place === 'outputs') {
-        dispatch(outputAddCondition(conditionLabel));
+        dispatch(outputAddCondition({ id: condition_id, value: conditionLabel }, null));
       } else {
         dispatch(changeCondition({ id: condition_id, value: conditionLabel }, null));
       }

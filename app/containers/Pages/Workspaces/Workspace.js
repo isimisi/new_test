@@ -45,6 +45,7 @@ import {
   cvrWorkspace, postSticky, showNotifAction,
   getCompanyData
 } from './reducers/workspaceActions';
+import './workspace.css';
 
 
 const nodeTypes = {
@@ -175,6 +176,7 @@ const Workspace = (props) => {
 
   const onLoad = (_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
+    _reactFlowInstance.fitView();
   };
 
   const onElementClick = (event, element) => {
@@ -397,6 +399,8 @@ const Workspace = (props) => {
     }
   }, []);
 
+  // console.log(JSON.stringify(elements));
+
   const onMouseLeave = useCallback(() => {
     onWorkspaceSave();
   }, [rfInstance, elements]);
@@ -419,7 +423,7 @@ const Workspace = (props) => {
           onElementsRemove={onElementsRemove}
           onConnect={onConnect}
           minZoom={0.3}
-          maxZoom={2}
+          maxZoom={3}
           style={flowStyle}
           nodeTypes={nodeTypes}
           onMove={(flowTransform) => {

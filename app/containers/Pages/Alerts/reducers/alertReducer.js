@@ -66,7 +66,6 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const description = fromJS(action.description);
         const group = fromJS(action.group);
         const conditions = fromJS(action.conditions);
-
         mutableState.set('title', title);
         mutableState.set('description', description);
         mutableState.set('group', group);

@@ -1,7 +1,10 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 import React, { useEffect, useState } from 'react';
 import {
-  OutputNamingForm, OutputForm, Notification
+  OutputNamingForm,
+  OutputForm, Notification,
+  ChooseConditions
 } from '@components';
 import { useSelector, useDispatch, } from 'react-redux';
 import {
@@ -16,7 +19,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Immutable from 'immutable';
-import { reducer, fromDraftToDocx } from './constants';
+import {
+  convertToRaw,
+} from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+import { reducer } from './constants';
 import {
   showOutput,
   putOutput,
@@ -24,15 +31,18 @@ import {
   getGroupDropDown,
   closeNotifAction,
   showNotifAction,
-  addCondition,
   titleChange,
   descriptionChange,
   addGroup,
   addOutput,
   fileTypeChange,
   editorStateChange,
-  addOutputUrl
+  addOutputUrl,
+  addCondition,
+  deleteCondition,
+  changeCondition
 } from './reducers/outputActions';
+import { postCondition } from '../Conditions/reducers/conditionActions';
 
 
 const Output = () => {
@@ -41,17 +51,19 @@ const Output = () => {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
 
+  const conditions = useSelector(state => state.getIn([reducer, 'outputConditions'])).toJS();
   const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
   const title = useSelector(state => state.getIn([reducer, 'title']));
   const description = useSelector(state => state.getIn([reducer, 'description']));
   const fileType = useSelector(state => state.getIn([reducer, 'fileType']));
   const group = useSelector(state => state.getIn([reducer, 'group']));
-  const condition = useSelector(state => state.getIn([reducer, 'condition']));
   const outputFileUrl = useSelector(state => state.getIn([reducer, 'outputFileUrl']));
   const outputFile = useSelector(state => state.getIn([reducer, 'outputFile']));
   const conditionsDropDownOptions = useSelector(state => state.getIn([reducer, 'conditionsDropDownOptions'])).toJS();
   const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
   const editorState = useSelector(state => state.getIn([reducer, 'editorState']));
+
+  const [deletedConditions, setDeletedConditions] = useState([]);
 
   useEffect(() => {
     if (!history?.location?.state?.fromCondition) {
@@ -69,28 +81,54 @@ const Output = () => {
   const onSave = (from) => {
     switch (from) {
       case 'fab':
-        if (outputFileUrl.length > 0 && editorState.getCurrentContent().hasText()) {
+        if (outputFileUrl?.length > 0 && editorState.getCurrentContent().hasText()) {
           setOpenAlert(true);
         } else if (editorState.getCurrentContent().hasText()) {
-          onSave('editor');
-        } else if (outputFileUrl.length > 0) {
+          onSave('draft');
+        } else if (outputFileUrl?.length > 0) {
           onSave('uploaded');
         } else {
           dispatch(showNotifAction('You must provide some content to your output'));
         }
         break;
-      case 'editor':
+      case 'draft':
         setOpenAlert(false);
-        dispatch(putOutput(id, title, description, fromDraftToDocx(editorState), fileType, from, condition, group));
+        const rawContentState = convertToRaw(editorState.getCurrentContent());
+
+        const markup = draftToHtml(rawContentState);
+
+        dispatch(putOutput(id, title, description, markup, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), history));
         break;
       case 'uploaded':
         setOpenAlert(false);
         if (outputFile instanceof Immutable.Map) {
-          dispatch(putOutput(id, title, description, outputFile, fileType, from, condition, group));
+          dispatch(putOutput(id, title, description, outputFile, fileType, from, group, conditions, deletedConditions, history));
         } else {
-          dispatch(putOutput(id, title, description, outputFileUrl, fileType, from, condition, group));
+          dispatch(putOutput(id, title, description, outputFileUrl, fileType, from, group, conditions, deletedConditions, history));
         }
         break;
+    }
+  };
+
+  const handleDelteCondition = (cond, index) => {
+    dispatch(deleteCondition(index));
+    if (cond.id) {
+      setDeletedConditions([...deletedConditions, cond.id]);
+    }
+  };
+  const handleAddCondition = () => {
+    dispatch(addCondition({ label: null, condition_id: null }));
+  };
+
+  const handleChangeCondition = (cond, index) => {
+    dispatch(changeCondition(cond, index));
+  };
+
+  const handleCreateOrSeeCondition = (condition, see) => {
+    if (see) {
+      window.open('/app/conditions/' + condition.condition_id, '_blank');
+    } else {
+      dispatch(postCondition(history, true));
     }
   };
 
@@ -106,6 +144,14 @@ const Output = () => {
         onGroupChange={(g) => dispatch(addGroup(g))}
         groupsDropDownOptions={groupsDropDownOptions}
       />
+      <ChooseConditions
+        conditions={conditions}
+        conditionsDropDownOptions={conditionsDropDownOptions}
+        deleteCondition={handleDelteCondition}
+        addCondition={handleAddCondition}
+        handleChangeCondition={handleChangeCondition}
+        createOrSeeCondition={handleCreateOrSeeCondition}
+      />
       <OutputForm
         title={title}
         outputFile={outputFileUrl}
@@ -115,12 +161,8 @@ const Output = () => {
           dispatch(addOutput(f));
           dispatch(addOutputUrl(u));
         }}
-        condition={condition}
         editorState={editorState}
-        onConditionChange={(value) => dispatch(addCondition(value))}
-        conditionsDropDownOptions={conditionsDropDownOptions}
         onEditorStateChange={(v) => dispatch(editorStateChange(v))}
-        history={history}
       />
       <div>
         <Tooltip title="Save">
@@ -154,7 +196,7 @@ const Output = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => onSave('editor')} variant="contained" color="primary">
+          <Button onClick={() => onSave('draft')} variant="contained" color="primary">
             Editor Content
           </Button>
           <Button onClick={() => onSave('uploaded')} variant="contained" color="secondary" autoFocus>

@@ -80,6 +80,7 @@ import WorkspaceFabs from './Workspace/WorkspaceFabs';
 import MapTypesForErst from './Workspace/MapTypesForErst';
 import CustomNode from './Workspace/Node/CustomNode';
 import StickyNoteNode from './Workspace/Node/StickyNoteNode';
+import MiniFlow from './Workspace/Analysis/MiniFlow';
 
 import CustomConnectionLine from './Workspace/Edge/CustomConnectionLine';
 import CustomEdge from './Workspace/Edge/CustomEdge';
@@ -169,6 +170,7 @@ export {
   CustomEdge,
   CustomNode,
   StickyNoteNode,
+  MiniFlow,
   DefineEdge,
   DefineNode,
   ConditionForm,

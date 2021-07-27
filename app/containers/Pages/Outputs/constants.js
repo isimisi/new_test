@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload';
+import { Link } from 'react-router-dom';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlDocx from 'html-docx-js/dist/html-docx';
@@ -54,9 +55,11 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Button variant="contained" color="secondary" href={`/app/outputs/${value}`}>
+        <Link to={`/app/outputs/${value}`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="secondary">
               Open
-        </Button>
+          </Button>
+        </Link>
       )
     }
   },
