@@ -19,7 +19,7 @@ function Register(props) {
 
   const submitForm = values => {
     const name = values.get('name');
-    const phone = values.get('phone');
+    const phone = null;
     const employer = values.get('employer');
     const email = values.get('email');
     const password = values.get('password');

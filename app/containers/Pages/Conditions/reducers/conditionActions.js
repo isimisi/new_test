@@ -152,16 +152,29 @@ export const deleteCondition = (id, title) => async dispatch => {
 };
 
 export const deleteConditionElement = (elementsToRemove, remainingElements) => async dispatch => {
-  Promise.all(elementsToRemove.map(async (e) => {
-    const url = `${baseUrl}/condition${isNode(e) ? 'Nodes' : 'Relationships'}/${e.id}`;
+  const message = genericErrorMessage;
+
+  if (elementsToRemove.length === 1 && !isNode(elementsToRemove[0])) {
+    const url = `${baseUrl}/conditionRelationships/${elementsToRemove[0].id}`;
     const header = authHeader();
-    await axios.delete(url, header);
-  })).then(() => {
+    try {
+      await axios.delete(url, header);
+      dispatch({ type: types.DELETE_CONDITION_ELEMENTS_SUCCESS, remainingElements });
+    } catch (error) {
+      dispatch({ type: types.DELETE_CONDITION_ELEMENTS_FAILED, message });
+    }
+  } else {
+    const url = `${baseUrl}/${CONDITIONS}/elements`;
+    const elements = elementsToRemove.filter(element => isNode(element)).map(element => element.id);
+    const body = { elements };
+    const header = authHeader();
     dispatch({ type: types.DELETE_CONDITION_ELEMENTS_SUCCESS, remainingElements });
-  }).catch((error) => {
-    const message = genericErrorMessage;
-    dispatch({ type: types.DELETE_CONDITION_ELEMENTS_FAILED, message });
-  });
+    try {
+      await axios.post(url, body, header);
+    } catch (error) {
+      dispatch({ type: types.DELETE_CONDITION_ELEMENTS_FAILED, message });
+    }
+  }
 };
 
 export const getNodes = () => async dispatch => {
@@ -177,14 +190,14 @@ export const getNodes = () => async dispatch => {
   }
 };
 
-export const postNode = (condition_id, node_id, nodeLabel, values, setDefineNodeOpen) => async dispatch => {
+export const postNode = (condition_id, node_id, nodeLabel, values, x, y, setDefineNodeOpen) => async dispatch => {
   const url = `${baseUrl}/conditionNodes`;
   const body = {
     condition_id,
     node_id,
     nodeLabel,
-    'x-value': 0,
-    'y-value': 0,
+    'x-value': x,
+    'y-value': y,
     values,
   };
   const header = authHeader();
@@ -236,13 +249,14 @@ export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatc
     type: edge.relationshipType,
   };
   const header = authHeader();
-
+  console.log('called');
   try {
     const response = await axios.post(url, body, header);
     const responseEdge = response.data;
     dispatch({ type: types.CONDITION_POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_POST_EDGE_FAILED, message });
   }

@@ -153,7 +153,7 @@ const EdgeForm = (props) => {
             }}
             placeholder="type"
             options={relationshipTypeOptions}
-            value={type.length > 0 && relationshipTypeOptions.find(x => x.value === type)}
+            value={type?.length > 0 && relationshipTypeOptions.find(x => x.value === type)}
             onChange={handleTypeChange}
           />
         </div>

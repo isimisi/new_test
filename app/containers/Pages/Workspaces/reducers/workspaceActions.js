@@ -68,6 +68,7 @@ export const analyseOutput = (workspaceId) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const outputs = response.data;
+
     dispatch({ type: types.ANALYSE_OUTPUT_SUCCESS, outputs });
   } catch (error) {
     console.log(error.response);

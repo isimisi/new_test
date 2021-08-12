@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useCallback, useRef
+} from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
   removeElements,
@@ -41,8 +43,10 @@ const Condition = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
   const history = useHistory();
+  const reactFlowContainer = useRef(null);
   const id = getId(history);
   const [metaOpen, setMetaOpen] = useState(false);
+  const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
   const [rfInstance, setRfInstance] = useState(null);
   const fromContent = history?.location?.state?.fromContent;
   // relationship
@@ -50,7 +54,7 @@ const Condition = (props) => {
   const [currentConnectionData, setCurrentConnectionData] = useState({});
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipType, setRelationshipType] = useState('');
-  const [comparisonType, setComparisonType] = useState('default');
+  const [comparisonType, setComparisonType] = useState('exists');
   const [comparisonValue, setComparisonValue] = useState('');
 
   const [currentZoom, setCurrentZoom] = useState(1);
@@ -111,13 +115,18 @@ const Condition = (props) => {
   };
 
   const handleNodeSave = () => {
+    const rf = rfInstance.toObject();
+
+    const _x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+    const _y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+
     if (isUpdatingElement) {
       const originalElementIds = elementToUpdate.data.conditionValues.map(cv => cv.id);
       const newConditionValueIds = conditionValues.map(cv => cv.conditionNodeValueId);
       const deletedConditionValues = originalElementIds.filter(x => !newConditionValueIds.includes(x));
       dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), setDefineNodeOpen));
     } else {
-      dispatch(postNode(id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), setDefineNodeOpen));
+      dispatch(postNode(id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), _x, _y, setDefineNodeOpen));
     }
     setIsUpdatingElement(false);
   };
@@ -194,44 +203,50 @@ const Condition = (props) => {
     onConditionSave();
   };
 
+  useEffect(() => {
+    if (reactFlowContainer) {
+      setReactFlowDimensions({
+        height: reactFlowContainer.current.clientHeight,
+        width: reactFlowContainer.current.clientWidth
+      });
+    }
+  }, []);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <div className={classes.root}>
-        <div
-          className={classes.content}
+      <div className={classes.root} ref={reactFlowContainer}>
+
+        <ReactFlow
+          elements={elements}
+          style={flowStyle}
+          onElementsRemove={onElementsRemove}
+          onConnect={onConnect}
+          nodeTypes={{ custom: CustomNode }}
+          edgeTypes={{ custom: CustomEdge }}
+          onLoad={onLoad}
+          connectionMode="loose"
+          onElementClick={onElementClick}
+          onMove={(flowTransform) => {
+            if (flowTransform) {
+              setCurrentZoom(flowTransform.zoom);
+            }
+          }}
         >
-          <ReactFlow
-            elements={elements}
-            style={flowStyle}
-            onElementsRemove={onElementsRemove}
-            onConnect={onConnect}
-            nodeTypes={{ custom: CustomNode }}
-            edgeTypes={{ custom: CustomEdge }}
-            onLoad={onLoad}
-            connectionMode="loose"
-            onElementClick={onElementClick}
-            onMove={(flowTransform) => {
-              if (flowTransform) {
-                setCurrentZoom(flowTransform.zoom);
-              }
-            }}
-          >
-            <Background
-              variant={BackgroundVariant.Lines}
-              gap={BASE_BG_GAP / currentZoom}
-              size={BASE_BG_STROKE / currentZoom}
-            />
+          <Background
+            variant={BackgroundVariant.Lines}
+            gap={BASE_BG_GAP / currentZoom}
+            size={BASE_BG_STROKE / currentZoom}
+          />
 
-            <MiniMap
-              nodeStrokeWidth={3}
-              nodeColor={theme.palette.secondary.light}
-              style={{ top: 0, right: 0 }}
-            />
-            <Controls />
+          <MiniMap
+            nodeStrokeWidth={3}
+            nodeColor={theme.palette.secondary.light}
+            style={{ top: 0, right: 0 }}
+          />
+          <Controls />
 
-          </ReactFlow>
-        </div>
+        </ReactFlow>
       </div>
       <ConditionMeta
         open={metaOpen}

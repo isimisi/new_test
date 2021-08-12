@@ -113,19 +113,7 @@ function RegisterForm(props) {
                     name="employer"
                     component={TextFieldRedux}
                     placeholder="Employer"
-                    label="Arbejdsgiver"
-                    className={classes.field}
-                  />
-                </FormControl>
-              </div>
-              <div>
-                <FormControl className={classes.formControl}>
-                  <Field
-                    name="phone"
-                    component={TextFieldRedux}
-                    placeholder="Telefon"
-                    label="Telefon"
-                    required
+                    label="Virksomhed"
                     className={classes.field}
                   />
                 </FormControl>

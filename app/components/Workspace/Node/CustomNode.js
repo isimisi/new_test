@@ -1,17 +1,30 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
-import React, { memo, useMemo, useCallback } from 'react';
+import React, {
+  memo, useMemo, useCallback, useEffect
+} from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import square from './square.svg';
 import triangle from './triangle.svg';
+
 import circle from './circle.svg';
 import person from './person.svg';
 
 const CustomNode = ({ data }) => {
   const theme = useTheme();
-  const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
+  const history = useHistory();
+  let handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
+
+  useEffect(() => {
+    if (history.location.pathname.includes('analysis')) {
+      handleVisability = false;
+    }
+  }, [history]);
+
 
   const getSVG = useCallback((figur) => {
     switch (figur) {
