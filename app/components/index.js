@@ -81,6 +81,7 @@ import MapTypesForErst from './Workspace/MapTypesForErst';
 import CustomNode from './Workspace/Node/CustomNode';
 import StickyNoteNode from './Workspace/Node/StickyNoteNode';
 import MiniFlow from './Workspace/Analysis/MiniFlow';
+import ShareModal from './Workspace/Share/ShareModal';
 
 import CustomConnectionLine from './Workspace/Edge/CustomConnectionLine';
 import CustomEdge from './Workspace/Edge/CustomEdge';
@@ -165,6 +166,7 @@ export {
   WorkspaceForm,
   WorkspaceMeta,
   WorkspaceFabs,
+  ShareModal,
   MapTypesForErst,
   CustomConnectionLine,
   CustomEdge,

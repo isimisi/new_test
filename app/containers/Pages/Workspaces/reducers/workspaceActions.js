@@ -54,11 +54,12 @@ export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async 
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
+    console.log(response);
     const alerts = response.data;
     setAlerts(alerts, initial);
   } catch (error) {
     // do something
-
+    console.log(error.response);
   }
 };
 
@@ -425,6 +426,23 @@ export const getCompanyData = (id, setShowCompanyData, setDefineNodeOpen, setNod
       _message = error.response.data;
     }
     dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_FAILED, message: _message });
+  }
+};
+
+export const shareWorkspace = (id, firstName, lastName, email, phone, editable, signable) => async dispatch => {
+  dispatch({ type: types.SHARE_WORKSPACE_LOADING });
+
+  const url = `${baseUrl}/workspaces/public/access/${id}`;
+  const body = {
+    firstName, lastName, email, phone, editable, signable
+  };
+  const header = authHeader();
+  try {
+    await axios.put(url, body, header);
+
+    dispatch({ type: types.SHARE_WORKSPACE_SUCCESS });
+  } catch (error) {
+    dispatch({ type: types.SHARE_WORKSPACE_FAILED });
   }
 };
 

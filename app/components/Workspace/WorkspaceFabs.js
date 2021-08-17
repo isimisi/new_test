@@ -10,13 +10,14 @@ import TextFieldsIcon from '@material-ui/icons/TextFields';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import PropTypes from 'prop-types';
 import FlagIcon from '@material-ui/icons/Flag';
+import ShareIcon from '@material-ui/icons/Share';
 import BusinessIcon from '@material-ui/icons/Business';
 import NotesIcon from '@material-ui/icons/Notes';
 
 const WorkspaceFab = (props) => {
   const {
     nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick,
-    onCvrClick, stickyClick, plan_id
+    onCvrClick, stickyClick, plan_id, onShareClick
   } = props;
   const theme = useTheme();
 
@@ -70,6 +71,13 @@ const WorkspaceFab = (props) => {
           <FlagIcon style={{ color: theme.palette.primary.main }} />
         </Action>
         <Action
+          text="Del dit workspace"
+          style={{ backgroundColor: 'white' }}
+          onClick={onShareClick}
+        >
+          <ShareIcon style={{ color: theme.palette.primary.main }} />
+        </Action>
+        <Action
           text="Hent fra CVR"
           style={{ backgroundColor: 'white' }}
           onClick={onCvrClick}
@@ -89,6 +97,7 @@ WorkspaceFab.propTypes = {
   onAnalysisClick: PropTypes.func.isRequired,
   onCvrClick: PropTypes.func.isRequired,
   stickyClick: PropTypes.func.isRequired,
+  onShareClick: PropTypes.func.isRequired,
   plan_id: PropTypes.number.isRequired
 };
 

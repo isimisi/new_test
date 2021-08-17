@@ -19,7 +19,7 @@ import {
   WorkspaceFabs, CustomNode, StickyNoteNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
   Notification, AlertModal, CompanyDataModel,
-  AlertLog, FormDialog, MapTypesForErst
+  AlertLog, FormDialog, MapTypesForErst, ShareModal
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -43,7 +43,7 @@ import {
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
-  getCompanyData
+  getCompanyData, shareWorkspace
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -96,6 +96,7 @@ const Workspace = (props) => {
   const [showMapErst, setShowMapErst] = useState(false);
   const [erstTypes, setErstTypes] = useState(initErstTypes);
   const [showCompanyData, setShowCompanyData] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(true);
 
 
   const [showAlertLog, setShowAlertLog] = useState(false);
@@ -135,6 +136,7 @@ const Workspace = (props) => {
   const [nodeBorderColor, setNodeBorderColor] = useState({
     r: 0, g: 0, b: 0, a: 1
   });
+
 
   // REACT FLOW SPECIFIC
 
@@ -641,7 +643,7 @@ const Workspace = (props) => {
         nodes={nodes}
         relationships={relationships}
       />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && (
+      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
@@ -650,6 +652,7 @@ const Workspace = (props) => {
           onAnalysisClick={() => history.push(`analysis/${id}`)}
           onCvrClick={() => setShowCvrModal(true)}
           stickyClick={handlePostSticky}
+          onShareClick={() => setShareModalOpen(true)}
           plan_id={plan_id}
         />
       )}
@@ -658,6 +661,11 @@ const Workspace = (props) => {
         close={() => setShowCompanyData(false)}
         displayName={elementToUpdate?.data?.displayName}
         companyData={companyData}
+      />
+      <ShareModal
+        open={shareModalOpen}
+        close={() => setShareModalOpen(false)}
+        onShare={(firstName, lastName, email, phone, editable, signable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, signable))}
       />
     </div>
   );
