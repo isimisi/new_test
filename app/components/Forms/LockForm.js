@@ -10,11 +10,13 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Help from '@material-ui/icons/Help';
-import Avatar from '@material-ui/core/Avatar';
-import dummy from '@api/dummy/dummyContents';
-import avatarApi from '@api/images/avatars';
+import Lottie from 'lottie-react';
+import {
+  useHistory
+} from 'react-router-dom';
 import { TextFieldRedux } from './ReduxFormMUI';
 import styles from './user-jss';
+import lock from './lock.json';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -26,6 +28,11 @@ function LockForm(props) {
     pristine,
     submitting
   } = props;
+  const history = useHistory();
+  const { search } = history.location;
+
+  const firstName = new URLSearchParams(search).get('firstName');
+  const lastName = new URLSearchParams(search).get('lastName');
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -41,16 +48,25 @@ function LockForm(props) {
     <div>
       <form onSubmit={handleSubmit}>
         <section className={classes.lockWrap}>
-          <Avatar alt="John Doe" src={avatarApi[6]} className={classes.avatar} />
+          <Lottie
+            animationData={lock}
+            style={{
+              width: '20%',
+            }}
+          />
           <div>
-            <Typography className={classes.userName} variant="h5">{dummy.user.name}</Typography>
+            <Typography className={classes.userName} variant="h5">
+              {firstName}
+              {' '}
+              {lastName}
+            </Typography>
             <div className={classes.lockForm}>
               <FormControl className={classes.lockField}>
                 <Field
-                  name="password"
+                  name="securityCode"
                   component={TextFieldRedux}
                   type="password"
-                  label="Your Password"
+                  label="Din sikkerhedskode"
                   required
                   validate={required}
                   className={classes.field}
@@ -84,7 +100,7 @@ function LockForm(props) {
                   horizontal: 'center',
                 }}
               >
-                <Typography className={classes.hint}>Hint: Type anything to unlock!</Typography>
+                <Typography className={classes.hint}>Du har modtaget koden på sms. Hvis ikke så kontakt personen, som har delt dette arbejdsområde med dig.</Typography>
               </Popover>
             </div>
           </div>

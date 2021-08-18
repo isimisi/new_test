@@ -56,7 +56,13 @@ import {
   GET_CVR_NODES_FAILED,
   GET_WORKSPACE_NODE_COMPANY_DATA_LOADING,
   GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS,
-  GET_WORKSPACE_NODE_COMPANY_DATA_FAILED
+  GET_WORKSPACE_NODE_COMPANY_DATA_FAILED,
+  SHARE_WORKSPACE_LOADING,
+  SHARE_WORKSPACE_SUCCESS,
+  SHARE_WORKSPACE_FAILED,
+  PUBLIC_ACCESS_WORKSPACE_LOADING,
+  PUBLIC_ACCESS_WORKSPACE_SUCCESS,
+  PUBLIC_ACCESS_WORKSPACE_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -79,7 +85,10 @@ const initialState = {
   alertId: null,
   alertOpen: false,
   outputs: List(),
-  companyData: {}
+  companyData: {},
+  publicAuthenticated: false,
+  publicUserFirstName: '',
+  publicUserLastName: ''
 };
 
 
@@ -341,6 +350,41 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('loading', false);
       });
     case GET_WORKSPACE_NODE_COMPANY_DATA_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+        mutableState.set('loading', false);
+      });
+    case SHARE_WORKSPACE_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
+    case SHARE_WORKSPACE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', false);
+      });
+    case SHARE_WORKSPACE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+        mutableState.set('loading', false);
+      });
+    case PUBLIC_ACCESS_WORKSPACE_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
+    case PUBLIC_ACCESS_WORKSPACE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const publicUserFirstName = fromJS(action.publicUserFirstName);
+        const publicUserLastName = fromJS(action.publicUserLastName);
+
+        mutableState.set('publicAuthenticated', true);
+        mutableState.set('publicUserFirstName', publicUserFirstName);
+        mutableState.set('publicUserLastName', publicUserLastName);
+        mutableState.set('loading', false);
+      });
+
+    case PUBLIC_ACCESS_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

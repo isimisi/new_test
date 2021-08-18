@@ -328,6 +328,7 @@ const styles = theme => ({
   lockForm: {
     display: 'flex',
     alignItems: 'baseline',
+    marginLeft: theme.spacing(3)
   },
   unlockBtn: {
     top: -4
@@ -370,6 +371,7 @@ const styles = theme => ({
   },
   userName: {
     color: theme.palette.common.white,
+    marginLeft: theme.spacing(3),
     fontWeight: theme.typography.fontWeightMedium,
     [theme.breakpoints.down('xs')]: {
       marginTop: theme.spacing(3),

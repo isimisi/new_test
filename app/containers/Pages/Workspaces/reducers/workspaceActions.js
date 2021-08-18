@@ -8,6 +8,7 @@ import {
   isNode,
 } from 'react-flow-renderer';
 import _history from '@utils/history';
+import { toast } from 'react-toastify';
 import * as types from './workspaceConstants';
 import { getLayoutedElements } from '../constants';
 
@@ -39,10 +40,10 @@ export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
     dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
     close();
   } catch (error) {
-    let _message = 'Vi har desværre nogle probler med kommunkationen til cvr';
+    let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
 
     if (error?.response?.status === 503) {
-      _message = 'Du skal være på en Draw plan, for at trække selskaber med over 100 elementer';
+      _message = 'Du skal være på et Draw plan for at trække selskaber med over 100 elementer';
     }
     dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
   }
@@ -429,22 +430,68 @@ export const getCompanyData = (id, setShowCompanyData, setDefineNodeOpen, setNod
   }
 };
 
-export const shareWorkspace = (id, firstName, lastName, email, phone, editable, signable) => async dispatch => {
+export const shareWorkspace = (id, firstName, lastName, email, phone, editable, setShareModalOpen) => async dispatch => {
   dispatch({ type: types.SHARE_WORKSPACE_LOADING });
 
-  const url = `${baseUrl}/workspaces/public/access/${id}`;
+  const url = `${baseUrl}/workspaces/share/${id}`;
   const body = {
-    firstName, lastName, email, phone, editable, signable
+    firstName, lastName, email, phone, editable
   };
   const header = authHeader();
   try {
-    await axios.put(url, body, header);
+    const response = await axios.post(url, body, header);
+
+    toast.info('Gå til det offentlige arbejdsområde', {
+      position: toast.POSITION.BOTTOM_CENTER,
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      toastId: Math.random() * 100 + 10,
+      onClick: () => {
+        window.open(response.data.link, '_blank');
+      }
+    });
+
+    setShareModalOpen(false);
 
     dispatch({ type: types.SHARE_WORKSPACE_SUCCESS });
   } catch (error) {
-    dispatch({ type: types.SHARE_WORKSPACE_FAILED });
+    dispatch({ type: types.SHARE_WORKSPACE_FAILED, message });
   }
 };
+
+export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, publicUserLastName, securityCode, history) => async dispatch => {
+  dispatch({ type: types.PUBLIC_ACCESS_WORKSPACE_LOADING });
+
+  const url = `${baseUrl}/workspaces/public/access/${workspaceId}`;
+  const body = {
+    userId, securityCode
+  };
+  const header = authHeader();
+  try {
+    const response = await axios.post(url, body, header);
+    const {
+      elements, label, description, group, zoom, x_position, y_position
+    } = response.data;
+
+    dispatch({
+      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
+    });
+
+    dispatch({
+      type: types.PUBLIC_ACCESS_WORKSPACE_SUCCESS, publicUserFirstName, publicUserLastName
+    });
+  } catch (error) {
+    let _message = message;
+    if (error?.response?.status === 403) {
+      _message = error.response.data;
+    }
+
+    dispatch({ type: types.PUBLIC_ACCESS_WORKSPACE_FAILED, message: _message });
+  }
+};
+
 
 export const labelChange = label => ({
   type: types.LABEL_CHANGE,

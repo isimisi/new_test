@@ -22,8 +22,6 @@ const ShareForm = (props) => {
     onPhoneChange,
     editable,
     onEditableChange,
-    signable,
-    onSignableChange,
     onShare
   } = props;
 
@@ -85,17 +83,6 @@ const ShareForm = (props) => {
                 Skal brugeren kunne redigere i arbejdsområdet?
           </Typography>
         </div>
-        <div className={classes.row}>
-          <Checkbox
-            name="sign"
-            color="primary"
-            checked={signable}
-            onChange={onSignableChange}
-          />
-          <Typography variant="subtitle2">
-                Skal brugeren kunne underskrive arbejdsområdet?
-          </Typography>
-        </div>
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => close()}>
@@ -105,7 +92,7 @@ const ShareForm = (props) => {
           variant="contained"
           color="secondary"
           type="button"
-          onClick={() => onShare(firstName, lastName, email, phone, editable, signable)}
+          onClick={() => onShare(firstName, lastName, email, phone, editable)}
         >
             Del
         </Button>
@@ -128,8 +115,6 @@ ShareForm.propTypes = {
   onPhoneChange: PropTypes.func.isRequired,
   editable: PropTypes.string.isRequired,
   onEditableChange: PropTypes.func.isRequired,
-  signable: PropTypes.string.isRequired,
-  onSignableChange: PropTypes.func.isRequired,
   onShare: PropTypes.func.isRequired,
 };
 

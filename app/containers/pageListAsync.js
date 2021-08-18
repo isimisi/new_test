@@ -148,3 +148,11 @@ export const HelpSupport = loadable(() =>
   import ('./Pages/HelpSupport'), {
     fallback: <Loading />,
   });
+
+
+// Public
+
+export const PublicWorkspace = loadable(() =>
+  import ('./Pages/Workspaces/PublicWorkspace'), {
+    fallback: <Loading />,
+  });

@@ -96,7 +96,7 @@ const Workspace = (props) => {
   const [showMapErst, setShowMapErst] = useState(false);
   const [erstTypes, setErstTypes] = useState(initErstTypes);
   const [showCompanyData, setShowCompanyData] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = useState(true);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
 
   const [showAlertLog, setShowAlertLog] = useState(false);
@@ -664,8 +664,9 @@ const Workspace = (props) => {
       />
       <ShareModal
         open={shareModalOpen}
+        loading={loading}
         close={() => setShareModalOpen(false)}
-        onShare={(firstName, lastName, email, phone, editable, signable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, signable))}
+        onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, setShareModalOpen))}
       />
     </div>
   );
