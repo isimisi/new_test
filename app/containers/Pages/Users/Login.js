@@ -16,7 +16,7 @@ import { login, closeNotifAction } from './reducers/authActions';
 function Login(props) {
   console.log('hej fra login');
   const reducer = 'auth';
-  const messageNotif = useSelector(state => state.getIn([reducer, 'errorMessage']));
+  const messageNotif = useSelector(state => state[reducer].get('errorMessage'));
   const dispatch = useDispatch();
   const history = useHistory();
   const { state: locationState } = useLocation();

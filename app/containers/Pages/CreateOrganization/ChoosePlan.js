@@ -19,7 +19,7 @@ import { closeNotifAction, askForADemo, purchase } from './reducers/createOrgani
 function Pricing() {
   // const { classes } = props;
   const reducer = 'createOrganization';
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const dispatch = useDispatch();
   const { user_id, plan_id } = loadFromLocalStorage();
   const [loading, setLoading] = useState(false);

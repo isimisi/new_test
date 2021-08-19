@@ -13,7 +13,7 @@ import { register, closeNotifAction } from './reducers/authActions';
 
 function Register(props) {
   const reducer = 'auth';
-  const messageNotif = useSelector(state => state.getIn([reducer, 'errorMessage']));
+  const messageNotif = useSelector(state => state[reducer].get('errorMessage'));
   const dispatch = useDispatch();
   const history = useHistory();
 

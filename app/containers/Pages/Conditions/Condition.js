@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
 import React, {
-  useState, useEffect, useCallback, useRef
+  useState, useEffect, useRef
 } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
@@ -62,15 +62,15 @@ const Condition = (props) => {
   const theme = useTheme();
 
   // REDUX
-  const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
-  const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
-  const elements = useSelector(state => state.getIn([reducer, 'elements'])).toJS();
-  const label = useSelector(state => state.getIn([reducer, 'label']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
-  const nodeAttributes = useSelector(state => state.getIn([reducer, 'nodeAttributes'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const relationships = useSelector(state => state[reducer].get('relationships')).toJS();
+  const nodes = useSelector(state => state[reducer].get('nodes')).toJS();
+  const elements = useSelector(state => state[reducer].get('elements')).toJS();
+  const label = useSelector(state => state[reducer].get('label'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const group = useSelector(state => state[reducer].get('group'));
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const nodeAttributes = useSelector(state => state[reducer].get('nodeAttributes')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
 
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');

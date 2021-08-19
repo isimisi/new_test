@@ -40,13 +40,13 @@ function Groups(props) {
   const [listView, setListView] = useState('grid');
   // Redux State
   const reducer = 'groups';
-  const keyword = useSelector(state => state.getIn([reducer, 'keywordValue']));
-  const groups = useSelector(state => state.getIn([reducer, 'groups']));
-  const activeGroup = useSelector(state => state.getIn([reducer, 'activeGroup'])).toJS();
-  const title = useSelector(state => state.getIn([reducer, 'title']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const image = useSelector(state => state.getIn([reducer, 'image'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const keyword = useSelector(state => state[reducer].get('keywordValue'));
+  const groups = useSelector(state => state[reducer].get('groups'));
+  const activeGroup = useSelector(state => state[reducer].get('activeGroup')).toJS();
+  const title = useSelector(state => state[reducer].get('title'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const image = useSelector(state => state[reducer].get('image')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
 
   const dispatch = useDispatch();
 

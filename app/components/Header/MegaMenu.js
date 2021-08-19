@@ -164,7 +164,7 @@ const reducer = 'ui';
 
 const mapStateToProps = state => ({
   ...state,
-  open: state.getIn([reducer, 'subMenuOpen'])
+  open: state[reducer].get('subMenuOpen')
 });
 
 const mapDispatchToProps = dispatch => ({

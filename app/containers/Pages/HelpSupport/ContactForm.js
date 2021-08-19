@@ -102,7 +102,7 @@ const reducer = 'initval';
 const FormInit = connect(
   state => ({
     force: state,
-    initialValues: state.getIn([reducer, 'formValues'])
+    initialValues: state[reducer].get('formValues')
   }),
   mapDispatchToProps,
 )(ContactFormMapped);

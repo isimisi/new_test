@@ -76,18 +76,18 @@ const Workspace = (props) => {
 
 
   // REDUX
-  const relationships = useSelector(state => state.getIn([reducer, 'relationships']));
-  const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
-  const handleVisability = useSelector(state => state.getIn([reducer, 'handleVisability']));
-  const elements = useSelector(state => state.getIn([reducer, 'elements'])).toJS();
-  const label = useSelector(state => state.getIn([reducer, 'label']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
-  const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const loading = useSelector(state => state.getIn([reducer, 'loading']));
-  const companyData = useSelector(state => state.getIn([reducer, 'companyData']));
+  const relationships = useSelector(state => state[reducer].get('relationships'));
+  const nodes = useSelector(state => state[reducer].get('nodes')).toJS();
+  const handleVisability = useSelector(state => state[reducer].get('handleVisability'));
+  const elements = useSelector(state => state[reducer].get('elements')).toJS();
+  const label = useSelector(state => state[reducer].get('label'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const group = useSelector(state => state[reducer].get('group'));
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const loading = useSelector(state => state[reducer].get('loading'));
+  const companyData = useSelector(state => state[reducer].get('companyData'));
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);

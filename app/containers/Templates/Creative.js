@@ -46,7 +46,7 @@ Parallax.propTypes = {
 
 const reducer = 'ui';
 const mapStateToProps = state => ({
-  gradient: state.getIn([reducer, 'gradient']),
+  gradient: state[reducer].get('gradient'),
   ...state,
 });
 

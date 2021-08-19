@@ -18,17 +18,17 @@ import {
 
 const Relationship = () => {
   const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const history = useHistory();
 
   const id = getId(history);
-  const label = useSelector(state => state.getIn([reducer, 'label']));
-  const values = useSelector(state => state.getIn([reducer, 'values'])).toJS();
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const colorSelector = useSelector(state => state.getIn([reducer, 'color']));
-  const size = useSelector(state => state.getIn([reducer, 'size']));
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
+  const label = useSelector(state => state[reducer].get('label'));
+  const values = useSelector(state => state[reducer].get('values')).toJS();
+  const description = useSelector(state => state[reducer].get('description'));
+  const group = useSelector(state => state[reducer].get('group'));
+  const colorSelector = useSelector(state => state[reducer].get('color'));
+  const size = useSelector(state => state[reducer].get('size'));
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
 
   const onSave = () => {
     const style = JSON.stringify({ color: colorSelector.toJS() });

@@ -96,7 +96,7 @@ const reducerUi = 'ui';
 const FormInit = connect(
   state => ({
     force: state,
-    deco: state.getIn([reducerUi, 'decoration'])
+    deco: state[reducerUi].get('decoration')
   }),
 )(ComingSoon);
 

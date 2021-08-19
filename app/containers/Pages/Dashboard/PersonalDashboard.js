@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import {
-  SliderWidget,
   GuideSlider,
   CounterIconsWidget,
   TimelineWidget,
@@ -49,10 +48,10 @@ const PersonalDashboard = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const reducer = 'dashboard';
-  const elementCounts = useSelector(state => state.getIn([reducer, 'elementCounts']));
-  const timeline = useSelector(state => state.getIn([reducer, 'timeline']));
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const workspaces = useSelector(state => state.getIn(['workspace', 'workspaces'])).toJS();
+  const elementCounts = useSelector(state => state[reducer].get('elementCounts'));
+  const timeline = useSelector(state => state[reducer].get('timeline'));
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const workspaces = useSelector(state => state.workspace.get('workspaces')).toJS();
   const [featureValue, setFeatureValue] = useState('');
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);

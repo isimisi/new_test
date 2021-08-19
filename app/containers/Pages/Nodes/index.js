@@ -24,9 +24,9 @@ import {
 function Nodes(props) {
   const { classes } = props;
   const dispatch = useDispatch();
-  const nodes = useSelector(state => state.getIn([reducer, 'nodes'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const loading = useSelector(state => state.getIn([reducer, 'loading']));
+  const nodes = useSelector(state => state[reducer].get('nodes')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const loading = useSelector(state => state[reducer].get('loading'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
 

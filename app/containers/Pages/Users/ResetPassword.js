@@ -12,7 +12,7 @@ function ResetPassword(props) {
   const [valueForm, setValueForm] = useState(null);
   const [sentPassword, setSendPassword] = useState(false);
   const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.getIn(['auth', 'errorMessage']));
+  const messageNotif = useSelector(state => state.auth.get('errorMessage'));
 
   const submitForm = useCallback((values) => {
     setValueForm(values);

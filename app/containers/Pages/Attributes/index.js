@@ -22,16 +22,16 @@ import {
 function Attributes(props) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const attributes = useSelector(state => state.getIn([reducer, 'attributes'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
-  const id = useSelector(state => state.getIn([reducer, 'id']));
-  const label = useSelector(state => state.getIn([reducer, 'label']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const type = useSelector(state => state.getIn([reducer, 'type']));
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const loading = useSelector(state => state.getIn([reducer, 'loading']));
-  const selectionOptions = useSelector(state => state.getIn([reducer, 'selectionOptions']));
+  const attributes = useSelector(state => state[reducer].get('attributes')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const id = useSelector(state => state[reducer].get('id'));
+  const label = useSelector(state => state[reducer].get('label'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const type = useSelector(state => state[reducer].get('type'));
+  const group = useSelector(state => state[reducer].get('group'));
+  const loading = useSelector(state => state[reducer].get('loading'));
+  const selectionOptions = useSelector(state => state[reducer].get('selectionOptions'));
   const { plan_id } = loadFromLocalStorage();
   const history = useHistory();
 
@@ -41,7 +41,7 @@ function Attributes(props) {
     dispatch(getAttributes());
     dispatch(getGroupDropDown());
 
-    if (plan_id !== 3) {
+    if (plan_id !== 3) {
       history.push('/app/plan');
     }
   }, []);

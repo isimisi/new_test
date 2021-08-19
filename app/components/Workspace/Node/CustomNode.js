@@ -17,7 +17,7 @@ import person from './person.svg';
 const CustomNode = ({ data }) => {
   const theme = useTheme();
   const history = useHistory();
-  let handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
+  let handleVisability = useSelector(state => state.workspace.get('handleVisability'));
 
   useEffect(() => {
     if (history.location.pathname.includes('analysis')) {

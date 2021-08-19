@@ -21,7 +21,7 @@ const WorkspaceAnalysis = (props) => {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
 
-  const outputs = useSelector(state => state.getIn([reducer, 'outputs'])).toJS();
+  const outputs = useSelector(state => state[reducer].get('outputs')).toJS();
 
   useEffect(() => {
     dispatch(analyseOutput(id));

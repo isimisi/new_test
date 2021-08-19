@@ -72,9 +72,10 @@ const domainGroupId = 'e25f2e52-b958-4868-bb38-05482f232612';
 
 // TODO: påsæt reux with loace storage så den bliver initeret med localstorage og jeg dermed aldrig skal kigge i locale storage
 const initialState = {};
-const store = configureStore(initialState, history);
+const { store } = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
+console.log(store.getState());
 
 // Include the Crisp code here, without the <script></script> tags
 window.$crisp = [];

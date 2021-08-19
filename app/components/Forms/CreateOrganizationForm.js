@@ -59,9 +59,7 @@ function RegisterForm(props) {
         <Typography variant="h4" className={classes.title} gutterBottom>
           Forbind dit team
         </Typography>
-        <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
-
-        </Typography>
+        <Typography variant="caption" className={classes.subtitle} gutterBottom align="center" />
         <section className={classes.formWrap}>
           <form onSubmit={handleSubmit}>
             <div>
@@ -143,7 +141,7 @@ const reducer = 'ui';
 const RegisterFormMapped = connect(
   state => ({
     force: state,
-    deco: state.getIn([reducer, 'decoration'])
+    deco: state[reducer].get('decoration')
   }),
 )(RegisterFormReduxed);
 

@@ -18,7 +18,7 @@ function Settings(props) {
   const { width } = props;
   const [valueForm, setValueForm] = useState([]);
   const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.getIn(['dashboard', 'message']));
+  const messageNotif = useSelector(state => state.dashboard.get('message'));
 
   const showResult = useCallback((values) => {
     setValueForm(values);

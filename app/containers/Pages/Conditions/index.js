@@ -24,9 +24,9 @@ import {
 function Conditions(props) {
   const { classes } = props;
   const dispatch = useDispatch();
-  const conditions = useSelector(state => state.getIn([reducer, 'conditions'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const loading = useSelector(state => state.getIn([reducer, 'loading']));
+  const conditions = useSelector(state => state[reducer].get('conditions')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const loading = useSelector(state => state[reducer].get('loading'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
 

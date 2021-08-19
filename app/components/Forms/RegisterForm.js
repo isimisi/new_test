@@ -230,7 +230,7 @@ const reducer = 'ui';
 const RegisterFormMapped = connect(
   state => ({
     force: state,
-    deco: state.getIn([reducer, 'decoration'])
+    deco: state[reducer].get('decoration')
   }),
 )(RegisterFormReduxed);
 

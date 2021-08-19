@@ -51,17 +51,17 @@ const Output = () => {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
 
-  const conditions = useSelector(state => state.getIn([reducer, 'outputConditions'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const title = useSelector(state => state.getIn([reducer, 'title']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const fileType = useSelector(state => state.getIn([reducer, 'fileType']));
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const outputFileUrl = useSelector(state => state.getIn([reducer, 'outputFileUrl']));
-  const outputFile = useSelector(state => state.getIn([reducer, 'outputFile']));
-  const conditionsDropDownOptions = useSelector(state => state.getIn([reducer, 'conditionsDropDownOptions'])).toJS();
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
-  const editorState = useSelector(state => state.getIn([reducer, 'editorState']));
+  const conditions = useSelector(state => state[reducer].get('outputConditions')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const title = useSelector(state => state[reducer].get('title'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const fileType = useSelector(state => state[reducer].get('fileType'));
+  const group = useSelector(state => state[reducer].get('group'));
+  const outputFileUrl = useSelector(state => state[reducer].get('outputFileUrl'));
+  const outputFile = useSelector(state => state[reducer].get('outputFile'));
+  const conditionsDropDownOptions = useSelector(state => state[reducer].get('conditionsDropDownOptions')).toJS();
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const editorState = useSelector(state => state[reducer].get('editorState'));
 
   const [deletedConditions, setDeletedConditions] = useState([]);
 

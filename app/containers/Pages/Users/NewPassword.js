@@ -22,7 +22,7 @@ function NewPassword(props) {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
   const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.getIn(['auth', 'errorMessage']));
+  const messageNotif = useSelector(state => state.auth.get('errorMessage'));
 
   const submitForm = useCallback((values) => {
     setValueForm(values);
@@ -82,7 +82,7 @@ const reducerUi = 'ui';
 const FormInit = connect(
   state => ({
     force: state,
-    deco: state.getIn([reducerUi, 'decoration'])
+    deco: state[reducerUi].get('decoration')
   }),
 )(NewPassword);
 

@@ -21,8 +21,8 @@ import { Notification } from '@components';
 function Relationships(props) {
   const { classes } = props;
   const dispatch = useDispatch();
-  const relationships = useSelector(state => state.getIn([reducer, 'relationships'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const relationships = useSelector(state => state[reducer].get('relationships')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
 

@@ -23,8 +23,8 @@ import {
 const Alerts = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
-  const alerts = useSelector(state => state.getIn([reducer, 'alerts'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const alerts = useSelector(state => state[reducer].get('alerts')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
 

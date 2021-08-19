@@ -119,13 +119,13 @@ Dashboard.propTypes = {
 
 const reducer = 'ui';
 const mapStateToProps = state => ({
-  sidebarOpen: state.getIn([reducer, 'sidebarOpen']),
-  pageLoaded: state.getIn([reducer, 'pageLoaded']),
-  mode: state.getIn([reducer, 'type']),
-  gradient: state.getIn([reducer, 'gradient']),
-  deco: state.getIn([reducer, 'decoration']),
-  layout: state.getIn([reducer, 'layout']),
-  bgPosition: state.getIn([reducer, 'bgPosition']),
+  sidebarOpen: state[reducer].get('sidebarOpen'),
+  pageLoaded: state[reducer].get('pageLoaded'),
+  mode: state[reducer].get('type'),
+  gradient: state[reducer].get('gradient'),
+  deco: state[reducer].get('decoration'),
+  layout: state[reducer].get('layout'),
+  bgPosition: state[reducer].get('bgPosition'),
   ...state,
 });
 

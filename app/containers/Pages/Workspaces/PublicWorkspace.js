@@ -17,8 +17,8 @@ import {
 
 function PublicFirewall(props) {
   const reducer = 'workspace';
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const publicAuthenticated = useSelector(state => state.getIn([reducer, 'publicAuthenticated']));
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const publicAuthenticated = useSelector(state => state[reducer].get('publicAuthenticated'));
   const dispatch = useDispatch();
   const history = useHistory();
   const { search } = history.location;

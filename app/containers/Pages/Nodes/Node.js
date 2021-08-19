@@ -18,22 +18,22 @@ import { reducer, generateNodeStyle } from './constants';
 
 const Node = () => {
   const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const theme = useTheme();
   const id = getId(history);
-  const title = useSelector(state => state.getIn([reducer, 'title']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const attributes = useSelector(state => state.getIn([reducer, 'attributes'])).toJS();
-  const deletedAttributes = useSelector(state => state.getIn([reducer, 'deletedAttributes'])).toJS();
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const attributesDropDownOptions = useSelector(state => state.getIn([reducer, 'attributesDropDownOptions'])).toJS();
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
+  const title = useSelector(state => state[reducer].get('title'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const attributes = useSelector(state => state[reducer].get('attributes')).toJS();
+  const deletedAttributes = useSelector(state => state[reducer].get('deletedAttributes')).toJS();
+  const group = useSelector(state => state[reducer].get('group'));
+  const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
 
   // generate style object
-  const size = useSelector(state => state.getIn([reducer, 'size']));
-  const backgroundColor = useSelector(state => state.getIn([reducer, 'backgroundColor']));
-  const borderColor = useSelector(state => state.getIn([reducer, 'borderColor']));
+  const size = useSelector(state => state[reducer].get('size'));
+  const backgroundColor = useSelector(state => state[reducer].get('backgroundColor'));
+  const borderColor = useSelector(state => state[reducer].get('borderColor'));
 
   const onSave = () => {
     const nodeStyle = generateNodeStyle(size, backgroundColor.toJS(), borderColor.toJS(), theme);

@@ -23,15 +23,15 @@ import {
 function Outputs(props) {
   const { classes } = props;
   const dispatch = useDispatch();
-  const outputs = useSelector(state => state.getIn([reducer, 'outputs'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const outputs = useSelector(state => state[reducer].get('outputs')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
 
   useEffect(() => {
     dispatch(getOutput());
 
-    if (plan_id !== 4) {
+    if (plan_id !== 4) {
       history.push('/app/plan');
     }
   }, []);

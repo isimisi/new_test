@@ -11,7 +11,7 @@ import { createOrganization, closeNotifAction } from './reducers/createOrganizat
 
 const CreateOrganization = () => {
   const reducer = 'createOrganization';
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const dispatch = useDispatch();
   const history = useHistory();
 

@@ -198,7 +198,7 @@ MainMenuBig.defaultProps = {
 const reducer = 'ui';
 
 const mapStateToProps = state => ({
-  open: state.getIn([reducer, 'subMenuOpen']),
+  open: state[reducer].get('subMenuOpen'),
   ...state
 });
 

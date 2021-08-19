@@ -19,15 +19,15 @@ import { reducer } from './constants';
 
 const Alert = () => {
   const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const id = getId(history);
-  const title = useSelector(state => state.getIn([reducer, 'title']));
-  const description = useSelector(state => state.getIn([reducer, 'description']));
-  const group = useSelector(state => state.getIn([reducer, 'group']));
-  const groupsDropDownOptions = useSelector(state => state.getIn([reducer, 'groupsDropDownOptions'])).toJS();
-  const conditions = useSelector(state => state.getIn([reducer, 'alertConditions'])).toJS();
-  const conditionsDropDownOptions = useSelector(state => state.getIn([reducer, 'conditionsDropDownOptions'])).toJS();
+  const title = useSelector(state => state[reducer].get('title'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const group = useSelector(state => state[reducer].get('group'));
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const conditions = useSelector(state => state[reducer].get('alertConditions')).toJS();
+  const conditionsDropDownOptions = useSelector(state => state[reducer].get('conditionsDropDownOptions')).toJS();
 
   const [deletedConditions, setDeletedConditions] = useState([]);
 

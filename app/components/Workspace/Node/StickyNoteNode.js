@@ -11,12 +11,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { putSticky, deleteWorkspaceElement } from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
 
 const StickyNote = ({ data }) => {
-  const handleVisability = useSelector(state => state.getIn(['workspace', 'handleVisability']));
+  const handleVisability = useSelector(state => state.workspace.get('handleVisability'));
   const [value, setValue] = useState(data.text);
   const [showDelete, setShowDelete] = useState(false);
   const dispatch = useDispatch();
 
-  const elements = useSelector(state => state.getIn(['workspace', 'elements'])).toJS();
+  const elements = useSelector(state => state.workspace.get('elements')).toJS();
 
   useEffect(() => {
     setValue(data.text);

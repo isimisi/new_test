@@ -151,8 +151,8 @@ const reducerUi = 'ui';
 const FormInit = connect(
   state => ({
     force: state,
-    initialValues: state.getIn([reducerLogin, 'usersLogin']),
-    deco: state.getIn([reducerUi, 'decoration'])
+    initialValues: state[reducerLogin].get('usersLogin'),
+    deco: state[reducerUi].get('decoration')
   }),
 )(LoginFormReduxed);
 

@@ -27,9 +27,9 @@ const { plan_id } = loadFromLocalStorage();
 const Workspaces = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
-  const workspaces = useSelector(state => state.getIn([reducer, 'workspaces'])).toJS();
-  const messageNotif = useSelector(state => state.getIn([reducer, 'message']));
-  const loading = useSelector(state => state.getIn([reducer, 'loading']));
+  const workspaces = useSelector(state => state[reducer].get('workspaces')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const loading = useSelector(state => state[reducer].get('loading'));
   const history = useHistory();
 
   useEffect(() => {
