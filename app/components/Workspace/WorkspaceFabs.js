@@ -83,6 +83,7 @@ const WorkspaceFab = (props) => {
             text="Del dit workspace"
             style={{ backgroundColor: 'white' }}
             onClick={onShareClick}
+            disabled={plan_id < 3}
           >
             <ShareIcon style={{ color: theme.palette.primary.main }} />
           </Action>

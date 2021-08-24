@@ -34,7 +34,7 @@ const ShareForm = (props) => {
     <div>
       <section className={css.bodyForm}>
         <Typography variant="caption">
-            Vær opmærksom på, at hvis du delere dit arbejdsområde er det tilgængeligt for alle, der er i besidelse af den autogeneret koder. Så du skal stole på de mennekser, du deler arbejdsområdet med, hvis arbejdsområdet indenholder sensitiv data.
+            OBS: Hvis du deler dit arbejdsområde, er det tilgængeligt for alle, der er i besidelse af den autogenerede kode. Da det kan indeholde sensitiv information, skal du være ekstra opmærksom på, hvem du deler det med.
         </Typography>
 
         <div>
@@ -60,14 +60,14 @@ const ShareForm = (props) => {
         <div>
           <TextField
             name="email"
-            placeholder="Email"
+            placeholder="E-mail"
             label="Email"
             className={classes.field}
             value={email}
             onChange={onEmailChange}
           />
         </div>
-        <div>
+        <div style={{ marginBottom: 10 }}>
           <TextField
             name="phone"
             placeholder="Telefonnummer"
@@ -77,6 +77,9 @@ const ShareForm = (props) => {
             onChange={onPhoneChange}
           />
         </div>
+        <Typography variant="caption">
+            Ved deling med eksterne brugere, ændres arbejdsområdets gruppe til "Ekstern" af sikkerhedsmæssige årsager. Herefter vil den ikke kunne ændres tilbage igen - og du vil ikke altid kunne foretage rettelser efterfølgende.
+        </Typography>
         <div className={classes.row} style={{ marginTop: 10 }}>
           <Checkbox
             name="editable"
@@ -85,12 +88,10 @@ const ShareForm = (props) => {
             onChange={onEditableChange}
           />
           <Typography variant="subtitle2">
-                Skal brugeren kunne redigere i arbejdsområdet?
+                Må brugeren redigere i arbejdsområdet?
           </Typography>
         </div>
-        <Typography variant="caption">
-            Når du deler dit arbejdsområde, med eksterne brugere, så ændre vi din gruppe til "Ekstern" af sikkerhedsmæssige årsager. Når den er ændret vil den ikke kunne ændres tilbage igen.
-        </Typography>
+
         <div className={classes.row}>
           <Checkbox
             name="changeGroup"
@@ -99,7 +100,7 @@ const ShareForm = (props) => {
             onChange={onChangeGroup}
           />
           <Typography variant="subtitle2" style={{ marginTop: 5 }}>
-                Jeg accepterer, at arbejdsområdets gruppe ændres til "Ekstern" og, at jeg ikke kan ændre den tilbage igen.
+                Jeg forstår og accepterer ovenstående.
           </Typography>
         </div>
       </section>

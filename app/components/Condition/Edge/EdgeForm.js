@@ -98,7 +98,7 @@ const EdgeForm = (props) => {
                 placeholder: 'label',
               }}
               placeholder="label"
-              options={mapSelectOptions(relationships.map(r => ({ value: r.label, label: r.description })))}
+              options={mapSelectOptions(relationships.map(r => ({ value: r?.label, label: r?.description })))}
               value={relationshipLabel && { label: relationshipLabel, value: relationshipLabel }}
               onChange={handleChangeLabel}
             />
@@ -133,7 +133,7 @@ const EdgeForm = (props) => {
               multiline
               rows={2}
               disabled
-              value={choosenRelationship.description}
+              value={choosenRelationship && choosenRelationship?.description}
             />
           </div>
         )}
