@@ -28,6 +28,46 @@ const styles = theme => ({
     },
     marginBottom: 50
   },
+  img: {
+    width: 90
+  },
+  logo: {
+    position: 'absolute', zIndex: 9999, top: 10, left: 10
+  },
+  signedLogo: {
+    position: 'absolute',
+    zIndex: 9999,
+    bottom: 70,
+    right: 20
+  },
+  signed: {
+    position: 'absolute',
+    zIndex: 9999,
+    bottom: 10,
+    right: 10,
+    padding: 5,
+    paddingRight: 9,
+    borderRadius: 5,
+    backgroundColor: '#0B730B22',
+    alignItems: 'center'
+  },
+  signedText: {
+    color: '#0B730Bdd',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  signedId: {
+    color: '#0B730Bdd',
+    fontSize: 10,
+  },
+  signedCircle: {
+    backgroundColor: '#0B730B55',
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    marginRight: 11,
+    marginBottom: 15,
+  },
   root: {
     flexGrow: 1,
     height: drawerHeight,
@@ -40,6 +80,12 @@ const styles = theme => ({
     [theme.breakpoints.up('sm')]: {
       display: 'flex',
     },
+  },
+  signedRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addBtn: {
     position: 'fixed',

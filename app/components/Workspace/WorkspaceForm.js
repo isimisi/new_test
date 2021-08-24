@@ -8,6 +8,7 @@ import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
 import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
+import Tooltip from '@material-ui/core/Tooltip';
 import styles from './workspace-jss';
 
 const WorkspaceForm = (props) => {
@@ -51,27 +52,31 @@ const WorkspaceForm = (props) => {
             onChange={descriptionChange}
           />
         </div>
-        <div className={classes.field} style={{ marginTop: theme.spacing(3) }}>
-          <NoSsr>
-            <Select
-              classes={classes}
-              styles={selectStyles('relative')}
-              inputId="react-select-single-workspace"
-              TextFieldProps={{
-                label: 'groups',
-                InputLabelProps: {
-                  htmlFor: 'react-select-single-workspace',
-                  shrink: true,
-                },
-                placeholder: 'Vælg gruppe',
-              }}
-              placeholder="Vælg gruppe"
-              options={mapSelectOptions(groupsDropDownOptions)}
-              value={group && { label: group, value: group }}
-              onChange={addGroup}
-            />
-          </NoSsr>
-        </div>
+        <Tooltip title={group === 'Ekstern' ? 'Hvis din gruppe er sat til ekstern kan den af sikkerhedsmæssige årsager ikke ændres tilbage' : ''} placement="top">
+          <div className={classes.field} style={{ marginTop: theme.spacing(3) }}>
+            <NoSsr>
+              <Select
+                classes={classes}
+                styles={selectStyles('relative')}
+                inputId="react-select-single-workspace"
+                TextFieldProps={{
+                  label: 'groups',
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single-workspace',
+                    shrink: true,
+                  },
+                  placeholder: 'Vælg gruppe',
+                }}
+                placeholder="Vælg gruppe"
+                options={mapSelectOptions(groupsDropDownOptions)}
+                value={group && { label: group, value: group }}
+                onChange={addGroup}
+                isDisabled={group === 'Ekstern'}
+              />
+            </NoSsr>
+          </div>
+        </Tooltip>
+
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => closeForm()}>
@@ -81,7 +86,7 @@ const WorkspaceForm = (props) => {
           variant="contained"
           color="secondary"
           type="button"
-          disabled={label?.length === 0 || description?.length === 0 || group?.length === 0}
+          disabled={label?.length === 0 || group?.length === 0}
           onClick={onSave}
         >
             Gem

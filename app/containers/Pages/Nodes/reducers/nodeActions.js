@@ -110,8 +110,8 @@ export const deleteNode = (id, title) => async dispatch => {
   }
 };
 
-export const getAttributeDropDown = () => async dispatch => {
-  const url = `${baseUrl}/attributs/dropDownValues`;
+export const getAttributeDropDown = (group) => async dispatch => {
+  const url = `${baseUrl}/attributs/dropDownValues?group=${group}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);

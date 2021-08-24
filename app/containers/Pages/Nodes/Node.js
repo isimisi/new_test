@@ -42,7 +42,10 @@ const Node = () => {
 
   useEffect(() => {
     dispatch(showNode(id));
-    dispatch(getAttributeDropDown());
+    if (group) {
+      dispatch(getAttributeDropDown(group));
+    }
+
     dispatch(getGroupDropDown());
   }, []);
   return (

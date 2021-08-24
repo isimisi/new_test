@@ -8,10 +8,11 @@ import {
   isNode,
 } from 'react-flow-renderer';
 import _history from '@utils/history';
+import { saveToLocalStorage } from '@api/localStorage/localStorage';
+import LogRocket from 'logrocket';
 import { toast } from 'react-toastify';
 import * as types from './workspaceConstants';
 import { getLayoutedElements } from '../constants';
-
 
 const WORKSPACES = 'workspaces';
 
@@ -94,7 +95,7 @@ export const postWorkspace = (history) => async dispatch => {
 };
 
 
-export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
+export const showWorkspace = (id, setMetaOpen = null, setAlerts = null) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
 
   const header = authHeader();
@@ -102,18 +103,18 @@ export const showWorkspace = (id, setMetaOpen, setAlerts) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const {
-      elements, label, description, group, zoom, x_position, y_position
+      elements, label, description, group, zoom, x_position, y_position, signed, signed_by
     } = response.data;
 
     dispatch({
-      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
+      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position, signed, signed_by
     });
 
 
     if ((!label || label?.length === 0) && (!description || description?.length === 0) && !group) {
-      setMetaOpen(true);
+      setMetaOpen && setMetaOpen(true);
     }
-    dispatch(analyseAlerts(id, setAlerts, true));
+    setAlerts && dispatch(analyseAlerts(id, setAlerts, true));
   } catch (error) {
     if (error?.response?.status === 403) {
       _history.replace('/app/not-found');
@@ -223,7 +224,7 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, 
     const node = response.data;
     dispatch({ type: types.WORKSPACE_POST_NODE_SUCCESS, node });
     setDefineNodeOpen(false);
-    dispatch(analyseAlerts(workspace_id, setAlerts));
+    setAlerts && dispatch(analyseAlerts(workspace_id, setAlerts));
   } catch (error) {
     dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
   }
@@ -280,7 +281,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => asy
     const responseEdge = response.data;
     dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
-    dispatch(analyseAlerts(workspace_id, setAlert));
+    setAlert && dispatch(analyseAlerts(workspace_id, setAlert));
   } catch (error) {
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
@@ -326,8 +327,8 @@ export const putEdge = (
   }
 };
 
-export const getNodes = () => async dispatch => {
-  const url = `${baseUrl}/nodes/workspace`;
+export const getNodes = (group) => async dispatch => {
+  const url = `${baseUrl}/nodes/workspace?group=${group}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
@@ -335,11 +336,12 @@ export const getNodes = () => async dispatch => {
     dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
   } catch (error) {
     dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
+    console.log(error.response);
   }
 };
 
-export const getRelationships = () => async dispatch => {
-  const url = `${baseUrl}/relationships/workspace`;
+export const getRelationships = (group) => async dispatch => {
+  const url = `${baseUrl}/relationships/workspace?group=${group}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
@@ -362,8 +364,8 @@ export const getGroupDropDown = () => async dispatch => {
   }
 };
 
-export const getAttributeDropDown = () => async dispatch => {
-  const url = `${baseUrl}/attributs/dropDownValues`;
+export const getAttributeDropDown = (group) => async dispatch => {
+  const url = `${baseUrl}/attributs/dropDownValues?group=${group}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
@@ -441,15 +443,16 @@ export const shareWorkspace = (id, firstName, lastName, email, phone, editable, 
   try {
     const response = await axios.post(url, body, header);
 
-    toast.info('Gå til det offentlige arbejdsområde', {
+    toast.info('Kopier link til offenligt arbejdsområde', {
       position: toast.POSITION.BOTTOM_CENTER,
       autoClose: 5000,
       hideProgressBar: false,
-      closeOnClick: true,
+      closeOnClick: false,
       pauseOnHover: true,
       toastId: Math.random() * 100 + 10,
-      onClick: () => {
-        window.open(response.data.link, '_blank');
+      onClick: (e) => {
+        navigator.clipboard.writeText(response.data);
+        e.target.innerText = 'Kopieret';
       }
     });
 
@@ -461,7 +464,7 @@ export const shareWorkspace = (id, firstName, lastName, email, phone, editable, 
   }
 };
 
-export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, publicUserLastName, securityCode, history) => async dispatch => {
+export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, publicUserLastName, securityCode) => async dispatch => {
   dispatch({ type: types.PUBLIC_ACCESS_WORKSPACE_LOADING });
 
   const url = `${baseUrl}/workspaces/public/access/${workspaceId}`;
@@ -471,16 +474,31 @@ export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, 
   const header = authHeader();
   try {
     const response = await axios.post(url, body, header);
+    const { workspace, accessToken, user } = response.data;
     const {
-      elements, label, description, group, zoom, x_position, y_position
-    } = response.data;
+      elements, label, description, group, zoom, x_position, y_position, signed, signed_by
+    } = workspace;
 
     dispatch({
-      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position
+      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position, signed, signed_by
+    });
+
+    saveToLocalStorage({
+      ...accessToken, ...user
+    });
+
+    LogRocket.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
+    });
+
+    analytics.identify(user.id, {
+      name: user.first_name + ' ' + user.last_name,
+      email: user.email,
     });
 
     dispatch({
-      type: types.PUBLIC_ACCESS_WORKSPACE_SUCCESS, publicUserFirstName, publicUserLastName
+      type: types.PUBLIC_ACCESS_WORKSPACE_SUCCESS, publicUserFirstName, publicUserLastName, workspaceId, editable: user.editable
     });
   } catch (error) {
     let _message = message;
@@ -489,6 +507,19 @@ export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, 
     }
 
     dispatch({ type: types.PUBLIC_ACCESS_WORKSPACE_FAILED, message: _message });
+  }
+};
+
+export const signWorkspace = (id, setShowSignWorkspace) => async dispatch => {
+  const url = `${baseUrl}/workspaces/sign/${id}`;
+  const body = {};
+  const header = authHeader();
+  try {
+    await axios.post(url, body, header);
+    setShowSignWorkspace(false);
+    dispatch(showWorkspace(id));
+  } catch (error) {
+    dispatch({ type: types.SHARE_WORKSPACE_FAILED, message });
   }
 };
 
@@ -536,3 +567,7 @@ export const showNotifAction = _message => ({
   type: notification.SHOW_NOTIF,
   message: _message
 });
+
+export const setPublicAccessFalse = {
+  type: types.SET_PUBLIC_ACCESS_FALSE
+};

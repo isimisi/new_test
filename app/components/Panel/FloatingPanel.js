@@ -51,11 +51,13 @@ function FloatingPanel(props) {
                 {expanded ? <MinimizeIcon /> : <ExpandIcon />}
               </IconButton>
             </Tooltip>
-            <Tooltip title="Close">
-              <IconButton className={classes.closeButton} onClick={() => closeForm()} aria-label="Close">
-                <CloseIcon />
-              </IconButton>
-            </Tooltip>
+            {closeForm && (
+              <Tooltip title="Close">
+                <IconButton className={classes.closeButton} onClick={() => closeForm()} aria-label="Close">
+                  <CloseIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </div>
         </header>
         {children}
@@ -67,7 +69,7 @@ function FloatingPanel(props) {
 FloatingPanel.propTypes = {
   classes: PropTypes.object.isRequired,
   openForm: PropTypes.bool.isRequired,
-  closeForm: PropTypes.func.isRequired,
+  closeForm: PropTypes.func,
   children: PropTypes.node.isRequired,
   width: PropTypes.string.isRequired,
   title: PropTypes.string,
@@ -77,6 +79,7 @@ FloatingPanel.propTypes = {
 FloatingPanel.defaultProps = {
   title: 'Add New Item',
   extraSize: false,
+  closeForm: null
 };
 
 const FloatingPanelResponsive = withWidth()(FloatingPanel);

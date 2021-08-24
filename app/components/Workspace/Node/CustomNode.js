@@ -18,6 +18,8 @@ const CustomNode = ({ data }) => {
   const theme = useTheme();
   const history = useHistory();
   let handleVisability = useSelector(state => state.workspace.get('handleVisability'));
+  const signed = useSelector(state => state.workspace.get('signed'));
+
 
   useEffect(() => {
     if (history.location.pathname.includes('analysis')) {
@@ -67,22 +69,22 @@ const CustomNode = ({ data }) => {
   };
 
   const handleStyle = useMemo(() => ({
-    height: handleVisability ? 8 : 0,
-    width: handleVisability ? 8 : 0,
+    height: handleVisability && !signed ? 8 : 0,
+    width: handleVisability && !signed ? 8 : 0,
     backgroundClip: 'padding-box',
-  }), [handleVisability]);
+  }), [handleVisability, signed]);
 
   const handleStyleSideBottom = useMemo(() => ({
-    height: handleVisability ? 8 : 0,
-    width: handleVisability ? 8 : 0,
+    height: handleVisability && !signed ? 8 : 0,
+    width: handleVisability && !signed ? 8 : 0,
     top: '70%',
-  }), [handleVisability]);
+  }), [handleVisability, signed]);
 
   const handleStyleSideTop = useMemo(() => ({
-    height: handleVisability ? 8 : 0,
-    width: handleVisability ? 8 : 0,
+    height: handleVisability && !signed ? 8 : 0,
+    width: handleVisability && !signed ? 8 : 0,
     top: '30%',
-  }), [handleVisability]);
+  }), [handleVisability, signed]);
 
   const header = useMemo(() => ({
     fontSize: 10

@@ -105,7 +105,12 @@ export const resetPassword = (email, setSendPassword) => async dispatch => {
     dispatch({ type: types.RESET_PASSWORD_SUCCESS, email });
     setSendPassword(true);
   } catch (error) {
-    const message = 'Vi havde nogle problemer med at sende mailen, prøv igen senere eller kontakt os';
+    let message = 'Vi havde nogle problemer med at sende mailen, prøv igen senere eller kontakt os';
+
+    if (error?.response?.status === 403) {
+      message = error.response.data.message;
+    }
+
     dispatch({ type: types.RESET_PASSWORD_FAILED, message });
   }
 };

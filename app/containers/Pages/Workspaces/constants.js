@@ -5,6 +5,7 @@ import { isNode } from 'react-flow-renderer';
 import dagre from 'dagre';
 import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
+import CheckIcon from '@material-ui/icons/Check';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -50,7 +51,18 @@ export const columns = [
   {
     name: 'Titel',
     options: {
-      filter: true
+      filter: true,
+      customBodyRender: (value) => (
+        value.split('∉').map((v, i) => {
+          if (i === 0) {
+            return v;
+          }
+          if (v === 'true') {
+            return <CheckIcon style={{ color: 'green', marginBottom: 20 }} />;
+          }
+          return '';
+        })
+      )
     }
   },
   {

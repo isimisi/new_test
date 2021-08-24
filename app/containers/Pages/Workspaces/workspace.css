@@ -7,6 +7,10 @@ path.react-flow__edge-path:hover {
     stroke: #555;
     cursor: pointer;
 }
+
+.react-flow {
+  background: white;
+}
 /* 
 .react-flow__handle:hover {
   background: #A1C4FF;

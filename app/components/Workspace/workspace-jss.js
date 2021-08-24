@@ -4,6 +4,7 @@ import blue from '@material-ui/core/colors/indigo';
 import cyan from '@material-ui/core/colors/cyan';
 import { lighten, darken, fade } from '@material-ui/core/styles/colorManipulator';
 const drawerWidth = 240;
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -17,6 +18,60 @@ const styles = theme => ({
     marginBottom: theme.spacing(3),
     borderRadius: theme.rounded.medium,
     boxShadow: theme.shade.light
+  },
+  canvasRoot: {
+    flexGrow: 1,
+    height: '100vh',
+    width: '100vw',
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  img: {
+    width: 90
+  },
+  logo: {
+    position: 'absolute', zIndex: 9999, top: 10, left: 10
+  },
+  signedLogo: {
+    position: 'absolute',
+    zIndex: 9999,
+    bottom: 70,
+    right: 20
+  },
+  signed: {
+    position: 'absolute',
+    zIndex: 9999,
+    bottom: 10,
+    right: 10,
+    padding: 5,
+    paddingRight: 9,
+    borderRadius: 5,
+    backgroundColor: '#0B730B22',
+    alignItems: 'center'
+  },
+  signedText: {
+    color: '#0B730Bdd',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  signedId: {
+    color: '#0B730Bdd',
+    fontSize: 10,
+  },
+  signedCircle: {
+    backgroundColor: '#0B730B55',
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    marginRight: 11,
+    marginBottom: 15,
+  },
+  controls: {
+    position: 'absolute',
+    top: '35%',
+    boxShadow: 'none',
+    bottom: 'none'
   },
   iconRed: {
     color: red[500]
@@ -285,6 +340,12 @@ const styles = theme => ({
     flexDirection: 'row',
     marginLeft: 5,
     alignItems: 'center',
+  },
+  signedRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   colorRow: {
     display: 'flex',

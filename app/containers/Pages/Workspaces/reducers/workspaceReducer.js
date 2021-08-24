@@ -62,7 +62,8 @@ import {
   SHARE_WORKSPACE_FAILED,
   PUBLIC_ACCESS_WORKSPACE_LOADING,
   PUBLIC_ACCESS_WORKSPACE_SUCCESS,
-  PUBLIC_ACCESS_WORKSPACE_FAILED
+  PUBLIC_ACCESS_WORKSPACE_FAILED,
+  SET_PUBLIC_ACCESS_FALSE
 } from './workspaceConstants';
 
 const initialState = {
@@ -71,6 +72,9 @@ const initialState = {
   label: '',
   description: '',
   group: '',
+  signed: false,
+  signedBy: '',
+  editable: false,
   elements: List(),
   message: '',
   groupsDropDownOptions: List(),
@@ -88,7 +92,8 @@ const initialState = {
   companyData: {},
   publicAuthenticated: false,
   publicUserFirstName: '',
-  publicUserLastName: ''
+  publicUserLastName: '',
+  publicAuthenticatedId: null
 };
 
 
@@ -151,6 +156,8 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const zoom = fromJS(action.zoom);
         const xPosition = fromJS(action.x_position);
         const yPosition = fromJS(action.y_position);
+        const signed = fromJS(action.signed);
+        const signedBy = fromJS(action.signed_by);
 
         mutableState.set('label', label);
         mutableState.set('description', description);
@@ -159,6 +166,8 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('zoom', zoom);
         mutableState.set('xPosition', xPosition);
         mutableState.set('yPosition', yPosition);
+        mutableState.set('signed', signed);
+        mutableState.set('signedBy', signedBy);
       });
     case SHOW_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
@@ -377,10 +386,14 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const publicUserFirstName = fromJS(action.publicUserFirstName);
         const publicUserLastName = fromJS(action.publicUserLastName);
-
+        const publicAuthenticatedId = fromJS(action.workspaceId);
+        const editable = fromJS(action.editable);
+        console.log(editable);
         mutableState.set('publicAuthenticated', true);
+        mutableState.set('publicAuthenticatedId', publicAuthenticatedId);
         mutableState.set('publicUserFirstName', publicUserFirstName);
         mutableState.set('publicUserLastName', publicUserLastName);
+        mutableState.set('editable', editable);
         mutableState.set('loading', false);
       });
 
@@ -409,6 +422,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const visability = fromJS(action.bool);
         mutableState.set('handleVisability', visability);
+      });
+    case SET_PUBLIC_ACCESS_FALSE:
+      return state.withMutations((mutableState) => {
+        mutableState.set('publicAuthenticatedId', null);
+        mutableState.set('publicAuthenticated', false);
       });
     case SHOW_NOTIF:
       return state.withMutations((mutableState) => {

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { LockForm, Notification } from '@components';
+import { LockForm, Notification, PublicWorkspace } from '@components';
 import styles from '@components/Forms/user-jss';
 import { useSelector, useDispatch } from 'react-redux';
 import { getId, getIdFromEncrypted } from '@api/constants';
@@ -11,18 +11,22 @@ import {
   useHistory
 } from 'react-router-dom';
 import {
-  closeNotifAction, accessPublicWorkspace
+  closeNotifAction, accessPublicWorkspace, setPublicAccessFalse
 } from './reducers/workspaceActions';
 
 
 function PublicFirewall(props) {
   const reducer = 'workspace';
+
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const publicAuthenticated = useSelector(state => state[reducer].get('publicAuthenticated'));
+  const label = useSelector(state => state[reducer].get('label'));
+  const publicAuthenticatedId = useSelector(state => state[reducer].get('publicAuthenticatedId'));
+
+
   const dispatch = useDispatch();
   const history = useHistory();
   const { search } = history.location;
-
   const userId = getIdFromEncrypted(new URLSearchParams(search).get('userId'));
   const firstName = new URLSearchParams(search).get('firstName');
   const lastName = new URLSearchParams(search).get('lastName');
@@ -30,14 +34,21 @@ function PublicFirewall(props) {
 
   const submitForm = values => {
     const securityCode = values.get('securityCode');
-    dispatch(accessPublicWorkspace(workspaceId, userId, firstName, lastName, securityCode, history));
+    dispatch(accessPublicWorkspace(workspaceId, userId, firstName, lastName, securityCode));
   };
 
-  const title = brand.name + ' - Login';
+  useEffect(() => {
+    if (workspaceId !== publicAuthenticatedId) {
+      dispatch(setPublicAccessFalse);
+    }
+  }, []);
+
+
+  const title = brand.name + ' - ' + label;
   const description = brand.desc;
   const { classes } = props;
   return (
-    <div className={classes.root}>
+    <div className={classes.rootFull}>
       <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
@@ -53,7 +64,9 @@ function PublicFirewall(props) {
             <LockForm onSubmit={(values) => submitForm(values)} />
           </div>
         </div>
-      ) : <div />}
+      ) : (
+        <PublicWorkspace />
+      )}
     </div>
   );
 }

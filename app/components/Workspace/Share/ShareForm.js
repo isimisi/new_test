@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -22,8 +22,13 @@ const ShareForm = (props) => {
     onPhoneChange,
     editable,
     onEditableChange,
-    onShare
+    onShare,
+    clearInput
   } = props;
+  const [changeGroup, setChangeGroup] = useState(false);
+  const onChangeGroup = () => setChangeGroup(prev => !prev);
+  const filled = firstName.length !== 0 && lastName.length !== 0 && email.length !== 0 && phone.length !== 0;
+
 
   return (
     <div>
@@ -83,6 +88,20 @@ const ShareForm = (props) => {
                 Skal brugeren kunne redigere i arbejdsområdet?
           </Typography>
         </div>
+        <Typography variant="caption">
+            Når du deler dit arbejdsområde, med eksterne brugere, så ændre vi din gruppe til "Ekstern" af sikkerhedsmæssige årsager. Når den er ændret vil den ikke kunne ændres tilbage igen.
+        </Typography>
+        <div className={classes.row}>
+          <Checkbox
+            name="changeGroup"
+            color="primary"
+            checked={changeGroup}
+            onChange={onChangeGroup}
+          />
+          <Typography variant="subtitle2" style={{ marginTop: 5 }}>
+                Jeg accepterer, at arbejdsområdets gruppe ændres til "Ekstern" og, at jeg ikke kan ændre den tilbage igen.
+          </Typography>
+        </div>
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => close()}>
@@ -92,7 +111,12 @@ const ShareForm = (props) => {
           variant="contained"
           color="secondary"
           type="button"
-          onClick={() => onShare(firstName, lastName, email, phone, editable)}
+          disabled={!changeGroup || !filled}
+          onClick={() => {
+            clearInput();
+            onShare(firstName, lastName, email, phone, editable);
+            onChangeGroup();
+          }}
         >
             Del
         </Button>
@@ -116,6 +140,7 @@ ShareForm.propTypes = {
   editable: PropTypes.string.isRequired,
   onEditableChange: PropTypes.func.isRequired,
   onShare: PropTypes.func.isRequired,
+  clearInput: PropTypes.func.isRequired
 };
 
 

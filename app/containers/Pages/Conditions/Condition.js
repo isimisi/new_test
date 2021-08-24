@@ -81,11 +81,17 @@ const Condition = (props) => {
 
   useEffect(() => {
     dispatch(getGroupDropDown());
-    dispatch(getNodes());
-    dispatch(getRelationships());
     dispatch(getBuildTypeValueOptions());
     dispatch(showCondition(id, setMetaOpen));
   }, []);
+
+  useEffect(() => {
+    if (group?.length > 0) {
+      dispatch(getNodes(group));
+      dispatch(getRelationships(group));
+    }
+  }, [group]);
+
 
   const choosenNode = nodes.find(r => r.label === nodeLabel);
 

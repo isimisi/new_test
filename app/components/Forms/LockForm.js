@@ -51,11 +51,11 @@ function LockForm(props) {
           <Lottie
             animationData={lock}
             style={{
-              width: '20%',
+              width: '30%',
             }}
           />
           <div>
-            <Typography className={classes.userName} variant="h5">
+            <Typography className={classes.userName} variant="h4">
               {firstName}
               {' '}
               {lastName}
@@ -84,7 +84,7 @@ function LockForm(props) {
                   }}
                 />
               </FormControl>
-              <Fab size="small" className={classes.unlockBtn} color="secondary" type="submit" disabled={submitting || pristine}>
+              <Fab className={classes.unlockBtn} color="secondary" type="submit" disabled={submitting || pristine}>
                 <ArrowForward />
               </Fab>
               <Popover

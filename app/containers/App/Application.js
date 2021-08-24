@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { ThemeContext } from './ThemeWrapper';
 import Dashboard from '../Templates/Dashboard';
 import {
@@ -16,6 +17,14 @@ import {
 function Application() {
   const history = useHistory();
   const changeMode = useContext(ThemeContext);
+
+  useEffect(() => {
+    const { type } = loadFromLocalStorage();
+
+    if (type === 'client') {
+      localStorage.clear();
+    }
+  }, []);
 
   return (
     <Dashboard history={history} changeMode={changeMode}>

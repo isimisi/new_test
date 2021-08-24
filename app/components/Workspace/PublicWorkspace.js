@@ -15,41 +15,39 @@ import ReactFlow, {
   ConnectionMode,
   BackgroundVariant
 } from 'react-flow-renderer';
-import {
-  WorkspaceFabs, CustomNode, StickyNoteNode,
-  DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
-  Notification, AlertModal, CompanyDataModel,
-  AlertLog, FormDialog, MapTypesForErst, ShareModal
-} from '@components';
-import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
+import {
+  WorkspaceFabs, CustomNode, StickyNoteNode,
+  DefineEdge, CustomEdge, DefineNode, CompanyDataModel, FormDialog
+} from '@components';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
+import { Fab } from 'react-tiny-fab';
 import {
   useHistory
 } from 'react-router-dom';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { toast } from 'react-toastify';
-import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId } from '@api/constants';
 import styles from './workspace-jss';
-import { reducer, initErstTypes } from './constants';
+import { reducer, initErstTypes as erstTypes } from '../../containers/Pages/Workspaces/constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
-  changeHandleVisability, labelChange, descriptionChange,
-  addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
-  showWorkspace, saveWorkspace, deleteWorkspaceElement,
+  changeHandleVisability,
+  getGroupDropDown, saveWorkspace, deleteWorkspaceElement,
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
-  getCompanyData, shareWorkspace
-} from './reducers/workspaceActions';
-import './workspace.css';
-
+  getCompanyData, signWorkspace, showWorkspace
+} from '../../containers/Pages/Workspaces/reducers/workspaceActions';
+import '../../containers/Pages/Workspaces/workspace.css';
+import SignWorkspace from './SignWorkspace';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -75,7 +73,7 @@ const Workspace = (props) => {
   const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(1);
-  const { plan_id } = loadFromLocalStorage();
+
 
   // REDUX
   const relationships = useSelector(state => state[reducer].get('relationships'));
@@ -83,30 +81,20 @@ const Workspace = (props) => {
   const handleVisability = useSelector(state => state[reducer].get('handleVisability'));
   const elements = useSelector(state => state[reducer].get('elements')).toJS();
   const label = useSelector(state => state[reducer].get('label'));
-  const description = useSelector(state => state[reducer].get('description'));
   const group = useSelector(state => state[reducer].get('group'));
-  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
-  const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
-  const messageNotif = useSelector(state => state[reducer].get('message'));
-  const loading = useSelector(state => state[reducer].get('loading'));
-  const companyData = useSelector(state => state[reducer].get('companyData'));
   const signed = useSelector(state => state[reducer].get('signed'));
   const signedBy = useSelector(state => state[reducer].get('signedBy'));
+  const editable = useSelector(state => state[reducer].get('editable'));
 
-  const [metaOpen, setMetaOpen] = useState(false);
+  const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
+  const loading = useSelector(state => state[reducer].get('loading'));
+  const companyData = useSelector(state => state[reducer].get('companyData'));
+
   const [rfInstance, setRfInstance] = useState(null);
 
   const [showCvrModal, setShowCvrModal] = useState(false);
-  const [showMapErst, setShowMapErst] = useState(false);
-  const [erstTypes, setErstTypes] = useState(initErstTypes);
   const [showCompanyData, setShowCompanyData] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = useState(false);
-
-
-  const [showAlertLog, setShowAlertLog] = useState(false);
-  const [alerts, setAlerts] = useState([]);
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [alertId, setAlertId] = useState(null);
+  const [showSignWorkspace, setShowSignWorkspace] = useState(false);
 
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
   const [elementToUpdate, setElementToUpdate] = useState(null);
@@ -159,8 +147,8 @@ const Workspace = (props) => {
       if (isNode(el)) {
         return !(
           nodeIdsToRemove.includes(el.id)
-          || nodeIdsToRemove.includes(el.target)
-          || nodeIdsToRemove.includes(el.source)
+            || nodeIdsToRemove.includes(el.target)
+            || nodeIdsToRemove.includes(el.source)
         );
       }
       return !edgeIdsToRemove.includes(el.id);
@@ -232,49 +220,13 @@ const Workspace = (props) => {
     }
   }, [rfInstance]);
 
-
-  const handleAlerts = (_alerts, initial) => {
-    if (initial) {
-      setAlerts([..._alerts]);
-    } else {
-      const newAlerts = _alerts.filter(x => !alerts.some(y => y.id === x.id));
-
-      newAlerts.forEach((element, index) => {
-        toast(element.label, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: false,
-          toastId: alerts.length + index,
-          style: {
-            backgroundColor: theme.palette.secondary.main,
-            color: 'white'
-          },
-          onClick: (e) => {
-            setAlertId(e.currentTarget.id);
-          }
-        });
-        setAlerts(list => [...list, element]);
-      });
-    }
-  };
-
   useEffect(() => {
-    dispatch(showWorkspace(id, setMetaOpen, handleAlerts));
+    dispatch(showWorkspace(id));
+    dispatch(getRelationships(group));
+    dispatch(getNodes(group));
     dispatch(getGroupDropDown());
+    dispatch(getAttributeDropDown(group));
   }, []);
-
-  useEffect(() => {
-    if (group) {
-      dispatch(getRelationships(group));
-      dispatch(getNodes(group));
-      dispatch(getAttributeDropDown(group));
-    }
-  }, [group]);
-
-  useEffect(() => {
-    if (alertId) {
-      setAlertOpen(true);
-    }
-  }, [alertId]);
 
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
@@ -283,7 +235,7 @@ const Workspace = (props) => {
     const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
     const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
-    if (plan_id === 1) {
+    if (!editable) {
       dispatch(showNotifAction('At tilføje og ændre elementer i et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje og ændre elementer'));
     } else if (isUpdatingElement) {
       dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
@@ -293,7 +245,7 @@ const Workspace = (props) => {
         choosenNode.id, choosenNode.label,
         nodeDisplayName, nodeFigur,
         JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
-        _attributes, setDefineNodeOpen, handleAlerts,
+        _attributes, setDefineNodeOpen, null,
         x, y
       ));
       setNodeLabel('');
@@ -316,7 +268,7 @@ const Workspace = (props) => {
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-    if (plan_id === 1) {
+    if (!editable) {
       dispatch(showNotifAction('At tilføje og ændre relationer i et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje og ændre relationer'));
     } else if (isUpdatingElement) {
       dispatch(putEdge(
@@ -345,7 +297,7 @@ const Workspace = (props) => {
         lineThrough,
         ...currentConnectionData
       };
-      dispatch(postEdge(id, edge, setDefineEdgeOpen, handleAlerts));
+      dispatch(postEdge(id, edge, setDefineEdgeOpen, null));
     }
 
     setIsUpdatingElement(false);
@@ -357,7 +309,7 @@ const Workspace = (props) => {
   }, []);
 
   const handleChangeLabel = useCallback((_label) => {
-    if (_label.__isNew__ && plan_id !== 2) {
+    if (_label.__isNew__ && !editable) {
       dispatch(addEdgeToList({
         id: null,
         label: _label.value,
@@ -366,7 +318,7 @@ const Workspace = (props) => {
         style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
       }));
     }
-    if (_label.__isNew__ && plan_id === 2) {
+    if (_label.__isNew__ && !editable) {
       dispatch(showNotifAction('Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
     } else {
       setRelationshipLabel(_label.value);
@@ -382,7 +334,7 @@ const Workspace = (props) => {
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
   const handlePostSticky = () => {
-    if (plan_id === 1) {
+    if (!editable) {
       dispatch(showNotifAction('At tilføje noter til et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje noter'));
     } else {
       const rf = rfInstance.toObject();
@@ -410,8 +362,6 @@ const Workspace = (props) => {
     }
   }, []);
 
-  // console.log(JSON.stringify(elements));
-
   const onMouseLeave = useCallback(() => {
     onWorkspaceSave();
   }, [rfInstance, elements]);
@@ -427,18 +377,17 @@ const Workspace = (props) => {
 
   return (
     <div>
-      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
+      <div className={classes.canvasRoot} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
         <ReactFlow
           elements={elements}
           onElementsRemove={onElementsRemove}
           onConnect={onConnect}
           minZoom={0.3}
           maxZoom={3}
-          nodesDraggable={!signed}
-          nodesConnectable={!signed}
-          elementsSelectable={!signed}
-          selectNodesOnDrag={!signed}
+          nodesDraggable={editable ? !signed : false}
+          nodesConnectable={editable ? !signed : false}
+          elementsSelectable={editable ? !signed : false}
+          selectNodesOnDrag={editable ? !signed : false}
           style={flowStyle}
           nodeTypes={nodeTypes}
           onMove={(flowTransform) => {
@@ -449,7 +398,7 @@ const Workspace = (props) => {
           edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
-          onElementClick={!signed && onElementClick}
+          onElementClick={editable ? !signed : false && onElementClick}
         >
           <div data-html2canvas-ignore="true">
             <MiniMap
@@ -459,71 +408,56 @@ const Workspace = (props) => {
             />
           </div>
           <div data-html2canvas-ignore="true">
-            <Controls showInteractive={!signed}>
+            <Controls className={classes.controls} showInteractive={editable ? !signed : false}>
               <ControlButton onClick={() => {
                 takeScreenShot(reactFlowContainer?.current);
               }}
               >
                 <PhotoCameraIcon />
               </ControlButton>
-              {!signed && (
+              {editable ? !signed : false && (
                 <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
                   {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </ControlButton>
               )}
             </Controls>
           </div>
-          {handleVisability && !signed
-               && (
-                 <Background
-                   variant={BackgroundVariant.Lines}
-                   gap={BASE_BG_GAP / currentZoom}
-                   size={BASE_BG_STROKE / currentZoom}
-                 />
-               )}
+          {handleVisability && editable ? !signed : false
+            && (
+              <Background
+                variant={BackgroundVariant.Lines}
+                gap={BASE_BG_GAP / currentZoom}
+                size={BASE_BG_STROKE / currentZoom}
+              />
+            )}
         </ReactFlow>
+        <a
+          href="https://www.juristic.io/"
+          className={signed ? classes.signedLogo : classes.logo}
+        >
+          <img className={classes.img} src={logoBeta} alt={brand.name} />
+        </a>
         {signed && (
-          <>
-            <a
-              href="https://www.juristic.io/"
-              className={classes.signedLogo}
-            >
-              <img className={classes.img} src={logoBeta} alt={brand.name} />
-            </a>
-
-            <div className={classes.signed}>
-              <div className={classes.signedRow}>
-                <div className={classes.signedCircle} />
-                <Typography className={classes.signedText}>
+          <div className={classes.signed}>
+            <div className={classes.signedRow}>
+              <div className={classes.signedCircle} />
+              <Typography className={classes.signedText}>
             Godkendt og låst af
-                  {' '}
-                  {' '}
-                  {signedBy}
-                </Typography>
-              </div>
-              <div className={classes.signedRow}>
-                <Typography className={classes.signedId}>
-              ID:
-                  {' '}
-                  {window.btoa(signedBy + id)}
-                </Typography>
-              </div>
+                {' '}
+                {' '}
+                {signedBy}
+              </Typography>
             </div>
-          </>
+            <div className={classes.signedRow}>
+              <Typography variant="" className={classes.signedId}>
+              ID:
+                {' '}
+                {window.btoa(signedBy + id)}
+              </Typography>
+            </div>
+          </div>
         )}
       </div>
-      <WorkspaceMeta
-        open={metaOpen}
-        label={label}
-        description={description}
-        group={group}
-        labelChange={(e) => dispatch(labelChange(e.target.value))}
-        descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
-        addGroup={(_group) => dispatch(addGroup(_group.value))}
-        groupsDropDownOptions={groupsDropDownOptions}
-        onSave={() => dispatch(putWorkspace(id, label, description, group, setMetaOpen))}
-        closeForm={() => setMetaOpen(false)}
-      />
       <DefineEdge
         open={defineEdgeOpen}
         close={closeDefineEdge}
@@ -559,7 +493,7 @@ const Workspace = (props) => {
         nodes={nodes}
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => {
-          if (_label.__isNew__ && plan_id !== 2) {
+          if (_label.__isNew__ && !editable) {
             dispatch(addWorkspaceNodeToList({
               attributes: [],
               description: null,
@@ -568,7 +502,7 @@ const Workspace = (props) => {
               style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
             }));
           }
-          if (_label.__isNew__ && plan_id === 2) {
+          if (_label.__isNew__ && !editable) {
             dispatch(showNotifAction('Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.'));
           } else {
             setNodeLabel(_label.value);
@@ -576,12 +510,12 @@ const Workspace = (props) => {
         }}
         attributes={attributes}
         handleChangeAttributes={(_attributes, newRow, isNew) => {
-          if (isNew && plan_id !== 2) {
+          if (isNew && !editable) {
             newRow.value = newRow.label;
             dispatch(addWorkspaceNodeAttributToList(newRow));
           }
 
-          if (isNew && plan_id === 2) {
+          if (isNew && !editable) {
             dispatch(showNotifAction('Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
           } else {
             setAttributes(_attributes);
@@ -611,29 +545,6 @@ const Workspace = (props) => {
           dispatch(getCompanyData(elementToUpdate.id, setShowCompanyData, setDefineNodeOpen, setNodeLabel, setIsUpdatingElement));
         }}
       />
-      {alerts[alertId] && (
-        <AlertModal
-          title={alerts[alertId]?.label}
-          description={alerts[alertId]?.description}
-          handleSeeCondition={() => {
-            const location = window.location.href.replace(
-              history.location.pathname,
-              `/app/red%20flags/${alerts[alertId]?.isNode}`
-            );
-            const win = window.open(location, '_blank');
-            win.focus();
-          }
-          }
-          open={alertOpen}
-          handleClose={() => setAlertOpen(false)}
-        />
-      )}
-      <AlertLog
-        open={showAlertLog}
-        close={() => setShowAlertLog(false)}
-        alerts={alerts}
-        history={history}
-      />
       <FormDialog
         loading={loading}
         open={showCvrModal}
@@ -641,63 +552,25 @@ const Workspace = (props) => {
         title="Indlæs fra CVR"
         description="Søg på en virksomhed eller et CVR-nummer:"
         textFielLabel="CVR-nummer"
-
         onConfirm={(value, close) => {
-          const erstNodeArray = Object.values(erstTypes.nodes);
-          const erstEdgeArray = Object.values(erstTypes.edges);
-          const nodeLabels = nodes.map((node) => node.label);
-          const relationshipLabels = relationships.toJS().map((r) => r.label);
-          if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
-            dispatch(cvrWorkspace(id, value, close, erstTypes));
-          } else {
-            setShowMapErst(true);
-          }
+          dispatch(cvrWorkspace(id, value, close, erstTypes));
         }}
       />
-      <MapTypesForErst
-        open={showMapErst}
-        handleClose={() => setShowMapErst(false)}
-        onConfirm={(types) => {
-          setShowMapErst(false);
-          setErstTypes(types);
-        }}
-        handleNodeChange={(_label) => {
-          if (_label.__isNew__) {
-            dispatch(addWorkspaceNodeToList({
-              attributes: [],
-              description: null,
-              id: null,
-              label: _label.value,
-              style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
-            }));
-          }
-        }}
-        handleRelationshipChange={(_label) => {
-          if (_label.__isNew__) {
-            dispatch(addEdgeToList({
-              id: null,
-              label: _label.value,
-              description: null,
-              values: [],
-              style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
-            }));
-          }
-        }}
-        initErstTypes={erstTypes}
-        nodes={nodes}
-        relationships={relationships}
-      />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && (
+      {!defineEdgeOpen && !defineNodeOpen && !showCompanyData && !showSignWorkspace && editable && !signed && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
-          metaClick={() => setMetaOpen(true)}
           saveClick={onWorkspaceSave}
-          onAlertClick={() => setShowAlertLog(true)}
-          onAnalysisClick={() => history.push(`analysis/${id}`)}
           onCvrClick={() => setShowCvrModal(true)}
           stickyClick={handlePostSticky}
-          onShareClick={() => setShareModalOpen(true)}
-          plan_id={plan_id}
+          signWorkspaceClick={() => setShowSignWorkspace(true)}
+          editable={editable}
+        />
+      )}
+      {!editable && !showSignWorkspace && (
+        <Fab
+          onClick={() => setShowSignWorkspace(true)}
+          icon={<BorderColorIcon style={{ color: theme.palette.primary.main }} />}
+          mainButtonStyles={{ backgroundColor: theme.palette.secondary.main }}
         />
       )}
       <CompanyDataModel
@@ -706,12 +579,12 @@ const Workspace = (props) => {
         displayName={elementToUpdate?.data?.displayName}
         companyData={companyData}
       />
-      <ShareModal
-        open={shareModalOpen}
-        loading={loading}
-        close={() => setShareModalOpen(false)}
-        onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, setShareModalOpen))}
+      <SignWorkspace
+        open={showSignWorkspace}
+        closeForm={() => setShowSignWorkspace(false)}
+        onSave={() => dispatch(signWorkspace(id, setShowSignWorkspace))}
       />
+
     </div>
   );
 };

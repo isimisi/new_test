@@ -348,6 +348,13 @@ const styles = theme => ({
       }
     }
   },
+  overlay: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#000000bb',
+    zIndex: 1
+  },
   lockField: {
     marginRight: theme.spacing(1),
     '& label': {

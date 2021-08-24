@@ -41,6 +41,13 @@ function ShareModal(props) {
     setEditable(prevVal => !prevVal);
   };
 
+  const clearInput = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPhone('');
+    setEditable(false);
+  };
 
   return (
     <div>
@@ -62,6 +69,7 @@ function ShareModal(props) {
             onPhoneChange={onPhoneChange}
             editable={editable}
             onEditableChange={onEditableChange}
+            clearInput={clearInput}
             onShare={onShare}
           />
         )}
