@@ -75,8 +75,6 @@ const initialState = {};
 const { store } = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
-console.log(store.getState());
-
 // Include the Crisp code here, without the <script></script> tags
 window.$crisp = [];
 window.CRISP_WEBSITE_ID = '66acbf35-9c41-485f-99dc-b7800897ea4a';

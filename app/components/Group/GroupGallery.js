@@ -20,7 +20,6 @@ function GroupGallery(props) {
   } = props;
 
   const handleDetailOpen = (product) => {
-    console.log(plan_id);
     if (plan_id < 3) {
       notif();
     } else {

@@ -11,8 +11,6 @@ import {
   ChoosePlanFront
 } from '../pageListAsync';
 
-console.log('hej fra auth');
-
 function Auth() {
   return (
     <Outer>

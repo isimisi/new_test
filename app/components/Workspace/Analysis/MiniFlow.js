@@ -15,7 +15,6 @@ const MiniFlow = (props) => {
 
   const onLoad = (reactFlowInstance) => {
     reactFlowInstance.fitView();
-    console.log(reactFlowInstance);
   };
 
 

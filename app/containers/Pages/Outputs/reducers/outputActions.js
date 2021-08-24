@@ -31,7 +31,6 @@ export const postOutput = (history) => async dispatch => {
     dispatch({ type: types.POST_OUTPUT_SUCCESS });
     history.push(`outputs/${id}`);
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_OUTPUT_FAILED, message });
   }
@@ -77,7 +76,6 @@ export const putOutput = (id, label, description, output, fileType, outputType, 
     dispatch({ type: types.PUT_OUTPUT_SUCCESS, message });
     history.push('/app/outputs');
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_OUTPUT_FAILED, message });
   }

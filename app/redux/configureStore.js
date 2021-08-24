@@ -21,11 +21,9 @@ const persistConfig = {
   storage,
 };
 
-console.log(createReducer());
 
 const persistedReducer = persistReducer(persistConfig, createReducer());
 
-console.log(persistedReducer);
 
 export default function configureStore(initialState = {}, history) {
   const store = createStore(

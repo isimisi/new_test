@@ -388,7 +388,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const publicUserLastName = fromJS(action.publicUserLastName);
         const publicAuthenticatedId = fromJS(action.workspaceId);
         const editable = fromJS(action.editable);
-        console.log(editable);
+
         mutableState.set('publicAuthenticated', true);
         mutableState.set('publicAuthenticatedId', publicAuthenticatedId);
         mutableState.set('publicUserFirstName', publicUserFirstName);

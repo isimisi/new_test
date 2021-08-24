@@ -143,7 +143,6 @@ export const newPassword = (id, password, history) => async dispatch => {
 
     history.push('/app');
   } catch (error) {
-    console.log(error.response);
     let message = 'Hov, der er vidst nogle problemer med login. Prøv igen senere.';
     if (error.response) {
       if (Array.isArray(error?.response?.data)) {

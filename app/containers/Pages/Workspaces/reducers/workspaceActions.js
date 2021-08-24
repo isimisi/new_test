@@ -56,12 +56,12 @@ export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async 
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
-    console.log(response);
+
     const alerts = response.data;
     setAlerts(alerts, initial);
   } catch (error) {
     // do something
-    console.log(error.response);
+
   }
 };
 
@@ -74,7 +74,6 @@ export const analyseOutput = (workspaceId) => async dispatch => {
 
     dispatch({ type: types.ANALYSE_OUTPUT_SUCCESS, outputs });
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.ANALYSE_OUTPUT_FAILED, message });
   }
 };
@@ -185,7 +184,6 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
       await axios.delete(url, header);
       dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
     } catch (error) {
-      console.log(error.response);
       dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
     }
   } else {
@@ -318,11 +316,10 @@ export const putEdge = (
   try {
     const response = await axios.put(url, body, header);
     const responseEdge = response.data;
-    console.log(responseEdge);
+
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.PUT_EDGE_FAILED, message });
   }
 };
@@ -336,7 +333,6 @@ export const getNodes = (group) => async dispatch => {
     dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
   } catch (error) {
     dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
-    console.log(error.response);
   }
 };
 
@@ -389,7 +385,6 @@ export const postSticky = (workspace_id, x, y) => async dispatch => {
     const node = response.data;
     dispatch({ type: types.WORKSPACE_POST_NODE_SUCCESS, node });
   } catch (error) {
-    console.log(error);
     dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
   }
 };
@@ -404,7 +399,7 @@ export const putSticky = (id, text) => async dispatch => {
   try {
     await axios.put(url, body, header);
   } catch (error) {
-    console.log(error);
+
     // do something
   }
 };

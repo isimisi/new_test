@@ -410,7 +410,6 @@ const Workspace = (props) => {
     }
   }, []);
 
-  // console.log(JSON.stringify(elements));
 
   const onMouseLeave = useCallback(() => {
     onWorkspaceSave();

@@ -131,7 +131,6 @@ export const saveCondition = (condition_id, conditionZoom, conditionXPosition, c
       history.push(`/app/${CONDITIONS}`);
     }
   } catch (error) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SAVE_CONDITION_FAILED, message });
   }
@@ -249,14 +248,13 @@ export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatc
     type: edge.relationshipType,
   };
   const header = authHeader();
-  console.log('called');
+
   try {
     const response = await axios.post(url, body, header);
     const responseEdge = response.data;
     dispatch({ type: types.CONDITION_POST_EDGE_SUCCESS, edge: responseEdge });
     setDefineEdgeOpen(false);
   } catch (error) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_POST_EDGE_FAILED, message });
   }

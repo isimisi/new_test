@@ -34,6 +34,7 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId } from '@api/constants';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 import styles from './workspace-jss';
 import { reducer, initErstTypes as erstTypes } from '../../containers/Pages/Workspaces/constants';
 import {
@@ -47,7 +48,7 @@ import {
 } from '../../containers/Pages/Workspaces/reducers/workspaceActions';
 import '../../containers/Pages/Workspaces/workspace.css';
 import SignWorkspace from './SignWorkspace';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
+
 
 const nodeTypes = {
   custom: CustomNode,
@@ -566,7 +567,7 @@ const Workspace = (props) => {
           editable={editable}
         />
       )}
-      {!editable && !showSignWorkspace && (
+      {!editable && !showSignWorkspace && !signed && (
         <Fab
           onClick={() => setShowSignWorkspace(true)}
           icon={<BorderColorIcon style={{ color: theme.palette.primary.main }} />}

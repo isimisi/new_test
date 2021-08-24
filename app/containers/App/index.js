@@ -10,8 +10,6 @@ import Application from './Application';
 import ThemeWrapper from './ThemeWrapper';
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
-console.log('hej fra main router');
-
 const App = () => (
   <ThemeWrapper>
     <Switch>
