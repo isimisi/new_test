@@ -60,8 +60,6 @@ export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async 
     const alerts = response.data;
     setAlerts(alerts, initial);
   } catch (error) {
-    // do something
-
   }
 };
 

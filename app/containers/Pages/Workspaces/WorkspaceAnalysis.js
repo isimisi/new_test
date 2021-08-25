@@ -22,7 +22,7 @@ const WorkspaceAnalysis = (props) => {
   const id = history.location.pathname.split('/').pop();
 
   const outputs = useSelector(state => state[reducer].get('outputs')).toJS();
-
+  console.log(outputs);
   useEffect(() => {
     dispatch(analyseOutput(id));
   }, []);
@@ -39,12 +39,12 @@ const WorkspaceAnalysis = (props) => {
     >
       {outputs.map(output => (
         <>
-          <Grid container spacing={3}>
+          <Grid container spacing={3} style={{ height: 400 }}>
             <Grid item xs={6}>
               <Typography>
-                {output.condition.label}
+                {output.conditionLabel}
               </Typography>
-              <MiniFlow elements={output.canvas} />
+              <MiniFlow elements={output.elements} />
             </Grid>
             <Grid item xs={6}>
               <div dangerouslySetInnerHTML={{ __html: output.action.output }} />

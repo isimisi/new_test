@@ -1,6 +1,6 @@
 import { fromJS, List, Map } from 'immutable';
 import {
-  convertFromRaw, EditorState, ContentState
+  EditorState, ContentState, convertToRaw
 } from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import { CLOSE_NOTIF, SHOW_NOTIF } from '@redux/constants/notifConstants';
@@ -35,21 +35,6 @@ import {
   OUTPUT_DELETE_CONDITION
 } from './outputConstants';
 
-const content = {
-  blocks: [{
-    key: '637gr',
-    text: '',
-    type: 'unstyled',
-    depth: 0,
-    inlineStyleRanges: [],
-    entityRanges: [],
-    data: {}
-  }],
-  entityMap: {}
-};
-const contentBlock = convertFromRaw(content);
-const initEditorState = EditorState.createWithContent(contentBlock);
-
 const initialState = {
   outputs: List(),
   outputFileUrl: '',
@@ -61,7 +46,7 @@ const initialState = {
   group: '',
   outputConditions: List(),
   message: '',
-  editorState: initEditorState,
+  editorState: EditorState.createEmpty(),
   conditionsDropDownOptions: List(),
   groupsDropDownOptions: List()
 };

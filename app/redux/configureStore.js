@@ -19,6 +19,7 @@ const persistConfig = {
   transforms: [immutableTransform()],
   key: 'root',
   storage,
+  blacklist: ['output']
 };
 
 

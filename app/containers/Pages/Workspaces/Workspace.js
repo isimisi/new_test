@@ -234,27 +234,22 @@ const Workspace = (props) => {
 
 
   const handleAlerts = (_alerts, initial) => {
-    if (initial) {
-      setAlerts([..._alerts]);
-    } else {
-      const newAlerts = _alerts.filter(x => !alerts.some(y => y.id === x.id));
-
-      newAlerts.forEach((element, index) => {
-        toast(element.label, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: false,
-          toastId: alerts.length + index,
-          style: {
-            backgroundColor: theme.palette.secondary.main,
-            color: 'white'
-          },
-          onClick: (e) => {
-            setAlertId(e.currentTarget.id);
-          }
-        });
-        setAlerts(list => [...list, element]);
+    _alerts.forEach((element, index) => {
+      toast(element.alert.label, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+        toastId: alerts.length + index,
+        style: {
+          backgroundColor: theme.palette.secondary.main,
+          color: 'white'
+        },
+        onClick: (e) => {
+          console.log(element);
+        }
       });
-    }
+      setAlerts(list => [...list, element]);
+    });
+    // }
   };
 
   useEffect(() => {
@@ -481,7 +476,7 @@ const Workspace = (props) => {
                  />
                )}
         </ReactFlow>
-        {signed && (
+        {signed ? (
           <>
             <a
               href="https://www.juristic.io/"
@@ -509,7 +504,7 @@ const Workspace = (props) => {
               </div>
             </div>
           </>
-        )}
+        ) : null}
       </div>
       <WorkspaceMeta
         open={metaOpen}
