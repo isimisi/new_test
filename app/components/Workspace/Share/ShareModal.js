@@ -33,8 +33,8 @@ function ShareModal(props) {
     setEmail(e.target.value);
   };
 
-  const onPhoneChange = (e) => {
-    setPhone(e.target.value);
+  const onPhoneChange = (value) => {
+    setPhone(value);
   };
 
   const onEditableChange = () => {

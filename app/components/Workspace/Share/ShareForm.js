@@ -6,6 +6,8 @@ import css from '@styles/Form.scss';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import styles from '../workspace-jss';
 
 const ShareForm = (props) => {
@@ -67,12 +69,14 @@ const ShareForm = (props) => {
             onChange={onEmailChange}
           />
         </div>
-        <div style={{ marginBottom: 10 }}>
-          <TextField
-            name="phone"
-            placeholder="Telefonnummer"
-            label="Telefonnummer"
+        <div style={{ marginBottom: 10, marginTop: 15 }}>
+          <PhoneInput
+            country="dk"
             className={classes.field}
+            inputStyle={{
+              width: '100%', height: 44.4625, borderRadius: 8, fontFamily: 'Open Sans'
+            }}
+            disableDropdown
             value={phone}
             onChange={onPhoneChange}
           />
