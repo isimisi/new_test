@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 import React, {
-  memo, useMemo, useCallback, useEffect
+  memo, useMemo, useCallback
 } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { Handle, Position } from 'react-flow-renderer';
@@ -17,16 +17,10 @@ import person from './person.svg';
 const CustomNode = ({ data }) => {
   const theme = useTheme();
   const history = useHistory();
-  let handleVisability = useSelector(state => state.workspace.get('handleVisability'));
+  const handleVisability = useSelector(state => state.workspace.get('handleVisability'));
   const signed = useSelector(state => state.workspace.get('signed'));
 
-
-  useEffect(() => {
-    if (history.location.pathname.includes('analysis')) {
-      handleVisability = false;
-    }
-  }, [history]);
-
+  const showHandles = !history.location.pathname.includes('analysis') && handleVisability && !signed;
 
   const getSVG = useCallback((figur) => {
     switch (figur) {
@@ -69,20 +63,20 @@ const CustomNode = ({ data }) => {
   };
 
   const handleStyle = useMemo(() => ({
-    height: handleVisability && !signed ? 8 : 0,
-    width: handleVisability && !signed ? 8 : 0,
+    height: showHandles ? 8 : 0,
+    width: showHandles ? 8 : 0,
     backgroundClip: 'padding-box',
   }), [handleVisability, signed]);
 
   const handleStyleSideBottom = useMemo(() => ({
-    height: handleVisability && !signed ? 8 : 0,
-    width: handleVisability && !signed ? 8 : 0,
+    height: showHandles ? 8 : 0,
+    width: showHandles ? 8 : 0,
     top: '70%',
   }), [handleVisability, signed]);
 
   const handleStyleSideTop = useMemo(() => ({
-    height: handleVisability && !signed ? 8 : 0,
-    width: handleVisability && !signed ? 8 : 0,
+    height: showHandles ? 8 : 0,
+    width: showHandles ? 8 : 0,
     top: '30%',
   }), [handleVisability, signed]);
 
