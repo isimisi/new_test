@@ -1,21 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import css from '@styles/Form.scss';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import Tooltip from '@material-ui/core/Tooltip';
+import { encryptId } from '@api/constants';
 import FloatingPanel from '../Panel/FloatingPanel';
-import AlertDemo from './AlertDemo';
 
 function AlertLog(props) {
   const {
     open,
     close,
     alerts,
-    history
+    history,
+    seeAlert
   } = props;
 
   const alertMargin = {
-    marginTop: 20,
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
+    marginBottom: 10,
+  };
+
+  const leave = () => {
+    const location = window.location.href.replace(
+      history.location.pathname,
+      `/app/red%20flags/${encryptId(alerts[0]?.alert?.id)}`
+    );
+    const win = window.open(location, '_blank');
+    win.focus();
   };
 
   return (
@@ -26,22 +41,28 @@ function AlertLog(props) {
         title="Dine tidligere red flags"
       >
         <div className={css.bodyForm}>
-          {alerts.map(a => (
-            <div key={a.id} style={alertMargin}>
-              <AlertDemo
-                title={a.label}
-                description={a.description}
-                handleSeeCondition={() => {
-                  const location = window.location.href.replace(
-                    history.location.pathname,
-                    `/app/red%20flags/${a.id}`
-                  );
-                  const win = window.open(location, '_blank');
-                  win.focus();
-                }}
-                border
-                disabled
-              />
+          {alerts.map((alert, index) => (
+            <div key={alert?.alert?.id} style={alertMargin}>
+              <div style={{
+                backgroundColor: '#fafafa', padding: 5, paddingLeft: 10, borderRadius: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'
+              }}
+              >
+                <Typography>
+                  {alert?.alert?.label}
+                </Typography>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <Tooltip title="Vis red flag">
+                    <IconButton color="primary" onClick={() => seeAlert(index)}>
+                      <VisibilityIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Gå til red flag">
+                    <IconButton color="primary" onClick={leave}>
+                      <ExitToAppIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </div>
             </div>
           )
           )}
@@ -55,7 +76,8 @@ AlertLog.propTypes = {
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   alerts: PropTypes.array.isRequired,
-  history: PropTypes.any.isRequired
+  history: PropTypes.any.isRequired,
+  seeAlert: PropTypes.func.isRequired,
 };
 
 export default AlertLog;

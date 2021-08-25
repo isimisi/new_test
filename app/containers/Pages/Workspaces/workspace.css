@@ -15,15 +15,17 @@ path.react-flow__edge-path:hover {
 .pulse > path {
   animation-duration: 1s;
   animation-name: pulse;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
+  animation-iteration-count: 5;
+  animation-direction: alternate;
+  animation-timing-function: ease-out;
 }
 
 .pulse > div {
   animation-duration: 1s;
   animation-name: pulse;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
+  animation-iteration-count: 5;
+  animation-direction: alternate;
+  animation-timing-function: ease-out;
 }
 
 @keyframes pulse {

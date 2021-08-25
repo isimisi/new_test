@@ -40,5 +40,6 @@ export const plans = ['Lite', 'Base', 'Draw', 'Pro'];
 
 export const getId = (history) => CryptoJS.AES.decrypt(decodeURIComponent(history.location.pathname.split('/').pop()), 'path')?.toString(CryptoJS.enc.Utf8) || history.location.pathname.split('/').pop();
 export const getIdFromEncrypted = (id) => CryptoJS.AES.decrypt(decodeURIComponent(id), 'path')?.toString(CryptoJS.enc.Utf8);
+export const encryptId = (id) => id && encodeURIComponent(CryptoJS.AES.encrypt(id.toString(), 'path').toString());
 
 export const generateRandomString = () => Math.random().toString(36).substring(7);

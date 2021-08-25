@@ -35,7 +35,7 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { toast } from 'react-toastify';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
-import { getId } from '@api/constants';
+import { getId, encryptId } from '@api/constants';
 import styles from './workspace-jss';
 import { reducer, initErstTypes } from './constants';
 import {
@@ -219,7 +219,15 @@ const Workspace = (props) => {
       setDefineEdgeOpen(true);
     }
   };
-
+  // const __elements = document.querySelectorAll('.react-flow__edge-path');
+  // useEffect(() => {
+  //   console.log(__elements);
+  //   if (__elements.length > 0) {
+  //     __elements.forEach(e => {
+  //       e.classList.add('pulse');
+  //     });
+  //   }
+  // }, [__elements]);
 
   // WORKSPACE GENERAL
 
@@ -232,24 +240,44 @@ const Workspace = (props) => {
     }
   }, [rfInstance]);
 
-
   const handleAlerts = (_alerts, initial) => {
-    _alerts.forEach((element, index) => {
-      toast(element.alert.label, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: false,
-        toastId: alerts.length + index,
-        style: {
-          backgroundColor: theme.palette.secondary.main,
-          color: 'white'
-        },
-        onClick: (e) => {
-          console.log(element);
-        }
+    if (initial) {
+      setAlerts([..._alerts]);
+    } else {
+      const cleanAlerts = alerts.map(alert => alert.alert);
+      const newAlerts = _alerts.filter(x => !cleanAlerts.some(y => y.id === x.alert.id));
+      console.log(cleanAlerts);
+      console.log(newAlerts, 'new alert');
+      setTimeout(() => {
+        Array.from(document.querySelectorAll('.pulse')).map(x => x.classList.remove('pulse'));
+      }, 10000);
+
+      newAlerts.forEach((alert, index) => {
+        alert.elements.forEach((element) => {
+          let htmlNode;
+          if (isNode(element)) {
+            htmlNode = document.querySelector(`[data-id="${element.id}"]`);
+          } else {
+            htmlNode = document.querySelector(`.id_${element.id}`);
+          }
+          htmlNode.classList.add('pulse');
+        });
+
+        toast(alert.alert.label, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+          toastId: alerts.length + index,
+          style: {
+            backgroundColor: theme.palette.secondary.main,
+            color: 'white'
+          },
+          onClick: (e) => {
+            setAlertId(e.currentTarget.id);
+          }
+        });
+        setAlerts(list => [...list, alert]);
       });
-      setAlerts(list => [...list, element]);
-    });
-    // }
+    }
   };
 
   useEffect(() => {
@@ -266,7 +294,7 @@ const Workspace = (props) => {
   }, [group]);
 
   useEffect(() => {
-    if (alertId) {
+    if (typeof alertId === 'number') {
       setAlertOpen(true);
     }
   }, [alertId]);
@@ -607,19 +635,22 @@ const Workspace = (props) => {
       />
       {alerts[alertId] && (
         <AlertModal
-          title={alerts[alertId]?.label}
-          description={alerts[alertId]?.description}
+          title={alerts[alertId]?.alert?.label}
+          description={alerts[alertId]?.alert?.description}
           handleSeeCondition={() => {
             const location = window.location.href.replace(
               history.location.pathname,
-              `/app/red%20flags/${alerts[alertId]?.isNode}`
+              `/app/red%20flags/${encryptId(alerts[0]?.alert?.id)}`
             );
             const win = window.open(location, '_blank');
             win.focus();
           }
           }
           open={alertOpen}
-          handleClose={() => setAlertOpen(false)}
+          handleClose={() => {
+            setAlertOpen(false);
+            setAlertId(null);
+          }}
         />
       )}
       <AlertLog
@@ -627,6 +658,7 @@ const Workspace = (props) => {
         close={() => setShowAlertLog(false)}
         alerts={alerts}
         history={history}
+        seeAlert={(index) => setAlertId(index)}
       />
       <FormDialog
         loading={loading}
