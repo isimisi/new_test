@@ -6,12 +6,10 @@ import ReactFlow, {
 import { CustomNode, CustomEdge } from '@components';
 
 const nodeTypes = { custom: CustomNode };
-const edgeTypes = { custom: CustomEdge };
 
 const MiniFlow = (props) => {
   const { elements } = props;
   const [hover, setHover] = useState(false);
-
 
   const onLoad = (reactFlowInstance) => {
     reactFlowInstance.fitView();
@@ -37,7 +35,7 @@ const MiniFlow = (props) => {
         maxZoom={2}
         nodeTypes={nodeTypes}
         onLoad={onLoad}
-        edgeTypes={edgeTypes}
+        edgeTypes={{ custom: CustomEdge }}
         connectionMode={ConnectionMode.Loose}
       >
         {hover && (

@@ -36,7 +36,7 @@ const ShareForm = (props) => {
     <div>
       <section className={css.bodyForm}>
         <Typography variant="caption">
-            OBS: Hvis du deler dit arbejdsområde, er det tilgængeligt for alle, der er i besidelse af den autogenerede kode. Da det kan indeholde sensitiv information, skal du være ekstra opmærksom på, hvem du deler det med.
+            OBS: Hvis du deler dit arbejdsområde, er det tilgængeligt for alle, der er i besiddelse af den autogenerede kode. Da det kan indeholde sensitiv information, skal du være ekstra opmærksom på, hvem du deler det med.
         </Typography>
 
         <div>

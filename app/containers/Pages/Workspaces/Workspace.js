@@ -240,28 +240,35 @@ const Workspace = (props) => {
     }
   }, [rfInstance]);
 
+  const highlightAlertItems = (alert) => {
+    alert.elements.forEach((element) => {
+      let htmlNode;
+      if (isNode(element)) {
+        htmlNode = document.querySelector(`[data-id="${element.id}"]`);
+      } else {
+        htmlNode = document.querySelector(`.id_${element.id}`);
+      }
+      htmlNode.classList.add('pulse');
+    });
+  };
+
+  const removeHighlightAlert = () => {
+    setTimeout(() => {
+      Array.from(document.querySelectorAll('.pulse')).map(x => x.classList.remove('pulse'));
+    }, 10000);
+  };
+
   const handleAlerts = (_alerts, initial) => {
     if (initial) {
       setAlerts([..._alerts]);
     } else {
-      const cleanAlerts = alerts.map(alert => alert.alert);
-      const newAlerts = _alerts.filter(x => !cleanAlerts.some(y => y.id === x.alert.id));
-      console.log(cleanAlerts);
-      console.log(newAlerts, 'new alert');
-      setTimeout(() => {
-        Array.from(document.querySelectorAll('.pulse')).map(x => x.classList.remove('pulse'));
-      }, 10000);
+      const cleanAlertsString = alerts.map(alert => alert.elements.map(x => x.id).join(''));
+      const newAlerts = _alerts.filter(x => !cleanAlertsString.includes(x.elements.map(y => y.id).join('')));
+
+      removeHighlightAlert();
 
       newAlerts.forEach((alert, index) => {
-        alert.elements.forEach((element) => {
-          let htmlNode;
-          if (isNode(element)) {
-            htmlNode = document.querySelector(`[data-id="${element.id}"]`);
-          } else {
-            htmlNode = document.querySelector(`.id_${element.id}`);
-          }
-          htmlNode.classList.add('pulse');
-        });
+        highlightAlertItems(alert);
 
         toast(alert.alert.label, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -659,6 +666,8 @@ const Workspace = (props) => {
         alerts={alerts}
         history={history}
         seeAlert={(index) => setAlertId(index)}
+        highlightAlertItems={highlightAlertItems}
+        removeHighlightAlert={removeHighlightAlert}
       />
       <FormDialog
         loading={loading}

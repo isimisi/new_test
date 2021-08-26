@@ -7,6 +7,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Tooltip from '@material-ui/core/Tooltip';
 import { encryptId } from '@api/constants';
+import HighlightIcon from '@material-ui/icons/Highlight';
 import FloatingPanel from '../Panel/FloatingPanel';
 
 function AlertLog(props) {
@@ -15,7 +16,9 @@ function AlertLog(props) {
     close,
     alerts,
     history,
-    seeAlert
+    seeAlert,
+    highlightAlertItems,
+    removeHighlightAlert
   } = props;
 
   const alertMargin = {
@@ -51,6 +54,17 @@ function AlertLog(props) {
                   {alert?.alert?.label}
                 </Typography>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <Tooltip title="Highlight">
+                    <IconButton
+                      color="primary"
+                      onClick={() => {
+                        highlightAlertItems(alert);
+                        removeHighlightAlert();
+                      }}
+                    >
+                      <HighlightIcon />
+                    </IconButton>
+                  </Tooltip>
                   <Tooltip title="Vis red flag">
                     <IconButton color="primary" onClick={() => seeAlert(index)}>
                       <VisibilityIcon />
@@ -78,6 +92,8 @@ AlertLog.propTypes = {
   alerts: PropTypes.array.isRequired,
   history: PropTypes.any.isRequired,
   seeAlert: PropTypes.func.isRequired,
+  highlightAlertItems: PropTypes.func.isRequired,
+  removeHighlightAlert: PropTypes.func.isRequired,
 };
 
 export default AlertLog;
