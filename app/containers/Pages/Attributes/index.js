@@ -41,7 +41,7 @@ function Attributes(props) {
     dispatch(getAttributes());
     dispatch(getGroupDropDown());
 
-    if (plan_id !== 3) {
+    if (plan_id < 3) {
       history.push('/app/plan');
     }
   }, []);

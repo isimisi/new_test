@@ -108,17 +108,9 @@ const StickyNote = ({ data }) => {
 
   const deleteNote = useCallback(() => {
     const elementsToRemove = [{ id: `sticky-${data.id}` }];
-
-    const nodeIdsToRemove = elementsToRemove.map((n) => n.id);
-
-    const remainingElements = elements.filter(el => !(
-      nodeIdsToRemove.includes(el.id)
-          || nodeIdsToRemove.includes(el.target)
-          || nodeIdsToRemove.includes(el.source)
-    ));
-
+    const remainingElements = elements.filter(e => e.id !== elementsToRemove[0].id);
     dispatch(deleteWorkspaceElement(elementsToRemove, remainingElements));
-  }, []);
+  }, [elements]);
 
 
   return (

@@ -89,7 +89,7 @@ function PricingCard(props) {
         <CardContent className={classes.featureList}>
           <List dense>
             <ListItem>
-              <ListItemText primary="Antal arbejdsområder" />
+              <ListItemText primary="Arbejdsområder" />
               <ListItemSecondaryAction>
                 <Typography style={{ marginRight: 10 }}>{getTierForWorkspaces(tier)}</Typography>
               </ListItemSecondaryAction>

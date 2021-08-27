@@ -190,6 +190,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
     const elements = elementsToRemove.filter(element => isNode(element)).map(element => element.id);
     const body = { elements };
     const header = authHeader();
+
     dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
     try {
       await axios.post(url, body, header);

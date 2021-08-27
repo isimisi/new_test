@@ -154,7 +154,6 @@ const Workspace = (props) => {
   const onElementsRemove = (elementsToRemove) => {
     const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
     const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
-
     const remainingElements = elements.filter(el => {
       if (isNode(el)) {
         return !(
