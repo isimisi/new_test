@@ -21,7 +21,7 @@ import {
 } from './reducers/attributeActions';
 
 const typeSuggestions = [
-  { label: 'Valgmuligheder', value: 'Selction' },
+  { label: 'Valgmuligheder', value: 'Selection' },
   { label: 'Værdi', value: 'Value' },
 ];
 

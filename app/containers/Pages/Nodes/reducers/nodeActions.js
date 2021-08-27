@@ -103,7 +103,7 @@ export const deleteNode = (id, title) => async dispatch => {
     let message = genericErrorMessage;
 
     if (error?.response?.status === 403) {
-      message = 'Hov det ser vidst ud til, at du bruger dette element i arbejdsområder eller betingelser, derfor kan du ikke slette den.';
+      message = 'Hov det ser vist ud til, at du bruger dette element i arbejdsområder eller betingelser, derfor kan du ikke slette den.';
     }
 
     dispatch({ type: types.DELETE_NODE_FAILED, message });

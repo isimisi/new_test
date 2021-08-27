@@ -177,7 +177,7 @@ export const deleteConditionElement = (elementsToRemove, remainingElements) => a
 };
 
 export const getNodes = (group) => async dispatch => {
-  const url = `${baseUrl}/nodes/workspace?group=${group}`;
+  const url = `${baseUrl}/nodes/workspace?group=${group}&type=condition`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
@@ -283,7 +283,7 @@ export const putEdge = (edgeId, relationship_id, relationshipLabel, comparison_t
 };
 
 export const getRelationships = (group) => async dispatch => {
-  const url = `${baseUrl}/relationships/workspace?group=${group}`;
+  const url = `${baseUrl}/relationships/workspace?group=${group}&type=condition`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);

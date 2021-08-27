@@ -12,7 +12,7 @@ const tableOptions = (onDelete, loading, where = 'elementer') => ({
     body: {
       noMatch: loading
         ? <Loader />
-        : 'Det ser vidst ud som om, at du ikke har lavet nogle ' + where + ' endnu',
+        : 'Det ser vist ud som om, at du ikke har lavet nogle ' + where + ' endnu',
     },
   }
 });

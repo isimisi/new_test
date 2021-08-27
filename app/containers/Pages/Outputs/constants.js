@@ -19,7 +19,7 @@ export const tableOptions = (onDelete, loading) => ({
     body: {
       noMatch: loading
         ? <Loader />
-        : 'Det ser vidst ud som om du ikke har lavet noget rapportindhold endnu',
+        : 'Det ser vist ud som om du ikke har lavet noget rapportindhold endnu',
     },
   }
 });

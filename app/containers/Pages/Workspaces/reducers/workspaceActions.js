@@ -150,6 +150,7 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
     await axios.put(url, body, header);
     dispatch({ type: types.SAVE_WORKSPACE_SUCCESS });
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.SAVE_WORKSPACE_FAILED, message });
   }
 };

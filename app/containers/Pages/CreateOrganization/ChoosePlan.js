@@ -79,7 +79,7 @@ function Pricing() {
         <Grid item md={3} sm={6} xs={12}>
           <PricingCard
             title="Pro"
-            price="Kontakt os"
+            price="Kontakt"
             tier="more-expensive"
             active={plans[plan_id - 1] === 'Pro'}
             onClick={() => handleGetItem(3)}

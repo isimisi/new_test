@@ -399,7 +399,7 @@ const Workspace = (props) => {
           edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
-          onElementClick={editable ? !signed : false && onElementClick}
+          onElementClick={editable && !signed && onElementClick}
         >
           <div data-html2canvas-ignore="true">
             <MiniMap

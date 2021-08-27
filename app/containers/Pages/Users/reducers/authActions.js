@@ -37,7 +37,7 @@ export const login = (email, password, history, locationState = null) => async d
 
     history.push(locationState?.from?.path || '/app');
   } catch (error) {
-    let message = 'Hov, der er vidst nogle problemer med login. Prøv igen senere.';
+    let message = 'Hov, der er vist nogle problemer med login. Prøv igen senere.';
     if (error.response) {
       if (Array.isArray(error?.response?.data)) {
         message = error.response.data[0].message;
@@ -143,7 +143,7 @@ export const newPassword = (id, password, history) => async dispatch => {
 
     history.push('/app');
   } catch (error) {
-    let message = 'Hov, der er vidst nogle problemer med login. Prøv igen senere.';
+    let message = 'Hov, der er vist nogle problemer med login. Prøv igen senere.';
     if (error.response) {
       if (Array.isArray(error?.response?.data)) {
         message = error.response.data[0].message;
