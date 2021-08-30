@@ -29,6 +29,25 @@ export const getWorkspaces = () => async dispatch => {
   }
 };
 
+
+export const cvrWorkspaceJobStatus = (jobId, workspaceId, close) => async dispatch => {
+  const url = `${baseUrl}/workspaces/${workspaceId}/cvr/status?jobId=${jobId}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    if (response.data === 'again') {
+      dispatch(cvrWorkspaceJobStatus(jobId, workspaceId, close));
+    } else {
+      const elements = getLayoutedElements(response.data);
+      dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
+      close();
+    }
+  } catch (error) {
+    const _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
+    dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
+  }
+};
+
 export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/${id}/cvr`;
@@ -36,10 +55,8 @@ export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
   const header = authHeader();
   try {
     const response = await axios.post(url, body, header);
-    const elements = getLayoutedElements(response.data);
-
-    dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
-    close();
+    const { jobId } = response.data;
+    dispatch(cvrWorkspaceJobStatus(jobId, id, close));
   } catch (error) {
     let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
 
