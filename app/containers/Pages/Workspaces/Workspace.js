@@ -218,15 +218,7 @@ const Workspace = (props) => {
       setDefineEdgeOpen(true);
     }
   };
-  // const __elements = document.querySelectorAll('.react-flow__edge-path');
-  // useEffect(() => {
-  //   console.log(__elements);
-  //   if (__elements.length > 0) {
-  //     __elements.forEach(e => {
-  //       e.classList.add('pulse');
-  //     });
-  //   }
-  // }, [__elements]);
+
 
   // WORKSPACE GENERAL
 
@@ -268,6 +260,7 @@ const Workspace = (props) => {
 
       newAlerts.forEach((alert, index) => {
         highlightAlertItems(alert);
+        setAlerts(list => [...list, alert]);
 
         toast(alert.alert.label, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -281,7 +274,6 @@ const Workspace = (props) => {
             setAlertId(e.currentTarget.id);
           }
         });
-        setAlerts(list => [...list, alert]);
       });
     }
   };
@@ -300,7 +292,7 @@ const Workspace = (props) => {
   }, [group]);
 
   useEffect(() => {
-    if (typeof alertId === 'number') {
+    if (alertId) {
       setAlertOpen(true);
     }
   }, [alertId]);
