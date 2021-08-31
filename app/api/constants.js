@@ -15,7 +15,7 @@ export const getStatus = () => {
   return status;
 };
 
-const getToken = () => {
+export const getToken = () => {
   const { token } = loadFromLocalStorage() || {};
   return token;
 };

@@ -12,7 +12,6 @@ import { saveToLocalStorage } from '@api/localStorage/localStorage';
 import LogRocket from 'logrocket';
 import { toast } from 'react-toastify';
 import * as types from './workspaceConstants';
-import { getLayoutedElements } from '../constants';
 
 const WORKSPACES = 'workspaces';
 
@@ -30,33 +29,13 @@ export const getWorkspaces = () => async dispatch => {
 };
 
 
-export const cvrWorkspaceJobStatus = (jobId, workspaceId, close) => async dispatch => {
-  const url = `${baseUrl}/workspaces/${workspaceId}/cvr/status?jobId=${jobId}`;
-  const header = authHeader();
-  try {
-    const response = await axios.get(url, header);
-    if (response.data === 'again') {
-      dispatch(cvrWorkspaceJobStatus(jobId, workspaceId, close));
-    } else {
-      const elements = getLayoutedElements(response.data);
-      dispatch({ type: types.GET_CVR_NODES_SUCCESS, elements });
-      close();
-    }
-  } catch (error) {
-    const _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
-    dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
-  }
-};
-
 export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/${id}/cvr`;
   const body = { cvr, erstTypes };
   const header = authHeader();
   try {
-    const response = await axios.post(url, body, header);
-    const { jobId } = response.data;
-    dispatch(cvrWorkspaceJobStatus(jobId, id, close));
+    await axios.post(url, body, header);
   } catch (error) {
     let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
 
@@ -534,6 +513,11 @@ export const signWorkspace = (id, setShowSignWorkspace) => async dispatch => {
     dispatch({ type: types.SHARE_WORKSPACE_FAILED, message });
   }
 };
+
+export const cvrSuccess = elements => ({
+  type: types.GET_CVR_NODES_SUCCESS,
+  elements
+});
 
 
 export const labelChange = label => ({

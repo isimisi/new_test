@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
@@ -10,7 +10,6 @@ import {
   useHistory,
   useLocation
 } from 'react-router-dom';
-import connection from '@api/socket/SocketConnection';
 import { login, closeNotifAction } from './reducers/authActions';
 
 
@@ -27,25 +26,6 @@ const Login = (props) => {
 
     dispatch(login(email, password, history, locationState));
   };
-
-  const [subscription, setSubscription] = useState(null);
-
-  useEffect(() => {
-    connection.connect();
-
-    // storing the subscription in the global variable
-    // passing the incoming data handler fn as a second argument
-    const sub = connection.subscribe('cvr:358');
-    setSubscription(sub);
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      if (subscription) {
-        subscription.close();
-      }
-    };
-  }, []);
-
 
   const title = brand.name + ' - Login';
   const description = brand.desc;

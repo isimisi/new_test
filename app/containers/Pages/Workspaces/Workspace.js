@@ -36,8 +36,9 @@ import { toast } from 'react-toastify';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId, encryptId } from '@api/constants';
+import connection from '@api/socket/SocketConnection';
 import styles from './workspace-jss';
-import { reducer, initErstTypes } from './constants';
+import { reducer, initErstTypes, getLayoutedElements } from './constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
@@ -46,8 +47,9 @@ import {
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
-  getCompanyData, shareWorkspace
+  getCompanyData, shareWorkspace, cvrSuccess
 } from './reducers/workspaceActions';
+
 import './workspace.css';
 
 
@@ -140,6 +142,31 @@ const Workspace = (props) => {
   const [nodeBorderColor, setNodeBorderColor] = useState({
     r: 0, g: 0, b: 0, a: 1
   });
+
+  // socket for cvr
+  const [subscription, setSubscription] = useState(null);
+
+  const handleCvrSuccess = (el) => {
+    setShowCvrModal(false);
+    dispatch(cvrSuccess(getLayoutedElements(el)));
+  };
+
+  useEffect(() => {
+    connection.connect();
+
+    // storing the subscription in the global variable
+    // passing the incoming data handler fn as a second argument
+
+    const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess);
+    setSubscription(sub);
+
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      if (subscription) {
+        subscription.close();
+      }
+    };
+  }, []);
 
 
   // REACT FLOW SPECIFIC
