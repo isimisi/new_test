@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
@@ -10,10 +10,11 @@ import {
   useHistory,
   useLocation
 } from 'react-router-dom';
+import connection from '@api/socket/SocketConnection';
 import { login, closeNotifAction } from './reducers/authActions';
 
 
-function Login(props) {
+const Login = (props) => {
   const reducer = 'auth';
   const messageNotif = useSelector(state => state[reducer].get('errorMessage'));
   const dispatch = useDispatch();
@@ -26,6 +27,25 @@ function Login(props) {
 
     dispatch(login(email, password, history, locationState));
   };
+
+  const [subscription, setSubscription] = useState(null);
+
+  useEffect(() => {
+    connection.connect();
+
+    // storing the subscription in the global variable
+    // passing the incoming data handler fn as a second argument
+    const sub = connection.subscribe('cvr:358');
+    setSubscription(sub);
+
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      if (subscription) {
+        subscription.close();
+      }
+    };
+  }, []);
+
 
   const title = brand.name + ' - Login';
   const description = brand.desc;
@@ -48,7 +68,7 @@ function Login(props) {
       </div>
     </div>
   );
-}
+};
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
