@@ -60,12 +60,6 @@ const CustomEdge = ({
   arrowHeadType,
   markerEndId,
 }) => {
-  console.log(sourceX,
-    sourceY,
-    targetX,
-    targetY,
-    sourcePosition,
-    targetPosition,);
   const edgePath = drawCurve(
     sourceX, sourceY, targetX, targetY, data.label === 'Ownership'
   );
