@@ -7,6 +7,7 @@ import { getSocketProtocol } from './protocol';
 
 export class SocketConnection {
   connect() {
+    console.log(`${getSocketProtocol()}${baseUrl.split('//')[1]}`);
     this.ws = Ws(`${getSocketProtocol()}${baseUrl.split('//')[1]}`)
       .withJwtToken(getToken())
       .connect();
@@ -32,6 +33,7 @@ export class SocketConnection {
 
       result.on('nonAutherized', () => {
         // handle unautherized situation
+        console.log('non authenticated');
       });
 
       result.on('completed', (data) => {
