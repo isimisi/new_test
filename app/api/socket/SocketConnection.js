@@ -7,7 +7,6 @@ import { getSocketProtocol } from './protocol';
 
 export class SocketConnection {
   connect() {
-    console.log(`${getSocketProtocol()}${baseUrl.split('//')[1]}`);
     this.ws = Ws(`${getSocketProtocol()}${baseUrl.split('//')[1]}`)
       .withJwtToken(getToken())
       .connect();
@@ -30,7 +29,7 @@ export class SocketConnection {
       setTimeout(() => this.subscribe(channel), 1000);
     } else {
       const result = this.ws.subscribe(channel);
-
+      console.log(channel, result, 'connection topic');
       result.on('nonAutherized', () => {
         // handle unautherized situation
         console.log('non authenticated');

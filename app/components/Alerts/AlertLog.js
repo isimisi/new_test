@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import css from '@styles/Form.scss';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +8,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Tooltip from '@material-ui/core/Tooltip';
 import { encryptId } from '@api/constants';
 import HighlightIcon from '@material-ui/icons/Highlight';
+import FlashOnIcon from '@material-ui/icons/FlashOn';
+import FlashOffIcon from '@material-ui/icons/FlashOff';
 import FloatingPanel from '../Panel/FloatingPanel';
 
 function AlertLog(props) {
@@ -20,6 +22,8 @@ function AlertLog(props) {
     highlightAlertItems,
     removeHighlightAlert
   } = props;
+
+  const [flashOn, setFlashOn] = useState(false);
 
   const alertMargin = {
     marginLeft: 10,
@@ -54,15 +58,20 @@ function AlertLog(props) {
                   {alert?.alert?.label}
                 </Typography>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <Tooltip title="Highlight">
+                  <Tooltip title={flashOn ? 'Stop highlight' : 'Highlight'}>
                     <IconButton
                       color="primary"
                       onClick={() => {
-                        highlightAlertItems(alert);
-                        removeHighlightAlert();
+                        if (flashOn) {
+                          removeHighlightAlert();
+                        } else {
+                          highlightAlertItems(alert, true);
+                        }
+
+                        setFlashOn(prevVal => !prevVal);
                       }}
                     >
-                      <HighlightIcon />
+                      {flashOn ? <FlashOffIcon /> : <FlashOnIcon />}
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Vis red flag">

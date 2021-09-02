@@ -258,7 +258,7 @@ const Workspace = (props) => {
     }
   }, [rfInstance]);
 
-  const highlightAlertItems = (alert) => {
+  const highlightAlertItems = (alert, constant = false) => {
     alert.elements.forEach((element) => {
       let htmlNode;
       if (isNode(element)) {
@@ -266,14 +266,13 @@ const Workspace = (props) => {
       } else {
         htmlNode = document.querySelector(`.id_${element.id}`);
       }
-      htmlNode.classList.add('pulse');
+      htmlNode.classList.add(constant ? 'pulseConstant' : 'pulse');
     });
   };
 
   const removeHighlightAlert = () => {
-    setTimeout(() => {
-      Array.from(document.querySelectorAll('.pulse')).map(x => x.classList.remove('pulse'));
-    }, 10000);
+    Array.from(document.querySelectorAll('.pulse')).map(x => x.classList.remove('pulse'));
+    Array.from(document.querySelectorAll('.pulseConstant')).map(x => x.classList.remove('pulseConstant'));
   };
 
   const handleAlerts = (_alerts, initial) => {
@@ -319,7 +318,7 @@ const Workspace = (props) => {
   }, [group]);
 
   useEffect(() => {
-    if (alertId) {
+    if (alertId || alertId === 0) {
       setAlertOpen(true);
     }
   }, [alertId]);
@@ -683,7 +682,8 @@ const Workspace = (props) => {
         close={() => setShowAlertLog(false)}
         alerts={alerts}
         history={history}
-        seeAlert={(index) => setAlertId(index)}
+        seeAlert={(index) => setAlertId(index)
+        }
         highlightAlertItems={highlightAlertItems}
         removeHighlightAlert={removeHighlightAlert}
       />
