@@ -701,6 +701,11 @@ const Workspace = (props) => {
           const nodeLabels = nodes.map((node) => node.label);
           const relationshipLabels = relationships.toJS().map((r) => r.label);
           if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
+            if (!subscription) {
+              connection.connect();
+              const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess);
+              setSubscription(sub);
+            }
             dispatch(cvrWorkspace(id, value, close, erstTypes));
           } else {
             setShowMapErst(true);
