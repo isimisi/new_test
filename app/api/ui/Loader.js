@@ -36,7 +36,7 @@ const Loader = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTextIndex(Math.floor(Math.random() * (loadingTexts.length - 0)));
-    }, 3000);
+    }, 6000);
 
     return () => clearTimeout(intervalId);
   }, []);
