@@ -85,7 +85,6 @@ function Sidebar(props) {
               closeMenuStatus={handleClose}
               changeStatus={handleChangeStatus}
               name={name}
-
             />
           </div>
         </SwipeableDrawer>

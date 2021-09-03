@@ -176,9 +176,6 @@ const styles = theme => ({
     '& $icon svg': {
       fill: theme.palette.primary.dark,
     },
-    '&:hover, &:focus': {
-      backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.primary.main, 0.24) : theme.palette.primary.light,
-    }
   },
   nolist: {
     listStyle: 'none',

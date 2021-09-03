@@ -514,7 +514,7 @@ export const signWorkspace = (id, setShowSignWorkspace) => async dispatch => {
   }
 };
 
-export const cvrSuccess = elements => ({
+export const cvrSuccess = (elements) => ({
   type: types.GET_CVR_NODES_SUCCESS,
   elements
 });
