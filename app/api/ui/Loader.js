@@ -22,7 +22,7 @@ const Loader = () => {
     'Indlæser elevatormusikken.',
     'Kontrollerer tyngdekraften.',
     'Vi prøver din tålmodighed.',
-    'Det er stadig hurtigere end du selv kunne tegne det...',
+    'Det er stadig hurtigere, end du selv kunne tegne det...',
     'Leverer pizzaer.',
   ];
 
@@ -47,7 +47,8 @@ const Loader = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      overflow: 'hidden'
     }}
     >
       {raccoon && (
