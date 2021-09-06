@@ -15,8 +15,6 @@ import ReactFlow, {
   ConnectionMode,
   BackgroundVariant
 } from 'react-flow-renderer';
-// import { jsPDF } from 'jspdf';
-
 import {
   WorkspaceFabs, CustomNode, StickyNoteNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
@@ -468,14 +466,6 @@ const Workspace = (props) => {
     if (image) {
       const a = document.createElement('a');
       a.href = image;
-
-      // const pdf = new jsPDF('l', 'px', 'a4');
-
-      // const width = pdf.internal.pageSize.getWidth() / 2;
-
-      // pdf.addImage(image, 'jpeg', 10, 10, width, width * 0.6);
-      // pdf.save('a4.pdf');
-
 
       a.download = createFileName('jpg', label);
       a.click();

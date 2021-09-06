@@ -1,24 +1,34 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactFlow, {
   ConnectionMode, ReactFlowProvider, Controls
 } from 'react-flow-renderer';
 import { CustomNode, CustomEdge } from '@components';
 
+
 const nodeTypes = { custom: CustomNode };
 
 const MiniFlow = (props) => {
   const { elements } = props;
+
+  const reactFlowContainer = useRef(null);
+
   const [hover, setHover] = useState(false);
 
   const onLoad = (reactFlowInstance) => {
     reactFlowInstance.fitView();
   };
 
+  useEffect(() => {
+    if (reactFlowContainer) {
+      props.setMiniFlow(reactFlowContainer);
+    }
+  }, [reactFlowContainer]);
 
   return (
     <ReactFlowProvider>
       <ReactFlow
+        ref={reactFlowContainer}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         elements={elements}
@@ -44,7 +54,6 @@ const MiniFlow = (props) => {
           />
         )}
       </ReactFlow>
-
     </ReactFlowProvider>
   );
 };
