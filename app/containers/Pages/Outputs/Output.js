@@ -86,7 +86,7 @@ const Output = () => {
         } else if (editorState.getCurrentContent().hasText()) {
           onSave('draft');
         } else if (outputFileUrl?.length > 0) {
-          onSave('uploaded');
+          onSave('upload');
         } else {
           dispatch(showNotifAction('You must provide some content to your output'));
         }
@@ -99,12 +99,13 @@ const Output = () => {
 
         dispatch(putOutput(id, title, description, markup, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), history));
         break;
-      case 'uploaded':
+      case 'upload':
         setOpenAlert(false);
-        if (outputFile instanceof Immutable.Map) {
-          dispatch(putOutput(id, title, description, outputFile, fileType, from, group, conditions, deletedConditions, history));
+
+        if (typeof outputFile === 'object') {
+          dispatch(putOutput(id, title, description, outputFile, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), history));
         } else {
-          dispatch(putOutput(id, title, description, outputFileUrl, fileType, from, group, conditions, deletedConditions, history));
+          dispatch(putOutput(id, title, description, outputFileUrl, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), history));
         }
         break;
     }
@@ -199,7 +200,7 @@ const Output = () => {
           <Button onClick={() => onSave('draft')} variant="contained" color="primary">
             Editor Content
           </Button>
-          <Button onClick={() => onSave('uploaded')} variant="contained" color="secondary" autoFocus>
+          <Button onClick={() => onSave('upload')} variant="contained" color="secondary" autoFocus>
             Uploaded Content
           </Button>
         </DialogActions>

@@ -6,6 +6,8 @@ import SidebarBig from './SidebarBig';
 import BreadCrumb from './BreadCrumb/BreadCrumb';
 import SearchUi from './Search/SearchUi';
 
+import EmailSidebar from './Email/EmailSidebar';
+
 // Dashboard and Widget
 import CounterWidget from './Counter/CounterWidget';
 
@@ -191,5 +193,6 @@ export {
   TimelineWidget,
   NewsListWidget,
   PaymentPanel,
-  CompanyDataModel
+  CompanyDataModel,
+  EmailSidebar
 };

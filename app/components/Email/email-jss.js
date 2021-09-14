@@ -91,10 +91,8 @@ const styles = theme => ({
     [theme.breakpoints.up('md')]: {
       position: 'relative',
     },
-    width: drawerWidth,
-    background: theme.palette.type === 'dark' ? darken(theme.palette.primary.light, 0.6) : lighten(theme.palette.primary.light, 0.5),
-    border: 'none',
-    minHeight: '100%',
+    width: '100%',
+    borderLeft: `1px solid ${theme.palette.divider}`,
   },
   selected: {
     background: theme.palette.type === 'dark' ? darken(theme.palette.primary.light, 0.5) : darken(theme.palette.primary.light, 0.05),

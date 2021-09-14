@@ -63,7 +63,9 @@ import {
   PUBLIC_ACCESS_WORKSPACE_LOADING,
   PUBLIC_ACCESS_WORKSPACE_SUCCESS,
   PUBLIC_ACCESS_WORKSPACE_FAILED,
-  SET_PUBLIC_ACCESS_FALSE
+  SET_PUBLIC_ACCESS_FALSE,
+  WORKSPACE_ANALYSIS_SAVE_SUCCESS,
+  WORKSPACE_ANALYSIS_SAVE_FAILED
 } from './workspaceConstants';
 
 const initialState = {
@@ -402,6 +404,15 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
         mutableState.set('loading', false);
+      });
+    case WORKSPACE_ANALYSIS_SAVE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', false);
+      });
+    case WORKSPACE_ANALYSIS_SAVE_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
       });
     case EDGE_ADD_TO_LIST:
       return state.withMutations((mutableState) => {

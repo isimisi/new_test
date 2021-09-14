@@ -19,12 +19,6 @@ const MiniFlow = (props) => {
     reactFlowInstance.fitView();
   };
 
-  useEffect(() => {
-    if (reactFlowContainer) {
-      props.setMiniFlow(reactFlowContainer);
-    }
-  }, [reactFlowContainer]);
-
   return (
     <ReactFlowProvider>
       <ReactFlow

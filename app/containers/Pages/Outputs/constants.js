@@ -27,6 +27,7 @@ export const tableOptions = (onDelete, loading) => ({
 const downloadFile = (label, file) => {
   const link = document.createElement('a');
   link.href = file;
+  link.target = '_blank';
   link.download = `${label}`;
   link.click();
 };

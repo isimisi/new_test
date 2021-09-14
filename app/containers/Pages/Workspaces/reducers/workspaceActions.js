@@ -514,6 +514,19 @@ export const signWorkspace = (id, setShowSignWorkspace) => async dispatch => {
   }
 };
 
+export const saveAnalysis = (id, output, subgraph) => async dispatch => {
+  const url = `${baseUrl}/workspaces/analysis/${id}`;
+  const body = { output, subgraph };
+  const header = authHeader();
+  try {
+    await axios.post(url, body, header);
+    dispatch({ type: types.WORKSPACE_ANALYSIS_SAVE_SUCCESS });
+  } catch (error) {
+    dispatch({ type: types.WORKSPACE_ANALYSIS_SAVE_FAILED, message });
+  }
+};
+
+
 export const cvrSuccess = (elements) => ({
   type: types.GET_CVR_NODES_SUCCESS,
   elements

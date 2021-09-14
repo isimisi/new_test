@@ -20,6 +20,7 @@ function EmailSidebar(props) {
       <Hidden mdUp>
         <Drawer
           variant="temporary"
+          anchor="right"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           classes={{
@@ -39,6 +40,7 @@ function EmailSidebar(props) {
           classes={{
             paper: classes.drawerPaper,
           }}
+          style={{ height: '100%' }}
         >
           <EmailMenu compose={compose} goto={goto} selected={selected} />
         </Drawer>

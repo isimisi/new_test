@@ -92,6 +92,30 @@ function EmailMenu(props) {
           </ListItemIcon>
           <ListItemText primary="Forums" />
         </ListItem>
+        <ListItem button className={selected === 'updates' ? classes.selected : ''} onClick={() => gotoPage('updates')}>
+          <ListItemIcon>
+            <Flag className={classes.iconOrange} />
+          </ListItemIcon>
+          <ListItemText primary="Updates" />
+        </ListItem>
+        <ListItem button className={selected === 'social' ? classes.selected : ''} onClick={() => gotoPage('social')}>
+          <ListItemIcon>
+            <People className={classes.iconRed} />
+          </ListItemIcon>
+          <ListItemText primary="Social" />
+        </ListItem>
+        <ListItem button className={selected === 'promos' ? classes.selected : ''} onClick={() => gotoPage('promos')}>
+          <ListItemIcon>
+            <LabelIcon className={classes.iconBlue} />
+          </ListItemIcon>
+          <ListItemText primary="Promos" />
+        </ListItem>
+        <ListItem button className={selected === 'forums' ? classes.selected : ''} onClick={() => gotoPage('forums')}>
+          <ListItemIcon>
+            <QuestionAnswer className={classes.iconCyan} />
+          </ListItemIcon>
+          <ListItemText primary="Forums" />
+        </ListItem>
       </List>
     </Fragment>
   );
