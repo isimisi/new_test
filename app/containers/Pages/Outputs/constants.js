@@ -69,7 +69,7 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value, tableMeta) => (
-        <IconButton color="primary" aria-label="download file" component="span" onClick={() => downloadFile(tableMeta.rowData[0], value)}>
+        <IconButton disabled={!value} color="primary" aria-label="download file" component="span" onClick={() => downloadFile(tableMeta.rowData[0], value)}>
           <CloudDownloadIcon />
         </IconButton>
       )
