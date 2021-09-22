@@ -10,6 +10,7 @@ import LogRocket from 'logrocket';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import immutableTransform from 'redux-persist-transform-immutable';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import createReducer from './reducers';
 
 const _logger = process.env.NODE_ENV === 'production' ? LogRocket.reduxMiddleware() : logger;
@@ -18,7 +19,8 @@ const persistConfig = {
   transforms: [immutableTransform()],
   key: 'root',
   storage,
-  blacklist: ['output']
+  blacklist: ['output'],
+  stateReconciler: autoMergeLevel2
 };
 
 

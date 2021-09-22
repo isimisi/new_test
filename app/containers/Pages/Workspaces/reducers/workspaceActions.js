@@ -532,7 +532,7 @@ export const revisionHistory = (id) => async dispatch => {
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
-    console.log(response);
+
     dispatch({ type: types.WORKSPACE_ANALYSIS_REVISION_SUCCESS, revisionHistory: response.data });
   } catch (error) {
     dispatch({ type: types.WORKSPACE_ANALYSIS_REVISION_FAILED, message });

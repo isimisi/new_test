@@ -35,13 +35,13 @@ import '!file-loader?name=[name].[ext]!../public/favicons/favicon.ico'; // eslin
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line
 
 import LogRocket from 'logrocket';
+import { isMobile } from 'react-device-detect';
 import configureStore from './redux/configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
 
 import 'video-react/dist/video-react.css';
-import { isMobile } from 'react-device-detect';
 
 
 //  logrocket
