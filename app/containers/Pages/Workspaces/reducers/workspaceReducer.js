@@ -1,4 +1,4 @@
-import { fromJS, List } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import {
   isNode,
   isEdge
@@ -65,7 +65,10 @@ import {
   PUBLIC_ACCESS_WORKSPACE_FAILED,
   SET_PUBLIC_ACCESS_FALSE,
   WORKSPACE_ANALYSIS_SAVE_SUCCESS,
-  WORKSPACE_ANALYSIS_SAVE_FAILED
+  WORKSPACE_ANALYSIS_SAVE_FAILED,
+  WORKSPACE_ANALYSIS_REVISION_SUCCESS,
+  WORKSPACE_ANALYSIS_REVISION_FAILED,
+  ANALYSIS_TEXT_CHANGE
 } from './workspaceConstants';
 
 const initialState = {
@@ -95,7 +98,8 @@ const initialState = {
   publicAuthenticated: false,
   publicUserFirstName: '',
   publicUserLastName: '',
-  publicAuthenticatedId: null
+  publicAuthenticatedId: null,
+  revisionHistory: Map()
 };
 
 
@@ -414,6 +418,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
+    case WORKSPACE_ANALYSIS_REVISION_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const revisionHistory = fromJS(action.revisionHistory);
+        mutableState.set('revisionHistory', revisionHistory);
+      });
+    case WORKSPACE_ANALYSIS_REVISION_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+      });
     case EDGE_ADD_TO_LIST:
       return state.withMutations((mutableState) => {
         const edge = fromJS(action.edge);
@@ -438,6 +452,13 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         mutableState.set('publicAuthenticatedId', null);
         mutableState.set('publicAuthenticated', false);
+      });
+    case ANALYSIS_TEXT_CHANGE:
+      return state.withMutations((mutableState) => {
+        const outputs = mutableState.get('outputs').toJS();
+        outputs[action.index].action.output = action.text;
+        console.log(action.text);
+        mutableState.set('outputs', fromJS(outputs));
       });
     case SHOW_NOTIF:
       return state.withMutations((mutableState) => {

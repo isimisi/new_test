@@ -1,3 +1,6 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-restricted-syntax */
 
 import CryptoJS from 'crypto-js';
 import { loadFromLocalStorage } from './localStorage/localStorage';

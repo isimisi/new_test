@@ -522,9 +522,28 @@ export const saveAnalysis = (id, output, subgraph) => async dispatch => {
     await axios.post(url, body, header);
     dispatch({ type: types.WORKSPACE_ANALYSIS_SAVE_SUCCESS });
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.WORKSPACE_ANALYSIS_SAVE_FAILED, message });
   }
 };
+
+export const revisionHistory = (id) => async dispatch => {
+  const url = `${baseUrl}/workspaces/analysis/${id}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    console.log(response);
+    dispatch({ type: types.WORKSPACE_ANALYSIS_REVISION_SUCCESS, revisionHistory: response.data });
+  } catch (error) {
+    dispatch({ type: types.WORKSPACE_ANALYSIS_REVISION_FAILED, message });
+  }
+};
+
+export const analysisTextChange = (text, index) => ({
+  type: types.ANALYSIS_TEXT_CHANGE,
+  text,
+  index
+});
 
 
 export const cvrSuccess = (elements) => ({

@@ -2,7 +2,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-bitwise */
 import React, {
-  useEffect, useRef, createRef
+  useEffect, useState
 } from 'react';
 import { useHistory, Prompt } from 'react-router-dom';
 import Hidden from '@material-ui/core/Hidden';
@@ -15,12 +15,19 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import SaveIcon from '@material-ui/icons/Save';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import { MiniFlow } from '@components';
+import { MiniFlow, Notification } from '@components';
 import 'react-quill/dist/quill.bubble.css';
 import Drawer from '@material-ui/core/Drawer';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { analyseOutput, saveAnalysis } from './reducers/workspaceActions';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { reducer } from './constants';
+
+import {
+  analyseOutput, saveAnalysis, closeNotifAction, revisionHistory, analysisTextChange
+} from './reducers/workspaceActions';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     borderLeft: `1px solid ${theme.palette.divider}`,
   },
   hoverItem: { transition: '1s' },
+  drawerContent: {
+    padding: 10
+  },
 }));
 
 
@@ -49,10 +59,12 @@ const WorkspaceAnalysis = () => {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
   const outputs = useSelector(state => state[reducer].get('outputs')).toJS();
-  const quillRefs = useRef(outputs.map(() => createRef()));
-  const theme = useTheme();
+  const revisionHistoryList = useSelector(state => state[reducer].get('revisionHistory')).toJS();
+
+  const messageNotif = useSelector(state => state[reducer].get('message'));
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeRevision, setActiveRevision] = useState({});
 
 
   const matchpattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm;
@@ -60,6 +72,7 @@ const WorkspaceAnalysis = () => {
 
   useEffect(() => {
     dispatch(analyseOutput(id));
+    dispatch(revisionHistory(id));
   }, []);
 
   const alertUser = e => {
@@ -73,17 +86,6 @@ const WorkspaceAnalysis = () => {
       window.removeEventListener('beforeunload', alertUser);
     };
   }, []);
-
-  const save = () => {
-    outputs.forEach((output, index) => {
-      let content = output.action.output;
-      if (!matchpattern.test(content)) {
-        content = quillRefs.current[index].current.state.value;
-      }
-
-      dispatch(saveAnalysis(id, content, JSON.stringify(output.elements)));
-    });
-  };
 
 
   const modules = {
@@ -102,65 +104,136 @@ const WorkspaceAnalysis = () => {
     }
   };
 
+  const handleQuillChange = (v, index) => {
+    dispatch(analysisTextChange(v, index));
+  };
+
+  const removePositionFromElements = (elements) => ([...elements].map(x => {
+    const { position, ...rest } = x;
+    return { ...rest };
+  }));
+
   const handleDrawer = () => {
-    setOpen(prevVal => !prevVal);
+    setOpen(prevVal => {
+      outputs.forEach((x, i) => {
+        const revisionHistoryItem = revisionHistoryList[JSON.stringify(removePositionFromElements(x.elements))];
+
+        if (revisionHistoryItem) {
+          const firstRevisionIndex = revisionHistoryItem.findIndex(x => x.revision_number === 0);
+          const lastRevisionIndex = revisionHistoryItem.findIndex((r, i) => {
+            if (activeRevision[JSON.stringify(removePositionFromElements(x.elements))]) {
+              return r.id === activeRevision[JSON.stringify(removePositionFromElements(x.elements))];
+            }
+
+            return firstRevisionIndex === 0 ? i === revisionHistoryItem.length - 1 : i === 0;
+          });
+          const revision = revisionHistoryItem[lastRevisionIndex];
+
+
+          handleQuillChange(revision[prevVal ? 'output' : 'htmlDiffString'], i);
+        }
+      });
+
+      return !prevVal;
+    });
+  };
+
+  const save = () => {
+    if (open) {
+      handleDrawer();
+    }
+
+    outputs.forEach((output) => {
+      dispatch(saveAnalysis(id, output.action.output, JSON.stringify(output.elements)));
+    });
+  };
+
+
+  const handleSelectRevision = (key, value, index) => {
+    const currRevisoion = { ...activeRevision };
+    currRevisoion[key] = value;
+    setActiveRevision(currRevisoion);
+
+
+    const revisionString = revisionHistoryList[key].find(x => x.id === value).htmlDiffString;
+
+    handleQuillChange(revisionString, index);
   };
 
   return (
     <>
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       {outputs.map((output, index) => (
-        <div id={`analyses-${index}`}>
-          <Grid container className={classes.root}>
-            <Grid item xs={open ? 5 : 6} style={{ marginBottom: 40, paddingLeft: 20, paddingTop: 20 }} className={classes.hoverItem}>
-              <Typography variant="h6" contentEditable>
-                {output.conditionLabel}
-              </Typography>
-              <MiniFlow elements={output.elements} />
-            </Grid>
-            <Grid item xs={open ? 5 : 6} style={{ paddingTop: 20 }} className={classes.hoverItem}>
-              <Typography variant="h6" contentEditable>
-                {output.action.label}
-              </Typography>
-              {matchpattern.test(output.action.output)
-                ? (
-                  <div style={{
-                    height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', display: 'flex'
-                  }}
-                  >
-                    <Button variant="contained" color="primary" href={output.action.output} target="_blank">Åben fil</Button>
-                  </div>
-                )
-                : (
-                  <ReactQuill
-                    placeholder="Note"
-                    theme="bubble"
-                    value={output.action.output}
-                    modules={modules}
-                    ref={quillRefs.current[index]}
-                  />
-                )}
-            </Grid>
-            {open && (
-              <Grid item xs={open ? 2 : 0} className={classes.hoverItem}>
-                <Hidden smDown>
-                  <Drawer
-                    variant="permanent"
-                    classes={{
-                      paper: classes.drawerPaper,
-                    }}
-                    style={{ height: '100%' }}
-                  />
-                </Hidden>
-              </Grid>
-            )}
+        <Grid container className={classes.root}>
+          <Grid item xs={open && !matchpattern.test(output.action.output) ? 5 : 6} style={{ marginBottom: 40, paddingLeft: 20, paddingTop: 20 }}>
+            <Typography variant="h6">
+              {output.conditionLabel}
+            </Typography>
+            <MiniFlow elements={output.elements} />
           </Grid>
-        </div>
+          <Grid item xs={open && !matchpattern.test(output.action.output) ? 5 : 6} style={{ paddingTop: 20 }}>
+            <Typography variant="h6">
+              {output.action.label}
+            </Typography>
+            {matchpattern.test(output.action.output)
+              ? (
+                <div style={{
+                  height: '100%', width: '100%', justifyContent: 'center', alignItems: 'center', display: 'flex'
+                }}
+                >
+                  <Button variant="contained" color="primary" href={output.action.output} target="_blank">Åben fil</Button>
+                </div>
+              )
+              : (
+                <ReactQuill
+                  placeholder="Note"
+                  theme="bubble"
+                  value={output.action.output}
+                  onChange={(v) => handleQuillChange(v, index)}
+                  modules={modules}
+                />
+              )}
+          </Grid>
+          {open && (
+            <Grid item xs={open && !matchpattern.test(output.action.output) ? 2 : 0} style={{ display: matchpattern.test(output.action.output) && 'none' }}>
+              <Hidden smDown>
+                <Drawer
+                  variant="permanent"
+                  classes={{
+                    paper: classes.drawerPaper,
+                  }}
+                  style={{ height: '100%' }}
+                >
+                  <List style={{ padding: 0 }}>
+                    {revisionHistoryList[JSON.stringify(removePositionFromElements(output.elements))]?.reverse().map((list, revisionIndex) => (
+                      <ListItem
+                        button
+                        selected={activeRevision[JSON.stringify(removePositionFromElements(output.elements))] ? activeRevision[JSON.stringify(removePositionFromElements(output.elements))] === list.id : revisionIndex === 0}
+                        key={list.id.toString()}
+                        activeClassName={classes.active}
+                        onClick={() => handleSelectRevision(JSON.stringify(removePositionFromElements(output.elements)), list.id, index)}
+                      >
+                        <ListItemText
+                          primaryTypographyProps={{ variant: 'body1', style: { fontSize: 12 } }}
+                          primary={list.created_at}
+                          secondary={list.user.firstName + ' ' + list.user.lastName}
+                        />
+                      </ListItem>
+                    ))}
+                  </List>
+
+                </Drawer>
+              </Hidden>
+            </Grid>
+          )}
+        </Grid>
       ))}
 
       <Tooltip title="Tidligere versioner">
         <Fab
           variant="extended"
           color="secondary"
+          disabled={Object.keys(revisionHistoryList).length === 0}
           style={{
             position: 'fixed',
             bottom: 30,
