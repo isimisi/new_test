@@ -48,7 +48,10 @@ const PersonalDashboard = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const reducer = 'dashboard';
-  const elementCounts = useSelector(state => state[reducer].get('elementCounts'));
+  const elementCounts = useSelector(state => {
+    console.log(state);
+    return state[reducer].get('elementCounts');
+  });
   const timeline = useSelector(state => state[reducer].get('timeline'));
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const workspaces = useSelector(state => state.workspace.get('workspaces')).toJS();

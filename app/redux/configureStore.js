@@ -7,22 +7,21 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { routerMiddleware } from 'connected-react-router';
 import LogRocket from 'logrocket';
-import { persistStore, persistReducer, createMigrate } from 'redux-persist';
+import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import immutableTransform from 'redux-persist-transform-immutable';
-import migrations from './migrations';
 
+import autoMergeLevel2Immutable from './autoMergeLevel2Immutable';
 import createReducer from './reducers';
 
 const _logger = process.env.NODE_ENV === 'production' ? LogRocket.reduxMiddleware() : logger;
 
 const persistConfig = {
-  version: 0,
   transforms: [immutableTransform()],
   key: 'root',
   storage,
   blacklist: ['output'],
-  migrate: createMigrate(migrations, { debug: false })
+  stateReconciler: autoMergeLevel2Immutable,
 };
 
 
