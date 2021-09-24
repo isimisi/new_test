@@ -106,19 +106,21 @@ function CompanyDataModel(props) {
           }
         </div>
         <div className={css.buttonArea}>
-          <Button
-            variant="text"
-            color="secondary"
-            type="button"
-            target="_blank"
-            href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${companyData?.companyMetaData['CVR-nummer']}`}
-          >
+          {companyData.companyMetaData && (
+            <Button
+              variant="text"
+              color="secondary"
+              type="button"
+              target="_blank"
+              href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${companyData?.companyMetaData['CVR-nummer']}`}
+            >
             Åben i enhedsvisning for
-            {' '}
-            {displayName}
-            {' '}
+              {' '}
+              {displayName}
+              {' '}
             direkte i CVR
-          </Button>
+            </Button>
+          )}
         </div>
       </FloatingPanel>
     </div>
