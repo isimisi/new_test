@@ -35,6 +35,10 @@ export const login = (email, password, history, locationState = null) => async d
       organization: organization && organization.name,
     });
 
+    $crisp.push(['set', 'user:nickname', [user.first_name + ' ' + user.last_name]]);
+    $crisp.push(['set', 'user:email', [user.email]]);
+
+
     history.push(locationState?.from?.path || '/app');
   } catch (error) {
     let message = 'Hov, der er vist nogle problemer med login. Prøv igen senere.';

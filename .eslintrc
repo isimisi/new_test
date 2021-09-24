@@ -60,6 +60,7 @@
     "__SERVER__": true,
     "beforeAll": true,
     "afterAll": true,
-    "analytics": "readonly"
+    "analytics": "readonly",
+    "$crisp": "readonly"
   }
 }
