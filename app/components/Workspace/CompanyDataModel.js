@@ -111,7 +111,7 @@ function CompanyDataModel(props) {
             color="secondary"
             type="button"
             target="_blank"
-            href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${companyData.companyMetaData['CVR-nummer']}`}
+            href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${companyData?.companyMetaData['CVR-nummer']}`}
           >
             Åben i enhedsvisning for
             {' '}

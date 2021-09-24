@@ -12,7 +12,6 @@ export const baseUrl = window.location.href === 'https://juristic-web-app-stagin
     ? 'https://juristic-api-gateway.herokuapp.com'
     : 'http://127.0.0.1:3333';
 
-console.log(process.env.FORCE_NODE_ENV, baseUrl, window.location.href, window.location.href === 'https://juristic-web-app-staging.herokuapp.com/');
 
 export const isAuthenticated = () => {
   const tokenMatch = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/;
