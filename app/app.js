@@ -42,6 +42,7 @@ import configureStore from './redux/configureStore';
 import { translationMessages } from './i18n';
 
 import 'video-react/dist/video-react.css';
+require('dotenv').config();
 
 
 //  logrocket

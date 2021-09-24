@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.2.69",
+  "version": "1.2.70",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -88,6 +88,7 @@
     "crypto-js": "^4.0.0",
     "dagre": "^0.8.5",
     "debounce": "^1.2.1",
+    "dotenv": "^10.0.0",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.9.1",
     "express": "4.16.4",
