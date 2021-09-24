@@ -12,6 +12,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import InfoIcon from '@material-ui/icons/Info';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import css from '@styles/Form.scss';
+import Button from '@material-ui/core/Button';
 import FloatingPanel from '../Panel/FloatingPanel';
 import styles from './workspace-jss';
 
@@ -102,6 +104,21 @@ function CompanyDataModel(props) {
               </TableContainer>
             )
           }
+        </div>
+        <div className={css.buttonArea}>
+          <Button
+            variant="text"
+            color="secondary"
+            type="button"
+            target="_blank"
+            href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${companyData.companyMetaData['CVR-nummer']}`}
+          >
+            Åben i enhedsvisning for
+            {' '}
+            {displayName}
+            {' '}
+            direkte i CVR
+          </Button>
         </div>
       </FloatingPanel>
     </div>

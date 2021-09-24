@@ -5,11 +5,14 @@
 import CryptoJS from 'crypto-js';
 import { loadFromLocalStorage } from './localStorage/localStorage';
 
+
 export const baseUrl = process.env.FORCE_NODE_ENV === 'staging'
   ? 'https://juristic-api-gateway-staging.herokuapp.com'
   : process.env.NODE_ENV === 'production'
     ? 'https://juristic-api-gateway.herokuapp.com'
     : 'http://127.0.0.1:3333';
+
+console.log(process.env.FORCE_NODE_ENV, baseUrl);
 
 export const isAuthenticated = () => {
   const tokenMatch = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/;

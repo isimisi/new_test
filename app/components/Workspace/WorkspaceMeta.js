@@ -38,6 +38,7 @@ function WorkspaceMeta(props) {
           closeForm={closeForm}
           onSave={onSave}
         />
+
       </FloatingPanel>
     </div>
   );
