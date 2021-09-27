@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { useEffect, useState } from 'react';
 import Lottie from 'lottie-react';
 import ReactTextTransition, { presets } from 'react-text-transition';
@@ -5,7 +7,7 @@ import ReactTextTransition, { presets } from 'react-text-transition';
 import loader from './loader.json';
 import walking from './raccoon/Walk/data.json';
 
-const Loader = () => {
+const Loader = (props) => {
   const [raccoon, setRaccoon] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
 
@@ -56,7 +58,7 @@ const Loader = () => {
           text={loadingTexts[textIndex]}
           springConfig={presets.wobbly}
           inline
-          style={{ marginBottom: 10 }}
+          style={{ marginBottom: 10, fontSize: props.bigFont && 20 }}
         />
       )}
       <Lottie

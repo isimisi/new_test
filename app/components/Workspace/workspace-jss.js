@@ -384,6 +384,16 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row'
   },
+  publicLoader: {
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: '#00000055',
+    position: 'absolute',
+    zIndex: 9999,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 export default styles;

@@ -417,7 +417,7 @@ const styles = theme => ({
       width: '20%',
       maxWidth: '250px'
     }
-  },
+  }
 });
 
 export default styles;

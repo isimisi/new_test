@@ -19,7 +19,7 @@ import BorderColorIcon from '@material-ui/icons/BorderColor';
 const WorkspaceFab = (props) => {
   const {
     nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick,
-    onCvrClick, stickyClick, plan_id, onShareClick, signWorkspaceClick
+    onCvrClick, stickyClick, plan_id, onShareClick, signWorkspaceClick, noAdd
   } = props;
   const theme = useTheme();
 
@@ -30,82 +30,84 @@ const WorkspaceFab = (props) => {
         onClick={stickyClick}
         icon={<NotesIcon />}
         event="click"
-        mainButtonStyles={{ backgroundColor: theme.palette.primary.main, right: 160 }}
+        mainButtonStyles={{ backgroundColor: theme.palette.primary.main, right: noAdd ? 80 : 160 }}
       />
       <Fab
         onClick={nodeClick}
         icon={<CheckBoxOutlineBlankIcon />}
         event="click"
-        mainButtonStyles={{ backgroundColor: theme.palette.primary.light, right: 80 }}
+        mainButtonStyles={{ backgroundColor: theme.palette.primary.light, right: noAdd ? 0 : 80 }}
       />
-      <Fab
-        icon={<AddIcon />}
-        mainButtonStyles={{ backgroundColor: theme.palette.secondary.main }}
-      >
-        <Action
-          text="Gem"
-          style={{ backgroundColor: 'white' }}
-          onClick={saveClick}
+      {!noAdd && (
+        <Fab
+          icon={<AddIcon />}
+          mainButtonStyles={{ backgroundColor: theme.palette.secondary.main }}
         >
-          <SaveIcon style={{ color: theme.palette.primary.main }} />
-        </Action>
-        {metaClick && (
           <Action
-            text="Metadata"
+            text="Gem"
             style={{ backgroundColor: 'white' }}
-            onClick={metaClick}
+            onClick={saveClick}
           >
-            <TextFieldsIcon style={{ color: theme.palette.primary.main }} />
+            <SaveIcon style={{ color: theme.palette.primary.main }} />
           </Action>
-        )}
-        {onAnalysisClick && (
+          {metaClick && (
+            <Action
+              text="Metadata"
+              style={{ backgroundColor: 'white' }}
+              onClick={metaClick}
+            >
+              <TextFieldsIcon style={{ color: theme.palette.primary.main }} />
+            </Action>
+          )}
+          {onAnalysisClick && (
+            <Action
+              text="Analyser"
+              style={{ backgroundColor: 'white' }}
+              onClick={onAnalysisClick}
+              disabled={plan_id !== 4}
+            >
+              <AssessmentIcon style={{ color: theme.palette.primary.main }} />
+            </Action>
+          )}
+          {onAlertClick && (
+            <Action
+              text="Red flags"
+              style={{ backgroundColor: 'white' }}
+              onClick={onAlertClick}
+              disabled={plan_id === 1}
+            >
+              <FlagIcon style={{ color: theme.palette.primary.main }} />
+            </Action>
+          )}
+          {onShareClick && (
+            <Action
+              text="Del dit workspace"
+              style={{ backgroundColor: 'white' }}
+              onClick={onShareClick}
+              disabled={plan_id < 3}
+            >
+              <ShareIcon style={{ color: theme.palette.primary.main }} />
+            </Action>
+          )}
           <Action
-            text="Analyser"
+            text="Hent fra CVR"
             style={{ backgroundColor: 'white' }}
-            onClick={onAnalysisClick}
-            disabled={plan_id !== 4}
+            onClick={onCvrClick}
           >
-            <AssessmentIcon style={{ color: theme.palette.primary.main }} />
+            <BusinessIcon style={{ color: theme.palette.primary.main }} />
           </Action>
-        )}
-        {onAlertClick && (
-          <Action
-            text="Red flags"
-            style={{ backgroundColor: 'white' }}
-            onClick={onAlertClick}
-            disabled={plan_id === 1}
-          >
-            <FlagIcon style={{ color: theme.palette.primary.main }} />
-          </Action>
-        )}
-        {onShareClick && (
-          <Action
-            text="Del dit workspace"
-            style={{ backgroundColor: 'white' }}
-            onClick={onShareClick}
-            disabled={plan_id < 3}
-          >
-            <ShareIcon style={{ color: theme.palette.primary.main }} />
-          </Action>
-        )}
-        <Action
-          text="Hent fra CVR"
-          style={{ backgroundColor: 'white' }}
-          onClick={onCvrClick}
-        >
-          <BusinessIcon style={{ color: theme.palette.primary.main }} />
-        </Action>
-        {signWorkspaceClick && (
-          <Action
-            text="Underskriv dette arbejdsområde"
-            style={{ backgroundColor: 'white' }}
-            onClick={signWorkspaceClick}
-          >
-            <BorderColorIcon style={{ color: theme.palette.primary.main }} />
-          </Action>
-        )}
+          {signWorkspaceClick && (
+            <Action
+              text="Underskriv dette arbejdsområde"
+              style={{ backgroundColor: 'white' }}
+              onClick={signWorkspaceClick}
+            >
+              <BorderColorIcon style={{ color: theme.palette.primary.main }} />
+            </Action>
+          )}
 
-      </Fab>
+        </Fab>
+      )}
     </>
   );
 };
@@ -120,7 +122,8 @@ WorkspaceFab.propTypes = {
   stickyClick: PropTypes.func.isRequired,
   onShareClick: PropTypes.func,
   plan_id: PropTypes.number,
-  signWorkspaceClick: PropTypes.func
+  signWorkspaceClick: PropTypes.func,
+  noAdd: PropTypes.bool
 };
 
 export default WorkspaceFab;

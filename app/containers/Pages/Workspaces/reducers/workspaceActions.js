@@ -539,6 +539,26 @@ export const revisionHistory = (id) => async dispatch => {
   }
 };
 
+export const cvrWorkspacePublic = (id, cvr, erstTypes) => async dispatch => {
+  const url = `${baseUrl}/koncerndiagrammer/${id}`;
+  const body = {
+    cvr,
+    erstTypes
+  };
+  try {
+    await axios.post(url, body);
+  } catch (error) {
+    console.log(error.response);
+    let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
+
+    if (error?.response?.status === 503) {
+      _message = 'Du skal være på et Draw plan for at trække selskaber med over 100 elementer';
+    }
+    dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
+  }
+};
+
+
 export const analysisTextChange = (text, index) => ({
   type: types.ANALYSIS_TEXT_CHANGE,
   text,

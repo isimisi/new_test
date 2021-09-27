@@ -156,3 +156,8 @@ export const PublicWorkspace = loadable(() =>
   import ('./Pages/Workspaces/PublicWorkspace'), {
     fallback: <Loading />,
   });
+
+export const KoncernDiagram = loadable(() =>
+  import ('./Pages/Workspaces/KoncernDiagram'), {
+    fallback: <Loading />,
+  });
