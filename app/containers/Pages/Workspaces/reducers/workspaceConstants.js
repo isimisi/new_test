@@ -51,6 +51,7 @@ export const LABEL_CHANGE = 'LABEL_CHANGE';
 export const VALUES_CHANGE = 'VALUES_CHANGE';
 export const DESCRIPTION_CHANGE = 'DESCRIPTION_CHANGE';
 export const ADD_GROUP = 'ADD_GROUP';
+export const SHARE_ORG_CHANGE = 'SHARE_ORG_CHANGE';
 
 // Edges
 export const EDGE_ADD_TO_LIST = 'EDGE_ADD_TO_LIST';

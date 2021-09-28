@@ -16,7 +16,9 @@ function WorkspaceMeta(props) {
     descriptionChange,
     addGroup,
     groupsDropDownOptions,
-    onSave
+    onSave,
+    shareOrg,
+    handleShareOrg
   } = props;
   const branch = '';
   return (
@@ -37,6 +39,8 @@ function WorkspaceMeta(props) {
           groupsDropDownOptions={groupsDropDownOptions}
           closeForm={closeForm}
           onSave={onSave}
+          shareOrg={shareOrg}
+          handleShareOrg={handleShareOrg}
         />
 
       </FloatingPanel>
@@ -55,6 +59,8 @@ WorkspaceMeta.propTypes = {
   groupsDropDownOptions: PropTypes.array.isRequired,
   closeForm: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  shareOrg: PropTypes.bool.isRequired,
+  handleShareOrg: PropTypes.func.isRequired,
 };
 
 WorkspaceMeta.defaultProps = {

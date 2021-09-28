@@ -17,6 +17,7 @@ import {
   VALUES_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
+  SHARE_ORG_CHANGE,
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
   GET_ATTRIBUTE_DROPDOWN_SUCCESS,
@@ -77,6 +78,7 @@ const initialState = {
   label: '',
   description: '',
   group: '',
+  shareOrg: false,
   signed: false,
   signedBy: '',
   editable: false,
@@ -99,7 +101,8 @@ const initialState = {
   publicUserFirstName: '',
   publicUserLastName: '',
   publicAuthenticatedId: null,
-  revisionHistory: Map()
+  revisionHistory: Map(),
+
 };
 
 
@@ -239,6 +242,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const group = fromJS(action.group);
         mutableState.set('group', group);
+      });
+    case SHARE_ORG_CHANGE:
+      return state.withMutations((mutableState) => {
+        const shareOrg = fromJS(action.check);
+        mutableState.set('shareOrg', shareOrg);
       });
     case POST_EDGE_LOADING:
       return state.withMutations((mutableState) => {

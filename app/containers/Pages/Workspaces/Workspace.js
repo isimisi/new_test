@@ -47,7 +47,7 @@ import {
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
-  getCompanyData, shareWorkspace, cvrSuccess
+  getCompanyData, shareWorkspace, cvrSuccess, shareOrgChange
 } from './reducers/workspaceActions';
 
 import './workspace.css';
@@ -87,6 +87,8 @@ const Workspace = (props) => {
   const label = useSelector(state => state[reducer].get('label'));
   const description = useSelector(state => state[reducer].get('description'));
   const group = useSelector(state => state[reducer].get('group'));
+  const shareOrg = useSelector(state => state[reducer].get('shareOrg'));
+  console.log(shareOrg);
   const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
   const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
   const messageNotif = useSelector(state => state[reducer].get('message'));
@@ -568,7 +570,9 @@ const Workspace = (props) => {
         descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
         addGroup={(_group) => dispatch(addGroup(_group.value))}
         groupsDropDownOptions={groupsDropDownOptions}
-        onSave={() => dispatch(putWorkspace(id, label, description, group, setMetaOpen))}
+        shareOrg={shareOrg}
+        handleShareOrg={(e) => dispatch(shareOrgChange(e.target.checked))}
+        onSave={() => dispatch(putWorkspace(id, label, description, group, shareOrg, setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
       />
       <DefineEdge

@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import css from '@styles/Form.scss';
 import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
@@ -24,7 +26,9 @@ const WorkspaceForm = (props) => {
     descriptionChange,
     addGroup,
     groupsDropDownOptions,
-    onSave
+    onSave,
+    shareOrg,
+    handleShareOrg
   } = props;
 
   return (
@@ -76,7 +80,17 @@ const WorkspaceForm = (props) => {
             </NoSsr>
           </div>
         </Tooltip>
-
+        <div className={classes.row} style={{ marginTop: 10 }}>
+          <Checkbox
+            checked={shareOrg}
+            onChange={handleShareOrg}
+            name="show label"
+            color="primary"
+          />
+          <Typography variant="subtitle2">
+                Del dit arbejdsområde med det resterende af din organisation
+          </Typography>
+        </div>
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => closeForm()}>
@@ -113,6 +127,8 @@ WorkspaceForm.propTypes = {
   groupsDropDownOptions: PropTypes.array.isRequired,
   closeForm: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  shareOrg: PropTypes.bool.isRequired,
+  handleShareOrg: PropTypes.func.isRequired,
 };
 
 

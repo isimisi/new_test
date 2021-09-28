@@ -118,13 +118,13 @@ export const showWorkspace = (id, setMetaOpen = null, setAlerts = null) => async
 };
 
 
-export const putWorkspace = (workspace_id, label, description, group, setMetaOpen) => async dispatch => {
+export const putWorkspace = (workspace_id, label, description, group, shareOrg, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}`;
   const body = {
-    label, description, group
+    label, description, group, shareOrg
   };
   const header = authHeader();
-
+  console.log(shareOrg);
   try {
     await axios.put(url, body, header);
     const _message = 'Metatekst er nu opdateret';
@@ -586,6 +586,12 @@ export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
 });
+
+export const shareOrgChange = check => ({
+  type: types.SHARE_ORG_CHANGE,
+  check
+});
+
 
 export const addEdgeToList = edge => ({
   type: types.EDGE_ADD_TO_LIST,
