@@ -387,7 +387,7 @@ const styles = theme => ({
   publicLoader: {
     width: '100vw',
     height: '100vh',
-    backgroundColor: '#00000055',
+    backgroundColor: '#ffffff',
     position: 'absolute',
     zIndex: 9999,
     display: 'flex',

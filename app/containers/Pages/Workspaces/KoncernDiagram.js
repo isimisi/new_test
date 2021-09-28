@@ -70,10 +70,16 @@ const Workspace = (props) => {
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [rfInstance, setRfInstance] = useState(null);
+
 
   const handleCvrSuccess = (el) => {
     dispatch(cvrSuccess(getLayoutedElements(el)));
     setLoading(false);
+
+    if (rfInstance) {
+      rfInstance.fitView();
+    }
   };
 
   useEffect(() => {
@@ -101,6 +107,7 @@ const Workspace = (props) => {
 
 
   const onLoad = (_reactFlowInstance) => {
+    setRfInstance(_reactFlowInstance);
     _reactFlowInstance.fitView();
   };
 
