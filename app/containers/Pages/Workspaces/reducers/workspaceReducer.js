@@ -69,7 +69,8 @@ import {
   WORKSPACE_ANALYSIS_SAVE_FAILED,
   WORKSPACE_ANALYSIS_REVISION_SUCCESS,
   WORKSPACE_ANALYSIS_REVISION_FAILED,
-  ANALYSIS_TEXT_CHANGE
+  ANALYSIS_TEXT_CHANGE,
+  SET_PUBLIC_VISITED
 } from './workspaceConstants';
 
 const initialState = {
@@ -102,7 +103,7 @@ const initialState = {
   publicUserLastName: '',
   publicAuthenticatedId: null,
   revisionHistory: Map(),
-
+  hasVisitedPublic: false
 };
 
 
@@ -477,6 +478,11 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         mutableState.set('message', '');
       });
+    case SET_PUBLIC_VISITED:
+      return state.withMutations((mutableState) => {
+        mutableState.set('hasVisitedPublic', true);
+      });
+
     default:
       return state;
   }

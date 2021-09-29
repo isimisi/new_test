@@ -25,6 +25,7 @@ import {
 } from '@components';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import Button from '@material-ui/core/Button';
@@ -42,7 +43,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import styles from '../../../components/Workspace/workspace-jss';
 import { reducer, getLayoutedElements, initErstTypes } from './constants';
 import {
-  cvrSuccess, cvrWorkspacePublic, closeNotifAction
+  cvrSuccess, cvrWorkspacePublic, closeNotifAction, firstPublicVisit
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -65,11 +66,15 @@ const Workspace = (props) => {
   const { search } = useLocation();
   const cvr = new URLSearchParams(search).get('cvr');
   const messageNotif = useSelector(state => state[reducer].get('message'));
+  const hasVisitedPublic = useSelector(state => state[reducer].get('hasVisitedPublic'));
+  console.log(hasVisitedPublic);
   const reactFlowContainer = useRef(null);
   const [image, takeScreenShot] = useScreenshot();
   const [currentZoom, setCurrentZoom] = useState(1);
   const elements = useSelector(state => state[reducer].get('elements')).toJS();
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
+  const [showInitModal, setShowInitModal] = useState(!hasVisitedPublic);
+  const [showAgain, setShowAgain] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
   const [rfInstance, setRfInstance] = useState(null);
@@ -134,6 +139,17 @@ const Workspace = (props) => {
 
   const handleCloseActions = () => {
     setOpenRegisterModal(false);
+  };
+
+  const handleCloseActionInitModal = () => {
+    setShowInitModal(false);
+    if (showAgain) {
+      dispatch(firstPublicVisit);
+    }
+  };
+
+  const handleShowAgain = (e) => {
+    setShowAgain(e.target.checked);
   };
 
   return (
@@ -287,6 +303,77 @@ const Workspace = (props) => {
             Opret GRATIS bruger
             </Button>
           </Link>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={showInitModal} onClose={handleCloseActionInitModal} aria-labelledby="form-dialog-title" fullWidth>
+        <DialogTitle id="form-dialog-title">Hurtig introduktion til Koncerndiagrammer</DialogTitle>
+        <DialogContent>
+          <div className={classes.packageContainter} style={{ marginTop: 20 }}>
+            <div style={{
+              display: 'flex', flexDirection: 'column', justifyContent: 'center'
+            }}
+            >
+              <div className={classes.nonCenteredRow}>
+                <div className="react-flow__controls-button react-flow__controls-zoomin">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M32 18.133H18.133V32h-4.266V18.133H0v-4.266h13.867V0h4.266v13.867H32z" /></svg>
+                </div>
+                <Typography color="textSecondary" className={classes.bulletText} style={{ marginTop: 0 }}> Zoom ind</Typography>
+              </div>
+              <div className={classes.nonCenteredRow}>
+                <div className="react-flow__controls-button react-flow__controls-zoomout">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 5"><path d="M0 0h32v4.2H0z" /></svg>
+                </div>
+                <Typography color="textSecondary" className={classes.bulletText}> Zoom ud</Typography>
+              </div>
+              <div className={classes.nonCenteredRow}>
+                <div className="react-flow__controls-button react-flow__controls-fitview">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 30"><path d="M3.692 4.63c0-.53.4-.938.939-.938h5.215V0H4.708C2.13 0 0 2.054 0 4.63v5.216h3.692V4.631zM27.354 0h-5.2v3.692h5.17c.53 0 .984.4.984.939v5.215H32V4.631A4.624 4.624 0 0027.354 0zm.954 24.83c0 .532-.4.94-.939.94h-5.215v3.768h5.215c2.577 0 4.631-2.13 4.631-4.707v-5.139h-3.692v5.139zm-23.677.94a.919.919 0 01-.939-.94v-5.138H0v5.139c0 2.577 2.13 4.707 4.708 4.707h5.138V25.77H4.631z" /></svg>
+                </div>
+                <Typography color="textSecondary" className={classes.bulletText}> Centrer</Typography>
+              </div>
+              <div className={classes.nonCenteredRow}>
+                <div className="react-flow__controls-button react-flow__controls-interactive">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 32"><path d="M21.333 10.667H19.81V7.619C19.81 3.429 16.38 0 12.19 0c-4.114 1.828-1.37 2.133.305 2.438 1.676.305 4.42 2.59 4.42 5.181v3.048H3.047A3.056 3.056 0 000 13.714v15.238A3.056 3.056 0 003.048 32h18.285a3.056 3.056 0 003.048-3.048V13.714a3.056 3.056 0 00-3.048-3.047zM12.19 24.533a3.056 3.056 0 01-3.047-3.047 3.056 3.056 0 013.047-3.048 3.056 3.056 0 013.048 3.048 3.056 3.056 0 01-3.048 3.047z" /></svg>
+                </div>
+                <Typography color="textSecondary" className={classes.bulletText}> Lås (op)</Typography>
+              </div>
+              <div className={classes.nonCenteredRow}>
+                <div className="react-flow__controls-button">
+                  <svg className="MuiSvgIcon-root" focusable="false" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3.2" />
+                    <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" />
+                  </svg>
+                </div>
+                <Typography color="textSecondary" className={classes.bulletText} style={{ marginBottom: 0 }}> Download</Typography>
+              </div>
+            </div>
+            <div style={{ width: 350 }}>
+              Velkommen til Koncerndiagrammer.dk.
+              <br />
+              <br />
+              Med "fjernbetjeningen" kan du styre diagrammet: zoom, centrer diagrammet, lås/lås op samt download.
+              <br />
+              <br />
+              Funktionerne styrer du ved at anvende knapperne til venstre. Hvis du ikke kan finde dit koncerndiagram, så tryk på "Centrer".
+            </div>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <div className={classes.row} style={{ marginRight: 10 }}>
+            <Checkbox
+              checked={showAgain}
+              onChange={handleShowAgain}
+              name="dont show"
+              color="primary"
+            />
+            <Typography variant="subtitle2">
+                Vis ikke igen
+            </Typography>
+          </div>
+          <Button color="primary" variant="contained" onClick={handleCloseActionInitModal}>
+            Luk
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -625,3 +625,7 @@ export const showNotifAction = _message => ({
 export const setPublicAccessFalse = {
   type: types.SET_PUBLIC_ACCESS_FALSE
 };
+
+export const firstPublicVisit = {
+  type: types.SET_PUBLIC_VISITED,
+};

@@ -418,6 +418,11 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  nonCenteredRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   packageBullets: { marginTop: 20, marginLeft: 5 },
   bulletText: { margin: 8 }
 });
