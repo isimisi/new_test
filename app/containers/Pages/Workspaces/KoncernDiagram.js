@@ -73,7 +73,7 @@ const Workspace = (props) => {
   const [currentZoom, setCurrentZoom] = useState(1);
   const elements = useSelector(state => state[reducer].get('elements')).toJS();
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
-  const [showInitModal, setShowInitModal] = useState(!hasVisitedPublic);
+  const [showInitModal, setShowInitModal] = useState(false);
   const [showAgain, setShowAgain] = useState(false);
   const [subscription, setSubscription] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -83,7 +83,7 @@ const Workspace = (props) => {
   const handleCvrSuccess = (el) => {
     dispatch(cvrSuccess(getLayoutedElements(el)));
     setLoading(false);
-
+    setShowInitModal(!hasVisitedPublic);
     if (rfInstance) {
       rfInstance.fitView();
     }
