@@ -37,6 +37,8 @@ import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId } from '@api/constants';
 import connection from '@api/socket/SocketConnection';
 import Loader from '@api/ui/Loader';
+import CheckIcon from '@material-ui/icons/Check';
+import ClearIcon from '@material-ui/icons/Clear';
 import styles from '../../../components/Workspace/workspace-jss';
 import { reducer, getLayoutedElements, initErstTypes } from './constants';
 import {
@@ -203,14 +205,78 @@ const Workspace = (props) => {
         <DialogContent>
           <Typography>
             Det ser ikke ud som om, at du er logget ind. Med en bruger kan du gemme søgninger, se selskabsinformationer fra CVR og meget mere.
-            <br />
-            <br />
-            Det bedste er, at det er
-            {' '}
-            <strong>helt gratis</strong>
-            !
-            <br />
           </Typography>
+
+          <div className={classes.packageContainter}>
+            <div className={classes.package}>
+              <div
+                className={classes.center}
+                style={{
+                  backgroundColor: '#C9D2CB', borderTopRightRadius: 10, borderTopLeftRadius: 10
+                }}
+              >
+                <Typography className={classes.packageHeader}>
+                  Uden bruger
+                </Typography>
+              </div>
+              <div className={classes.packageContent}>
+
+                <div className={classes.packageBullets}>
+                  <Typography className={classes.bulletText}>
+                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                  Koncerndiagrammer
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <ClearIcon fontSize="inherit" color="error" className={classes.textIcon} />
+                  Gem 10 søgninger
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <ClearIcon fontSize="inherit" color="error" className={classes.textIcon} />
+                  Selskabsdata
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <ClearIcon fontSize="inherit" color="error" className={classes.textIcon} />
+                  Regnskabstal (beta)
+                  </Typography>
+                </div>
+              </div>
+            </div>
+
+            <div className={classes.package}>
+              <div
+                className={classes.center}
+                style={{
+                  backgroundColor: '#4B5E6D', borderTopRightRadius: 10, borderTopLeftRadius: 10
+                }}
+              >
+                <Typography className={classes.packageHeader}>
+                  Med gratis bruger
+                </Typography>
+              </div>
+              <div className={classes.packageContent}>
+
+                <div className={classes.packageBullets}>
+                  <Typography className={classes.bulletText}>
+                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                  Koncerndiagrammer
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                  Gem 10 søgninger
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                  Selskabsdata
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                  Regnskabstal (beta)
+                  </Typography>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseActions} color="primary">

@@ -393,7 +393,33 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
-  }
+  },
+  packageContainter: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 40,
+    marginBottom: 25
+  },
+  package: { width: 220 },
+  packageHeader: {
+    color: 'white', padding: 5,
+  },
+  packageContent: {
+    backgroundColor: '#F1F1F1',
+    paddingTop: 5,
+    paddingBottom: 20,
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10
+  },
+  textIcon: { marginRight: 10 },
+  center: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  packageBullets: { marginTop: 20, marginLeft: 5 },
+  bulletText: { margin: 8 }
 });
 
 export default styles;
