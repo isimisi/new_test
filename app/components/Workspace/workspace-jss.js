@@ -397,7 +397,6 @@ const styles = theme => ({
   packageContainter: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
     marginTop: 40,
     marginBottom: 25
   },

@@ -16,6 +16,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
+import Grid from '@material-ui/core/Grid';
 import {
   Link,
   useHistory, useLocation
@@ -223,8 +224,8 @@ const Workspace = (props) => {
             Det ser ikke ud som om, at du er logget ind. Med en bruger kan du gemme søgninger, se selskabsinformationer fra CVR og meget mere.
           </Typography>
 
-          <div className={classes.packageContainter}>
-            <div className={classes.package}>
+          <Grid container justifyContent="space-around" className={classes.packageContainter} spacing={2}>
+            <Grid item sm={5} xs={12} className={classes.package}>
               <div
                 className={classes.center}
                 style={{
@@ -256,9 +257,9 @@ const Workspace = (props) => {
                   </Typography>
                 </div>
               </div>
-            </div>
+            </Grid>
 
-            <div className={classes.package}>
+            <Grid item sm={5} xs={12} className={classes.package}>
               <div
                 className={classes.center}
                 style={{
@@ -290,9 +291,9 @@ const Workspace = (props) => {
                   </Typography>
                 </div>
               </div>
-            </div>
+            </Grid>
 
-          </div>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseActions} color="primary">
@@ -309,10 +310,14 @@ const Workspace = (props) => {
       <Dialog open={showInitModal} onClose={handleCloseActionInitModal} aria-labelledby="form-dialog-title" fullWidth>
         <DialogTitle id="form-dialog-title">Hurtig introduktion til Koncerndiagrammer</DialogTitle>
         <DialogContent>
-          <div className={classes.packageContainter} style={{ marginTop: 20 }}>
-            <div style={{
-              display: 'flex', flexDirection: 'column', justifyContent: 'center'
-            }}
+          <Grid container spacing={2} className={classes.packageContainter} style={{ marginTop: 20 }}>
+            <Grid
+              style={{
+                display: 'flex', flexDirection: 'column', justifyContent: 'center'
+              }}
+              xs={12}
+              sm={3}
+              item
             >
               <div className={classes.nonCenteredRow}>
                 <div className="react-flow__controls-button react-flow__controls-zoomin">
@@ -347,8 +352,8 @@ const Workspace = (props) => {
                 </div>
                 <Typography color="textSecondary" className={classes.bulletText} style={{ marginBottom: 0 }}> Download</Typography>
               </div>
-            </div>
-            <div style={{ width: 350 }}>
+            </Grid>
+            <Grid xs={12} sm={9} item>
               Velkommen til Koncerndiagrammer.dk.
               <br />
               <br />
@@ -356,8 +361,8 @@ const Workspace = (props) => {
               <br />
               <br />
               Funktionerne styrer du ved at anvende knapperne til venstre. Hvis du ikke kan finde dit koncerndiagram, så tryk på "Centrer".
-            </div>
-          </div>
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <div className={classes.row} style={{ marginRight: 10 }}>
