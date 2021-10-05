@@ -29,7 +29,6 @@ export class SocketConnection {
       setTimeout(() => this.subscribe(channel), 1000);
     } else {
       const result = this.ws.subscribe(channel);
-      console.log(channel, result, 'connection topic');
       result.on('nonAutherized', () => {
         // handle unautherized situation
         console.log('non authenticated');

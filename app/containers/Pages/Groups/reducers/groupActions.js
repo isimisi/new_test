@@ -21,7 +21,7 @@ export const postGroup = (title, description, image, closeModal) => async dispat
   const url = `${baseUrl}/${GROUPS}?title=${title}&description=${description}`;
   const body = new FormData();
   body.append('file_content', image);
-  console.log(image);
+
   const header = authHeader();
   try {
     await axios.post(url, body, header);

@@ -70,7 +70,12 @@ import {
   WORKSPACE_ANALYSIS_REVISION_SUCCESS,
   WORKSPACE_ANALYSIS_REVISION_FAILED,
   ANALYSIS_TEXT_CHANGE,
-  SET_PUBLIC_VISITED
+  SET_PUBLIC_VISITED,
+  SET_SHOW_COMPANY_DATA,
+  GET_WORKSPACE_NODE_ADDRESS_INFO_LOADING,
+  GET_WORKSPACE_NODE_ADDRESS_INFO_SUCCESS,
+  GET_WORKSPACE_NODE_ADDRESS_INFO_FAILED,
+  SET_SHOW_ADDRESS_INFO
 } from './workspaceConstants';
 
 const initialState = {
@@ -103,7 +108,10 @@ const initialState = {
   publicUserLastName: '',
   publicAuthenticatedId: null,
   revisionHistory: Map(),
-  hasVisitedPublic: false
+  hasVisitedPublic: false,
+  showCompanyData: false,
+  addressInfo: {},
+  showAddressInfo: false
 };
 
 
@@ -379,6 +387,22 @@ export default function reducer(state = initialImmutableState, action = {}) {
         mutableState.set('message', message);
         mutableState.set('loading', false);
       });
+    case GET_WORKSPACE_NODE_ADDRESS_INFO_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
+      });
+    case GET_WORKSPACE_NODE_ADDRESS_INFO_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set('addressInfo', action.addressInfo);
+        mutableState.set('showAddressInfo', true);
+        mutableState.set('loading', false);
+      });
+    case GET_WORKSPACE_NODE_ADDRESS_INFO_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set('message', message);
+        mutableState.set('loading', false);
+      });
     case SHARE_WORKSPACE_LOADING:
       return state.withMutations((mutableState) => {
         mutableState.set('loading', true);
@@ -466,7 +490,7 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const outputs = mutableState.get('outputs').toJS();
         outputs[action.index].action.output = action.text;
-        console.log(action.text);
+
         mutableState.set('outputs', fromJS(outputs));
       });
     case SHOW_NOTIF:
@@ -482,6 +506,17 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         mutableState.set('hasVisitedPublic', true);
       });
+    case SET_SHOW_COMPANY_DATA:
+      return state.withMutations((mutableState) => {
+        const show = fromJS(action.show);
+        mutableState.set('showCompanyData', show);
+      });
+    case SET_SHOW_ADDRESS_INFO:
+      return state.withMutations((mutableState) => {
+        const show = fromJS(action.show);
+        mutableState.set('showAddressInfo', show);
+      });
+
 
     default:
       return state;

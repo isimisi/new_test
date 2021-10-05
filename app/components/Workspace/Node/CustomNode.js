@@ -1,25 +1,33 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 import React, {
-  memo, useMemo, useCallback
+  memo, useMemo, useCallback, useState
 } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import InfoIcon from '@material-ui/icons/Info';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { getCompanyData, getAddressInfo } from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
+
 import square from './square.svg';
 import triangle from './triangle.svg';
-
 import circle from './circle.svg';
 import person from './person.svg';
 
 const CustomNode = ({ data }) => {
+  const dispatch = useDispatch();
   const theme = useTheme();
   const history = useHistory();
   const handleVisability = useSelector(state => state.workspace.get('handleVisability'));
   const signed = useSelector(state => state.workspace.get('signed'));
-
+  const loading = useSelector(state => state.workspace.get('loading'));
+  const [showContext, setShowContext] = useState(false);
   const showHandles = !history.location.pathname.includes('analysis') && handleVisability && !signed;
 
   const getSVG = useCallback((figur) => {
@@ -41,7 +49,7 @@ const CustomNode = ({ data }) => {
     border: '1px solid',
     borderRadius: theme.rounded.small,
     display: 'flex',
-    padding: 10,
+    padding: 12,
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -88,8 +96,22 @@ const CustomNode = ({ data }) => {
     fontSize: 6
   }), []);
 
+
+  const handelShowContext = useCallback(() => {
+    setShowContext(true);
+  }, []);
+  const handelHideContext = useCallback(() => {
+    setShowContext(false);
+  }, []);
+
   return (
-    <div style={nodeStyle}>
+    <div
+      onMouseOver={handelShowContext}
+      onFocus={handelShowContext}
+      onMouseLeave={handelHideContext}
+      onBlur={handelHideContext}
+      style={nodeStyle}
+    >
       <Handle
         style={handleStyle}
         type="source"
@@ -152,6 +174,62 @@ const CustomNode = ({ data }) => {
           {cv.value}
         </Typography>
       ))}
+      <div
+        onMouseOver={handelShowContext}
+        onFocus={handelShowContext}
+        onMouseLeave={handelHideContext}
+        onBlur={handelHideContext}
+        className="nodrag"
+        style={{
+          position: 'absolute',
+          width: 'calc(100% + 50px)',
+          height: '100%',
+          zIndex: -1
+        }}
+      >
+        {showContext && data.unitNumber && (
+          <div style={{
+            position: 'absolute',
+            right: 1,
+            top: 5,
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+          >
+
+            <Tooltip title="Selskabsinformation">
+              <IconButton
+                color="primary"
+                aria-label="Info om selskabet"
+                size="small"
+                style={{ borderRadius: 5, backgroundColor: '#015C94', marginBottom: 5, }}
+                onClick={() => {
+                  dispatch(getCompanyData(data.id));
+                }}
+              >
+
+                {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <InfoIcon style={{ fontSize: 8, color: 'white' }} />}
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Ejendomsdata">
+              <IconButton
+                color="primary"
+                aria-label="ejendomsdata"
+                size="small"
+                style={{
+                  borderRadius: 5, backgroundColor: '#015C94'
+                }}
+                onClick={() => {
+                  dispatch(getAddressInfo(data.id));
+                }}
+              >
+                {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <HomeWorkIcon style={{ fontSize: 8, color: 'white' }} />}
+
+              </IconButton>
+            </Tooltip>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

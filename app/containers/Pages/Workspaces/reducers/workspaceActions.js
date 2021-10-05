@@ -124,7 +124,7 @@ export const putWorkspace = (workspace_id, label, description, group, shareOrg, 
     label, description, group, shareOrg
   };
   const header = authHeader();
-  console.log(shareOrg);
+
   try {
     await axios.put(url, body, header);
     const _message = 'Metatekst er nu opdateret';
@@ -146,7 +146,6 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
     await axios.put(url, body, header);
     dispatch({ type: types.SAVE_WORKSPACE_SUCCESS });
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.SAVE_WORKSPACE_FAILED, message });
   }
 };
@@ -400,7 +399,7 @@ export const putSticky = (id, text) => async dispatch => {
   }
 };
 
-export const getCompanyData = (id, setShowCompanyData, setDefineNodeOpen, setNodeLabel, setIsUpdatingElement) => async dispatch => {
+export const getCompanyData = (id) => async dispatch => {
   dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
   const url = `${baseUrl}/workspacenodes/company/info/${id}`;
   const header = authHeader();
@@ -410,16 +409,31 @@ export const getCompanyData = (id, setShowCompanyData, setDefineNodeOpen, setNod
     const companyData = response.data;
     dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS, companyData });
 
-    setDefineNodeOpen(false);
-    setNodeLabel('');
-    setIsUpdatingElement(false);
-    setShowCompanyData(true);
+    dispatch({ type: types.SET_SHOW_COMPANY_DATA, show: true });
   } catch (error) {
     let _message = message;
     if (error?.response?.status === 403) {
       _message = error.response.data;
     }
     dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_FAILED, message: _message });
+  }
+};
+
+export const getAddressInfo = (id) => async dispatch => {
+  dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_LOADING });
+  const url = `${baseUrl}/workspacenodes/company/addressInfo/${id}`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+
+    const addressInfo = response.data;
+    dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_SUCCESS, addressInfo });
+  } catch (error) {
+    let _message = message;
+    if (error?.response?.status === 403) {
+      _message = error.response.data;
+    }
+    dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_FAILED, message: _message });
   }
 };
 
@@ -522,7 +536,6 @@ export const saveAnalysis = (id, output, subgraph) => async dispatch => {
     await axios.post(url, body, header);
     dispatch({ type: types.WORKSPACE_ANALYSIS_SAVE_SUCCESS });
   } catch (error) {
-    console.log(error.response);
     dispatch({ type: types.WORKSPACE_ANALYSIS_SAVE_FAILED, message });
   }
 };
@@ -548,7 +561,6 @@ export const cvrWorkspacePublic = (id, cvr, erstTypes) => async dispatch => {
   try {
     await axios.post(url, body);
   } catch (error) {
-    console.log(error.response);
     let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
 
     if (error?.response?.status === 503) {
@@ -629,3 +641,13 @@ export const setPublicAccessFalse = {
 export const firstPublicVisit = {
   type: types.SET_PUBLIC_VISITED,
 };
+
+export const setShowCompanyData = show => ({
+  type: types.SET_SHOW_COMPANY_DATA,
+  show
+});
+
+export const setShowAddressInfo = show => ({
+  type: types.SET_SHOW_ADDRESS_INFO,
+  show
+});

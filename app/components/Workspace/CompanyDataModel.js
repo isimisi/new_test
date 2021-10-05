@@ -29,7 +29,6 @@ function CompanyDataModel(props) {
 
     open,
     close,
-    displayName,
     companyData
   } = props;
   const branch = '';
@@ -39,13 +38,14 @@ function CompanyDataModel(props) {
     setValue(newValue);
   };
 
+
   return (
     <div>
       <FloatingPanel
         openForm={open}
         branch={branch}
         closeForm={close}
-        title={'Selskabsdata for ' + displayName}
+        title={'Selskabsdata for ' + companyData.name}
         extraSize
       >
         <Tabs
@@ -78,7 +78,7 @@ function CompanyDataModel(props) {
                       <Typography style={{ textAlign: 'center' }}>
                         Vi kunne ikke finde noget data at vise dig her
                         {' '}
-                        {displayName}
+                        {companyData.name}
                       </Typography>
 
                     )
@@ -116,7 +116,7 @@ function CompanyDataModel(props) {
             >
             Åben i enhedsvisning for
               {' '}
-              {displayName}
+              {companyData.name}
               {' '}
             direkte i CVR
             </Button>
@@ -130,7 +130,6 @@ function CompanyDataModel(props) {
 CompanyDataModel.propTypes = {
   open: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  displayName: PropTypes.string.isRequired,
   companyData: PropTypes.object.isRequired
 };
 

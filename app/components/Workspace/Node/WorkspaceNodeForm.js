@@ -48,7 +48,6 @@ const WorkspaceNodeForm = (props) => {
     handleRemoveAttributes,
     nodeFigur,
     handleNodeFigurChange,
-    showCompanyData
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
@@ -265,15 +264,6 @@ const WorkspaceNodeForm = (props) => {
         )}
       </section>
       <div className={css.buttonArea}>
-        {Boolean(elementToUpdate?.data?.unitNumber) && (
-          <Button
-            style={{ position: 'absolute', left: 10 }}
-            startIcon={<AssessmentIcon />}
-            onClick={showCompanyData}
-          >
-          selskabsdata
-          </Button>
-        )}
         {isUpdatingElement && (
           <Button
             variant="contained"
@@ -320,7 +310,6 @@ WorkspaceNodeForm.propTypes = {
   handleRemoveAttributes: PropTypes.func.isRequired,
   nodeFigur: PropTypes.string,
   handleNodeFigurChange: PropTypes.func.isRequired,
-  showCompanyData: PropTypes.func.isRequired
 };
 
 WorkspaceNodeForm.defaultProps = {

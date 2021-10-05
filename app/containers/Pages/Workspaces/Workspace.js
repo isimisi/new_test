@@ -19,7 +19,8 @@ import {
   WorkspaceFabs, CustomNode, StickyNoteNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
   Notification, AlertModal, CompanyDataModel,
-  AlertLog, FormDialog, MapTypesForErst, ShareModal
+  AlertLog, FormDialog, MapTypesForErst, ShareModal,
+  AddressInfoModel
 } from '@components';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
@@ -47,7 +48,8 @@ import {
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
-  getCompanyData, shareWorkspace, cvrSuccess, shareOrgChange
+  shareWorkspace, cvrSuccess, shareOrgChange,
+  setShowCompanyData, setShowAddressInfo
 } from './reducers/workspaceActions';
 
 import './workspace.css';
@@ -88,14 +90,18 @@ const Workspace = (props) => {
   const description = useSelector(state => state[reducer].get('description'));
   const group = useSelector(state => state[reducer].get('group'));
   const shareOrg = useSelector(state => state[reducer].get('shareOrg'));
-  console.log(shareOrg);
+
   const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
   const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const loading = useSelector(state => state[reducer].get('loading'));
   const companyData = useSelector(state => state[reducer].get('companyData'));
+  const addressInfo = useSelector(state => state[reducer].get('addressInfo'));
   const signed = useSelector(state => state[reducer].get('signed'));
   const signedBy = useSelector(state => state[reducer].get('signedBy'));
+  const showCompanyData = useSelector(state => state[reducer].get('showCompanyData'));
+  const showAddressInfo = useSelector(state => state[reducer].get('showAddressInfo'));
+
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
@@ -103,7 +109,6 @@ const Workspace = (props) => {
   const [showCvrModal, setShowCvrModal] = useState(false);
   const [showMapErst, setShowMapErst] = useState(false);
   const [erstTypes, setErstTypes] = useState(initErstTypes);
-  const [showCompanyData, setShowCompanyData] = useState(false);
   const [shareModalOpen, setShareModalOpen] = useState(false);
 
 
@@ -214,7 +219,7 @@ const Workspace = (props) => {
   };
 
   const onElementClick = (event, element) => {
-    setShowCompanyData(false);
+    dispatch(setShowCompanyData(false));
     setDefineEdgeOpen(false);
     setDefineNodeOpen(false);
     setIsUpdatingElement(true);
@@ -658,9 +663,6 @@ const Workspace = (props) => {
             setDeletedAttributes(attr => [...attr, _id]);
           }
         }}
-        showCompanyData={() => {
-          dispatch(getCompanyData(elementToUpdate.id, setShowCompanyData, setDefineNodeOpen, setNodeLabel, setIsUpdatingElement));
-        }}
       />
       {alerts[alertId] && (
         <AlertModal
@@ -750,7 +752,7 @@ const Workspace = (props) => {
         nodes={nodes}
         relationships={relationships}
       />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && (
+      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && !showCompanyData && !showAddressInfo && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
@@ -765,9 +767,13 @@ const Workspace = (props) => {
       )}
       <CompanyDataModel
         open={showCompanyData}
-        close={() => setShowCompanyData(false)}
-        displayName={elementToUpdate?.data?.displayName}
+        close={() => dispatch(setShowCompanyData(false))}
         companyData={companyData}
+      />
+      <AddressInfoModel
+        open={showAddressInfo}
+        close={() => dispatch(setShowAddressInfo(false))}
+        addressInfo={addressInfo}
       />
       <ShareModal
         open={shareModalOpen}

@@ -68,7 +68,7 @@ const Workspace = (props) => {
   const cvr = new URLSearchParams(search).get('cvr');
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const hasVisitedPublic = useSelector(state => state[reducer].get('hasVisitedPublic'));
-  console.log(hasVisitedPublic);
+
   const reactFlowContainer = useRef(null);
   const [image, takeScreenShot] = useScreenshot();
   const [currentZoom, setCurrentZoom] = useState(1);

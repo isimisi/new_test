@@ -64,13 +64,12 @@ export const putOutput = (id, label, description, output, fileType, outputType, 
 
   let body;
   if (validURL(output) || typeof output === 'string') {
-    console.log(validURL(output), typeof output === 'string');
     header.params.output = output;
   } else {
     body = new FormData();
     body.append('file_content', output);
   }
-  console.log(body, output);
+
   try {
     await axios.put(url, body, header);
     const message = 'Dit indhold er blevet opdateret';
@@ -78,7 +77,7 @@ export const putOutput = (id, label, description, output, fileType, outputType, 
     history.push('/app/outputs');
   } catch (error) {
     const message = genericErrorMessage;
-    console.log('hejweqwsad');
+
     dispatch({ type: types.PUT_OUTPUT_FAILED, message });
   }
 };

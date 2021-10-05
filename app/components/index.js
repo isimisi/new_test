@@ -93,6 +93,7 @@ import DefineEdge from './Workspace/Edge/DefineEdge';
 
 import DefineNode from './Workspace/Node/DefineNode';
 import CompanyDataModel from './Workspace/CompanyDataModel';
+import AddressInfoModel from './Workspace/AddressInfoModel';
 
 // Condition
 import ConditionForm from './Condition/ConditionForm';
@@ -194,5 +195,6 @@ export {
   NewsListWidget,
   PaymentPanel,
   CompanyDataModel,
+  AddressInfoModel,
   EmailSidebar
 };
