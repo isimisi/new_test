@@ -22,6 +22,8 @@ import {
   AlertLog, FormDialog, MapTypesForErst, ShareModal,
   AddressInfoModel
 } from '@components';
+import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
@@ -49,7 +51,8 @@ import {
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
   shareWorkspace, cvrSuccess, shareOrgChange,
-  setShowCompanyData, setShowAddressInfo
+  setShowCompanyData, setShowAddressInfo,
+  handleRunIntro, changeStepIndex
 } from './reducers/workspaceActions';
 
 import './workspace.css';
@@ -102,6 +105,9 @@ const Workspace = (props) => {
   const showCompanyData = useSelector(state => state[reducer].get('showCompanyData'));
   const showAddressInfo = useSelector(state => state[reducer].get('showAddressInfo'));
 
+  const runIntro = useSelector(state => state[reducer].get('runIntro'));
+  const introStepIndex = useSelector(state => state[reducer].get('introStepIndex'));
+
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState(null);
@@ -153,9 +159,12 @@ const Workspace = (props) => {
   // socket for cvr
   const [subscription, setSubscription] = useState(null);
 
+
   const handleCvrSuccess = (el) => {
     setShowCvrModal(false);
     dispatch(cvrSuccess(getLayoutedElements(el)));
+    dispatch(changeStepIndex(10));
+    dispatch(handleRunIntro(true));
   };
 
   useEffect(() => {
@@ -479,6 +488,130 @@ const Workspace = (props) => {
     }
   }, [image]);
 
+  const localeSteps = {
+    skip: <Button size="small" style={{ color: '#bbb' }}>Spring over</Button>,
+    back: <div>Forrige</div>,
+    next: <div>Næste</div>,
+  };
+
+  const steps = [
+    {
+      content: <h2>Velkommen til arbejdsområdet</h2>,
+      locale: localeSteps,
+      placement: 'center',
+      target: 'body',
+    },
+    {
+      target: '.floatingPanel',
+      content: 'Start med at beskrive arbejdsområdet. Vælg gruppen "Corporate"!',
+      locale: localeSteps,
+      disableBeacon: true,
+      disableOverlayClose: true,
+      hideCloseButton: true,
+      hideFooter: true,
+      spotlightClicks: true,
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Du kan indsætte tekstbokse og noter via denne kvik-knap.</div>,
+      locale: localeSteps,
+      target: '.rtf--mb:nth-of-type(1)',
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Indsæt elementer, som fx selskaber og personer, via denne kvik-knap.</div>,
+      locale: localeSteps,
+      target: '.rtf:nth-of-type(2) > li > button',
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>I denne menu finder du de øvrige funktioner. Her kan du gemme ændringerne i dit arbejdsområde!</div>,
+      locale: localeSteps,
+      target: '.rtf--ab__c:nth-of-type(1)',
+      disableBeacon: true,
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Hvis du vil ændre navn, beskrivelse og gruppe - eller ændre indstillingen for deling - skal du trykke her.</div>,
+      locale: localeSteps,
+      target: '.rtf--ab__c:nth-of-type(2)',
+      disableBeacon: true,
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Tryk på Analyser-knappen for at skabe et notat eller en rapport på baggrund af tegningen i arbejdsområdet.</div>,
+      locale: localeSteps,
+      target: '.rtf--ab__c:nth-of-type(3)',
+      disableBeacon: true,
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Du kan også få en fuld oversigt over red flags i arbejdsområdet - også selvom du allerede har set dem.</div>,
+      locale: localeSteps,
+      target: '.rtf--ab__c:nth-of-type(4)',
+      disableBeacon: true,
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Hvis du får brug for at dele arbejdsområdet med nogen, der ikke er Juristic-brugere, kan du gøre det her.</div>,
+      locale: localeSteps,
+      target: '.rtf--ab__c:nth-of-type(5)',
+      disableBeacon: true,
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Vi har koblet Juristic direkte til CVR (og snart også i Sverige, Norge og Finland). Prøv at trykke her nu!</div>,
+      locale: localeSteps,
+      target: '.rtf--ab__c:nth-of-type(6)',
+      disableBeacon: true,
+      disableOverlayClose: true,
+      hideCloseButton: true,
+      hideFooter: true,
+      spotlightClicks: true,
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Hvis du ikke kan finde din tegning eller dit diagram, kan du trykke her for at centrere visningen!</div>,
+      locale: localeSteps,
+      target: '.react-flow__controls-fitview',
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Download koncerndiagrammet eller tegningen ved at trykke her - husk, det er kun det, du kan se på din skærm, der downloades!</div>,
+      locale: localeSteps,
+      target: '.react-flow__controls-button:nth-of-type(5)',
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Og til slut kan du trykke her for at skjule hjælpestreger m.v. fra arbejdsområdet - eller slå dem til igen.</div>,
+      locale: localeSteps,
+      target: '.react-flow__controls-button:nth-of-type(6)',
+    },
+    {
+      content: <div style={{ textAlign: 'left' }}>Nu er det bare at begynde - velkommen! Hvis du har problemer eller spørgsmål, er vi tilgængelige via livechat. Knappen finder du i bunden til venstre.</div>,
+      locale: localeSteps,
+      target: '.react-flow__pane',
+    },
+  ];
+
+  const handleJoyrideCallback = (data) => {
+    const {
+      action, index, type, status
+    } = data;
+
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      // Need to set our running state to false, so we can restart if we click start again.
+      dispatch(handleRunIntro(false));
+      dispatch(changeStepIndex(0));
+    } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+      let newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+
+      if (!metaOpen && index === 1) {
+        newStepIndex = 2;
+      }
+
+      if (index === 3) {
+        const hoverMenu = document.querySelector('.rtf:nth-of-type(3)');
+        hoverMenu.classList.remove('closed');
+        hoverMenu.classList.add('open');
+        setTimeout(() => {
+          dispatch(changeStepIndex(newStepIndex));
+        }, 100);
+      } else {
+        dispatch(changeStepIndex(newStepIndex));
+      }
+    }
+  };
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -578,7 +711,7 @@ const Workspace = (props) => {
         shareOrg={shareOrg}
         handleShareOrg={(e) => dispatch(shareOrgChange(e.target.checked))}
         onSave={() => dispatch(putWorkspace(id, label, description, group, shareOrg, setMetaOpen))}
-        closeForm={() => setMetaOpen(false)}
+        closeForm={introStepIndex !== 2 ? null : () => setMetaOpen(false)}
       />
       <DefineEdge
         open={defineEdgeOpen}
@@ -759,7 +892,10 @@ const Workspace = (props) => {
           saveClick={onWorkspaceSave}
           onAlertClick={() => setShowAlertLog(true)}
           onAnalysisClick={() => history.push(`analysis/${id}`)}
-          onCvrClick={() => setShowCvrModal(true)}
+          onCvrClick={() => {
+            dispatch(handleRunIntro(false));
+            setShowCvrModal(true);
+          }}
           stickyClick={handlePostSticky}
           onShareClick={() => setShareModalOpen(true)}
           plan_id={plan_id}
@@ -780,6 +916,21 @@ const Workspace = (props) => {
         loading={loading}
         close={() => setShareModalOpen(false)}
         onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, setShareModalOpen))}
+      />
+      <Joyride
+        continuous
+        run={runIntro}
+        stepIndex={introStepIndex}
+        scrollToFirstStep
+        showSkipButton
+        callback={handleJoyrideCallback}
+        steps={steps}
+        styles={{
+          options: {
+            zIndex: 10000,
+            primaryColor: '#36454F'
+          }
+        }}
       />
     </div>
   );

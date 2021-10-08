@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.2.83",
+  "version": "1.2.84",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -132,6 +132,7 @@
     "react-iframe": "^1.8.0",
     "react-intl": "2.8.0",
     "react-ionicons": "^2.1.6",
+    "react-joyride": "^2.3.1",
     "react-katex": "^2.0.2",
     "react-modal": "^3.4.4",
     "react-phone-input-2": "^2.14.0",

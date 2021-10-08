@@ -48,7 +48,7 @@ function MainMenu(props) {
   const getMenus = menuArray => menuArray.map((item, index) => {
     if (item.child || item.linkParent) {
       return (
-        <div key={index.toString()}>
+        <div key={index.toString()} className={'for_intro_' + index.toString()}>
           <ListItem
             button
             component={LinkBtn}
@@ -84,6 +84,7 @@ function MainMenu(props) {
               className={classNames(
                 classes.nolist,
                 (item.keyParent ? classes.child : ''),
+
               )}
               in={open.indexOf(item.key) > -1}
               timeout="auto"
@@ -114,7 +115,7 @@ function MainMenu(props) {
         key={index.toString()}
         button
         exact
-        className={classes.nested}
+        className={classNames(classes.nested, `for_intro_${item.name}`)}
         activeClassName={classes.active}
         component={LinkBtn}
         to={item.badge && notIncludedPlans.includes(item.badge) ? '/app/plan' : item.link}

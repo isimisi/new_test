@@ -40,17 +40,20 @@ function FloatingPanel(props) {
           expanded ? classes.expanded : '',
           classes.floatingForm,
           classes.formTheme,
-          extraSize && classes.large
+          extraSize && classes.large,
+          'floatingPanel'
         )}
       >
         <header>
           {title}
           <div className={classes.btnOpt}>
-            <Tooltip title={expanded ? 'Exit Full Screen' : 'Full Screen'}>
-              <IconButton className={classes.expandButton} onClick={() => toggleExpand()} aria-label="Expand">
-                {expanded ? <MinimizeIcon /> : <ExpandIcon />}
-              </IconButton>
-            </Tooltip>
+            {closeForm && (
+              <Tooltip title={expanded ? 'Exit Full Screen' : 'Full Screen'}>
+                <IconButton className={classes.expandButton} onClick={() => toggleExpand()} aria-label="Expand">
+                  {expanded ? <MinimizeIcon /> : <ExpandIcon />}
+                </IconButton>
+              </Tooltip>
+            )}
             {closeForm && (
               <Tooltip title="Close">
                 <IconButton className={classes.closeButton} onClick={() => closeForm()} aria-label="Close">
@@ -58,6 +61,7 @@ function FloatingPanel(props) {
                 </IconButton>
               </Tooltip>
             )}
+
           </div>
         </header>
         {children}

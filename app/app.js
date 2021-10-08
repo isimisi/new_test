@@ -27,6 +27,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import Bugsnag from '@bugsnag/js';
 import BugsnagPluginReact from '@bugsnag/plugin-react';
 
+
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -42,6 +43,7 @@ import configureStore from './redux/configureStore';
 import { translationMessages } from './i18n';
 
 import 'video-react/dist/video-react.css';
+
 require('dotenv').config();
 
 
@@ -99,6 +101,7 @@ let render = messages => {
       <LanguageProvider messages={messages}>
         <ConnectedRouter history={history}>
           <App />
+
           <ToastContainer />
         </ConnectedRouter>
       </LanguageProvider>

@@ -129,7 +129,13 @@ export const putWorkspace = (workspace_id, label, description, group, shareOrg, 
     await axios.put(url, body, header);
     const _message = 'Metatekst er nu opdateret';
     dispatch({ type: types.PUT_WORKSPACE_SUCCESS, message: _message });
+
     setMetaOpen(false);
+
+    setTimeout(() => {
+      // eslint-disable-next-line no-use-before-define
+      dispatch(changeStepIndex(2));
+    }, 100);
   } catch (error) {
     dispatch({ type: types.PUT_WORKSPACE_FAILED, message });
   }
@@ -650,4 +656,14 @@ export const setShowCompanyData = show => ({
 export const setShowAddressInfo = show => ({
   type: types.SET_SHOW_ADDRESS_INFO,
   show
+});
+
+export const handleRunIntro = run => ({
+  type: types.RUN_INTRO_WORKSPACE,
+  run
+});
+
+export const changeStepIndex = index => ({
+  type: types.CHANGE_STEP_INDEX_WORKSPACE,
+  index
 });

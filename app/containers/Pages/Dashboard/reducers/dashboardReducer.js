@@ -6,13 +6,17 @@ import {
   GET_TIMELINE_SUCCESS,
   GET_TIMELINE_FAILED,
   POST_FEATURE_SUCCESS,
-  POST_FEATURE_FAILED
+  POST_FEATURE_FAILED,
+  RUN_INTRO,
+  CHANGE_STEP_INDEX
 } from './dashboardConstants';
 
 const initialState = {
   elementCounts: {},
   timeline: [],
   message: '',
+  runIntro: true,
+  introStepIndex: 0
 };
 
 
@@ -48,6 +52,16 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+      });
+    case RUN_INTRO:
+      return state.withMutations((mutableState) => {
+        const run = fromJS(action.run);
+        mutableState.set('runIntro', run);
+      });
+    case CHANGE_STEP_INDEX:
+      return state.withMutations((mutableState) => {
+        const index = fromJS(action.index);
+        mutableState.set('introStepIndex', index);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

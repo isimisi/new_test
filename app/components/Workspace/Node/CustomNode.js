@@ -13,7 +13,9 @@ import InfoIcon from '@material-ui/icons/Info';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { getCompanyData, getAddressInfo } from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
+import {
+  getCompanyData, getAddressInfo
+} from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
 
 import square from './square.svg';
 import triangle from './triangle.svg';
@@ -29,6 +31,7 @@ const CustomNode = ({ data }) => {
   const loading = useSelector(state => state.workspace.get('loading'));
   const [showContext, setShowContext] = useState(false);
   const showHandles = !history.location.pathname.includes('analysis') && handleVisability && !signed;
+  const showHover = !history.location.pathname.includes('public');
 
   const getSVG = useCallback((figur) => {
     switch (figur) {
@@ -187,7 +190,7 @@ const CustomNode = ({ data }) => {
           zIndex: -1
         }}
       >
-        {showContext && data.unitNumber && (
+        {showContext && data.unitNumber && showHover && (
           <div style={{
             position: 'absolute',
             right: 1,

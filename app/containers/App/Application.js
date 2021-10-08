@@ -14,6 +14,7 @@ import {
   WorkspaceAnalysis
 } from '../pageListAsync';
 
+
 function Application() {
   const history = useHistory();
   const changeMode = useContext(ThemeContext);
@@ -55,6 +56,7 @@ function Application() {
         <Route path="/app/help-support" component={HelpSupport} />
         <Route component={NotFound} />
       </Switch>
+
     </Dashboard>
   );
 }

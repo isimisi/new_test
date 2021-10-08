@@ -89,6 +89,17 @@ export const helpMe = (name, email, mesg) => async dispatch => {
 };
 
 
+export const handleRunIntro = run => ({
+  type: types.RUN_INTRO,
+  run
+});
+
+export const changeStepIndex = index => ({
+  type: types.CHANGE_STEP_INDEX,
+  index
+});
+
+
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF
 };

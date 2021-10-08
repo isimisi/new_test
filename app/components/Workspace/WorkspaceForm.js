@@ -93,9 +93,11 @@ const WorkspaceForm = (props) => {
         </div>
       </section>
       <div className={css.buttonArea}>
-        <Button type="button" onClick={() => closeForm()}>
+        {closeForm && (
+          <Button type="button" onClick={closeForm}>
             Annuller
-        </Button>
+          </Button>
+        )}
         <Button
           variant="contained"
           color="secondary"

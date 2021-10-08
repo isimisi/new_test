@@ -47,6 +47,7 @@ const WorkspaceFab = (props) => {
             text="Gem"
             style={{ backgroundColor: 'white' }}
             onClick={saveClick}
+            className="testeren"
           >
             <SaveIcon style={{ color: theme.palette.primary.main }} />
           </Action>
