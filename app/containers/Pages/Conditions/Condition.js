@@ -81,7 +81,6 @@ const Condition = (props) => {
 
   useEffect(() => {
     dispatch(getGroupDropDown());
-    dispatch(getBuildTypeValueOptions());
     dispatch(showCondition(id, setMetaOpen));
   }, []);
 
@@ -89,6 +88,7 @@ const Condition = (props) => {
     if (group?.length > 0) {
       dispatch(getNodes(group));
       dispatch(getRelationships(group));
+      dispatch(getBuildTypeValueOptions(group));
     }
   }, [group]);
 
@@ -291,7 +291,12 @@ const Condition = (props) => {
         handleSave={() => handleRelationshipSave()}
         comparisonsOptions={comparisonsOptions}
         comparisonType={comparisonType}
-        handleComparisonTypeChange={(v) => setComparisonType(v)}
+        handleComparisonTypeChange={(v) => {
+          if (['exists', 'does not exist', 'any'].includes(v)) {
+            setComparisonValue(null);
+          }
+          setComparisonType(v);
+        }}
         comparisonValue={comparisonValue}
         handleComparisonValueChange={(v) => setComparisonValue(v)}
         isUpdatingElement={isUpdatingElement}

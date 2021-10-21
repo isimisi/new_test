@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Select from 'react-select';
@@ -115,7 +115,7 @@ function RelationshipForm(props) {
                 onChange={onValueChanged}
                 onInputChange={(v) => setInputValue(v)}
                 onKeyDown={handleKeyDown}
-                placeholder={`Indtast valgmuligheder, fx en talværdi`}
+                placeholder="Indtast valgmuligheder, fx en talværdi"
                 value={values}
               />
             </div>

@@ -177,7 +177,7 @@ const WorkspaceNodeForm = (props) => {
                   )
                     : (
                       <CreatableSelect
-                        styles={selectStyles('relative')}
+                        styles={selectStyles()}
                         placeholder="Værdi"
                         options={JSON.parse(attribut.selectionOptions)}
                         value={attribut.value && { label: attribut.value, value: attribut.value }}

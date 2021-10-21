@@ -52,7 +52,8 @@ import {
   cvrWorkspace, postSticky, showNotifAction,
   shareWorkspace, cvrSuccess, shareOrgChange,
   setShowCompanyData, setShowAddressInfo,
-  handleRunIntro, changeStepIndex
+  handleRunIntro, changeStepIndex, uncertainCompaniesChange,
+  mapUncertainCompanies
 } from './reducers/workspaceActions';
 
 import './workspace.css';
@@ -107,6 +108,8 @@ const Workspace = (props) => {
 
   const runIntro = useSelector(state => state[reducer].get('runIntro'));
   const introStepIndex = useSelector(state => state[reducer].get('introStepIndex'));
+
+  const uncertainCompanies = useSelector(state => state[reducer].get('uncertainCompanies')).toJS();
 
 
   const [metaOpen, setMetaOpen] = useState(false);
@@ -163,8 +166,17 @@ const Workspace = (props) => {
   const handleCvrSuccess = (el) => {
     setShowCvrModal(false);
     dispatch(cvrSuccess(getLayoutedElements(el)));
-    dispatch(changeStepIndex(10));
-    dispatch(handleRunIntro(true));
+    // dispatch(changeStepIndex(10));
+    // dispatch(handleRunIntro(true));
+  };
+
+  const handleCvrError = () => {
+    setShowCvrModal(false);
+    dispatch(showNotifAction('Vi havde en fejl i forbindelse med at trække koncerndiagrammet. Vores udviklere er  underettet og er på sagen!'));
+  };
+
+  const handleUncertainCompanies = (companies = []) => {
+    dispatch(uncertainCompaniesChange(companies));
   };
 
   useEffect(() => {
@@ -173,7 +185,7 @@ const Workspace = (props) => {
     // storing the subscription in the global variable
     // passing the incoming data handler fn as a second argument
 
-    const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess);
+    const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
     setSubscription(sub);
 
     // Specify how to clean up after this effect:
@@ -338,6 +350,7 @@ const Workspace = (props) => {
       setAlertOpen(true);
     }
   }, [alertId]);
+
 
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
@@ -711,7 +724,7 @@ const Workspace = (props) => {
         shareOrg={shareOrg}
         handleShareOrg={(e) => dispatch(shareOrgChange(e.target.checked))}
         onSave={() => dispatch(putWorkspace(id, label, description, group, shareOrg, setMetaOpen))}
-        closeForm={introStepIndex !== 2 ? null : () => setMetaOpen(false)}
+        closeForm={runIntro ? null : () => setMetaOpen(false)}
       />
       <DefineEdge
         open={defineEdgeOpen}
@@ -830,11 +843,16 @@ const Workspace = (props) => {
       <FormDialog
         loading={loading}
         open={showCvrModal}
-        handleClose={() => setShowCvrModal(false)}
+        handleClose={() => {
+          setShowCvrModal(false);
+          handleUncertainCompanies();
+        }}
         title="Indlæs fra CVR"
         description="Søg på en virksomhed eller et CVR-nummer:"
         textFielLabel="CVR-nummer"
-
+        changeUncertainCompanies={handleUncertainCompanies}
+        uncertainCompanies={uncertainCompanies}
+        mapUncertainCompanies={(uncertainMapping) => dispatch(mapUncertainCompanies(id, uncertainMapping, erstTypes))}
         onConfirm={(value, close) => {
           const erstNodeArray = Object.values(erstTypes.nodes);
           const erstEdgeArray = Object.values(erstTypes.edges);
@@ -843,7 +861,7 @@ const Workspace = (props) => {
           if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
             if (!subscription) {
               connection.connect();
-              const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess);
+              const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
               setSubscription(sub);
             }
             dispatch(cvrWorkspace(id, value, close, erstTypes));

@@ -71,8 +71,8 @@ export const showCondition = (id, setMetaOpen) => async dispatch => {
   }
 };
 
-export const getBuildTypeValueOptions = () => async dispatch => {
-  const url = `${baseUrl}/${CONDITIONS}/buildTypeOptions`;
+export const getBuildTypeValueOptions = (group) => async dispatch => {
+  const url = `${baseUrl}/${CONDITIONS}/buildTypeOptions?group=${group}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);

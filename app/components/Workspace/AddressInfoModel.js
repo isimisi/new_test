@@ -24,8 +24,6 @@ function AddressInfoModel(props) {
     addressInfo
   } = props;
 
-  console.log(addressInfo);
-
   return (
     <div>
       <FloatingPanel

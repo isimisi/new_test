@@ -77,7 +77,8 @@ import {
   GET_WORKSPACE_NODE_ADDRESS_INFO_FAILED,
   SET_SHOW_ADDRESS_INFO,
   RUN_INTRO_WORKSPACE,
-  CHANGE_STEP_INDEX_WORKSPACE
+  CHANGE_STEP_INDEX_WORKSPACE,
+  HANDLE_UNCERTAIN_COMPANIES
 } from './workspaceConstants';
 
 const initialState = {
@@ -115,7 +116,8 @@ const initialState = {
   addressInfo: {},
   showAddressInfo: false,
   runIntro: true,
-  introStepIndex: 0
+  introStepIndex: 0,
+  uncertainCompanies: List()
 };
 
 
@@ -529,6 +531,12 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const index = fromJS(action.index);
         mutableState.set('introStepIndex', index);
+      });
+    case HANDLE_UNCERTAIN_COMPANIES:
+      return state.withMutations((mutableState) => {
+        const companies = fromJS(action.companies);
+        mutableState.set('uncertainCompanies', companies);
+        mutableState.set('loading', false);
       });
 
     default:

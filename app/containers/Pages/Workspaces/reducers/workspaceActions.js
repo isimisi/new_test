@@ -576,6 +576,23 @@ export const cvrWorkspacePublic = (id, cvr, erstTypes) => async dispatch => {
   }
 };
 
+export const mapUncertainCompanies = (id, uncertainCompanies, erstTypes) => async dispatch => {
+  dispatch({ type: types.GET_CVR_NODES_LOADING });
+  const url = `${baseUrl}/workspaces/uncertainCompanies/${id}`;
+  const header = authHeader();
+  const body = {
+    uncertainCompanies,
+    erstTypes
+  };
+  try {
+    await axios.post(url, body, header);
+  } catch (error) {
+    console.log(error.response);
+    const _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
+    dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
+  }
+};
+
 
 export const analysisTextChange = (text, index) => ({
   type: types.ANALYSIS_TEXT_CHANGE,
@@ -587,6 +604,11 @@ export const analysisTextChange = (text, index) => ({
 export const cvrSuccess = (elements) => ({
   type: types.GET_CVR_NODES_SUCCESS,
   elements
+});
+
+export const uncertainCompaniesChange = (companies) => ({
+  type: types.HANDLE_UNCERTAIN_COMPANIES,
+  companies
 });
 
 

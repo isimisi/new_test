@@ -24,7 +24,7 @@ export class SocketConnection {
     return this;
   }
 
-  subscribeToCvr(channel, handleCompleted) {
+  subscribeToCvr(channel, handleCompleted, handleError, handleUncertainCompanies) {
     if (!this.ws) {
       setTimeout(() => this.subscribe(channel), 1000);
     } else {
@@ -35,12 +35,17 @@ export class SocketConnection {
       });
 
       result.on('completed', (data) => {
-        handleCompleted(data);
+        const { elements, uncertainCompanies } = data;
+
+        if (uncertainCompanies.length > 0) {
+          handleUncertainCompanies(uncertainCompanies);
+        } else {
+          handleCompleted(elements);
+        }
       });
 
       result.on('error', (error) => {
-        // give message to user?
-        console.error('error', error);
+        handleError();
       });
 
       return result;
