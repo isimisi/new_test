@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,7 +8,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import PropTypes from 'prop-types';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const UpgradeModal = (props) => {
+type Props = {
+  open: boolean,
+  close: () => void
+}
+
+const UpgradeModal = (props: Props) => {
   const { open, close } = props;
 
   return (

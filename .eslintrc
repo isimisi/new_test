@@ -1,7 +1,7 @@
 {
   "extends": [
     "eslint-config-airbnb",
-    "plugin:flowtype/recommended"
+    // "plugin:flowtype/recommended"
   ],
   "env": {
     "browser": true,
@@ -46,7 +46,7 @@
   "plugins": [
     "react",
     "import",
-    "flowtype",
+    // "flowtype",
     "react-hooks"
   ],
   "settings": {
