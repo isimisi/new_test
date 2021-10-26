@@ -65,7 +65,6 @@ const styles = theme => ({
   inputHeader: {
     font: 'inherit',
     padding: `${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(9)}px`,
-    border: 0,
     display: 'block',
     verticalAlign: 'middle',
     whiteSpace: 'normal',
@@ -84,7 +83,7 @@ const styles = theme => ({
     '& input': {
       transition: theme.transitions.create('width'),
       padding: 0,
-      color: theme.palette.common.white,
+      color: 'black',
       width: 100,
       '&:focus': {
         width: 250,
@@ -93,16 +92,16 @@ const styles = theme => ({
       },
     },
     '& ::-webkit-input-placeholder': { /* Chrome/Opera/Safari */
-      color: 'rgba(255,255,255,1)'
+      color: 'black'
     },
     '& ::-moz-placeholder': { /* Firefox 19+ */
-      color: 'rgba(255,255,255,1)'
+      color: 'black'
     },
     '& :-ms-input-placeholder': { /* IE 10+ */
-      color: 'rgba(255,255,255,1)'
+      color: 'black'
     },
     '& :-moz-placeholder': { /* Firefox 18- */
-      color: 'rgba(255,255,255,1)'
+      color: 'black'
     },
   },
   containerSearch: {

@@ -43,7 +43,7 @@ function GroupCard(props) {
       </CardContent>
       <CardActions className={classes.price}>
         <div className={classes.rightAction}>
-          <Button size="small" variant="outlined" color="secondary" onClick={detailOpen}>
+          <Button size="small" variant="outlined" color="primary" onClick={detailOpen}>
             Se detaljer
           </Button>
         </div>

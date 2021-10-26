@@ -691,7 +691,7 @@ const styles = theme => ({
     padding: '6px 16px',
   },
   timelineConnector: {
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.light
   }
 });
 

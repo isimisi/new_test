@@ -20,7 +20,7 @@ const CounterIconWidget = (props) => {
       <Grid container spacing={2}>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('nodes') < 20 ? 50 : 0}
             end={elementCounts.get('nodes') || 0}
             duration={5}
@@ -35,7 +35,7 @@ const CounterIconWidget = (props) => {
         </Grid>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('nodes') < 20 ? 50 : 0}
             end={elementCounts.get('relationships') || 0}
             duration={5}
@@ -50,7 +50,7 @@ const CounterIconWidget = (props) => {
         </Grid>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('attributes') < 20 ? 50 : 0}
             end={elementCounts.get('attributes') || 0}
             duration={5}
@@ -65,7 +65,7 @@ const CounterIconWidget = (props) => {
         </Grid>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('conditions') < 20 ? 50 : 0}
             end={elementCounts.get('conditions') || 0}
             duration={5}
@@ -80,7 +80,7 @@ const CounterIconWidget = (props) => {
         </Grid>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('workspaces') < 20 ? 50 : 0}
             end={elementCounts.get('workspaces') || 0}
             duration={5}
@@ -95,7 +95,7 @@ const CounterIconWidget = (props) => {
         </Grid>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('groups') < 20 ? 50 : 0}
             end={elementCounts.get('groups') || 0}
             duration={5}
@@ -110,7 +110,7 @@ const CounterIconWidget = (props) => {
         </Grid>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('outputs') < 20 ? 50 : 0}
             end={elementCounts.get('outputs') || 0}
             duration={5}
@@ -125,7 +125,7 @@ const CounterIconWidget = (props) => {
         </Grid>
         <Grid item xs={3} md={3}>
           <CounterWidget
-            color={colorfull[0]}
+            color="white"
             start={elementCounts.get('alerts') < 20 ? 50 : 0}
             end={/* elementCounts.get('alerts') || */0}
             duration={5}

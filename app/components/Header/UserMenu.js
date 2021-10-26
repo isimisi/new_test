@@ -1,7 +1,7 @@
 
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import {
   Link,
   useHistory
@@ -18,14 +18,12 @@ import { useDispatch } from 'react-redux';
 import UserAvatar from 'react-user-avatar';
 import { customerPortal } from '../../containers/Pages/CreateOrganization/reducers/createOrganizationActions';
 
-// import classNames from 'classnames';
-// import IconButton from '@material-ui/core/IconButton';
-// import Badge from '@material-ui/core/Badge';
 import styles from './header-jss';
 
 function UserMenu() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const theme = useTheme();
 
   const [menuState, setMenuState] = useState({
     anchorEl: null,
@@ -61,8 +59,8 @@ function UserMenu() {
   const name = `${first_name} ${last_name}`;
   return (
     <div>
-      <Button onClick={handleMenu('user-setting')}>
-        <UserAvatar size="40" name={name} />
+      <Button onClick={handleMenu('user-setting')} style={{ color: theme.palette.common.white }}>
+        <UserAvatar color={theme.palette.primary.main} size="40" name={name} />
       </Button>
       <Menu
         id="menu-appbar"

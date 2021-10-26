@@ -111,7 +111,7 @@ const styles = theme => ({
     backgroundAttachment: 'fixed'
   },
   solidBg: {
-    backgroundColor: theme.palette.type === 'dark' ? darken(theme.palette.primary.main, 0.4) : theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main
   },
   decorationWave: {
     width: '100%',

@@ -107,9 +107,15 @@ const styles = theme => ({
     marginLeft: 10
   },
   title: {
-    fontSize: 20,
-    height: 30,
-    fontWeight: theme.typography.fontWeightMedium
+    position: 'relative',
+    fontSize: 18,
+    fontWeight: 400,
+    color: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center',
+      fontWeight: 600,
+      marginBottom: theme.spacing(1)
+    }
   },
   ratting: {
     margin: '10px 0',
@@ -128,6 +134,7 @@ const styles = theme => ({
     }
   },
   desc: {
+    fontSize: 15,
     overflow: 'hidden'
   },
   chipDiscount: {

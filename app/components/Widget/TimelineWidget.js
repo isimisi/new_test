@@ -52,6 +52,7 @@ function TimelineWidget(props) {
                 <TimelineDot className={classes.timelineConnector}>
                   <Ionicon
                     icon={item.icon}
+                    style={{ color: 'black' }}
                   />
                 </TimelineDot>
                 <TimelineConnector className={classes.timelineConnector} />
@@ -59,7 +60,7 @@ function TimelineWidget(props) {
               <TimelineContent>
                 <ButtonBase style={{ borderRadius: 8, whiteSpace: 'normal' }} onClick={() => history.push(item.link)}>
                   <Paper elevation={3} className={classes.paper}>
-                    <Typography variant="subtitle2" component="h1">
+                    <Typography variant="body2" component="h1">
                       {item.label}
                     </Typography>
                     <Typography variant="caption">

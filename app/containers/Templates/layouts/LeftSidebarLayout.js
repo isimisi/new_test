@@ -2,12 +2,10 @@ import React, { Fragment } from 'react';
 import { PropTypes } from 'prop-types';
 import classNames from 'classnames';
 import Fade from '@material-ui/core/Fade';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import {
   Header,
   Sidebar,
-  BreadCrumb,
 } from '@components';
 import dataMenu from '@api/ui/menu';
 import Decoration from '../Decoration';

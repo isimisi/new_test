@@ -23,7 +23,7 @@ const styles = theme => ({
   },
   title: {
     position: 'relative',
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 400,
     color: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,
     [theme.breakpoints.down('xs')]: {
@@ -34,6 +34,7 @@ const styles = theme => ({
   },
   description: {
     maxWidth: 960,
+    fontSize: 15,
     paddingTop: theme.spacing(0.5),
     [theme.breakpoints.down('xs')]: {
       textAlign: 'center'

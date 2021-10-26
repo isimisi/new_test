@@ -19,7 +19,7 @@ function HorizontalNewsCard(props) {
   return (
     <Card className={classes.newsList}>
       <CardContent className={classes.newsListContent}>
-        <Typography noWrap gutterBottom variant="h5" className={classes.title} component="h2">
+        <Typography noWrap gutterBottom variant="h6" component="h2" className={classes.title}>
           {title}
         </Typography>
         <Typography component="p" className={classes.desc}>

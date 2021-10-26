@@ -285,7 +285,7 @@ const PersonalDashboard = (props) => {
                   multiline
                 />
               </FormControl>
-              <Fab size="medium" color="secondary" type="submit" onClick={handleSubmitFeature}>
+              <Fab size="medium" color="primary" type="submit" onClick={handleSubmitFeature}>
                 <Send />
               </Fab>
             </div>

@@ -2,17 +2,32 @@ module.exports = {
   greyTheme: {
     palette: {
       primary: {
-        light: '#4b5f6d',
-        main: '#36454F',
-        dark: '#212b31',
+        light: '#E7F2FF',
+        main: '#73B1FF',
+        dark: '#193765',
         contrastText: '#fff',
       },
       secondary: {
-        light: '#ced5d0',
-        main: '#B2BEB5',
-        dark: '#96a79a',
-        contrastText: '#fff',
+        light: '#fff',
+        main: '#E7F2FF',
+        dark: '#cee4ff',
+        contrastText: '#193765',
       },
+      error: {
+
+      },
+      warning: {
+
+      },
+      info: {
+
+      },
+      success: {
+
+      },
+      background: {
+        default: '#F3F5F8'
+      }
     },
   },
 };

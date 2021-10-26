@@ -77,13 +77,6 @@ function Header(props) {
     }
   };
 
-  const turnMode = mode => {
-    if (mode === 'light') {
-      props.changeMode('dark');
-    } else {
-      props.changeMode('light');
-    }
-  };
 
   const {
     classes,
@@ -91,7 +84,6 @@ function Header(props) {
     margin,
     position,
     gradient,
-    mode,
     title,
     openGuide,
     history
@@ -120,7 +112,7 @@ function Header(props) {
           margin && classes.appBarShift,
           setMargin(position),
           turnDarker && classes.darker,
-          gradient ? classes.gradientBg : classes.solidBg
+          classes.solidBg
         )
       }
     >
@@ -135,7 +127,7 @@ function Header(props) {
         </Fab>
         <Hidden smDown>
           <div className={classes.headerProperties}>
-            <div className={classNames(classes.headerAction, showTitle && classes.fadeOut)}>
+            <div className={classNames(classes.headerAction)}>
               {fullScreen ? (
                 <Tooltip title="Afslut fuldskærmsvisning" placement="bottom">
                   <IconButton className={classes.button} onClick={closeFullScreen}>
@@ -145,7 +137,7 @@ function Header(props) {
               ) : (
                 <Tooltip title="Fuldskærmsvisning" placement="bottom">
                   <IconButton className={classes.button} onClick={openFullScreen}>
-                    <i className="ion-ios-crop" />
+                    <i className="ion-ios-crop" style={{ color: 'black' }} />
                   </IconButton>
                 </Tooltip>
               )}
@@ -157,25 +149,22 @@ function Header(props) {
 
               <Tooltip title="Opdater" placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
-                  <i className="ion-ios-refresh-outline" />
+                  <i className="ion-ios-refresh-outline" style={{ color: 'black' }} />
                 </IconButton>
               </Tooltip>
 
               <Tooltip title="Guide" placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
-                  <i className="ion-ios-help-outline" />
+                  <i className="ion-ios-help-outline" style={{ color: 'black' }} />
                 </IconButton>
               </Tooltip>
             </div>
-            <Typography component="h2" className={classNames(classes.headerTitle, showTitle && classes.show)}>
-              {title}
-            </Typography>
           </div>
         </Hidden>
         <div className={classes.searchWrapper}>
           <div className={classNames(classes.wrapper, classes.light)}>
             <div className={classes.search}>
-              <SearchIcon />
+              <SearchIcon style={{ color: 'black' }} />
             </div>
             <SearchUi history={history} />
           </div>
@@ -195,9 +184,8 @@ Header.propTypes = {
   margin: PropTypes.bool.isRequired,
   gradient: PropTypes.bool.isRequired,
   position: PropTypes.string.isRequired,
-  mode: PropTypes.string.isRequired,
+
   title: PropTypes.string.isRequired,
-  changeMode: PropTypes.func.isRequired,
   openGuide: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };

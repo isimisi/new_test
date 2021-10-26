@@ -62,7 +62,6 @@ function Dashboard(props) {
     gradient,
     deco,
     bgPosition,
-    layout,
     changeMode
   } = props;
 
@@ -74,8 +73,8 @@ function Dashboard(props) {
       className={
         classNames(
           classes.appFrameInner,
-          layout === 'top-navigation' || layout === 'mega-menu' ? classes.topNav : classes.sideNav,
-          mode === 'dark' ? 'dark-mode' : 'light-mode'
+          classes.sideNav,
+          'light-mode'
         )
       }
     >
@@ -114,7 +113,6 @@ Dashboard.propTypes = {
   gradient: PropTypes.bool.isRequired,
   deco: PropTypes.bool.isRequired,
   bgPosition: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired
 };
 
 const reducer = 'ui';
@@ -122,10 +120,10 @@ const mapStateToProps = state => ({
   sidebarOpen: state[reducer].get('sidebarOpen'),
   pageLoaded: state[reducer].get('pageLoaded'),
   mode: state[reducer].get('type'),
-  gradient: state[reducer].get('gradient'),
+  gradient: false,
   deco: state[reducer].get('decoration'),
   layout: state[reducer].get('layout'),
-  bgPosition: state[reducer].get('bgPosition'),
+  bgPosition: 'header',
   ...state,
 });
 
@@ -141,89 +139,3 @@ const DashboardMaped = connect(
 )(Dashboard);
 
 export default (withStyles(styles)(DashboardMaped));
-
-// SIde bar options
-// { /* Right Sidebar Layout */
-//   layout === 'right-sidebar' && (
-//     <RightSidebarLayout
-//       history={history}
-//       toggleDrawer={toggleDrawer}
-//       loadTransition={loadTransition}
-//       changeMode={changeMode}
-//       sidebarOpen={sidebarOpen}
-//       pageLoaded={pageLoaded}
-//       mode={mode}
-//       gradient={gradient}
-//       deco={deco}
-//       bgPosition={bgPosition}
-//       place={place}
-//       titleException={titleException}
-//       handleOpenGuide={handleOpenGuide}
-//     >
-//       { children }
-//     </RightSidebarLayout>
-//   )
-// }
-// { /* Top Bar with Dropdown Menu */
-//   layout === 'top-navigation' && (
-//     <DropMenuLayout
-//       history={history}
-//       toggleDrawer={toggleDrawer}
-//       loadTransition={loadTransition}
-//       changeMode={changeMode}
-//       sidebarOpen={sidebarOpen}
-//       pageLoaded={pageLoaded}
-//       mode={mode}
-//       gradient={gradient}
-//       deco={deco}
-//       bgPosition={bgPosition}
-//       place={place}
-//       titleException={titleException}
-//       handleOpenGuide={handleOpenGuide}
-//     >
-//       { children }
-//     </DropMenuLayout>
-//   )
-// }
-// { /* Top Bar with Mega Menu */
-//   layout === 'mega-menu' && (
-//     <MegaMenuLayout
-//       history={history}
-//       toggleDrawer={toggleDrawer}
-//       loadTransition={loadTransition}
-//       changeMode={changeMode}
-//       sidebarOpen={sidebarOpen}
-//       pageLoaded={pageLoaded}
-//       mode={mode}
-//       gradient={gradient}
-//       deco={deco}
-//       bgPosition={bgPosition}
-//       place={place}
-//       titleException={titleException}
-//       handleOpenGuide={handleOpenGuide}
-//     >
-//       { children }
-//     </MegaMenuLayout>
-//   )
-// }
-// { /* Left Big-Sidebar Layout */
-//   layout === 'big-sidebar' && (
-//     <LeftSidebarBigLayout
-//       history={history}
-//       toggleDrawer={toggleDrawer}
-//       loadTransition={loadTransition}
-//       changeMode={changeMode}
-//       sidebarOpen={sidebarOpen}
-//       pageLoaded={pageLoaded}
-//       gradient={gradient}
-//       deco={deco}
-//       bgPosition={bgPosition}
-//       mode={mode}
-//       place={place}
-//       titleException={titleException}
-//       handleOpenGuide={handleOpenGuide}
-//     >
-//       { children }
-//     </LeftSidebarBigLayout>
-//   )
-// }

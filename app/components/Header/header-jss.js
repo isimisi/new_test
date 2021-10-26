@@ -1,4 +1,4 @@
-import { alpha, darken } from '@material-ui/core/styles/colorManipulator';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import { gradientBgLight, gradientBgDark } from 'containers/Templates/appStyles-jss';
 const drawerWidth = 240;
 const drawerBigWidth = 280;
@@ -12,7 +12,7 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     '& $menuButton': {
-      color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.main,
+      color: theme.palette.primary.light,
       backgroundColor: 'transparent',
       boxShadow: 'none',
       zIndex: 10,
@@ -76,7 +76,7 @@ const styles = theme => ({
       padding: `${theme.spacing(0.5)}px 0`,
     },
     [theme.breakpoints.up('lg')]: {
-      background: alpha(theme.palette.background.paper, 0.8),
+      background: fade(theme.palette.background.paper, 0.8),
     },
     color: theme.palette.text.primary
   },
@@ -130,17 +130,12 @@ const styles = theme => ({
       },
     },
     '& $menuButton': {
-      backgroundColor: theme.palette.type === 'dark' ? theme.palette.secondary.main : theme.palette.secondary.light,
-      boxShadow: theme.glow.medium,
+      backgroundColor: theme.palette.primary.main,
+
     },
     '& $headerAction': {
       marginLeft: theme.spacing(1)
     },
-    '&$darker': {
-      '& $menuButton': {
-        color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.main,
-      }
-    }
   },
   menuButton: {},
   hide: {
@@ -163,29 +158,13 @@ const styles = theme => ({
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(1),
     borderRadius: 22,
+    boxShadow: `0 0 1px ${theme.palette.primary.main}`,
     display: 'inline-block',
     '&:hover': {
-      background: alpha(theme.palette.common.white, 0.25),
+      background: fade(theme.palette.common.white, 0.25),
     },
     '&$light': {
-      background: alpha(theme.palette.common.white, 0.2),
-    },
-    '&$dark': {
-      background: theme.palette.type === 'dark' ? theme.palette.grey[700] : alpha(theme.palette.common.white, 0.8),
-      boxShadow: theme.shade.light,
-      '& input': {
-        color: theme.palette.grey[700],
-      },
-      '& input::placeholder': {
-        color: theme.palette.grey[400],
-        opacity: 1 /* Firefox */
-      },
-      '& input:-ms-input-placeholder': {
-        color: theme.palette.grey[400],
-      },
-      '& input::-ms-input-placeholder': { /* Internet Explorer 10-11 */
-        color: theme.palette.grey[400],
-      }
+      background: theme.palette.common.white,
     },
     '& $miniInput': {
       width: 70
@@ -217,12 +196,12 @@ const styles = theme => ({
   solidBg: {},
   darker: {
     backgroundAttachment: 'fixed',
-    boxShadow: theme.shadows[3],
+    boxShadow: '0px 2px 2px -2px rgba(80,80,80, 0.2)',
     '&$gradientBg': {
       backgroundImage: theme.palette.type === 'dark' ? gradientBgDark(theme) : gradientBgLight(theme),
     },
     '&$solidBg': {
-      backgroundColor: theme.palette.type === 'dark' ? darken(theme.palette.primary.main, 0.4) : theme.palette.primary.main
+      backgroundColor: theme.palette.background.default
     },
     '& $menuButton': {
       color: theme.palette.common.white
@@ -373,12 +352,12 @@ const styles = theme => ({
     },
     '&$active': {
       borderLeft: `5px solid ${theme.palette.primary.main}`,
-      backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
+      backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
       '& span': {
         color: theme.palette.primary.main,
       },
       '&:hover': {
-        backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
+        backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
       }
     }
   },
@@ -401,22 +380,21 @@ const styles = theme => ({
     },
     '&$active': {
       border: `1px solid ${theme.palette.primary.main}`,
-      backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
+      backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
       '& span': {
         color: theme.palette.primary.main,
       },
       '&:hover': {
-        backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
+        backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
       }
     }
   },
   bigIcon: {
     display: 'block',
     marginTop: 40,
-    '& svg': {
-      width: 100,
-      height: 100,
-      fill: theme.palette.primary.main,
+    '& i': {
+      fontSize: 100,
+      color: theme.palette.primary.main,
       margin: '0 auto',
       display: 'inherit'
     }
@@ -430,7 +408,7 @@ const styles = theme => ({
     alignItems: 'center',
     zIndex: 1
   },
-  alphaOut: {},
+  fadeOut: {},
   invert: {},
   headerAction: {
     margin: `0 ${theme.spacing(3)}px`,
@@ -438,19 +416,19 @@ const styles = theme => ({
     '& $button': {
       margin: `0 ${theme.spacing(1)}px / 2`,
       '& i': {
-        color: alpha(theme.palette.common.white, 0.87),
+        color: fade(theme.palette.common.white, 0.87),
         width: 28,
         height: 28,
         fontSize: 28,
       }
     },
-    '&$alphaOut': {
+    '&$fadeOut': {
       opacity: 0,
     },
     '&$invert': {
       '& $button': {
         '& i': {
-          color: alpha(theme.palette.text.primary, 0.5),
+          color: fade(theme.palette.text.primary, 0.5),
         }
       }
     }

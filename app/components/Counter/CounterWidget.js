@@ -7,15 +7,13 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 
 const styles = theme => ({
   title: {
-
-    fontSize: 14,
     [theme.breakpoints.up('sm')]: {
-      fontSize: 16,
+      fontSize: 14,
     },
     fontWeight: 400
   },
   counter: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 500,
     textAlign: 'left'
   },
@@ -60,7 +58,8 @@ function CounterWidget(props) {
     '& > *': {
       padding: '0 5px'
     },
-    backgroundColor: color
+    backgroundColor: color,
+    boxShadow: theme.shade.light,
   };
 
   return (

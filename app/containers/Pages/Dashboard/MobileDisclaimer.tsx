@@ -5,7 +5,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import PropTypes from 'prop-types';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 type Props = {
@@ -41,12 +40,6 @@ const UpgradeModal = (props: Props) => {
       </Dialog>
     </div>
   );
-};
-
-
-UpgradeModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
 };
 
 export default UpgradeModal;
