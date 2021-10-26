@@ -1,9 +1,8 @@
 import colorfull from '@api/palette/colorfull';
-import { darken, fade, lighten } from '@material-ui/core/styles/colorManipulator';
+import { darken, alpha, lighten } from '@material-ui/core/styles/colorManipulator';
 import { gradientBgLight, gradientBgDark } from 'containers/Templates/appStyles-jss';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
-import images from '@api/images/photos';
 
 const styles = theme => ({
   rootCounter: {
@@ -451,7 +450,7 @@ const styles = theme => ({
     },
     '& > time': {
       border: `10px solid ${theme.palette.secondary.main}`,
-      boxShadow: theme.palette.type === 'dark' ? `0 0 0 10px ${fade(theme.palette.secondary.main, 0.6)}` : `0 0 0 10px ${fade(theme.palette.secondary.light, 0.6)}`,
+      boxShadow: theme.palette.type === 'dark' ? `0 0 0 10px ${alpha(theme.palette.secondary.main, 0.6)}` : `0 0 0 10px ${alpha(theme.palette.secondary.light, 0.6)}`,
       borderRadius: '50%',
       '& > div': {
         background: theme.palette.secondary.main,
@@ -524,14 +523,14 @@ const styles = theme => ({
     padding: theme.spacing(2),
     backgroundImage: theme.palette.type === 'dark' ? gradientBgDark(theme) : gradientBgLight(theme),
     '& button': {
-      background: fade(theme.palette.background.paper, 0.3),
+      background: alpha(theme.palette.background.paper, 0.3),
       color: theme.palette.common.white,
       borderRadius: theme.rounded.medium
     }
   },
   stripped: {
     '& tbody tr:nth-child(even)': {
-      background: theme.palette.type === 'dark' ? fade(theme.palette.grey[900], 0.5) : theme.palette.grey[50]
+      background: theme.palette.type === 'dark' ? alpha(theme.palette.grey[900], 0.5) : theme.palette.grey[50]
     }
   },
   activityWrap: {
@@ -687,14 +686,6 @@ const styles = theme => ({
       left: 35,
       animation: 'title-appear 1s ease-out 500ms forwards',
     },
-    '&$sun': {
-      backgroundImage: `url(${images[9]})`,
-      backgroundPosition: '0 -120px'
-    },
-    '&$cloud': {
-      backgroundImage: `url(${images[18]})`,
-      backgroundPosition: '0 -120px'
-    }
   },
   paper: {
     padding: '6px 16px',

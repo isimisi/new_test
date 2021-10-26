@@ -2,7 +2,6 @@
 import Header from './Header/Header';
 import HeaderMenu from './Header/HeaderMenu';
 import Sidebar from './Sidebar';
-import SidebarBig from './SidebarBig';
 import BreadCrumb from './BreadCrumb/BreadCrumb';
 import SearchUi from './Search/SearchUi';
 
@@ -28,7 +27,6 @@ import LockForm from './Forms/LockForm';
 import AddressForm from './Forms/AddressForm';
 import PaymentForm from './Forms/PaymentForm';
 import Review from './Forms/Review';
-import SideReview from './Forms/SideReview';
 import CreateOrganizationForm from './Forms/CreateOrganizationForm';
 import NodeForm from './Forms/NodeForm';
 import RelationshipForm from './Forms/RelationshipForm';
@@ -107,7 +105,6 @@ import ConditionDefineNode from './Condition/Node/DefineNode';
 // user
 import SendResetPassword from './User/SendResetPassword';
 
-import SliderWidget from './Widget/SliderWidget';
 import CounterIconsWidget from './Widget/CounterIconsWidget';
 import TimelineWidget from './Widget/TimelineWidget';
 import NewsListWidget from './Widget/NewsListWidget';
@@ -120,7 +117,6 @@ export {
   Header,
   HeaderMenu,
   Sidebar,
-  SidebarBig,
   BreadCrumb,
   SearchUi,
   CounterWidget,
@@ -135,7 +131,6 @@ export {
   AddressForm,
   PaymentForm,
   Review,
-  SideReview,
   CreateOrganizationForm,
   NodeForm,
   RelationshipForm,
@@ -189,7 +184,6 @@ export {
   ChooseConditions,
   FormDialog,
   SendResetPassword,
-  SliderWidget,
   CounterIconsWidget,
   TimelineWidget,
   NewsListWidget,

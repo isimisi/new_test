@@ -12,7 +12,6 @@ import logo from '@images/logo.svg';
 import brand from '@api/dummy/brand';
 import Hidden from '@material-ui/core/Hidden';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import dummy from '@api/dummy/dummyContents';
 import MenuIcon from '@material-ui/icons/Menu';
 import SidebarContent from '../Sidebar/SidebarContent';
 import DropListMenu from './DropListMenu';
@@ -25,7 +24,6 @@ const elem = document.documentElement;
 
 function HeaderMenu(props) {
   const [fullScreen, setFullScreen] = useState(false);
-  const [status, setStatus] = useState(dummy.user.status);
   const [anchorEl, setAnchorEl] = useState(null);
   const [fixed, setFixed] = useState(false);
 
@@ -89,11 +87,6 @@ function HeaderMenu(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleChangeStatus = st => {
-    setStatus(st);
-    handleClose();
   };
 
   const {
@@ -192,11 +185,9 @@ function HeaderMenu(props) {
               toggleDrawerOpen={toggleDrawerOpen}
               loadTransition={loadTransition}
               dataMenu={dataMenu}
-              status={status}
               anchorEl={anchorEl}
               openMenuStatus={handleOpen}
               closeMenuStatus={handleClose}
-              changeStatus={handleChangeStatus}
               isLogin={isLogin}
             />
           </div>

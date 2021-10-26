@@ -1,4 +1,4 @@
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { alpha, darken } from '@material-ui/core/styles/colorManipulator';
 const gradientBgLight = (theme) => `linear-gradient(-45deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.main} 33%, ${theme.palette.secondary.main} 100%);`;
 const gradientBgDark = (theme) => `linear-gradient(-45deg, ${darken(theme.palette.primary.main, 0.4)} 0%, ${darken(theme.palette.primary.main, 0.4)} 33%, ${darken(theme.palette.secondary.main, 0.4)} 100%);`;
 const styles = theme => ({
@@ -60,7 +60,7 @@ const styles = theme => ({
   searchSettings: {
     marginBottom: theme.spacing(4),
     borderRadius: theme.rounded.medium,
-    backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.grey[200], 0.15) : fade(theme.palette.grey[200], 0.95),
+    backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.grey[200], 0.15) : alpha(theme.palette.grey[200], 0.95),
     '& svg': {
       fill: theme.palette.text.secondary
     }

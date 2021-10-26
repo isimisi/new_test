@@ -4,7 +4,7 @@ import purple from '@material-ui/core/colors/deepPurple';
 import teal from '@material-ui/core/colors/teal';
 import brown from '@material-ui/core/colors/brown';
 import red from '@material-ui/core/colors/red';
-import { lighten, darken, fade } from '@material-ui/core/styles/colorManipulator';
+import { lighten, darken, alpha } from '@material-ui/core/styles/colorManipulator';
 
 const drawerWidth = 300;
 const drawerHeight = '84vh';
@@ -178,7 +178,7 @@ const styles = theme => ({
     backdropFilter: 'saturate(180%) blur(20px)',
     transition: 'left 0.4s ease-out, opacity 0.4s ease-out',
     [theme.breakpoints.up('lg')]: {
-      backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.grey[800], 0.75) : fade(theme.palette.background.paper, 0.9),
+      backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.grey[800], 0.75) : alpha(theme.palette.background.paper, 0.9),
     },
     [theme.breakpoints.down('xs')]: {
       left: '100%',

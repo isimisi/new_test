@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -266,10 +267,6 @@ const PersonalDashboard = (props) => {
       <Grid container spacing={3} className={classes.root}>
         <Grid item md={6} xs={12}>
           <CounterIconsWidget elementCounts={elementCounts} history={history} />
-          <Divider className={classes.divider} />
-          {/* <div className={classes.sliderWrap}>
-            <SliderWidget />
-          </div> */}
           <Divider className={classes.divider} />
           <NewsListWidget handleOpenGuide={handleOpenGuide} />
         </Grid>

@@ -2,7 +2,7 @@ import red from '@material-ui/core/colors/red';
 import orange from '@material-ui/core/colors/orange';
 import blue from '@material-ui/core/colors/indigo';
 import cyan from '@material-ui/core/colors/cyan';
-import { lighten, darken, fade } from '@material-ui/core/styles/colorManipulator';
+import { lighten, darken, alpha } from '@material-ui/core/styles/colorManipulator';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -11,7 +11,7 @@ const styles = theme => ({
     minHeight: 500,
     zIndex: 1,
     position: 'relative',
-    backgroundColor: theme.palette.type === 'dark' ? fade(theme.palette.grey[800], 0.75) : fade(theme.palette.background.paper, 0.9),
+    backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.grey[800], 0.75) : alpha(theme.palette.background.paper, 0.9),
     backdropFilter: 'saturate(180%) blur(20px)',
     overflow: 'hidden',
     display: 'flex',

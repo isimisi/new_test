@@ -6,13 +6,11 @@ import classNames from 'classnames';
 import Hidden from '@material-ui/core/Hidden';
 import Drawer from '@material-ui/core/Drawer';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import dummy from '@api/dummy/dummyContents';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './sidebar-jss';
 import SidebarContent from './SidebarContent';
 
 function Sidebar(props) {
-  const [status, setStatus] = useState(dummy.user.status);
   const [anchorEl, setAnchorEl] = useState(null);
   const [turnDarker, setTurnDarker] = useState(false);
   const {
@@ -49,11 +47,6 @@ function Sidebar(props) {
     setAnchorEl(null);
   };
 
-  const handleChangeStatus = st => {
-    setStatus(st);
-    handleClose();
-  };
-
   const {
     classes,
     open,
@@ -79,11 +72,9 @@ function Sidebar(props) {
               toggleDrawerOpen={toggleDrawerOpen}
               loadTransition={loadTransition}
               dataMenu={dataMenu}
-              status={status}
               anchorEl={anchorEl}
               openMenuStatus={handleOpen}
               closeMenuStatus={handleClose}
-              changeStatus={handleChangeStatus}
               name={name}
             />
           </div>
@@ -106,11 +97,9 @@ function Sidebar(props) {
             turnDarker={turnDarker}
             loadTransition={loadTransition}
             dataMenu={dataMenu}
-            status={status}
             anchorEl={anchorEl}
             openMenuStatus={handleOpen}
             closeMenuStatus={handleClose}
-            changeStatus={handleChangeStatus}
             name={name}
           />
         </Drawer>

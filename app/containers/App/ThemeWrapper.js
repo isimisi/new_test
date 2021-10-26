@@ -6,7 +6,7 @@ import { create } from 'jss';
 import rtl from 'jss-rtl';
 import { StylesProvider, jssPreset } from '@material-ui/styles';
 import { bindActionCreators } from 'redux';
-import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { withStyles, createTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {
   changeThemeAction,
   changeModeAction,
@@ -54,7 +54,7 @@ function ThemeWrapper(props) {
   const [progress, setProgress] = useState(0);
   const [theme, setTheme] = useState(
     // eslint-disable-next-line
-    createMuiTheme(applicationTheme(props.color, props.mode, props.direction))
+    createTheme(applicationTheme(props.color, props.mode, props.direction))
   );
 
   const {
@@ -84,7 +84,7 @@ function ThemeWrapper(props) {
   const handleChangeMode = modeParam => {
     const { changeMode } = props;
     setTheme(
-      createMuiTheme(
+      createTheme(
         applicationTheme(color, modeParam, direction)
       )
     );

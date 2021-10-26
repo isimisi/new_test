@@ -1,7 +1,7 @@
 import pink from '@material-ui/core/colors/pink';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 import dark from '@material-ui/core/colors/blueGrey';
-import { fade, darken } from '@material-ui/core/styles/colorManipulator';
+import { alpha, darken } from '@material-ui/core/styles/colorManipulator';
 import roundedThumbLight from '@images/decoration/roundedThumbLight.png';
 import roundedThumbDark from '@images/decoration/roundedThumbDark.png';
 
@@ -300,7 +300,7 @@ const styles = theme => ({
     marginBottom: -60,
     top: -70,
     textAlign: 'center',
-    background: fade(theme.palette.common.white, 0.3),
+    background: alpha(theme.palette.common.white, 0.3),
     color: theme.palette.common.white,
     '& h5': {
       color: theme.palette.common.white

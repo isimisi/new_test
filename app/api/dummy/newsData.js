@@ -1,4 +1,3 @@
-import imgData from '../images/photos';
 const newsData = [
   {
     title: 'Velkommen til Juristic (beta)',
