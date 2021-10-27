@@ -469,10 +469,6 @@ const Workspace = (props) => {
     }
   };
 
-  const flowStyle = {
-    backgroundColor: 'white'
-  };
-
   window.onbeforeunload = () => {
     onWorkspaceSave();
   };
@@ -639,7 +635,6 @@ const Workspace = (props) => {
           nodesConnectable={!signed}
           elementsSelectable={!signed}
           selectNodesOnDrag={!signed}
-          style={flowStyle}
           nodeTypes={nodeTypes}
           onMove={(flowTransform) => {
             if (flowTransform) {
@@ -654,12 +649,12 @@ const Workspace = (props) => {
           <div data-html2canvas-ignore="true">
             <MiniMap
               nodeStrokeWidth={3}
-              nodeColor={theme.palette.secondary.light}
-              style={{ top: 0, right: 0 }}
+              nodeColor={theme.palette.secondary.main}
+              style={{ top: 10, right: 10, borderRadius: 10 }}
             />
           </div>
           <div data-html2canvas-ignore="true">
-            <Controls showInteractive={!signed}>
+            <Controls showInteractive={!signed} style={{ borderRadius: 4 }}>
               <ControlButton onClick={() => {
                 takeScreenShot(reactFlowContainer?.current);
               }}

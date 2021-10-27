@@ -25,8 +25,8 @@ export const columns = (onOpen) => [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Button variant="contained" color="primary" onClick={() => onOpen(value)}>
-              Open
+        <Button variant="contained" color="secondary" onClick={() => onOpen(value)}>
+              Åben
         </Button>
       )
     }

@@ -27,8 +27,8 @@ export const columns = [
       filter: true,
       customBodyRender: (value) => (
         <Link to={`/app/conditions/${value}`} style={{ textDecoration: 'none' }}>
-          <Button variant="contained" color="primary">
-              Open
+          <Button variant="contained" color="secondary">
+              Åben
           </Button>
         </Link>
       )

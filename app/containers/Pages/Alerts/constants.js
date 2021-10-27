@@ -26,9 +26,9 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Link to={`/app/red flags/${value}`}>
-          <Button variant="contained" color="primary">
-            Open
+        <Link to={`/app/red flags/${value}`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="secondary">
+            Åben
           </Button>
         </Link>
       )

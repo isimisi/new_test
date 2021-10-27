@@ -35,9 +35,9 @@ export const tableColumns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Link to={`/app/relationships/${value}`}>
-          <Button variant="contained" color="primary">
-              Open
+        <Link to={`/app/relationships/${value}`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="secondary">
+              Åben
           </Button>
         </Link>
       )

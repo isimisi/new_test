@@ -286,7 +286,7 @@ const PersonalDashboard = (props) => {
                 />
               </FormControl>
               <Fab size="medium" color="primary" type="submit" onClick={handleSubmitFeature}>
-                <Send />
+                <Send style={{ color: 'white' }} />
               </Fab>
             </div>
           </PapperBlock>

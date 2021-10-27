@@ -15,6 +15,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import BusinessIcon from '@material-ui/icons/Business';
 import NotesIcon from '@material-ui/icons/Notes';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+import colorfull from '@api/palette/colorfull';
 
 const WorkspaceFab = (props) => {
   const {
@@ -30,18 +31,18 @@ const WorkspaceFab = (props) => {
         onClick={stickyClick}
         icon={<NotesIcon />}
         event="click"
-        mainButtonStyles={{ backgroundColor: theme.palette.primary.main, right: noAdd ? 80 : 160 }}
+        mainButtonStyles={{ backgroundColor: colorfull[3], right: noAdd ? 80 : 160 }}
       />
       <Fab
         onClick={nodeClick}
         icon={<CheckBoxOutlineBlankIcon />}
         event="click"
-        mainButtonStyles={{ backgroundColor: theme.palette.primary.light, right: noAdd ? 0 : 80 }}
+        mainButtonStyles={{ backgroundColor: colorfull[1], right: noAdd ? 0 : 80 }}
       />
       {!noAdd && (
         <Fab
           icon={<AddIcon />}
-          mainButtonStyles={{ backgroundColor: theme.palette.secondary.main }}
+          mainButtonStyles={{ backgroundColor: colorfull[0] }}
         >
           <Action
             text="Gem"
@@ -49,7 +50,7 @@ const WorkspaceFab = (props) => {
             onClick={saveClick}
             className="testeren"
           >
-            <SaveIcon style={{ color: theme.palette.primary.main }} />
+            <SaveIcon />
           </Action>
           {metaClick && (
             <Action
@@ -57,7 +58,7 @@ const WorkspaceFab = (props) => {
               style={{ backgroundColor: 'white' }}
               onClick={metaClick}
             >
-              <TextFieldsIcon style={{ color: theme.palette.primary.main }} />
+              <TextFieldsIcon />
             </Action>
           )}
           {onAnalysisClick && (
@@ -67,7 +68,7 @@ const WorkspaceFab = (props) => {
               onClick={onAnalysisClick}
               disabled={plan_id !== 4}
             >
-              <AssessmentIcon style={{ color: theme.palette.primary.main }} />
+              <AssessmentIcon />
             </Action>
           )}
           {onAlertClick && (
@@ -77,7 +78,7 @@ const WorkspaceFab = (props) => {
               onClick={onAlertClick}
               disabled={plan_id === 1}
             >
-              <FlagIcon style={{ color: theme.palette.primary.main }} />
+              <FlagIcon />
             </Action>
           )}
           {onShareClick && (
@@ -87,7 +88,7 @@ const WorkspaceFab = (props) => {
               onClick={onShareClick}
               disabled={plan_id < 3}
             >
-              <ShareIcon style={{ color: theme.palette.primary.main }} />
+              <ShareIcon />
             </Action>
           )}
           <Action
@@ -95,7 +96,7 @@ const WorkspaceFab = (props) => {
             style={{ backgroundColor: 'white' }}
             onClick={onCvrClick}
           >
-            <BusinessIcon style={{ color: theme.palette.primary.main }} />
+            <BusinessIcon />
           </Action>
           {signWorkspaceClick && (
             <Action
@@ -103,7 +104,7 @@ const WorkspaceFab = (props) => {
               style={{ backgroundColor: 'white' }}
               onClick={signWorkspaceClick}
             >
-              <BorderColorIcon style={{ color: theme.palette.primary.main }} />
+              <BorderColorIcon />
             </Action>
           )}
 

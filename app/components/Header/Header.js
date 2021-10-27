@@ -83,8 +83,6 @@ function Header(props) {
     toggleDrawerOpen,
     margin,
     position,
-    gradient,
-    title,
     openGuide,
     history
   } = props;
@@ -123,7 +121,7 @@ function Header(props) {
           aria-label="Menu"
           onClick={toggleDrawerOpen}
         >
-          <MenuIcon />
+          <MenuIcon className={classes.menuIcon} />
         </Fab>
         <Hidden smDown>
           <div className={classes.headerProperties}>
@@ -137,7 +135,7 @@ function Header(props) {
               ) : (
                 <Tooltip title="Fuldskærmsvisning" placement="bottom">
                   <IconButton className={classes.button} onClick={openFullScreen}>
-                    <i className="ion-ios-crop" style={{ color: 'black' }} />
+                    <i className="ion-ios-crop" style={{ color: '#333' }} />
                   </IconButton>
                 </Tooltip>
               )}
@@ -149,13 +147,13 @@ function Header(props) {
 
               <Tooltip title="Opdater" placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
-                  <i className="ion-ios-refresh-outline" style={{ color: 'black' }} />
+                  <i className="ion-ios-refresh-outline" style={{ color: '#333' }} />
                 </IconButton>
               </Tooltip>
 
               <Tooltip title="Guide" placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
-                  <i className="ion-ios-help-outline" style={{ color: 'black' }} />
+                  <i className="ion-ios-help-outline" style={{ color: '#333' }} />
                 </IconButton>
               </Tooltip>
             </div>
@@ -164,7 +162,7 @@ function Header(props) {
         <div className={classes.searchWrapper}>
           <div className={classNames(classes.wrapper, classes.light)}>
             <div className={classes.search}>
-              <SearchIcon style={{ color: 'black' }} />
+              <SearchIcon />
             </div>
             <SearchUi history={history} />
           </div>
@@ -182,10 +180,7 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
   toggleDrawerOpen: PropTypes.func.isRequired,
   margin: PropTypes.bool.isRequired,
-  gradient: PropTypes.bool.isRequired,
   position: PropTypes.string.isRequired,
-
-  title: PropTypes.string.isRequired,
   openGuide: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };

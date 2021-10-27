@@ -72,7 +72,7 @@ function Attributes(props) {
       <Tooltip title="Nyt kendetegn">
         <Fab
           variant="extended"
-          color="secondary"
+          color="primary"
           className={classes.addBtn}
           onClick={() => {
             setOpen(true);

@@ -53,7 +53,7 @@ function Relationships(props) {
         elevation={10}
       />
       <Tooltip title="Ny forbindelse">
-        <Fab variant="extended" color="secondary" className={classes.addBtn} onClick={() => dispatch(postRelationship(history))}>
+        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postRelationship(history))}>
             Ny forbindelse
         </Fab>
       </Tooltip>

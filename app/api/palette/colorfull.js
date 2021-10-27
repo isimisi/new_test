@@ -1,12 +1,14 @@
 const colorfull = [
-  '#F2F2F2',
-  '#025373',
-  '#F2D785',
-  '#F2B33D',
-  '#F2E1C2',
-  '#5b68f1',
-  '#f15bb3',
-  '#1e60fa',
+  '#E7F2FF',
+  '#FCF5DE',
+  '#FFF6F7',
+  '#F2FBF7',
+  '#FFDC79',
+  '#73B1FF',
+  '#FF8DA0',
+  '#73CFA8',
+  '#8F73FF',
+  '#E584F5',
 ];
 
 export const red = '#BF0426';

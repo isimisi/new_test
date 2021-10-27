@@ -12,7 +12,6 @@ const styles = theme => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     '& $menuButton': {
-      color: theme.palette.primary.light,
       backgroundColor: 'transparent',
       boxShadow: 'none',
       zIndex: 10,
@@ -131,13 +130,15 @@ const styles = theme => ({
     },
     '& $menuButton': {
       backgroundColor: theme.palette.primary.main,
-
     },
     '& $headerAction': {
       marginLeft: theme.spacing(1)
     },
   },
   menuButton: {},
+  menuIcon: {
+    color: theme.palette.secondary.light
+  },
   hide: {
     display: 'none',
   },

@@ -27,7 +27,7 @@ export const tableColumns = [
       filter: true,
       customBodyRender: (value) => (
         <Link to={`/app/nodes/${value}`} style={{ textDecoration: 'none' }}>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="secondary">
               Open
           </Button>
         </Link>

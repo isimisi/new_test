@@ -192,7 +192,8 @@ const applicationTheme = (color) => ({
     },
     MuiSvgIcon: {
       root: {
-        fontSize: '1.2rem'
+        fontSize: '1.2rem',
+        color: '#333'
       }
     },
     MuiIcon: {
@@ -382,7 +383,7 @@ const applicationTheme = (color) => ({
     MUIDataTableToolbarSelect: {
       root: {
         boxShadow: 'none',
-        backgroundColor: themePalette[color].palette.secondary.light,
+        backgroundColor: themePalette[color].palette.secondary.main,
       },
       title: {
         padding: '0 0 0 26px',
@@ -415,6 +416,7 @@ const applicationTheme = (color) => ({
         minWidth: 360
       }
     },
+
     MUIDataTablePagination: {
       toolbar: {
         padding: 0,
