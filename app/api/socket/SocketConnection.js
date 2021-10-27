@@ -37,7 +37,7 @@ export class SocketConnection {
       result.on('completed', (data) => {
         const { elements, uncertainCompanies } = data;
 
-        if (uncertainCompanies.length > 0) {
+        if (uncertainCompanies && uncertainCompanies.length > 0) {
           handleUncertainCompanies(uncertainCompanies);
         } else {
           handleCompleted(elements);
