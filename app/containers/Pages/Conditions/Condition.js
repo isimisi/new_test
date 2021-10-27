@@ -247,11 +247,10 @@ const Condition = (props) => {
 
           <MiniMap
             nodeStrokeWidth={3}
-            nodeColor={theme.palette.secondary.light}
-            style={{ top: 0, right: 0 }}
+            nodeColor={theme.palette.secondary.main}
+            style={{ top: 10, right: 10, borderRadius: 10 }}
           />
-          <Controls />
-
+          <Controls style={{ borderRadius: 4 }} />
         </ReactFlow>
       </div>
       <ConditionMeta

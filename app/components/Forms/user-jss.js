@@ -296,7 +296,7 @@ const styles = theme => ({
   },
   link: {
     fontSize: '0.775rem',
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
     textDecoration: 'none',
     '&:hover': {
       textDecoration: 'underline'

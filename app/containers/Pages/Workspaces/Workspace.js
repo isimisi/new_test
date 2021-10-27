@@ -321,7 +321,7 @@ const Workspace = (props) => {
           autoClose: false,
           toastId: alerts.length + index,
           style: {
-            backgroundColor: theme.palette.secondary.main,
+            backgroundColor: theme.palette.primary.main,
             color: 'white'
           },
           onClick: (e) => {
