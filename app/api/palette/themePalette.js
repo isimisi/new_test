@@ -19,9 +19,7 @@ module.exports = {
       warning: {
 
       },
-      info: {
-
-      },
+      info: '#6F7F96',
       success: {
 
       },

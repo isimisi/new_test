@@ -335,6 +335,7 @@ const applicationTheme = (color) => ({
     },
     MuiSnackbarContent: {
       root: {
+        backgroundColor: themePalette[color].palette.info,
         '@media (min-width: 960px)': {
           borderRadius: 8,
         },

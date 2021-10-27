@@ -44,7 +44,7 @@ function Notification(props) {
           className={classes.close}
           onClick={() => handleClose()}
         >
-          <CloseIcon />
+          <CloseIcon style={{ color: 'white' }} />
         </IconButton>,
       ]}
     />

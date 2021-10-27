@@ -205,7 +205,7 @@ const CustomNode = ({ data }) => {
                 color="primary"
                 aria-label="Info om selskabet"
                 size="small"
-                style={{ borderRadius: 5, backgroundColor: '#015C94', marginBottom: 5, }}
+                style={{ borderRadius: 5, backgroundColor: theme.palette.primary.main, marginBottom: 5, }}
                 onClick={() => {
                   dispatch(getCompanyData(data.id));
                 }}
@@ -220,7 +220,7 @@ const CustomNode = ({ data }) => {
                 aria-label="ejendomsdata"
                 size="small"
                 style={{
-                  borderRadius: 5, backgroundColor: '#015C94'
+                  borderRadius: 5, backgroundColor: theme.palette.primary.main
                 }}
                 onClick={() => {
                   dispatch(getAddressInfo(data.id));
