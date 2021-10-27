@@ -6,7 +6,7 @@ import CryptoJS from 'crypto-js';
 import { loadFromLocalStorage } from './localStorage/localStorage';
 
 
-export const baseUrl = window.location.host === 'https://juristic-web-app-staging.herokuapp.com'
+export const baseUrl = window.location.host === 'juristic-web-app-staging.herokuapp.com'
   ? 'https://juristic-api-gateway-staging.herokuapp.com'
   : process.env.NODE_ENV === 'production'
     ? 'https://juristic-api-gateway.herokuapp.com'
