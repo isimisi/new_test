@@ -109,6 +109,7 @@ const WorkspaceNodeForm = (props) => {
             options={nodes.map(n => ({ value: n.label, label: n.label }))}
             value={nodeLabel && { label: nodeLabel, value: nodeLabel }}
             onChange={handleChangeLabel}
+
           />
         </div>
         {choosenNode && (
@@ -121,18 +122,6 @@ const WorkspaceNodeForm = (props) => {
                 label="Alias"
                 value={nodeDisplayName}
                 onChange={handleDisplayNameChange}
-              />
-            </div>
-            <div>
-              <TextField
-                name="description"
-                className={classes.field}
-                placeholder="Description"
-                label="Description"
-                multiline
-                rows={2}
-                disabled
-                value={choosenNode.description || ''}
               />
             </div>
           </>

@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import css from '@styles/Form.scss';
 import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
 import Select from 'react-select';
@@ -131,20 +130,6 @@ const EdgeForm = (props) => {
               options={choosenRelationship && choosenRelationship.values.map(r => ({ value: r, label: r }))}
               value={relationshipValue && { label: relationshipValue, value: relationshipValue }}
               onChange={handleChangeValue}
-            />
-          </div>
-        )}
-        {!editable && (
-          <div>
-            <TextField
-              name="description"
-              className={classes.field}
-              placeholder="Description"
-              label="Description"
-              multiline
-              rows={2}
-              disabled
-              value={choosenRelationship ? choosenRelationship?.description : ''}
             />
           </div>
         )}

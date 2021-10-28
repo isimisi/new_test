@@ -90,6 +90,7 @@ export const postWorkspace = (history) => async dispatch => {
 
 export const showWorkspace = (id, setMetaOpen = null, setAlerts = null) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
+  dispatch({ type: types.SHOW_WORKSPACE_LOADING });
 
   const header = authHeader();
 
@@ -413,6 +414,7 @@ export const getCompanyData = (id) => async dispatch => {
     const response = await axios.get(url, header);
 
     const companyData = response.data;
+    console.log(companyData);
     dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS, companyData });
 
     dispatch({ type: types.SET_SHOW_COMPANY_DATA, show: true });

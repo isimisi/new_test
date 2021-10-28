@@ -11,6 +11,7 @@ import {
   GET_WORKSPACES_FAILED,
   PUT_WORKSPACE_SUCCESS,
   PUT_WORKSPACE_FAILED,
+  SHOW_WORKSPACE_LOADING,
   SHOW_WORKSPACE_SUCCESS,
   SHOW_WORKSPACE_FAILED,
   LABEL_CHANGE,
@@ -170,6 +171,10 @@ export default function reducer(state = initialImmutableState, action = {}) {
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+      });
+    case SHOW_WORKSPACE_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set('elements', List());
       });
     case SHOW_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {

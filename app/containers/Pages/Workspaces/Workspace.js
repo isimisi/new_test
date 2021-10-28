@@ -23,7 +23,6 @@ import {
   AddressInfoModel
 } from '@components';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
@@ -41,7 +40,9 @@ import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId, encryptId } from '@api/constants';
 import connection from '@api/socket/SocketConnection';
 import styles from './workspace-jss';
-import { reducer, initErstTypes, getLayoutedElements } from './constants';
+import {
+  reducer, initErstTypes, getLayoutedElements, steps
+} from './constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
@@ -83,6 +84,7 @@ const Workspace = (props) => {
   const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
   const [currentZoom, setCurrentZoom] = useState(1);
+  console.log(currentZoom);
   const { plan_id } = loadFromLocalStorage();
 
   // REDUX
@@ -430,6 +432,16 @@ const Workspace = (props) => {
   const closeDefineEdge = useCallback(() => {
     setDefineEdgeOpen(false);
     setIsUpdatingElement(false);
+    setRelationshipLabel('');
+    setRelationshipValue('');
+    setRelationshipType(null);
+    setRelationshipColor({
+      r: 0, g: 0, b: 0, a: 1
+    });
+    setShowArrow(false);
+    setAnimatedLine(false);
+    setShowlabel(false);
+    setLineThrough(false);
   }, []);
 
   const handleChangeLabel = useCallback((_label) => {
@@ -496,101 +508,6 @@ const Workspace = (props) => {
       a.click();
     }
   }, [image]);
-
-  const localeSteps = {
-    skip: <Button size="small" style={{ color: '#bbb' }}>Spring over</Button>,
-    back: <div>Forrige</div>,
-    next: <div>Næste</div>,
-  };
-
-  const steps = [
-    {
-      content: <h2>Velkommen til arbejdsområdet</h2>,
-      locale: localeSteps,
-      placement: 'center',
-      target: 'body',
-    },
-    {
-      target: '.floatingPanel',
-      content: 'Start med at beskrive arbejdsområdet. Vælg gruppen "Corporate"!',
-      locale: localeSteps,
-      disableBeacon: true,
-      disableOverlayClose: true,
-      hideCloseButton: true,
-      hideFooter: true,
-      spotlightClicks: true,
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Du kan indsætte tekstbokse og noter via denne kvik-knap.</div>,
-      locale: localeSteps,
-      target: '.rtf--mb:nth-of-type(1)',
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Indsæt elementer, som fx selskaber og personer, via denne kvik-knap.</div>,
-      locale: localeSteps,
-      target: '.rtf:nth-of-type(2) > li > button',
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>I denne menu finder du de øvrige funktioner. Her kan du gemme ændringerne i dit arbejdsområde!</div>,
-      locale: localeSteps,
-      target: '.rtf--ab__c:nth-of-type(1)',
-      disableBeacon: true,
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Hvis du vil ændre navn, beskrivelse og gruppe - eller ændre indstillingen for deling - skal du trykke her.</div>,
-      locale: localeSteps,
-      target: '.rtf--ab__c:nth-of-type(2)',
-      disableBeacon: true,
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Tryk på Analyser-knappen for at skabe et notat eller en rapport på baggrund af tegningen i arbejdsområdet.</div>,
-      locale: localeSteps,
-      target: '.rtf--ab__c:nth-of-type(3)',
-      disableBeacon: true,
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Du kan også få en fuld oversigt over red flags i arbejdsområdet - også selvom du allerede har set dem.</div>,
-      locale: localeSteps,
-      target: '.rtf--ab__c:nth-of-type(4)',
-      disableBeacon: true,
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Hvis du får brug for at dele arbejdsområdet med nogen, der ikke er Juristic-brugere, kan du gøre det her.</div>,
-      locale: localeSteps,
-      target: '.rtf--ab__c:nth-of-type(5)',
-      disableBeacon: true,
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Vi har koblet Juristic direkte til CVR (og snart også i Sverige, Norge og Finland). Prøv at trykke her nu!</div>,
-      locale: localeSteps,
-      target: '.rtf--ab__c:nth-of-type(6)',
-      disableBeacon: true,
-      disableOverlayClose: true,
-      hideCloseButton: true,
-      hideFooter: true,
-      spotlightClicks: true,
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Hvis du ikke kan finde din tegning eller dit diagram, kan du trykke her for at centrere visningen!</div>,
-      locale: localeSteps,
-      target: '.react-flow__controls-fitview',
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Download koncerndiagrammet eller tegningen ved at trykke her - husk, det er kun det, du kan se på din skærm, der downloades!</div>,
-      locale: localeSteps,
-      target: '.react-flow__controls-button:nth-of-type(5)',
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Og til slut kan du trykke her for at skjule hjælpestreger m.v. fra arbejdsområdet - eller slå dem til igen.</div>,
-      locale: localeSteps,
-      target: '.react-flow__controls-button:nth-of-type(6)',
-    },
-    {
-      content: <div style={{ textAlign: 'left' }}>Nu er det bare at begynde - velkommen! Hvis du har problemer eller spørgsmål, er vi tilgængelige via livechat. Knappen finder du i bunden til venstre.</div>,
-      locale: localeSteps,
-      target: '.react-flow__pane',
-    },
-  ];
 
   const handleJoyrideCallback = (data) => {
     const {
@@ -673,7 +590,7 @@ const Workspace = (props) => {
                  <Background
                    variant={BackgroundVariant.Lines}
                    gap={BASE_BG_GAP / currentZoom}
-                   size={BASE_BG_STROKE / currentZoom}
+                   size={BASE_BG_STROKE / currentZoom / 2}
                  />
                )}
         </ReactFlow>
@@ -751,6 +668,10 @@ const Workspace = (props) => {
         close={() => {
           setDefineNodeOpen(false);
           setNodeLabel('');
+          setNodeDisplayName('');
+          setNodeFigur(null);
+          setAttributes([initialAttribut]);
+          setChoosenNode(null);
           setIsUpdatingElement(false);
         }}
         nodes={nodes}
