@@ -36,11 +36,6 @@ export const ChoosePlan = loadable(() =>
     fallback: <Loading />,
   });
 
-export const ChoosePlanFront = loadable(() =>
-  import ('./Pages/CreateOrganization/ChoosePlanFront'), {
-    fallback: <Loading />,
-  });
-
 export const Workspaces = loadable(() =>
   import ('./Pages/Workspaces'), {
     fallback: <Loading />,
@@ -120,13 +115,7 @@ export const Attributes = loadable(() =>
   import ('./Pages/Attributes'), {
     fallback: <Loading />,
   });
-
-export const CreateOrganization = loadable(() =>
-  import ('./Pages/CreateOrganization/CreateOrganization'), {
-    fallback: <Loading />,
-  });
-
-
+  
 // Other
 export const NotFound = loadable(() =>
   import ('./Pages/NotFound/NotFound'), {

@@ -14,7 +14,10 @@ module.exports = {
         contrastText: '#193765',
       },
       error: {
-
+        light: '#fff',
+        main: '#FFF6F7',
+        dark: '#FF8DA0',
+        contrastText: '#FF8DA0',
       },
       warning: {
 

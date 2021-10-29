@@ -119,7 +119,7 @@ const PersonalDashboard = (props) => {
     dispatch(handleRunIntro(false));
     dispatch(changeStepIndex(0));
 
-    if ((plan_id === 1 && workspaces.length === 10) || (plan_id === 2 && workspaces.length === 50)) {
+    if (plan_id === 1 && workspaces.length === 50) {
       dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.'));
     } else {
       dispatch(postWorkspace(history));
@@ -269,9 +269,6 @@ const PersonalDashboard = (props) => {
           <CounterIconsWidget elementCounts={elementCounts} history={history} />
           <Divider className={classes.divider} />
           <NewsListWidget handleOpenGuide={handleOpenGuide} />
-        </Grid>
-        <Grid item md={6} sm={12} xs={12}>
-          <TimelineWidget timeline={timeline} history={history} />
           <Divider className={classes.divider} />
           <PapperBlock title="Send os et ønske" icon="ion-ios-redo-outline" whiteBg noMargin desc="Vi er glade for idéer og ser på det straks">
             <div className={classes.subscribeForm}>
@@ -291,6 +288,9 @@ const PersonalDashboard = (props) => {
             </div>
           </PapperBlock>
           <Divider className={classes.divider} />
+        </Grid>
+        <Grid item md={6} sm={12} xs={12}>
+          <TimelineWidget timeline={timeline} history={history} />
         </Grid>
       </Grid>
       <UpgradeModal

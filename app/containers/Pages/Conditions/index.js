@@ -33,7 +33,7 @@ function Conditions(props) {
   useEffect(() => {
     dispatch(getConditions());
 
-    if (plan_id < 3) {
+    if (plan_id === 1) {
       history.push('/app/plan');
     }
   }, []);

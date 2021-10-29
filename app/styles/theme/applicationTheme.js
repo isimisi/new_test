@@ -6,6 +6,7 @@ const applicationTheme = (color) => ({
     primary: themePalette[color].palette.primary,
     secondary: themePalette[color].palette.secondary,
     background: themePalette[color].palette.background,
+    error: themePalette[color].palette.error,
     action: {
       hover: 'rgba(80,80,80, 0.05)',
       hoverOpacity: 0.05

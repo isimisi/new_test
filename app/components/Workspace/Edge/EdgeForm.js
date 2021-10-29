@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import css from '@styles/Form.scss';
 import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
@@ -13,7 +13,6 @@ import CreatableSelect from 'react-select/creatable';
 import { SketchPicker } from 'react-color';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
-import { red } from '@api/palette/colorfull';
 import styles from '../workspace-jss';
 import BeizerCurve from './beizerCurve.svg';
 import StraightLine from './straightLine.svg';
@@ -89,6 +88,8 @@ const EdgeForm = (props) => {
   const editable = relationshipLabel.length === 0;
   const relationships = iRelationships.toJS();
   const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
+  const theme = useTheme();
+
 
   return (
     <div>
@@ -223,7 +224,7 @@ const EdgeForm = (props) => {
             variant="contained"
             type="button"
             onClick={handleDeleteEdge}
-            style={{ backgroundColor: red, color: 'white' }}
+            style={{ backgroundColor: theme.palette.error.dark, color: 'white' }}
           >
             Delete
           </Button>
@@ -233,7 +234,7 @@ const EdgeForm = (props) => {
         </Button>
         <Button
           variant="contained"
-          color="secondary"
+          color="primary"
           type="button"
           onClick={handleSave}
           disabled={relationshipLabel.length === 0 && relationshipValue === 0}

@@ -6,12 +6,11 @@ import CryptoJS from 'crypto-js';
 import { loadFromLocalStorage } from './localStorage/localStorage';
 
 
-export const baseUrl = window.location.host === 'juristic-web-app-staging.herokuapp.com'
+export const baseUrl = window.location.href === 'https://juristic-web-app-staging.herokuapp.com/'
   ? 'https://juristic-api-gateway-staging.herokuapp.com'
   : process.env.NODE_ENV === 'production'
     ? 'https://juristic-api-gateway.herokuapp.com'
     : 'http://127.0.0.1:3333';
-
 
 export const isAuthenticated = () => {
   const tokenMatch = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/;
@@ -45,7 +44,7 @@ export const validURL = (str) => {
   return !!pattern.test(str);
 };
 
-export const plans = ['Lite', 'Base', 'Draw', 'Pro'];
+export const plans = ['Base', 'Draw', 'Pro'];
 
 export const getId = (history) => CryptoJS.AES.decrypt(decodeURIComponent(history.location.pathname.split('/').pop()), 'path')?.toString(CryptoJS.enc.Utf8) || history.location.pathname.split('/').pop();
 export const getIdFromEncrypted = (id) => CryptoJS.AES.decrypt(decodeURIComponent(id), 'path')?.toString(CryptoJS.enc.Utf8);

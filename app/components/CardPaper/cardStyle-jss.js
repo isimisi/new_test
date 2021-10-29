@@ -1,9 +1,10 @@
 import pink from '@material-ui/core/colors/pink';
 import lightGreen from '@material-ui/core/colors/lightGreen';
 import dark from '@material-ui/core/colors/blueGrey';
-import { alpha, darken } from '@material-ui/core/styles/colorManipulator';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import roundedThumbLight from '@images/decoration/roundedThumbLight.png';
 import roundedThumbDark from '@images/decoration/roundedThumbDark.png';
+import colorfull from '@api/palette/colorfull';
 
 const styles = theme => ({
   divider: {
@@ -332,16 +333,13 @@ const styles = theme => ({
     borderColor: theme.palette.common.white,
   },
   free: {
-    background: theme.palette.secondary.main,
-  },
-  cheap: {
-    background: theme.palette.secondary.dark,
+    background: colorfull[4],
   },
   expensive: {
-    background: theme.palette.primary.light,
+    background: colorfull[5],
   },
   moreExpensive: {
-    background: theme.palette.primary.main,
+    background: colorfull[7],
   },
   mainFeaturedPost: {
     backgroundColor: theme.palette.grey[800],

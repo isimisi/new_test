@@ -32,8 +32,6 @@ function PricingCard(props) {
 
   const getTier = lv => {
     switch (lv) {
-      case 'cheap':
-        return classes.cheap;
       case 'expensive':
         return classes.expensive;
       case 'more-expensive':
@@ -43,34 +41,27 @@ function PricingCard(props) {
     }
   };
 
-  const lite = ['Indlæs fra CVR', 'Hent regnskabsdata'];
-  const base = ['Ændre data fra CVR', 'Tilføj indhold', 'Automatiske red flags'];
+  const lite = ['Indlæs fra CVR', 'Hent regnskabsdata', 'Ændre data fra CVR', 'Tilføj indhold', 'Automatiske red flags'];
+
   const team = ['Sikkert virksomhedslogin', 'Design egne red flags', 'Design eget indhold', "Integrer andre API'er", 'Eget subdomæne', 'VPN lås'];
   const pro = ['Automatisk læringsindhold', 'Automatisk report builder'];
 
   const features = [
     ...lite,
-    ...base,
     ...team,
     ...pro];
 
   const getTierForWorkspaces = lv => {
-    switch (lv) {
-      case 'cheap':
-        return 50;
-      case 'free':
-        return 10;
-      default:
-        return 'Ubegr.';
+    if (lv === 'free') {
+      return 50;
     }
+    return 'Ubegr.';
   };
 
   const getTierForChecks = lv => {
     switch (lv) {
-      case 'cheap':
-        return [...lite, ...base];
       case 'expensive':
-        return [...lite, ...base, ...team];
+        return [...lite, ...team];
       case 'more-expensive':
         return features;
       default:

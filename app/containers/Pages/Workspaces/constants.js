@@ -82,7 +82,7 @@ export const columns = [
     options: {
       filter: true,
       customBodyRender: (value) => (
-        <Tooltip title={!value ? 'Dine arbejdsområder bliver låst efter 7 dage på lite og 90 dage på base' : 'Gå til arbejdsområde'}>
+        <Tooltip title={!value ? 'Dine arbejdsområder bliver låst efter 90 dage på base' : 'Gå til arbejdsområde'}>
           <Link to={!value ? '/app/plan' : `/app/workspaces/${value}`} style={{ textDecoration: 'none' }}>
             <Button variant="contained" color="secondary" disabled={!value}>
               {!value ? 'Låst' : 'Åben'}

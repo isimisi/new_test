@@ -29,7 +29,7 @@ function Relationships(props) {
   useEffect(() => {
     dispatch(getRelationships());
 
-    if (plan_id < 3) {
+    if (plan_id === 1) {
       history.push('/app/plan');
     }
   }, []);

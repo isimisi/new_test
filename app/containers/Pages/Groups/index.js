@@ -94,7 +94,7 @@ function Groups(props) {
         notif={() => dispatch(showNotifAction('At ændre grupper er forbehold brugere på Draw abonnementer.'))}
         keyword={keyword}
         deleteGroup={(id) => {
-          if (plan_id < 3) {
+          if (plan_id === 1) {
             dispatch(showNotifAction('At slette grupper er forbehold brugere på Draw abonnementer.'));
           } else {
             dispatch(deleteGroup(id));
@@ -107,7 +107,7 @@ function Groups(props) {
           color="primary"
           className={classes.addBtn}
           onClick={() => {
-            if (plan_id < 3) {
+            if (plan_id === 1) {
               dispatch(showNotifAction('At oprette grupper er forbehold brugere på Draw abonnementer.'));
             } else {
               setOpen(true);
