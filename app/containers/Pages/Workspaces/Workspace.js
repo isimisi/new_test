@@ -90,6 +90,7 @@ const Workspace = (props) => {
   // REDUX
   const relationships = useSelector(state => state[reducer].get('relationships'));
   const nodes = useSelector(state => state[reducer].get('nodes')).toJS();
+
   const handleVisability = useSelector(state => state[reducer].get('handleVisability'));
   const elements = useSelector(state => state[reducer].get('elements')).toJS();
   const label = useSelector(state => state[reducer].get('label'));

@@ -12,7 +12,6 @@ export const baseUrl = window.location.host === 'juristic-web-app-staging.heroku
     ? 'https://juristic-api-gateway.herokuapp.com'
     : 'http://127.0.0.1:3333';
 
-console.log(window.location.host);
 
 export const isAuthenticated = () => {
   const tokenMatch = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/;
