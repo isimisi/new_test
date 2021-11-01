@@ -3,7 +3,6 @@
 import React from 'react';
 import { Fab, Action } from 'react-tiny-fab';
 import 'react-tiny-fab/dist/styles.css';
-import { useTheme } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import SaveIcon from '@material-ui/icons/Save';
@@ -22,7 +21,6 @@ const WorkspaceFab = (props) => {
     nodeClick, metaClick, saveClick, onAlertClick, onAnalysisClick,
     onCvrClick, stickyClick, plan_id, onShareClick, signWorkspaceClick, noAdd
   } = props;
-  const theme = useTheme();
 
 
   return (
@@ -31,17 +29,20 @@ const WorkspaceFab = (props) => {
         onClick={stickyClick}
         icon={<NotesIcon />}
         event="click"
+        style={{ bottom: 0, right: 24 }}
         mainButtonStyles={{ backgroundColor: colorfull[3], right: noAdd ? 80 : 160 }}
       />
       <Fab
         onClick={nodeClick}
         icon={<CheckBoxOutlineBlankIcon />}
         event="click"
+        style={{ bottom: 0, right: 24 }}
         mainButtonStyles={{ backgroundColor: colorfull[1], right: noAdd ? 0 : 80 }}
       />
       {!noAdd && (
         <Fab
           icon={<AddIcon />}
+          style={{ bottom: 0, right: 24 }}
           mainButtonStyles={{ backgroundColor: colorfull[0] }}
         >
           <Action
@@ -86,7 +87,7 @@ const WorkspaceFab = (props) => {
               text="Del dit workspace"
               style={{ backgroundColor: 'white' }}
               onClick={onShareClick}
-              disabled={plan_id < 3}
+              disabled={plan_id === 1}
             >
               <ShareIcon />
             </Action>

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, useTheme } from '@material-ui/core/styles';
@@ -11,7 +12,11 @@ import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import Tooltip from '@material-ui/core/Tooltip';
+import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './workspace-jss';
+
+const localeStorage = loadFromLocalStorage();
+const plan_id = localeStorage?.plan_id;
 
 const WorkspaceForm = (props) => {
   const theme = useTheme();
@@ -80,17 +85,19 @@ const WorkspaceForm = (props) => {
             </NoSsr>
           </div>
         </Tooltip>
-        <div className={classes.row} style={{ marginTop: 10 }}>
-          <Checkbox
-            checked={shareOrg}
-            onChange={handleShareOrg}
-            name="show label"
-            color="primary"
-          />
-          <Typography variant="subtitle2">
+        {plan_id !== 1 && (
+          <div className={classes.row} style={{ marginTop: 10 }}>
+            <Checkbox
+              checked={shareOrg}
+              onChange={handleShareOrg}
+              name="show label"
+              color="primary"
+            />
+            <Typography variant="subtitle2">
                 Del dit arbejdsområde med det resterende af din organisation
-          </Typography>
-        </div>
+            </Typography>
+          </div>
+        )}
       </section>
       <div className={css.buttonArea}>
         {closeForm && (

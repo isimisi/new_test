@@ -20,7 +20,7 @@ function GroupGallery(props) {
   } = props;
 
   const handleDetailOpen = (product) => {
-    if (plan_id < 3) {
+    if (plan_id === 1) {
       notif();
     } else {
       setOpen(true);

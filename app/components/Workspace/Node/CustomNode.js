@@ -214,22 +214,24 @@ const CustomNode = ({ data }) => {
                 {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <InfoIcon style={{ fontSize: 8, color: 'white' }} />}
               </IconButton>
             </Tooltip>
-            <Tooltip title="Ejendomsdata">
-              <IconButton
-                color="primary"
-                aria-label="ejendomsdata"
-                size="small"
-                style={{
-                  borderRadius: 5, backgroundColor: theme.palette.primary.main
-                }}
-                onClick={() => {
-                  dispatch(getAddressInfo(data.id));
-                }}
-              >
-                {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <HomeWorkIcon style={{ fontSize: 8, color: 'white' }} />}
+            {data.data_provider === 'erst' && (
+              <Tooltip title="Ejendomsdata">
+                <IconButton
+                  color="primary"
+                  aria-label="ejendomsdata"
+                  size="small"
+                  style={{
+                    borderRadius: 5, backgroundColor: theme.palette.primary.main
+                  }}
+                  onClick={() => {
+                    dispatch(getAddressInfo(data.id));
+                  }}
+                >
+                  {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <HomeWorkIcon style={{ fontSize: 8, color: 'white' }} />}
 
-              </IconButton>
-            </Tooltip>
+                </IconButton>
+              </Tooltip>
+            )}
           </div>
         )}
       </div>

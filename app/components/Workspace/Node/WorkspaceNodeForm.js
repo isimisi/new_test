@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import Select from 'react-select';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -18,7 +18,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
-import AssessmentIcon from '@material-ui/icons/Assessment';
 import styles from '../workspace-jss';
 import square from './square.svg';
 import triangle from './triangle.svg';
@@ -28,7 +27,6 @@ import person from './person.svg';
 const WorkspaceNodeForm = (props) => {
   const {
     classes,
-    close,
     nodes,
     nodeLabel,
     handleChangeLabel,
@@ -42,7 +40,6 @@ const WorkspaceNodeForm = (props) => {
     nodeDisplayName,
     handleDisplayNameChange,
     isUpdatingElement,
-    elementToUpdate,
     handleDeleteNode,
     attributesDropDownOptions,
     handleRemoveAttributes,
@@ -52,6 +49,7 @@ const WorkspaceNodeForm = (props) => {
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
   const choosenNode = nodes.find(r => r.label === nodeLabel);
+  const theme = useTheme();
 
   const figurTypeOptions = [
     {
@@ -258,14 +256,14 @@ const WorkspaceNodeForm = (props) => {
             variant="contained"
             type="button"
             onClick={handleDeleteNode}
-            style={{ backgroundColor: red, color: 'white', marginRight: 10 }}
+            style={{ backgroundColor: theme.palette.error.dark, color: 'white', marginRight: 10 }}
           >
             Slet
           </Button>
         )}
         <Button
           variant="contained"
-          color="secondary"
+          color="primary"
           type="button"
           onClick={handleNodeSave}
           disabled={!choosenNode}
@@ -279,7 +277,6 @@ const WorkspaceNodeForm = (props) => {
 
 WorkspaceNodeForm.propTypes = {
   classes: PropTypes.object.isRequired,
-  close: PropTypes.func,
   nodes: PropTypes.array.isRequired,
   nodeLabel: PropTypes.string.isRequired,
   handleChangeLabel: PropTypes.func.isRequired,
@@ -293,7 +290,6 @@ WorkspaceNodeForm.propTypes = {
   nodeDisplayName: PropTypes.string.isRequired,
   handleDisplayNameChange: PropTypes.func.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
-  elementToUpdate: PropTypes.object.isRequired,
   handleDeleteNode: PropTypes.func.isRequired,
   attributesDropDownOptions: PropTypes.array.isRequired,
   handleRemoveAttributes: PropTypes.func.isRequired,

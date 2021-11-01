@@ -269,7 +269,7 @@ const styles = theme => ({
     fontSize: '0.875rem',
     '&:hover': {
       background: 'none',
-      color: theme.palette.secondary.main
+      color: theme.palette.primary.main
     }
   },
   leftIcon: {
@@ -277,6 +277,7 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing(1),
+    color: 'white'
   },
   iconSmall: {
     fontSize: 20,

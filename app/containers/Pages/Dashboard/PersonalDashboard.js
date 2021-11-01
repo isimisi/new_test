@@ -119,7 +119,7 @@ const PersonalDashboard = (props) => {
     dispatch(handleRunIntro(false));
     dispatch(changeStepIndex(0));
 
-    if ((plan_id === 1 && workspaces.length === 10) || (plan_id === 2 && workspaces.length === 50)) {
+    if (plan_id === 1 && workspaces.length === 50) {
       dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.'));
     } else {
       dispatch(postWorkspace(history));
@@ -193,30 +193,30 @@ const PersonalDashboard = (props) => {
       content: <div style={{ textAlign: 'left' }}>Her finder du en oversigt over de enkelte byggeklodser, som du kan se og redigere. Byggeklodser er en samlet betegnelse for indholdet i arbejdsområdet.</div>,
       locale: localeSteps,
     },
-    {
-      target: '.for_intro_Betingelser',
-      content: <div style={{ textAlign: 'left' }}>Betingelser er den måde, hvorpå du kan programmere Juristic. Tænk på det som logikken bag det juridiske indhold.</div>,
-      locale: localeSteps,
-      disableBeacon: true,
-    },
-    {
-      target: '.for_intro_Elementer',
-      content: <div style={{ textAlign: 'left' }}>Elementer er en anden grundsten. Det kan for eksempelvis være selskaber, personer eller andre interessenter i analysen!</div>,
-      locale: localeSteps,
-      disableBeacon: true,
-    },
-    {
-      target: '.for_intro_Kendetegn',
-      content: <div style={{ textAlign: 'left' }}>Ved at tilføje kendetegn, som fx land eller lignende, kan du gøre logikken i betingelserne eller dine tegninger mere detaljerede!</div>,
-      locale: localeSteps,
-      disableBeacon: true,
-    },
-    {
-      target: '.for_intro_Forbindelser',
-      content: <div style={{ textAlign: 'left' }}>Forbindelser er de streger, du tegner mellem elementerne, fx ejerskab mellem to selskaber!</div>,
-      locale: localeSteps,
-      disableBeacon: true,
-    },
+    // {
+    //   target: '.for_intro_Betingelser',
+    //   content: <div style={{ textAlign: 'left' }}>Betingelser er den måde, hvorpå du kan programmere Juristic. Tænk på det som logikken bag det juridiske indhold.</div>,
+    //   locale: localeSteps,
+    //   disableBeacon: true,
+    // },
+    // {
+    //   target: '.for_intro_Elementer',
+    //   content: <div style={{ textAlign: 'left' }}>Elementer er en anden grundsten. Det kan for eksempelvis være selskaber, personer eller andre interessenter i analysen!</div>,
+    //   locale: localeSteps,
+    //   disableBeacon: true,
+    // },
+    // {
+    //   target: '.for_intro_Kendetegn',
+    //   content: <div style={{ textAlign: 'left' }}>Ved at tilføje kendetegn, som fx land eller lignende, kan du gøre logikken i betingelserne eller dine tegninger mere detaljerede!</div>,
+    //   locale: localeSteps,
+    //   disableBeacon: true,
+    // },
+    // {
+    //   target: '.for_intro_Forbindelser',
+    //   content: <div style={{ textAlign: 'left' }}>Forbindelser er de streger, du tegner mellem elementerne, fx ejerskab mellem to selskaber!</div>,
+    //   locale: localeSteps,
+    //   disableBeacon: true,
+    // },
     {
       target: '.for_intro_3',
       content: <div style={{ textAlign: 'left' }}>Under Rapportindhold kan du uploade filer eller skrive paradigmetekster, som skal være resultatet af den juridiske analyse. På den måde kan Juristic udarbejde første udkast til fx et notat eller en strukturrapport - og endda på få minutter. </div>,
@@ -269,9 +269,6 @@ const PersonalDashboard = (props) => {
           <CounterIconsWidget elementCounts={elementCounts} history={history} />
           <Divider className={classes.divider} />
           <NewsListWidget handleOpenGuide={handleOpenGuide} />
-        </Grid>
-        <Grid item md={6} sm={12} xs={12}>
-          <TimelineWidget timeline={timeline} history={history} />
           <Divider className={classes.divider} />
           <PapperBlock title="Send os et ønske" icon="ion-ios-redo-outline" whiteBg noMargin desc="Vi er glade for idéer og ser på det straks">
             <div className={classes.subscribeForm}>
@@ -291,6 +288,9 @@ const PersonalDashboard = (props) => {
             </div>
           </PapperBlock>
           <Divider className={classes.divider} />
+        </Grid>
+        <Grid item md={6} sm={12} xs={12}>
+          <TimelineWidget timeline={timeline} history={history} />
         </Grid>
       </Grid>
       <UpgradeModal

@@ -37,7 +37,7 @@ function CompanyDataModel(props) {
   const branch = '';
   const [value, setValue] = React.useState(0);
 
-  const tabs = ['Virksomhedsdata', 'Balance', 'Resultat', 'Pengestrøm', 'Nøgletal'];
+  const tabs = ['Virksomhedsdata', 'Nøgletal', 'Balance', 'Resultat', 'Pengestrøm'];
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -64,12 +64,12 @@ function CompanyDataModel(props) {
           aria-label="icon label tabs example"
         >
           <Tab icon={<InfoIcon />} label="Generelt" />
+          <Tab icon={<TrendingUpIcon />} label="Nøgletal" />
           <Tab icon={<SyncAltIcon />} label="Balance" />
           <Tab icon={<AccountBalanceIcon />} label="Resultat" />
           <Tab icon={<MoneyIcon />} label="Pengestrøm" />
-          <Tab icon={<TrendingUpIcon />} label="Nøgletal" />
         </Tabs>
-        <div style={{ maxHeight: 600, overflow: 'auto' }}>
+        <div style={{ maxHeight: 400, overflow: 'auto' }}>
           <TableContainer component={Paper} style={{ padding: 14 }}>
             <Table>
               <TableBody>
@@ -84,7 +84,11 @@ function CompanyDataModel(props) {
                   )
                 )) : (
                   <Typography style={{ textAlign: 'center' }}>
-                        Vi kunne ikke finde noget data at vise dig på
+                        Vi kunne ikke finde noget data vedrørende
+                    {' '}
+                    {tabs[value]}
+                    {' '}
+                    på
                     {' '}
                     {companyData.navn}
                   </Typography>

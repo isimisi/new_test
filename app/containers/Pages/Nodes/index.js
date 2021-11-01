@@ -33,7 +33,7 @@ function Nodes(props) {
   useEffect(() => {
     dispatch(getNodes());
 
-    if (plan_id < 3) {
+    if (plan_id === 1) {
       history.push('/app/plan');
     }
   }, []);
