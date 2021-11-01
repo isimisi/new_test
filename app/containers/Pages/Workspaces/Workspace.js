@@ -112,7 +112,7 @@ const Workspace = (props) => {
   const runIntro = useSelector(state => state[reducer].get('runIntro'));
   const introStepIndex = useSelector(state => state[reducer].get('introStepIndex'));
 
-  const uncertainCompanies = useSelector(state => state[reducer].get('uncertainCompanies')).toJS();
+  const uncertainCompanies = useSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
 
 
   const [metaOpen, setMetaOpen] = useState(false);
