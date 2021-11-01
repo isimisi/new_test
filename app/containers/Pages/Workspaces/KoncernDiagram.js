@@ -228,9 +228,7 @@ const Workspace = (props) => {
             <Grid item sm={5} xs={12} className={classes.package}>
               <div
                 className={classes.center}
-                style={{
-                  backgroundColor: '#C9D2CB', borderTopRightRadius: 10, borderTopLeftRadius: 10
-                }}
+                style={{ backgroundColor: theme.palette.primary.main, borderTopRightRadius: 10, borderTopLeftRadius: 10 }}
               >
                 <Typography className={classes.packageHeader}>
                   Uden bruger
@@ -240,19 +238,23 @@ const Workspace = (props) => {
 
                 <div className={classes.packageBullets}>
                   <Typography className={classes.bulletText}>
-                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                    <CheckIcon fontSize="inherit" className={classes.textIcon} />
                   Koncerndiagrammer
                   </Typography>
                   <Typography className={classes.bulletText}>
-                    <ClearIcon fontSize="inherit" color="error" className={classes.textIcon} />
-                  Gem 10 søgninger
+                    <ClearIcon fontSize="inherit" className={classes.textIconError} />
+                  Gem 50 søgninger
                   </Typography>
                   <Typography className={classes.bulletText}>
-                    <ClearIcon fontSize="inherit" color="error" className={classes.textIcon} />
+                    <ClearIcon fontSize="inherit" className={classes.textIconError} />
+                  Tegn og rediger data
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <ClearIcon fontSize="inherit" className={classes.textIconError} />
                   Selskabsdata
                   </Typography>
                   <Typography className={classes.bulletText}>
-                    <ClearIcon fontSize="inherit" color="error" className={classes.textIcon} />
+                    <ClearIcon fontSize="inherit" className={classes.textIconError} />
                   Regnskabstal (beta)
                   </Typography>
                 </div>
@@ -263,7 +265,7 @@ const Workspace = (props) => {
               <div
                 className={classes.center}
                 style={{
-                  backgroundColor: '#4B5E6D', borderTopRightRadius: 10, borderTopLeftRadius: 10
+                  backgroundColor: theme.palette.primary.main, borderTopRightRadius: 10, borderTopLeftRadius: 10
                 }}
               >
                 <Typography className={classes.packageHeader}>
@@ -274,20 +276,24 @@ const Workspace = (props) => {
 
                 <div className={classes.packageBullets}>
                   <Typography className={classes.bulletText}>
-                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                    <CheckIcon fontSize="inherit" className={classes.textIcon} />
                   Koncerndiagrammer
                   </Typography>
                   <Typography className={classes.bulletText}>
-                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
-                  Gem 10 søgninger
+                    <CheckIcon fontSize="inherit" className={classes.textIcon} />
+                  Gem 50 søgninger
                   </Typography>
                   <Typography className={classes.bulletText}>
-                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
+                    <CheckIcon fontSize="inherit" className={classes.textIcon} />
+                  Tegn og rediger data
+                  </Typography>
+                  <Typography className={classes.bulletText}>
+                    <CheckIcon fontSize="inherit" className={classes.textIcon} />
                   Selskabsdata
                   </Typography>
                   <Typography className={classes.bulletText}>
-                    <CheckIcon fontSize="inherit" color="secondary" className={classes.textIcon} />
-                  Regnskabstal (beta)
+                    <CheckIcon fontSize="inherit" className={classes.textIcon} />
+                  Regnskabstal
                   </Typography>
                 </div>
               </div>

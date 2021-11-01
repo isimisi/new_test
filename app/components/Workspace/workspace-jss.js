@@ -405,13 +405,14 @@ const styles = theme => ({
     color: 'white', padding: 5,
   },
   packageContent: {
-    backgroundColor: '#F1F1F1',
+    backgroundColor: theme.palette.background.default,
     paddingTop: 5,
     paddingBottom: 20,
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10
   },
-  textIcon: { marginRight: 10 },
+  textIcon: { marginRight: 10, color: theme.palette.primary.main },
+  textIconError: { marginRight: 10, color: theme.palette.error.dark },
   center: {
     display: 'flex',
     alignItems: 'center',
