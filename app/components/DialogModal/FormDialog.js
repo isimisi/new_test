@@ -99,10 +99,10 @@ const FormDialog = (props) => {
   } = props;
   const [textField, setTextField] = useState('');
   const [countries, setCountries] = useState([]);
-  const [companyMapping, setCompanyMapping] = useState(uncertainCompanies.reduce((obj, item) => ({ ...obj, [item.soughtAfterName]: { id: item.id, name: item.name, orgGuessedName: item.name } }), {}));
+  const [companyMapping, setCompanyMapping] = useState(uncertainCompanies?.reduce((obj, item) => ({ ...obj, [item.soughtAfterName]: { id: item.id, name: item.name, orgGuessedName: item.name } }), {}));
 
   useEffect(() => {
-    setCompanyMapping(uncertainCompanies.reduce((obj, item) => ({ ...obj, [item.soughtAfterName]: { id: item.id, name: item.name, orgGuessedName: item.name } }), {}));
+    setCompanyMapping(uncertainCompanies?.reduce((obj, item) => ({ ...obj, [item.soughtAfterName]: { id: item.id, name: item.name, orgGuessedName: item.name } }), {}));
   }, [uncertainCompanies]);
 
   const changeTextField = (e) => {
@@ -110,7 +110,7 @@ const FormDialog = (props) => {
   };
 
   const confirm = () => {
-    if (uncertainCompanies.length > 0) {
+    if (uncertainCompanies?.length > 0) {
       mapUncertainCompanies(companyMapping);
       changeUncertainCompanies();
       setCompanyMapping({});
@@ -134,11 +134,11 @@ const FormDialog = (props) => {
 
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
-      <DialogTitle id="form-dialog-title">{uncertainCompanies.length > 0 ? 'Fortæl os hvad selslaberne hedder' : title}</DialogTitle>
+      <DialogTitle id="form-dialog-title">{uncertainCompanies?.length > 0 ? 'Fortæl os hvad selslaberne hedder' : title}</DialogTitle>
       <DialogContent>
         {loading
           ? <Loader />
-          : uncertainCompanies.length > 0
+          : uncertainCompanies?.length > 0
             ? (
               <UncertainCompanies
                 uncertainCompanies={companyMapping}
