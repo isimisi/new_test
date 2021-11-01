@@ -183,7 +183,7 @@ export const steps = [
     disableBeacon: true,
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Vi har koblet Juristic direkte til CVR (og snart også i Sverige, Norge og Finland). Prøv at trykke her nu!</div>,
+    content: <div style={{ textAlign: 'left' }}>Vi har koblet Juristic direkte til CVR i Danmark, Sverige, Norge og Finland. Prøv at trykke her nu!</div>,
     locale: localeSteps,
     target: '.rtf--ab__c:nth-of-type(6)',
     disableBeacon: true,
@@ -192,24 +192,24 @@ export const steps = [
     hideFooter: true,
     spotlightClicks: true,
   },
-  {
-    content: <div style={{ textAlign: 'left' }}>Hvis du ikke kan finde din tegning eller dit diagram, kan du trykke her for at centrere visningen!</div>,
-    locale: localeSteps,
-    target: '.react-flow__controls-fitview',
-  },
-  {
-    content: <div style={{ textAlign: 'left' }}>Download koncerndiagrammet eller tegningen ved at trykke her - husk, det er kun det, du kan se på din skærm, der downloades!</div>,
-    locale: localeSteps,
-    target: '.react-flow__controls-button:nth-of-type(5)',
-  },
-  {
-    content: <div style={{ textAlign: 'left' }}>Og til slut kan du trykke her for at skjule hjælpestreger m.v. fra arbejdsområdet - eller slå dem til igen.</div>,
-    locale: localeSteps,
-    target: '.react-flow__controls-button:nth-of-type(6)',
-  },
-  {
-    content: <div style={{ textAlign: 'left' }}>Nu er det bare at begynde - velkommen! Hvis du har problemer eller spørgsmål, er vi tilgængelige via livechat. Knappen finder du i bunden til venstre.</div>,
-    locale: localeSteps,
-    target: '.react-flow__pane',
-  },
+  // {
+  //   content: <div style={{ textAlign: 'left' }}>Hvis du ikke kan finde din tegning eller dit diagram, kan du trykke her for at centrere visningen!</div>,
+  //   locale: localeSteps,
+  //   target: '.react-flow__controls-fitview',
+  // },
+  // {
+  //   content: <div style={{ textAlign: 'left' }}>Download koncerndiagrammet eller tegningen ved at trykke her - husk, det er kun det, du kan se på din skærm, der downloades!</div>,
+  //   locale: localeSteps,
+  //   target: '.react-flow__controls-button:nth-of-type(5)',
+  // },
+  // {
+  //   content: <div style={{ textAlign: 'left' }}>Og til slut kan du trykke her for at skjule hjælpestreger m.v. fra arbejdsområdet - eller slå dem til igen.</div>,
+  //   locale: localeSteps,
+  //   target: '.react-flow__controls-button:nth-of-type(6)',
+  // },
+  // {
+  //   content: <div style={{ textAlign: 'left' }}>Nu er det bare at begynde - velkommen! Hvis du har problemer eller spørgsmål, er vi tilgængelige via livechat. Knappen finder du i bunden til venstre.</div>,
+  //   locale: localeSteps,
+  //   target: '.react-flow__pane',
+  // },
 ];

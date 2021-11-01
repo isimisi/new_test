@@ -15,7 +15,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import styles from './workspace-jss';
 
-const { plan_id } = loadFromLocalStorage();
+const localeStorage = loadFromLocalStorage();
+const plan_id = localeStorage?.plan_id;
 
 const WorkspaceForm = (props) => {
   const theme = useTheme();
