@@ -193,6 +193,7 @@ module.exports = options => ({
       '@styles': path.resolve(__dirname, '../../app/styles/components/'),
       '@api': path.resolve(__dirname, '../../app/api/'),
       '@utils': path.resolve(__dirname, '../../app/utils/'),
+      '@hooks': path.resolve(__dirname, '../../app/hooks/'),
       '@images': path.resolve(__dirname, '../../public/images/'),
       '@vendor': path.resolve(__dirname, '../../node_modules/'),
     }

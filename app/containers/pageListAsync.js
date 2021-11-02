@@ -80,11 +80,6 @@ export const Node = loadable(() =>
   import ('./Pages/Nodes/Node'), {
     fallback: <Loading />,
   })
-  
-export const Invoice = loadable(() =>
-  import ('./Pages/Invoice'), {
-    fallback: <Loading />,
-  });
 
 export const Groups = loadable(() =>
   import ('./Pages/Groups'), {

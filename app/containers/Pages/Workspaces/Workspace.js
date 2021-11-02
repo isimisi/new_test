@@ -19,7 +19,7 @@ import {
   WorkspaceFabs, CustomNode, StickyNoteNode,
   DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
   Notification, AlertModal, CompanyDataModel,
-  AlertLog, FormDialog, MapTypesForErst, ShareModal,
+  AlertLog, CvrDialog, MapTypesForErst, ShareModal,
   AddressInfoModel
 } from '@components';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -56,6 +56,7 @@ import {
   handleRunIntro, changeStepIndex, uncertainCompaniesChange,
   mapUncertainCompanies
 } from './reducers/workspaceActions';
+// import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 
 import './workspace.css';
 
@@ -531,6 +532,8 @@ const Workspace = (props) => {
     }
   };
 
+  // useCutCopyPaste(elements, onElementsRemove, setElements);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -749,7 +752,7 @@ const Workspace = (props) => {
         highlightAlertItems={highlightAlertItems}
         removeHighlightAlert={removeHighlightAlert}
       />
-      <FormDialog
+      <CvrDialog
         loading={loading}
         open={showCvrModal}
         handleClose={() => {

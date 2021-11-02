@@ -13,6 +13,7 @@ const logger = require('../../server/logger');
 const pkg = require(path.resolve(process.cwd(), 'package.json')); // eslint-disable-line
 const { dllPlugin } = pkg;
 
+
 const plugins = [
   new webpack.HotModuleReplacementPlugin(), // Tell webpack we want hot reloading
   new HtmlWebpackPlugin({

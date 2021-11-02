@@ -4,8 +4,7 @@ import { loadFromLocalStorage } from '@api/localStorage/localStorage';
 import { ThemeContext } from './ThemeWrapper';
 import Dashboard from '../Templates/Dashboard';
 import {
-  PersonalDashboard,
-  Invoice, Error, Settings,
+  PersonalDashboard, Error, Settings,
   HelpSupport, NotFound, Workspaces, Workspace,
   Conditions, Condition, Outputs, Output,
   Nodes, Node, Groups, Alerts, Alert,
@@ -50,7 +49,6 @@ function Application() {
         <Route exact path="/app/settings" component={Settings} />
         <Route exact path="/app/create/organization" component={CreateOrganization} />
         <Route exact path="/app/plan" component={ChoosePlan} />
-        <Route path="/app/invoice" component={Invoice} />
         <Route path="/app/not-found" component={NotFound} />
         <Route path="/app/error" component={Error} />
         <Route path="/app/help-support" component={HelpSupport} />
