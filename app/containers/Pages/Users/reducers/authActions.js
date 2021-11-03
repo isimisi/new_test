@@ -3,7 +3,7 @@
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader } from '@api/constants';
-import { saveToLocalStorage, loadFromLocalStorage } from '@api/localStorage/localStorage';
+import { loadFromLocalStorage, saveToLocalStorage } from '@utils/localStorage';
 import LogRocket from 'logrocket';
 import * as types from './authConstants';
 

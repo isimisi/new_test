@@ -8,7 +8,7 @@ import {
   isNode,
 } from 'react-flow-renderer';
 import _history from '@utils/history';
-import { saveToLocalStorage } from '@api/localStorage/localStorage';
+import { saveToLocalStorage } from '@utils/localStorage';
 import LogRocket from 'logrocket';
 import { toast } from 'react-toastify';
 import * as types from './workspaceConstants';
@@ -56,6 +56,7 @@ export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async 
     const alerts = response.data;
     setAlerts(alerts, initial);
   } catch (error) {
+    // do something
   }
 };
 

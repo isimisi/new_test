@@ -35,7 +35,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { toast } from 'react-toastify';
-import { loadFromLocalStorage } from '@api/localStorage/localStorage';
+import { loadFromLocalStorage } from '@utils/localStorage';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId, encryptId } from '@api/constants';
 import connection from '@api/socket/SocketConnection';

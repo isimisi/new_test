@@ -192,9 +192,12 @@ module.exports = options => ({
       '@redux': path.resolve(__dirname, '../../app/redux/'),
       '@styles': path.resolve(__dirname, '../../app/styles/components/'),
       '@api': path.resolve(__dirname, '../../app/api/'),
+      '@helpers': path.resolve(__dirname, '../../app/helpers/'),
       '@utils': path.resolve(__dirname, '../../app/utils/'),
+      '@types': path.resolve(__dirname, '../../app/types/'),
       '@hooks': path.resolve(__dirname, '../../app/hooks/'),
       '@images': path.resolve(__dirname, '../../public/images/'),
+      '@lotties': path.resolve(__dirname, '../../public/lotties/'),
       '@vendor': path.resolve(__dirname, '../../node_modules/'),
     }
   },

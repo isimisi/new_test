@@ -38,7 +38,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId } from '@api/constants';
 import connection from '@api/socket/SocketConnection';
-import Loader from '@api/ui/Loader';
+import Loader from '@components/Loading/LongLoader';
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import styles from '../../../components/Workspace/workspace-jss';

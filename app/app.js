@@ -26,6 +26,8 @@ import CookieBot from 'react-cookiebot/lib/CookieBot';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Bugsnag from '@bugsnag/js';
 import BugsnagPluginReact from '@bugsnag/plugin-react';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 
 
 // Import Language Provider
@@ -37,7 +39,7 @@ import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line
 
 import LogRocket from 'logrocket';
 import { isMobile } from 'react-device-detect';
-import configureStore from './redux/configureStore';
+import store from './redux/configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
@@ -74,8 +76,6 @@ const domainGroupId = 'e25f2e52-b958-4868-bb38-05482f232612';
 // Create redux store with history
 
 // TODO: påsæt reux with loace storage så den bliver initeret med localstorage og jeg dermed aldrig skal kigge i locale storage
-const initialState = {};
-const { store } = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
 // Include the Crisp code here, without the <script></script> tags
@@ -94,17 +94,20 @@ if (!isMobile) {
   }());
 }
 
+const persistor = persistStore(store);
+
 
 let render = messages => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <ConnectedRouter history={history}>
-          <App />
-
-          <ToastContainer />
-        </ConnectedRouter>
-      </LanguageProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <LanguageProvider messages={messages}>
+          <ConnectedRouter history={history}>
+            <App />
+            <ToastContainer />
+          </ConnectedRouter>
+        </LanguageProvider>
+      </PersistGate>
     </Provider>,
     MOUNT_NODE,
   );
@@ -132,15 +135,6 @@ if (process.env.NODE_ENV === 'production') {
   };
 }
 
-if (module.hot) {
-  // Hot reloadable React components and translation json files
-  // modules.hot.accept does not accept dynamic dependencies,
-  // have to be constants at compile-time
-  module.hot.accept(['./i18n', 'containers/App'], () => {
-    ReactDOM.unmountComponentAtNode(MOUNT_NODE);
-    render(translationMessages);
-  });
-}
 
 // Chunked polyfill for browsers without Intl support
 if (!window.Intl) {

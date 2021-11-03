@@ -4,7 +4,7 @@
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
-import { saveToLocalStorage, loadFromLocalStorage } from '@api/localStorage/localStorage';
+import { loadFromLocalStorage, saveToLocalStorage } from '@utils/localStorage';
 import * as types from './dashboardConstants';
 const DASHBOARD = 'dashboard';
 

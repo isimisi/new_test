@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Loader from '@api/ui/Loader';
+import Loader from '@components/Loading/LongLoader';
 import FloatingPanel from '../../Panel/FloatingPanel';
 import ShareForm from './ShareForm';
 import styles from '../workspace-jss';

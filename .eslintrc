@@ -61,6 +61,7 @@
     "beforeAll": true,
     "afterAll": true,
     "analytics": "readonly",
-    "$crisp": "readonly"
+    "$crisp": "readonly",
+    "ReturnType": "readonly",
   }
 }
