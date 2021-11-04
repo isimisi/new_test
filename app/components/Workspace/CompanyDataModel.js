@@ -97,14 +97,14 @@ function CompanyDataModel(props) {
             </Table>
           </TableContainer>
         </div>
-        {/* <div className={css.buttonArea}>
-          {companyData.companyMetaData && (
+        <div className={css.buttonArea}>
+          {companyData.Virksomhedsdata && companyData.Land === 'DK' && (
             <Button
               variant="text"
               color="primary"
               type="button"
               target="_blank"
-              href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${companyData?.companyMetaData['CVR-nummer']}`}
+              href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${companyData?.Virksomhedsdata['CVR-nummer']}`}
             >
             Åben i enhedsvisning for
               {' '}
@@ -113,7 +113,7 @@ function CompanyDataModel(props) {
             direkte i CVR
             </Button>
           )}
-        </div> */}
+        </div>
       </FloatingPanel>
     </div>
   );
