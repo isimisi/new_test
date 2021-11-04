@@ -2,7 +2,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import {
-  isNode, Node, Edge, Position
+  isNode, Position, FlowElement
 } from 'react-flow-renderer';
 import dagre from 'dagre';
 import { Link } from 'react-router-dom';
@@ -30,9 +30,7 @@ export const getLayoutedElements = (elements, direction = 'TB') => {
 
   dagre.layout(dagreGraph);
 
-  type Element = Node | Edge
-
-  return elements.map((el: Element) => {
+  return elements.map((el: FlowElement) => {
     if (isNode(el)) {
       const nodeWithPosition = dagreGraph.node(el.id);
       el.targetPosition = isHorizontal ? Position.Left : Position.Top;

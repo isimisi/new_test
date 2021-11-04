@@ -4,7 +4,7 @@
 
 import { loadFromLocalStorage } from '@utils/localStorage';
 import CryptoJS from 'crypto-js';
-import { RouteComponentProps } from 'react-router-dom';
+import { History } from 'history';
 
 
 export const baseUrl = window.location.href === 'https://juristic-web-app-staging.herokuapp.com/'
@@ -47,7 +47,7 @@ export const validURL = (str: string): boolean => {
 
 export const plans = ['Base', 'Draw', 'Pro'];
 
-export const getId = (history: RouteComponentProps<'history'>) => {
+export const getId = (history: History) => {
   const id = history.location.pathname.split('/').pop();
   if (typeof id === 'string') {
     return CryptoJS.AES

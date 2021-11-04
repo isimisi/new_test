@@ -515,6 +515,7 @@ export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, 
       type: types.PUBLIC_ACCESS_WORKSPACE_SUCCESS, publicUserFirstName, publicUserLastName, workspaceId, editable: user.editable
     });
   } catch (error) {
+    console.log(error.response);
     let _message = message;
     if (error?.response?.status === 403) {
       _message = error.response.data;

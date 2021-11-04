@@ -332,7 +332,7 @@ const styles = theme => ({
     marginLeft: theme.spacing(3)
   },
   unlockBtn: {
-    top: -4
+    top: -4,
   },
   notifyForm: {
     alignItems: 'baseline',
@@ -357,13 +357,8 @@ const styles = theme => ({
     zIndex: 1
   },
   lockField: {
-    marginRight: theme.spacing(1),
-    '& label': {
-      color: `${theme.palette.common.white} !important`,
-    },
+    marginRight: theme.spacing(3),
     '& label + div': {
-      background: alpha(theme.palette.primary.light, 0.3),
-      border: 'none',
       '& svg': {
         fill: alpha(theme.palette.common.white, 0.7)
       }
@@ -378,8 +373,9 @@ const styles = theme => ({
     boxShadow: theme.glow.medium
   },
   userName: {
-    color: theme.palette.common.white,
+    color: theme.palette.secondary.contrastText,
     marginLeft: theme.spacing(3),
+    marginBottom: 20,
     fontWeight: theme.typography.fontWeightMedium,
     [theme.breakpoints.down('xs')]: {
       marginTop: theme.spacing(3),
@@ -424,7 +420,7 @@ const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   header: {
     textAlign: 'center',

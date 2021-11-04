@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Field, reduxForm } from 'redux-form/immutable';
 import Fab from '@material-ui/core/Fab';
+import Paper from '@material-ui/core/Paper';
 import Popover from '@material-ui/core/Popover';
 import FormControl from '@material-ui/core/FormControl';
 import IconButton from '@material-ui/core/IconButton';
@@ -52,66 +53,68 @@ function LockForm(props: Props) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <section className={classes.lockWrap}>
-          <Lottie
-            animationData={lock}
-            style={{
-              width: '30%',
-            }}
-          />
-          <div>
-            <Typography className={classes.userName} variant="h4">
-              {firstName}
-              {' '}
-              {lastName}
-            </Typography>
-            <div className={classes.lockForm}>
-              <FormControl className={classes.lockField}>
-                <Field
-                  name="securityCode"
-                  component={TextFieldRedux}
-                  type="password"
-                  label="Din sikkerhedskode"
-                  required
-                  validate={required}
-                  className={classes.field}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="Helper Hint"
-                          onClick={handleShowHint}
-                        >
-                          <Help />
-                        </IconButton>
-                      </InputAdornment>
-                    )
+      <Paper className={classes.paperWrap} style={{ paddingTop: 60, paddingBottom: 60 }}>
+        <form onSubmit={handleSubmit}>
+          <section className={classes.lockWrap}>
+            <Lottie
+              animationData={lock}
+              style={{
+                width: '30%',
+              }}
+            />
+            <div>
+              <Typography className={classes.userName} variant="h4">
+                {firstName}
+                {' '}
+                {lastName}
+              </Typography>
+              <div className={classes.lockForm}>
+                <FormControl className={classes.lockField}>
+                  <Field
+                    name="securityCode"
+                    component={TextFieldRedux}
+                    type="password"
+                    label="Din sikkerhedskode"
+                    required
+                    className={classes.field}
+                    validate={required}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="Helper Hint"
+                            onClick={handleShowHint}
+                          >
+                            <Help />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                  />
+                </FormControl>
+                <Fab className={classes.unlockBtn} color="primary" type="submit" disabled={Boolean(submitting) || pristine}>
+                  <ArrowForward style={{ color: 'white' }} />
+                </Fab>
+                <Popover
+                  open={Boolean(anchorEl)}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
                   }}
-                />
-              </FormControl>
-              <Fab className={classes.unlockBtn} color="secondary" type="submit" disabled={Boolean(submitting) || pristine}>
-                <ArrowForward />
-              </Fab>
-              <Popover
-                open={Boolean(anchorEl)}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              >
-                <Typography className={classes.hint}>Du har modtaget koden på sms. Hvis ikke så kontakt personen, som har delt dette arbejdsområde med dig.</Typography>
-              </Popover>
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                >
+                  <Typography className={classes.hint}>Du har modtaget koden på sms. Hvis ikke så kontakt personen, som har delt dette arbejdsområde med dig.</Typography>
+                </Popover>
+              </div>
             </div>
-          </div>
-        </section>
-      </form>
+          </section>
+        </form>
+      </Paper>
     </div>
   );
 }
