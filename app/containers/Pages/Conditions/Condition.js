@@ -210,6 +210,7 @@ const Condition = (props) => {
   const handleNodeChange = (value, index, _type, isNew = false) => {
     const newArray = [...conditionValues];
 
+
     if (_type === 'comparison_type' && nonValueArray.includes(value)) {
       newArray[index].comparison_value = '';
     }
@@ -221,10 +222,6 @@ const Condition = (props) => {
     }
 
     setConditionValues(newArray);
-  };
-
-  const flowStyle = {
-    backgroundColor: 'white'
   };
 
   window.onbeforeunload = () => {
@@ -247,7 +244,6 @@ const Condition = (props) => {
 
         <ReactFlow
           elements={elements}
-          style={flowStyle}
           onElementsRemove={onElementsRemove}
           onConnect={onConnect}
           nodeTypes={{ custom: CustomNode }}
