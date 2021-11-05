@@ -57,6 +57,7 @@ const relationshipTypeOptions = [
   },
 ];
 
+const nonValueArray = ['exists', 'does not exist', 'any'];
 
 const EdgeForm = (props) => {
   const {
@@ -113,7 +114,7 @@ const EdgeForm = (props) => {
             />
           </div>
         </div>
-        {!['exists', 'does not exist', 'any'].includes(comparisonType) && (
+        {!nonValueArray.includes(comparisonType) && (
           <div className={classes.attrField} style={{ marginLeft: 0 }}>
             <TextField
               value={comparisonValue}
@@ -177,7 +178,7 @@ const EdgeForm = (props) => {
           color="secondary"
           type="button"
           onClick={handleSave}
-          disabled={relationshipLabel.length === 0 && comparisonValue.length === 0}
+          disabled={relationshipLabel.length === 0}
         >
             Gem
         </Button>

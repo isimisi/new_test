@@ -189,7 +189,7 @@ export const getNodes = (group) => async dispatch => {
   }
 };
 
-export const postNode = (condition_id, node_id, nodeLabel, values, x, y, setDefineNodeOpen) => async dispatch => {
+export const postNode = (condition_id, node_id, nodeLabel, values, x, y, close) => async dispatch => {
   const url = `${baseUrl}/conditionNodes`;
   const body = {
     condition_id,
@@ -205,14 +205,14 @@ export const postNode = (condition_id, node_id, nodeLabel, values, x, y, setDefi
     const response = await axios.post(url, body, header);
     const node = response.data;
     dispatch({ type: types.CONDITION_POST_NODE_SUCCESS, node });
-    setDefineNodeOpen(false);
+    close();
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_POST_NODE_FAILED, message });
   }
 };
 
-export const putNode = (conditionNodeId, node_id, nodeLabel, nodeValues, deletedConditionValues, setDefineNodeOpen) => async dispatch => {
+export const putNode = (conditionNodeId, node_id, nodeLabel, nodeValues, deletedConditionValues, close) => async dispatch => {
   const url = `${baseUrl}/conditionNodes/${conditionNodeId}`;
   const body = {
     node_id,
@@ -226,14 +226,14 @@ export const putNode = (conditionNodeId, node_id, nodeLabel, nodeValues, deleted
     const response = await axios.put(url, body, header);
     const node = response.data;
     dispatch({ type: types.CONDITION_PUT_NODE_SUCCESS, node });
-    setDefineNodeOpen(false);
+    close();
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_PUT_NODE_FAILED, message });
   }
 };
 
-export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatch => {
+export const postEdge = (condition_id, edge, close) => async dispatch => {
   const url = `${baseUrl}/conditionRelationships`;
   const body = {
     condition_id,
@@ -253,14 +253,14 @@ export const postEdge = (condition_id, edge, setDefineEdgeOpen) => async dispatc
     const response = await axios.post(url, body, header);
     const responseEdge = response.data;
     dispatch({ type: types.CONDITION_POST_EDGE_SUCCESS, edge: responseEdge });
-    setDefineEdgeOpen(false);
+    close();
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_POST_EDGE_FAILED, message });
   }
 };
 
-export const putEdge = (edgeId, relationship_id, relationshipLabel, comparison_type, comparison_value, type, setDefineEdgeOpen) => async dispatch => {
+export const putEdge = (edgeId, relationship_id, relationshipLabel, comparison_type, comparison_value, type, close) => async dispatch => {
   const url = `${baseUrl}/conditionRelationships/${edgeId}`;
   const body = {
     relationship_id,
@@ -275,7 +275,7 @@ export const putEdge = (edgeId, relationship_id, relationshipLabel, comparison_t
     const response = await axios.put(url, body, header);
     const edge = response.data;
     dispatch({ type: types.CONDITION_PUT_EDGE_SUCCESS, edge });
-    setDefineEdgeOpen(false);
+    close();
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.CONDITION_PUT_EDGE_FAILED, message });

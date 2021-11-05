@@ -38,6 +38,8 @@ import {
 const BASE_BG_GAP = 32;
 const BASE_BG_STROKE = 1;
 
+const nonValueArray = ['exists', 'does not exist', 'any'];
+
 
 const Condition = (props) => {
   const { classes } = props;
@@ -102,11 +104,20 @@ const Condition = (props) => {
     }
   };
 
+  const closeEdge = React.useCallback(() => {
+    setDefineEdgeOpen(false);
+    setIsUpdatingElement(false);
+    setRelationshipLabel('');
+    setRelationshipType('');
+    setComparisonType('exists');
+    setComparisonValue('');
+  }, []);
+
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
 
     if (isUpdatingElement) {
-      dispatch(putEdge(elementToUpdate.id, choosenRelationship.id, choosenRelationship.label, comparisonType, comparisonValue, relationshipType, setDefineEdgeOpen));
+      dispatch(putEdge(elementToUpdate.id, choosenRelationship.id, choosenRelationship.label, comparisonType, comparisonValue, relationshipType, closeEdge));
     } else {
       const edge = {
         relationship_id: choosenRelationship.id,
@@ -116,9 +127,16 @@ const Condition = (props) => {
         comparisonValue,
         ...currentConnectionData
       };
-      dispatch(postEdge(id, edge, setDefineEdgeOpen));
+      dispatch(postEdge(id, edge, closeEdge));
     }
   };
+
+  const closeNode = React.useCallback(() => {
+    setDefineNodeOpen(false);
+    setIsUpdatingElement(false);
+    setNodeLabel('');
+    setConditionValues([]);
+  }, []);
 
   const handleNodeSave = () => {
     const rf = rfInstance.toObject();
@@ -130,11 +148,10 @@ const Condition = (props) => {
       const originalElementIds = elementToUpdate.data.conditionValues.map(cv => cv.id);
       const newConditionValueIds = conditionValues.map(cv => cv.conditionNodeValueId);
       const deletedConditionValues = originalElementIds.filter(x => !newConditionValueIds.includes(x));
-      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), setDefineNodeOpen));
+      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), closeNode));
     } else {
-      dispatch(postNode(id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), _x, _y, setDefineNodeOpen));
+      dispatch(postNode(id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), _x, _y, closeNode));
     }
-    setIsUpdatingElement(false);
   };
 
 
@@ -192,6 +209,11 @@ const Condition = (props) => {
 
   const handleNodeChange = (value, index, _type, isNew = false) => {
     const newArray = [...conditionValues];
+
+    if (_type === 'comparison_type' && nonValueArray.includes(value)) {
+      newArray[index].comparison_value = '';
+    }
+
     newArray[index] = { ...newArray[index], [_type]: value };
 
     if (_type === 'attribut' && isNew) {
@@ -267,10 +289,7 @@ const Condition = (props) => {
       />
       <ConditionDefineEdge
         open={defineEdgeOpen}
-        close={() => {
-          setDefineEdgeOpen(false);
-          setIsUpdatingElement(false);
-        }}
+        close={closeEdge}
         relationships={relationships}
         relationshipLabel={relationshipLabel}
         handleChangeLabel={(_label) => {
@@ -291,8 +310,8 @@ const Condition = (props) => {
         comparisonsOptions={comparisonsOptions}
         comparisonType={comparisonType}
         handleComparisonTypeChange={(v) => {
-          if (['exists', 'does not exist', 'any'].includes(v)) {
-            setComparisonValue(null);
+          if (nonValueArray.includes(v)) {
+            setComparisonValue('');
           }
           setComparisonType(v);
         }}
@@ -303,10 +322,7 @@ const Condition = (props) => {
       />
       <ConditionDefineNode
         open={defineNodeOpen}
-        close={() => {
-          setDefineNodeOpen(false);
-          setIsUpdatingElement(false);
-        }}
+        close={closeNode}
         nodes={nodes}
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => {

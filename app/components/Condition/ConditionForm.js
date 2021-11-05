@@ -79,7 +79,7 @@ const ConditionForm = (props) => {
         </Button>
         <Button
           variant="contained"
-          color="secondary"
+          color="primary"
           type="button"
           onClick={onSave}
         >
