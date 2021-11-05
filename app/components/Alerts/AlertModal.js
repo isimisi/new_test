@@ -31,7 +31,7 @@ const AlertModal = props => {
         <Button color="primary" variant="outlined" size="large" onClick={handleSeeCondition}>
             Se betingelse
         </Button>
-        <Button color="secondary" variant="outlined" size="large" onClick={handleClose}>
+        <Button color="primary" variant="contained" size="large" onClick={handleClose}>
             Luk
         </Button>
       </DialogActions>

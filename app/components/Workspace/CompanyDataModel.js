@@ -43,7 +43,6 @@ function CompanyDataModel(props) {
     setValue(newValue);
   };
 
-  console.log(companyData);
 
   return (
     <div>

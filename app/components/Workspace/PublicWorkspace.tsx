@@ -231,7 +231,6 @@ const Workspace = (props) => {
   }, [rfInstance]);
 
   useEffect(() => {
-    console.log('jeg når at kalde');
     dispatch(showWorkspace(id));
     dispatch(getRelationships(group));
     dispatch(getNodes(group));

@@ -12,16 +12,12 @@ import ReactFlow, {
   ControlButton,
   Background,
   isNode,
+  Node,
   ConnectionMode,
-  BackgroundVariant
+  BackgroundVariant,
+  FlowElement,
+  OnLoadParams
 } from 'react-flow-renderer';
-import {
-  WorkspaceFabs, CustomNode, StickyNoteNode,
-  DefineEdge, CustomEdge, DefineNode, WorkspaceMeta,
-  Notification, AlertModal, CompanyDataModel,
-  AlertLog, CvrDialog, MapTypesForErst, ShareModal,
-  AddressInfoModel
-} from '@components';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
@@ -36,9 +32,25 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { toast } from 'react-toastify';
 import { loadFromLocalStorage } from '@utils/localStorage';
+import Notification from '@components/Notification/Notification';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId, encryptId } from '@api/constants';
 import connection from '@api/socket/SocketConnection';
+import AlertModal from '@components/Alerts/AlertModal';
+import CustomNode from '@components/Workspace/Node/CustomNode';
+import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
+import WorkspaceMeta from '@components/Workspace/WorkspaceMeta';
+import CustomEdge from '@components/Workspace/Edge/CustomEdge';
+import DefineEdge from '@components/Workspace/Edge/DefineEdge';
+import DefineNode from '@components/Workspace/Node/DefineNode';
+import AlertLog from '@components/Alerts/AlertLog';
+import CvrDialog from '@components/DialogModal/CvrDialog';
+import MapTypesForErst from '@components/Workspace/MapTypesForErst';
+import CompanyDataModel from '@components/Workspace/CompanyDataModel';
+import AddressInfoModel from '@components/Workspace/AddressInfoModel';
+import ShareModal from '@components/Workspace/Share/ShareModal';
+import WorkspaceFabs from '@components/Workspace/WorkspaceFabs';
+import { NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
 import {
   reducer, initErstTypes, getLayoutedElements, steps
@@ -57,8 +69,12 @@ import {
   mapUncertainCompanies
 } from './reducers/workspaceActions';
 // import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
-
 import './workspace.css';
+
+
+
+
+
 
 
 const nodeTypes = {
@@ -74,6 +90,11 @@ const initialAttribut = {
 const BASE_BG_GAP = 32;
 const BASE_BG_STROKE = 1;
 
+interface Dimensions {
+  height: number;
+  width: number;
+}
+
 
 const Workspace = (props) => {
   const { classes } = props;
@@ -83,7 +104,7 @@ const Workspace = (props) => {
   const id = getId(history);
   const reactFlowContainer = useRef(null);
   const [image, takeScreenShot] = useScreenshot();
-  const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
+  const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
 
   const { plan_id } = loadFromLocalStorage();
@@ -117,7 +138,7 @@ const Workspace = (props) => {
 
 
   const [metaOpen, setMetaOpen] = useState(false);
-  const [rfInstance, setRfInstance] = useState(null);
+  const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
 
   const [showCvrModal, setShowCvrModal] = useState(false);
   const [showMapErst, setShowMapErst] = useState(false);
@@ -126,12 +147,12 @@ const Workspace = (props) => {
 
 
   const [showAlertLog, setShowAlertLog] = useState(false);
-  const [alerts, setAlerts] = useState([]);
+  const [alerts, setAlerts] = useState<any[]>([]);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [alertId, setAlertId] = useState(null);
+  const [alertId, setAlertId] = useState<number | null>(null);
 
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
-  const [elementToUpdate, setElementToUpdate] = useState(null);
+  const [elementToUpdate, setElementToUpdate] = useState<FlowElement | null>(null);
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
@@ -153,7 +174,7 @@ const Workspace = (props) => {
   const [nodeDisplayName, setNodeDisplayName] = useState('');
   const [nodeFigur, setNodeFigur] = useState(null);
   const [attributes, setAttributes] = useState([initialAttribut]);
-  const [choosenNode, setChoosenNode] = useState(null);
+  const [choosenNode, setChoosenNode] = useState<NodeDropdownInstance | null>(null);
 
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [nodeColor, setNodeColor] = useState({
@@ -195,6 +216,7 @@ const Workspace = (props) => {
     // Specify how to clean up after this effect:
     return function cleanup() {
       if (subscription) {
+        // @ts-ignore
         subscription.close();
       }
     };
@@ -213,13 +235,9 @@ const Workspace = (props) => {
   const onElementsRemove = (elementsToRemove) => {
     const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
     const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
-    const remainingElements = elements.filter(el => {
+    const remainingElements = elements.filter((el: FlowElement) => {
       if (isNode(el)) {
-        return !(
-          nodeIdsToRemove.includes(el.id)
-          || nodeIdsToRemove.includes(el.target)
-          || nodeIdsToRemove.includes(el.source)
-        );
+        return !nodeIdsToRemove.includes(el.id);
       }
       return !edgeIdsToRemove.includes(el.id);
     });
@@ -284,7 +302,7 @@ const Workspace = (props) => {
   const onWorkspaceSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      const _nodes = flow.elements.filter(n => isNode(n));
+      const _nodes = flow.elements.filter((n): n is Node => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
       dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
     }
@@ -329,7 +347,7 @@ const Workspace = (props) => {
             color: 'white'
           },
           onClick: (e) => {
-            setAlertId(e.currentTarget.id);
+            setAlertId(Number(e.currentTarget.id));
           }
         });
       });
@@ -358,27 +376,29 @@ const Workspace = (props) => {
 
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
-    const rf = rfInstance.toObject();
+    const rf = rfInstance?.toObject();
 
-    const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
-    const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
-
-    if (isUpdatingElement) {
-      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
-    } else {
-      dispatch(postNode(
-        id,
-        choosenNode.id, choosenNode.label,
-        nodeDisplayName, nodeFigur,
-        JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
-        _attributes, setDefineNodeOpen, handleAlerts,
-        x, y
-      ));
-      setNodeLabel('');
+    const x = rf && reactFlowDimensions && (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+    const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+    if(choosenNode) {
+      if (isUpdatingElement && elementToUpdate) {
+        dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
+      } else {
+        dispatch(postNode(
+          id,
+          choosenNode.id, choosenNode.label,
+          nodeDisplayName, nodeFigur,
+          JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
+          _attributes, setDefineNodeOpen, handleAlerts,
+          x, y
+        ));
+        setNodeLabel('');
+      }
+  
+      setIsUpdatingElement(false);
+    };
     }
 
-    setIsUpdatingElement(false);
-  };
 
   useEffect(() => {
     const _node = nodes.find(r => r.label === nodeLabel);
@@ -394,7 +414,7 @@ const Workspace = (props) => {
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-    if (isUpdatingElement) {
+    if (isUpdatingElement && elementToUpdate) {
       dispatch(putEdge(
         elementToUpdate.id,
         choosenRelationship.id,
@@ -468,9 +488,9 @@ const Workspace = (props) => {
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
   const handlePostSticky = () => {
-    const rf = rfInstance.toObject();
-    const x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
-    const y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+    const rf = rfInstance?.toObject();
+    const x = rf && reactFlowDimensions && (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+    const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
     dispatch(postSticky(id, x, y));
   };
@@ -482,7 +502,8 @@ const Workspace = (props) => {
   useEffect(() => {
     if (reactFlowContainer) {
       setReactFlowDimensions({
-        height: reactFlowContainer.current.clientHeight,
+        //@ts-ignore
+        height: reactFlowContainer.current.clientHeight,//@ts-ignore
         width: reactFlowContainer.current.clientWidth
       });
     }
@@ -521,11 +542,13 @@ const Workspace = (props) => {
 
       if (index === 3) {
         const hoverMenu = document.querySelector('.rtf:nth-of-type(3)');
-        hoverMenu.classList.remove('closed');
-        hoverMenu.classList.add('open');
-        setTimeout(() => {
-          dispatch(changeStepIndex(newStepIndex));
-        }, 100);
+        if(hoverMenu) {
+          hoverMenu.classList.remove('closed');
+          hoverMenu.classList.add('open');
+          setTimeout(() => {
+            dispatch(changeStepIndex(newStepIndex));
+          }, 100);
+        }
       } else {
         dispatch(changeStepIndex(newStepIndex));
       }
@@ -557,7 +580,7 @@ const Workspace = (props) => {
           edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
-          onElementClick={!signed && onElementClick}
+          onElementClick={!signed ? onElementClick : undefined}
         >
           <div data-html2canvas-ignore="true">
             <MiniMap
@@ -718,11 +741,12 @@ const Workspace = (props) => {
         handleRemoveAttributes={(_id, index) => {
           setAttributes(att => att.filter((v, i) => i !== index));
           if (_id) {
+            //@ts-ignore
             setDeletedAttributes(attr => [...attr, _id]);
           }
         }}
       />
-      {alerts[alertId] && (
+      {alertId && alerts[alertId] && (
         <AlertModal
           title={alerts[alertId]?.alert?.label}
           description={alerts[alertId]?.alert?.description}
@@ -732,7 +756,7 @@ const Workspace = (props) => {
               `/app/red%20flags/${encryptId(alerts[0]?.alert?.id)}`
             );
             const win = window.open(location, '_blank');
-            win.focus();
+            win && win.focus();
           }
           }
           open={alertOpen}
@@ -856,7 +880,7 @@ const Workspace = (props) => {
         callback={handleJoyrideCallback}
         steps={steps}
         styles={{
-          options: {
+          options: {  
             zIndex: 10000,
             primaryColor: '#36454F'
           }

@@ -1,7 +1,9 @@
 {
   "extends": [
     "eslint-config-airbnb",
-    // "plugin:flowtype/recommended"
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "env": {
     "browser": true,
@@ -34,19 +36,20 @@
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "function-paren-newline": 0,
     "react/no-typos": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
     "jsx-a11y/anchor-is-valid": 0,
     "react/default-props-match-prop-types": 0,
     "arrow-parens": 0,
     "jsx-a11y/label-has-for": [ 2, {
         "required": {
             "every": [ "id" ]
-        },
-    }],
+        }
+    }]
   },
   "plugins": [
     "react",
     "import",
-    // "flowtype",
+    "@typescript-eslint",
     "react-hooks"
   ],
   "settings": {
