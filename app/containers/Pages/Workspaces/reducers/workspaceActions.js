@@ -203,7 +203,7 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
   }
 };
 
-export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, background_color, border_color, attributes, setDefineNodeOpen, setAlerts, x, y) => async dispatch => {
+export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, background_color, border_color, attributes, close, setAlerts, x, y) => async dispatch => {
   dispatch({ type: types.WORKSPACE_POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
@@ -224,14 +224,14 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, 
     const response = await axios.post(url, body, header);
     const node = response.data;
     dispatch({ type: types.WORKSPACE_POST_NODE_SUCCESS, node });
-    setDefineNodeOpen(false);
+    close();
     setAlerts && dispatch(analyseAlerts(workspace_id, setAlerts));
   } catch (error) {
     dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
   }
 };
 
-export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, figur, backgroundColor, borderColor, attributes, deletedAttributes, setDefineNodeOpen) => async dispatch => {
+export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, figur, backgroundColor, borderColor, attributes, deletedAttributes, close) => async dispatch => {
   dispatch({ type: types.WORKSPACE_PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
@@ -249,14 +249,14 @@ export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, figur
     const response = await axios.put(url, body, header);
     const node = response.data;
     dispatch({ type: types.WORKSPACE_PUT_NODE_SUCCESS, node });
-    setDefineNodeOpen(false);
+    close();
   } catch (error) {
     dispatch({ type: types.WORKSPACE_PUT_NODE_FAILED, message });
   }
 };
 
 
-export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => async dispatch => {
+export const postEdge = (workspace_id, edge, close, setAlert) => async dispatch => {
   dispatch({ type: types.POST_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship`;
   const body = {
@@ -281,7 +281,7 @@ export const postEdge = (workspace_id, edge, setDefineEdgeOpen, setAlert) => asy
     const response = await axios.post(url, body, header);
     const responseEdge = response.data;
     dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
-    setDefineEdgeOpen(false);
+    close();
     setAlert && dispatch(analyseAlerts(workspace_id, setAlert));
   } catch (error) {
     dispatch({ type: types.POST_EDGE_FAILED, message });
@@ -299,7 +299,7 @@ export const putEdge = (
   animatedLine,
   showLabel,
   lineThrough,
-  setDefineEdgeOpen
+  close
 ) => async dispatch => {
   dispatch({ type: types.PUT_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
@@ -321,7 +321,7 @@ export const putEdge = (
     const responseEdge = response.data;
 
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
-    setDefineEdgeOpen(false);
+    close();
   } catch (error) {
     dispatch({ type: types.PUT_EDGE_FAILED, message });
   }

@@ -71,12 +71,6 @@ import {
 // import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import './workspace.css';
 
-
-
-
-
-
-
 const nodeTypes = {
   custom: CustomNode,
   sticky: StickyNoteNode
@@ -373,6 +367,16 @@ const Workspace = (props) => {
     }
   }, [alertId]);
 
+  const closeNode = useCallback(() => {
+    setDefineNodeOpen(false);
+    setNodeLabel('');
+    setNodeDisplayName('');
+    setNodeFigur(null);
+    setAttributes([initialAttribut]);
+    setChoosenNode(null);
+    setIsUpdatingElement(false);
+  }, [])
+
 
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
@@ -382,20 +386,17 @@ const Workspace = (props) => {
     const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
     if(choosenNode) {
       if (isUpdatingElement && elementToUpdate) {
-        dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
+        dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
       } else {
         dispatch(postNode(
           id,
           choosenNode.id, choosenNode.label,
           nodeDisplayName, nodeFigur,
           JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
-          _attributes, setDefineNodeOpen, handleAlerts,
+          _attributes, closeNode, handleAlerts,
           x, y
         ));
-        setNodeLabel('');
       }
-  
-      setIsUpdatingElement(false);
     };
     }
 
@@ -412,41 +413,6 @@ const Workspace = (props) => {
 
   // RELATIONSHIP
 
-  const handleRelationshipSave = () => {
-    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-    if (isUpdatingElement && elementToUpdate) {
-      dispatch(putEdge(
-        elementToUpdate.id,
-        choosenRelationship.id,
-        choosenRelationship.label,
-        relationshipValue,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        setDefineEdgeOpen
-      ));
-    } else {
-      const edge = {
-        relationship_id: choosenRelationship.id,
-        relationshipLabel: choosenRelationship.label,
-        relationshipValue,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        ...currentConnectionData
-      };
-      dispatch(postEdge(id, edge, setDefineEdgeOpen, handleAlerts));
-    }
-
-    setIsUpdatingElement(false);
-  };
-
   const closeDefineEdge = useCallback(() => {
     setDefineEdgeOpen(false);
     setIsUpdatingElement(false);
@@ -461,6 +427,41 @@ const Workspace = (props) => {
     setShowlabel(false);
     setLineThrough(false);
   }, []);
+
+  const handleRelationshipSave = () => {
+    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
+    if (isUpdatingElement && elementToUpdate) {
+      dispatch(putEdge(
+        elementToUpdate.id,
+        choosenRelationship.id,
+        choosenRelationship.label,
+        relationshipValue,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        lineThrough,
+        closeDefineEdge
+      ));
+    } else {
+      const edge = {
+        relationship_id: choosenRelationship.id,
+        relationshipLabel: choosenRelationship.label,
+        relationshipValue,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        lineThrough,
+        ...currentConnectionData
+      };
+      dispatch(postEdge(id, edge, closeDefineEdge, handleAlerts));
+    }
+
+    setIsUpdatingElement(false);
+  };
 
   const handleChangeLabel = useCallback((_label) => {
     if (_label.__isNew__ && plan_id !== 1) {
@@ -684,15 +685,7 @@ const Workspace = (props) => {
       />
       <DefineNode
         open={defineNodeOpen}
-        close={() => {
-          setDefineNodeOpen(false);
-          setNodeLabel('');
-          setNodeDisplayName('');
-          setNodeFigur(null);
-          setAttributes([initialAttribut]);
-          setChoosenNode(null);
-          setIsUpdatingElement(false);
-        }}
+        close={closeNode}
         nodes={nodes}
         nodeLabel={nodeLabel}
         handleChangeLabel={(_label) => {

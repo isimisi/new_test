@@ -18,7 +18,6 @@ import {
 
 const initialState = {
   groups: List([]),
-  cart: List([]),
   activeGroup: Map(),
   keywordValue: '',
   title: '',
@@ -44,6 +43,9 @@ export default function reducer(state = initialImmutableState, action: any): any
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('title', '');
+        mutableState.set('description', '');
+        mutableState.set('image', List());
       });
     case POST_GROUP_FAILED:
       return state.withMutations((mutableState) => {
