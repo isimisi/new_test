@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
@@ -38,7 +39,7 @@ interface Props {
 }
 
 function SidebarContent(props: Props) {
-  const { status } = loadFromLocalStorage();
+  const { status, user_id } = loadFromLocalStorage();
   const classes = useStyle();
 
   const {
@@ -55,7 +56,7 @@ function SidebarContent(props: Props) {
     <div className={classNames(classes.drawerInner, !drawerPaper ? classes.drawerPaperClose : '')}>
       <div className={classes.drawerHeader}>
         <NavLink to="/app" className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}>
-          <img src={logoBeta} alt={brand.name} style={{ width: 120 }} />
+          <img src={user_id === 75 ? 'https://kammeradvokaten.dk//media/8878/poul-schmith-kammeradvokaten-sort.svg' : logoBeta} alt={brand.name} style={{ width: 120 }} />
         </NavLink>
       </div>
       <div
