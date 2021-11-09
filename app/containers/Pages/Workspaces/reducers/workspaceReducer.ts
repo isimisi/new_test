@@ -265,8 +265,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case SHARE_ORG_CHANGE:
       return state.withMutations((mutableState) => {
-        const shareOrg = fromJS(action.check);
-        mutableState.set('shareOrg', shareOrg);
+        mutableState.update('shareOrg', val => !val);
       });
     case POST_EDGE_LOADING:
       return state.withMutations((mutableState) => {

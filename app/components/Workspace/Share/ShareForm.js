@@ -6,6 +6,7 @@ import css from '@styles/Form.scss';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import styles from '../workspace-jss';
@@ -84,29 +85,27 @@ const ShareForm = (props) => {
         <Typography variant="caption">
             Ved deling med eksterne brugere, ændres arbejdsområdets gruppe til "Ekstern" af sikkerhedsmæssige årsager. Herefter vil den ikke kunne ændres tilbage igen - og du vil ikke altid kunne foretage rettelser efterfølgende.
         </Typography>
-        <div className={classes.row} style={{ marginTop: 10 }}>
+        <ButtonBase className={classes.row} style={{ marginTop: 10 }} onClick={onEditableChange}>
           <Checkbox
             name="editable"
             color="primary"
             checked={editable}
-            onChange={onEditableChange}
           />
           <Typography variant="subtitle2">
                 Må brugeren redigere i arbejdsområdet?
           </Typography>
-        </div>
+        </ButtonBase>
 
-        <div className={classes.row}>
+        <ButtonBase className={classes.row} onClick={onChangeGroup}>
           <Checkbox
             name="changeGroup"
             color="primary"
             checked={changeGroup}
-            onChange={onChangeGroup}
           />
           <Typography variant="subtitle2" style={{ marginTop: 5 }}>
                 Jeg forstår og accepterer ovenstående.
           </Typography>
-        </div>
+        </ButtonBase>
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => close()}>

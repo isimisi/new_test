@@ -46,8 +46,6 @@ import { translationMessages } from './i18n';
 
 import 'video-react/dist/video-react.css';
 
-require('dotenv').config();
-
 
 //  logrocket
 LogRocket.init('pm66tw/juristic-web-app');
@@ -144,7 +142,7 @@ if (!window.Intl) {
     .then(() => Promise.all([
       import('intl/locale-data/jsonp/en.js'),
       import('intl/locale-data/jsonp/de.js'),
-    ])) // eslint-disable-line prettier/prettier
+    ]))
     .then(() => render(translationMessages))
     .catch(err => {
       throw err;

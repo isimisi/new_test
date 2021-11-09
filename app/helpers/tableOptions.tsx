@@ -24,6 +24,29 @@ const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'element
         ? <Loader />
         : 'Det ser vist ud som om, at du ikke har lavet nogle ' + where + ' endnu',
     },
+    toolbar: {
+      downloadCsv: 'Download som CSV fil',
+      filterTable: 'Filtrer tabel',
+      print: 'Print',
+      search: 'Søg',
+      viewColumns: 'Vis colonner'
+    },
+    filter: {
+      all: 'alle',
+      reset: 'reset',
+      title: 'Filtrer'
+    },
+    pagination: {
+      displayRows: 'af',
+      rowsPerPage: 'Rækker per side:',
+    },
+    selectedRows: {
+      delete: 'Slet',
+      text: 'række(r) valgt',
+    },
+    viewColumns: {
+      title: 'Vis colonner'
+    }
   }
 });
 

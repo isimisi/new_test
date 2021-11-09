@@ -482,10 +482,10 @@ const Workspace = (props) => {
   const handleChangeValue = useCallback((value) => setRelationshipValue(value ? value.value : value), []);
   const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
   const handleColorChange = useCallback((color) => setRelationshipColor(color.rgb), []);
-  const handleShowArrowChange = useCallback((e) => setShowArrow(e.target.checked), []);
-  const handleAnimatedLineChange = useCallback((e) => setAnimatedLine(e.target.checked), []);
-  const handleShowLabelChange = useCallback((e) => setShowlabel(e.target.checked), []);
-  const handleLineThroughChange = useCallback((e) => setLineThrough(e.target.checked), []);
+  const handleShowArrowChange = useCallback(() => setShowArrow(val => !val), []);
+  const handleAnimatedLineChange = useCallback(() => setAnimatedLine(val => !val), []);
+  const handleShowLabelChange = useCallback(() => setShowlabel(val => !val), []);
+  const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
   const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
   const handlePostSticky = () => {
@@ -654,7 +654,7 @@ const Workspace = (props) => {
         addGroup={(_group) => dispatch(addGroup(_group.value))}
         groupsDropDownOptions={groupsDropDownOptions}
         shareOrg={shareOrg}
-        handleShareOrg={(e) => dispatch(shareOrgChange(e.target.checked))}
+        handleShareOrg={() => dispatch(shareOrgChange)}
         onSave={() => dispatch(putWorkspace(id, label, description, group, shareOrg, setMetaOpen))}
         closeForm={runIntro ? null : () => setMetaOpen(false)}
       />
@@ -741,6 +741,7 @@ const Workspace = (props) => {
       />
       {alertId && alerts[alertId] && (
         <AlertModal
+          disabled={alerts[alertId]?.alert?.organization_id === 11}
           title={alerts[alertId]?.alert?.label}
           description={alerts[alertId]?.alert?.description}
           handleSeeCondition={() => {

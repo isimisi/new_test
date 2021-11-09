@@ -13,6 +13,7 @@ import CreatableSelect from 'react-select/creatable';
 import { SketchPicker } from 'react-color';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import styles from '../workspace-jss';
 import BeizerCurve from './beizerCurve.svg';
 import StraightLine from './straightLine.svg';
@@ -169,10 +170,9 @@ const EdgeForm = (props) => {
             </div>
           ) : null }
         </div>
-        <div className={classes.row}>
+        <ButtonBase className={classes.row} onClick={handleShowArrowChange}>
           <Checkbox
             checked={showArrow}
-            onChange={handleShowArrowChange}
             name="arrow"
             color="primary"
             disabled={editable}
@@ -180,11 +180,10 @@ const EdgeForm = (props) => {
           <Typography variant="subtitle2">
                 Vis som pil
           </Typography>
-        </div>
-        <div className={classes.row}>
+        </ButtonBase>
+        <ButtonBase className={classes.row} onClick={handleAnimatedLineChange}>
           <Checkbox
             checked={animatedLine}
-            onChange={handleAnimatedLineChange}
             name="animated"
             color="primary"
             disabled={editable}
@@ -192,11 +191,10 @@ const EdgeForm = (props) => {
           <Typography variant="subtitle2">
                 Animeret linje
           </Typography>
-        </div>
-        <div className={classes.row}>
+        </ButtonBase>
+        <ButtonBase className={classes.row} onClick={handleLineThroughChange}>
           <Checkbox
             checked={lineThrough}
-            onChange={handleLineThroughChange}
             name="line through"
             color="primary"
             disabled={editable}
@@ -204,11 +202,10 @@ const EdgeForm = (props) => {
           <Typography variant="subtitle2">
                 Vis som overstreget
           </Typography>
-        </div>
-        <div className={classes.row}>
+        </ButtonBase>
+        <ButtonBase className={classes.row} onClick={handleShowLabelChange}>
           <Checkbox
             checked={showLabel}
-            onChange={handleShowLabelChange}
             name="show label"
             color="primary"
             disabled={editable}
@@ -216,7 +213,7 @@ const EdgeForm = (props) => {
           <Typography variant="subtitle2">
                 Vis label
           </Typography>
-        </div>
+        </ButtonBase>
       </section>
       <div className={css.buttonArea}>
         {isUpdatingElement && (

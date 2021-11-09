@@ -631,10 +631,7 @@ export const addGroup = group => ({
   group
 });
 
-export const shareOrgChange = check => ({
-  type: types.SHARE_ORG_CHANGE,
-  check
-});
+export const shareOrgChange = { type: types.SHARE_ORG_CHANGE };
 
 
 export const addEdgeToList = edge => ({

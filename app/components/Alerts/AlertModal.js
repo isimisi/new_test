@@ -7,10 +7,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const AlertModal = props => {
   const {
-    title, description, open, handleClose, handleSeeCondition
+    title, description, open, handleClose, handleSeeCondition, disabled
   } = props;
 
   return (
@@ -28,7 +29,13 @@ const AlertModal = props => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" variant="outlined" size="large" onClick={handleSeeCondition}>
+        <Button
+          color="primary"
+          variant="outlined"
+          size="large"
+          onClick={handleSeeCondition}
+          disabled={disabled}
+        >
             Se betingelse
         </Button>
         <Button color="primary" variant="contained" size="large" onClick={handleClose}>
@@ -44,7 +51,8 @@ AlertModal.propTypes = {
   description: PropTypes.string.isRequired,
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  handleSeeCondition: PropTypes.func.isRequired
+  handleSeeCondition: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 

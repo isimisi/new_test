@@ -2,7 +2,7 @@
   "include": [
     "app/**/*"
   ],
-  "exclude": ["node_modules", "build"], // *** The files to not type check ***
+  "exclude": ["node_modules", "build", "server", "internals"], // *** The files to not type check ***
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 

@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
+// @ts-nocheck
 import React, {
   useState, useEffect, useRef
 } from 'react';
@@ -12,11 +13,13 @@ import ReactFlow, {
   MiniMap,
   Controls
 } from 'react-flow-renderer';
-import {
-  CustomNode, ConditionDefineEdge,
-  CustomEdge, ConditionDefineNode,
-  ConditionMeta, Notification, ConditionFabs
-} from '@components';
+import CustomEdge from '@components/Workspace/Edge/CustomEdge';
+import CustomNode from '@components/Workspace/Node/CustomNode';
+import ConditionDefineEdge from '@components/Condition/Edge/DefineEdge';
+import ConditionDefineNode from '@components/Condition/Node/DefineNode';
+import ConditionMeta from '@components/Condition/ConditionMeta';
+import ConditionFabs from '@components/Condition/ConditionFabs';
+import Notification from '@components/Notification/Notification';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import {

@@ -13,7 +13,9 @@ import Select from 'react-select';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import Tooltip from '@material-ui/core/Tooltip';
 import { loadFromLocalStorage } from '@utils/localStorage';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import styles from './workspace-jss';
+
 
 const localeStorage = loadFromLocalStorage();
 const plan_id = localeStorage?.plan_id;
@@ -86,17 +88,20 @@ const WorkspaceForm = (props) => {
           </div>
         </Tooltip>
         {plan_id !== 1 && (
-          <div className={classes.row} style={{ marginTop: 10 }}>
+          <ButtonBase
+            className={classes.row}
+            style={{ marginTop: 10 }}
+            onClick={handleShareOrg}
+          >
             <Checkbox
               checked={shareOrg}
-              onChange={handleShareOrg}
               name="show label"
               color="primary"
             />
             <Typography variant="subtitle2">
                 Del dit arbejdsområde med det resterende af din organisation
             </Typography>
-          </div>
+          </ButtonBase>
         )}
       </section>
       <div className={css.buttonArea}>

@@ -80,7 +80,7 @@ export const columns = [
     }
   },
   {
-    name: 'Se arbejdsområde',
+    name: '',
     options: {
       filter: true,
       customBodyRender: (value) => (

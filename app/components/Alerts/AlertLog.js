@@ -7,7 +7,6 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Tooltip from '@material-ui/core/Tooltip';
 import { encryptId } from '@api/constants';
-import HighlightIcon from '@material-ui/icons/Highlight';
 import FlashOnIcon from '@material-ui/icons/FlashOn';
 import FlashOffIcon from '@material-ui/icons/FlashOff';
 import FloatingPanel from '../Panel/FloatingPanel';
@@ -80,7 +79,7 @@ function AlertLog(props) {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Gå til red flag">
-                    <IconButton color="primary" onClick={leave}>
+                    <IconButton color="primary" onClick={leave} disabled={alert?.alert?.organization_id === 11}>
                       <ExitToAppIcon />
                     </IconButton>
                   </Tooltip>
