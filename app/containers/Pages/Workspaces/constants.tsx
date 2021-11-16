@@ -131,6 +131,7 @@ export const steps = [
   {
     content: <h2>Velkommen til arbejdsområdet</h2>,
     locale: localeSteps,
+    placement: 'center',
     target: 'body',
   },
   {

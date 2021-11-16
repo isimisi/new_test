@@ -98,11 +98,11 @@ export const showWorkspace = (id, setMetaOpen = null, setAlerts = null) => async
   try {
     const response = await axios.get(url, header);
     const {
-      elements, label, description, group, zoom, x_position, y_position, signed, signed_by
+      elements, label, description, group, zoom, x_position, y_position, signed, signed_by, tags
     } = response.data;
 
     dispatch({
-      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position, signed, signed_by
+      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position, signed, signed_by, tags
     });
 
 
@@ -120,10 +120,10 @@ export const showWorkspace = (id, setMetaOpen = null, setAlerts = null) => async
 };
 
 
-export const putWorkspace = (workspace_id, label, description, group, shareOrg, setMetaOpen) => async dispatch => {
+export const putWorkspace = (workspace_id, label, description, group, tags, shareOrg, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}`;
   const body = {
-    label, description, group, shareOrg
+    label, description, group, shareOrg, tags
   };
   const header = authHeader();
 
@@ -597,6 +597,64 @@ export const mapUncertainCompanies = (id, uncertainCompanies, erstTypes) => asyn
   }
 };
 
+export const getTags = () => async dispatch => {
+  const url = `${baseUrl}/tags`;
+  const header = authHeader();
+  try {
+    const response = await axios.get(url, header);
+    const tags = response.data;
+    dispatch({ type: types.TAG_INDEX_SUCCESS, tags });
+  } catch (error) {
+    dispatch({ type: types.TAG_INDEX_FAILED, message });
+  }
+};
+
+export const postTag = (emoji, emoji_name, name) => async dispatch => {
+  const url = `${baseUrl}/tags`;
+  const body = {
+    emoji,
+    emoji_name,
+    name
+  };
+  const header = authHeader();
+  try {
+    const response = await axios.post(url, body, header);
+    const tag = response.data;
+    dispatch({ type: types.TAG_POST_SUCCESS, tag });
+  } catch (error) {
+    dispatch({ type: types.TAG_POST_FAILED, message });
+  }
+};
+
+export const updateTag = (id, emoji, emoji_name, name) => async dispatch => {
+  const url = `${baseUrl}/tags/${id}`;
+  const body = {
+    emoji,
+    emoji_name,
+    name
+  };
+  const header = authHeader();
+  try {
+    const response = await axios.put(url, body, header);
+    const tag = response.data;
+    dispatch({ type: types.TAG_UPDATE_SUCCESS, tag });
+  } catch (error) {
+    dispatch({ type: types.TAG_UPDATE_FAILED, message });
+  }
+};
+
+export const deleteTag = (id) => async dispatch => {
+  const url = `${baseUrl}/tags/${id}`;
+  const header = authHeader();
+  try {
+    await axios.delete(url, header);
+
+    dispatch({ type: types.TAG_DELETE_SUCCESS, id });
+  } catch (error) {
+    dispatch({ type: types.TAG_DELETE_FAILED, message });
+  }
+};
+
 
 export const analysisTextChange = (text, index) => ({
   type: types.ANALYSIS_TEXT_CHANGE,
@@ -629,6 +687,11 @@ export const descriptionChange = description => ({
 export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
+});
+
+export const changeTags = tags => ({
+  type: types.CHANGE_TAGS,
+  tags
 });
 
 export const shareOrgChange = { type: types.SHARE_ORG_CHANGE };

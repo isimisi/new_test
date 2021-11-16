@@ -18,7 +18,10 @@ function WorkspaceMeta(props) {
     groupsDropDownOptions,
     onSave,
     shareOrg,
-    handleShareOrg
+    handleShareOrg,
+    tagOptions,
+    tags,
+    changeTags
   } = props;
   const branch = '';
   return (
@@ -33,6 +36,7 @@ function WorkspaceMeta(props) {
           label={label}
           description={description}
           group={group}
+          tagOptions={tagOptions}
           labelChange={labelChange}
           descriptionChange={descriptionChange}
           addGroup={addGroup}
@@ -41,6 +45,8 @@ function WorkspaceMeta(props) {
           onSave={onSave}
           shareOrg={shareOrg}
           handleShareOrg={handleShareOrg}
+          tags={tags}
+          changeTags={changeTags}
         />
 
       </FloatingPanel>
@@ -61,6 +67,9 @@ WorkspaceMeta.propTypes = {
   onSave: PropTypes.func.isRequired,
   shareOrg: PropTypes.bool.isRequired,
   handleShareOrg: PropTypes.func.isRequired,
+  tagOptions: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
+  changeTags: PropTypes.func.isRequired,
 };
 
 WorkspaceMeta.defaultProps = {

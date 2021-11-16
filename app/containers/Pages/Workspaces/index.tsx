@@ -2,8 +2,10 @@
 import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
 import MUIDataTable from 'mui-datatables';
 import Tooltip from '@material-ui/core/Tooltip';
+
 import Fab from '@material-ui/core/Fab';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -13,27 +15,40 @@ import tableOptions from '@helpers/tableOptions';
 import CryptoJS from 'crypto-js';
 import Notification from '@components/Notification/Notification';
 import { loadFromLocalStorage } from '@utils/localStorage';
+
+import TagList from '@components/Tags/TagList';
 import {
   columns,
   reducer
 } from './constants';
 import styles from './workspace-jss';
 import {
-  getWorkspaces, closeNotifAction, postWorkspace, deleteWorkspaces, showNotifAction
+  getWorkspaces,
+  closeNotifAction,
+  postWorkspace,
+  deleteWorkspaces,
+  showNotifAction,
+  getTags,
+  deleteTag,
+  postTag,
+  updateTag
 } from './reducers/workspaceActions';
 
 const { plan_id } = loadFromLocalStorage();
 
 const Workspaces = (props) => {
   const { classes } = props;
+
   const dispatch = useDispatch();
   const workspaces = useSelector(state => state[reducer].get('workspaces')).toJS();
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const loading = useSelector(state => state[reducer].get('loading'));
+  const tags = useSelector(state => state[reducer].get('tags'))?.toJS();
   const history = useHistory();
 
   useEffect(() => {
     dispatch(getWorkspaces());
+    dispatch(getTags());
   }, []);
 
   const onDelete = ({ data }) => {
@@ -53,15 +68,40 @@ const Workspaces = (props) => {
     }
   };
 
+  const handleDeleteTag = (id) => {
+    dispatch(deleteTag(id));
+  };
+
+  const handlePostTag = (emoji, emojiName, name) => {
+    dispatch(postTag(emoji, emojiName, name));
+  };
+
+  const handleUpdateTag = (id, emoji, emojiName, name) => {
+    dispatch(updateTag(id, emoji, emojiName, name));
+  };
+
   return (
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <MUIDataTable
-        title="Dine arbejdsområder"
-        data={workspaces}
-        columns={columns}
-        options={tableOptions(onDelete, loading, 'arbejdsområder')}
-      />
+      <Grid container spacing={2} direction="row" justify="center">
+        <Grid item md={3} lg={2}>
+          <TagList
+            tags={tags}
+            handleDelete={handleDeleteTag}
+            handlePostTag={handlePostTag}
+            handleUpdateTag={handleUpdateTag}
+            allNumber={workspaces.length}
+          />
+        </Grid>
+        <Grid item md={9} lg={10}>
+          <MUIDataTable
+            title="Dine arbejdsområder"
+            data={workspaces}
+            columns={columns}
+            options={tableOptions(onDelete, loading, 'arbejdsområder')}
+          />
+        </Grid>
+      </Grid>
       <Tooltip title="Nyt arbejdsområde">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={createWorkspace}>
             Nyt arbejdsområde

@@ -1,3 +1,5 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable default-case */
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -14,11 +16,30 @@ import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import Tooltip from '@material-ui/core/Tooltip';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import CreatableSelect from 'react-select/creatable';
 import styles from './workspace-jss';
 
 
 const localeStorage = loadFromLocalStorage();
 const plan_id = localeStorage?.plan_id;
+
+const tagMapping = (tag) => {
+  if (tag.name) {
+    return {
+      value: tag.name,
+      label: (
+        <div style={{ width: '100%', height: '100%' }} data-emoji={tag.emoji} data-id={tag.id}>
+          <span style={{ paddingRight: '5px' }}>
+            {tag.emoji}
+            {' '}
+            {tag.name}
+          </span>
+        </div>
+      ),
+    };
+  }
+  return tag;
+};
 
 const WorkspaceForm = (props) => {
   const theme = useTheme();
@@ -35,7 +56,10 @@ const WorkspaceForm = (props) => {
     groupsDropDownOptions,
     onSave,
     shareOrg,
-    handleShareOrg
+    handleShareOrg,
+    tagOptions,
+    tags,
+    changeTags
   } = props;
 
   return (
@@ -64,7 +88,7 @@ const WorkspaceForm = (props) => {
           />
         </div>
         <Tooltip title={group === 'Ekstern' ? 'Hvis din gruppe er sat til ekstern kan den af sikkerhedsmæssige årsager ikke ændres tilbage' : ''} placement="top">
-          <div className={classes.field} style={{ marginTop: theme.spacing(3) }}>
+          <div className={classes.field} style={{ marginTop: theme.spacing(2) }}>
             <NoSsr>
               <Select
                 classes={classes}
@@ -87,6 +111,42 @@ const WorkspaceForm = (props) => {
             </NoSsr>
           </div>
         </Tooltip>
+        <div className={classes.field} style={{ marginTop: theme.spacing(2) }}>
+          <CreatableSelect
+            styles={selectStyles('relative')}
+            isMulti
+            isClearable
+            value={tags.map(tagMapping)}
+            onChange={(newValue, meta) => {
+              console.log(meta.removedValue);
+              switch (meta.action) {
+                case 'select-option':
+                  const tag = {
+                    id: meta.option.label.props['data-id'],
+                    emoji: meta.option.label.props['data-emoji'],
+                    name: meta.option.value,
+                  };
+                  changeTags([...tags, tag]);
+                  break;
+                case 'create-option':
+                  const newTag = newValue[newValue.length - 1];
+                  changeTags([...tags, newTag]);
+                  break;
+                case 'remove-value':
+                case 'pop-value':
+                case 'deselect-option':
+                  changeTags(tags.filter(t => t.id !== meta.removedValue.label.props['data-id']));
+                  break;
+                case 'clear':
+                  changeTags([]);
+                  break;
+              }
+            }}
+            inputId="react-select-tags"
+            placeholder="Tilføj tags til dit arbejdsområde"
+            options={tagOptions.map(tagMapping)}
+          />
+        </div>
         {plan_id !== 1 && (
           <ButtonBase
             className={classes.row}
@@ -143,6 +203,9 @@ WorkspaceForm.propTypes = {
   onSave: PropTypes.func.isRequired,
   shareOrg: PropTypes.bool.isRequired,
   handleShareOrg: PropTypes.func.isRequired,
+  tagOptions: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
+  changeTags: PropTypes.func.isRequired,
 };
 
 

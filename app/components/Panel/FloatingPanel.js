@@ -11,7 +11,6 @@ import MinimizeIcon from '@material-ui/icons/CallReceived';
 import styles from './panel-jss';
 
 function FloatingPanel(props) {
-  const [expanded, setExpanded] = useState(false);
   const {
     classes,
     openForm,
@@ -19,8 +18,11 @@ function FloatingPanel(props) {
     children,
     title,
     extraSize,
-    width
+    width,
+    expanded: initExpanded
   } = props;
+
+  const [expanded, setExpanded] = useState(initExpanded);
 
   const toggleExpand = () => {
     setExpanded(expand => !expand);
@@ -78,12 +80,14 @@ FloatingPanel.propTypes = {
   width: PropTypes.string.isRequired,
   title: PropTypes.string,
   extraSize: PropTypes.bool,
+  expanded: PropTypes.bool,
 };
 
 FloatingPanel.defaultProps = {
   title: 'Add New Item',
   extraSize: false,
-  closeForm: null
+  closeForm: null,
+  expanded: false
 };
 
 const FloatingPanelResponsive = withWidth()(FloatingPanel);

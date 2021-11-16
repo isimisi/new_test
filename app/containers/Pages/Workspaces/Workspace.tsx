@@ -66,7 +66,7 @@ import {
   shareWorkspace, cvrSuccess, shareOrgChange,
   setShowCompanyData, setShowAddressInfo,
   handleRunIntro, changeStepIndex, uncertainCompaniesChange,
-  mapUncertainCompanies
+  mapUncertainCompanies, changeTags
 } from './reducers/workspaceActions';
 // import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import './workspace.css';
@@ -87,6 +87,12 @@ const BASE_BG_STROKE = 1;
 interface Dimensions {
   height: number;
   width: number;
+}
+
+interface Tag {
+  value: number,
+  label: any,
+  __isNew__?: boolean
 }
 
 
@@ -129,6 +135,9 @@ const Workspace = (props) => {
   const introStepIndex = useSelector(state => state[reducer].get('introStepIndex'));
 
   const uncertainCompanies = useSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
+  const tagOptions = useSelector(state => state[reducer].get('tags'))?.toJS();
+  const tags = useSelector(state => state[reducer].get('specificWorkspaceTags'))?.toJS();
+  console.log(tags)
 
 
   const [metaOpen, setMetaOpen] = useState(false);
@@ -649,14 +658,25 @@ const Workspace = (props) => {
         label={label}
         description={description}
         group={group}
+        tagOptions={tagOptions}
+        tags={tags}
+        changeTags={tags => dispatch(changeTags(tags))}
         labelChange={(e) => dispatch(labelChange(e.target.value))}
         descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
         addGroup={(_group) => dispatch(addGroup(_group.value))}
         groupsDropDownOptions={groupsDropDownOptions}
         shareOrg={shareOrg}
         handleShareOrg={() => dispatch(shareOrgChange)}
-        onSave={() => dispatch(putWorkspace(id, label, description, group, shareOrg, setMetaOpen))}
+        onSave={() => dispatch(putWorkspace(
+          id,
+          label,
+          description,
+          group,
+          JSON.stringify(tags),
+          shareOrg,
+          setMetaOpen))}
         closeForm={runIntro ? null : () => setMetaOpen(false)}
+        
       />
       <DefineEdge
         open={defineEdgeOpen}
@@ -872,6 +892,7 @@ const Workspace = (props) => {
         scrollToFirstStep
         showSkipButton
         callback={handleJoyrideCallback}
+        /** @ts-ignore */
         steps={steps}
         styles={{
           options: {  

@@ -50,6 +50,7 @@ import {
   postWorkspace, showNotifAction
   // @ts-ignore
 } from '../Workspaces/reducers/workspaceActions';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const raccoon = require('@lotties/racoon/clipboard.json');
 
 
@@ -66,6 +67,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const timeline = useAppSelector(state => state[reducer].get('timeline'));
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
   const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
+  console.log(runIntro);
   const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();
 
@@ -180,6 +182,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
         />
       </div>,
       locale: localeSteps,
+      placement: 'center',
       target: 'body',
     },
     {
@@ -231,16 +234,16 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
       content: <div style={{ textAlign: 'left' }}>Red flags er avancerede notifikationer, som dukker op, mens du tegner i de enkelte arbejdsområder - i realtime.</div>,
       locale: localeSteps,
     },
-    {
-      target: '.for_intro_5',
-      content: <div style={{ textAlign: 'left' }}>Alt indhold, fx arbejdsområder og byggeklodser, kan opdeles i grupper, så du kun ser det, der er vigtigt for dig.</div>,
-      locale: localeSteps,
-    },
-    {
-      target: '.for_intro_7',
-      content: <div style={{ textAlign: 'left' }}>Hvis du har brug for mere hjælp, kan du altid trykke her og se svar på ofte stillede spørgsmål. Alternativt kan du altid skrive på vores chat.</div>,
-      locale: localeSteps,
-    },
+    // {
+    //   target: '.for_intro_5',
+    //   content: <div style={{ textAlign: 'left' }}>Alt indhold, fx arbejdsområder og byggeklodser, kan opdeles i grupper, så du kun ser det, der er vigtigt for dig.</div>,
+    //   locale: localeSteps,
+    // },
+    // {
+    //   target: '.for_intro_7',
+    //   content: <div style={{ textAlign: 'left' }}>Hvis du har brug for mere hjælp, kan du altid trykke her og se svar på ofte stillede spørgsmål. Alternativt kan du altid skrive på vores chat.</div>,
+    //   locale: localeSteps,
+    // },
 
 
     {
@@ -310,6 +313,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
         scrollToFirstStep
         showSkipButton
         callback={handleJoyrideCallback}
+        /** @ts-ignore */
         steps={steps}
         styles={{
           options: {

@@ -22,11 +22,8 @@ export const selectStyles = (menuPosition = 'absolute') => ({
       font: 'inherit',
     },
   }),
-  menu: (provided) => {
-    console.log(provided);
-    return ({
-      ...provided,
-      position: menuPosition,
-    });
-  }
+  menu: (provided) => ({
+    ...provided,
+    position: menuPosition,
+  })
 });

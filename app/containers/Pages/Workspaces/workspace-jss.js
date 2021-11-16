@@ -26,7 +26,6 @@ const styles = theme => ({
         }
       }
     },
-    marginBottom: 50
   },
   img: {
     width: 90

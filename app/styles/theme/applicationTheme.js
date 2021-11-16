@@ -1,6 +1,9 @@
 import themePalette from '@api/palette/themePalette';
 // import colorfull from '@api/palette/colorfull';
 
+const height = window.innerHeight;
+
+
 const applicationTheme = (color) => ({
   palette: {
     primary: themePalette[color].palette.primary,
@@ -233,6 +236,12 @@ const applicationTheme = (color) => ({
         borderRadius: 8,
       },
     },
+    MuiTable: {
+      root: {
+        marginBottom: 0,
+        marginTop: 24,
+      }
+    },
     MuiTableCell: {
       head: {
         fontWeight: 600,
@@ -269,6 +278,9 @@ const applicationTheme = (color) => ({
       selectIcon: {
         top: 4,
       },
+      spacer: {
+        flex: 'none'
+      }
     },
 
     MuiPickersToolbar: {
@@ -413,10 +425,11 @@ const applicationTheme = (color) => ({
       responsiveStacked: {
         overflow: 'auto !important',
         overflowX: 'auto !important',
+        height: 'calc(100% - 728px)'
       },
       tableRoot: {
         minWidth: 360
-      }
+      },
     },
 
     MUIDataTablePagination: {
