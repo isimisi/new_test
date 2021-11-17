@@ -20,7 +20,6 @@ const persistConfig = {
   stateReconciler: autoMergeLevel2Immutable,
 };
 
-
 const persistedReducer = persistReducer(persistConfig, reducer);
 
 const initialState = {};

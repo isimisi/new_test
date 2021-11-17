@@ -603,6 +603,7 @@ export const getTags = () => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const tags = response.data;
+    tags.active = false;
     dispatch({ type: types.TAG_INDEX_SUCCESS, tags });
   } catch (error) {
     dispatch({ type: types.TAG_INDEX_FAILED, message });
@@ -692,6 +693,11 @@ export const addGroup = group => ({
 export const changeTags = tags => ({
   type: types.CHANGE_TAGS,
   tags
+});
+
+export const changeTagActivity = (tag) => ({
+  type: types.CHANGE_TAGS_ACTIVE,
+  tag
 });
 
 export const shareOrgChange = { type: types.SHARE_ORG_CHANGE };

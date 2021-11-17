@@ -15,29 +15,24 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Tag } from '@customTypes/data';
 import useStyles from './tag.jss';
 
 import CreateTag from './CreateTag';
 
-interface Tag {
-  emoji: string;
-  emoji_name: string;
-  name: string;
-  id: number;
-  workspaceTags: Array<any>;
-}
 
 interface Props {
   tags: Tag[];
   handleDelete: (id: number | null) => void;
   handlePostTag: (emoji: string | undefined, emoji_name: string | undefined, name: string) => void;
   handleUpdateTag: (id: number | undefined, emoji: string | undefined, emoji_name: string | undefined, name: string) => void;
+  makeActive: (tag: Tag) => void;
   allNumber: number;
 }
 
 const TagList = (props: Props) => {
   const {
-    tags, handleDelete, handlePostTag, handleUpdateTag, allNumber
+    tags, handleDelete, handlePostTag, handleUpdateTag, allNumber, makeActive
   } = props;
   const classes = useStyles();
   const [showCreateTag, setShowCreateTag] = useState(false);
@@ -63,7 +58,7 @@ const TagList = (props: Props) => {
     <>
       <Paper>
         <List className={classes.tagContainer}>
-          <ListItem button className={classes.activelistItem}>
+          <ListItem button className={!tags.some(t => t.active) ? classes.activelistItem : undefined}>
             <ListItemText primary="Vis alle" />
             <ListItemSecondaryAction>
               <Paper className={classes.countContainer}>
@@ -91,6 +86,8 @@ const TagList = (props: Props) => {
                 key={tag.id.toString()}
                 dense
                 button
+                onClick={() => makeActive(tag)}
+                className={tag.active ? classes.activelistItem : undefined}
               >
                 <ListItemAvatar className={classes.listItemAvatar}>
                   <span role="img" aria-label={tag.emoji_name}>{tag.emoji}</span>

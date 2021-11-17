@@ -53,6 +53,13 @@
     "@typescript-eslint",
     "react-hooks"
   ],
+  "prettier/prettier": [
+    "error",
+    {
+      "singleQuote": true,
+      "parser": "typescript"
+    }
+  ],
   "settings": {
     "import/parser": "babel-eslint",
     "import/resolve": {

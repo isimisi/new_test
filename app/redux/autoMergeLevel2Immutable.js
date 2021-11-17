@@ -1,6 +1,4 @@
-function isPlainEnoughObject(o) {
-  return o !== null && !Array.isArray(o) && typeof o === 'object';
-}
+import { isImmutable} from 'immutable';
 
 export default function autoMergeLevel2Immutable(
   inboundState,
@@ -24,8 +22,8 @@ export default function autoMergeLevel2Immutable(
         }
         return;
       }
-
-      if (typeof reducedState[key] !== 'object' && isPlainEnoughObject(reducedState[key].toJS())) {
+      
+      if (typeof reducedState[key].toJS === 'function') {
         // if object is plain enough shallow merge the new values (hence "Level2")
         newState[key] = newState[key].merge(inboundState[key]);
         return;

@@ -12,11 +12,12 @@ type onRowsDelete = (
 ) => void | false;
 
 
-const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'elementer'): MUIDataTableOptions => ({
+const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'elementer', handleFilterChanged: any = () => {}): MUIDataTableOptions => ({
   filterType: 'dropdown',
   print: true,
   rowsPerPage: 10,
   page: 0,
+  onFilterChange: handleFilterChanged,
   onRowsDelete: onDelete,
   textLabels: {
     body: {

@@ -5,6 +5,7 @@ import { reducer as form } from 'redux-form/immutable';
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router/immutable';
 import history from '@utils/history';
+import stateManager from 'redux-persist-state-manager'
 
 
 import uiReducer from './modules/ui';

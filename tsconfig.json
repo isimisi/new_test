@@ -40,7 +40,7 @@
       "@helpers/*": ["app/helpers/*"],
       "@utils/*": ["app/utils/*"],
       "@hooks/*": ["app/hooks/*"],
-      "@types/*": ["app/types/*"],
+      "@customTypes/*": ["app/types/*"],
       "@images/*": ["public/images/*"],
       "@lotties/*": ["public/lotties/*"],
       "@vendor/*": ["node_modules/*"],

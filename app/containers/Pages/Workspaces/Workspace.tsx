@@ -284,6 +284,7 @@ const Workspace = (props) => {
       setNodeBorderColor({
         r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
       });
+      
       setDefineNodeOpen(true);
     } else {
       event.persist();

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -17,6 +17,7 @@ import Notification from '@components/Notification/Notification';
 import { loadFromLocalStorage } from '@utils/localStorage';
 
 import TagList from '@components/Tags/TagList';
+import { Tag } from '@customTypes/data';
 import {
   columns,
   reducer
@@ -31,7 +32,8 @@ import {
   getTags,
   deleteTag,
   postTag,
-  updateTag
+  updateTag,
+  changeTagActivity
 } from './reducers/workspaceActions';
 
 const { plan_id } = loadFromLocalStorage();
@@ -45,6 +47,8 @@ const Workspaces = (props) => {
   const loading = useSelector(state => state[reducer].get('loading'));
   const tags = useSelector(state => state[reducer].get('tags'))?.toJS();
   const history = useHistory();
+
+  const col = columns;
 
   useEffect(() => {
     dispatch(getWorkspaces());
@@ -80,6 +84,25 @@ const Workspaces = (props) => {
     dispatch(updateTag(id, emoji, emojiName, name));
   };
 
+  const handleMakeActiveTag = (tag: Tag) => {
+    dispatch(changeTagActivity(tag));
+  };
+
+  
+    const activeTags = tags.filter(tag => tag.active).map(tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}`);
+    col[2].options.filterList = activeTags
+  
+  const handleFilterChanged = (changedColumn, filterList, type, changedColumnIndex, displayData) => {
+    if(changedColumn === 'Tags') {
+      const deleted = activeTags.find(tag => !filterList[2].includes(tag))
+      if(deleted) {
+        const tagObj = tags.find(tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}` === deleted)
+        handleMakeActiveTag(tagObj)
+      }
+    }
+
+  }
+
   return (
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -90,6 +113,7 @@ const Workspaces = (props) => {
             handleDelete={handleDeleteTag}
             handlePostTag={handlePostTag}
             handleUpdateTag={handleUpdateTag}
+            makeActive={handleMakeActiveTag}
             allNumber={workspaces.length}
           />
         </Grid>
@@ -97,8 +121,8 @@ const Workspaces = (props) => {
           <MUIDataTable
             title="Dine arbejdsområder"
             data={workspaces}
-            columns={columns}
-            options={tableOptions(onDelete, loading, 'arbejdsområder')}
+            columns={col}
+            options={tableOptions(onDelete, loading, 'arbejdsområder', handleFilterChanged)}
           />
         </Grid>
       </Grid>

@@ -88,7 +88,8 @@ import {
   TAG_POST_SUCCESS,
   TAG_POST_FAILED,
   TAG_UPDATE_SUCCESS,
-  TAG_UPDATE_FAILED
+  TAG_UPDATE_FAILED,
+  CHANGE_TAGS_ACTIVE
 } from './workspaceConstants';
 
 const initialState = {
@@ -567,6 +568,16 @@ export default function reducer(state = initialImmutableState, action: any) {
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+      });
+    case CHANGE_TAGS_ACTIVE:
+      return state.withMutations((mutableState) => {
+        const tag = action.tag;
+        mutableState.update('tags', myList => {
+          const newList = [...myList.toJS()];
+          const index = newList.findIndex(item => item.id === tag.id);
+          newList[index].active = !newList[index].active;
+          return fromJS(newList);
+        });
       });
     case SHOW_NOTIF:
       return state.withMutations((mutableState) => {

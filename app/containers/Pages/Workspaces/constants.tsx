@@ -8,6 +8,8 @@ import dagre from 'dagre';
 import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import CheckIcon from '@material-ui/icons/Check';
+import Chip from '@material-ui/core/Chip';
+import { FilterType } from 'mui-datatables';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -54,6 +56,12 @@ export const columns = [
     name: 'Titel',
     options: {
       filter: true,
+      filterOptions: {
+        renderValue: v => v.split('∉')[0]
+      },
+      customFilterListOptions: {
+        render: v => v.split('∉')[0]
+      },
       customBodyRender: (value) => (
         value.split('∉').map((v, i) => {
           if (i === 0) {
@@ -74,6 +82,21 @@ export const columns = [
     }
   },
   {
+    name: 'Tags',
+    options: {
+      filter: false,
+      filterList: [],
+      filterOptions: {
+        logic: (tags, filters) => {
+          const mappedTags = tags.map(tag => (`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`))
+          return !filters.every(tag => mappedTags.includes(tag))
+        }
+      },
+      sort: false,
+      customBodyRender: (tags) => tags.map(tag => (<Chip key={tag.id} style={{ margin: 2 }} size="small" label={`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`} />))
+    }
+  },
+  {
     name: 'Gruppe',
     options: {
       filter: true,
@@ -82,7 +105,9 @@ export const columns = [
   {
     name: '',
     options: {
-      filter: true,
+      filter: false,
+      sort: false,
+      viewColumns: false,
       customBodyRender: (value) => (
         <Tooltip title={!value ? 'Dine arbejdsområder bliver låst efter 90 dage på base' : 'Gå til arbejdsområde'}>
           <Link to={!value ? '/app/plan' : `/app/workspaces/${value}`} style={{ textDecoration: 'none' }}>

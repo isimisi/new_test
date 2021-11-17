@@ -194,7 +194,7 @@ module.exports = options => ({
       '@api': path.resolve(__dirname, '../../app/api/'),
       '@helpers': path.resolve(__dirname, '../../app/helpers/'),
       '@utils': path.resolve(__dirname, '../../app/utils/'),
-      '@types': path.resolve(__dirname, '../../app/types/'),
+      '@customTypes': path.resolve(__dirname, '../../app/types/'),
       '@hooks': path.resolve(__dirname, '../../app/hooks/'),
       '@images': path.resolve(__dirname, '../../public/images/'),
       '@lotties': path.resolve(__dirname, '../../public/lotties/'),

@@ -16,7 +16,7 @@ const initialState = {
   timeline: [],
   message: '',
   runIntro: true,
-  introStepIndex: 0
+  introStepIndex: 0,
 };
 
 const initialImmutableState = fromJS(initialState);
