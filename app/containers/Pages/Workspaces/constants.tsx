@@ -87,12 +87,12 @@ export const columns = [
       filterList: [],
       filterOptions: {
         logic: (tags, filters) => {
-          const mappedTags = tags.map(tag => (`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`));
+          const mappedTags = tags?.map(tag => (`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`));
           return !filters.every(tag => mappedTags.includes(tag));
         }
       },
       sort: false,
-      customBodyRender: (tags) => tags.map(tag => (<Chip key={tag.id} style={{ margin: 2 }} size="small" label={`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`} />))
+      customBodyRender: (tags) => tags?.map(tag => (<Chip key={tag.id} style={{ margin: 2 }} size="small" label={`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`} />))
     }
   },
   {
