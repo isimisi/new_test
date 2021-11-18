@@ -56,9 +56,10 @@ const Workspaces = (props) => {
   }, []);
 
   const onDelete = ({ data }) => {
-    const deletedWorkspaces = data.map(v => ({ id: workspaces[v.index][3], title: workspaces[v.index][0] }));
+    const deletedWorkspaces = data.map(v => ({ id: workspaces[v.index][4], title: workspaces[v.index][0] }));
     deletedWorkspaces.forEach(e => {
       const id = CryptoJS.AES.decrypt(decodeURIComponent(e.id), 'path').toString(CryptoJS.enc.Utf8);
+
       const title = e.title.split('∉')[0];
       dispatch(deleteWorkspaces(id, title));
     });
