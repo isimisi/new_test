@@ -17,6 +17,7 @@ const initialState = {
   message: '',
   runIntro: true,
   introStepIndex: 0,
+  afgørendefuckingTest: 22
 };
 
 const initialImmutableState = fromJS(initialState);

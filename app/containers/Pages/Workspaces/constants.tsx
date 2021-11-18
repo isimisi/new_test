@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 import Tooltip from '@material-ui/core/Tooltip';
 import CheckIcon from '@material-ui/icons/Check';
 import Chip from '@material-ui/core/Chip';
-import { FilterType } from 'mui-datatables';
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
@@ -88,8 +87,8 @@ export const columns = [
       filterList: [],
       filterOptions: {
         logic: (tags, filters) => {
-          const mappedTags = tags.map(tag => (`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`))
-          return !filters.every(tag => mappedTags.includes(tag))
+          const mappedTags = tags.map(tag => (`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`));
+          return !filters.every(tag => mappedTags.includes(tag));
         }
       },
       sort: false,

@@ -29,7 +29,6 @@ import BugsnagPluginReact from '@bugsnag/plugin-react';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
-
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -46,7 +45,6 @@ import { translationMessages } from './i18n';
 
 import 'video-react/dist/video-react.css';
 
-
 //  logrocket
 LogRocket.init('pm66tw/juristic-web-app');
 
@@ -57,7 +55,6 @@ if (process.env.NODE_ENV === 'production') {
     plugins: [new BugsnagPluginReact()]
   });
 } // import css
-
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -70,7 +67,6 @@ openSansObserver.load().then(() => {
 
 const domainGroupId = 'e25f2e52-b958-4868-bb38-05482f232612';
 
-
 // Create redux store with history
 
 // TODO: påsæt reux with loace storage så den bliver initeret med localstorage og jeg dermed aldrig skal kigge i locale storage
@@ -79,7 +75,6 @@ const MOUNT_NODE = document.getElementById('app');
 // Include the Crisp code here, without the <script></script> tags
 window.$crisp = [];
 window.CRISP_WEBSITE_ID = '66acbf35-9c41-485f-99dc-b7800897ea4a';
-
 
 if (!isMobile) {
   // eslint-disable-next-line func-names
@@ -94,7 +89,6 @@ if (!isMobile) {
 
 const persistor = persistStore(store);
 
-
 let render = messages => {
   ReactDOM.render(
     <Provider store={store}>
@@ -107,13 +101,12 @@ let render = messages => {
         </LanguageProvider>
       </PersistGate>
     </Provider>,
-    MOUNT_NODE,
+    MOUNT_NODE
   );
 };
 
 if (process.env.NODE_ENV === 'production') {
-  const ErrorBoundary = Bugsnag.getPlugin('react')
-    .createErrorBoundary(React);
+  const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 
   render = messages => {
     ReactDOM.render(
@@ -128,11 +121,10 @@ if (process.env.NODE_ENV === 'production') {
           </LanguageProvider>
         </Provider>
       </ErrorBoundary>,
-      MOUNT_NODE,
+      MOUNT_NODE
     );
   };
 }
-
 
 // Chunked polyfill for browsers without Intl support
 if (!window.Intl) {
@@ -141,8 +133,9 @@ if (!window.Intl) {
   })
     .then(() => Promise.all([
       import('intl/locale-data/jsonp/en.js'),
-      import('intl/locale-data/jsonp/de.js'),
-    ]))
+      import('intl/locale-data/jsonp/de.js')
+    ])
+    )
     .then(() => render(translationMessages))
     .catch(err => {
       throw err;

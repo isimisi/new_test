@@ -89,13 +89,6 @@ interface Dimensions {
   width: number;
 }
 
-interface Tag {
-  value: number,
-  label: any,
-  __isNew__?: boolean
-}
-
-
 const Workspace = (props) => {
   const { classes } = props;
   const dispatch = useDispatch();
@@ -137,7 +130,7 @@ const Workspace = (props) => {
   const uncertainCompanies = useSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
   const tagOptions = useSelector(state => state[reducer].get('tags'))?.toJS();
   const tags = useSelector(state => state[reducer].get('specificWorkspaceTags'))?.toJS();
-  console.log(tags)
+  console.log(tags);
 
 
   const [metaOpen, setMetaOpen] = useState(false);
@@ -284,7 +277,7 @@ const Workspace = (props) => {
       setNodeBorderColor({
         r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
       });
-      
+
       setDefineNodeOpen(true);
     } else {
       event.persist();
@@ -385,7 +378,7 @@ const Workspace = (props) => {
     setAttributes([initialAttribut]);
     setChoosenNode(null);
     setIsUpdatingElement(false);
-  }, [])
+  }, []);
 
 
   const handleNodeSave = () => {
@@ -394,7 +387,7 @@ const Workspace = (props) => {
 
     const x = rf && reactFlowDimensions && (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
     const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
-    if(choosenNode) {
+    if (choosenNode) {
       if (isUpdatingElement && elementToUpdate) {
         dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
       } else {
@@ -407,8 +400,8 @@ const Workspace = (props) => {
           x, y
         ));
       }
-    };
     }
+  };
 
 
   useEffect(() => {
@@ -513,8 +506,8 @@ const Workspace = (props) => {
   useEffect(() => {
     if (reactFlowContainer) {
       setReactFlowDimensions({
-        //@ts-ignore
-        height: reactFlowContainer.current.clientHeight,//@ts-ignore
+        // @ts-ignore
+        height: reactFlowContainer.current.clientHeight, // @ts-ignore
         width: reactFlowContainer.current.clientWidth
       });
     }
@@ -553,7 +546,7 @@ const Workspace = (props) => {
 
       if (index === 3) {
         const hoverMenu = document.querySelector('.rtf:nth-of-type(3)');
-        if(hoverMenu) {
+        if (hoverMenu) {
           hoverMenu.classList.remove('closed');
           hoverMenu.classList.add('open');
           setTimeout(() => {
@@ -661,7 +654,7 @@ const Workspace = (props) => {
         group={group}
         tagOptions={tagOptions}
         tags={tags}
-        changeTags={tags => dispatch(changeTags(tags))}
+        changeTags={_tags => dispatch(changeTags(_tags))}
         labelChange={(e) => dispatch(labelChange(e.target.value))}
         descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
         addGroup={(_group) => dispatch(addGroup(_group.value))}
@@ -677,7 +670,7 @@ const Workspace = (props) => {
           shareOrg,
           setMetaOpen))}
         closeForm={runIntro ? null : () => setMetaOpen(false)}
-        
+
       />
       <DefineEdge
         open={defineEdgeOpen}
@@ -755,7 +748,7 @@ const Workspace = (props) => {
         handleRemoveAttributes={(_id, index) => {
           setAttributes(att => att.filter((v, i) => i !== index));
           if (_id) {
-            //@ts-ignore
+            // @ts-ignore
             setDeletedAttributes(attr => [...attr, _id]);
           }
         }}
@@ -896,7 +889,7 @@ const Workspace = (props) => {
         /** @ts-ignore */
         steps={steps}
         styles={{
-          options: {  
+          options: {
             zIndex: 10000,
             primaryColor: '#36454F'
           }
