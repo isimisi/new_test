@@ -88,20 +88,19 @@ const Workspaces = (props) => {
     dispatch(changeTagActivity(tag));
   };
 
-  
-    const activeTags = tags.filter(tag => tag.active).map(tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}`);
-    col[2].options.filterList = activeTags
-  
-  const handleFilterChanged = (changedColumn, filterList, type, changedColumnIndex, displayData) => {
-    if(changedColumn === 'Tags') {
-      const deleted = activeTags.find(tag => !filterList[2].includes(tag))
-      if(deleted) {
-        const tagObj = tags.find(tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}` === deleted)
-        handleMakeActiveTag(tagObj)
+
+  const activeTags = tags.filter(tag => tag.active).map(tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}`);
+  col[2].options.filterList = activeTags;
+
+  const handleFilterChanged = (changedColumn, filterList) => {
+    if (changedColumn === 'Tags') {
+      const deleted = activeTags.find(tag => !filterList[2].includes(tag));
+      if (deleted) {
+        const tagObj = tags.find(tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}` === deleted);
+        handleMakeActiveTag(tagObj);
       }
     }
-
-  }
+  };
 
   return (
     <div className={classes.table}>
