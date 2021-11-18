@@ -22,12 +22,21 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
+const resetEnhancer = rootReducer => (state, action) => {
+  if (action.type !== 'RESET') return rootReducer(state, action);
+
+  const newState = rootReducer(undefined, {});
+  newState.router = state.router;
+  return newState;
+};
+
 const initialState = {};
 const store = createStore(
-  persistedReducer,
+  resetEnhancer(persistedReducer),
   initialState,
   compose(applyMiddleware(thunk, routerMiddleware(history), _logger))
 );
+
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

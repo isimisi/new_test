@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import classNames from 'classnames';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
-import type { AppDispatch, RootState } from '@redux/configureStore';
+import type { RootState } from '@redux/configureStore';
 import {
   GuideSlider,
   CounterIconsWidget,
@@ -67,7 +67,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const timeline = useAppSelector(state => state[reducer].get('timeline'));
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
   const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
-  console.log(runIntro);
+
   const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();
 
@@ -343,7 +343,7 @@ const mapStateToProps = (state: RootState) => ({
   open: state[reducer].get('subMenuOpen')
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
   openSubMenu: bindActionCreators(openAction, dispatch)
 });
 

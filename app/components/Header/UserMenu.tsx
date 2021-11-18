@@ -16,6 +16,7 @@ import link from '@api/ui/link';
 import { useAppDispatch } from '@hooks/redux';
 import UserAvatar from 'react-user-avatar';
 import { loadFromLocalStorage } from '@utils/localStorage';
+import store from '@redux/configureStore';
 import { customerPortal } from '../../containers/Pages/CreateOrganization/reducers/createOrganizationActions';
 
 import styles from './header-jss';
@@ -50,6 +51,7 @@ function UserMenu() {
 
   const handleLogOut = () => {
     localStorage.clear();
+    store.dispatch({ type: 'RESET' });
   };
 
   const { anchorEl, openMenu } = menuState;
