@@ -1,29 +1,29 @@
-const guideSteps = [
+const guideSteps = (t) => ([
   {
-    title: 'Velkommen til Juristic',
-    label: 'Juristic er en visual platform for rådgivere.',
+    title:  t('guide-slider.welcome'),
+    label:  t('guide-slider.welcome_text'),
     imgPath: 'https://app-juristic-media.s3.eu-north-1.amazonaws.com/guides/1.jpg',
   },
   {
-    title: 'CVR-import',
-    label: 'Med vores CVR-funktion kan du lynhurtigt få et overblik.',
+    title: t('guide-slider.cvr_import'),
+    label: t('guide-slider.cvr_import_text'),
     imgPath: 'https://app-juristic-media.s3.eu-north-1.amazonaws.com/guides/2.gif',
   },
   {
-    title: 'Red flags',
-    label: 'Med red flags får du input, mens du drafter.',
+    title: t('guide-slider.red_flags'),
+    label: t('guide-slider.red_flags_text'),
     imgPath: 'https://app-juristic-media.s3.eu-north-1.amazonaws.com/guides/3.gif',
   },
   {
-    title: 'Få et bedre overblik',
-    label: 'Med vores visuelle værktøj får du bedre overblik over problemstillinger.',
+    title: t('guide-slider.get_a_better_overview'),
+    label: t('guide-slider.get_a_better_overview_text'),
     imgPath: 'https://app-juristic-media.s3.eu-north-1.amazonaws.com/guides/4.gif',
   },
   {
-    title: 'Få dit eget indhold eller 1-kliks-rapporter',
-    label: 'Opgrader i dag for at få flere funktioner med Base, Draw og Pro.',
+    title: t('guide-slider.get_your_own_content'),
+    label: t('guide-slider.get_your_own_content_text'),
     imgPath: 'https://app-juristic-media.s3.eu-north-1.amazonaws.com/guides/5.jpg',
   },
-];
+]);
 
 export default guideSteps;
