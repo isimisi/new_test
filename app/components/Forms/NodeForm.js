@@ -16,6 +16,7 @@ import CreatableSelect from 'react-select/creatable';
 import {
   titleChange, descriptionChange, addAtrribut, addGroup, removeAtrribut
 } from '../../containers/Pages/Nodes/reducers/nodeActions';
+import {useTranslation} from 'react-i18next';
 
 const styles = theme => ({
   root: {
@@ -53,6 +54,7 @@ function NodeForm(props) {
     attributesDropDownOptions,
     groupsDropDownOptions
   } = props;
+  const {t} = useTranslation();
 
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
@@ -96,15 +98,15 @@ function NodeForm(props) {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Navngiv dit
+              {t('nodes.node-form.name_your')}
               {' '}
-              element
+              {t('nodes.node-form._element')}
             </Typography>
             <div>
               <TextField
                 name="title"
-                placeholder="Navn"
-                label="Navn"
+                placeholder={t('nodes.node-form.name')}
+                label={t('nodes.node-form.name')}
                 className={classes.field}
                 onChange={handleTitleChange}
                 value={title}
@@ -114,8 +116,8 @@ function NodeForm(props) {
               <TextField
                 name="description"
                 className={classes.field}
-                placeholder="Indtast beskrivelse"
-                label="Beskrivelse"
+                placeholder={t('nodes.node-form.desc')}
+                label={t('nodes.node-form.desc')}
                 multiline
                 rows={2}
                 onChange={handleDescriptionChange}
@@ -127,7 +129,7 @@ function NodeForm(props) {
                 <div className={classes.field}>
                   <CreatableSelect
                     styles={selectStyles()}
-                    placeholder="Vælg standard-kendetegn for elementet"
+                    placeholder={t('nodes.node-form.select_standard_look')}
                     options={attributesDropDownOptions}
                     value={attribut.label && { label: attribut.label, value: attribut.label }}
                     isDisabled={Boolean(attribut.label)}
@@ -141,7 +143,7 @@ function NodeForm(props) {
                       {attribut.type === 'Value' ? (
                         <TextField
                           value={attribut.value}
-                          placeholder="Værdi"
+                          placeholder={t('nodes.node-form.value')}
                           onChange={(e) => handleChange(e.target.value, index, 'value')}
                         />
                       )
@@ -169,14 +171,14 @@ function NodeForm(props) {
                   styles={selectStyles}
                   inputId="react-select-single-nodeform"
                   TextFieldProps={{
-                    label: 'Vælg gruppe',
+                    label: t('nodes.node-form.select_group'),
                     InputLabelProps: {
                       htmlFor: 'react-select-single-nodeform',
                       shrink: true,
                     },
-                    placeholder: 'groups',
+                    placeholder: t('nodes.node-form.select_group'),
                   }}
-                  placeholder="groups"
+                  placeholder={t('nodes.node-form.select_group')}
                   options={mapSelectOptions(groupsDropDownOptions)}
                   value={group && { label: group, value: group }}
                   onChange={handleChangeGroups}

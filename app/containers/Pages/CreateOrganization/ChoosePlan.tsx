@@ -13,6 +13,7 @@ import PricingCard from '@components/CardPaper/PricingCard';
 import Notification from '@components/Notification/Notification';
 import styles from '../HelpSupport/helpSupport-jss';
 import { closeNotifAction, } from './reducers/createOrganizationActions';
+import {useTranslation} from 'react-i18next';
 
 function Pricing() {
   // const { classes } = props;
@@ -20,6 +21,7 @@ function Pricing() {
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const dispatch = useDispatch();
   const { plan_id } = loadFromLocalStorage();
+  const {t} = useTranslation();
 
 
   const handleGetItem = () => {
@@ -43,7 +45,7 @@ function Pricing() {
         <Grid item md={4} sm={6} xs={12}>
           <PricingCard
             title="Base"
-            price="Gratis"
+            price={t('choose-plan.free')}
             active={plans[plan_id - 1] === 'Base'}
             included={plan_id > 1}
             tier="free"
@@ -52,7 +54,7 @@ function Pricing() {
         <Grid item md={4} sm={6} xs={12}>
           <PricingCard
             title="Draw"
-            price="499 DKK"
+            price={t('choose-plan.price')}
             tier="expensive"
             active={plans[plan_id - 1] === 'Draw'}
             onClick={() => handleGetItem()}
@@ -61,7 +63,7 @@ function Pricing() {
         <Grid item md={4} sm={6} xs={12}>
           <PricingCard
             title="Pro"
-            price="Kontakt"
+            price={t('choose-plan.contact')}
             tier="more-expensive"
             active={plans[plan_id - 1] === 'Pro'}
             onClick={() => handleGetItem()}

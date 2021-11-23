@@ -9,6 +9,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import styles from './condition-jss';
+import { useTranslation } from 'react-i18next';
 
 const ConditionForm = (props) => {
   const theme = useTheme();
@@ -25,15 +26,15 @@ const ConditionForm = (props) => {
     groupsDropDownOptions,
     onSave
   } = props;
-
+  const {t} = useTranslation();
   return (
     <div>
       <section className={css.bodyForm}>
         <div>
           <TextField
             name="label"
-            placeholder="Navn"
-            label="Navn"
+            placeholder={t('conditions.condition-form.form_name')}
+            label={t('conditions.condition-form.form_name')}
             className={classes.field}
             value={label}
             onChange={labelChange}
@@ -43,8 +44,8 @@ const ConditionForm = (props) => {
           <TextField
             name="description"
             className={classes.field}
-            placeholder="Beskrivelse"
-            label="Indtast beskrivelse"
+            placeholder={t('conditions.condition-form.form_desc')}
+            label={t('conditions.condition-form.form_desc')}
             multiline
             rows={2}
             value={description}
@@ -58,14 +59,14 @@ const ConditionForm = (props) => {
               styles={selectStyles('relative')}
               inputId="react-select-single-condition"
               TextFieldProps={{
-                label: 'groups',
+                label: t('conditions.condition-form.select_group'),
                 InputLabelProps: {
                   htmlFor: 'react-select-single-condition',
                   shrink: true,
                 },
-                placeholder: 'Vælg gruppe',
+                placeholder: t('conditions.condition-form.select_group'),
               }}
-              placeholder="Vælg gruppe"
+              placeholder={t('conditions.condition-form.select_group')}
               options={mapSelectOptions(groupsDropDownOptions)}
               value={group && { label: group, value: group }}
               onChange={addGroup}
@@ -75,7 +76,7 @@ const ConditionForm = (props) => {
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => closeForm()}>
-            Annuller
+        {t('conditions.condition-form.btn_cnx')}
         </Button>
         <Button
           variant="contained"
@@ -83,7 +84,7 @@ const ConditionForm = (props) => {
           type="button"
           onClick={onSave}
         >
-            Gem
+            {t('conditions.condition-form.btn_save')}
         </Button>
       </div>
     </div>

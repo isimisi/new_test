@@ -9,6 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import { TextFieldRedux } from './ReduxFormMUI';
 import styles from './user-jss';
+import { useTranslation } from 'react-i18next';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -27,6 +28,7 @@ function ResetForm(props) {
     pristine,
     submitting,
   } = props;
+  const {t} = useTranslation();
   return (
     <>
       <section>
@@ -36,8 +38,8 @@ function ResetForm(props) {
               <Field
                 name="password"
                 component={TextFieldRedux}
-                type="password"
-                label="Dit kodeord"
+                type={t('new-password-form.your_password')}
+                label={t('new-password-form.your_password')}
                 required
                 validate={[required, passwordsMatch]}
                 className={classes.field}
@@ -49,8 +51,8 @@ function ResetForm(props) {
               <Field
                 name="passwordConfirm"
                 component={TextFieldRedux}
-                type="password"
-                label="Skriv dit kodeord igen"
+                type={t('new-password-form.enter_your_password_again')}
+                label={t('new-password-form.enter_your_password_again')}
                 required
                 validate={[required, passwordsMatch]}
                 className={classes.field}
@@ -59,7 +61,7 @@ function ResetForm(props) {
           </div>
           <div className={classes.btnArea}>
             <Button variant="contained" color="primary" type="submit">
-              Log ind
+            {t('new-password-form.log_in')}
               <ArrowForward className={classNames(classes.rightIcon, classes.iconSmall)} disabled={submitting || pristine} />
             </Button>
           </div>

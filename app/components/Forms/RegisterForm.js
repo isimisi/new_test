@@ -24,6 +24,7 @@ import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import { TextFieldRedux, CheckboxRedux } from './ReduxFormMUI';
 import styles from './user-jss';
+import {useTranslation} from 'react-i18next';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -46,7 +47,7 @@ const LinkBtn = React.forwardRef(function LinkBtn(props, ref) { // eslint-disabl
 
 function RegisterForm(props) {
   const [tab, setTab] = useState(0);
-
+  const {t} = useTranslation();
 
   const handleChangeTab = (event, value) => {
     setTab(value);
@@ -74,12 +75,12 @@ function RegisterForm(props) {
             </NavLink>
             <Button size="small" className={classes.buttonLink} component={LinkBtn} to="/login">
               <Icon className={classes.icon}>arrow_forward</Icon>
-              Har du allerede en bruger ?
+              {t('register-form.already_have_account')}
             </Button>
           </div>
         </Hidden>
         <Typography variant="h4" className={classes.title} gutterBottom>
-          Registrer dig
+          {t('register-form.register')}
         </Typography>
         <Tabs
           value={tab}
@@ -89,8 +90,8 @@ function RegisterForm(props) {
           centered
           className={classes.tab}
         >
-          <Tab label="Med Email" />
-          <Tab label="Virksomhedslogin" disabled />
+          <Tab label={t('register-form.single_sign_on')} />
+          <Tab label={t('register-form.company_login')} disabled />
         </Tabs>
         {tab === 0 && (
           <section className={classes.formWrap}>
@@ -100,8 +101,8 @@ function RegisterForm(props) {
                   <Field
                     name="name"
                     component={TextFieldRedux}
-                    placeholder="Dit navn"
-                    label="Dit navn"
+                    placeholder={t('register-form.your_name')}
+                    label={t('register-form.your_name')}
                     required
                     className={classes.field}
                   />
@@ -112,8 +113,8 @@ function RegisterForm(props) {
                   <Field
                     name="employer"
                     component={TextFieldRedux}
-                    placeholder="Employer"
-                    label="Virksomhed"
+                    placeholder={t('register-form.employer')}
+                    label={t('register-form.employer')}
                     className={classes.field}
                   />
                 </FormControl>
@@ -123,8 +124,8 @@ function RegisterForm(props) {
                   <Field
                     name="email"
                     component={TextFieldRedux}
-                    placeholder="Din email"
-                    label="Din email"
+                    placeholder={t('register-form.your_email')}
+                    label={t('register-form.your_email')}
                     required
                     validate={[required, email]}
                     className={classes.field}
@@ -136,8 +137,8 @@ function RegisterForm(props) {
                   <Field
                     name="password"
                     component={TextFieldRedux}
-                    type="password"
-                    label="Dit kodeord"
+                    type={t('register-form.your_password')}
+                    label={t('register-form.your_password')}
                     required
                     validate={[required, passwordsMatch]}
                     className={classes.field}
@@ -149,8 +150,8 @@ function RegisterForm(props) {
                   <Field
                     name="passwordConfirm"
                     component={TextFieldRedux}
-                    type="password"
-                    label="Skriv dit kodeord igen"
+                    type={t('register-form.enter_your_password_again')}
+                    label={t('register-form.enter_your_password_again')}
                     required
                     validate={[required, passwordsMatch]}
                     className={classes.field}
@@ -166,9 +167,9 @@ function RegisterForm(props) {
                   control={(
                     <Field name="checkbox" component={CheckboxRedux} required className={classes.agree} />
                   )}
-                  label="Jeg accepterer"
+                  label={t('register-form.i_accept')}
                 />
-                <a onClick={() => window.open('https://juristic.io/terms', '_blank').focus()} className={classes.link}>Vilkår &amp; betingelser</a>
+                <a onClick={() => window.open('https://juristic.io/terms', '_blank').focus()} className={classes.link}>{t('register-form.terms_and_conditions')}</a>
                 {/* <Typography style={{ marginLeft: 6, marginRight: 6 }}>
                     og
                 </Typography>
@@ -180,12 +181,12 @@ function RegisterForm(props) {
                   control={(
                     <Field name="marketing" component={CheckboxRedux} className={classes.agree} />
                   )}
-                  label="Ja, jeg vil gerne modtage marketingkommunikation per elektronisk post."
+                  label={t('register-form.keep_me_updated')}
                 />
               </div>
               <div className={classes.btnArea}>
                 <Button variant="contained" color="primary" type="submit">
-                  Fortsæt
+                {t('register-form.btn_continue')}
                   <ArrowForward className={classNames(classes.rightIcon, classes.iconSmall)} disabled={submitting || pristine} />
                 </Button>
               </div>

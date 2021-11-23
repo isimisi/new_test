@@ -13,21 +13,12 @@ import colorfull from '@api/palette/colorfull';
 import TextField from '@material-ui/core/TextField';
 import CounterWidget from '../Counter/CounterWidget';
 import styles from './group-jss';
+import { useTranslation } from 'react-i18next';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) { // eslint-disable-line
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
-const categories = [
-  'output',
-  'red flags',
-  'forbindelser',
-  'betingelser',
-  'elementer',
-  'kendetegn',
-  'arbejdsområdet'
-];
 
 function GroupDetail(props) { // eslint-disable-line
   const {
@@ -42,6 +33,17 @@ function GroupDetail(props) { // eslint-disable-line
   const [isTitleFocused, setIsTitleFocused] = useState(false);
   const [title, setTitle] = useState(activeGroup.title);
   const [description, setDescription] = useState(activeGroup.description);
+  const {t} = useTranslation();
+
+  const categories = [
+    t('groups.group-details.output'),
+    t('groups.group-details.red_flags'),
+    t('groups.group-details.connections'),
+    t('groups.group-details.conditions'),
+    t('groups.group-details.elements'),
+    t('groups.group-details.features'),
+    t('groups.group-details.workspace')
+  ];
 
   return (
     <Dialog

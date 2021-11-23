@@ -16,6 +16,7 @@ import {
 } from './reducers/alertActions';
 import { postCondition } from '../Conditions/reducers/conditionActions';
 import { reducer } from './constants';
+import {useTranslation} from 'react-i18next';
 
 const Alert = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const Alert = () => {
   const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
   const conditions = useSelector(state => state[reducer].get('alertConditions')).toJS();
   const conditionsDropDownOptions = useSelector(state => state[reducer].get('conditionsDropDownOptions')).toJS();
+  const {t} = useTranslation();
 
   const [deletedConditions, setDeletedConditions] = useState([]);
 
@@ -103,7 +105,7 @@ const Alert = () => {
           }}
           onClick={onSave}
         >
-            Save Red Flag
+            {t('alert-naming-form.btn_save_red_flag')}
         </Fab>
       </Tooltip>
     </div>

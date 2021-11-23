@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
+import {useTranslation} from 'react-i18next';
 
 const styles = () => ({
   root: {
@@ -35,6 +36,7 @@ const RelationshipDemo = (props) => {
     size
   } = props;
   const color = `rgba(${colorSelector.get('r')}, ${colorSelector.get('g')}, ${colorSelector.get('b')}, ${colorSelector.get('a')})`;
+  const {t} = useTranslation();
 
   const getLabelSize = () => {
     switch (size) {
@@ -52,7 +54,7 @@ const RelationshipDemo = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Din forbindelse
+        {t('relationships.relationship-demo.your_relationship')}
       </Typography>
       <Tooltip title={description}>
         <div className={classes.relationshipContainer}>

@@ -14,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { generateRandomString } from '@api/constants';
+import {t} from 'i18next';
 
 const styles = theme => ({
   root: {
@@ -68,7 +69,7 @@ const ChooseConditions = (props) => {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Situationer:
+              {t('output.ChooseConditions.situations')}
             </Typography>
             {conditions.map((condition, index) => (
               <div className={classes.inlineWrap} key={`${condition.label}${generateRandomString()}`}>
@@ -82,12 +83,12 @@ const ChooseConditions = (props) => {
                     <Select
                       classes={classes}
                       TextFieldProps={{
-                        label: 'condition',
+                        label: t('output.ChooseConditions.condition'),
                         InputLabelProps: {
                           htmlFor: 'react-select-single-alert-condition',
                           shrink: true,
                         },
-                        placeholder: 'condition',
+                        placeholder: t('output.ChooseConditions.condition'),
                       }}
                       placeholder="condition"
                       value={condition.label && { label: condition.label, value: condition.label }}

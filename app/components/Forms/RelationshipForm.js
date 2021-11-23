@@ -13,6 +13,7 @@ import CreatableSelect from 'react-select/creatable';
 import {
   labelChange, descriptionChange, addGroup, valuesChange
 } from '../../containers/Pages/Relationships/reducers/relationshipActions';
+import {useTranslation} from 'react-i18next';
 
 
 const styles = theme => ({
@@ -43,6 +44,7 @@ const styles = theme => ({
 function RelationshipForm(props) {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
+  const {t} = useTranslation();
 
   const {
     classes,
@@ -91,15 +93,15 @@ function RelationshipForm(props) {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Navngiv din
+              {t('relationships.relationship_form.name_your')}
               {' '}
-              forbindelse
+              {t('relationships.relationship_form._relationship')}
             </Typography>
             <div>
               <TextField
                 name="label"
-                placeholder="Navn"
-                label="Label"
+                placeholder={t('relationships.relationship_form.name')}
+                label={t('relationships.relationship_form.name')}
                 className={classes.field}
                 onChange={handleLabelChange}
                 value={label}
@@ -115,7 +117,7 @@ function RelationshipForm(props) {
                 onChange={onValueChanged}
                 onInputChange={(v) => setInputValue(v)}
                 onKeyDown={handleKeyDown}
-                placeholder="Indtast valgmuligheder, fx en talværdi"
+                placeholder={t('relationships.relationship_form.enter_options')}
                 value={values}
               />
             </div>
@@ -123,8 +125,8 @@ function RelationshipForm(props) {
               <TextField
                 name="description"
                 className={classes.field}
-                placeholder="Indtast beskrivelse"
-                label="Beskrivelse"
+                placeholder={t('relationships.relationship_form.desc')}
+                label={t('relationships.relationship_form.desc')}
 
                 multiline
                 rows={2}
@@ -143,9 +145,9 @@ function RelationshipForm(props) {
                     htmlFor: 'react-select-single-relationship',
                     shrink: true,
                   },
-                  placeholder: 'Vælg gruppe',
+                  placeholder: t('relationships.relationship_form.select_group'),
                 }}
-                placeholder="Vælg gruppe"
+                placeholder={t('relationships.relationship_form.select_group')}
                 options={mapSelectOptions(groupsDropDownOptions)}
                 value={group && { label: group, value: group }}
                 onChange={handleChangeGroups}

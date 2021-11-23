@@ -3,11 +3,14 @@ import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import { Route } from 'react-router-dom';
 import { ErrorWrap } from '@components';
+import { useTranslation} from 'react-i18next';
 
 const title = brand.name + ' - Page Not Found';
 const description = brand.desc;
 
-const NotFound = () => (
+const NotFound = () => {
+  const {t} = useTranslation();
+  return (
   <Route
     render={({ staticContext }) => {
       if (staticContext) {
@@ -23,11 +26,11 @@ const NotFound = () => (
             <meta property="twitter:title" content={title} />
             <meta property="twitter:description" content={description} />
           </Helmet>
-          <ErrorWrap title="404" desc="Hov, siden du leder efter findes vist ikke." />
+          <ErrorWrap title="404" desc={t('404.not_found')} />
         </div>
       );
     }}
   />
-);
+)};
 
 export default NotFound;

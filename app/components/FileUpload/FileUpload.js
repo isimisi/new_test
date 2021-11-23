@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { useSpring, animated } from 'react-spring';
 import NoteAdd from '@material-ui/icons/NoteAdd';
 import PropTypes from 'prop-types';
+import {useTranslation} from 'react-i18next';
 
 const AnimatedNoteAdd = animated(NoteAdd);
 
@@ -80,7 +81,8 @@ const FileUpload = props => {
   callback.accept = onlyImage ? 'image/*' : '.docx, .pdf';
 
   const { getRootProps, getInputProps } = useDropzone(callback);
-
+  const {t} = useTranslation();
+  
   const thumbs = files.map(_file => (
     <div className={classes.thumb} key={_file.name}>
       <div className={classes.thumbInner}>
@@ -120,7 +122,7 @@ const FileUpload = props => {
             transform: useSpringProps.xys.interpolate(trans)
           }}
         />
-        {!minimal && <Typography variant="h5">Upload dit indhold</Typography>}
+        {!minimal && <Typography variant="h5">{t('output.FileUpload.upload_content')}</Typography>}
       </div>
       <aside className={classes.thumbsContainer}>
         {onlyImage && thumbs}

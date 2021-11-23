@@ -19,6 +19,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import { plans } from '@api/constants';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import useStyle from './sidebar-jss';
+import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line react/prop-types
 const LinkBtn = React.forwardRef((props, ref) => <NavLink to={props.to} {...props} innerRef={ref} />);
@@ -51,6 +52,7 @@ const MainMenu = (props: Props) => {
 
   const getMenus = menuArray => menuArray.map((item, index) => {
     if (item.child || item.linkParent) {
+      const {t} = useTranslation();
       return (
         <div key={index.toString()} className={'for_intro_' + index.toString()}>
           <ListItem
@@ -73,7 +75,7 @@ const MainMenu = (props: Props) => {
                 <Ionicon icon={item.icon} />
               </ListItemIcon>
             )}
-            <ListItemText classes={{ primary: classes.primary }} primary={item.name} />
+            <ListItemText classes={{ primary: classes.primary }} primary={t(`${item.name}`)}  />
             { !item.linkParent && (
               <span>
                 { open.indexOf(item.key) > -1 ? <ExpandLess /> : <ExpandMore /> }
@@ -115,6 +117,7 @@ const MainMenu = (props: Props) => {
         </ListSubheader>
       );
     }
+    const {t} = useTranslation();
     return (
       <ListItem
         key={index.toString()}
@@ -126,7 +129,7 @@ const MainMenu = (props: Props) => {
         to={item.badge && notIncludedPlans.includes(item.badge) ? '/app/plan' : item.link}
         onClick={() => handleClick()}
       >
-        <ListItemText classes={{ primary: classes.primary }} inset primary={item.name} />
+        <ListItemText classes={{ primary: classes.primary }} inset primary={t(`${item.name}`)}/> 
         {item.badge && notIncludedPlans.includes(item.badge) && (
           <Chip color="primary" label={item.badge} className={classes.badge} />
         )}

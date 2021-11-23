@@ -8,6 +8,7 @@ import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
+import {t} from 'i18next';
 
 const mapSelectOptions = (options) => options.map(suggestion => ({
   value: suggestion.value,
@@ -78,13 +79,13 @@ function OutputNamingForm(props) {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Navngiv output
+              {t('output.OutputNamingForm.name_output')}
             </Typography>
             <div>
               <TextField
                 name="title"
-                placeholder="Title"
-                label="Title"
+                placeholder={t('output.OutputNamingForm.title')}
+                label={t('output.OutputNamingForm.title')}
                 className={classes.field}
                 onChange={(e) => onTitleChange(e.target.value)}
                 value={title}
@@ -94,8 +95,8 @@ function OutputNamingForm(props) {
               <TextField
                 name="description"
                 className={classes.field}
-                placeholder="Description"
-                label="Description"
+                placeholder={t('output.OutputNamingForm.desc')}
+                label={t('output.OutputNamingForm.desc')}
                 multiline
                 rows={2}
                 onChange={(e) => onDescriptionChange(e.target.value)}
@@ -109,14 +110,14 @@ function OutputNamingForm(props) {
                   styles={selectStyles}
                   inputId="react-select-single-output"
                   TextFieldProps={{
-                    label: 'groups',
+                    label: t('output.OutputNamingForm.groups'),
                     InputLabelProps: {
                       htmlFor: 'react-select-single-output',
                       shrink: true,
                     },
-                    placeholder: 'groups',
+                    placeholder: t('output.OutputNamingForm.groups'),
                   }}
-                  placeholder="groups"
+                  placeholder={t('output.OutputNamingForm.groups')}
                   options={mapSelectOptions(groupsDropDownOptions)}
                   value={group && { label: group, value: group }}
                   onChange={(v) => onGroupChange(v.value)}

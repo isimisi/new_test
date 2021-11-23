@@ -19,11 +19,12 @@ import styles from './attribute-jss';
 import {
   addType, addGroup, descriptionChange, labelChange, changeSelectionValues
 } from './reducers/attributeActions';
+import {useTranslation} from 'react-i18next';
 
-const typeSuggestions = [
-  { label: 'Valgmuligheder', value: 'Selection' },
-  { label: 'Værdi', value: 'Value' },
-];
+const typeSuggestions = (t) => ([
+  { label: t('attributes.create_new_feature.options') , value: 'Selection' },
+  { label: t('attributes.create_new_feature.value'), value: 'Value' },
+]);
 
 const createOption = (label) => ({
   label,
@@ -60,6 +61,7 @@ const Attribute = (props) => {
   const theme = useTheme();
   const [inputValue, setInputValue] = useState('');
   const dispatch = useDispatch();
+  const {t} = useTranslation();
 
   const handleKeyDown = event => {
     if (!inputValue) return;
@@ -88,10 +90,10 @@ const Attribute = (props) => {
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Skab nyt kendetegn</DialogTitle>
+      <DialogTitle id="form-dialog-title">{t('attributes.create_new_feature.dialog_title')}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-            Her kan du skabe en nyt kendetegn. Du skal først vælge, om der skal kunne indtastes en specifik værdi ("Værdi"), eller om brugeren skal kunne vælge mellem nogle specifikke ting ("Valgmugligheder").
+            {t('attributes.create_new_feature.dialog_content_text')}
         </DialogContentText>
         <div className={classes.inlineWrap}>
           <div className={classes.field} style={{ width: '30%' }}>
@@ -108,8 +110,8 @@ const Attribute = (props) => {
                   },
                   placeholder: 'type',
                 }}
-                placeholder="type"
-                options={typeSuggestions}
+                placeholder={t('attributes.create_new_feature.options')}
+                options={typeSuggestions(t)}
                 value={{ label: type, value: type }}
                 onChange={(v) => dispatch(addType(v.value))}
               />
@@ -127,9 +129,9 @@ const Attribute = (props) => {
                     htmlFor: 'react-select-single-attr-group',
                     shrink: true,
                   },
-                  placeholder: 'Vælg gruppe',
+                  placeholder: t('attributes.create_new_feature.select_group'),
                 }}
-                placeholder="Vælg gruppe"
+                placeholder={t('attributes.create_new_feature.select_group')} 
                 options={mapSelectOptions(groupsDropDownOptions)}
                 value={group && { label: group, value: group }}
                 onChange={(v) => dispatch(addGroup(v.value))}
@@ -138,10 +140,10 @@ const Attribute = (props) => {
           </div>
         </div>
         <TextField
-          autoFocus
+          autoFocus 
           margin="dense"
           id="attribute"
-          label="Navn (fx 'Antal medarbejdere' eller 'Land')"
+          label={t('attributes.create_new_feature.dialog_name')} 
           value={label}
           onChange={(e) => dispatch(labelChange(e.target.value))}
           fullWidth
@@ -156,7 +158,7 @@ const Attribute = (props) => {
             onChange={(v) => dispatch(changeSelectionValues(v || []))}
             onInputChange={(v) => setInputValue(v)}
             onKeyDown={handleKeyDown}
-            placeholder="Indtast faste Valgmuligheder"
+            placeholder={t('attributes.create_new_feature.dialog_enter_default_options')}
             value={selectionOptions.toJS()}
           />
         )}
@@ -164,8 +166,8 @@ const Attribute = (props) => {
           <TextField
             name="description"
             className={classes.field}
-            placeholder="Beskrivelse"
-            label="Beskrivelse"
+            placeholder={t('attributes.create_new_feature.dialog_desc')}
+            label={t('attributes.create_new_feature.dialog_desc')}
             multiline
             onChange={(e) => dispatch(descriptionChange(e.target.value))}
             value={description}
@@ -176,7 +178,7 @@ const Attribute = (props) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleSave} color="primary">
-                Save
+          {t('attributes.create_new_feature.btn_save')}
         </Button>
       </DialogActions>
     </Dialog>

@@ -12,6 +12,7 @@ import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import {
   titleChange, descriptionChange, addGroup
 } from '../../containers/Pages/Alerts/reducers/alertActions';
+import {useTranslation} from 'react-i18next';
 
 const styles = theme => ({
   root: {
@@ -40,6 +41,7 @@ const styles = theme => ({
 
 const AlertNamingForm = (props) => {
   const dispatch = useDispatch();
+  const {t} = useTranslation();
 
   const {
     classes,
@@ -69,13 +71,13 @@ const AlertNamingForm = (props) => {
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              Red flag-indhold
+              {t('alert-naming-form.red_flag_content')}
             </Typography>
             <div>
               <TextField
                 name="title"
-                placeholder="Title"
-                label="Title"
+                placeholder={t('alert-naming-form.red_flag_title')}
+                label={t('alert-naming-form.red_flag_title')}
                 className={classes.field}
                 onChange={handleTitleChange}
                 value={title}
@@ -85,8 +87,8 @@ const AlertNamingForm = (props) => {
               <TextField
                 name="description"
                 className={classes.field}
-                placeholder="Description"
-                label="Description"
+                placeholder={t('alert-naming-form.red_flag_desc')}
+                label={t('alert-naming-form.red_flag_desc')}
                 multiline
                 onChange={handleDescriptionChange}
                 value={description}
@@ -99,14 +101,14 @@ const AlertNamingForm = (props) => {
                   styles={selectStyles}
                   inputId="react-select-single-alert-group"
                   TextFieldProps={{
-                    label: 'groups',
+                    label: t('alert-naming-form.red_flag_groups'),
                     InputLabelProps: {
                       htmlFor: 'react-select-single-alert-group',
                       shrink: true,
                     },
-                    placeholder: 'groups',
+                    placeholder: t('alert-naming-form.red_flag_groups'),
                   }}
-                  placeholder="groups"
+                  placeholder={t('alert-naming-form.red_flag_groups')}
                   options={mapSelectOptions(groupsDropDownOptions)}
                   value={group && { label: group, value: group }}
                   onChange={handleChangeGroups}

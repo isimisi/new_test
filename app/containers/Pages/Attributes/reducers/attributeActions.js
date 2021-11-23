@@ -5,6 +5,7 @@ import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import * as types from './attributeConstants';
 const ATTRIBUTS = 'attributs';
+import {useTranslation} from 'react-i18next';
 
 export const getAttributes = () => async dispatch => {
   dispatch({ type: types.GET_ATTRIBUTES_LOADING });
@@ -66,10 +67,11 @@ export const putAttribute = (id, label, description, type, group, selectionOptio
   };
   body.selectionOptions = type === 'Selection' ? JSON.stringify(selectionOptions) : null;
   const header = authHeader();
+  const {t} = useTranslation();
 
   try {
-    await axios.put(url, body, header);
-    const message = 'Du har opdateret dit element';
+    await axios.put(url, body, header, t);
+    const message = t('attributes.you_have_updated_your_element');
     dispatch({ type: types.PUT_ATTRIBUTE_SUCCESS, message });
     dispatch(getAttributes());
   } catch (error) {
