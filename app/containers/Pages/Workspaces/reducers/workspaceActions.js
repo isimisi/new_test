@@ -129,7 +129,7 @@ export const putWorkspace = (workspace_id, label, description, group, tags, shar
 
   try {
     await axios.put(url, body, header);
-    const _message = 'Metatekst er nu opdateret';
+    const _message = t('workspaces.metatext_is_now_updated');
     dispatch({ type: types.PUT_WORKSPACE_SUCCESS, message: _message });
 
     setMetaOpen(false);

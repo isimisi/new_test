@@ -35,6 +35,7 @@ import {
   updateTag,
   changeTagActivity
 } from './reducers/workspaceActions';
+import { useTranslation } from 'react-i18next';
 
 const { plan_id } = loadFromLocalStorage();
 
@@ -47,8 +48,9 @@ const Workspaces = (props) => {
   const loading = useSelector(state => state[reducer].get('loading'));
   const tags = useSelector(state => state[reducer].get('tags'))?.toJS();
   const history = useHistory();
+  const {t} = useTranslation();
 
-  const col = columns;
+  const col = columns(t);
 
   useEffect(() => {
     dispatch(getWorkspaces());
@@ -67,7 +69,7 @@ const Workspaces = (props) => {
 
   const createWorkspace = () => {
     if (plan_id === 1 && workspaces.length === 50) {
-      dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.'));
+      dispatch(showNotifAction(t('workspaces.can_not_create_more_workspaces')));
     } else {
       dispatch(postWorkspace(history));
     }
@@ -119,16 +121,16 @@ const Workspaces = (props) => {
         </Grid>
         <Grid item md={9} lg={10}>
           <MUIDataTable
-            title="Dine arbejdsområder"
+            title={t('workspaces.your_workspace')}
             data={workspaces}
             columns={col}
             options={tableOptions(onDelete, loading, 'arbejdsområder', handleFilterChanged)}
           />
         </Grid>
       </Grid>
-      <Tooltip title="Nyt arbejdsområde">
+      <Tooltip title={`${t('workspaces.btn_new_workspace')}`}>
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={createWorkspace}>
-            Nyt arbejdsområde
+            {`${t('workspaces.btn_new_workspace')}`}
         </Fab>
       </Tooltip>
     </div>
