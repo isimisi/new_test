@@ -1,31 +1,422 @@
 {
-  "boilerplate.components.Footer.author.message": "Made with love by {author}.",
-  "boilerplate.components.Footer.license.message": "This project is licensed under the MIT license.",
-  "boilerplate.components.Header.features": "Features",
-  "boilerplate.components.Header.home": "Home",
-  "boilerplate.containers.FeaturePage.css.header": "Features",
-  "boilerplate.containers.FeaturePage.css.message": "Next generation CSS",
-  "boilerplate.containers.FeaturePage.feedback.header": "Instant feedback",
-  "boilerplate.containers.FeaturePage.feedback.message": "Enjoy the best DX and code your app at the speed of thought! Your\n    saved changes to the CSS and JS are reflected instantaneously\n    without refreshing the page. Preserve application state even when\n    you update something in the underlying code!",
-  "boilerplate.containers.FeaturePage.header": "Features",
-  "boilerplate.containers.FeaturePage.internationalization.header": "Complete i18n Standard Internationalization & Pluralization",
-  "boilerplate.containers.FeaturePage.internationalization.message": "Scalable apps need to support multiple languages, easily add and support multiple languages with `react-intl`.",
-  "boilerplate.containers.FeaturePage.javascript.header": "Next generation JavaScript",
-  "boilerplate.containers.FeaturePage.javascript.message": "Use template strings, object destructuring, arrow functions, JSX\n    syntax and more, today.",
-  "boilerplate.containers.FeaturePage.network.header": "Offline-first",
-  "boilerplate.containers.FeaturePage.network.message": "The next frontier in performant web apps: availability without a\n      network connection from the instant your users load the app.",
-  "boilerplate.containers.FeaturePage.routing.header": "Industry-standard routing",
-  "boilerplate.containers.FeaturePage.routing.message": "Write composable CSS that's co-located with your components for\n    complete modularity. Unique generated class names keep the\n    specificity low while eliminating style clashes. Ship only the\n    styles that are on the page for the best performance.",
-  "boilerplate.containers.FeaturePage.scaffolding.header": "Quick scaffolding",
-  "boilerplate.containers.FeaturePage.scaffolding.message": "Automate the creation of components, containers, routes, selectors\n  and sagas - and their tests - right from the CLI!",
-  "boilerplate.containers.FeaturePage.state_management.header": "Predictable state management",
-  "boilerplate.containers.FeaturePage.state_management.message": "Unidirectional data flow allows for change logging and time travel\n    debugging.",
-  "boilerplate.containers.HomePage.start_project.header": "Start your next react project in seconds",
-  "boilerplate.containers.HomePage.start_project.message": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
-  "boilerplate.containers.HomePage.tryme.atPrefix": "@",
-  "boilerplate.containers.HomePage.tryme.header": "Try me!",
-  "boilerplate.containers.HomePage.tryme.message": "Show Github repositories by",
-  "boilerplate.containers.LocaleToggle.de": "de",
-  "boilerplate.containers.LocaleToggle.en": "en",
-  "boilerplate.containers.NotFoundPage.header": "Page not found."
+  "login-form": {
+    "create_account": "Create account",
+    "log_in": "Log in",
+    "your_email": "Your E-mail",
+    "your_password": "Password",
+    "forgot_password": "Forgot password",
+    "remember_me": "Remember Me",
+    "btn_continue": "Continue"
+  },
+  "register-form": {
+    "register": "Register",
+    "your_name": "Your name",
+    "employer": "Company name",
+    "your_email": "Your Email",
+    "your_password": "Your password",
+    "enter_your_password_again": "Re-enter password",
+    "already_have_account": "Do you already have an account ?",
+    "single_sign_on": "Single sign on",
+    "company_login": "Company Login",
+    "i_accept": "I accept",
+    "terms_and_conditions": "Terms & conditions",
+    "keep_me_updated": "Yes, I would like to receive marketing communications by e-mail.",
+    "btn_continue": "Continue"
+  },
+  "reset-form": {
+    "reset_password": "Reset password",
+    "send_a_link": "Send a link to your email to change your password",
+    "your_email": "Your Email",
+    "btn_send_link": "Send link"
+  },
+  "new-password-form": {
+    "enter_your_new_password": "Enter your new password",
+    "your_password": "Your password",
+    "enter_your_password_again": "Re-enter password",
+    "log_in": "Log in"
+  },
+  "comming-soon": {
+    "Comming_soon": "Coming Soon",
+    "come_with_perform_in_design": "Will come with performance in design",
+    "email": "Email",
+    "notify_me": "Notify me"
+  },
+  "404": {
+    "not_found": "Whoops, the page you're looking for does not exist.",
+    "btn_return_to_home_page": "Return to home page"
+  },
+  "personal-dashboard": {
+    "create_a_new_workspace": "Create a new workspace",
+    "send_us_a_request": "Send us a request",
+    "we_love_ideas": "We love ideas and look at it right away",
+    "write_your_wish_here": "Write your wish here",
+    "CounterIconsWidget": {
+      "elements": "elements",
+      "relationship": "connections",
+      "features": "features",
+      "conditions": "conditions",
+      "areas": "workspace",
+      "groups": "groups",
+      "outputs": "reports",
+      "alerts": "own red flags"
+    },
+    "HorizontalNewsCard": {
+      "btn_see_guide_here": "Se guide her",
+      "title": "Welcome to Juristic (beta)",
+      "desc": "Thanks for joining! We have worked hard to develop the platform so that it is both easy and intuitive to use. If you need a little introduction, we have put together a little guide."
+    }
+  },
+  "outputs": {
+    "outputs.title": "Your content",
+    "btn_create_new_output": "Create new Output",
+    "outputs.loadingMessage": "Looks like you have not created any report content yet"
+  },
+  "output": {
+    "OutputNamingForm.name_output": "Name the output",
+    "OutputNamingForm.title": "Title",
+    "OutputNamingForm.desc": "Description",
+    "OutputNamingForm.groups": "Groups",
+    "btn_save_output": "Save Output",
+    "ChooseConditions": {
+      "situations": "Situations:",
+      "condition": "condition"
+    },
+    "FileUpload": {
+      "upload_content": "Upload you content:"
+    }
+  },
+  "alerts": {
+    "your_red_flags": "Your Red Flags",
+    "btn_new_red_flag": "New red flag"
+  },
+  "alert-naming-form": {
+    "red_flag_content": "Red flag-content",
+    "red_flag_title": "Title",
+    "red_flag_desc": "Description",
+    "red_flag_groups": "groups",
+    "btn_save_red_flag": "Save Red Flag"
+  },
+  "attributes": {
+    "your_features": "Features",
+    "btn_new_features": "New feature",
+    "table_title": "Title",
+    "table_desc": "Description",
+    "table_groups": "Groups",
+    "table_see_features": "See features",
+    "btn_open": "Open",
+    "last_changed": "Last changed",
+    "you_have_updated_your_element": "You have updated your element ",
+    "create_new_feature": {
+      "dialog_title": "Create new feature",
+      "dialog_content_text": "Here you can create a new feature. You must first choose whether it should be possible to enter a specific value ('Value') or whether the user should be able to choose between some specific items ('Options').",
+      "select_group": "Select group",
+      "dialog_name": "Name (eg 'Number of employees' or 'Country')",
+      "dialog_desc": "Description",
+      "dialog_enter_default_options": "Enter default options",
+      "options": "Options",
+      "value": "Value",
+      "btn_save": "Save"
+    }
+  },
+  "relationships": {
+    "your_relationships": "Your relationships",
+    "btn_new_relationship": "New relationship",
+    "table_title": "Title",
+    "table_desc": "Description",
+    "table_groups": "Groups",
+    "table_see_relationships": "See relationships",
+    "btn_open": "Open",
+    "btn_save_relationship": "Save relationship",
+    "last_changed": "Last Changed",
+    "relationship_form": {
+      "name_your": "Name your",
+      "_relationship": "relationship",
+      "name": "Name",
+      "enter_options": "Enter options, eg a number value",
+      "desc": "Description",
+      "select_group": "Select group"
+    },
+    "relationship-demo": {
+      "your_relationship": "Your relationship"
+    },
+    "relationship-stylling": {
+      "standard_look": "Standard-look",
+      "pick_a_label_size": "Pick a label size",
+      "pick_a_color": "Pick a color",
+      "small": "small",
+      "medium": "medium",
+      "large": "large"
+    }
+  },
+  "conditions": {
+    "your_conditions": "Your conditions",
+    "btn_new_condition": "New condition",
+    "table_title": "Title",
+    "table_desc": "Description",
+    "table_groups": "Groups",
+    "table_see_conditions": "See conditions",
+    "btn_open": "Open",
+    "last_changed": "Last changed",
+    "conditions-meta": {
+      "form_title": "Your scenario"
+    },
+    "condition-form": {
+      "form_name": "Name",
+      "form_desc": "Enter desctiption",
+      "select_group": "Select group",
+      "btn_cnx": "Cancel",
+      "btn_save": "Save"
+    },
+    "define-node": {
+      "define_your_element": "Define your element for a scenario",
+      "modify_your_element": "Modify_your_element"
+    },
+    "node-form": {
+      "select_your_element": "Select your element",
+      "desc": "Description",
+      "delete": "Delete",
+      "btn_cnx": "Cancel",
+      "btn_save": "Save"
+    }
+  },
+  "groups": {
+    "btn_create_new_group": "Create new group",
+    "group-card": {
+      "see_details": "See details"
+    },
+    "group-actions": {
+      "created_group": "You have created a group ",
+      "image_not_supported": "Sorry, we do not support the uploaded image. Try again with another",
+      "group_deleted": "You have now deleted a group"
+    },
+    "search-group": {
+      "results": "Results",
+      "search_groups": "Search groups"
+    },
+    "group-details": {
+      "output": "output",
+      "red_flags": "Red flags",
+      "connections": "connections",
+      "conditions": "conditions",
+      "elements": "nodes",
+      "features": "features",
+      "workspace": "workspace"
+    }
+  },
+  "nodes": {
+    "your_elements": "Nodes",
+    "btn_new_element": "Create new element",
+    "table_title": "Title",
+    "table_desc": "Description",
+    "tags": "Tags",
+    "table_groups": "Group",
+    "table_see_element": "See element",
+    "btn_open": "Open",
+    "last_changed": "Last changed",
+    "btn_save": "Save",
+    "node-form": {
+      "name_your": "Name your",
+      "_element": "element",
+      "name": "Name",
+      "desc": "Description",
+      "select_standard_look": "Select the default look for the element",
+      "select_group": "Select groups",
+      "value": "Value"
+    },
+    "node-demo": {
+      "your_elements": "Your Nodes"
+    },
+    "node-styling": {
+      "standard-look": "Standard-look",
+      "size": "Size",
+      "color": "Color",
+      "border_color": "Border color",
+      "small": "small",
+      "medium": "medium",
+      "large": "large"
+    },
+    "node-actions": {
+      "you_have_updated_your_element": "You have updated your element ",
+      "you_have_deleted": "You have deleted",
+      "can_not_delete_it": "Hov, it appears that you are using this item in work areas or conditions, therefore you can not delete it. "
+    }
+  },
+  "workspaces": {
+    "your_workspace": "Your workspace",
+    "btn_new_workspace": "New workspace",
+    "can_not_create_more_workspaces": "You can not create more workspaces. Upgrade to make more.",
+    "table_title": "Title",
+    "table_desc": "Description",
+    "table_groups": "Groups",
+    "table_see_element": "See workspaces",
+    "table_created": "Created",
+    "btn_open": "Open",
+    "last_changed": "Last changed",
+    "previous": "Previous",
+    "welcome_to_the_work_area": "Welcome to the work area",
+    "workspace-form": {
+      "your_workspace": "Your workspace",
+      "name": "Name",
+      "desc": "Description",
+      "select_group": "Select group",
+      "checkbox": "Share your work area with the rest of your organization",
+      "btn_cnx": "Cancel",
+      "btn_save": "Save",
+      "add_tags_to_your_workspace": "Add tags to your workspace"
+    },
+    "metatext_is_now_updated": "Metatext is now updated",
+    "can_not_delete": "You can not delete expired workspaces."
+  },
+  "workspace-analysis": {
+    "earlier_versions": "Earlier versions",
+    "save": "Save"
+  },
+  "workspace-meta": {
+    "name_your_work_area":"Name your work area"
+  },
+  "tag-list": {
+    "show_all": "Show all",
+    "add_new_tag": "Add new tag"
+  },
+  "choose-plan": {
+    "free": "Free",
+    "excl_vat": "excl. vat",
+    "price": "499 DKK",
+    "contact": "Contact",
+    "workspaces": "Workspaces",
+    "load_from_cvr": "Load from CVR",
+    "download_accounting_data": "Download accounting data",
+    "change_data_from_CVR": "Change data from CVR",
+    "add_content": "Add content",
+    "automatic_red_flags": "Automatic red flags",
+    "secure_company_login": "Secure company login",
+    "design_your_own_red_flags": "Design your own red flags",
+    "design_your_own_content": "Design your own content",
+    "integrate_other_APIs": "Integrate other APIs",
+    "own_subdomain": "Own subdomain",
+    "vpn_lock": "VPN lock",
+    "automatic_learning_content": "Automatic learning content",
+    "automatic_report_builde": "Automatic report builde",
+    "btn_included": "Included",
+    "order_a_demo": "Order a demo",
+    "get_it_now": "Get it now",
+    "unlimited": "Unltd."
+  },
+  "invoice": {
+    "print_out": "Print this out!"
+  },
+  "error": {
+    "server_goes_wrong": "Sorry, server goes wrong",
+    "btn_go_to_front_page": "Go to front page"
+  },
+  "help-support": {
+    "faq": "Frequently Asked Questions",
+    "faq_text": "We have gathered the most frequently asked questions in a clear overview below. If you have others, you are of course always welcome to send us a message via the contact form on the right.",
+
+    "what_is_a_red_flag?": "What is a red flag?",
+    "red_flag_expl": {
+      "expl1": "A red flag is a special feature that can help you analyze and identify certain legal issues.",
+      "expl2": "Red flags automatically appear in your workspace as you draw - and users with a Draw subscription can even design and create their own red flags."
+    },
+
+    "is_it_really_free?": "Is it really free?",
+    "is_it_really_free_expl": {
+      "expl1": "Depending on the subscription you have selected, you will have access to different features or editions of Juristic. ",
+      "expl2": "Of course, you can always continue as a free user. "
+    },
+
+    "how_can_i_get_further_help?": "How can I get further help?",
+    "how_can_i_get_further_help_expl": {
+      "expl1": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website.",
+      "expl2": "We will respond as soon as possible. Draw and Pro users have access to special support features depending on the agreement."
+    },
+
+    "how_to_program_law?": "How to program law?",
+    "how_to_program_law_expl": {
+      "expl1": "With Juristic Draw and Juristic Pro, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms.",
+      "expl2": "The special thing is that you do not need other programs or to be able to code. Drag and drop items - just like you are used to."
+    },
+
+    "is_it_safe_to_use?": "Is it safe to use?",
+    "is_it_safe_to_use_expl": {
+      "expl1": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Draw and Pro versions include additional security features that are targeted at businesses.",
+      "expl2": "You can read more about how we process data in our business terms and personal data policy. You can find both on our website."
+    },
+
+    "why_are_not_all_features_available yet?": "Why are not all features available yet?",
+    "why_are_not_all_features_available yet_expl": {
+      "expl1": "Juristic is still in 'beta'. This means that the platform is still under development - and there are therefore many more features on the way.",
+      "expl2": "However, it also means that you will experience certain errors that we are still working hard to resolve."
+    },
+    "contact-form": {
+      "contact_us": "Contact us",
+      "name": "Name",
+      "email": "E-mail",
+      "message": "Message",
+      "send": "Send",
+      "reset": "Reset"
+    }
+  },
+  "user-menu": {
+    "log_out": "Log out",
+    "plan_administrator": "Plan administrator"
+  },
+  "header": {
+    "full_screen": "Full screen display",
+    "exit_full_screen": "Exit full screen view",
+    "update": "Update",
+    "guide": "Guide"
+  },
+  "guide-slider": {
+    "exit": "Exit",
+    "continue": "Continue",
+    "back": "Back",
+
+    "welcome": "Welcome to Juristic",
+    "welcome_text": "Juristic is a visual platform for advisors.",
+
+    "cvr_import": "CVR-import",
+    "cvr_import_text": "With our CVR function, you can get an overview in a flash.",
+
+    "red_flags": "Red flags",
+    "red_flags_text": "With red flags, you get input while drafting.",
+
+    "get_a_better_overview": "Get a better overview",
+    "get_a_better_overview_text": "With our visual tool you get a better overview of issues.",
+
+    "get_your_own_content": "Get your own content or 1-click reports",
+    "get_your_own_content_text": "Upgrade today to get more features with Base, Draw and Pro."
+  },
+  "search": {
+    "search": "Search"
+  },
+  "sidebar-menu": {
+    "front_page": "Front page",
+    "your_workspace": "Workspace",
+    "data_builder": "Data Builder",
+    "child": {
+      "conditions": "Conditions",
+      "nodes": "Nodes",
+      "attributes": "Attributes",
+      "relationships": "Relationships"
+    },
+    "output": "Output",
+    "red_flags": "Red flags",
+    "groups": "Groups",
+    "settings": "Settings",
+    "help": "Help"
+  },
+  "timeline-widget": {
+    "activity": "Activity",
+    "go_to_workspace": "Go to workspace",
+    "jump_into_a_work_area": "You have not used Juristic yet. Jump into a work area and get started."
+  },
+  "columns": {
+    "title": "Title",
+      "desc": "Description",
+      "groups" :"Groups",
+      "see_red_flag": "See Red Flag",
+      "last_changed": "Last changed",
+      "btn_open": "Open"
+  }
 }
