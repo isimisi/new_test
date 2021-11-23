@@ -2,45 +2,45 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
-export const tableColumns = [
+export const tableColumns = (t) => ([
   {
-    name: 'Titel',
+    name: t('relationships.table_title'),
     options: {
       filter: true
     }
   },
   {
-    name: 'Beskrivelse',
+    name: t('relationships.table_desc'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Gruppe',
+    name: t('relationships.table_groups'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Se forbindelse',
+    name: t('relationships.table_see_relationships'), 
     options: {
       filter: true,
       customBodyRender: (value) => (
         <Link to={`/app/relationships/${value}`} style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="secondary">
-              Åben
+              {t('relationships.btn_open')}
           </Button>
         </Link>
       )
     }
   },
   {
-    name: 'Sidst ændret',
+    name: t('relationships.last_changed'),
     options: {
       filter: true,
     }
   },
-];
+]);
 
 export const reducer = 'relationship';
 
