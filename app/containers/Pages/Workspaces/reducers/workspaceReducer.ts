@@ -81,15 +81,6 @@ import {
   RUN_INTRO_WORKSPACE,
   CHANGE_STEP_INDEX_WORKSPACE,
   HANDLE_UNCERTAIN_COMPANIES,
-  TAG_INDEX_SUCCESS,
-  TAG_INDEX_FAILED,
-  TAG_DELETE_SUCCESS,
-  TAG_DELETE_FAILED,
-  TAG_POST_SUCCESS,
-  TAG_POST_FAILED,
-  TAG_UPDATE_SUCCESS,
-  TAG_UPDATE_FAILED,
-  CHANGE_TAGS_ACTIVE
 } from './workspaceConstants';
 
 const initialState = {
@@ -129,7 +120,6 @@ const initialState = {
   runIntro: true,
   introStepIndex: 0,
   uncertainCompanies: List(),
-  tags: List(),
   specificWorkspaceTags: List(),
 };
 
@@ -154,8 +144,9 @@ export default function reducer(state = initialImmutableState, action: any) {
         mutableState.set('loading', false);
       });
     case SAVE_WORKSPACE_SUCCESS:
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       return state.withMutations((mutableState) => {
-
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
       });
     case SAVE_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
@@ -521,63 +512,6 @@ export default function reducer(state = initialImmutableState, action: any) {
         outputs[action.index].action.output = action.text;
 
         mutableState.set('outputs', fromJS(outputs));
-      });
-    case TAG_INDEX_SUCCESS:
-      return state.withMutations((mutableState) => {
-        const tags = fromJS(action.tags);
-        mutableState.set('tags', tags);
-      });
-    case TAG_INDEX_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set('message', message);
-      });
-    case TAG_DELETE_SUCCESS:
-      return state.withMutations((mutableState) => {
-        const { id } = action;
-        mutableState.update('tags', myList => myList.filter(tag => tag.toJS().id !== id));
-      });
-    case TAG_DELETE_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set('message', message);
-      });
-    case TAG_POST_SUCCESS:
-      return state.withMutations((mutableState) => {
-        const tag = fromJS(action.tag);
-        mutableState.update('tags', myList => myList.push(tag));
-      });
-    case TAG_POST_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set('message', message);
-      });
-    case TAG_UPDATE_SUCCESS:
-      return state.withMutations((mutableState) => {
-        const tag = action.tag;
-        mutableState.update('tags', myList => {
-          const newList = [...myList.toJS()];
-          const index = newList.findIndex(item => item.id === tag.id);
-          newList[index].name = tag.name;
-          newList[index].emoji = tag.emoji;
-          newList[index].emoji_name = tag.emoji_name;
-          return fromJS(newList);
-        });
-      });
-    case TAG_UPDATE_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set('message', message);
-      });
-    case CHANGE_TAGS_ACTIVE:
-      return state.withMutations((mutableState) => {
-        const tag = action.tag;
-        mutableState.update('tags', myList => {
-          const newList = [...myList.toJS()];
-          const index = newList.findIndex(item => item.id === tag.id);
-          newList[index].active = !newList[index].active;
-          return fromJS(newList);
-        });
       });
     case SHOW_NOTIF:
       return state.withMutations((mutableState) => {

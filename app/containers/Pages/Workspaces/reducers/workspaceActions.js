@@ -136,6 +136,7 @@ export const putWorkspace = (workspace_id, label, description, group, tags, shar
 
     setTimeout(() => {
       // eslint-disable-next-line no-use-before-define
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       dispatch(changeStepIndex(2));
     }, 100);
   } catch (error) {
@@ -393,6 +394,7 @@ export const postSticky = (workspace_id, x, y) => async dispatch => {
 };
 
 // eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const putSticky = (id, text) => async dispatch => {
   const url = `${baseUrl}/workspaces/sticky/${id}`;
   const body = {
@@ -597,66 +599,6 @@ export const mapUncertainCompanies = (id, uncertainCompanies, erstTypes) => asyn
   }
 };
 
-export const getTags = () => async dispatch => {
-  const url = `${baseUrl}/tags`;
-  const header = authHeader();
-  try {
-    const response = await axios.get(url, header);
-    const tags = response.data;
-    tags.active = false;
-    dispatch({ type: types.TAG_INDEX_SUCCESS, tags });
-  } catch (error) {
-    dispatch({ type: types.TAG_INDEX_FAILED, message });
-  }
-};
-
-export const postTag = (emoji, emoji_name, name) => async dispatch => {
-  const url = `${baseUrl}/tags`;
-  const body = {
-    emoji,
-    emoji_name,
-    name
-  };
-  const header = authHeader();
-  try {
-    const response = await axios.post(url, body, header);
-    const tag = response.data;
-    dispatch({ type: types.TAG_POST_SUCCESS, tag });
-  } catch (error) {
-    dispatch({ type: types.TAG_POST_FAILED, message });
-  }
-};
-
-export const updateTag = (id, emoji, emoji_name, name) => async dispatch => {
-  const url = `${baseUrl}/tags/${id}`;
-  const body = {
-    emoji,
-    emoji_name,
-    name
-  };
-  const header = authHeader();
-  try {
-    const response = await axios.put(url, body, header);
-    const tag = response.data;
-    dispatch({ type: types.TAG_UPDATE_SUCCESS, tag });
-  } catch (error) {
-    dispatch({ type: types.TAG_UPDATE_FAILED, message });
-  }
-};
-
-export const deleteTag = (id) => async dispatch => {
-  const url = `${baseUrl}/tags/${id}`;
-  const header = authHeader();
-  try {
-    await axios.delete(url, header);
-
-    dispatch({ type: types.TAG_DELETE_SUCCESS, id });
-  } catch (error) {
-    dispatch({ type: types.TAG_DELETE_FAILED, message });
-  }
-};
-
-
 export const analysisTextChange = (text, index) => ({
   type: types.ANALYSIS_TEXT_CHANGE,
   text,
@@ -688,16 +630,6 @@ export const descriptionChange = description => ({
 export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
-});
-
-export const changeTags = tags => ({
-  type: types.CHANGE_TAGS,
-  tags
-});
-
-export const changeTagActivity = (tag) => ({
-  type: types.CHANGE_TAGS_ACTIVE,
-  tag
 });
 
 export const shareOrgChange = { type: types.SHARE_ORG_CHANGE };
