@@ -23,6 +23,7 @@ import {
   updateTag
 } from '@components/Tags/reducers/tagsActions';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import { useTranslation } from 'react-i18next';
 import { columns, reducer } from './constants';
 import styles from './workspace-jss';
 import {
@@ -32,7 +33,6 @@ import {
   deleteWorkspaces,
   showNotifAction
 } from './reducers/workspaceActions';
-import { useTranslation } from 'react-i18next';
 
 const { plan_id } = loadFromLocalStorage();
 
@@ -46,7 +46,7 @@ const Workspaces = props => {
   const loading = useAppSelector(state => state[reducer].get('loading'));
   const tags = useAppSelector(state => state.tags.get('tags')).toJS();
   const history = useHistory();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const col = columns(t);
 
@@ -73,11 +73,7 @@ const Workspaces = props => {
 
   const createWorkspace = () => {
     if (plan_id === 1 && workspaces.length === 50) {
-      dispatch(
-        showNotifAction(
-          t('workspaces.can_not_create_more_workspaces')
-        )
-      );
+      dispatch(showNotifAction(t('workspaces.can_not_create_more_workspaces')));
     } else {
       dispatch(postWorkspace(history));
     }
@@ -147,7 +143,7 @@ const Workspaces = props => {
           />
         </Grid>
       </Grid>
-      <Tooltip {`${t('workspaces.btn_new_workspace')}`}>
+      <Tooltip title={`${t('workspaces.btn_new_workspace')}`}>
         <Fab
           variant="extended"
           color="primary"
