@@ -17,8 +17,8 @@ import Fade from '@material-ui/core/Fade';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Tag } from '@customTypes/data';
+import { useTranslation } from 'react-i18next';
 import useStyles from './tag.jss';
-import {useTranslation} from 'react-i18next';
 
 import CreateTag from './CreateTag';
 
@@ -44,7 +44,7 @@ const TagList = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openId, setOpenId] = useState(null);
   const contextOpen = Boolean(anchorEl);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
 
   const handleCloseTag = () => {
@@ -68,13 +68,8 @@ const TagList = (props: Props) => {
     <>
       <Paper>
         <List className={classes.tagContainer}>
-<<<<<<< Updated upstream
-          <ListItem button className={!tags.some(t => t.active) ? classes.activelistItem : undefined}>
+          <ListItem button className={!tags.some(tag => tag.active) ? classes.activelistItem : undefined} onClick={handleShowAll}>
             <ListItemText primary={t('tag-list.show_all')} />
-=======
-          <ListItem button className={!tags.some(t => t.active) ? classes.activelistItem : undefined} onClick={handleShowAll}>
-            <ListItemText primary="Vis alle" />
->>>>>>> Stashed changes
             <ListItemSecondaryAction>
               <Paper className={classes.countContainer}>
                 <Typography className={classes.tagCount}>
@@ -130,9 +125,9 @@ const TagList = (props: Props) => {
         setOpenId={setOpenId}
         handleUpdate={openId ? handleUpdateTag : undefined}
         openId={openId}
-        emojiName={openId ? tags.find(t => t.id === openId)?.emoji_name : undefined}
-        emoji={openId ? tags.find(t => t.id === openId)?.emoji : undefined}
-        initialName={openId ? tags.find(t => t.id === openId)?.name : undefined}
+        emojiName={openId ? tags.find(tag => tag.id === openId)?.emoji_name : undefined}
+        emoji={openId ? tags.find(tag => tag.id === openId)?.emoji : undefined}
+        initialName={openId ? tags.find(tag => tag.id === openId)?.name : undefined}
       />
       <Menu
         id="fade-menu"

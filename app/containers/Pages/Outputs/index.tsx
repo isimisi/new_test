@@ -18,6 +18,7 @@ import {
 import Grid from '@material-ui/core/Grid';
 import TagList from '@components/Tags/TagList';
 import { Tag, WhereInApp } from '@customTypes/data';
+import { useTranslation } from 'react-i18next';
 import { columns, reducer } from './constants';
 import useStyles from './output-jss';
 import {
@@ -26,7 +27,6 @@ import {
   closeNotifAction,
   deleteOutput
 } from './reducers/outputActions';
-import {useTranslation} from 'react-i18next';
 
 const Outputs = () => {
   const classes = useStyles();
@@ -36,7 +36,7 @@ const Outputs = () => {
   const tags = useAppSelector(state => state.tags.get('tags')).toJS();
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(getOutput());
@@ -98,18 +98,9 @@ const Outputs = () => {
 
   return (
     <div className={classes.table}>
-<<<<<<< Updated upstream
-      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <MUIDataTable
-        title={t('outputs.outputs.title')}
-        data={outputs}
-        columns={columns}
-        options={tableOptions(onDelete, false, t('outputs.outputs.loadingMeassage'))}
-=======
       <Notification
         close={() => dispatch(closeNotifAction)}
         message={messageNotif}
->>>>>>> Stashed changes
       />
       <Grid container spacing={2} direction="row" justify="center">
         <Grid item md={3} lg={2}>
@@ -139,18 +130,13 @@ const Outputs = () => {
         </Grid>
       </Grid>
       <Tooltip title="Nyt indhold">
-<<<<<<< Updated upstream
-        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postOutput(history))}>
-          {`${t('outputs.outputs.btn_create_new_output')}`}
-=======
         <Fab
           variant="extended"
           color="primary"
           className={classes.addBtn}
           onClick={() => dispatch(postOutput(history))}
         >
-          Create new Output
->>>>>>> Stashed changes
+          {`${t('outputs.outputs.btn_create_new_output')}`}
         </Fab>
       </Tooltip>
     </div>

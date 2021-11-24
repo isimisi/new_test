@@ -9,18 +9,13 @@ import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-<<<<<<< Updated upstream:app/components/Forms/OutputNamingForm.js
-import Tooltip from '@material-ui/core/Tooltip';
-import {t} from 'i18next';
-=======
+import { t } from 'i18next';
 import CreatableSelect from 'react-select/creatable';
 import {
   hanldeOnChange,
   MixedTagOptions,
-  TagCleanOption,
   tagMapping
 } from '@components/Tags/constants';
->>>>>>> Stashed changes:app/components/Forms/OutputNamingForm.tsx
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -124,11 +119,7 @@ const OutputNamingForm = (props: Props) => {
                       htmlFor: 'react-select-single-output',
                       shrink: true
                     },
-<<<<<<< Updated upstream:app/components/Forms/OutputNamingForm.js
-                    placeholder: t('output.OutputNamingForm.groups'),
-=======
-                    placeholder: 'groups'
->>>>>>> Stashed changes:app/components/Forms/OutputNamingForm.tsx
+                    placeholder: t('output.OutputNamingForm.groups')
                   }}
                   placeholder={t('output.OutputNamingForm.groups')}
                   options={mapSelectOptions(groupsDropDownOptions)}
