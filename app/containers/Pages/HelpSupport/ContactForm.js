@@ -8,8 +8,8 @@ import Button from '@material-ui/core/Button';
 import { PapperBlock } from '@components';
 import { TextFieldRedux } from '@components/Forms/ReduxFormMUI';
 import { initAction, clearAction } from '@redux/actions/reduxFormActions';
-import styles from './helpSupport-jss';
 import { useTranslation } from 'react-i18next';
+import styles from './helpSupport-jss';
 
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
@@ -28,7 +28,7 @@ function ContactForm(props) {
     reset,
     submitting,
   } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <PapperBlock title={t('help-support.contact-form.contact_us')} whiteBg>

@@ -6,7 +6,6 @@ import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import * as types from './nodeConstants';
 import { getSize } from '../constants';
 const NODES = 'nodes';
-import { useTranslation } from 'react-i18next';
 
 export const getNodes = () => async dispatch => {
   dispatch({ type: types.GET_NODES_LOADING });
@@ -80,11 +79,10 @@ export const putNode = (id, label, description, attributes, deletedAttributes, g
     label, description, group, style, attributes, deletedAttributes
   };
   const header = authHeader();
-  const {t} = useTranslation();
 
   try {
     await axios.put(url, body, header);
-    const message = t('nodes.node-actions.you_have_updated_your_element');
+    const message = 'Dit element er opdateret';
     dispatch({ type: types.PUT_NODE_SUCCESS, message });
     history.push('/app/nodes');
   } catch (error) {
@@ -96,8 +94,7 @@ export const putNode = (id, label, description, attributes, deletedAttributes, g
 export const deleteNode = (id, title) => async dispatch => {
   const url = `${baseUrl}/${NODES}/${id}`;
   const header = authHeader();
-  const {t} = useTranslation();
-  
+
   try {
     await axios.delete(url, header);
     const message = `Du har slettet ${title}`;
@@ -107,7 +104,7 @@ export const deleteNode = (id, title) => async dispatch => {
     let message = genericErrorMessage;
 
     if (error?.response?.status === 403) {
-      message = t('nodes.node-actions.can_not_delete_it');
+      message = 'Vi kunne ikke slette dit element, da du bruger det i andre sammenhænge';
     }
 
     dispatch({ type: types.DELETE_NODE_FAILED, message });

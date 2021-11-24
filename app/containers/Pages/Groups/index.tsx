@@ -12,6 +12,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import { makeStyles } from '@material-ui/core/styles';
 import { loadFromLocalStorage } from '@utils/localStorage';
+import { useTranslation } from 'react-i18next';
 import {
   getGroups,
   postGroup,
@@ -22,16 +23,14 @@ import {
   closeNotifAction,
   showNotifAction
 } from './reducers/groupActions';
-import { useTranslation } from 'react-i18next';
-
 
 const useStyles = makeStyles(() => ({
   addBtn: {
     position: 'fixed',
     bottom: 30,
     right: 50,
-    zIndex: 100,
-  },
+    zIndex: 100
+  }
 }));
 
 const { plan_id } = loadFromLocalStorage();
@@ -44,15 +43,15 @@ function Groups() {
   const reducer = 'groups';
   const keyword = useSelector(state => state[reducer].get('keywordValue'));
   const groups = useSelector(state => state[reducer].get('groups'));
-  const activeGroup = useSelector(state => state[reducer].get('activeGroup')).toJS();
+  const activeGroup = useSelector(state => state[reducer].get('activeGroup')
+  ).toJS();
   const title = useSelector(state => state[reducer].get('title'));
   const description = useSelector(state => state[reducer].get('description'));
   const image = useSelector(state => state[reducer].get('image')).toJS();
   const messageNotif = useSelector(state => state[reducer].get('message'));
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     dispatch(getGroups());
@@ -79,10 +78,13 @@ function Groups() {
         <meta property="twitter:title" content={metaTitle} />
         <meta property="twitter:description" content={metaDescription} />
       </Helmet>
-      <Notification close={() => dispatch(closeNotifAction())} message={messageNotif} />
+      <Notification
+        close={() => dispatch(closeNotifAction())}
+        message={messageNotif}
+      />
       <SearchGroup
         dataProduct={groups}
-        search={(payload) => dispatch(searchAction(payload))}
+        search={payload => dispatch(searchAction(payload))}
         keyword={keyword}
         listView={listView}
         handleSwitchView={handleSwitchView}
@@ -90,15 +92,24 @@ function Groups() {
       <GroupGallery
         listView={listView}
         dataProduct={groups}
-        showDetail={(payload) => dispatch(showGroup(payload.get('id')))}
-        updateDetail={(t, d) => dispatch(putGroup(activeGroup.id, t, d))}
+        showDetail={payload => dispatch(showGroup(payload.get('id')))}
+        updateDetail={(x, d) => dispatch(putGroup(activeGroup.id, x, d))}
         activeGroup={activeGroup}
         plan_id={plan_id}
-        notif={() => dispatch(showNotifAction('At ændre grupper er forbehold brugere på Draw abonnementer.'))}
+        notif={() => dispatch(
+          showNotifAction(
+            'At ændre grupper er forbehold brugere på Draw abonnementer.'
+          )
+        )
+        }
         keyword={keyword}
-        deleteGroup={(id) => {
+        deleteGroup={id => {
           if (plan_id === 1) {
-            dispatch(showNotifAction('At slette grupper er forbehold brugere på Draw abonnementer.'));
+            dispatch(
+              showNotifAction(
+                'At slette grupper er forbehold brugere på Draw abonnementer.'
+              )
+            );
           } else {
             dispatch(deleteGroup(id));
           }
@@ -111,18 +122,22 @@ function Groups() {
           className={classes.addBtn}
           onClick={() => {
             if (plan_id === 1) {
-              dispatch(showNotifAction('At oprette grupper er forbehold brugere på Draw abonnementer.'));
+              dispatch(
+                showNotifAction(
+                  'At oprette grupper er forbehold brugere på Draw abonnementer.'
+                )
+              );
             } else {
               setOpen(true);
             }
           }}
         >
-            {`${t('groups.btn_create_new_group')}`}
+          {`${t('groups.btn_create_new_group')}`}
         </Fab>
       </Tooltip>
       <GroupModal
         open={open}
-        setOpen={(v) => setOpen(v)}
+        setOpen={v => setOpen(v)}
         title={title}
         description={description}
         image={image}

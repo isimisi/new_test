@@ -2,7 +2,6 @@ import { fromJS } from 'immutable';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
   STORE_ORGANIZATION_FAILED,
-  PURCASE_FAILED,
   DEMO_SUCCESS,
   DEMO_FAILED,
 } from './createOrganizationConstants';
@@ -26,11 +25,6 @@ export default function reducer(state = initialImmutableState, action: any): any
         mutableState.set('message', message);
       });
     case DEMO_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set('message', message);
-      });
-    case PURCASE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);

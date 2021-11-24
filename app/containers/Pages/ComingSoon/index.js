@@ -13,12 +13,12 @@ import Paper from '@material-ui/core/Paper';
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import styles from '@components/Forms/user-jss';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 function ComingSoon(props) {
   const { classes, deco } = props;
   const [email, setEmail] = useState('');
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const handleChange = event => {
     setEmail(event.target.value);
@@ -72,7 +72,7 @@ function ComingSoon(props) {
                 </FormControl>
                 <aside>
                   <Button variant="contained" color="secondary" type="submit">
-                  {t('commig-soon.Notify me')}
+                    {t('commig-soon.Notify me')}
                   </Button>
                 </aside>
               </div>

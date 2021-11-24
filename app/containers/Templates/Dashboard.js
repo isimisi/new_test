@@ -5,9 +5,9 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import { toggleAction, openAction, playTransitionAction } from '@redux/actions/uiActions';
+import { GuideSlider } from '@components';
 import LeftSidebarLayout from './layouts/LeftSidebarLayout';
 import styles from './appStyles-jss';
-import { GuideSlider } from '@components';
 
 
 function Dashboard(props) {

@@ -13,8 +13,8 @@ import {
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import styles from '@components/Forms/user-jss';
-import { closeNotifAction, newPassword } from './reducers/authActions';
 import { useTranslation } from 'react-i18next';
+import { closeNotifAction, newPassword } from './reducers/authActions';
 
 
 function NewPassword(props) {
@@ -24,7 +24,7 @@ function NewPassword(props) {
   const id = history.location.pathname.split('/').pop();
   const dispatch = useDispatch();
   const messageNotif = useSelector(state => state.auth.get('errorMessage'));
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const submitForm = useCallback((values) => {
     setValueForm(values);
