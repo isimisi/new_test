@@ -56,7 +56,6 @@ import { useTranslation } from 'react-i18next';
 
 
 const { plan_id } = loadFromLocalStorage();
-console.log(plan_id);
 
 const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const classes = useStyles();

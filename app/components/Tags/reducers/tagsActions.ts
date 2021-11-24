@@ -4,20 +4,16 @@
 import axios from 'axios';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
 import { AppThunk } from '@redux/configureStore';
-import { WhereInApp } from '@customTypes/data';
 import * as types from './tagsConstants';
 const TAGS = 'tags';
 
-export const getTags = (where: WhereInApp): AppThunk => async dispatch => {
-  console.log('snaljksm');
-  const url = `${baseUrl}/${TAGS}?where=${where}`;
+export const getTags = (): AppThunk => async dispatch => {
+  const url = `${baseUrl}/${TAGS}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
-    console.log(response.data, 'asdnlks');
     const tags = response.data;
     tags.active = false;
-    console.log(tags);
     dispatch({ type: types.TAG_INDEX_SUCCESS, tags });
   } catch (error) {
     dispatch({ type: types.TAG_INDEX_FAILED, genericErrorMessage });

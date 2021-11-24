@@ -23,6 +23,7 @@ import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
@@ -48,7 +49,6 @@ import MapTypesForErst from '@components/Workspace/MapTypesForErst';
 import CompanyDataModel from '@components/Workspace/CompanyDataModel';
 import AddressInfoModel from '@components/Workspace/AddressInfoModel';
 import ShareModal from '@components/Workspace/Share/ShareModal';
-import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import WorkspaceFabs from '@components/Workspace/WorkspaceFabs';
 import { NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
@@ -71,7 +71,6 @@ import {
 // import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import './workspace.css';
 
-
 const nodeTypes = {
   custom: CustomNode,
   sticky: StickyNoteNode
@@ -92,7 +91,7 @@ interface Dimensions {
 
 const Workspace = (props) => {
   const { classes } = props;
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
   const theme = useTheme();
   const id = getId(history);
@@ -104,33 +103,34 @@ const Workspace = (props) => {
   const { plan_id } = loadFromLocalStorage();
 
   // REDUX
-  const relationships = useAppSelector(state => state[reducer].get('relationships'));
-  const nodes = useAppSelector(state => state[reducer].get('nodes')).toJS();
+  const relationships = useSelector(state => state[reducer].get('relationships'));
+  const nodes = useSelector(state => state[reducer].get('nodes')).toJS();
 
-  const handleVisability = useAppSelector(state => state[reducer].get('handleVisability'));
-  const elements = useAppSelector(state => state[reducer].get('elements')).toJS();
-  const label = useAppSelector(state => state[reducer].get('label'));
-  const description = useAppSelector(state => state[reducer].get('description'));
-  const group = useAppSelector(state => state[reducer].get('group'));
-  const shareOrg = useAppSelector(state => state[reducer].get('shareOrg'));
+  const handleVisability = useSelector(state => state[reducer].get('handleVisability'));
+  const elements = useSelector(state => state[reducer].get('elements')).toJS();
+  const label = useSelector(state => state[reducer].get('label'));
+  const description = useSelector(state => state[reducer].get('description'));
+  const group = useSelector(state => state[reducer].get('group'));
+  const shareOrg = useSelector(state => state[reducer].get('shareOrg'));
 
-  const groupsDropDownOptions = useAppSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
-  const attributesDropDownOptions = useAppSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
-  const messageNotif = useAppSelector(state => state[reducer].get('message'));
-  const loading = useAppSelector(state => state[reducer].get('loading'));
-  const companyData = useAppSelector(state => state[reducer].get('companyData'));
-  const addressInfo = useAppSelector(state => state[reducer].get('addressInfo'));
-  const signed = useAppSelector(state => state[reducer].get('signed'));
-  const signedBy = useAppSelector(state => state[reducer].get('signedBy'));
-  const showCompanyData = useAppSelector(state => state[reducer].get('showCompanyData'));
-  const showAddressInfo = useAppSelector(state => state[reducer].get('showAddressInfo'));
+  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
+  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const loading = useSelector(state => state[reducer].get('loading'));
+  const companyData = useSelector(state => state[reducer].get('companyData'));
+  const addressInfo = useSelector(state => state[reducer].get('addressInfo'));
+  const signed = useSelector(state => state[reducer].get('signed'));
+  const signedBy = useSelector(state => state[reducer].get('signedBy'));
+  const showCompanyData = useSelector(state => state[reducer].get('showCompanyData'));
+  const showAddressInfo = useSelector(state => state[reducer].get('showAddressInfo'));
 
-  const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
-  // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
+  const runIntro = useSelector(state => state[reducer].get('runIntro'));
+  const introStepIndex = useSelector(state => state[reducer].get('introStepIndex'));
 
-  const uncertainCompanies = useAppSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
-  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
-  const tags = useAppSelector(state => state[reducer].get('specificWorkspaceTags'))?.toJS();
+  const uncertainCompanies = useSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
+  const tagOptions = useSelector(state => state[reducer].get('tags'))?.toJS();
+  const tags = useSelector(state => state[reducer].get('specificWorkspaceTags'))?.toJS();
+  console.log(tags);
 
 
   const [metaOpen, setMetaOpen] = useState(false);
@@ -879,13 +879,14 @@ const Workspace = (props) => {
         close={() => setShareModalOpen(false)}
         onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, setShareModalOpen))}
       />
-      {/* <Joyride
+      <Joyride
         continuous
         run={runIntro}
         stepIndex={introStepIndex}
         scrollToFirstStep
         showSkipButton
         callback={handleJoyrideCallback}
+        /** @ts-ignore */
         steps={steps}
         styles={{
           options: {
@@ -893,7 +894,7 @@ const Workspace = (props) => {
             primaryColor: '#36454F'
           }
         }}
-      /> */}
+      />
     </div>
   );
 };

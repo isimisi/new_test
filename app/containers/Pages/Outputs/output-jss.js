@@ -1,7 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { MyTheme } from '@customTypes/styling';
-
-const useStyles = makeStyles((theme: MyTheme) => ({
+const styles = theme => ({
   table: {
     '& > div': {
       overflow: 'auto'
@@ -24,8 +21,8 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     position: 'fixed',
     bottom: 30,
     right: 50,
-    zIndex: 100
-  }
-}));
+    zIndex: 100,
+  },
+});
 
-export default useStyles;
+export default styles;

@@ -6,14 +6,4 @@ export interface Tag {
     id: number;
     workspaceTags: Array<any>;
     active: boolean
-}
-
-export enum WhereInApp {
-  workspace = 'workspace',
-  condition = 'condition',
-  alert = 'alert',
-  output = 'output',
-  node = 'node',
-  relationship = 'relationship',
-  group = 'group',
-}
+  }

@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, { useState } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -29,16 +28,13 @@ interface Props {
   handlePostTag: (emoji: string | undefined, emoji_name: string | undefined, name: string) => void;
   handleUpdateTag: (id: number | undefined, emoji: string | undefined, emoji_name: string | undefined, name: string) => void;
   makeActive: (tag: Tag) => void;
-  handleShowAll: () => void;
   allNumber: number;
-  findCountString: 'workspaceTags' | 'actionTags'
 }
 
 const TagList = (props: Props) => {
   const {
-    tags, handleDelete, handlePostTag, handleUpdateTag, allNumber, makeActive, findCountString, handleShowAll
+    tags, handleDelete, handlePostTag, handleUpdateTag, allNumber, makeActive
   } = props;
-
   const classes = useStyles();
   const [showCreateTag, setShowCreateTag] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -46,11 +42,7 @@ const TagList = (props: Props) => {
   const contextOpen = Boolean(anchorEl);
   const {t} = useTranslation();
 
-
-  const handleCloseTag = () => {
-    setOpenId(null);
-    setShowCreateTag(false);
-  };
+  const handleCloseTag = () => setShowCreateTag(false);
   const handleOpenTag = () => setShowCreateTag(true);
 
   const handleContextOpen = (event, id) => {
@@ -68,13 +60,8 @@ const TagList = (props: Props) => {
     <>
       <Paper>
         <List className={classes.tagContainer}>
-<<<<<<< Updated upstream
           <ListItem button className={!tags.some(t => t.active) ? classes.activelistItem : undefined}>
             <ListItemText primary={t('tag-list.show_all')} />
-=======
-          <ListItem button className={!tags.some(t => t.active) ? classes.activelistItem : undefined} onClick={handleShowAll}>
-            <ListItemText primary="Vis alle" />
->>>>>>> Stashed changes
             <ListItemSecondaryAction>
               <Paper className={classes.countContainer}>
                 <Typography className={classes.tagCount}>
@@ -114,7 +101,7 @@ const TagList = (props: Props) => {
                   </IconButton>
                   <Paper className={classes.countContainer}>
                     <Typography className={classes.tagCount}>
-                      {tag[findCountString]?.length}
+                      {tag.workspaceTags.length}
                     </Typography>
                   </Paper>
                 </ListItemSecondaryAction>
