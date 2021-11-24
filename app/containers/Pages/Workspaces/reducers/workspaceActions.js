@@ -129,15 +129,14 @@ export const putWorkspace = (workspace_id, label, description, group, tags, shar
 
   try {
     await axios.put(url, body, header);
-    const _message = t('workspaces.metatext_is_now_updated');
-    dispatch({ type: types.PUT_WORKSPACE_SUCCESS, message: _message });
+    dispatch({ type: types.PUT_WORKSPACE_SUCCESS });
 
     setMetaOpen(false);
 
-    setTimeout(() => {
-      // eslint-disable-next-line no-use-before-define
-      dispatch(changeStepIndex(2));
-    }, 100);
+    // setTimeout(() => {
+    //   // eslint-disable-next-line no-use-before-define
+    //   dispatch(changeStepIndex(2));
+    // }, 100);
   } catch (error) {
     dispatch({ type: types.PUT_WORKSPACE_FAILED, message });
   }

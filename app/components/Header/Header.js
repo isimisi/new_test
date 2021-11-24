@@ -2,21 +2,18 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import SearchIcon from '@material-ui/icons/Search';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import UserMenu from './UserMenu';
-import SearchUi from '../Search/SearchUi';
-import LanguageSelector from '../LanguageSelector';
-import styles from './header-jss';
 import { useTranslation } from 'react-i18next';
+import UserMenu from './UserMenu';
+// import LanguageSelector from '../LanguageSelector';
+import styles from './header-jss';
 
 const elem = document.documentElement;
 
@@ -25,7 +22,7 @@ function Header(props) {
   const [fullScreen, setFullScreen] = useState(false);
   const [turnDarker, setTurnDarker] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   // Initial header style
   let flagDarker = false;
@@ -148,7 +145,7 @@ function Header(props) {
                 </IconButton>
               </Tooltip> */}
 
-              <Tooltip title={t('header.update')}  placement="bottom">
+              <Tooltip title={t('header.update')} placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
                   <i className="ion-ios-refresh-outline" style={{ color: '#333' }} />
                 </IconButton>
@@ -170,7 +167,7 @@ function Header(props) {
             <SearchUi history={history} />
           </div>
         </div> */}
-        <LanguageSelector />
+        {/* <LanguageSelector /> */}
         <Hidden xsDown>
           <span className={classes.separatorV} />
         </Hidden>

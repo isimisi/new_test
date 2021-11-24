@@ -1,18 +1,22 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import Loader from '@components/Loading/LongLoader';
 import { MUIDataTableOptions } from 'mui-datatables';
 import React from 'react';
-import {t} from 'i18next';
 
 type onRowsDelete = (
   rowsDeleted: {
-      lookup: { [dataIndex: number]: boolean };
-      data: Array<{ index: number; dataIndex: number }>;
+    lookup: { [dataIndex: number]: boolean };
+    data: Array<{ index: number; dataIndex: number }>;
   },
-  newTableData: any[],
+  newTableData: any[]
 ) => void | false;
 
-
-const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'elementer', handleFilterChanged: any = () => {}): MUIDataTableOptions => ({
+const tableOptions = (
+  onDelete: onRowsDelete,
+  loading: boolean,
+  where = 'elementer',
+  handleFilterChanged: any = () => {}
+): MUIDataTableOptions => ({
   filterType: 'dropdown',
   print: true,
   rowsPerPage: 10,
@@ -21,9 +25,7 @@ const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'element
   onRowsDelete: onDelete,
   textLabels: {
     body: {
-      noMatch: loading
-        ? <Loader />
-        : t('outputs.outputs.loadingMeassage'),
+      noMatch: loading ? <Loader /> : null
     },
     toolbar: {
       downloadCsv: 'Download som CSV fil',
@@ -39,11 +41,11 @@ const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'element
     },
     pagination: {
       displayRows: 'af',
-      rowsPerPage: 'Rækker per side:',
+      rowsPerPage: 'Rækker per side:'
     },
     selectedRows: {
       delete: 'Slet',
-      text: 'række(r) valgt',
+      text: 'række(r) valgt'
     },
     viewColumns: {
       title: 'Vis colonner'

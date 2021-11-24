@@ -18,8 +18,8 @@ import { loadFromLocalStorage } from '@utils/localStorage';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CreatableSelect from 'react-select/creatable';
 import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
+import { useTranslation } from 'react-i18next';
 import styles from './workspace-jss';
-import {useTranslation} from 'react-i18next';
 
 
 const localeStorage = loadFromLocalStorage();
@@ -45,7 +45,7 @@ const WorkspaceForm = (props) => {
     tags,
     changeTags
   } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -139,7 +139,7 @@ const WorkspaceForm = (props) => {
           disabled={label?.length === 0 || group?.length === 0}
           onClick={onSave}
         >
-            {t('workspaces.workspace-form.btn_save')}
+          {t('workspaces.workspace-form.btn_save')}
         </Button>
       </div>
     </div>

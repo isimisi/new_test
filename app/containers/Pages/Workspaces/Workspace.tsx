@@ -146,7 +146,7 @@ const Workspace = (props) => {
   const [alerts, setAlerts] = useState<any[]>([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertId, setAlertId] = useState<number | null>(null);
-
+  console.log(alertId);
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
   const [elementToUpdate, setElementToUpdate] = useState<FlowElement | null>(null);
 
@@ -753,7 +753,7 @@ const Workspace = (props) => {
           }
         }}
       />
-      {alertId && alerts[alertId] && (
+      {(alertId || alertId === 0) && alerts[alertId] && (
         <AlertModal
           disabled={alerts[alertId]?.alert?.organization_id === 11}
           title={alerts[alertId]?.alert?.label}

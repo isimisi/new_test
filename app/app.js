@@ -29,9 +29,6 @@ import BugsnagPluginReact from '@bugsnag/plugin-react';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
-// Import Language Provider
-// import LanguageProvider from 'containers/LanguageProvider';
-
 // Load the favicon and the .htaccess file
 import '!file-loader?name=[name].[ext]!../public/favicons/favicon.ico'; // eslint-disable-line
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line

@@ -136,7 +136,7 @@ const Outputs = () => {
           className={classes.addBtn}
           onClick={() => dispatch(postOutput(history))}
         >
-          {`${t('outputs.outputs.btn_create_new_output')}`}
+          {`${t('outputs.btn_create_new_output')}`}
         </Fab>
       </Tooltip>
     </div>

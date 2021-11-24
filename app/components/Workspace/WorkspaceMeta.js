@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
 import WorkspaceForm from './WorkspaceForm';
 import FloatingPanel from '../Panel/FloatingPanel';
 import styles from './workspace-jss';
-import {useTranslation} from 'react-i18next';
 
 function WorkspaceMeta(props) {
   const {
@@ -25,7 +25,7 @@ function WorkspaceMeta(props) {
     changeTags
   } = props;
   const branch = '';
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div>

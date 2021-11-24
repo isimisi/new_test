@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { fromJS, List, Map } from 'immutable';
 import {
   isNode,
@@ -210,8 +211,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case PUT_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set('message', message);
+
       });
     case PUT_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {

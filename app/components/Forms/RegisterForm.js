@@ -22,9 +22,9 @@ import Icon from '@material-ui/core/Icon';
 import Hidden from '@material-ui/core/Hidden';
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
+import { useTranslation } from 'react-i18next';
 import { TextFieldRedux, CheckboxRedux } from './ReduxFormMUI';
 import styles from './user-jss';
-import {useTranslation} from 'react-i18next';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -47,7 +47,7 @@ const LinkBtn = React.forwardRef(function LinkBtn(props, ref) { // eslint-disabl
 
 function RegisterForm(props) {
   const [tab, setTab] = useState(0);
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const handleChangeTab = (event, value) => {
     setTab(value);
@@ -186,7 +186,7 @@ function RegisterForm(props) {
               </div>
               <div className={classes.btnArea}>
                 <Button variant="contained" color="primary" type="submit">
-                {t('register-form.btn_continue')}
+                  {t('register-form.btn_continue')}
                   <ArrowForward className={classNames(classes.rightIcon, classes.iconSmall)} disabled={submitting || pristine} />
                 </Button>
               </div>
