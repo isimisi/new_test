@@ -17,6 +17,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Tag } from '@customTypes/data';
 import useStyles from './tag.jss';
+import {useTranslation} from 'react-i18next';
 
 import CreateTag from './CreateTag';
 
@@ -39,6 +40,7 @@ const TagList = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openId, setOpenId] = useState(null);
   const contextOpen = Boolean(anchorEl);
+  const {t} = useTranslation();
 
   const handleCloseTag = () => setShowCreateTag(false);
   const handleOpenTag = () => setShowCreateTag(true);
@@ -59,7 +61,7 @@ const TagList = (props: Props) => {
       <Paper>
         <List className={classes.tagContainer}>
           <ListItem button className={!tags.some(t => t.active) ? classes.activelistItem : undefined}>
-            <ListItemText primary="Vis alle" />
+            <ListItemText primary={t('tag-list.show_all')} />
             <ListItemSecondaryAction>
               <Paper className={classes.countContainer}>
                 <Typography className={classes.tagCount}>
@@ -75,7 +77,7 @@ const TagList = (props: Props) => {
               className={classes.button}
               onClick={handleOpenTag}
             >
-              Tilføj nyt tag
+              {`${t('tag-list.add_new_tag')}`}
             </Button>
           </ListItem>
           <Divider className={classes.divider} />

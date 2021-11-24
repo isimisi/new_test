@@ -14,6 +14,7 @@ import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import styles from '@components/Forms/user-jss';
 import { closeNotifAction, newPassword } from './reducers/authActions';
+import { useTranslation } from 'react-i18next';
 
 
 function NewPassword(props) {
@@ -23,6 +24,7 @@ function NewPassword(props) {
   const id = history.location.pathname.split('/').pop();
   const dispatch = useDispatch();
   const messageNotif = useSelector(state => state.auth.get('errorMessage'));
+  const {t} = useTranslation();
 
   const submitForm = useCallback((values) => {
     setValueForm(values);
@@ -61,7 +63,7 @@ function NewPassword(props) {
               </div>
             </div>
             <Typography variant="h2" className={classes.titleGradient} gutterBottom>
-              Skriv dit nye kodeord
+              {t('new-password-form.enter_your_new_password')}
             </Typography>
             <section className={classes.pageFormWrap}>
               <NewPasswordForm onSubmit={(values) => submitForm(values)} />

@@ -14,6 +14,7 @@ import CardActions from '@material-ui/core/CardActions';
 
 import Button from '@material-ui/core/Button';
 import styles from './cardStyle-jss';
+import { useTranslation } from 'react-i18next';
 
 function GroupCard(props) {
   const {
@@ -26,6 +27,7 @@ function GroupCard(props) {
     detailOpen,
     deleteGroup
   } = props;
+  const {t} = useTranslation();
   return (
     <Card className={classNames(classes.cardProduct, isWidthUp('sm', width) && list ? classes.cardList : '')}>
       <CardMedia
@@ -44,7 +46,7 @@ function GroupCard(props) {
       <CardActions className={classes.price}>
         <div className={classes.rightAction}>
           <Button size="small" variant="outlined" color="primary" onClick={detailOpen}>
-            Se detaljer
+            {t('groups.group-card.see_details')}
           </Button>
         </div>
         <div className={classes.rightAction}>

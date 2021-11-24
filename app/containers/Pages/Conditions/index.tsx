@@ -20,6 +20,7 @@ import styles from './conditions-jss';
 import {
   closeNotifAction, getConditions, postCondition, deleteCondition
 } from './reducers/conditionActions';
+import {useTranslation} from 'react-i18next';
 
 function Conditions(props) {
   const { classes } = props;
@@ -29,6 +30,7 @@ function Conditions(props) {
   const loading = useAppSelector(state => state[reducer].get('loading'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
+  const {t} = useTranslation();
 
   useEffect(() => {
     dispatch(getConditions());
@@ -50,14 +52,14 @@ function Conditions(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Dine betingelser"
+        title={t('conditions.your_conditions')}
         data={conditions}
-        columns={columns}
+        columns={columns(t)}
         options={tableOptions(onDelete, loading)}
       />
-      <Tooltip title="Ny betingelse">
+      <Tooltip title={`${t('conditions.your_conditions')}`}>
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postCondition(history))}>
-            Ny betingelse
+        {`${t('conditions.your_conditions')}`}
         </Fab>
       </Tooltip>
     </div>

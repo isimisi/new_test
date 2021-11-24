@@ -14,7 +14,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import UserMenu from './UserMenu';
 import SearchUi from '../Search/SearchUi';
+import LanguageSelector from '../LanguageSelector';
 import styles from './header-jss';
+import { useTranslation } from 'react-i18next';
 
 const elem = document.documentElement;
 
@@ -23,6 +25,7 @@ function Header(props) {
   const [fullScreen, setFullScreen] = useState(false);
   const [turnDarker, setTurnDarker] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
+  const {t} = useTranslation();
 
   // Initial header style
   let flagDarker = false;
@@ -127,13 +130,13 @@ function Header(props) {
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction)}>
               {fullScreen ? (
-                <Tooltip title="Afslut fuldskærmsvisning" placement="bottom">
+                <Tooltip title={t('header.exit_full_screen')} placement="bottom">
                   <IconButton className={classes.button} onClick={closeFullScreen}>
                     <i className="ion-ios-crop" />
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title="Fuldskærmsvisning" placement="bottom">
+                <Tooltip title={t('header.full_screen')} placement="bottom">
                   <IconButton className={classes.button} onClick={openFullScreen}>
                     <i className="ion-ios-crop" style={{ color: '#333' }} />
                   </IconButton>
@@ -145,13 +148,13 @@ function Header(props) {
                 </IconButton>
               </Tooltip> */}
 
-              <Tooltip title="Opdater" placement="bottom">
+              <Tooltip title={t('header.update')}  placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
                   <i className="ion-ios-refresh-outline" style={{ color: '#333' }} />
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title="Guide" placement="bottom">
+              <Tooltip title={t('header.guide')} placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
                   <i className="ion-ios-help-outline" style={{ color: '#333' }} />
                 </IconButton>
@@ -167,6 +170,7 @@ function Header(props) {
             <SearchUi history={history} />
           </div>
         </div> */}
+        <LanguageSelector />
         <Hidden xsDown>
           <span className={classes.separatorV} />
         </Hidden>

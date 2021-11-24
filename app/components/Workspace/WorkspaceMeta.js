@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import WorkspaceForm from './WorkspaceForm';
 import FloatingPanel from '../Panel/FloatingPanel';
 import styles from './workspace-jss';
+import {useTranslation} from 'react-i18next';
 
 function WorkspaceMeta(props) {
   const {
@@ -24,13 +25,15 @@ function WorkspaceMeta(props) {
     changeTags
   } = props;
   const branch = '';
+  const {t} = useTranslation();
+
   return (
     <div>
       <FloatingPanel
         openForm={open}
         branch={branch}
         closeForm={closeForm}
-        title="Navngiv dit arbejdsområde"
+        title={t('workspace-meta.name_your_work_area')}
       >
         <WorkspaceForm
           label={label}

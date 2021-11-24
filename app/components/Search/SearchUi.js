@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import suggestionsApi from '@api/ui/menu';
 import styles from './search-jss';
+import {useTranslation} from 'react-i18next';
 
 const menu = [];
 
@@ -117,6 +118,7 @@ function SearchUi(props) {
   };
 
   const { classes } = props;
+  const {t} = useTranslation();
 
   return (
     <Autosuggest
@@ -137,7 +139,7 @@ function SearchUi(props) {
       className={classes.autocomplete}
       inputProps={{
         classes,
-        placeholder: 'Søg',
+        placeholder: t('search.search'),
         value,
         onChange: handleChange,
       }}

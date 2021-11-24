@@ -11,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import {
   backgroundChange, borderChange, sizeChange
 } from '../../containers/Pages/Nodes/reducers/nodeActions';
+import { useTranslation } from 'react-i18next';
 
 const styles = () => ({
   root: {
@@ -62,6 +63,7 @@ const NodeStyling = (props) => {
     backgroundColor,
     borderColor
   } = props;
+  const {t} = useTranslation();
 
   const [displayColorPickerBackground, setDisplayColorPickerBackground] = useState(false);
 
@@ -99,19 +101,19 @@ const NodeStyling = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Standard-udseende
+        {t('nodes.node-styling.standard-look')}
       </Typography>
       <div className={classes.row}>
         <Typography variant="subtitle2" component="h3">
-        Størrelse
+        {t('nodes.node-styling.size')}
         </Typography>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Small' ? 'secondary' : ''}>Small</Button>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Medium' ? 'secondary' : ''}>Medium</Button>
-        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Large' ? 'secondary' : ''}>Large</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Small' ? 'secondary' : ''}>{t('nodes.node-styling.small')}</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Medium' ? 'secondary' : ''}>{t('nodes.node-styling.medium')}</Button>
+        <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Large' ? 'secondary' : ''}>{t('nodes.node-styling.large')}</Button>
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
-        Farve
+        {t('nodes.node-styling.color')}
         </Typography>
         <div className={classes.swatch} onClick={handleClickBackground}>
           <div className={classes.color} style={{ backgroundColor: `rgba(${backgroundColor.r}, ${backgroundColor.g}, ${backgroundColor.b}, ${backgroundColor.a})` }} />
@@ -125,7 +127,7 @@ const NodeStyling = (props) => {
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
-        Kantfarve
+        {t('nodes.node-styling.border_color')}
         </Typography>
         <div className={classes.swatch} onClick={handleClickBorder}>
           <div className={classes.color} style={{ backgroundColor: `rgba(${borderColor.r}, ${borderColor.g}, ${borderColor.b}, ${borderColor.a})` }} />

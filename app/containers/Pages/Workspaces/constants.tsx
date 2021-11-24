@@ -50,9 +50,9 @@ export const getLayoutedElements = (elements, direction = 'TB') => {
   });
 };
 
-export const columns = [
+export const columns = (t) => [
   {
-    name: 'Titel',
+    name: t('workspaces.table_title'),
     options: {
       filter: true,
       filterOptions: {
@@ -75,13 +75,13 @@ export const columns = [
     }
   },
   {
-    name: 'Beskrivelse',
+    name: t('workspaces.table_desc'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Tags',
+    name: t('workspaces.tags'),
     options: {
       filter: false,
       filterList: [],
@@ -96,7 +96,7 @@ export const columns = [
     }
   },
   {
-    name: 'Gruppe',
+    name: t('workspaces.table_groups'),
     options: {
       filter: true,
     }
@@ -111,7 +111,7 @@ export const columns = [
         <Tooltip title={!value ? 'Dine arbejdsområder bliver låst efter 90 dage på base' : 'Gå til arbejdsområde'}>
           <Link to={!value ? '/app/plan' : `/app/workspaces/${value}`} style={{ textDecoration: 'none' }}>
             <Button variant="contained" color="secondary" disabled={!value}>
-              {!value ? 'Låst' : 'Åben'}
+              {!value ? 'Låst' : t('workspaces.btn_open')}
             </Button>
           </Link>
         </Tooltip>
@@ -119,13 +119,13 @@ export const columns = [
     }
   },
   {
-    name: 'Oprettet',
+    name: t('workspaces.table_created'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Sidst ændret',
+    name: t('workspaces.last_changed'),
     options: {
       filter: true,
     }

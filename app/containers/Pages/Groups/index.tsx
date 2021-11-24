@@ -22,6 +22,7 @@ import {
   closeNotifAction,
   showNotifAction
 } from './reducers/groupActions';
+import { useTranslation } from 'react-i18next';
 
 
 const useStyles = makeStyles(() => ({
@@ -48,6 +49,7 @@ function Groups() {
   const description = useSelector(state => state[reducer].get('description'));
   const image = useSelector(state => state[reducer].get('image')).toJS();
   const messageNotif = useSelector(state => state[reducer].get('message'));
+  const {t} = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -115,7 +117,7 @@ function Groups() {
             }
           }}
         >
-            Create new Group
+            {`${t('groups.btn_create_new_group')}`}
         </Fab>
       </Tooltip>
       <GroupModal

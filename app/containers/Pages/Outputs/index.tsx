@@ -19,6 +19,7 @@ import styles from './output-jss';
 import {
   getOutput, postOutput, closeNotifAction, deleteOutput
 } from './reducers/outputActions';
+import {useTranslation} from 'react-i18next';
 
 
 function Outputs(props) {
@@ -28,6 +29,7 @@ function Outputs(props) {
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
+  const {t} = useTranslation();
 
   useEffect(() => {
     dispatch(getOutput());
@@ -48,14 +50,14 @@ function Outputs(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Dit indhold"
+        title={t('outputs.outputs.title')}
         data={outputs}
         columns={columns}
-        options={tableOptions(onDelete, false)}
+        options={tableOptions(onDelete, false, t('outputs.outputs.loadingMeassage'))}
       />
       <Tooltip title="Nyt indhold">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postOutput(history))}>
-            Create new Output
+          {`${t('outputs.outputs.btn_create_new_output')}`}
         </Fab>
       </Tooltip>
     </div>

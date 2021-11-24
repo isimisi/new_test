@@ -41,7 +41,13 @@ import { isMobile } from 'react-device-detect';
 import store from './redux/configureStore';
 
 // Import i18n messages
-import { translationMessages } from './i18n';
+// import { translationMessages } from './i18n';
+
+// import i18nemo
+import i18n from './i18nemo';
+
+// I18nextProvider 
+import { I18nextProvider } from 'react-i18next';
 
 import 'video-react/dist/video-react.css';
 
@@ -89,16 +95,16 @@ if (!isMobile) {
 
 const persistor = persistStore(store);
 
-let render = messages => {
+let render = i18n => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <LanguageProvider messages={messages}>
+        <I18nextProvider i18n={i18n}>
           <ConnectedRouter history={history}>
             <App />
             <ToastContainer />
           </ConnectedRouter>
-        </LanguageProvider>
+        </I18nextProvider>
       </PersistGate>
     </Provider>,
     MOUNT_NODE
@@ -108,17 +114,17 @@ let render = messages => {
 if (process.env.NODE_ENV === 'production') {
   const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 
-  render = messages => {
+  render = i18n => {
     ReactDOM.render(
       <ErrorBoundary>
         <Provider store={store}>
-          <LanguageProvider messages={messages}>
+          <I18nextProvider i18n={i18n}>
             <ConnectedRouter history={history}>
               <App />
               <ToastContainer />
               <CookieBot domainGroupId={domainGroupId} />
             </ConnectedRouter>
-          </LanguageProvider>
+          </I18nextProvider>
         </Provider>
       </ErrorBoundary>,
       MOUNT_NODE
@@ -136,12 +142,12 @@ if (!window.Intl) {
       import('intl/locale-data/jsonp/de.js')
     ])
     )
-    .then(() => render(translationMessages))
+    .then(() => render())
     .catch(err => {
       throw err;
     });
 } else {
-  render(translationMessages);
+  render();
 }
 // Install ServiceWorker and AppCache in the end since
 // it's not most important operation and if main code fails,

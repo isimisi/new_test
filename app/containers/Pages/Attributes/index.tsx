@@ -18,6 +18,7 @@ import { columns, reducer } from './constants';
 import {
   getAttributes, closeNotifAction, postAttribute, getGroupDropDown, putAttribute, showAttribute, deleteAttribute, changeCurrentAttribute
 } from './reducers/attributeActions';
+import { useTranslation } from 'react-i18next';
 
 function Attributes(props) {
   const [open, setOpen] = useState(false);
@@ -34,6 +35,7 @@ function Attributes(props) {
   const selectionOptions = useAppSelector(state => state[reducer].get('selectionOptions'));
   const { plan_id } = loadFromLocalStorage();
   const history = useHistory();
+  const {t} = useTranslation();
 
   const { classes } = props;
 
@@ -63,12 +65,12 @@ function Attributes(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Dine kendetegn"
+        title={t('attributes.your_features')}
         data={attributes}
-        columns={columns(onOpen)}
+        columns={columns(onOpen, t)}
         options={tableOptions(onDelete, loading, 'kendetegn')}
       />
-      <Tooltip title="Nyt kendetegn">
+      <Tooltip title={`${t('attributes.btn_new_features')}`}>
         <Fab
           variant="extended"
           color="primary"
@@ -78,7 +80,7 @@ function Attributes(props) {
             dispatch(postAttribute());
           }}
         >
-            Nyt kendetegn
+            {`${t('attributes.btn_new_features')}`}
         </Fab>
       </Tooltip>
       <Attribute

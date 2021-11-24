@@ -23,6 +23,7 @@ import logo from '@images/logo.svg';
 import { useAppSelector } from '@hooks/redux';
 import { TextFieldRedux, CheckboxRedux } from './ReduxFormMUI';
 import styles from './user-jss';
+import { useTranslation } from 'react-i18next';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -43,6 +44,7 @@ const LoginForm = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const deco = useAppSelector(state => state.ui.get('decoration'));
   const classes = useStyles();
+  const {t} = useTranslation();
 
   const handleClickShowPassword = () => {
     setShowPassword(show => !show);
@@ -77,12 +79,12 @@ const LoginForm = (props) => {
               to="/register"
             >
               <Icon className={classes.icon}>arrow_forward</Icon>
-              Opret ny konto
+              {t('login-form.create_account')}
             </Button>
           </div>
         </Hidden>
         <Typography variant="h4" className={classes.title} gutterBottom>
-          Log ind
+          {t('login-form.log_in')}
         </Typography>
 
         <section className={classes.formWrap}>
@@ -92,8 +94,8 @@ const LoginForm = (props) => {
                 <Field
                   name="email"
                   component={TextFieldRedux}
-                  placeholder="Din Email"
-                  label="Din Email"
+                  placeholder={t('login-form.your_email')}
+                  label={t('login-form.your_email')}
                   required
                   validate={[required, email]}
                   className={classes.field}
@@ -106,7 +108,7 @@ const LoginForm = (props) => {
                   name="password"
                   component={TextFieldRedux}
                   type={showPassword ? 'text' : 'password'}
-                  label="Dit Kodeord"
+                  label={t('login-form.your_password')}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -127,19 +129,19 @@ const LoginForm = (props) => {
               </FormControl>
             </div>
             <div className={classes.optArea}>
-              <FormControlLabel className={classes.label} control={<Field name="checkbox" component={CheckboxRedux} />} label="Husk mig" />
+              <FormControlLabel className={classes.label} control={<Field name="checkbox" component={CheckboxRedux} />} label={t('login-form.remember_me')} />
               <Button
                 size="small"
                 component={LinkBtn}
                 to="/reset-password"
                 className={classes.buttonLink}
               >
-                Glemt Kodeord
+                {t('login-form.forgot_password')}
               </Button>
             </div>
             <div className={classes.btnArea}>
               <Button variant="contained" color="primary" size="large" type="submit">
-                Fortsæt
+                {t('login-form.btn_continue')}
                 <ArrowForward
                   className={classNames(classes.rightIcon, classes.iconSmall)}
                   disabled={submitting || pristine}

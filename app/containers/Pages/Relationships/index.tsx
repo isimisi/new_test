@@ -18,6 +18,7 @@ import { tableColumns, reducer } from './constants';
 import {
   getRelationships, postRelationship, closeNotifAction, deleteRelationship
 } from './reducers/relationshipActions';
+import { useTranslation } from 'react-i18next';
 
 function Relationships(props) {
   const { classes } = props;
@@ -26,6 +27,7 @@ function Relationships(props) {
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
+  const {t} = useTranslation();
 
   useEffect(() => {
     dispatch(getRelationships());
@@ -47,14 +49,14 @@ function Relationships(props) {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Dine forbindelser"
+        title={t('relationships.your_relationships')}
         data={relationships}
-        columns={tableColumns}
+        columns={tableColumns(t)}
         options={tableOptions(onDelete, false)}
       />
       <Tooltip title="Ny forbindelse">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postRelationship(history))}>
-            Ny forbindelse
+         {`${t('relationships.btn_new_relationship')}`}
         </Fab>
       </Tooltip>
     </div>

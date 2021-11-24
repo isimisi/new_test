@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import NodeForm from './NodeForm';
 import FloatingPanel from '../../Panel/FloatingPanel';
 import styles from '../condition-jss';
+import {useTranslation} from 'react-i18next';
 
 function DefineNode(props) {
   const {
@@ -22,14 +23,15 @@ function DefineNode(props) {
     isUpdatingElement,
     handleDeleteNode
   } = props;
-
+  const {t} = useTranslation();
+  
   return (
     <div>
       <FloatingPanel
         openForm={open}
         closeForm={close}
         extraSize
-        title={isUpdatingElement ? 'Ændre dit element' : 'Definer dit element for et scenarie'}
+        title={isUpdatingElement ? t('conditions.define-node.modify_your_element') : t('conditions.define-node.define_your_element')}
       >
         <NodeForm
           nodes={nodes}

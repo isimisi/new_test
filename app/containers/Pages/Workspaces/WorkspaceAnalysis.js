@@ -27,6 +27,7 @@ import { reducer } from './constants';
 import {
   analyseOutput, saveAnalysis, closeNotifAction, revisionHistory, analysisTextChange
 } from './reducers/workspaceActions';
+import { useTranslation } from 'react-i18next';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -65,6 +66,7 @@ const WorkspaceAnalysis = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [activeRevision, setActiveRevision] = useState({});
+  const {t} = useTranslation();
 
 
   const matchpattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm;
@@ -229,7 +231,7 @@ const WorkspaceAnalysis = () => {
         </Grid>
       ))}
 
-      <Tooltip title="Tidligere versioner">
+      <Tooltip title={t('workspaces.workspace-analysis.earlier_versions')}>
         <Fab
           variant="extended"
           color="secondary"
@@ -245,7 +247,7 @@ const WorkspaceAnalysis = () => {
           <AssignmentIcon />
         </Fab>
       </Tooltip>
-      <Tooltip title="Gem">
+      <Tooltip title={t('workspaces.workspace-analysis.save')}>
         <Fab
           variant="extended"
           color="primary"

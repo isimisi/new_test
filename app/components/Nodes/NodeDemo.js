@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Tooltip from '@material-ui/core/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 const styles = theme => ({
   root: {
@@ -45,7 +46,7 @@ const NodeDemo = (props) => {
     backgroundColorSelector,
     borderColorSelector
   } = props;
-
+  const {t} = useTranslation();
 
   const backgroundColor = `rgba(${backgroundColorSelector.get('r')}, ${backgroundColorSelector.get('g')}, ${backgroundColorSelector.get('b')}, ${backgroundColorSelector.get('a')})`;
   const borderColor = `rgba(${borderColorSelector.get('r')}, ${borderColorSelector.get('g')}, ${borderColorSelector.get('b')}, ${borderColorSelector.get('a')})`;
@@ -66,7 +67,7 @@ const NodeDemo = (props) => {
   return (
     <Paper className={classes.root}>
       <Typography variant="h5" component="h3">
-        Dine elementer
+        {t('nodes.node-demo.your_elements')}
       </Typography>
       <Tooltip title={description}>
         <div

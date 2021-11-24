@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import ConditionForm from './ConditionForm';
 import FloatingPanel from '../Panel/FloatingPanel';
 import styles from './condition-jss';
+import {useTranslation} from 'react-i18next';
 
 function ConditionMeta(props) {
   const {
@@ -19,13 +20,15 @@ function ConditionMeta(props) {
     onSave
   } = props;
   const branch = '';
+  const {t} = useTranslation();
+
   return (
     <div>
       <FloatingPanel
         openForm={open}
         branch={branch}
         closeForm={closeForm}
-        title="Dit scenarie"
+        title={t('conditions.conditions-meta.form_title')}
       >
         <ConditionForm
           label={label}
