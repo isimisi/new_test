@@ -35,6 +35,7 @@ const formatTranslationMessages = (locale, messages) => {
 };
 
 const translationMessages = {
+
   en: formatTranslationMessages('en', enTranslationMessages),
   de: formatTranslationMessages('de', deTranslationMessages),
 };
