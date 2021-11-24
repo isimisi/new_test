@@ -147,7 +147,7 @@ const Workspaces = props => {
           />
         </Grid>
       </Grid>
-      <Tooltip {`${t('workspaces.btn_new_workspace')}`}>
+      <Tooltip title={`${t('workspaces.btn_new_workspace')}`}>
         <Fab
           variant="extended"
           color="primary"
