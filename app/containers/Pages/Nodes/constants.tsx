@@ -2,33 +2,33 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
-export const tableColumns = [
+export const tableColumns = (t) => ([
   {
-    name: 'Titel',
+    name: t('nodes.table_title'),
     options: {
       filter: true
     }
   },
   {
-    name: 'Beskrivelse',
+    name: t('nodes.table_desc'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Gruppe',
+    name: t('nodes.table_groups'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Se element',
+    name: t('nodes.table_see_element'),
     options: {
       filter: true,
       customBodyRender: (value) => (
         <Link to={`/app/nodes/${value}`} style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="secondary">
-              Åben
+              {t('nodes.btn_open')}
           </Button>
         </Link>
       )
@@ -40,7 +40,7 @@ export const tableColumns = [
       filter: true,
     }
   },
-];
+]);
 
 export const reducer = 'node';
 

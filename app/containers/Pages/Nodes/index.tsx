@@ -19,6 +19,7 @@ import styles from './node-jss';
 import {
   getNodes, postNode, closeNotifAction, deleteNode
 } from './reducers/nodeActions';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(styles);
 
@@ -30,6 +31,7 @@ const Nodes = () => {
   const loading = useSelector(state => state[reducer].get('loading'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
+  const {t} = useTranslation();
 
   useEffect(() => {
     dispatch(getNodes());
@@ -52,14 +54,14 @@ const Nodes = () => {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Dine elementer"
+        title={t('nodes.your_elements')}
         data={nodes}
-        columns={tableColumns}
+        columns={tableColumns(t)}
         options={tableOptions(onDelete, loading)}
       />
-      <Tooltip title="Nyt element">
+      <Tooltip title={`${t('nodes.btn_new_element')}`}>
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postNode(history))}>
-            Nyt element
+            {`${t('nodes.btn_new_element')}`}
         </Fab>
       </Tooltip>
     </div>

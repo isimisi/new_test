@@ -14,6 +14,7 @@ import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import { TextFieldRedux } from './ReduxFormMUI';
 import styles from './user-jss';
+import {useTranslation} from 'react-i18next';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -31,6 +32,8 @@ function ResetForm(props) {
     submitting,
     deco,
   } = props;
+  const {t} = useTranslation();
+
   return (
     <Paper className={classNames(classes.paperWrap, deco && classes.petal)}>
       <div className={classes.topBar}>
@@ -39,10 +42,10 @@ function ResetForm(props) {
         </NavLink>
       </div>
       <Typography variant="h4" className={classes.title} gutterBottom>
-        Reset kodeord
+        {t('reset-form.reset_password')}
       </Typography>
       <Typography variant="caption" className={classes.subtitle} gutterBottom align="center">
-        Send et link til din email for at ændre dit kodeord
+        {t('reset-form.send_a_link')}
       </Typography>
       <section className={classes.formWrap}>
         <form onSubmit={handleSubmit}>
@@ -51,8 +54,8 @@ function ResetForm(props) {
               <Field
                 name="email"
                 component={TextFieldRedux}
-                placeholder="Din Email"
-                label="Din Email"
+                placeholder={t('reset-form.your_email')}
+                label={t('reset-form.your_email')}
                 required
                 validate={[required, email]}
                 className={classes.field}
@@ -61,7 +64,7 @@ function ResetForm(props) {
           </div>
           <div className={classes.btnArea}>
             <Button variant="contained" color="primary" type="submit">
-              Send link
+            {t('reset-form.btn_send_link')}
               <ArrowForward className={classNames(classes.rightIcon, classes.iconSmall)} disabled={submitting || pristine} />
             </Button>
           </div>

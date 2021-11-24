@@ -5,10 +5,12 @@ import Grid from '@material-ui/core/Grid';
 import Ionicon from 'react-ionicons';
 import CounterWidget from '../Counter/CounterWidget';
 import styles from './widget-jss';
+import {useTranslation} from 'react-i18next';
 
 
 const CounterIconWidget = (props) => {
   const { classes, elementCounts, history } = props;
+  const {t} = useTranslation();
 
   const handleClick = (where) => {
     history.push(`/app/${where}`);
@@ -23,7 +25,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('nodes') < 20 ? 50 : 0}
             end={elementCounts.get('nodes') || 0}
             duration={5}
-            title="elementer"
+            title={t('personal-dashboard.CounterIconsWidget.elements')}
             onClick={() => handleClick('nodes')}
           >
             <Ionicon
@@ -38,7 +40,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('nodes') < 20 ? 50 : 0}
             end={elementCounts.get('relationships') || 0}
             duration={5}
-            title="forbindelser"
+            title={t('personal-dashboard.CounterIconsWidget.relationship')}
             onClick={() => handleClick('relationships')}
           >
             <Ionicon
@@ -53,7 +55,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('attributes') < 20 ? 50 : 0}
             end={elementCounts.get('attributes') || 0}
             duration={5}
-            title="kendetegn"
+            title={t('personal-dashboard.CounterIconsWidget.features')}
             onClick={() => handleClick('attributes')}
           >
             <Ionicon
@@ -68,7 +70,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('conditions') < 20 ? 50 : 0}
             end={elementCounts.get('conditions') || 0}
             duration={5}
-            title="betingelser"
+            title={t('personal-dashboard.CounterIconsWidget.conditions')}
             onClick={() => handleClick('conditions')}
           >
             <Ionicon
@@ -83,7 +85,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('workspaces') < 20 ? 50 : 0}
             end={elementCounts.get('workspaces') || 0}
             duration={5}
-            title="områder"
+            title={t('personal-dashboard.CounterIconsWidget.areas')}
             onClick={() => handleClick('workspaces')}
           >
             <Ionicon
@@ -99,7 +101,7 @@ const CounterIconWidget = (props) => {
             end={elementCounts.get('groups') || 0}
             duration={5}
             onClick={() => handleClick('groups')}
-            title="grupper"
+            title={t('personal-dashboard.CounterIconsWidget.groups')}
           >
             <Ionicon
               className={classes.counterIcon}
@@ -113,7 +115,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('outputs') < 20 ? 50 : 0}
             end={elementCounts.get('outputs') || 0}
             duration={5}
-            title="rapporter"
+            title={t('personal-dashboard.CounterIconsWidget.outputs')}
             onClick={() => handleClick('outputs')}
           >
             <Ionicon
@@ -128,7 +130,7 @@ const CounterIconWidget = (props) => {
             start={elementCounts.get('alerts') < 20 ? 50 : 0}
             end={/* elementCounts.get('alerts') || */0}
             duration={5}
-            title="egne red flags"
+            title={t('personal-dashboard.CounterIconsWidget.alerts')}
             onClick={() => handleClick('red flags')}
           >
             <Ionicon

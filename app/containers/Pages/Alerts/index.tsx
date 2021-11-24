@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
+import PropTypes, { any } from 'prop-types';
 import MUIDataTable from 'mui-datatables';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
@@ -20,6 +20,7 @@ import {
 import {
   getAlerts, postAlert, deleteAlert, closeNotifAction
 } from './reducers/alertActions';
+import { useTranslation} from 'react-i18next';
 
 const Alerts = (props) => {
   const { classes } = props;
@@ -28,6 +29,8 @@ const Alerts = (props) => {
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
+  const { t } = useTranslation();
+
 
   useEffect(() => {
     dispatch(getAlerts());
@@ -49,22 +52,21 @@ const Alerts = (props) => {
     <div className={classes.table}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <MUIDataTable
-        title="Dine Red Flags"
+        title={t('alerts.your_red_flags')}
         data={alerts}
-        columns={columns}
+        columns={columns(t)}
         options={tableOptions(onDelete, false)}
       />
-      <Tooltip title="Nyt red flag">
         <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postAlert(history))}>
-            Nyt red flag
+            {`${t('alerts.btn_new_red_flag')}`}
         </Fab>
-      </Tooltip>
     </div>
   );
 };
 
 Alerts.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  t: any
 };
 
 export default withStyles(styles)(Alerts);

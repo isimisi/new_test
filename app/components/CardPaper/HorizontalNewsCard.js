@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import styles from './cardStyle-jss';
+import {useTranslation} from 'react-i18next';
 
 function HorizontalNewsCard(props) {
   const {
@@ -14,8 +15,10 @@ function HorizontalNewsCard(props) {
     thumbnail,
     title,
     desc,
-    handleOpenGuide
+    handleOpenGuide,
   } = props;
+  const {t} = useTranslation();
+
   return (
     <Card className={classes.newsList}>
       <CardContent className={classes.newsListContent}>
@@ -27,7 +30,7 @@ function HorizontalNewsCard(props) {
         </Typography>
         <div className={classes.actionArea}>
           <Button size="small" color="primary" onClick={handleOpenGuide}>
-            Se guide her
+            {t('personal-dashboard.HorizontalNewsCard.btn_see_guide_here')}
           </Button>
         </div>
       </CardContent>

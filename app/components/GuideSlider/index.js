@@ -12,6 +12,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Slide from '@material-ui/core/Slide';
 import guideData from '@api/dummy/guideData';
 import styles from './guide-jss';
+import { useTranslation } from 'react-i18next';
+import guideSteps from '../../api/dummy/guideData';
 
 const maxStepsSwipe = guideData.length;
 
@@ -21,6 +23,10 @@ const Transition = React.forwardRef(function Transition(props, ref) { // eslint-
 
 function GuideSlider(props) {
   const [activeStepSwipe, setActiveStepSwipe] = useState(0);
+  
+  const {t} = useTranslation();
+  const guideData = guideSteps(t);
+  const maxStepsSwipe = guideData.length;
 
   const handleNextSwipe = () => {
     setActiveStepSwipe(activeStepSwipe + 1);
@@ -84,12 +90,12 @@ function GuideSlider(props) {
           nextButton={
             activeStepSwipe === maxStepsSwipe - 1 ? (
               <Button size="small" color="primary" onClick={handleClose}>
-                Afslut
+                {t('guide-slider.exit')}
                 {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
               </Button>
             ) : (
               <Button size="small" onClick={handleNextSwipe}>
-                Fortsæt
+                {t('guide-slider.continue')}
                 {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
               </Button>
             )
@@ -97,7 +103,7 @@ function GuideSlider(props) {
           backButton={(
             <Button size="small" onClick={handleBackSwipe} disabled={activeStepSwipe === 0}>
               {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-              Tilbage
+              {t('guide-slider.back')}
             </Button>
           )}
         />

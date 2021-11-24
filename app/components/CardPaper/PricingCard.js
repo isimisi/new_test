@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Loader from '@components/Loading/LongLoader';
 import styles from './cardStyle-jss';
+import {useTranslation} from 'react-i18next';
 
 
 function PricingCard(props) {
@@ -40,11 +41,13 @@ function PricingCard(props) {
         return classes.free;
     }
   };
+  const {t} = useTranslation();
 
-  const lite = ['Indlæs fra CVR', 'Hent regnskabsdata', 'Ændre data fra CVR', 'Tilføj indhold', 'Automatiske red flags'];
+  const lite = [ t('choose-plan.load_from_cvr'), t('choose-plan.download_accounting_data'), 
+  t('choose-plan.change_data_from_CVR'), t('choose-plan.add_content'), t('choose-plan.automatic_red_flags')];
 
-  const team = ['Sikkert virksomhedslogin', 'Design egne red flags', 'Design eget indhold', "Integrer andre API'er", 'Eget subdomæne', 'VPN lås'];
-  const pro = ['Automatisk læringsindhold', 'Automatisk report builder'];
+  const team = [t('choose-plan.secure_company_login'), t('choose-plan.design_your_own_red_flags'), t('choose-plan.design_your_own_content'), t('choose-plan.integrate_other_APIs'), t('choose-plan.own_subdomain'), t('choose-plan.vpn_lock')];
+  const pro = [t('choose-plan.automatic_learning_content'), t('choose-plan.automatic_report_builde')];
 
   const features = [
     ...lite,
@@ -55,7 +58,7 @@ function PricingCard(props) {
     if (lv === 'free') {
       return 50;
     }
-    return 'Ubegr.';
+    return t('choose-plan.unlimited');
   };
 
   const getTierForChecks = lv => {
@@ -75,12 +78,12 @@ function PricingCard(props) {
         <div className={classes.priceHead}>
           <Typography variant="h5">{title}</Typography>
           <Typography component="h4" variant="h3">{price}</Typography>
-          {title !== 'Pro' && <Typography>ekskl. moms</Typography>}
+          {title !== 'Pro' && <Typography>{t('choose-plan.excl_vat')}</Typography>}
         </div>
         <CardContent className={classes.featureList}>
           <List dense>
             <ListItem>
-              <ListItemText primary="Arbejdsområder" />
+              <ListItemText primary={t('choose-plan.workspaces')} />
               <ListItemSecondaryAction>
                 <Typography style={{ marginRight: 10 }}>{getTierForWorkspaces(tier)}</Typography>
               </ListItemSecondaryAction>
@@ -104,7 +107,7 @@ function PricingCard(props) {
               className={classes.lightButton}
               onClick={() => onClick()}
             >
-              {included ? 'Inkluderet' : active ? 'Nuværende' : title === 'Pro' || title === 'Draw' ? 'Bestil en demo' : 'Få det nu'}
+              {included ? t('choose-plan.btn_included')  : active ? 'Nuværende' : title === 'Pro' || title === 'Draw' ?  t('choose-plan.order_a_demo') : 'Få det nu'}
             </Button>
           )}
         </CardActions>

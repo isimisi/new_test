@@ -18,6 +18,7 @@ import { loadFromLocalStorage } from '@utils/localStorage';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CreatableSelect from 'react-select/creatable';
 import styles from './workspace-jss';
+import {useTranslation} from 'react-i18next';
 
 
 const localeStorage = loadFromLocalStorage();
@@ -61,6 +62,7 @@ const WorkspaceForm = (props) => {
     tags,
     changeTags
   } = props;
+  const {t} = useTranslation();
 
   return (
     <div>
@@ -68,8 +70,8 @@ const WorkspaceForm = (props) => {
         <div>
           <TextField
             name="label"
-            placeholder="Navn"
-            label="Label"
+            placeholder={t('workspaces.workspace-form.name')}
+            label={t('workspaces.workspace-form.name')}
             className={classes.field}
             value={label}
             onChange={labelChange}
@@ -79,8 +81,8 @@ const WorkspaceForm = (props) => {
           <TextField
             name="description"
             className={classes.field}
-            placeholder="Indtast beskrivelse"
-            label="Beskrivelse"
+            placeholder={t('workspaces.workspace-form.desc')}
+            label={t('workspaces.workspace-form.desc')}
             multiline
             rows={2}
             value={description}
@@ -95,14 +97,14 @@ const WorkspaceForm = (props) => {
                 styles={selectStyles('relative')}
                 inputId="react-select-single-workspace"
                 TextFieldProps={{
-                  label: 'groups',
+                  label: t('workspaces.workspace-form.select_group'),
                   InputLabelProps: {
                     htmlFor: 'react-select-single-workspace',
                     shrink: true,
                   },
-                  placeholder: 'Vælg gruppe',
+                  placeholder: t('workspaces.workspace-form.select_group'),
                 }}
-                placeholder="Vælg gruppe"
+                placeholder={t('workspaces.workspace-form.select_group')}
                 options={mapSelectOptions(groupsDropDownOptions)}
                 value={group && { label: group, value: group }}
                 onChange={addGroup}
@@ -143,7 +145,7 @@ const WorkspaceForm = (props) => {
               }
             }}
             inputId="react-select-tags"
-            placeholder="Tilføj tags til dit arbejdsområde"
+            placeholder={t('workspaces.workspace-form.add_tags_to_your_workspace')}
             options={tagOptions.map(tagMapping)}
           />
         </div>
@@ -159,7 +161,7 @@ const WorkspaceForm = (props) => {
               color="primary"
             />
             <Typography variant="subtitle2">
-                Del dit arbejdsområde med det resterende af din organisation
+              {t('workspaces.workspace-form.checkbox')}
             </Typography>
           </ButtonBase>
         )}
@@ -167,7 +169,7 @@ const WorkspaceForm = (props) => {
       <div className={css.buttonArea}>
         {closeForm && (
           <Button type="button" onClick={closeForm}>
-            Annuller
+            {t('workspaces.workspace-form.btn_cnx')}
           </Button>
         )}
         <Button
@@ -177,7 +179,7 @@ const WorkspaceForm = (props) => {
           disabled={label?.length === 0 || group?.length === 0}
           onClick={onSave}
         >
-            Gem
+            {t('workspaces.workspace-form.btn_save')}
         </Button>
       </div>
     </div>

@@ -11,6 +11,7 @@ import GridOn from '@material-ui/icons/GridOn';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import styles from './search-jss';
+import {useTranslation} from 'react-i18next';
 
 function SearchProduct(props) {
   const {
@@ -21,6 +22,7 @@ function SearchProduct(props) {
     handleSwitchView,
     listView
   } = props;
+  const {t} = useTranslation();
 
   const getTotalResult = dataArray => {
     let totalResult = 0;
@@ -44,12 +46,12 @@ function SearchProduct(props) {
               <div className={classes.search}>
                 <SearchIcon />
               </div>
-              <input className={classes.input} placeholder="Søg blandt grupper" onChange={(event) => search(event)} />
+              <input className={classes.input} placeholder={t('groups.search-group.search_groups')}onChange={(event) => search(event)} />
             </div>
           </div>
           <Typography variant="caption" className={classes.result}>
             {getTotalResult(dataProduct)}
-            &nbsp;Resultater
+            &nbsp;{t('groups.search-group.results')}
           </Typography>
           <Hidden mdDown>
             <div className={classes.toggleContainer}>

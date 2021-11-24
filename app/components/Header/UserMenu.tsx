@@ -18,6 +18,7 @@ import UserAvatar from 'react-user-avatar';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import store from '@redux/configureStore';
 import { customerPortal } from '../../containers/Pages/CreateOrganization/reducers/createOrganizationActions';
+import {useTranslation} from 'react-i18next';
 
 import styles from './header-jss';
 
@@ -25,6 +26,7 @@ function UserMenu() {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const theme = useTheme();
+  const {t} = useTranslation();
 
   const [menuState, setMenuState] = useState({
     anchorEl: null,
@@ -80,13 +82,13 @@ function UserMenu() {
       >
 
         <MenuItem disabled onClick={handleClose} component={Link} to={link.profile}>{name}</MenuItem>
-        <MenuItem disabled={!stripe_customer_id} onClick={admonistratePlan}>Administrer plan</MenuItem>
+        <MenuItem disabled={!stripe_customer_id} onClick={admonistratePlan}>{t('user-menu.plan_administrator')}</MenuItem>
         <Divider />
         <MenuItem onClick={handleLogOut} component={Link} to="/">
           <ListItemIcon>
             <ExitToApp />
           </ListItemIcon>
-          Log Out
+          {t('user-menu.log_out')}
         </MenuItem>
       </Menu>
     </div>

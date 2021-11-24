@@ -1,42 +1,42 @@
 module.exports = [
   {
     key: 'dashboard',
-    name: 'Forside',
+    name: ('sidebar-menu.front_page'),
     icon: 'ios-analytics-outline',
     linkParent: '/app',
   },
   {
     key: 'workspace',
-    name: 'Arbejdsområder',
+    name: ('sidebar-menu.your_workspace'),
     icon: 'ios-git-network',
     linkParent: '/app/workspaces',
   },
   {
     key: 'dataBuilder',
-    name: 'Byggeklodser',
+    name: ('sidebar-menu.data_builder'),
     icon: 'ios-build-outline',
     child: [
       {
         key: 'conditions',
-        name: 'Betingelser',
+        name: ('sidebar-menu.child.conditions'),
         link: '/app/conditions',
         badge: 'Draw',
       },
       {
         key: 'nodes',
-        name: 'Elementer',
+        name: ('sidebar-menu.child.nodes'),
         link: '/app/nodes',
         badge: 'Draw',
       },
       {
         key: 'attributes',
-        name: 'Kendetegn',
+        name: ('sidebar-menu.child.attributes'),
         link: '/app/attributes',
         badge: 'Draw',
       },
       {
         key: 'relationships',
-        name: 'Forbindelser',
+        name: ('sidebar-menu.child.relationships'),
         link: '/app/relationships',
         badge: 'Draw',
       },
@@ -44,34 +44,34 @@ module.exports = [
   },
   {
     key: 'output',
-    name: 'Rapportindhold',
+    name: ('sidebar-menu.output'),
     icon: 'ios-document-outline',
     linkParent: '/app/outputs',
     badge: 'Pro',
   },
   {
     key: 'redFlags',
-    name: 'Red Flags',
+    name: ('sidebar-menu.red_flags'),
     icon: 'ios-flag-outline',
     badge: 'Draw',
     linkParent: '/app/red flags',
   },
   {
     key: 'groups',
-    name: 'Grupper',
+    name: ('sidebar-menu.groups'),
     icon: 'ios-folder-outline',
     linkParent: '/app/groups',
   },
   {
     key: 'settings',
-    name: 'Indstillinger',
+    name: ('sidebar-menu.settings'),
     icon: 'ios-settings-outline',
     linkParent: '/app/settings',
     disabled: true
   },
   {
     key: 'help',
-    name: 'Hjælp',
+    name: ('sidebar-menu.help'),
     icon: 'ios-help-circle-outline',
     linkParent: '/app/help-support',
   }

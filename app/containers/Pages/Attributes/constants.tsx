@@ -1,42 +1,42 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
-export const columns = (onOpen) => [
+export const columns = (onOpen, t) => ([
   {
-    name: 'Titel',
+    name: t('attributes.table_title'),
     options: {
       filter: true
     }
   },
   {
-    name: 'Beskrivelse',
+    name: t('attributes.table_desc'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Gruppe',
+    name: t('attributes.table_groups'),
     options: {
       filter: true,
     }
   },
   {
-    name: 'Se kendetegn',
+    name: t('attributes.table_see_features'),
     options: {
       filter: true,
       customBodyRender: (value) => (
         <Button variant="contained" color="secondary" onClick={() => onOpen(value)}>
-              Åben
+              {`${t('attributes.btn_open')}`}
         </Button>
       )
     }
   },
   {
-    name: 'Sidst ændret',
+    name: t('attributes.last_changed'),
     options: {
       filter: true,
     }
   },
-];
+]);
 
 export const reducer = 'attribute';

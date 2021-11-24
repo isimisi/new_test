@@ -13,10 +13,12 @@ import Paper from '@material-ui/core/Paper';
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import styles from '@components/Forms/user-jss';
+import {useTranslation} from 'react-i18next';
 
 function ComingSoon(props) {
   const { classes, deco } = props;
   const [email, setEmail] = useState('');
+  const {t} = useTranslation();
 
   const handleChange = event => {
     setEmail(event.target.value);
@@ -51,17 +53,17 @@ function ComingSoon(props) {
               </div>
             </div>
             <Typography variant="h2" className={classes.titleGradient} gutterBottom>
-              Coming Soon
+              {t('comming-soon.Comming_soon')}
             </Typography>
             <Typography variant="h5" gutterBottom align="center">
-              Will come with performance in design
+              {t('commig-soon.come_with_perform_in_design')}
             </Typography>
             <section className={classes.pageFormWrap}>
               <div className={classNames(classes.notifyForm, classes.centerAdornment)}>
                 <FormControl>
                   <TextField
                     fullWidth
-                    label="Email"
+                    label={t('commig-soon.email')}
                     className={classes.textField}
                     value={email}
                     onChange={handleChange}
@@ -70,7 +72,7 @@ function ComingSoon(props) {
                 </FormControl>
                 <aside>
                   <Button variant="contained" color="secondary" type="submit">
-                    Notify me
+                  {t('commig-soon.Notify me')}
                   </Button>
                 </aside>
               </div>

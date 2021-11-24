@@ -17,17 +17,19 @@ import 'moment/locale/da';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
+import {useTranslation} from 'react-i18next';
 
 
 function TimelineWidget(props) {
   const { classes, timeline, history } = props;
+  const {t} = useTranslation();
 
   return (
-    <PapperBlock whiteBg noMargin title="Aktivitet" icon="ion-ios-time-outline" desc="">
+    <PapperBlock whiteBg noMargin title={t('timeline-widget.activity')} icon="ion-ios-time-outline" desc="">
 
       {timeline.toJS().length === 0 ? (
         <div>
-          <Typography variant="h5">Du har endnu ikke brugt Juristic endnu. Hop ind i et arbejdsområde og kom godt i gang.</Typography>
+          <Typography variant="h5">{t('timeline-widget.jump_into_a_work_area')}</Typography>
           <div className={classes.activityButton}>
             <img src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/racoon/Screenshot+2021-07-08+at+15.51.40.png" alt="nerdy" style={{ height: 200 }} />
             <Button
@@ -35,7 +37,7 @@ function TimelineWidget(props) {
               size="large"
               onClick={() => history.push('/app/workspaces')}
             >
-              Gå til arbejdsområde
+              {t('timeline-widget.go_to_workspace')}
             </Button>
           </div>
         </div>

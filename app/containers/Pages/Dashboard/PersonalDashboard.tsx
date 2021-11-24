@@ -52,6 +52,7 @@ import {
 } from '../Workspaces/reducers/workspaceActions';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const raccoon = require('@lotties/racoon/clipboard.json');
+import { useTranslation } from 'react-i18next';
 
 
 const { plan_id } = loadFromLocalStorage();
@@ -67,6 +68,9 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const timeline = useAppSelector(state => state[reducer].get('timeline'));
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
   const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
+  const {t} = useTranslation();
+
+  console.log(t)
 
   const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();
@@ -277,11 +281,11 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
           <Divider className={classes.divider} />
           <NewsListWidget handleOpenGuide={handleOpenGuide} />
           <Divider className={classes.divider} />
-          <PapperBlock title="Send os et ønske" icon="ion-ios-redo-outline" whiteBg noMargin desc="Vi er glade for idéer og ser på det straks">
+          <PapperBlock title={t('personal-dashboard.send_us_a_request')} icon="ion-ios-redo-outline" whiteBg noMargin desc={t('personal-dashboard.we_love_ideas')}>
             <div className={classes.subscribeForm}>
               <FormControl>
                 <TextField
-                  label="Skriv dit ønske her"
+                  label={t('personal-dashboard.write_your_wish_here')}
                   margin="normal"
                   onChange={handleFeatureChange}
                   value={featureValue}
@@ -329,7 +333,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
         }}
       />
       <Fab variant="extended" color="primary" className={classNames(classes.addBtn, 'personal_dashboard_workspace_button')} onClick={createWorkspace}>
-        Opret et nyt arbejdsområde
+        {`${t('personal-dashboard.create_a_new_workspace')}`}
       </Fab>
     </div>
   );

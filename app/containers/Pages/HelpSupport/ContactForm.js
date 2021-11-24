@@ -9,6 +9,7 @@ import { PapperBlock } from '@components';
 import { TextFieldRedux } from '@components/Forms/ReduxFormMUI';
 import { initAction, clearAction } from '@redux/actions/reduxFormActions';
 import styles from './helpSupport-jss';
+import { useTranslation } from 'react-i18next';
 
 // validation functions
 const required = value => (value == null ? 'Required' : undefined);
@@ -27,15 +28,17 @@ function ContactForm(props) {
     reset,
     submitting,
   } = props;
+  const {t} = useTranslation();
+
   return (
-    <PapperBlock title="Kontakt os" whiteBg>
+    <PapperBlock title={t('help-support.contact-form.contact_us')} whiteBg>
       <form onSubmit={handleSubmit}>
         <div>
           <Field
             name="name"
             component={TextFieldRedux}
-            placeholder="Navn"
-            label="Navn"
+            placeholder={t('help-support.contact-form.name')}
+            label={t('help-support.contact-form.name')}
             validate={required}
             required
             className={classes.field}
@@ -45,8 +48,8 @@ function ContactForm(props) {
           <Field
             name="email"
             component={TextFieldRedux}
-            placeholder="E-mail"
-            label="E-mail"
+            placeholder={t('help-support.contact-form.email')}
+            label={t('help-support.contact-form.email')}
             required
             validate={[required, email]}
             className={classes.field}
@@ -58,22 +61,22 @@ function ContactForm(props) {
             className={classes.field}
             component={TextFieldRedux}
             validate={required}
-            placeholder="Besked"
-            label="Besked"
+            placeholder={t('help-support.contact-form.message')}
+            label={t('help-support.contact-form.message')}
             multiline={trueBool}
             rows={4}
           />
         </div>
         <div>
           <Button variant="contained" color="secondary" type="submit" disabled={submitting}>
-            Send
+            {t('help-support.contact-form.send')}
           </Button>
           <Button
             type="button"
             disabled={pristine || submitting}
             onClick={reset}
           >
-            Nulstil
+            {t('help-support.contact-form.reset')}
           </Button>
         </div>
       </form>

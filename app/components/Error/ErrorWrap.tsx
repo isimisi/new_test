@@ -5,7 +5,9 @@ import Button from '@material-ui/core/Button';
 import { Route, Link } from 'react-router-dom';
 import Lottie from 'lottie-react';
 import useStyles from './error.jss';
+import {useTranslation} from 'react-i18next';
 const notFound = require('@lotties/notFound.json');
+
 
 interface Props {
   desc: any;
@@ -13,6 +15,7 @@ interface Props {
 
 const ErrorWrap = (props: Props) => {
   const classes = useStyles();
+  const {t} = useTranslation();
   return (
     <Route
       render={({ staticContext }) => {
@@ -32,7 +35,7 @@ const ErrorWrap = (props: Props) => {
               component={Link}
               to="/app/"
             >
-            Gå til forside
+            {t('404.btn_return_to_home_page')}
             </Button>
           </div>
         );

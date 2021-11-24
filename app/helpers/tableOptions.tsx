@@ -1,7 +1,7 @@
 import Loader from '@components/Loading/LongLoader';
 import { MUIDataTableOptions } from 'mui-datatables';
 import React from 'react';
-
+import {t} from 'i18next';
 
 type onRowsDelete = (
   rowsDeleted: {
@@ -23,7 +23,7 @@ const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'element
     body: {
       noMatch: loading
         ? <Loader />
-        : 'Det ser vist ud som om, at du ikke har lavet nogle ' + where + ' endnu',
+        : t('outputs.outputs.loadingMeassage'),
     },
     toolbar: {
       downloadCsv: 'Download som CSV fil',
