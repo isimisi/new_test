@@ -1,3 +1,4 @@
+
 import React, {
   useState, useEffect, Dispatch, SetStateAction
 } from 'react';
@@ -98,8 +99,8 @@ const CreateTag = (props: Props) => {
     <div>
       <FloatingPanel
         openForm={open}
-        closeForm={close}
-        title="Lav et nyt tag"
+        closeForm={handleClose}
+        title={openId ? 'Ændre dit tag' : 'Lav et nyt tag'}
         expanded
       >
         <section className={css.bodyForm}>
@@ -134,7 +135,7 @@ const CreateTag = (props: Props) => {
           )}
         </section>
         <div className={css.buttonArea}>
-          <Button type="button" onClick={close}>
+          <Button type="button" onClick={handleClose}>
             Annuller
           </Button>
 

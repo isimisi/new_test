@@ -14,7 +14,7 @@ import Notification from '@components/Notification/Notification';
 import { loadFromLocalStorage } from '@utils/localStorage';
 
 import TagList from '@components/Tags/TagList';
-import { Tag } from '@customTypes/data';
+import { Tag, WhereInApp } from '@customTypes/data';
 import {
   changeTagActivity,
   deleteTag,
@@ -52,7 +52,7 @@ const Workspaces = props => {
 
   useEffect(() => {
     dispatch(getWorkspaces());
-    dispatch(getTags());
+    dispatch(getTags(WhereInApp.workspace));
   }, []);
 
   const onDelete = ({ data }) => {
@@ -116,6 +116,13 @@ const Workspaces = props => {
     }
   };
 
+  const handleShowAll = () => {
+    const actTags = tags.filter(tag => tag.active);
+    actTags.forEach(tag => {
+      dispatch(changeTagActivity(tag));
+    });
+  };
+
   return (
     <div className={classes.table}>
       <Notification
@@ -128,9 +135,11 @@ const Workspaces = props => {
             tags={tags}
             handleDelete={handleDeleteTag}
             handlePostTag={handlePostTag}
+            handleShowAll={handleShowAll}
             handleUpdateTag={handleUpdateTag}
             makeActive={handleMakeActiveTag}
             allNumber={workspaces.length}
+            findCountString="workspaceTags"
           />
         </Grid>
         <Grid item md={9} lg={10}>

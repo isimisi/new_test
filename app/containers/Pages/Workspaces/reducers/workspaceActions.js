@@ -136,7 +136,6 @@ export const putWorkspace = (workspace_id, label, description, group, tags, shar
 
     setTimeout(() => {
       // eslint-disable-next-line no-use-before-define
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
       dispatch(changeStepIndex(2));
     }, 100);
   } catch (error) {
@@ -394,7 +393,6 @@ export const postSticky = (workspace_id, x, y) => async dispatch => {
 };
 
 // eslint-disable-next-line no-unused-vars
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const putSticky = (id, text) => async dispatch => {
   const url = `${baseUrl}/workspaces/sticky/${id}`;
   const body = {
@@ -631,6 +629,12 @@ export const addGroup = group => ({
   type: types.ADD_GROUP,
   group
 });
+
+export const changeTags = tags => ({
+  type: types.CHANGE_TAGS,
+  tags
+});
+
 
 export const shareOrgChange = { type: types.SHARE_ORG_CHANGE };
 

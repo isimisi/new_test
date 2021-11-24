@@ -42,11 +42,11 @@ export const showOutput = (id) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const {
-      label, description, output, conditions, group, file_type, output_type
+      label, description, output, conditions, group, file_type, output_type, tags
     } = response.data;
 
     dispatch({
-      type: types.SHOW_OUTPUT_SUCCESS, label, description, output, conditions, group, file_type, output_type
+      type: types.SHOW_OUTPUT_SUCCESS, label, description, output, conditions, group, file_type, output_type, tags
     });
   } catch (error) {
     const message = genericErrorMessage;
@@ -54,12 +54,12 @@ export const showOutput = (id) => async dispatch => {
   }
 };
 
-export const putOutput = (id, label, description, output, fileType, outputType, group, conditions, deletedConditions, history) => async dispatch => {
+export const putOutput = (id, label, description, output, fileType, outputType, group, conditions, deletedConditions, tags, history) => async dispatch => {
   const url = `${baseUrl}/${ACTIONS}/${id}`;
 
   const header = authHeader();
   header.params = {
-    label, description, fileType, outputType, group, conditions, deletedConditions
+    label, description, fileType, outputType, group, conditions, deletedConditions, tags
   };
 
   let body;
@@ -173,6 +173,11 @@ export const addOutput = (file) => ({
 export const addOutputUrl = (url) => ({
   type: types.ADD_OUTPUT_URL,
   url,
+});
+
+export const changeTags = tags => ({
+  type: types.CHANGE_TAGS,
+  tags
 });
 
 export const closeNotifAction = {

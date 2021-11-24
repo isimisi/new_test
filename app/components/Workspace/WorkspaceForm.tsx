@@ -17,30 +17,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CreatableSelect from 'react-select/creatable';
+import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
 import styles from './workspace-jss';
 import {useTranslation} from 'react-i18next';
 
 
 const localeStorage = loadFromLocalStorage();
 const plan_id = localeStorage?.plan_id;
-
-const tagMapping = (tag) => {
-  if (tag.name) {
-    return {
-      value: tag.name,
-      label: (
-        <div style={{ width: '100%', height: '100%' }} data-emoji={tag.emoji} data-id={tag.id}>
-          <span style={{ paddingRight: '5px' }}>
-            {tag.emoji}
-            {' '}
-            {tag.name}
-          </span>
-        </div>
-      ),
-    };
-  }
-  return tag;
-};
 
 const WorkspaceForm = (props) => {
   const theme = useTheme();
@@ -119,31 +102,8 @@ const WorkspaceForm = (props) => {
             isMulti
             isClearable
             value={tags.map(tagMapping)}
-            onChange={(newValue, meta) => {
-              console.log(meta.removedValue);
-              switch (meta.action) {
-                case 'select-option':
-                  const tag = {
-                    id: meta.option.label.props['data-id'],
-                    emoji: meta.option.label.props['data-emoji'],
-                    name: meta.option.value,
-                  };
-                  changeTags([...tags, tag]);
-                  break;
-                case 'create-option':
-                  const newTag = newValue[newValue.length - 1];
-                  changeTags([...tags, newTag]);
-                  break;
-                case 'remove-value':
-                case 'pop-value':
-                case 'deselect-option':
-                  changeTags(tags.filter(t => t.id !== meta.removedValue.label.props['data-id']));
-                  break;
-                case 'clear':
-                  changeTags([]);
-                  break;
-              }
-            }}
+            onChange={(newValue, meta) => hanldeOnChange(newValue, meta, changeTags, tags)
+            }
             inputId="react-select-tags"
             placeholder={t('workspaces.workspace-form.add_tags_to_your_workspace')}
             options={tagOptions.map(tagMapping)}
