@@ -100,6 +100,7 @@
     "emoji-picker-react": "^3.4.8",
     "eslint-config-airbnb-base": "^14.2.1",
     "express": "4.16.4",
+    "flag-icon-css": "^4.1.5",
     "fontfaceobserver": "2.1.0",
     "history": "4.9.0",
     "html-docx-js": "^0.3.1",
