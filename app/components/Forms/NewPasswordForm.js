@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form/immutable';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import ArrowForward from '@material-ui/icons/ArrowForward';
+import { useTranslation } from 'react-i18next';
 import { TextFieldRedux } from './ReduxFormMUI';
 import styles from './user-jss';
-import { useTranslation } from 'react-i18next';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -28,7 +27,7 @@ function ResetForm(props) {
     pristine,
     submitting,
   } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <>
       <section>
@@ -61,7 +60,7 @@ function ResetForm(props) {
           </div>
           <div className={classes.btnArea}>
             <Button variant="contained" color="primary" type="submit">
-            {t('new-password-form.log_in')}
+              {t('new-password-form.log_in')}
               <ArrowForward className={classNames(classes.rightIcon, classes.iconSmall)} disabled={submitting || pristine} />
             </Button>
           </div>
@@ -83,12 +82,4 @@ const ResetFormReduxed = reduxForm({
   enableReinitialize: true,
 })(ResetForm);
 
-const reducer = 'ui';
-const RegisterFormMapped = connect(
-  state => ({
-    force: state,
-    deco: state[reducer].get('decoration')
-  }),
-)(ResetFormReduxed);
-
-export default withStyles(styles)(RegisterFormMapped);
+export default withStyles(styles)(ResetFormReduxed);

@@ -3,17 +3,14 @@ import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { LoginForm, Notification } from '@components';
 import styles from '@components/Forms/user-jss';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  useHistory,
-  useLocation
-} from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import LoginForm from '@components/Forms/LoginForm';
+import Notification from '@components/Notification/Notification';
 import { login, closeNotifAction } from './reducers/authActions';
 
-
-const Login = (props) => {
+const Login = props => {
   const reducer = 'auth';
 
   const messageNotif = useSelector(state => state[reducer].get('errorMessage'));
@@ -41,10 +38,13 @@ const Login = (props) => {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+      <Notification
+        close={() => dispatch(closeNotifAction)}
+        message={messageNotif}
+      />
       <div className={classes.container}>
         <div className={classes.userFormWrap}>
-          <LoginForm onSubmit={(values) => submitForm(values)} />
+          <LoginForm onSubmit={values => submitForm(values)} />
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@ const Login = (props) => {
 };
 
 Login.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Login);

@@ -125,7 +125,7 @@ const Workspaces = props => {
         close={() => dispatch(closeNotifAction)}
         message={messageNotif}
       />
-      <Grid container spacing={2} direction="row" justify="center">
+      <Grid container spacing={2} direction="row">
         <Grid item md={3} lg={2}>
           <TagList
             tags={tags}

@@ -33,6 +33,7 @@ import { loadFromLocalStorage } from '@utils/localStorage';
 import Button from '@material-ui/core/Button';
 import { bindActionCreators } from 'redux';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import { useTranslation } from 'react-i18next';
 import useStyles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -52,11 +53,9 @@ import {
 } from '../Workspaces/reducers/workspaceActions';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const raccoon = require('@lotties/racoon/clipboard.json');
-import { useTranslation } from 'react-i18next';
 
 
 const { plan_id } = loadFromLocalStorage();
-console.log(plan_id);
 
 const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const classes = useStyles();
@@ -69,9 +68,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const timeline = useAppSelector(state => state[reducer].get('timeline'));
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
   const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
-  const {t} = useTranslation();
-
-  console.log(t)
+  const { t } = useTranslation();
 
   const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();

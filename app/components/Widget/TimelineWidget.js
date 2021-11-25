@@ -15,14 +15,14 @@ import Ionicon from 'react-ionicons';
 import moment from 'moment';
 import 'moment/locale/da';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import { useTranslation } from 'react-i18next';
 import styles from './widget-jss';
 import PapperBlock from '../PapperBlock/PapperBlock';
-import {useTranslation} from 'react-i18next';
 
 
 function TimelineWidget(props) {
   const { classes, timeline, history } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <PapperBlock whiteBg noMargin title={t('timeline-widget.activity')} icon="ion-ios-time-outline" desc="">
@@ -44,7 +44,7 @@ function TimelineWidget(props) {
       ) : (
         <Timeline align="alternate">
           {timeline.toJS().map(item => (
-            <TimelineItem>
+            <TimelineItem key={item.id.toString()}>
               <TimelineOppositeContent>
                 <Typography variant="body2" color="textSecondary">
                   {moment(item.updated_at).fromNow()}
