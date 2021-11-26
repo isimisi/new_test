@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // Important modules this config uses
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -15,7 +16,7 @@ module.exports = require('./webpack.base.babel')({
   // In production, we skip all hot-reloading stuff
   entry: [
     require.resolve('react-app-polyfill/ie11'),
-    path.join(process.cwd(), 'app/app.js'),
+    path.join(process.cwd(), 'app/app.tsx'),
   ],
   devtool: 'source-map', // Ensure your webpack build is creating source maps!
 

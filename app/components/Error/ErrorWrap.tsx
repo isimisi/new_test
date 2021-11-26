@@ -4,10 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { Route, Link } from 'react-router-dom';
 import Lottie from 'lottie-react';
+import { useTranslation } from 'react-i18next';
 import useStyles from './error.jss';
-import {useTranslation} from 'react-i18next';
 const notFound = require('@lotties/notFound.json');
-
 
 interface Props {
   desc: any;
@@ -15,13 +14,13 @@ interface Props {
 
 const ErrorWrap = (props: Props) => {
   const classes = useStyles();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Route
       render={({ staticContext }) => {
         if (staticContext) {
-        // @ts-ignore
-        staticContext.status = 404; // eslint-disable-line 
+          // @ts-ignore
+          staticContext.status = 404; // eslint-disable-line
         }
         const { desc } = props;
         return (
@@ -35,7 +34,7 @@ const ErrorWrap = (props: Props) => {
               component={Link}
               to="/app/"
             >
-            {t('404.btn_return_to_home_page')}
+              {t('404.btn_return_to_home_page')}
             </Button>
           </div>
         );

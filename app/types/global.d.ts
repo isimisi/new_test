@@ -1,7 +1,7 @@
-//external
+// external
 declare module 'redux-persist-transform-immutable';
 
-//internal
+// internal
 declare module '@utils/history';
 declare module '@redux/autoMergeLevel2Immutable';
 declare module '*.jpg';
