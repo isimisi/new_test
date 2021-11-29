@@ -31,6 +31,7 @@ export const getLayoutedElements = (elements, direction = 'TB') => {
 
   dagre.layout(dagreGraph);
 
+
   return elements.map((el: FlowElement) => {
     if (isNode(el)) {
       const nodeWithPosition = dagreGraph.node(el.id);
@@ -108,7 +109,7 @@ export const columns = (t) => [
       sort: false,
       viewColumns: false,
       customBodyRender: (value) => (
-        <Tooltip title={!value ? 'Dine arbejdsområder bliver låst efter 90 dage på base' : 'Gå til arbejdsområde'}>
+        <Tooltip title={!value ? t('workspaces.your_work_areas_will_be_locked') : t('workspaces.go_to_workspace')}>
           <Link to={!value ? '/app/plan' : `/app/workspaces/${value}`} style={{ textDecoration: 'none' }}>
             <Button variant="contained" color="secondary" disabled={!value}>
               {!value ? 'Låst' : t('workspaces.btn_open')}
@@ -145,11 +146,12 @@ export const initErstTypes = {
 
 };
 
-const localeSteps = {
-  skip: <Button size="small" style={{ color: '#bbb' }}>Spring over</Button>,
-  back: <div>Forrige</div>,
-  next: <div>Næste</div>,
-};
+
+const localeSteps = (t) => [{
+  skip: <Button size="small" style={{ color: '#bbb' }}>{t('workspaces.split')}</Button>,
+  back: <div>{t('workspaces.previous')}</div>,
+  next: <div>{t('workspaces.next')}</div>,
+}];
 
 export const steps = (t) => [
   {
