@@ -28,7 +28,7 @@ function Settings(props: Props) {
     setValueForm(values);
 
     const name = values.get('name');
-    const email = values.guseAppDispatchet('email');
+    const email = values.get('email');
     const message = values.get('message');
 
     dispatch(helpMe(name, email, message));
