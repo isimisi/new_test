@@ -26,27 +26,27 @@ const tableOptions = (onDelete: onRowsDelete, loading: boolean, where = 'element
         : t('outputs.outputs.loadingMeassage'),
     },
     toolbar: {
-      downloadCsv: 'Download som CSV fil',
-      filterTable: 'Filtrer tabel',
-      print: 'Print',
-      search: 'Søg',
-      viewColumns: 'Vis colonner'
+      downloadCsv: t('helpers.toolbar.downloadCsv'),
+      filterTable: t('helpers.toolbar.filterTable'),
+      print: t('helpers.toolbar.print'),
+      search: t('helpers.toolbar.search'),
+      viewColumns: t('helpers.toolbar.viewColumns')
     },
     filter: {
-      all: 'alle',
-      reset: 'reset',
-      title: 'Filtrer'
+      all: t('helpers.filter.all'),
+      reset: t('helpers.filter.reset'),
+      title: t('helpers.filter.filter')
     },
     pagination: {
-      displayRows: 'af',
-      rowsPerPage: 'Rækker per side:',
+      displayRows: t('helpers.pagination.display_rows'),
+      rowsPerPage:t('helpers.pagination.rows_per_page'),
     },
     selectedRows: {
-      delete: 'Slet',
-      text: 'række(r) valgt',
+      delete: t('helpers.pagination.selectedRows.delete'),
+      text: t('helpers.pagination.selectedRows.row_selected')
     },
     viewColumns: {
-      title: 'Vis colonner'
+      title: t('helpers.pagination.display.view_columns')
     }
   }
 });

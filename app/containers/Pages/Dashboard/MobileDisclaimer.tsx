@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {useTranslation} from 'react-i18next';
 
 type Props = {
   open: boolean,
@@ -14,6 +15,7 @@ type Props = {
 
 const UpgradeModal = (props: Props) => {
   const { open, close } = props;
+  const {t} = useTranslation();
 
   return (
     <div>
@@ -24,17 +26,17 @@ const UpgradeModal = (props: Props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Det ser ud til, at du er på en mobil enhed 📱
+          {t('mobile-disclaimer.you_re_on_a_mobile_device')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-              Mange af vores funktioner virker på mobile enheder, men for den bedste oplevelse anbefaler vi, at du bruger en browser på din computer.
-              Har du spørgsmål, så kontakt os gerne.
+            {t('mobile-disclaimer.desc')}
+              {t('mobile-disclaimer.contact_us')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={close} color="primary" autoFocus>
-            Fortsæt
+          {t('mobile-disclaimer.btn_continue')}
           </Button>
         </DialogActions>
       </Dialog>

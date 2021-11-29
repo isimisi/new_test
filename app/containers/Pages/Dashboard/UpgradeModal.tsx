@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Lottie from 'lottie-react';
 import printer from './printer.json';
+import {useTranslation} from 'react-i18next';
 
 interface Props {
   open: boolean;
@@ -15,6 +16,7 @@ interface Props {
 
 const UpgradeModal = (props: Props) => {
   const { open, close } = props;
+  const {t} = useTranslation();
 
   return (
     <div>
@@ -25,11 +27,11 @@ const UpgradeModal = (props: Props) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Tillykke, du har nu opgraderet din bruger!
+          {t('upgrade-modal.you_have_now_upgraded_your_user')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Du har fået adgang til dine ekstra funktioner! Vi er glade for, at du finder værdi i Juristic. Oplever du problemer, eller har du bare spørgsmål, er du altid velkommen til at ringe eller skrive til os.
+          {t('upgrade-modal.desc')}
           </DialogContentText>
           <div style={{
             width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'
@@ -45,7 +47,7 @@ const UpgradeModal = (props: Props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={close} color="primary" autoFocus>
-            Fortsæt
+            {t('upgrade-modal.btn_continue')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -29,9 +29,6 @@ import BugsnagPluginReact from '@bugsnag/plugin-react';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
-// Import Language Provider
-import LanguageProvider from 'containers/LanguageProvider';
-
 // Load the favicon and the .htaccess file
 import '!file-loader?name=[name].[ext]!../public/favicons/favicon.ico'; // eslint-disable-line
 import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line
@@ -39,15 +36,7 @@ import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line
 import LogRocket from 'logrocket';
 import { isMobile } from 'react-device-detect';
 import store from './redux/configureStore';
-
-// Import i18n messages
-// import { translationMessages } from './i18n';
-
-// import i18nemo
-import i18n from './i18nemo';
-
-// I18nextProvider 
-import { I18nextProvider } from 'react-i18next';
+import './i18nemo';
 
 import 'video-react/dist/video-react.css';
 
@@ -95,16 +84,14 @@ if (!isMobile) {
 
 const persistor = persistStore(store);
 
-let render = i18n => {
+let render = () => {
   ReactDOM.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <I18nextProvider i18n={i18n}>
-          <ConnectedRouter history={history}>
-            <App />
-            <ToastContainer />
-          </ConnectedRouter>
-        </I18nextProvider>
+        <ConnectedRouter history={history}>
+          <App />
+          <ToastContainer />
+        </ConnectedRouter>
       </PersistGate>
     </Provider>,
     MOUNT_NODE
@@ -114,17 +101,15 @@ let render = i18n => {
 if (process.env.NODE_ENV === 'production') {
   const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 
-  render = i18n => {
+  render = () => {
     ReactDOM.render(
       <ErrorBoundary>
         <Provider store={store}>
-          <I18nextProvider i18n={i18n}>
-            <ConnectedRouter history={history}>
-              <App />
-              <ToastContainer />
-              <CookieBot domainGroupId={domainGroupId} />
-            </ConnectedRouter>
-          </I18nextProvider>
+          <ConnectedRouter history={history}>
+            <App />
+            <ToastContainer />
+            <CookieBot domainGroupId={domainGroupId} />
+          </ConnectedRouter>
         </Provider>
       </ErrorBoundary>,
       MOUNT_NODE
@@ -132,26 +117,4 @@ if (process.env.NODE_ENV === 'production') {
   };
 }
 
-// Chunked polyfill for browsers without Intl support
-if (!window.Intl) {
-  new Promise(resolve => {
-    resolve(import('intl'));
-  })
-    .then(() => Promise.all([
-      import('intl/locale-data/jsonp/en.js'),
-      import('intl/locale-data/jsonp/de.js')
-    ])
-    )
-    .then(() => render())
-    .catch(err => {
-      throw err;
-    });
-} else {
-  render();
-}
-// Install ServiceWorker and AppCache in the end since
-// it's not most important operation and if main code fails,
-// we do not want it installed
-// if (process.env.NODE_ENV === 'production') {
-//   require('offline-plugin/runtime').install(); // eslint-disable-line global-require
-// }
+render();

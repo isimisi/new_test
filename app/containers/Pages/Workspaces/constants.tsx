@@ -151,16 +151,16 @@ const localeSteps = {
   next: <div>Næste</div>,
 };
 
-export const steps = [
+export const steps = (t) => [
   {
-    content: <h2>Velkommen til arbejdsområdet</h2>,
+    content: <h2>{t('workspaces.welcome_to_the_work_area')}</h2>,
     locale: localeSteps,
     placement: 'center',
     target: 'body',
   },
   {
     target: '.floatingPanel',
-    content: 'Start med at beskrive arbejdsområdet. Vælg gruppen "Corporate"!',
+    content: t('workspaces.describing_the_work_area'),
     locale: localeSteps,
     disableBeacon: true,
     disableOverlayClose: true,
@@ -169,47 +169,47 @@ export const steps = [
     spotlightClicks: true,
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Du kan indsætte tekstbokse og noter via denne kvik-knap.</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.insert_text_boxes_and_notes')}</div>,
     locale: localeSteps,
     target: '.rtf--mb:nth-of-type(1)',
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Indsæt elementer, som fx selskaber og personer, via denne kvik-knap.</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.insert_elements')}</div>,
     locale: localeSteps,
     target: '.rtf:nth-of-type(2) > li > button',
   },
   {
-    content: <div style={{ textAlign: 'left' }}>I denne menu finder du de øvrige funktioner. Her kan du gemme ændringerne i dit arbejdsområde!</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.other_functions')}</div>,
     locale: localeSteps,
     target: '.rtf--ab__c:nth-of-type(1)',
     disableBeacon: true,
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Hvis du vil ændre navn, beskrivelse og gruppe - eller ændre indstillingen for deling - skal du trykke her.</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.change_name_description_and_group')}</div>,
     locale: localeSteps,
     target: '.rtf--ab__c:nth-of-type(2)',
     disableBeacon: true,
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Tryk på Analyser-knappen for at skabe et notat eller en rapport på baggrund af tegningen i arbejdsområdet.</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.press_analyze_btn_to_create_a_note_or_report')}</div>,
     locale: localeSteps,
     target: '.rtf--ab__c:nth-of-type(3)',
     disableBeacon: true,
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Du kan også få en fuld oversigt over red flags i arbejdsområdet - også selvom du allerede har set dem.</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.get_a_full_overview_of_red_flags')}</div>,
     locale: localeSteps,
     target: '.rtf--ab__c:nth-of-type(4)',
     disableBeacon: true,
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Hvis du får brug for at dele arbejdsområdet med nogen, der ikke er Juristic-brugere, kan du gøre det her.</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.share_workspace_with_non_juristic_user')}</div>,
     locale: localeSteps,
     target: '.rtf--ab__c:nth-of-type(5)',
     disableBeacon: true,
   },
   {
-    content: <div style={{ textAlign: 'left' }}>Vi har koblet Juristic direkte til CVR i Danmark, Sverige, Norge og Finland. Prøv at trykke her nu!</div>,
+    content: <div style={{ textAlign: 'left' }}>{t('workspaces.connected_juristic_to_cvr_in_dk_swe_no_fi')}</div>,
     locale: localeSteps,
     target: '.rtf--ab__c:nth-of-type(6)',
     disableBeacon: true,

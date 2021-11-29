@@ -87,7 +87,11 @@
   },
   "alerts": {
     "your_red_flags": "Your Red Flags",
-    "btn_new_red_flag": "New red flag"
+    "btn_new_red_flag": "New red flag",
+    "alert-modal": {
+      "condition": "See condition",
+      "close": "Close"
+    }
   },
   "alert-naming-form": {
     "red_flag_content": "Red flag-content",
@@ -254,6 +258,24 @@
     "last_changed": "Last changed",
     "previous": "Previous",
     "welcome_to_the_work_area": "Welcome to the work area",
+    "describing the work area": "Start by describing the work area. Select the group 'Corporate'",
+    "insert_text_boxes_and_notes": "You can insert text boxes and notes via this quick button.",
+    "insert_elements": "Insert elements, such as companies and individuals, via this quick button.",
+    "other_functions": "In this menu you will find the other functions. Here you can save the changes in your work area!",
+    "change_name_description_and_group": "If you want to change the name, description and group - or change the sharing setting - click here.",
+    "press_analyze_btn_to_create_a_note_or_report": "Press the Analyze button to create a note or report based on the drawing in the work area.",
+    "get_a_full_overview_of_red_flags": "You can also get a full overview of red flags in the work area - even if you have already seen them.",
+    "share_workspace_with_non_juristic_user": "If you need to share the workspace with someone who is not a Juristic user, you can do so here.",
+    "connected_juristic_to_cvr_in_dk_swe_no_fi": "We have connected Juristic directly to CVR in Denmark, Sweden, Norway and Finland. Try clicking here now!",
+    "drawing_error": "We had an error drawing the group chart. Our developers are informed and are on the case!",
+    "approved_and_locked_off": "Approved and locked off",
+    "id": "ID:",
+    "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_item_types": "You can not create new item types. This is a Draw feature. Contact us for more information.",
+    "you_can_not_create_new_attribute_types": "You can not create new attribute types. This is a Draw feature. Contact us for more information.",
+    "load_from_CVR": "Load from CVR",
+    "search_for_a_company_or_CVR_number": "Search for a company or CVR number:",
+    "cvr_nr": "CVR-number",
     "workspace-form": {
       "your_workspace": "Your workspace",
       "name": "Name",
@@ -418,5 +440,41 @@
       "see_red_flag": "See Red Flag",
       "last_changed": "Last changed",
       "btn_open": "Open"
-  }
+  },
+  "helpers": {
+    "toolbar": {
+      "downloadCsv": "Download as CSV file",
+      "filterTable": "Filter table",
+      "print": "Print",
+      "search": "Search",
+      "viewColumns": "View Columns"
+    },
+    "filter": {
+      "all": "all",
+      "reset": "reset",
+      "filter": "Filter"
+    },
+    "pagination" : {
+      "rows_per_page": "Rows per page:",
+      "display_rows": "of"
+    },
+    "selectedRows": {
+      "delete": "Delete",
+      "row_selected": "row (s) selected"
+    },
+    "viewColumns": {
+      "view_columns": "View columns"
+    }
+  },
+    "mobile-disclaimer": {
+      "you_re_on_a_mobile_device": "It looks like you're on a mobile device 📱",
+      "desc": "Many of our features work on mobile devices, but for the best experience, we recommend that you use a browser on your computer.",
+      "contact_us": "If you have any questions, please contact us.",
+      "btn_continue": "Continue"
+    },
+    "upgrade-modal": {
+      "you_have_now_upgraded_your_user": "Congratulations, you have now upgraded your user!",
+      "desc": "You've got access to your extra features! We're glad you're finding value in Juristic. If you experience problems, or if you just have questions, you are always welcome to call or write to us.",
+      "btn_continue": "Continue"
+    }
 }
