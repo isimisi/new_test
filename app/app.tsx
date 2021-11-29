@@ -112,4 +112,19 @@ if (process.env.NODE_ENV === 'production') {
   };
 }
 
-render();
+if (!window.Intl) {
+  new Promise(resolve => {
+    resolve(import('intl'));
+  })
+    .then(() => Promise.all([
+      import('intl/locale-data/jsonp/en.js'),
+      import('intl/locale-data/jsonp/de.js')
+    ])
+    )
+    .then(() => render())
+    .catch(err => {
+      throw err;
+    });
+} else {
+  render();
+}
