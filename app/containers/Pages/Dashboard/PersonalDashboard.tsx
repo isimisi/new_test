@@ -33,6 +33,7 @@ import { loadFromLocalStorage } from '@utils/localStorage';
 import Button from '@material-ui/core/Button';
 import { bindActionCreators } from 'redux';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import { useTranslation } from 'react-i18next';
 import useStyles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -52,7 +53,6 @@ import {
 } from '../Workspaces/reducers/workspaceActions';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const raccoon = require('@lotties/racoon/clipboard.json');
-import { useTranslation } from 'react-i18next';
 
 
 const { plan_id } = loadFromLocalStorage();
@@ -68,9 +68,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const timeline = useAppSelector(state => state[reducer].get('timeline'));
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
   const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
-  const {t} = useTranslation();
-
-  console.log(t)
+  const { t } = useTranslation();
 
   const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();
@@ -92,7 +90,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
 
   const handleOpenGuide = () => {
     if (introStepIndex !== 0) {
-      dispatch(showNotifAction('Find den lille cirkel der blinker og fortsæt hvor du slap fra'));
+      dispatch(showNotifAction(t('personal-dashboard.find_the_small_circle')));
     } else {
       dispatch(handleRunIntro(true));
     }
@@ -131,7 +129,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
     dispatch(changeStepIndex(0));
 
     if (plan_id === 1 && workspaces.length === 50) {
-      dispatch(showNotifAction('Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.'));
+      dispatch(showNotifAction(t('personal-dashboard.can_not_create_more_workspaces')));
     } else {
       dispatch(postWorkspace(history));
     }
@@ -166,9 +164,9 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   };
 
   const localeSteps = {
-    skip: <Button size="small" style={{ color: '#bbb' }}>Spring over</Button>,
-    back: <div>Forrige</div>,
-    next: <div>Næste</div>,
+    skip: <Button size="small" style={{ color: '#bbb' }}>{t('personal-dashboard.skip')}</Button>,
+    back: <div>{t('personal-dashboard.previous')}</div>,
+    next: <div>{t('personal-dashboard.next')}</div>,
   };
 
   const steps = [
@@ -177,7 +175,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
         justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column'
       }}
       >
-        <h2>Velkommen til Juristic</h2>
+        <h2>{t('personal-dashboard.welcome')}</h2>
         <Lottie
           animationData={raccoon}
           style={{
@@ -191,17 +189,17 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
     },
     {
       target: '.for_intro_0',
-      content: <div style={{ textAlign: 'left' }}>Her er du nu! Forsiden indeholder et overblik over dine seneste arbejdsområder og ændringer.</div>,
+      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_frontpage')}</div>,
       locale: localeSteps,
     },
     {
       target: '.for_intro_1',
-      content: <div style={{ textAlign: 'left' }}>Her finder du en oversigt over arbejdsområder. De er kernen af platformen, og det er der, du kan indhente koncerndiagrammer og lave analyser!</div>,
+      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_workspace')}</div>,
       locale: localeSteps,
     },
     {
       target: '.for_intro_2',
-      content: <div style={{ textAlign: 'left' }}>Her finder du en oversigt over de enkelte byggeklodser, som du kan se og redigere. Byggeklodser er en samlet betegnelse for indholdet i arbejdsområdet.</div>,
+      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_data_builder')}</div>,
       locale: localeSteps,
     },
     // {
@@ -230,12 +228,12 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
     // },
     {
       target: '.for_intro_3',
-      content: <div style={{ textAlign: 'left' }}>Under Rapportindhold kan du uploade filer eller skrive paradigmetekster, som skal være resultatet af den juridiske analyse. På den måde kan Juristic udarbejde første udkast til fx et notat eller en strukturrapport - og endda på få minutter. </div>,
+      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_output')}</div>,
       locale: localeSteps,
     },
     {
       target: '.for_intro_4',
-      content: <div style={{ textAlign: 'left' }}>Red flags er avancerede notifikationer, som dukker op, mens du tegner i de enkelte arbejdsområder - i realtime.</div>,
+      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_red_flags')}</div>,
       locale: localeSteps,
     },
     // {
@@ -252,7 +250,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
 
     {
       target: '.personal_dashboard_workspace_button',
-      content: 'Prøv at oprette et nyt arbejdsområde!',
+      content: t('personal-dashboard.try_creating_a_new_workspace'),
       locale: localeSteps,
       disableBeacon: true,
       disableOverlayClose: true,
