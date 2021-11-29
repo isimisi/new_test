@@ -21,9 +21,9 @@ import Hidden from '@material-ui/core/Hidden';
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import { useAppSelector } from '@hooks/redux';
+import { useTranslation } from 'react-i18next';
 import { TextFieldRedux, CheckboxRedux } from './ReduxFormMUI';
 import styles from './user-jss';
-import { useTranslation } from 'react-i18next';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
@@ -44,7 +44,7 @@ const LoginForm = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const deco = useAppSelector(state => state.ui.get('decoration'));
   const classes = useStyles();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const handleClickShowPassword = () => {
     setShowPassword(show => !show);
