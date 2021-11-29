@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import useStyles from './error.jss';
 const notFound = require('@lotties/notFound.json');
 
-
 interface Props {
   desc: any;
 }
@@ -21,8 +20,8 @@ const ErrorWrap = (props: Props) => {
     <Route
       render={({ staticContext }) => {
         if (staticContext) {
-        // @ts-ignore
-        staticContext.status = 404; // eslint-disable-line 
+          // @ts-ignore
+          staticContext.status = 404; // eslint-disable-line
         }
         const { desc } = props;
         return (

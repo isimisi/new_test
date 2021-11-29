@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
-export const columns = (t) => ([
+export const columns = t => [
   {
     name: t('conditions.table_title'),
     options: {
@@ -10,25 +10,28 @@ export const columns = (t) => ([
     }
   },
   {
-    name:  t('conditions.table_desc'),
+    name: t('conditions.table_desc'),
     options: {
-      filter: true,
+      filter: true
     }
   },
   {
-    name:  t('conditions.table_groups'),
+    name: t('conditions.table_groups'),
     options: {
-      filter: true,
+      filter: true
     }
   },
   {
     name: t('conditions.table_see_conditions'),
     options: {
       filter: true,
-      customBodyRender: (value) => (
-        <Link to={`/app/conditions/${value}`} style={{ textDecoration: 'none' }}>
+      customBodyRender: value => (
+        <Link
+          to={`/app/conditions/${value}`}
+          style={{ textDecoration: 'none' }}
+        >
           <Button variant="contained" color="secondary">
-              {`${t('conditions.btn_open')}`}
+            {`${t('conditions.btn_open')}`}
           </Button>
         </Link>
       )
@@ -37,33 +40,31 @@ export const columns = (t) => ([
   {
     name: t('conditions.last_changed'),
     options: {
-      filter: true,
+      filter: true
     }
-  },
-]);
+  }
+];
 
 export const reducer = 'conditions';
 
-export const andOrOption = [
-  { label: 'All' },
-  { label: 'At Least One' },
-].map(suggestion => ({
-  value: suggestion.label,
-  label: suggestion.label,
-}));
+export const andOrOption = [{ label: 'All' }, { label: 'At Least One' }].map(
+  suggestion => ({
+    value: suggestion.label,
+    label: suggestion.label
+  })
+);
 
 export const buildTypeOptions = [
   { label: 'Node Title' },
   { label: 'Node Attribut' },
   { label: 'Node Description' },
-  { label: 'Relationship Label' },
+  { label: 'Relationship Label' }
   // { label: 'All (AND)' },
   // { label: 'At Least One (OR)' },
 ].map(suggestion => ({
   value: suggestion.label,
-  label: suggestion.label,
+  label: suggestion.label
 }));
-
 
 export const comparisonsOptions = [
   { label: 'is equal to' },
@@ -74,8 +75,8 @@ export const comparisonsOptions = [
   { label: 'does not exist' },
   { label: 'contains' },
   { label: 'does not contain' },
-  { label: 'any' },
+  { label: 'any' }
 ].map(suggestion => ({
   value: suggestion.label,
-  label: suggestion.label,
+  label: suggestion.label
 }));

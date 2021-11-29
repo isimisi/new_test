@@ -2,36 +2,36 @@ import React, { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { connect, useSelector, useDispatch } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import { NewPasswordForm, Notification } from '@components';
+import Notification from '@components/Notification/Notification';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import {
-  useHistory,
-} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import styles from '@components/Forms/user-jss';
-import { closeNotifAction, newPassword } from './reducers/authActions';
 import { useTranslation } from 'react-i18next';
-
+import NewPasswordForm from '@components/Forms/NewPasswordForm';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import { closeNotifAction, newPassword } from './reducers/authActions';
 
 function NewPassword(props) {
-  const { classes, deco } = props;
+  const { classes } = props;
   const [valueForm, setValueForm] = useState(null);
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
-  const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.auth.get('errorMessage'));
-  const {t} = useTranslation();
+  const dispatch = useAppDispatch();
+  const messageNotif = useAppSelector(state => state.auth.get('errorMessage'));
+  const { t } = useTranslation();
 
-  const submitForm = useCallback((values) => {
-    setValueForm(values);
-    const password = values.get('password');
-    dispatch(newPassword(id, password, history));
-  }, [valueForm]);
-
+  const submitForm = useCallback(
+    values => {
+      setValueForm(values);
+      const password = values.get('password');
+      dispatch(newPassword(id, password, history));
+    },
+    [valueForm]
+  );
 
   const title = brand.name + ' - Coming Soon';
   const description = brand.desc;
@@ -45,28 +45,33 @@ function NewPassword(props) {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+      <Notification
+        close={() => dispatch(closeNotifAction)}
+        message={messageNotif}
+      />
       <div className={classes.container}>
         <div className={classes.fullFormWrap}>
           <Paper
-            className={
-              classNames(
-                classes.fullWrap,
-                deco && classes.petal,
-                classes.centerV
-              )
-            }
+            className={classNames(
+              classes.fullWrap,
+              classes.petal,
+              classes.centerV
+            )}
           >
             <div className={classes.brandCenter}>
               <div className={classes.brand}>
                 <img src={logo} alt={brand.name} />
               </div>
             </div>
-            <Typography variant="h2" className={classes.titleGradient} gutterBottom>
+            <Typography
+              variant="h2"
+              className={classes.titleGradient}
+              gutterBottom
+            >
               {t('new-password-form.enter_your_new_password')}
             </Typography>
             <section className={classes.pageFormWrap}>
-              <NewPasswordForm onSubmit={(values) => submitForm(values)} />
+              <NewPasswordForm onSubmit={values => submitForm(values)} />
             </section>
           </Paper>
         </div>
@@ -76,16 +81,6 @@ function NewPassword(props) {
 }
 
 NewPassword.propTypes = {
-  classes: PropTypes.object.isRequired,
-  deco: PropTypes.bool.isRequired,
+  classes: PropTypes.object.isRequired
 };
-
-const reducerUi = 'ui';
-const FormInit = connect(
-  state => ({
-    force: state,
-    deco: state[reducerUi].get('decoration')
-  }),
-)(NewPassword);
-
-export default withStyles(styles)(FormInit);
+export default withStyles(styles)(NewPassword);

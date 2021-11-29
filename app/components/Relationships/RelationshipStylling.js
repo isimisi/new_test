@@ -8,10 +8,10 @@ import PropTypes from 'prop-types';
 import { SketchPicker } from 'react-color';
 import { useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
+import { useTranslation } from 'react-i18next';
 import {
   colorChange, sizeChange
 } from '../../containers/Pages/Relationships/reducers/relationshipActions';
-import { useTranslation } from 'react-i18next';
 
 const styles = () => ({
   root: {
@@ -57,7 +57,7 @@ const styles = () => ({
 const RelationshipStylling = (props) => {
   const dispatch = useDispatch();
   const { classes, color, size } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState(false);
 
@@ -85,7 +85,7 @@ const RelationshipStylling = (props) => {
       </Typography>
       <div className={classes.row}>
         <Typography variant="subtitle2" component="h3">
-        {t('relationships.relationship-stylling.pick_a_label_size')}
+          {t('relationships.relationship-stylling.pick_a_label_size')}
         </Typography>
         <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Small' ? 'secondary' : ''}>{t('relationships.relationship-stylling.small')}</Button>
         <Button onClick={handleSizeClick} className={classes.size} size="small" variant="contained" color={size === 'Medium' ? 'secondary' : ''}>{t('relationships.relationship-stylling.medium')}</Button>
@@ -93,7 +93,7 @@ const RelationshipStylling = (props) => {
       </div>
       <div className={classes.row}>
         <Typography variant="subtitle2">
-        {t('relationships.relationship-stylling.pick_a_color')}
+          {t('relationships.relationship-stylling.pick_a_color')}
         </Typography>
         <div className={classes.swatch} onClick={handleClickColor}>
           <div className={classes.color} style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})` }} />

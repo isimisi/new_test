@@ -4,15 +4,28 @@ import { loadFromLocalStorage } from '@utils/localStorage';
 import { ThemeContext } from './ThemeWrapper';
 import Dashboard from '../Templates/Dashboard';
 import {
-  PersonalDashboard, Error, Settings,
-  HelpSupport, NotFound, Workspaces, Workspace,
-  Conditions, Condition, Outputs, Output,
-  Nodes, Node, Groups, Alerts, Alert,
-  Relationships, Relationship,
-  Attributes, CreateOrganization, ChoosePlan,
+  PersonalDashboard,
+  Error,
+  Settings,
+  HelpSupport,
+  NotFound,
+  Workspaces,
+  Workspace,
+  Conditions,
+  Condition,
+  Outputs,
+  Output,
+  Nodes,
+  Node,
+  Groups,
+  Alerts,
+  Alert,
+  Relationships,
+  Relationship,
+  Attributes,
+  ChoosePlan,
   WorkspaceAnalysis
 } from '../pageListAsync';
-
 
 function Application() {
   const history = useHistory();
@@ -29,7 +42,7 @@ function Application() {
   return (
     <Dashboard history={history} changeMode={changeMode}>
       <Switch>
-        { /* Home */ }
+        {/* Home */}
         <Route exact path="/app" component={PersonalDashboard} />
         <Route exact path="/app/outputs" component={Outputs} />
         <Route exact path="/app/outputs/:id" component={Output} />
@@ -44,20 +57,21 @@ function Application() {
         <Route exact path="/app/nodes" component={Nodes} />
         <Route exact path="/app/nodes/:id" component={Node} />
         <Route exact path="/app/workspaces" component={Workspaces} />
-        <Route exact path="/app/workspaces/analysis/:id" component={WorkspaceAnalysis} />
+        <Route
+          exact
+          path="/app/workspaces/analysis/:id"
+          component={WorkspaceAnalysis}
+        />
         <Route exact path="/app/workspaces/:id" component={Workspace} />
         <Route exact path="/app/settings" component={Settings} />
-        <Route exact path="/app/create/organization" component={CreateOrganization} />
         <Route exact path="/app/plan" component={ChoosePlan} />
         <Route path="/app/not-found" component={NotFound} />
         <Route path="/app/error" component={Error} />
         <Route path="/app/help-support" component={HelpSupport} />
         <Route component={NotFound} />
       </Switch>
-
     </Dashboard>
   );
 }
-
 
 export default Application;

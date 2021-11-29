@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import MUIDataTable from 'mui-datatables';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import Fab from '@material-ui/core/Fab';
 import { useHistory } from 'react-router-dom';
@@ -14,7 +13,7 @@ import Notification from '@components/Notification/Notification';
 import { loadFromLocalStorage } from '@utils/localStorage';
 
 import TagList from '@components/Tags/TagList';
-import { Tag } from '@customTypes/data';
+import { Tag, WhereInApp } from '@customTypes/data';
 import {
   changeTagActivity,
   deleteTag,
@@ -52,7 +51,7 @@ const Workspaces = props => {
 
   useEffect(() => {
     dispatch(getWorkspaces());
-    dispatch(getTags());
+    dispatch(getTags(WhereInApp.workspace));
   }, []);
 
   const onDelete = ({ data }) => {
@@ -73,11 +72,7 @@ const Workspaces = props => {
 
   const createWorkspace = () => {
     if (plan_id === 1 && workspaces.length === 50) {
-      dispatch(
-        showNotifAction(
-          t('workspaces.can_not_create_more_workspaces')
-        )
-      );
+      dispatch(showNotifAction(t('workspaces.can_not_create_more_workspaces')));
     } else {
       dispatch(postWorkspace(history));
     }
@@ -116,21 +111,30 @@ const Workspaces = props => {
     }
   };
 
+  const handleShowAll = () => {
+    const actTags = tags.filter(tag => tag.active);
+    actTags.forEach(tag => {
+      dispatch(changeTagActivity(tag));
+    });
+  };
+
   return (
     <div className={classes.table}>
       <Notification
         close={() => dispatch(closeNotifAction)}
         message={messageNotif}
       />
-      <Grid container spacing={2} direction="row" justify="center">
+      <Grid container spacing={2} direction="row">
         <Grid item md={3} lg={2}>
           <TagList
             tags={tags}
             handleDelete={handleDeleteTag}
             handlePostTag={handlePostTag}
+            handleShowAll={handleShowAll}
             handleUpdateTag={handleUpdateTag}
             makeActive={handleMakeActiveTag}
             allNumber={workspaces.length}
+            findCountString="workspaceTags"
           />
         </Grid>
         <Grid item md={9} lg={10}>

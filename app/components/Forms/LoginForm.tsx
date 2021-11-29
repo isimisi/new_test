@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 // @ts-nocheck
 
 import React, { Fragment, useState } from 'react';
@@ -27,20 +28,19 @@ import styles from './user-jss';
 
 // validation functions
 const required = value => (value === null ? 'Required' : undefined);
-const email = value => (
-  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-    ? 'Invalid email'
-    : undefined
-);
+const email = value => (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+  ? 'Invalid email'
+  : undefined);
 
 const useStyles = makeStyles(styles);
 
-
 // @ts-ignore eslint-disable-next-line
 // eslint-disable-next-line react/prop-types
-const LinkBtn = React.forwardRef((props, ref) => <NavLink to={props.to} {...props} innerRef={ref} />);
+const LinkBtn = React.forwardRef((props, ref) => (
+  <NavLink to={props.to} {...props} innerRef={ref} />
+));
 
-const LoginForm = (props) => {
+const LoginForm = props => {
   const [showPassword, setShowPassword] = useState(false);
   const deco = useAppSelector(state => state.ui.get('decoration'));
   const classes = useStyles();
@@ -54,11 +54,7 @@ const LoginForm = (props) => {
     event.preventDefault();
   };
 
-  const {
-    handleSubmit,
-    pristine,
-    submitting,
-  } = props;
+  const { handleSubmit, pristine, submitting } = props;
   return (
     <Fragment>
       <Hidden mdUp>
@@ -129,7 +125,11 @@ const LoginForm = (props) => {
               </FormControl>
             </div>
             <div className={classes.optArea}>
-              <FormControlLabel className={classes.label} control={<Field name="checkbox" component={CheckboxRedux} />} label={t('login-form.remember_me')} />
+              <FormControlLabel
+                className={classes.label}
+                control={<Field name="checkbox" component={CheckboxRedux} />}
+                label={t('login-form.remember_me')}
+              />
               <Button
                 size="small"
                 component={LinkBtn}
@@ -140,7 +140,12 @@ const LoginForm = (props) => {
               </Button>
             </div>
             <div className={classes.btnArea}>
-              <Button variant="contained" color="primary" size="large" type="submit">
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                type="submit"
+              >
                 {t('login-form.btn_continue')}
                 <ArrowForward
                   className={classNames(classes.rightIcon, classes.iconSmall)}
@@ -158,12 +163,12 @@ const LoginForm = (props) => {
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   pristine: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired
 };
 
 const LoginFormReduxed = reduxForm({
   form: 'immutableExample',
-  enableReinitialize: true,
+  enableReinitialize: true
 })(LoginForm);
 
 export default LoginFormReduxed;

@@ -44,10 +44,13 @@ const Login = (props: Props) => {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+      <Notification
+        close={() => dispatch(closeNotifAction)}
+        message={messageNotif}
+      />
       <div className={classes.container}>
         <div className={classes.userFormWrap}>
-          <LoginForm onSubmit={(values) => submitForm(values)} />
+          <LoginForm onSubmit={values => submitForm(values)} />
         </div>
       </div>
     </div>

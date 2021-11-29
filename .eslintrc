@@ -43,6 +43,9 @@
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "function-paren-newline": 0,
     "react/no-typos": 0,
+    "camelcase": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
     // "prettier/prettier": [
     //   {
     //     "singleQuote": true,

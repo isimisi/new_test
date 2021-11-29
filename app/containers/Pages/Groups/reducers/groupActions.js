@@ -1,9 +1,9 @@
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
+import { useTranslation } from 'react-i18next';
 import * as types from './groupConstants';
 const GROUPS = 'groups';
-import { useTranslation } from 'react-i18next';
 
 export const getGroups = () => async dispatch => {
   const url = `${baseUrl}/${GROUPS}`;
@@ -21,7 +21,7 @@ export const getGroups = () => async dispatch => {
 export const postGroup = (title, description, image, closeModal) => async dispatch => {
   const url = `${baseUrl}/${GROUPS}?title=${title}&description=${description}`;
   const body = new FormData();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   body.append('file_content', image);
 
   const header = authHeader();
@@ -65,7 +65,7 @@ export const putGroup = (id, title, description) => async dispatch => {
 export const deleteGroup = (id) => async dispatch => {
   const url = `${baseUrl}/${GROUPS}/${id}`;
   const header = authHeader();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   try {
     await axios.delete(url, header);

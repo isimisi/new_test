@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes, { any } from 'prop-types';
 import MUIDataTable from 'mui-datatables';
-import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import Notification from '@components/Notification/Notification';
 import {
@@ -13,6 +12,7 @@ import CryptoJS from 'crypto-js';
 import tableOptions from '@helpers/tableOptions';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import { useTranslation } from 'react-i18next';
 import styles from './alert-jss';
 import {
   columns, reducer
@@ -20,7 +20,6 @@ import {
 import {
   getAlerts, postAlert, deleteAlert, closeNotifAction
 } from './reducers/alertActions';
-import { useTranslation} from 'react-i18next';
 
 const Alerts = (props) => {
   const { classes } = props;
@@ -57,9 +56,9 @@ const Alerts = (props) => {
         columns={columns(t)}
         options={tableOptions(onDelete, false)}
       />
-        <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postAlert(history))}>
-            {`${t('alerts.btn_new_red_flag')}`}
-        </Fab>
+      <Fab variant="extended" color="primary" className={classes.addBtn} onClick={() => dispatch(postAlert(history))}>
+        {`${t('alerts.btn_new_red_flag')}`}
+      </Fab>
     </div>
   );
 };

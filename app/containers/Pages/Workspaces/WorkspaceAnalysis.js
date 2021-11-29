@@ -22,12 +22,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import { useTranslation } from 'react-i18next';
 import { reducer } from './constants';
 
 import {
   analyseOutput, saveAnalysis, closeNotifAction, revisionHistory, analysisTextChange
 } from './reducers/workspaceActions';
-import { useTranslation } from 'react-i18next';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -66,7 +66,7 @@ const WorkspaceAnalysis = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [activeRevision, setActiveRevision] = useState({});
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
 
   const matchpattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm;
@@ -121,13 +121,13 @@ const WorkspaceAnalysis = () => {
         const revisionHistoryItem = revisionHistoryList[JSON.stringify(removePositionFromElements(x.elements))];
 
         if (revisionHistoryItem) {
-          const firstRevisionIndex = revisionHistoryItem.findIndex(x => x.revision_number === 0);
-          const lastRevisionIndex = revisionHistoryItem.findIndex((r, i) => {
+          const firstRevisionIndex = revisionHistoryItem.findIndex(y => y.revision_number === 0);
+          const lastRevisionIndex = revisionHistoryItem.findIndex((r, j) => {
             if (activeRevision[JSON.stringify(removePositionFromElements(x.elements))]) {
               return r.id === activeRevision[JSON.stringify(removePositionFromElements(x.elements))];
             }
 
-            return firstRevisionIndex === 0 ? i === revisionHistoryItem.length - 1 : i === 0;
+            return firstRevisionIndex === 0 ? j === revisionHistoryItem.length - 1 : j === 0;
           });
           const revision = revisionHistoryItem[lastRevisionIndex];
 

@@ -32,7 +32,8 @@ import {
   ADD_OUTPUT_URL,
   OUTPUT_ADD_CONDITION,
   OUTPUT_CHANGE_CONDITION,
-  OUTPUT_DELETE_CONDITION
+  OUTPUT_DELETE_CONDITION,
+  CHANGE_TAGS
 } from './outputConstants';
 
 const initialState = {
@@ -48,7 +49,8 @@ const initialState = {
   message: '',
   editorState: EditorState.createEmpty(),
   conditionsDropDownOptions: List(),
-  groupsDropDownOptions: List()
+  groupsDropDownOptions: List(),
+  outputTags: List()
 };
 
 
@@ -85,6 +87,7 @@ export default function reducer(state = initialImmutableState, action: any): any
         const description = fromJS(action.description);
         const output = fromJS(action.output);
         const conditions = fromJS(action.conditions);
+        const tags = fromJS(action.tags);
 
         const group = fromJS(action.group);
         const fileType = fromJS(action.file_type);
@@ -107,6 +110,7 @@ export default function reducer(state = initialImmutableState, action: any): any
         mutableState.set('fileType', fileType);
         mutableState.set('outputType', outputType);
         mutableState.set('outputConditions', conditions);
+        mutableState.set('outputTags', tags);
         mutableState.set('group', group);
       });
     case SHOW_OUTPUT_FAILED:
@@ -218,6 +222,11 @@ export default function reducer(state = initialImmutableState, action: any): any
     case OUTPUT_DELETE_CONDITION:
       return state.withMutations((mutableState) => {
         mutableState.update('outputConditions', list => list.filter((l, i) => i !== action.index));
+      });
+    case CHANGE_TAGS:
+      return state.withMutations((mutableState) => {
+        const tags = fromJS(action.tags);
+        mutableState.set('outputTags', tags);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

@@ -6,12 +6,11 @@ import { loadFromLocalStorage } from '@utils/localStorage';
 import CryptoJS from 'crypto-js';
 import { History } from 'history';
 
-export const baseUrl = 'https://juristic-api-gateway-staging.herokuapp.com';
-// window.location.href === 'https://juristic-web-app-staging.herokuapp.com/'
-//   ? 'https://juristic-api-gateway-staging.herokuapp.com'
-//   : process.env.NODE_ENV === 'production'
-//     ? 'https://juristic-api-gateway.herokuapp.com'
-//     : 'http://127.0.0.1:3333';
+export const baseUrl = window.location.hostname === 'juristic-web-app-staging.herokuapp.com'
+  ? 'https://juristic-api-gateway-staging.herokuapp.com'
+  : process.env.NODE_ENV === 'production'
+    ? 'https://juristic-api-gateway.herokuapp.com'
+    : 'http://127.0.0.1:3333';
 
 export const isAuthenticated = () => {
   const tokenMatch = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/;

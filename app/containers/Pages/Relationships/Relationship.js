@@ -7,10 +7,10 @@ import {
   useHistory
 } from 'react-router-dom';
 import { getId } from '@api/constants';
-import { reducer, generateLabelStyle } from './constants';
 import {
   RelationshipDemo, RelationshipStylling, RelationshipForm, Notification
 } from '@components';
+import { reducer, generateLabelStyle } from './constants';
 import {
   closeNotifAction, putRelationship, showRelationship, getGroupDropDown
 } from './reducers/relationshipActions';

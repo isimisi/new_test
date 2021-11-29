@@ -81,7 +81,11 @@ export const putRelationship = (id, label, values, description, style, label_sty
     dispatch({ type: types.PUT_RELATIONSHIP_SUCCESS, message });
     history.push(`/app/${RELATIONSHIPS}`);
   } catch (error) {
-    const message = genericErrorMessage;
+    console.log(error.response);
+    let message = genericErrorMessage;
+    if (error?.response?.status === 403) {
+      message = 'Du kan ikke slette værdier, som du bruger i et arbejdsområder eller betingelser';
+    }
     dispatch({ type: types.PUT_RELATIONSHIP_FAILED, message });
   }
 };

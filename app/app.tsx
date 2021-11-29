@@ -1,23 +1,11 @@
-/**
- * app.js
- *
- * This is the entry file for the application, only setup and boilerplate
- * code.
- */
-
-// Needed for redux-saga es6 generator support
-import '@babel/polyfill';
-
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router/immutable';
 import FontFaceObserver from 'fontfaceobserver';
-import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-// Import root app
-import App from 'containers/App';
+
 import './styles/layout/base.scss';
 import { ToastContainer } from 'react-toastify';
 
@@ -35,8 +23,10 @@ import 'file-loader?name=.htaccess!./.htaccess'; // eslint-disable-line
 
 import LogRocket from 'logrocket';
 import { isMobile } from 'react-device-detect';
+import App from './containers/App';
+import history from './utils/history';
 import store from './redux/configureStore';
-import './i18nemo';
+import './i18n';
 
 import 'video-react/dist/video-react.css';
 
@@ -49,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
     apiKey: '6d9a9a961530851d4c09cac9aa86ada6',
     plugins: [new BugsnagPluginReact()]
   });
-} // import css
+}
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -67,9 +57,10 @@ const domainGroupId = 'e25f2e52-b958-4868-bb38-05482f232612';
 // TODO: påsæt reux with loace storage så den bliver initeret med localstorage og jeg dermed aldrig skal kigge i locale storage
 const MOUNT_NODE = document.getElementById('app');
 
-// Include the Crisp code here, without the <script></script> tags
-window.$crisp = [];
-window.CRISP_WEBSITE_ID = '66acbf35-9c41-485f-99dc-b7800897ea4a';
+// eslint-disable-next-line dot-notation
+window['$crisp'] = [];
+// eslint-disable-next-line dot-notation
+window['CRISP_WEBSITE_ID'] = '66acbf35-9c41-485f-99dc-b7800897ea4a';
 
 if (!isMobile) {
   // eslint-disable-next-line func-names
@@ -77,7 +68,7 @@ if (!isMobile) {
     const d = document;
     const s = d.createElement('script');
     s.src = 'https://client.crisp.chat/l.js';
-    s.async = 1;
+    s.async = true;
     d.getElementsByTagName('head')[0].appendChild(s);
   }());
 }
@@ -99,11 +90,13 @@ let render = () => {
 };
 
 if (process.env.NODE_ENV === 'production') {
+  // @ts-ignore
   const ErrorBoundary = Bugsnag.getPlugin('react').createErrorBoundary(React);
 
   render = () => {
     ReactDOM.render(
       <ErrorBoundary>
+        {/* @ts-ignore */}
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <App />

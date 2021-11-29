@@ -3,7 +3,7 @@
  */
 import { reducer as form } from 'redux-form/immutable';
 import {
-  AnyAction, combineReducers, Reducer
+  combineReducers
 } from 'redux';
 import { connectRouter } from 'connected-react-router/immutable';
 import history from '@utils/history';
@@ -11,7 +11,6 @@ import { routerReducer } from 'react-router-redux';
 
 import uiReducer from './modules/ui';
 import initval from './modules/initForm';
-import languageProviderReducer from '../containers/LanguageProvider/reducer';
 import dashboard from '../containers/Pages/Dashboard/reducers/dashboardReducer';
 import auth from '../containers/Pages/Users/reducers/authReducer';
 import groups from '../containers/Pages/Groups/reducers/groupReducer';
@@ -42,7 +41,6 @@ export interface ApplicationState {
   initval: any,
   groups: any,
   tags: IImmutableTagState,
-  language: any
   router: routerReducer
 }
 
@@ -67,7 +65,6 @@ const rootReducer = combineReducers<ApplicationState>({
   groups,
   // @ts-ignore
   tags,
-  language: languageProviderReducer,
   router: connectRouter(history)
 });
 

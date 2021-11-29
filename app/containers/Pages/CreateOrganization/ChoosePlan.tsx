@@ -11,9 +11,9 @@ import { plans } from '@api/constants';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import PricingCard from '@components/CardPaper/PricingCard';
 import Notification from '@components/Notification/Notification';
+import { useTranslation } from 'react-i18next';
 import styles from '../HelpSupport/helpSupport-jss';
-import { closeNotifAction, } from './reducers/createOrganizationActions';
-import {useTranslation} from 'react-i18next';
+import { closeNotifAction } from './reducers/createOrganizationActions';
 
 function Pricing() {
   // const { classes } = props;
@@ -21,8 +21,7 @@ function Pricing() {
   const messageNotif = useSelector(state => state[reducer].get('message'));
   const dispatch = useDispatch();
   const { plan_id } = loadFromLocalStorage();
-  const {t} = useTranslation();
-
+  const { t } = useTranslation();
 
   const handleGetItem = () => {
     window.open('https://calendly.com/juristic_aps/demo', '_blank');
@@ -40,7 +39,10 @@ function Pricing() {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+      <Notification
+        close={() => dispatch(closeNotifAction)}
+        message={messageNotif}
+      />
       <Grid container spacing={2}>
         <Grid item md={4} sm={6} xs={12}>
           <PricingCard
@@ -75,7 +77,7 @@ function Pricing() {
 }
 
 Pricing.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Pricing);
