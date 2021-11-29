@@ -669,7 +669,7 @@ const Workspace = (props) => {
           JSON.stringify(tags),
           shareOrg,
           setMetaOpen))}
-        closeForm={runIntro ? null : () => setMetaOpen(false)}
+        closeForm={() => setMetaOpen(false)}
 
       />
       <DefineEdge

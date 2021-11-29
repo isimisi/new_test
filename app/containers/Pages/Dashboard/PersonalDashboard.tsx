@@ -308,14 +308,14 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
           setShowUpgrade(false);
         }}
       />
-      <Joyride
+      {/* <Joyride
         continuous
         run={runIntro}
         stepIndex={introStepIndex}
         scrollToFirstStep
         showSkipButton
         callback={handleJoyrideCallback}
-        /** @ts-ignore */
+
         steps={steps}
         styles={{
           options: {
@@ -323,7 +323,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
             primaryColor: '#36454F'
           },
         }}
-      />
+      /> */}
       <MobileDisclaimer
         open={showMobileDisclaimer}
         close={() => {
