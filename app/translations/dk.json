@@ -292,6 +292,13 @@
       "cvr_nr": "CVR-nummer",
       "next":"Næste",
       "skip": "Spring over",
+      "create-tag": {
+        "chg_tag": "Ændre dit tag",
+        "create_a_new_tag": "Lav et nyt tag",
+        "name":"Navn",
+        "cancel": "Annuller",
+        "save": "Gem"
+      },
       "workspace-form": {
         "your_workspace": "Dine arbejdsområder",
         "name": "Navn",

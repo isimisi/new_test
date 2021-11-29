@@ -263,6 +263,7 @@
     "can_not_create_more_workspaces": "You can not create more workspaces. Upgrade to make more.",
     "table_title": "Title",
     "table_desc": "Description",
+    "tags": "Tags",
     "table_groups": "Groups",
     "table_see_element": "See workspaces",
     "table_created": "Created",
@@ -292,6 +293,13 @@
     "cvr_nr": "CVR-number",
     "next": "Next",
     "skip": "Spring over",
+    "create-tag": {
+      "chg_tag": "Change your tag",
+      "create_a_new_tag": "Create a new tag",
+      "name": "Name",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
     "workspace-form": {
       "your_workspace": "Your workspace",
       "name": "Name",
