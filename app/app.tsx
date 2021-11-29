@@ -6,6 +6,9 @@ import { ConnectedRouter } from 'connected-react-router/immutable';
 import FontFaceObserver from 'fontfaceobserver';
 import 'sanitize.css/sanitize.css';
 
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 import './styles/layout/base.scss';
 import { ToastContainer } from 'react-toastify';
 
