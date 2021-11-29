@@ -17,9 +17,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CreatableSelect from 'react-select/creatable';
-import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
 import { useTranslation } from 'react-i18next';
 import styles from './workspace-jss';
+import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
 
 
 const localeStorage = loadFromLocalStorage();

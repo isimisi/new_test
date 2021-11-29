@@ -15,14 +15,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CreatableSelect from 'react-select/creatable';
 import Tooltip from '@material-ui/core/Tooltip';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import styles from './attribute-jss';
 import {
   addType, addGroup, descriptionChange, labelChange, changeSelectionValues
 } from './reducers/attributeActions';
-import {useTranslation} from 'react-i18next';
 
 const typeSuggestions = (t) => ([
-  { label: t('attributes.create_new_feature.options') , value: 'Selection' },
+  { label: t('attributes.create_new_feature.options'), value: 'Selection' },
   { label: t('attributes.create_new_feature.value'), value: 'Value' },
 ]);
 
@@ -61,7 +61,7 @@ const Attribute = (props) => {
   const theme = useTheme();
   const [inputValue, setInputValue] = useState('');
   const dispatch = useDispatch();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const handleKeyDown = event => {
     if (!inputValue) return;
@@ -93,7 +93,7 @@ const Attribute = (props) => {
       <DialogTitle id="form-dialog-title">{t('attributes.create_new_feature.dialog_title')}</DialogTitle>
       <DialogContent>
         <DialogContentText>
-            {t('attributes.create_new_feature.dialog_content_text')}
+          {t('attributes.create_new_feature.dialog_content_text')}
         </DialogContentText>
         <div className={classes.inlineWrap}>
           <div className={classes.field} style={{ width: '30%' }}>
@@ -131,7 +131,7 @@ const Attribute = (props) => {
                   },
                   placeholder: t('attributes.create_new_feature.select_group'),
                 }}
-                placeholder={t('attributes.create_new_feature.select_group')} 
+                placeholder={t('attributes.create_new_feature.select_group')}
                 options={mapSelectOptions(groupsDropDownOptions)}
                 value={group && { label: group, value: group }}
                 onChange={(v) => dispatch(addGroup(v.value))}
@@ -140,10 +140,10 @@ const Attribute = (props) => {
           </div>
         </div>
         <TextField
-          autoFocus 
+          autoFocus
           margin="dense"
           id="attribute"
-          label={t('attributes.create_new_feature.dialog_name')} 
+          label={t('attributes.create_new_feature.dialog_name')}
           value={label}
           onChange={(e) => dispatch(labelChange(e.target.value))}
           fullWidth

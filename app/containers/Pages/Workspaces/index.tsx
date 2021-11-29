@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import MUIDataTable from 'mui-datatables';
-import Tooltip from '@material-ui/core/Tooltip';
 
 import Fab from '@material-ui/core/Fab';
 import { useHistory } from 'react-router-dom';
@@ -152,16 +151,14 @@ const Workspaces = props => {
           />
         </Grid>
       </Grid>
-      <Tooltip title={`${t('workspaces.btn_new_workspace')}`}>
-        <Fab
-          variant="extended"
-          color="primary"
-          className={classes.addBtn}
-          onClick={createWorkspace}
-        >
-          {`${t('workspaces.btn_new_workspace')}`}
-        </Fab>
-      </Tooltip>
+      <Fab
+        variant="extended"
+        color="primary"
+        className={classes.addBtn}
+        onClick={createWorkspace}
+      >
+        {`${t('workspaces.btn_new_workspace')}`}
+      </Fab>
     </div>
   );
 };

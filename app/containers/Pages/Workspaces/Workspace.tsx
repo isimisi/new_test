@@ -50,6 +50,7 @@ import AddressInfoModel from '@components/Workspace/AddressInfoModel';
 import ShareModal from '@components/Workspace/Share/ShareModal';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import WorkspaceFabs from '@components/Workspace/WorkspaceFabs';
+import { useTranslation } from 'react-i18next';
 import { NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
 import {
@@ -100,6 +101,7 @@ const Workspace = (props) => {
   const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
+  const { t } = useTranslation();
 
   const { plan_id } = loadFromLocalStorage();
 
@@ -193,7 +195,7 @@ const Workspace = (props) => {
 
   const handleCvrError = () => {
     setShowCvrModal(false);
-    dispatch(showNotifAction('Vi havde en fejl i forbindelse med at trække koncerndiagrammet. Vores udviklere er  underettet og er på sagen!'));
+    dispatch(showNotifAction(t('workspaces.drawing_error')));
   };
 
   const handleUncertainCompanies = (companies = []) => {
@@ -477,7 +479,7 @@ const Workspace = (props) => {
       }));
     }
     if (_label.__isNew__ && plan_id === 1) {
-      dispatch(showNotifAction('Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
+      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_relationship_types')));
     } else {
       setRelationshipLabel(_label.value);
     }
@@ -630,7 +632,7 @@ const Workspace = (props) => {
               <div className={classes.signedRow}>
                 <div className={classes.signedCircle} />
                 <Typography className={classes.signedText}>
-            Godkendt og låst af
+                  {t('workspaces.approved_and_locked_off')}
                   {' '}
                   {' '}
                   {signedBy}
@@ -638,7 +640,7 @@ const Workspace = (props) => {
               </div>
               <div className={classes.signedRow}>
                 <Typography className={classes.signedId}>
-              ID:
+                  {t('workspaces.id')}
                   {' '}
                   {window.btoa(signedBy + id)}
                 </Typography>
@@ -713,7 +715,7 @@ const Workspace = (props) => {
             }));
           }
           if (_label.__isNew__ && plan_id === 1) {
-            dispatch(showNotifAction('Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.'));
+            dispatch(showNotifAction(t('workspaces.you_can_not_create_new_item_types')));
           } else {
             setNodeLabel(_label.value);
           }
@@ -726,7 +728,7 @@ const Workspace = (props) => {
           }
 
           if (isNew && plan_id === 1) {
-            dispatch(showNotifAction('Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
+            dispatch(showNotifAction(t('workspaces.you_can_not_create_new_attribute_types')));
           } else {
             setAttributes(_attributes);
           }
@@ -791,9 +793,9 @@ const Workspace = (props) => {
           setShowCvrModal(false);
           handleUncertainCompanies();
         }}
-        title="Indlæs fra CVR"
-        description="Søg på en virksomhed eller et CVR-nummer:"
-        textFielLabel="CVR-nummer"
+        title={t('workspaces.load_from_CVR')}
+        description={t('workspaces.search_for_a_company_or_CVR_number')}
+        textFielLabel={t('workspaces.cvr_nr')}
         changeUncertainCompanies={handleUncertainCompanies}
         uncertainCompanies={uncertainCompanies}
         mapUncertainCompanies={(uncertainMapping) => dispatch(mapUncertainCompanies(id, uncertainMapping, erstTypes))}

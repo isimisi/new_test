@@ -1,9 +1,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import brand from '@api/dummy/brand';
-import { RegisterForm, Notification } from '@components';
+import Notification from '@components/Notification/Notification';
+import RegisterForm from '@components/Forms/RegisterForm';
 import styles from '@components/Forms/user-jss';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -11,7 +11,11 @@ import {
 } from 'react-router-dom';
 import { register, closeNotifAction } from './reducers/authActions';
 
-function Register(props) {
+interface Props {
+  classes: any;
+}
+
+function Register(props: Props) {
   const reducer = 'auth';
   const messageNotif = useSelector(state => state[reducer].get('errorMessage'));
   const dispatch = useDispatch();
@@ -50,9 +54,5 @@ function Register(props) {
     </div>
   );
 }
-
-Register.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(Register);

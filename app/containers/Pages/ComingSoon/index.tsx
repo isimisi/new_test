@@ -15,7 +15,12 @@ import logo from '@images/logo.svg';
 import styles from '@components/Forms/user-jss';
 import { useTranslation } from 'react-i18next';
 
-function ComingSoon(props) {
+interface Props {
+  classes: any;
+  deco: any;
+}
+
+function ComingSoon(props: Props) {
   const { classes, deco } = props;
   const [email, setEmail] = useState('');
   const { t } = useTranslation();
@@ -72,7 +77,7 @@ function ComingSoon(props) {
                 </FormControl>
                 <aside>
                   <Button variant="contained" color="secondary" type="submit">
-                    {t('commig-soon.Notify me')}
+                    {t('commig-soon.notify_me')}
                   </Button>
                 </aside>
               </div>
