@@ -1,7 +1,7 @@
 const guideSteps = (t) => ([
   {
-    title:  t('guide-slider.welcome'),
-    label:  t('guide-slider.welcome_text'),
+    title: t('guide-slider.welcome'),
+    label: t('guide-slider.welcome_text'),
     imgPath: 'https://app-juristic-media.s3.eu-north-1.amazonaws.com/guides/1.jpg',
   },
   {
