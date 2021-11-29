@@ -28,8 +28,6 @@ import history from './utils/history';
 import store from './redux/configureStore';
 import './i18n';
 
-import 'video-react/dist/video-react.css';
-
 //  logrocket
 LogRocket.init('pm66tw/juristic-web-app');
 
