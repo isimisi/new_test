@@ -458,6 +458,7 @@
     "columns": {
       "title": "Titel",
       "desc": "Beskrivelse",
+      "tags": "tags",
       "groups" :"Gruppe",
       "see_red_flag": "Se Red Flag",
       "last_changed": "Sidst ændret",

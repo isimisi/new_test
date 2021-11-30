@@ -31,7 +31,8 @@ const initialState = {
   alertConditions: List(),
   message: '',
   groupsDropDownOptions: List(),
-  conditionsDropDownOptions: List()
+  conditionsDropDownOptions: List(),
+  alertTags: List()
 };
 
 

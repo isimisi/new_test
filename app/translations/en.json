@@ -460,7 +460,8 @@
   "columns": {
     "title": "Title",
       "desc": "Description",
-      "groups" :"Groups",
+      "groups": "Groups",
+      "tags": "tags",
       "see_red_flag": "See Red Flag",
       "last_changed": "Last changed",
       "btn_open": "Open"

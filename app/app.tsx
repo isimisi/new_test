@@ -1,4 +1,6 @@
 // Import all the third party stuff
+// @ts-nocheck
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -97,7 +99,6 @@ if (process.env.NODE_ENV === 'production') {
   render = () => {
     ReactDOM.render(
       <ErrorBoundary>
-        {/* @ts-ignore */}
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <App />

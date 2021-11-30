@@ -3,13 +3,12 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 import { baseUrl, authHeader, genericErrorMessage } from '@api/constants';
-import { AppThunk } from '@redux/configureStore';
+import { AppDispatch, AppThunk } from '@redux/configureStore';
 import { WhereInApp } from '@customTypes/data';
 import * as types from './tagsConstants';
 const TAGS = 'tags';
 
-export const getTags = (where: WhereInApp): AppThunk => async dispatch => {
-  console.log('snaljksm');
+export const getTags = (where: WhereInApp): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   const url = `${baseUrl}/${TAGS}?where=${where}`;
   const header = authHeader();
   try {
@@ -24,7 +23,7 @@ export const getTags = (where: WhereInApp): AppThunk => async dispatch => {
   }
 };
 
-export const postTag = (emoji, emoji_name, name) => async dispatch => {
+export const postTag = (emoji, emoji_name, name): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   const url = `${baseUrl}/${TAGS}`;
   const body = {
     emoji,
@@ -41,7 +40,7 @@ export const postTag = (emoji, emoji_name, name) => async dispatch => {
   }
 };
 
-export const updateTag = (id, emoji, emoji_name, name) => async dispatch => {
+export const updateTag = (id, emoji, emoji_name, name): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   const url = `${baseUrl}/${TAGS}/${id}`;
   const body = {
     emoji,
@@ -58,7 +57,7 @@ export const updateTag = (id, emoji, emoji_name, name) => async dispatch => {
   }
 };
 
-export const deleteTag = (id) => async dispatch => {
+export const deleteTag = (id): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   const url = `${baseUrl}/${TAGS}/${id}`;
   const header = authHeader();
   try {

@@ -1,5 +1,4 @@
 import { fromJS, List } from 'immutable';
-import { AnyAction } from 'redux';
 
 import { Tag } from '@customTypes/data';
 import { Immutable } from '@redux/configureStore';
@@ -12,22 +11,25 @@ import {
   TAG_UPDATE_FAILED,
   TAG_DELETE_SUCCESS,
   TAG_DELETE_FAILED,
-  CHANGE_TAGS_ACTIVE
+  CHANGE_TAGS_ACTIVE,
+  TagActions
 } from './tagsConstants';
 
 interface TagState {
   tags: List<Tag>,
+  message: string
 }
 
 export type IImmutableTagState = Immutable<TagState>
 
 const initialState: TagState = {
-  tags: List()
+  tags: List(),
+  message: ''
 };
 
 const initialImmutableState = fromJS(initialState);
 
-export default function reducer(state = initialImmutableState, action: AnyAction): IImmutableTagState {
+export default function reducer(state = initialImmutableState, action: TagActions): IImmutableTagState {
   switch (action.type) {
     case TAG_INDEX_SUCCESS:
       return state.withMutations((mutableState) => {

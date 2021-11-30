@@ -145,6 +145,11 @@ export const deleteCondition = index => ({
   index
 });
 
+export const changeTags = tags => ({
+  type: types.CHANGE_TAGS,
+  tags
+});
+
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF
 };
