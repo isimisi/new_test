@@ -4,7 +4,7 @@ import { initReactI18next } from 'react-i18next';
 import translationDK from './translations/dk.json';
 import translationEN from './translations/en.json';
 
-const fallbackLng = ['da'];
+const fallbackLng = ['en'];
 const availableLanguages = ['da', 'en'];
 
 

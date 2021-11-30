@@ -35,7 +35,7 @@ export const tableColumns = t => [
     }
   },
   {
-    name: 'Sidst ændret',
+    name: t('nodes.last_changed'),
     options: {
       filter: true
     }

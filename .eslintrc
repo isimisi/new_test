@@ -38,6 +38,7 @@
     "react/prefer-stateless-function": 0,
     "react/forbid-prop-types": 0,
     "prefer-destructuring": 0,
+    "linebreak-style": 0,
     "jsx-a11y/href-no-hash": "off",
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "function-paren-newline": 0,

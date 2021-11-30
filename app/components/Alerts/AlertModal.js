@@ -7,12 +7,13 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
-import Tooltip from '@material-ui/core/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 const AlertModal = props => {
   const {
     title, description, open, handleClose, handleSeeCondition, disabled
   } = props;
+  const { t } = useTranslation();
 
   return (
     <Dialog
@@ -36,10 +37,10 @@ const AlertModal = props => {
           onClick={handleSeeCondition}
           disabled={disabled}
         >
-            Se betingelse
+          {t('alerts.alert-modal.condition')}
         </Button>
         <Button color="primary" variant="contained" size="large" onClick={handleClose}>
-            Luk
+          {t('alerts.alert-modal.close')}
         </Button>
       </DialogActions>
     </Dialog>

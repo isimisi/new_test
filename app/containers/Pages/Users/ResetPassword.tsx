@@ -1,18 +1,23 @@
 import React, { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
-import PropTypes from 'prop-types';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { withStyles } from '@material-ui/core/styles';
-import { ResetForm, SendResetPassword, Notification } from '@components';
-import { useSelector, useDispatch } from 'react-redux';
+import SendResetPassword from '@components/User/SendResetPassword';
+import ResetForm from '@components/Forms/ResetForm';
+import Notification from '@components/Notification/Notification';
 import styles from '../../../components/Forms/user-jss';
 import { resetPassword, closeNotifAction } from './reducers/authActions';
 
-function ResetPassword(props) {
+interface Props {
+  classes: any;
+}
+
+function ResetPassword(props: Props) {
   const [valueForm, setValueForm] = useState(null);
   const [sentPassword, setSendPassword] = useState(false);
-  const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.auth.get('errorMessage'));
+  const dispatch = useAppDispatch();
+  const messageNotif = useAppSelector(state => state.auth.get('errorMessage'));
 
   const submitForm = useCallback((values) => {
     setValueForm(values);
@@ -45,9 +50,5 @@ function ResetPassword(props) {
     </div>
   );
 }
-
-ResetPassword.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(ResetPassword);

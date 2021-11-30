@@ -1,20 +1,26 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import styles from '@components/Forms/user-jss';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import {
+  useHistory,
+  useLocation
+} from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import LoginForm from '@components/Forms/LoginForm';
 import Notification from '@components/Notification/Notification';
 import { login, closeNotifAction } from './reducers/authActions';
 
-const Login = props => {
+interface Props {
+  classes: any;
+}
+
+const Login = (props: Props) => {
   const reducer = 'auth';
 
-  const messageNotif = useSelector(state => state[reducer].get('errorMessage'));
-  const dispatch = useDispatch();
+  const messageNotif = useAppSelector(state => state[reducer].get('errorMessage'));
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const { state: locationState } = useLocation();
 
@@ -49,10 +55,6 @@ const Login = props => {
       </div>
     </div>
   );
-};
-
-Login.propTypes = {
-  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Login);

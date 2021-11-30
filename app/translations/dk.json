@@ -50,6 +50,18 @@
       "send_us_a_request": "Send os et ønske",
       "we_love_ideas": "Vi er glade for idéer og ser på det straks",
       "write_your_wish_here": "Skriv dit ønske her",
+      "find_the_small_circle": "Find den lille cirkel der blinker og fortsæt hvor du slap fra",
+      "can_not_create_more_workspaces": "Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.",
+      "next": "Næste",
+      "previous": "Forrige",
+      "skip": "Spring over",
+      "welcome": "Velkommen til Juristic",
+      "localsteps_frontpage": "Her er du nu! Forsiden indeholder et overblik over dine seneste arbejdsområder og ændringer.",
+      "localsteps_workspace": "Her finder du en oversigt over arbejdsområder. De er kernen af platformen, og det er der, du kan indhente koncerndiagrammer og lave analyser!",
+      "localsteps_data_builder": "Her finder du en oversigt over de enkelte byggeklodser, som du kan se og redigere. Byggeklodser er en samlet betegnelse for indholdet i arbejdsområdet.",
+      "localsteps_output": "Under Rapportindhold kan du uploade filer eller skrive paradigmetekster, som skal være resultatet af den juridiske analyse. På den måde kan Juristic udarbejde første udkast til fx et notat eller en strukturrapport - og endda på få minutter.",
+      "localsteps_red_flags": "Red flags er avancerede notifikationer, som dukker op, mens du tegner i de enkelte arbejdsområder - i realtime.",
+      "try_creating_a_new_workspace": "Prøv at oprette et nyt arbejdsområde!",
       "CounterIconsWidget": {
         "elements": "elementer",
         "relationship": "forbindelser",
@@ -87,7 +99,11 @@
     },
     "alerts": {
       "your_red_flags": "Dine Red Flags",
-      "btn_new_red_flag": "Nyt red flag"
+      "btn_new_red_flag": "Nyt red flag",
+      "alert-modal": {
+        "condition": "Se betingelse",
+        "close": "Luk"
+      }
     },
     "alert-naming-form": {
       "red_flag_content": "Red flag-indhold",
@@ -254,6 +270,35 @@
       "last_changed": "Sidst ændret",
       "previous": "Forrige",
       "welcome_to_the_work_area": "Velkommen til arbejdsområdet",
+      "describing_the_work_area": "Start med at beskrive arbejdsområdet. Vælg gruppen 'Corporate'",
+      "insert_text_boxes_and_notes": "Du kan indsætte tekstbokse og noter via denne kvik-knap.",
+      "insert_elements": "Indsæt elementer, som fx selskaber og personer, via denne kvik-knap.",
+      "other_functions": "I denne menu finder du de øvrige funktioner. Her kan du gemme ændringerne i dit arbejdsområde!",
+      "change_name_description_and_group": "Hvis du vil ændre navn, beskrivelse og gruppe - eller ændre indstillingen for deling - skal du trykke her.",
+      "press_analyze_btn_to_create_a_note_or_report": "Tryk på Analyser-knappen for at skabe et notat eller en rapport på baggrund af tegningen i arbejdsområdet.",
+      "get_a_full_overview_of_red_flags": "Du kan også få en fuld oversigt over red flags i arbejdsområdet - også selvom du allerede har set dem.",
+      "share_workspace_with_non_juristic_user": "Hvis du får brug for at dele arbejdsområdet med nogen, der ikke er Juristic-brugere, kan du gøre det her.",
+      "connected_juristic_to_cvr_in_dk_swe_no_fi": "Vi har koblet Juristic direkte til CVR i Danmark, Sverige, Norge og Finland. Prøv at trykke her nu!",
+      "drawing_error": "Vi havde en fejl i forbindelse med at trække koncerndiagrammet. Vores udviklere er  underettet og er på sagen!",
+      "approved_and_locked_off": "Godkendt og låst af",
+      "id": "ID:",
+      "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.",
+      "you_can_not_create_new_item_types": "Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.",
+      "you_can_not_create_new_attribute_types": "Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.",
+      "load_from_CVR": "Indlæs fra CVR",
+      "search_for_a_company_or_CVR_number": "Søg på en virksomhed eller et CVR-nummer:",
+      "your_work_areas_will_be_locked": "Dine arbejdsområder bliver låst efter 90 dage på base",
+      "go_to_workspace": "Gå til arbejdsområde",
+      "cvr_nr": "CVR-nummer",
+      "next":"Næste",
+      "skip": "Spring over",
+      "create-tag": {
+        "chg_tag": "Ændre dit tag",
+        "create_a_new_tag": "Lav et nyt tag",
+        "name":"Navn",
+        "cancel": "Annuller",
+        "save": "Gem"
+      },
       "workspace-form": {
         "your_workspace": "Dine arbejdsområder",
         "name": "Navn",
@@ -417,6 +462,42 @@
       "see_red_flag": "Se Red Flag",
       "last_changed": "Sidst ændret",
       "btn_open": "Åben"
+    },
+    "helpers": {
+      "toolbar": {
+        "downloadCsv": "Download som CSV fil",
+        "filterTable": "Filtrer tabel",
+        "print": "Print",
+        "search": "Søg",
+        "viewColumns": "Vis colonner"
+      },
+      "filter": {
+        "all": "alle",
+        "reset": "reset",
+        "filter": "Filtrer"
+      },
+      "pagination" : {
+        "rows_per_page": "Rækker per side:",
+        "display_rows": "af"
+      },
+      "selectedRows": {
+        "delete": "Slet",
+        "row_selected": "række(r) valgt"
+      },
+      "viewColumns": {
+        "view_columns": "Vis colonner"
+      }
+    },
+    "mobile-disclaimer": {
+      "you_re_on_a_mobile_device": "Det ser ud til, at du er på en mobil enhed 📱",
+      "desc": "Mange af vores funktioner virker på mobile enheder, men for den bedste oplevelse anbefaler vi, at du bruger en browser på din computer.",
+      "contact_us": "Har du spørgsmål, så kontakt os gerne.",
+      "btn_continue":"Fortsæt"
+    },
+    "upgrade-modal": {
+      "you_have_now_upgraded_your_user": "Tillykke, du har nu opgraderet din bruger!",
+      "desc": "Du har fået adgang til dine ekstra funktioner! Vi er glade for, at du finder værdi i Juristic. Oplever du problemer, eller har du bare spørgsmål, er du altid velkommen til at ringe eller skrive til os.",
+      "btn_continue": "Fortsæt"
     }
   }
   

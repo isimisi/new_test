@@ -50,6 +50,18 @@
     "send_us_a_request": "Send us a request",
     "we_love_ideas": "We love ideas and look at it right away",
     "write_your_wish_here": "Write your wish here",
+    "find_the_small_circle": "Find the small circle that is flashing and continue where you left off",
+    "can_not_create_more_workspaces": "You can not create more workspaces. Upgrade to make more. ",
+    "next": "Next",
+    "previous": "Previous",
+    "skip": "Skip",
+    "welcome": "Welcome to Juristic",
+    "localsteps_frontpage": "Here you are now! The front page contains an overview of your latest work areas and changes. ",
+    "localsteps_workspace": "Here you will find an overview of work areas. They are the core of the platform and that's where you can obtain group charts and make analyzes! ",
+    "localsteps_data_builder": "Here you will find an overview of the individual building blocks, which you can see and edit. Building blocks is a collective term for the content of the work area.",
+    "localsteps_output": "Under Report Content, you can upload files or write paradigm texts, which should be the result of the legal analysis. In this way, Juristic can prepare the first draft of, for example, a memorandum or a structural report - and even in a few minutes.",
+    "localsteps_red_flags": "Red flags are advanced notifications that appear while drawing in individual work areas - in real time.",
+    "try_creating_a_new_workspace": "Try creating a new workspace!",
     "CounterIconsWidget": {
       "elements": "elements",
       "relationship": "connections",
@@ -87,7 +99,11 @@
   },
   "alerts": {
     "your_red_flags": "Your Red Flags",
-    "btn_new_red_flag": "New red flag"
+    "btn_new_red_flag": "New red flag",
+    "alert-modal": {
+      "condition": "See condition",
+      "close": "Close"
+    }
   },
   "alert-naming-form": {
     "red_flag_content": "Red flag-content",
@@ -247,6 +263,7 @@
     "can_not_create_more_workspaces": "You can not create more workspaces. Upgrade to make more.",
     "table_title": "Title",
     "table_desc": "Description",
+    "tags": "Tags",
     "table_groups": "Groups",
     "table_see_element": "See workspaces",
     "table_created": "Created",
@@ -254,6 +271,35 @@
     "last_changed": "Last changed",
     "previous": "Previous",
     "welcome_to_the_work_area": "Welcome to the work area",
+    "describing the work area": "Start by describing the work area. Select the group 'Corporate'",
+    "insert_text_boxes_and_notes": "You can insert text boxes and notes via this quick button.",
+    "insert_elements": "Insert elements, such as companies and individuals, via this quick button.",
+    "other_functions": "In this menu you will find the other functions. Here you can save the changes in your work area!",
+    "change_name_description_and_group": "If you want to change the name, description and group - or change the sharing setting - click here.",
+    "press_analyze_btn_to_create_a_note_or_report": "Press the Analyze button to create a note or report based on the drawing in the work area.",
+    "get_a_full_overview_of_red_flags": "You can also get a full overview of red flags in the work area - even if you have already seen them.",
+    "share_workspace_with_non_juristic_user": "If you need to share the workspace with someone who is not a Juristic user, you can do so here.",
+    "connected_juristic_to_cvr_in_dk_swe_no_fi": "We have connected Juristic directly to CVR in Denmark, Sweden, Norway and Finland. Try clicking here now!",
+    "drawing_error": "We had an error drawing the group chart. Our developers are informed and are on the case!",
+    "approved_and_locked_off": "Approved and locked off",
+    "id": "ID:",
+    "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_item_types": "You can not create new item types. This is a Draw feature. Contact us for more information.",
+    "you_can_not_create_new_attribute_types": "You can not create new attribute types. This is a Draw feature. Contact us for more information.",
+    "load_from_CVR": "Load from CVR",
+    "search_for_a_company_or_CVR_number": "Search for a company or CVR number:",
+    "your_work_areas_will_be_locked": "Your work areas will be locked after 90 days on base",
+    "go_to_workspace": "Go to workspace",
+    "cvr_nr": "CVR-number",
+    "next": "Next",
+    "skip": "Spring over",
+    "create-tag": {
+      "chg_tag": "Change your tag",
+      "create_a_new_tag": "Create a new tag",
+      "name": "Name",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
     "workspace-form": {
       "your_workspace": "Your workspace",
       "name": "Name",
@@ -418,5 +464,41 @@
       "see_red_flag": "See Red Flag",
       "last_changed": "Last changed",
       "btn_open": "Open"
-  }
+  },
+  "helpers": {
+    "toolbar": {
+      "downloadCsv": "Download as CSV file",
+      "filterTable": "Filter table",
+      "print": "Print",
+      "search": "Search",
+      "viewColumns": "View Columns"
+    },
+    "filter": {
+      "all": "all",
+      "reset": "reset",
+      "filter": "Filter"
+    },
+    "pagination" : {
+      "rows_per_page": "Rows per page:",
+      "display_rows": "of"
+    },
+    "selectedRows": {
+      "delete": "Delete",
+      "row_selected": "row (s) selected"
+    },
+    "viewColumns": {
+      "view_columns": "View columns"
+    }
+  },
+    "mobile-disclaimer": {
+      "you_re_on_a_mobile_device": "It looks like you're on a mobile device 📱",
+      "desc": "Many of our features work on mobile devices, but for the best experience, we recommend that you use a browser on your computer.",
+      "contact_us": "If you have any questions, please contact us.",
+      "btn_continue": "Continue"
+    },
+    "upgrade-modal": {
+      "you_have_now_upgraded_your_user": "Congratulations, you have now upgraded your user!",
+      "desc": "You've got access to your extra features! We're glad you're finding value in Juristic. If you experience problems, or if you just have questions, you are always welcome to call or write to us.",
+      "btn_continue": "Continue"
+    }
 }

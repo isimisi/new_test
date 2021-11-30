@@ -29,7 +29,6 @@ import { isMobile } from 'react-device-detect';
 import App from './containers/App';
 import history from './utils/history';
 import store from './redux/configureStore';
-
 import './i18n';
 
 //  logrocket
@@ -79,17 +78,14 @@ const persistor = persistStore(store);
 
 let render = () => {
   ReactDOM.render(
-    <>
-      {/* @ts-ignore */}
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <ConnectedRouter history={history}>
-            <App />
-            <ToastContainer />
-          </ConnectedRouter>
-        </PersistGate>
-      </Provider>
-    </>,
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ConnectedRouter history={history}>
+          <App />
+          <ToastContainer />
+        </ConnectedRouter>
+      </PersistGate>
+    </Provider>,
     MOUNT_NODE
   );
 };

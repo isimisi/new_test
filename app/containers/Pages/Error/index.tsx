@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import { Route } from 'react-router-dom';
-import { ErrorWrap } from '@components';
+import ErrorWrap from '@components/Error/ErrorWrap';
 import { useTranslation } from 'react-i18next';
 
 const title = brand.name + ' - Aplication Error';
@@ -14,7 +14,8 @@ const Error = () => {
     <Route
       render={({ staticContext }) => {
         if (staticContext) {
-          staticContext.status = 404; // eslint-disable-line
+        // @ts-ignore
+        staticContext.status = 404; // eslint-disable-line 
         }
         return (
           <div>
@@ -26,7 +27,9 @@ const Error = () => {
               <meta property="twitter:title" content={title} />
               <meta property="twitter:description" content={description} />
             </Helmet>
-            <ErrorWrap title="500" desc={t('error.server_goes_wrong')} />
+            <ErrorWrap
+              desc={t('error.server_goes_wrong')}
+            />
           </div>
         );
       }}

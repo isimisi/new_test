@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import CancelIcon from '@material-ui/icons/Cancel';
+import { useTranslation } from 'react-i18next';
 import FloatingPanel from '../Panel/FloatingPanel';
 import useStyles from './tag.jss';
 
@@ -43,6 +44,7 @@ const CreateTag = (props: Props) => {
   const [name, setName] = useState(initialName || '');
   const [emoji, setEmoji] = useState(initialEmoji);
   const [emojiName, setEmojiName] = useState(initialEmojiName);
+  const { t } = useTranslation();
 
 
   useEffect(() => {
@@ -100,7 +102,7 @@ const CreateTag = (props: Props) => {
       <FloatingPanel
         openForm={open}
         closeForm={handleClose}
-        title={openId ? 'Ændre dit tag' : 'Lav et nyt tag'}
+        title={openId ? t('workspaces.create-tag.chg_tag') : t('workspaces.create-tag.create_a_new_tag')}
         expanded
       >
         <section className={css.bodyForm}>
@@ -117,8 +119,8 @@ const CreateTag = (props: Props) => {
             </IconButton>
             <TextField
               name="name"
-              placeholder="Navn"
-              label="Navn"
+              placeholder={t('workspaces.create-tag.name')}
+              label={t('workspaces.create-tag.name')}
               className={classes.field}
               value={name}
               onChange={handleChangeName}
@@ -136,7 +138,7 @@ const CreateTag = (props: Props) => {
         </section>
         <div className={css.buttonArea}>
           <Button type="button" onClick={handleClose}>
-            Annuller
+            {t('workspaces.create-tag.cancel')}
           </Button>
 
           <Button
@@ -145,7 +147,7 @@ const CreateTag = (props: Props) => {
             type="button"
             onClick={handleSave}
           >
-            Gem
+            {t('workspaces.create-tag.save')}
           </Button>
         </div>
       </FloatingPanel>

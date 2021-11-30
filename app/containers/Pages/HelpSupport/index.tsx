@@ -1,24 +1,28 @@
 import React, { useState, useCallback } from 'react';
-import { PropTypes } from 'prop-types';
 import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { Notification } from '@components';
-import { useDispatch, useSelector } from 'react-redux';
+import Notification from '@components/Notification/Notification';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import styles from './helpSupport-jss';
 import Qna from './Qna';
 import ContactForm from './ContactForm';
 import { helpMe, closeNotifAction } from '../Dashboard/reducers/dashboardActions';
 
-function Settings(props) {
+interface Props {
+  width: any;
+  dashboard: any;
+}
+
+function Settings(props: Props) {
   const title = brand.name;
   const description = brand.desc;
   const { width } = props;
   const [valueForm, setValueForm] = useState([]);
-  const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state.dashboard.get('message'));
+  const dispatch = useAppDispatch();
+  const messageNotif = useAppSelector(state => state.dashboard.get('message'));
 
   const showResult = useCallback((values) => {
     setValueForm(values);
@@ -52,9 +56,5 @@ function Settings(props) {
     </div>
   );
 }
-
-Settings.propTypes = {
-  width: PropTypes.string.isRequired,
-};
 
 export default withStyles(styles)(withWidth()(Settings));
