@@ -21,6 +21,7 @@ import {
   ALERT_ADD_CONDITION,
   ALERT_CHANGE_CONDITION,
   ALERT_DELETE_CONDITION,
+  CHANGE_TAGS
 } from './alertConstants';
 
 const initialState = {
@@ -156,6 +157,11 @@ export default function reducer(state = initialImmutableState, action: any) {
     case ALERT_DELETE_CONDITION:
       return state.withMutations((mutableState) => {
         mutableState.update('alertConditions', list => list.filter((l, i) => i !== action.index));
+      });
+    case CHANGE_TAGS:
+      return state.withMutations((mutableState) => {
+        const tags = fromJS(action.tags);
+        mutableState.set('alertTags', tags);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

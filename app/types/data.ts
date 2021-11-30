@@ -17,3 +17,8 @@ export enum WhereInApp {
   relationship = 'relationship',
   group = 'group',
 }
+
+export interface SelectOptions {
+  value: string;
+  label: string | JSX.Element;
+}

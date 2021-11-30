@@ -2,43 +2,49 @@ import React, { useEffect, useState } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
-import { Notification, AlertNamingForm, ChooseConditions } from '@components';
-import { useSelector, useDispatch, } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
 import { getId } from '@api/constants';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import Notification from '@components/Notification/Notification';
+import AlertNamingForm from '@components/Forms/AlertNamingForm';
+import ChooseConditions from '@components/Condition/ChooseConditions';
 import {
   closeNotifAction, showAlert, putAlert, getConditionsDropDown, getGroupDropDown,
   addCondition,
   changeCondition,
-  deleteCondition
+  deleteCondition,
+  changeTags
 } from './reducers/alertActions';
 import { postCondition } from '../Conditions/reducers/conditionActions';
 import { reducer } from './constants';
-import {useTranslation} from 'react-i18next';
 
 const Alert = () => {
-  const dispatch = useDispatch();
-  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const dispatch = useAppDispatch();
+  const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const history = useHistory();
   const id = getId(history);
-  const title = useSelector(state => state[reducer].get('title'));
-  const description = useSelector(state => state[reducer].get('description'));
-  const group = useSelector(state => state[reducer].get('group'));
-  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
-  const conditions = useSelector(state => state[reducer].get('alertConditions')).toJS();
-  const conditionsDropDownOptions = useSelector(state => state[reducer].get('conditionsDropDownOptions')).toJS();
-  const {t} = useTranslation();
+  const title = useAppSelector(state => state[reducer].get('title'));
+  const description = useAppSelector(state => state[reducer].get('description'));
+  const group = useAppSelector(state => state[reducer].get('group'));
+  const groupsDropDownOptions = useAppSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const conditions = useAppSelector(state => state[reducer].get('alertConditions')).toJS();
+  const conditionsDropDownOptions = useAppSelector(state => state[reducer].get('conditionsDropDownOptions')).toJS();
+  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
+  const tags = useAppSelector(state => state[reducer].get('alertTags')).toJS();
+  const { t } = useTranslation();
 
-  const [deletedConditions, setDeletedConditions] = useState([]);
+  const [deletedConditions, setDeletedConditions] = useState<number[]>([]);
 
 
   const onSave = () => {
-    dispatch(putAlert(history, id, title, description, group, JSON.stringify(conditions), JSON.stringify(deletedConditions)));
+    dispatch(putAlert(history, id, title, description, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags)));
   };
 
   useEffect(() => {
+    // @ts-ignore
     if (!history?.location?.state?.fromCondition) {
       dispatch(showAlert(id));
     }
@@ -79,7 +85,9 @@ const Alert = () => {
             description={description}
             group={group}
             groupsDropDownOptions={groupsDropDownOptions}
-            history={history}
+            tags={tags}
+            changeTags={_tags => dispatch(changeTags(_tags))}
+            tagOptions={tagOptions}
           />
         </Grid>
         <Grid item md={12}>
@@ -105,7 +113,7 @@ const Alert = () => {
           }}
           onClick={onSave}
         >
-            {t('alert-naming-form.btn_save_red_flag')}
+          {`${t('alert-naming-form.btn_save_red_flag')}`}
         </Fab>
       </Tooltip>
     </div>

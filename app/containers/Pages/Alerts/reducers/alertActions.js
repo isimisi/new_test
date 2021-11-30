@@ -52,10 +52,10 @@ export const showAlert = (id) => async dispatch => {
   }
 };
 
-export const putAlert = (history, id, label, description, group, conditions, deletedConditions) => async dispatch => {
+export const putAlert = (history, id, label, description, group, conditions, deletedConditions, tags) => async dispatch => {
   const url = `${baseUrl}/${ALERTS}/${id}`;
   const body = {
-    label, description, group, conditions, deletedConditions
+    label, description, group, conditions, deletedConditions, tags
   };
   const header = authHeader();
   try {
@@ -67,6 +67,7 @@ export const putAlert = (history, id, label, description, group, conditions, del
 
     history.push('/app/red flags');
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_ALERT_FAILED, message });
   }

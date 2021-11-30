@@ -13,17 +13,15 @@ export const getTags = (where: WhereInApp): AppThunk => async (dispatch: AppDisp
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
-    console.log(response.data, 'asdnlks');
     const tags = response.data;
     tags.active = false;
-    console.log(tags);
     dispatch({ type: types.TAG_INDEX_SUCCESS, tags });
   } catch (error) {
     dispatch({ type: types.TAG_INDEX_FAILED, genericErrorMessage });
   }
 };
 
-export const postTag = (emoji, emoji_name, name): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
+export const postTag = (emoji: string, emoji_name: string, name: string): AppThunk => async (dispatch: AppDispatch): Promise<void> => {
   const url = `${baseUrl}/${TAGS}`;
   const body = {
     emoji,
