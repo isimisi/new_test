@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import Loader from '@components/Loading/LongLoader';
 import { MUIDataTableOptions } from 'mui-datatables';
