@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
+import Chip from '@material-ui/core/Chip';
 
 export const columns = t => [
   {
@@ -10,9 +11,28 @@ export const columns = t => [
     }
   },
   {
-    name: t('conditions.table_desc'),
+    name: 'Tags',
     options: {
-      filter: true
+      filter: false,
+      filterList: [],
+      filterOptions: {
+        logic: (tags, filters) => {
+          const mappedTags = tags.map(
+            tag => `${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`
+          );
+          return !filters.every(tag => mappedTags.includes(tag));
+        }
+      },
+      sort: false,
+      customBodyRender: tags => Array.isArray(tags)
+        && tags.map(tag => (
+          <Chip
+            key={tag.id}
+            style={{ margin: 2 }}
+            size="small"
+            label={`${tag.tag.emoji ? tag.tag.emoji : ''} ${tag.tag.name}`}
+          />
+        ))
     }
   },
   {

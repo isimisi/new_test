@@ -8,11 +8,14 @@ import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
 import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
-import styles from './condition-jss';
 import { useTranslation } from 'react-i18next';
+import CreatableSelect from 'react-select/creatable';
+import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
+import styles from './condition-jss';
 
 const ConditionForm = (props) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const {
     classes,
@@ -24,9 +27,12 @@ const ConditionForm = (props) => {
     descriptionChange,
     addGroup,
     groupsDropDownOptions,
-    onSave
+    onSave,
+    tagOptions,
+    tags,
+    changeTags
   } = props;
-  const {t} = useTranslation();
+
   return (
     <div>
       <section className={css.bodyForm}>
@@ -73,10 +79,23 @@ const ConditionForm = (props) => {
             />
           </NoSsr>
         </div>
+        <div className={classes.field} style={{ marginTop: theme.spacing(2) }}>
+          <CreatableSelect
+            styles={selectStyles('relative')}
+            isMulti
+            isClearable
+            value={tags.map(tagMapping)}
+            onChange={(newValue, meta) => hanldeOnChange(newValue, meta, changeTags, tags)
+            }
+            inputId="react-select-tags"
+            placeholder={t('workspaces.workspace-form.add_tags_to_your_workspace')}
+            options={tagOptions.map(tagMapping)}
+          />
+        </div>
       </section>
       <div className={css.buttonArea}>
         <Button type="button" onClick={() => closeForm()}>
-        {t('conditions.condition-form.btn_cnx')}
+          {t('conditions.condition-form.btn_cnx')}
         </Button>
         <Button
           variant="contained"
@@ -84,7 +103,7 @@ const ConditionForm = (props) => {
           type="button"
           onClick={onSave}
         >
-            {t('conditions.condition-form.btn_save')}
+          {t('conditions.condition-form.btn_save')}
         </Button>
       </div>
     </div>
@@ -102,6 +121,9 @@ ConditionForm.propTypes = {
   groupsDropDownOptions: PropTypes.array.isRequired,
   closeForm: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  tagOptions: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
+  changeTags: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ConditionForm);

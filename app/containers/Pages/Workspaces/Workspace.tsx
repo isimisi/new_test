@@ -18,7 +18,7 @@ import ReactFlow, {
   FlowElement,
   OnLoadParams
 } from 'react-flow-renderer';
-import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
+// import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
@@ -127,7 +127,7 @@ const Workspace = (props) => {
   const showCompanyData = useAppSelector(state => state[reducer].get('showCompanyData'));
   const showAddressInfo = useAppSelector(state => state[reducer].get('showAddressInfo'));
 
-  const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
+  // const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
   // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
 
   const uncertainCompanies = useAppSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
@@ -530,36 +530,36 @@ const Workspace = (props) => {
     }
   }, [image]);
 
-  const handleJoyrideCallback = (data) => {
-    const {
-      action, index, type, status
-    } = data;
+  // const handleJoyrideCallback = (data) => {
+  //   const {
+  //     action, index, type, status
+  //   } = data;
 
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-      // Need to set our running state to false, so we can restart if we click start again.
-      dispatch(handleRunIntro(false));
-      dispatch(changeStepIndex(0));
-    } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
-      let newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+  //   if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+  //     // Need to set our running state to false, so we can restart if we click start again.
+  //     dispatch(handleRunIntro(false));
+  //     dispatch(changeStepIndex(0));
+  //   } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+  //     let newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
 
-      if (!metaOpen && index === 1) {
-        newStepIndex = 2;
-      }
+  //     if (!metaOpen && index === 1) {
+  //       newStepIndex = 2;
+  //     }
 
-      if (index === 3) {
-        const hoverMenu = document.querySelector('.rtf:nth-of-type(3)');
-        if (hoverMenu) {
-          hoverMenu.classList.remove('closed');
-          hoverMenu.classList.add('open');
-          setTimeout(() => {
-            dispatch(changeStepIndex(newStepIndex));
-          }, 100);
-        }
-      } else {
-        dispatch(changeStepIndex(newStepIndex));
-      }
-    }
-  };
+  //     if (index === 3) {
+  //       const hoverMenu = document.querySelector('.rtf:nth-of-type(3)');
+  //       if (hoverMenu) {
+  //         hoverMenu.classList.remove('closed');
+  //         hoverMenu.classList.add('open');
+  //         setTimeout(() => {
+  //           dispatch(changeStepIndex(newStepIndex));
+  //         }, 100);
+  //       }
+  //     } else {
+  //       dispatch(changeStepIndex(newStepIndex));
+  //     }
+  //   }
+  // };
 
   // useCutCopyPaste(elements, onElementsRemove, setElements);
 

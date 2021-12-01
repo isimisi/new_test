@@ -41,7 +41,8 @@ import {
   DELETE_CONDITION_ELEMENTS_FAILED,
   CONDITION_RELATIONSHIP_ADD_TO_LIST,
   CONDITION_NODE_ADD_TO_LIST,
-  CONDITION_NODE_ATTRIBUT_ADD_TO_LIST
+  CONDITION_NODE_ATTRIBUT_ADD_TO_LIST,
+  CHANGE_TAGS
 } from './conditionConstants';
 
 const initialState = {
@@ -57,6 +58,7 @@ const initialState = {
   relationshipLabels: List(),
   nodes: List(),
   relationships: List(),
+  conditionTags: List(),
 };
 
 
@@ -264,6 +266,11 @@ export default function reducer(state = initialImmutableState, action: any) {
       return state.withMutations((mutableState) => {
         const attribut = fromJS(action.attribut);
         mutableState.update('nodeAttributes', myList => myList.push(attribut));
+      });
+    case CHANGE_TAGS:
+      return state.withMutations((mutableState) => {
+        const tags = fromJS(action.tags);
+        mutableState.set('conditionTags', tags);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

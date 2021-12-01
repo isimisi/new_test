@@ -18,8 +18,8 @@ import { loadFromLocalStorage } from '@utils/localStorage';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CreatableSelect from 'react-select/creatable';
 import { useTranslation } from 'react-i18next';
-import styles from './workspace-jss';
 import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
+import styles from './workspace-jss';
 
 
 const localeStorage = loadFromLocalStorage();

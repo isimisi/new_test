@@ -91,10 +91,10 @@ export const getBuildTypeValueOptions = (group) => async dispatch => {
   }
 };
 
-export const putConditionMeta = (id, label, description, group, setMetaOpen) => async dispatch => {
+export const putConditionMeta = (id, label, description, group, tags, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${CONDITIONS}/${id}`;
   const body = {
-    label, description, group,
+    label, description, group, tags
   };
   const header = authHeader();
   try {
@@ -102,6 +102,7 @@ export const putConditionMeta = (id, label, description, group, setMetaOpen) => 
     dispatch({ type: types.PUT_CONDITION_SUCCESS });
     setMetaOpen(false);
   } catch (error) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_CONDITION_FAILED, message });
   }
@@ -338,6 +339,12 @@ export const addAttributToList = attribut => ({
   type: types.CONDITION_NODE_ATTRIBUT_ADD_TO_LIST,
   attribut
 });
+
+export const changeTags = tags => ({
+  type: types.CHANGE_TAGS,
+  tags
+});
+
 
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'react-i18next';
 import ConditionForm from './ConditionForm';
 import FloatingPanel from '../Panel/FloatingPanel';
 import styles from './condition-jss';
-import {useTranslation} from 'react-i18next';
 
 function ConditionMeta(props) {
   const {
@@ -17,10 +17,13 @@ function ConditionMeta(props) {
     descriptionChange,
     addGroup,
     groupsDropDownOptions,
-    onSave
+    onSave,
+    tagOptions,
+    tags,
+    changeTags
   } = props;
   const branch = '';
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -40,6 +43,9 @@ function ConditionMeta(props) {
           groupsDropDownOptions={groupsDropDownOptions}
           closeForm={closeForm}
           onSave={onSave}
+          tagOptions={tagOptions}
+          tags={tags}
+          changeTags={changeTags}
         />
       </FloatingPanel>
     </div>
@@ -57,6 +63,9 @@ ConditionMeta.propTypes = {
   groupsDropDownOptions: PropTypes.array.isRequired,
   closeForm: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  tagOptions: PropTypes.array.isRequired,
+  tags: PropTypes.array.isRequired,
+  changeTags: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(ConditionMeta);

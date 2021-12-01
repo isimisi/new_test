@@ -13,6 +13,7 @@ import ReactFlow, {
   MiniMap,
   Controls
 } from 'react-flow-renderer';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import CustomNode from '@components/Workspace/Node/CustomNode';
 import ConditionDefineEdge from '@components/Condition/Edge/DefineEdge';
@@ -21,7 +22,6 @@ import ConditionMeta from '@components/Condition/ConditionMeta';
 import ConditionFabs from '@components/Condition/ConditionFabs';
 import Notification from '@components/Notification/Notification';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   useHistory
 } from 'react-router-dom';
@@ -31,7 +31,7 @@ import { reducer, comparisonsOptions } from './constants';
 import {
   closeNotifAction, titleChange, descriptionChange,
   addGroup, getGroupDropDown, getNodes,
-  getBuildTypeValueOptions,
+  getBuildTypeValueOptions, changeTags,
   getRelationships, postNode, postEdge,
   showCondition, putConditionMeta, saveCondition,
   putNode, putEdge, deleteConditionElement,
@@ -46,7 +46,7 @@ const nonValueArray = ['exists', 'does not exist', 'any'];
 
 const Condition = (props) => {
   const { classes } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const reactFlowContainer = useRef(null);
   const id = getId(history);
@@ -67,15 +67,17 @@ const Condition = (props) => {
   const theme = useTheme();
 
   // REDUX
-  const relationships = useSelector(state => state[reducer].get('relationships')).toJS();
-  const nodes = useSelector(state => state[reducer].get('nodes')).toJS();
-  const elements = useSelector(state => state[reducer].get('elements')).toJS();
-  const label = useSelector(state => state[reducer].get('label'));
-  const description = useSelector(state => state[reducer].get('description'));
-  const group = useSelector(state => state[reducer].get('group'));
-  const groupsDropDownOptions = useSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
-  const nodeAttributes = useSelector(state => state[reducer].get('nodeAttributes')).toJS();
-  const messageNotif = useSelector(state => state[reducer].get('message'));
+  const relationships = useAppSelector(state => state[reducer].get('relationships')).toJS();
+  const nodes = useAppSelector(state => state[reducer].get('nodes')).toJS();
+  const elements = useAppSelector(state => state[reducer].get('elements')).toJS();
+  const label = useAppSelector(state => state[reducer].get('label'));
+  const description = useAppSelector(state => state[reducer].get('description'));
+  const group = useAppSelector(state => state[reducer].get('group'));
+  const groupsDropDownOptions = useAppSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const nodeAttributes = useAppSelector(state => state[reducer].get('nodeAttributes')).toJS();
+  const messageNotif = useAppSelector(state => state[reducer].get('message'));
+  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
+  const tags = useAppSelector(state => state[reducer].get('conditionTags'))?.toJS();
 
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
@@ -283,8 +285,11 @@ const Condition = (props) => {
         descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
         addGroup={(_group) => dispatch(addGroup(_group.value))}
         groupsDropDownOptions={groupsDropDownOptions}
-        onSave={() => dispatch(putConditionMeta(id, label, description, group, setMetaOpen))}
+        onSave={() => dispatch(putConditionMeta(id, label, description, group, JSON.stringify(tags), setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
+        tagOptions={tagOptions}
+        tags={tags}
+        changeTags={_tags => dispatch(changeTags(_tags))}
       />
       <ConditionDefineEdge
         open={defineEdgeOpen}
