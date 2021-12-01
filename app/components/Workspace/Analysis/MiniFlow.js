@@ -12,12 +12,20 @@ const MiniFlow = (props) => {
   const { elements } = props;
 
   const reactFlowContainer = useRef(null);
+  const [rfInstance, setRfInstance] = useState(null);
 
   const [hover, setHover] = useState(false);
 
-  const onLoad = (reactFlowInstance) => {
-    reactFlowInstance.fitView();
+  const onLoad = (_reactFlowInstance) => {
+    setRfInstance(_reactFlowInstance);
+    _reactFlowInstance.fitView();
   };
+
+  useEffect(() => {
+    if (rfInstance) {
+      rfInstance.fitView();
+    }
+  }, [elements, rfInstance]);
 
   return (
     <ReactFlowProvider>

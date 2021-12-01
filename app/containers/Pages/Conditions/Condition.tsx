@@ -242,6 +242,12 @@ const Condition = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (rfInstance) {
+      rfInstance.fitView();
+    }
+  }, [elements, rfInstance]);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />

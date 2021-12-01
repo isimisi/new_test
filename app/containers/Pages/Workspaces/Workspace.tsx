@@ -54,7 +54,7 @@ import { useTranslation } from 'react-i18next';
 import { NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
 import {
-  reducer, initErstTypes, getLayoutedElements, steps
+  reducer, initErstTypes, getLayoutedElements
 } from './constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
@@ -66,7 +66,7 @@ import {
   cvrWorkspace, postSticky, showNotifAction,
   shareWorkspace, cvrSuccess, shareOrgChange,
   setShowCompanyData, setShowAddressInfo,
-  handleRunIntro, changeStepIndex, uncertainCompaniesChange,
+  handleRunIntro, uncertainCompaniesChange,
   mapUncertainCompanies, changeTags
 } from './reducers/workspaceActions';
 // import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
@@ -148,7 +148,7 @@ const Workspace = (props) => {
   const [alerts, setAlerts] = useState<any[]>([]);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertId, setAlertId] = useState<number | null>(null);
-  console.log(alertId);
+
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
   const [elementToUpdate, setElementToUpdate] = useState<FlowElement | null>(null);
 
@@ -562,6 +562,12 @@ const Workspace = (props) => {
   // };
 
   // useCutCopyPaste(elements, onElementsRemove, setElements);
+
+  useEffect(() => {
+    if (rfInstance) {
+      rfInstance.fitView();
+    }
+  }, [elements, rfInstance]);
 
   return (
     <div>

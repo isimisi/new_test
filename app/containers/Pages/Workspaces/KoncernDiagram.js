@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable new-cap */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
@@ -133,6 +134,12 @@ const Workspace = (props) => {
       a.click();
     }
   }, [image]);
+
+  useEffect(() => {
+    if (rfInstance) {
+      rfInstance.fitView();
+    }
+  }, [elements, rfInstance]);
 
   const handleActions = () => {
     setOpenRegisterModal(true);
