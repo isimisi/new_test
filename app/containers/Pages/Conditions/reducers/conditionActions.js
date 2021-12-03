@@ -50,7 +50,7 @@ export const showCondition = (id, setMetaOpen) => async dispatch => {
     const response = await axios.get(url, header);
 
     const {
-      label, description, group, elements
+      label, description, group, elements, tags
     } = response.data;
 
 
@@ -63,7 +63,8 @@ export const showCondition = (id, setMetaOpen) => async dispatch => {
       label,
       description,
       group,
-      elements
+      elements,
+      tags
     });
   } catch (error) {
     const message = genericErrorMessage;

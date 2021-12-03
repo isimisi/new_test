@@ -118,11 +118,13 @@ export default function reducer(state = initialImmutableState, action: any) {
         const description = fromJS(action.description);
         const group = fromJS(action.group);
         const elements = fromJS(action.elements);
+        const tags = fromJS(action.tags);
 
         mutableState.set('label', label);
         mutableState.set('description', description);
         mutableState.set('group', group);
         mutableState.set('elements', elements);
+        mutableState.set('conditionTags', tags);
       });
     case SHOW_CONDITION_FAILED:
       return state.withMutations((mutableState) => {

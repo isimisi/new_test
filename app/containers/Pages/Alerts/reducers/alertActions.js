@@ -40,11 +40,11 @@ export const showAlert = (id) => async dispatch => {
   try {
     const response = await axios.get(url, header);
     const {
-      label: title, description, group, conditions
+      label: title, description, group, conditions, tags
     } = response.data;
 
     dispatch({
-      type: types.SHOW_ALERT_SUCCESS, title, description, group, conditions
+      type: types.SHOW_ALERT_SUCCESS, title, description, group, conditions, tags
     });
   } catch (error) {
     const message = genericErrorMessage;

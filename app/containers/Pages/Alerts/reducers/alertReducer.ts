@@ -68,10 +68,12 @@ export default function reducer(state = initialImmutableState, action: any) {
         const description = fromJS(action.description);
         const group = fromJS(action.group);
         const conditions = fromJS(action.conditions);
+        const tags = fromJS(action.tags);
         mutableState.set('title', title);
         mutableState.set('description', description);
         mutableState.set('group', group);
         mutableState.set('alertConditions', conditions);
+        mutableState.set('alertTags', tags);
       });
     case SHOW_ALERT_FAILED:
       return state.withMutations((mutableState) => {
