@@ -137,7 +137,7 @@ function RegisterForm(props) {
                   <Field
                     name="password"
                     component={TextFieldRedux}
-                    type={t('register-form.your_password')}
+                    type="password"
                     label={t('register-form.your_password')}
                     required
                     validate={[required, passwordsMatch]}
@@ -150,7 +150,7 @@ function RegisterForm(props) {
                   <Field
                     name="passwordConfirm"
                     component={TextFieldRedux}
-                    type={t('register-form.enter_your_password_again')}
+                    type="password"
                     label={t('register-form.enter_your_password_again')}
                     required
                     validate={[required, passwordsMatch]}
