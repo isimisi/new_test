@@ -242,11 +242,11 @@ const Condition = (props) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (rfInstance) {
-      rfInstance.fitView();
-    }
-  }, [elements, rfInstance]);
+  // useEffect(() => {
+  //   if (rfInstance) {
+  //     rfInstance.fitView();
+  //   }
+  // }, [elements, rfInstance]);
 
   return (
     <div>

@@ -135,11 +135,11 @@ const Workspace = (props) => {
     }
   }, [image]);
 
-  useEffect(() => {
-    if (rfInstance) {
-      rfInstance.fitView();
-    }
-  }, [elements, rfInstance]);
+  // useEffect(() => {
+  //   if (rfInstance) {
+  //     rfInstance.fitView();
+  //   }
+  // }, [elements, rfInstance]);
 
   const handleActions = () => {
     setOpenRegisterModal(true);

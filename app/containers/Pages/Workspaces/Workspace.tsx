@@ -563,11 +563,11 @@ const Workspace = (props) => {
 
   // useCutCopyPaste(elements, onElementsRemove, setElements);
 
-  useEffect(() => {
-    if (rfInstance) {
-      rfInstance.fitView();
-    }
-  }, [elements, rfInstance]);
+  // useEffect(() => {
+  //   if (rfInstance) {
+  //     rfInstance.fitView();
+  //   }
+  // }, [elements, rfInstance]);
 
   return (
     <div>

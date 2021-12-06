@@ -21,11 +21,11 @@ const MiniFlow = (props) => {
     _reactFlowInstance.fitView();
   };
 
-  useEffect(() => {
-    if (rfInstance) {
-      rfInstance.fitView();
-    }
-  }, [elements, rfInstance]);
+  // useEffect(() => {
+  //   if (rfInstance) {
+  //     rfInstance.fitView();
+  //   }
+  // }, [elements, rfInstance]);
 
   return (
     <ReactFlowProvider>
