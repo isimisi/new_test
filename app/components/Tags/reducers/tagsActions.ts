@@ -62,7 +62,8 @@ export const deleteTag = (id): AppThunk => async (dispatch: AppDispatch): Promis
     await axios.delete(url, header);
 
     dispatch({ type: types.TAG_DELETE_SUCCESS, id });
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error.response);
     dispatch({ type: types.TAG_DELETE_FAILED, genericErrorMessage });
   }
 };

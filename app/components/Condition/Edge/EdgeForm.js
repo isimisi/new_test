@@ -16,7 +16,6 @@ import styles from '../condition-jss';
 import BeizerCurve from '../../Workspace/Edge/beizerCurve.svg';
 import StraightLine from '../../Workspace/Edge/straightLine.svg';
 import SmoothStep from '../../Workspace/Edge/smoothStep.svg';
-import Curve from '../../Workspace/Edge/curve.svg';
 
 const relationshipTypeOptions = [
   {
@@ -29,7 +28,7 @@ const relationshipTypeOptions = [
     )
   },
   {
-    value: 'default',
+    value: 'custom',
     label: (
       <>
         <span style={{ paddingRight: '5px' }}>Beizer Kurve</span>
@@ -43,15 +42,6 @@ const relationshipTypeOptions = [
       <>
         <span style={{ paddingRight: '5px' }}>Step kurve</span>
         <img src={SmoothStep} alt="smooth step" style={{ height: 36 }} />
-      </>
-    )
-  },
-  {
-    value: 'custom',
-    label: (
-      <>
-        <span style={{ paddingRight: '5px' }}>Kurvet kurve</span>
-        <img src={Curve} alt="curve" style={{ height: 36 }} />
       </>
     )
   },

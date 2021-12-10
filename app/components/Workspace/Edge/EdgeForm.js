@@ -18,7 +18,6 @@ import styles from '../workspace-jss';
 import BeizerCurve from './beizerCurve.svg';
 import StraightLine from './straightLine.svg';
 import SmoothStep from './smoothStep.svg';
-import Curve from './curve.svg';
 
 const relationshipTypeOptions = [
   {
@@ -31,7 +30,7 @@ const relationshipTypeOptions = [
     )
   },
   {
-    value: 'default',
+    value: 'custom',
     label: (
       <>
         <span style={{ paddingRight: '5px' }}>Beizer Kurve</span>
@@ -45,15 +44,6 @@ const relationshipTypeOptions = [
       <>
         <span style={{ paddingRight: '5px' }}>Step kurve</span>
         <img src={SmoothStep} alt="smooth step" style={{ height: 36 }} />
-      </>
-    )
-  },
-  {
-    value: 'custom',
-    label: (
-      <>
-        <span style={{ paddingRight: '5px' }}>Kurvet kurve</span>
-        <img src={Curve} alt="curve" style={{ height: 36 }} />
       </>
     )
   },
@@ -138,7 +128,6 @@ const EdgeForm = (props) => {
         <div className={classes.field} style={{ marginTop: 20 }}>
           <Select
             classes={classes}
-            isDisabled={editable}
             styles={selectStyles('relative')}
             inputId="react-select-single-edge-workspace-type"
             TextFieldProps={{

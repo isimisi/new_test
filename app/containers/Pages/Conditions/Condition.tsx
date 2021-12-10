@@ -58,7 +58,7 @@ const Condition = (props) => {
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
   const [currentConnectionData, setCurrentConnectionData] = useState({});
   const [relationshipLabel, setRelationshipLabel] = useState('');
-  const [relationshipType, setRelationshipType] = useState('');
+  const [relationshipType, setRelationshipType] = useState('custom');
   const [comparisonType, setComparisonType] = useState('exists');
   const [comparisonValue, setComparisonValue] = useState('');
 
@@ -113,7 +113,7 @@ const Condition = (props) => {
     setDefineEdgeOpen(false);
     setIsUpdatingElement(false);
     setRelationshipLabel('');
-    setRelationshipType('');
+    setRelationshipType('custom');
     setComparisonType('exists');
     setComparisonValue('');
   }, []);

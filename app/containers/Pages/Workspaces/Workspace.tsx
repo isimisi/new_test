@@ -157,7 +157,7 @@ const Workspace = (props) => {
   const [currentConnectionData, setCurrentConnectionData] = useState({});
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
-  const [relationshipType, setRelationshipType] = useState(null);
+  const [relationshipType, setRelationshipType] = useState('custom');
   const [relationshipColor, setRelationshipColor] = useState({
     r: 0, g: 0, b: 0, a: 1
   });
@@ -423,7 +423,7 @@ const Workspace = (props) => {
     setIsUpdatingElement(false);
     setRelationshipLabel('');
     setRelationshipValue('');
-    setRelationshipType(null);
+    setRelationshipType('custom');
     setRelationshipColor({
       r: 0, g: 0, b: 0, a: 1
     });
