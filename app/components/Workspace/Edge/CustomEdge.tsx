@@ -337,7 +337,7 @@ const CustomEdge = ({
   // https://codepen.io/enxaneta/post/how-to-add-a-point-to-an-svg-path
   helperPoints[0] = lerp(points[0], points[1], t);
   helperPoints[1] = lerp(points[1], points[2], t);
-  helperPoints[2] = lerp(points[3], points[3], t);
+  helperPoints[2] = lerp(points[2], points[3], t);
   helperPoints[3] = lerp(helperPoints[0], helperPoints[1], t);
   helperPoints[4] = lerp(helperPoints[1], helperPoints[2], t);
   helperPoints[5] = lerp(helperPoints[3], helperPoints[4], t);
