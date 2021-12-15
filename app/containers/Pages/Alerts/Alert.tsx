@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import {
   useHistory
 } from 'react-router-dom';
-import { getId } from '@api/constants';
+import { encryptId, getId } from '@api/constants';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import Notification from '@components/Notification/Notification';
@@ -69,7 +69,7 @@ const Alert = () => {
 
   const handleCreateOrSeeCondition = (condition, see) => {
     if (see) {
-      window.open('/app/conditions/' + condition.condition_id, '_blank');
+      window.open('/app/conditions/' + encryptId(condition.condition_id), '_blank');
     } else {
       dispatch(postCondition(history, true));
     }

@@ -132,6 +132,7 @@ const Condition = (props) => {
         comparisonValue,
         ...currentConnectionData
       };
+
       dispatch(postEdge(id, edge, closeEdge));
     }
   };

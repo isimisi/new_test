@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CreateIcon from '@material-ui/icons/Create';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { generateRandomString } from '@api/constants';
-import {t} from 'i18next';
+import { t } from 'i18next';
 
 const styles = theme => ({
   root: {

@@ -20,7 +20,7 @@ const tableOptions = (
   handleFilterChanged: any = () => {}
 ): MUIDataTableOptions => {
   const { t } = useTranslation();
-  return ({
+  return {
     filterType: 'dropdown',
     print: true,
     rowsPerPage: 10,
@@ -45,17 +45,17 @@ const tableOptions = (
       },
       pagination: {
         displayRows: t('helpers.pagination.display_rows'),
-        rowsPerPage: t('helpers.pagination.rows_per_page'),
+        rowsPerPage: t('helpers.pagination.rows_per_page')
       },
       selectedRows: {
-        delete: t('helpers.pagination.selectedRows.delete'),
-        text: t('helpers.pagination.selectedRows.row_selected')
+        delete: t('helpers.selectedRows.delete'),
+        text: t('helpers.selectedRows.row_selected')
       },
       viewColumns: {
         title: t('helpers.pagination.display.view_columns')
       }
     }
-  });
+  };
 };
 
 export default tableOptions;

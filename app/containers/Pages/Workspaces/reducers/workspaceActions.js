@@ -33,6 +33,7 @@ export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/${id}/cvr`;
   const body = { cvr, erstTypes };
+  console.log(body);
   const header = authHeader();
   try {
     await axios.post(url, body, header);
@@ -153,6 +154,7 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
     await axios.put(url, body, header);
     dispatch({ type: types.SAVE_WORKSPACE_SUCCESS });
   } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.SAVE_WORKSPACE_FAILED, message });
   }
 };

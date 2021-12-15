@@ -3,14 +3,11 @@ import { Helmet } from 'react-helmet';
 import brand from '@api/dummy/brand';
 import { withStyles } from '@material-ui/core/styles';
 import styles from '@components/Forms/user-jss';
-import {
-  useHistory,
-  useLocation
-} from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import LoginForm from '@components/Forms/LoginForm';
 import Notification from '@components/Notification/Notification';
-import { login, closeNotifAction } from './reducers/authActions';
+import { login, closeNotifAction } from './reducers/authActions.js';
 
 interface Props {
   classes: any;
@@ -19,7 +16,8 @@ interface Props {
 const Login = (props: Props) => {
   const reducer = 'auth';
 
-  const messageNotif = useAppSelector(state => state[reducer].get('errorMessage'));
+  const messageNotif = useAppSelector(state => state[reducer].get('errorMessage')
+  );
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { state: locationState } = useLocation();

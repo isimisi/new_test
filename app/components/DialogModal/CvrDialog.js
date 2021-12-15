@@ -114,7 +114,7 @@ const FormDialog = (props) => {
       mapUncertainCompanies(companyMapping);
       changeUncertainCompanies();
       setCompanyMapping({});
-    } else if (textField.includes('DK')) {
+    } else if (textField.includes('DK') && textField.length < 12) {
       onConfirm(textField.substring(2), handleClose);
     } else {
       onConfirm(textField, handleClose);

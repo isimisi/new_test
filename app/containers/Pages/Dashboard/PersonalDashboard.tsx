@@ -89,11 +89,12 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   };
 
   const handleOpenGuide = () => {
-    if (introStepIndex !== 0) {
-      dispatch(showNotifAction(t('personal-dashboard.find_the_small_circle')));
-    } else {
-      dispatch(handleRunIntro(true));
-    }
+    // if (introStepIndex !== 0) {
+    //   dispatch(showNotifAction(t('personal-dashboard.find_the_small_circle')));
+    // } else {
+    //   dispatch(handleRunIntro(true));
+    // }
+    setOpenGuide(true);
   };
 
 

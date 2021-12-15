@@ -4,5 +4,8 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
       },
-    "eslint.validate": ["javascript"]
+    "eslint.validate": [
+      "javascript"
+    ],
+    "i18next.i18nPaths": "/Users/keanottesen/Documents/GitHub/JuristicWebApp/app/translations"
 }
