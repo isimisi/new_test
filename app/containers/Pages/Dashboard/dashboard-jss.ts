@@ -42,6 +42,27 @@ const styles = makeStyles((theme: Theme) => ({
     bottom: 30,
     right: 50,
     zIndex: 100,
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginLeft: 5,
+    alignItems: 'center',
+  },
+  field: {
+    width: '100%',
+    marginTop: 0,
+    '& svg': {
+      color: theme.palette.grey[400],
+      fontSize: 18,
+    }
+  },
+  lottie: {
+    borderRadius: '50%',
+    height: 197.71,
+  },
+  removeMargin: {
+    marginTop: -16,
   }
 }));
 

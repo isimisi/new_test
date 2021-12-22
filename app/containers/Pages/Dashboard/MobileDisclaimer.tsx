@@ -6,16 +6,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
-  open: boolean,
-  close: () => void
-}
+  open: boolean;
+  close: () => void;
+};
 
 const UpgradeModal = (props: Props) => {
   const { open, close } = props;
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -31,12 +31,12 @@ const UpgradeModal = (props: Props) => {
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {t('mobile-disclaimer.desc')}
-              {t('mobile-disclaimer.contact_us')}
+            {t('mobile-disclaimer.contact_us')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={close} color="primary" autoFocus>
-          {t('mobile-disclaimer.btn_continue')}
+            {t('mobile-disclaimer.btn_continue')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -46,7 +46,11 @@
       "btn_return_to_home_page": "Gå til forside"
     },
     "personal-dashboard": {
+      "intro_greeting": "Hej {{name}}",
+      "intro_text": "Hvad vil du gerne lave?",
       "create_a_new_workspace": "Opret et nyt arbejdsområde",
+      "start_empty": "Start med et tomt whiteboard",
+      "create_empty_workspace": "Kun fantasien sætter grænser",
       "send_us_a_request": "Send os et ønske",
       "we_love_ideas": "Vi er glade for idéer og ser på det straks",
       "write_your_wish_here": "Skriv dit ønske her",
@@ -286,7 +290,8 @@
       "you_can_not_create_new_item_types": "Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.",
       "you_can_not_create_new_attribute_types": "Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.",
       "load_from_CVR": "Indlæs fra CVR",
-      "search_for_a_company_or_CVR_number": "Søg på en virksomhed eller et CVR-nummer:",
+      "search_for_a_company_or_CVR_number": "Søg på en virksomhed, en person eller et CVR-nummer",
+      "restrict_countries": "Søg kun i bestemte lande",
       "your_work_areas_will_be_locked": "Dine arbejdsområder bliver låst efter 90 dage på base",
       "go_to_workspace": "Gå til arbejdsområde",
       "cvr_nr": "CVR-nummer",

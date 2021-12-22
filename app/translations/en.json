@@ -46,7 +46,11 @@
     "btn_return_to_home_page": "Return to home page"
   },
   "personal-dashboard": {
+    "intro_greeting": "Hello {{name}}",
+    "intro_text": "What do you want to do?",
     "create_a_new_workspace": "Create a new workspace",
+    "start_empty": "Start with an whiteboard",
+    "create_empty_workspace": "Create whatever you want on an empty canvas",
     "send_us_a_request": "Send us a request",
     "we_love_ideas": "We love ideas and look at it right away",
     "write_your_wish_here": "Write your wish here",
@@ -287,7 +291,8 @@
     "you_can_not_create_new_item_types": "You can not create new item types. This is a Draw feature. Contact us for more information.",
     "you_can_not_create_new_attribute_types": "You can not create new attribute types. This is a Draw feature. Contact us for more information.",
     "load_from_CVR": "Load from CVR",
-    "search_for_a_company_or_CVR_number": "Search for a company or CVR number:",
+    "search_for_a_company_or_CVR_number": "Search for a company or CVR number",
+    "restrict_countries": "Search only in specific countries",
     "your_work_areas_will_be_locked": "Your work areas will be locked after 90 days on base",
     "go_to_workspace": "Go to workspace",
     "cvr_nr": "CVR-number",

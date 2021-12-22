@@ -12,78 +12,12 @@ import Select from 'react-select';
 import axios from 'axios';
 import { selectStyles } from '@api/ui/helper';
 import { baseUrl } from '@api/constants';
-import dk from '@images/countries/dk.svg';
-import no from '@images/countries/no.svg';
-import se from '@images/countries/se.svg';
-import fi from '@images/countries/fi.svg';
+import { useTranslation } from 'react-i18next';
+import { countryDropDown } from '@helpers/countryOptions';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import UncertainCompanies from '../Workspace/UncertainCompanies';
 
-
-const countryDropDown = [
-  {
-    value: 'DK',
-    label: (
-      <div style={{ width: '100%', height: '100%' }}>
-        <img
-          src={dk}
-          alt="Denmark"
-          style={{
-            height: 20, width: 25, marginRight: 10
-          }}
-        />
-        <span>Danmark</span>
-      </div>
-    ),
-  },
-  {
-    value: 'SE',
-    label: (
-      <div style={{ width: '100%', height: '100%' }}>
-        <img
-          src={se}
-          alt="Sverige"
-          style={{
-            height: 20, width: 25, marginRight: 10
-          }}
-        />
-        <span>Sverige</span>
-      </div>
-    ),
-  },
-  {
-    value: 'NO',
-    label: (
-      <div style={{ width: '100%', height: '100%' }}>
-        <img
-          src={no}
-          alt="Norge"
-          style={{
-            height: 20, width: 25, marginRight: 10
-          }}
-        />
-        <span>Norge</span>
-      </div>
-    ),
-  },
-  {
-    value: 'FI',
-    label: (
-      <div style={{ width: '100%', height: '100%' }}>
-        <img
-          src={fi}
-          alt="Finland"
-          style={{
-            height: 20, width: 25, marginRight: 10
-          }}
-        />
-        <span>Finland</span>
-      </div>
-    ),
-  }
-
-];
 
 const FormDialog = (props) => {
   const {
@@ -127,11 +61,12 @@ const FormDialog = (props) => {
     &countries=${countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI'])}`)
     .then(res => res.data);
 
+
   const handleChangeCountries = (values) => {
     setCountries(values || []);
   };
 
-
+  const { t } = useTranslation();
   return (
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
       <DialogTitle id="form-dialog-title">{uncertainCompanies?.length > 0 ? 'Fortæl os hvad selslaberne hedder' : title}</DialogTitle>
@@ -162,7 +97,7 @@ const FormDialog = (props) => {
                   autoFocus
                   maxMenuHeight={150}
                   onChange={changeTextField}
-                  placeholder="Navn eller CVR-nummer"
+                  placeholder={t('workspaces.search_for_a_company_or_CVR_number')}
                   loadOptions={getAsyncOptions}
                   noOptionsMessage={() => (
                     <Typography>

@@ -3,7 +3,9 @@
 /* eslint-disable camelcase */
 import axios from 'axios';
 import * as notification from '@redux/constants/notifConstants';
-import { baseUrl, authHeader, genericErrorMessage as message } from '@api/constants';
+import {
+  baseUrl, authHeader, genericErrorMessage as message, getIdFromEncrypted
+} from '@api/constants';
 import {
   isNode,
 } from 'react-flow-renderer';
@@ -12,6 +14,7 @@ import { saveToLocalStorage } from '@utils/localStorage';
 import LogRocket from 'logrocket';
 import { toast } from 'react-toastify';
 import * as types from './workspaceConstants';
+import { initErstTypes } from '../constants';
 
 const WORKSPACES = 'workspaces';
 
@@ -33,11 +36,12 @@ export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/${id}/cvr`;
   const body = { cvr, erstTypes };
-  console.log(body);
+
   const header = authHeader();
   try {
     await axios.post(url, body, header);
   } catch (error) {
+    console.log(error.response);
     let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
 
     if (error?.response?.status === 503) {
@@ -74,16 +78,21 @@ export const analyseOutput = (workspaceId) => async dispatch => {
   }
 };
 
-export const postWorkspace = (history) => async dispatch => {
+export const postWorkspace = (history, label, description, group, tags, shareOrg, cvr) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}`;
-  const body = {};
+  const body = {
+    label, description, group, tags, shareOrg
+  };
   const header = authHeader();
 
   try {
     const response = await axios.post(url, body, header);
-
+    const id = response.data;
     dispatch({ type: types.POST_WORKSPACE_SUCCESS });
-    history.push(`/app/${WORKSPACES}/${response.data}`);
+    if (cvr) {
+      dispatch(cvrWorkspace(getIdFromEncrypted(id), cvr, undefined, initErstTypes));
+    }
+    history.push(`/app/${WORKSPACES}/${id}`);
   } catch (error) {
     dispatch({ type: types.POST_WORKSPACE_FAILED, message });
   }

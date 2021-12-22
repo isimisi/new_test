@@ -1,12 +1,16 @@
 /* eslint-disable react/jsx-closing-tag-location */
 /* eslint-disable camelcase */
-import React, { useEffect, useState } from 'react';
+import React, {
+  ChangeEvent, useEffect, useState
+} from 'react';
 import brand from '@api/dummy/brand';
+import { countryDropDown } from '@helpers/countryOptions';
+import Typography from '@material-ui/core/Typography';
 import { Helmet } from 'react-helmet';
-import classNames from 'classnames';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import type { RootState } from '@redux/configureStore';
+import { useTheme } from '@material-ui/core/styles';
 import {
   GuideSlider,
   CounterIconsWidget,
@@ -16,15 +20,20 @@ import {
   Notification
   // @ts-ignore
 } from '@components';
+import Select from 'react-select';
 import FormControl from '@material-ui/core/FormControl';
 import Send from '@material-ui/icons/Send';
-import Joyride, {
-  ACTIONS, EVENTS, STATUS, CallBackProps
-} from 'react-joyride';
+import axios from 'axios';
+import { baseUrl } from '@api/constants';
+// import Joyride, {
+//   ACTIONS, EVENTS, STATUS, CallBackProps
+// } from 'react-joyride';
 import Lottie from 'lottie-react';
+import AsyncSelect from 'react-select/async';
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
+import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import {
   useHistory
 } from 'react-router-dom';
@@ -34,6 +43,12 @@ import Button from '@material-ui/core/Button';
 import { bindActionCreators } from 'redux';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import { useTranslation } from 'react-i18next';
+import CreatableSelect from 'react-select/creatable';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Checkbox from '@material-ui/core/Checkbox';
+
+import { SelectOptions } from '@customTypes/data';
+import { hanldeOnChange, MixedTagOptions, tagMapping } from '@components/Tags/constants';
 import useStyles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -41,8 +56,6 @@ import {
   getTimeline,
   postFeatureRequest,
   getUserInfo,
-  handleRunIntro,
-  changeStepIndex
   // @ts-ignore
 } from './reducers/dashboardActions';
 import UpgradeModal from './UpgradeModal';
@@ -51,11 +64,14 @@ import {
   postWorkspace, showNotifAction
   // @ts-ignore
 } from '../Workspaces/reducers/workspaceActions';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const raccoon = require('@lotties/racoon/clipboard.json');
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const corporateChart = require('@lotties/racoon/corporateChart.json');
 
 
-const { plan_id } = loadFromLocalStorage();
+const { plan_id, first_name } = loadFromLocalStorage();
 
 const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const classes = useStyles();
@@ -67,17 +83,39 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const elementCounts = useAppSelector(state => state[reducer].get('elementCounts'));
   const timeline = useAppSelector(state => state[reducer].get('timeline'));
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
-  const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
+  // const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
   const { t } = useTranslation();
+  const theme = useTheme();
 
-  const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
+  // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();
-
+  const groupsDropDownOptions = useAppSelector(state => state.workspace.get('groupsDropDownOptions')).toJS();
+  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
 
   const [featureValue, setFeatureValue] = useState('');
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
   const [showMobileDisclaimer, setShowMobileDisclaimer] = useState(false);
+
+  // workspace
+  const [label, setLabel] = useState('');
+  const labelChange = (e: ChangeEvent<HTMLInputElement>) => setLabel(e.target.value);
+  const [workspacDescription, setWorkspacDescription] = useState('');
+  const descriptionChange = (e: ChangeEvent<HTMLInputElement>) => setWorkspacDescription(e.target.value);
+  const [group, setGroup] = useState('');
+  const changeGroup = (val: SelectOptions) => setGroup(val.value);
+  const [tags, setTags] = useState<MixedTagOptions[]>([]);
+  const changeTags = (val: MixedTagOptions[]) => setTags(val);
+  const [shareOrg, setShareOrg] = useState(false);
+  const changeShareOrg = () => setShareOrg(prevVal => !prevVal);
+
+
+  const [cvrSearch, setCvrSearch] = useState('');
+
+  const changeCvrSearch = (val: SelectOptions) => setCvrSearch(val.value);
+  const [countries, setCountries] = useState<SelectOptions[]>([]);
+  const handleChangeCountries = (values: SelectOptions[]) => setCountries(values || []);
+  // const [companyMapping, setCompanyMapping] = useState(uncertainCompanies?.reduce((obj, item) => ({ ...obj, [item.soughtAfterName]: { id: item.id, name: item.name, orgGuessedName: item.name } }), {}));
 
 
   const handleCloseGuide = () => {
@@ -125,141 +163,24 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   };
 
 
-  const createWorkspace = () => {
-    dispatch(handleRunIntro(false));
-    dispatch(changeStepIndex(0));
-
+  const createEmptyWorkspace = () => {
     if (plan_id === 1 && workspaces.length === 50) {
       dispatch(showNotifAction(t('personal-dashboard.can_not_create_more_workspaces')));
     } else {
-      dispatch(postWorkspace(history));
+      dispatch(postWorkspace(history, label, workspacDescription, group, JSON.stringify(tags), shareOrg));
     }
   };
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const {
-      action, index, type, status
-    } = data;
 
-    if ([STATUS.FINISHED, STATUS.SKIPPED].some(x => x === status)) {
-      // Need to set our running state to false, so we can restart if we click start again.
-      dispatch(handleRunIntro(false));
-      dispatch(changeStepIndex(0));
-    } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].some(x => x === type)) {
-      const newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
-
-      if (index === 2) {
-        openSubMenu('dataBuilder', undefined);
-        setTimeout(() => {
-          dispatch(changeStepIndex(newStepIndex));
-        }, 400);
-      } else if (index === 7) {
-        openSubMenu('dataBuilder', undefined);
-        setTimeout(() => {
-          dispatch(changeStepIndex(newStepIndex));
-        }, 400);
-      } else {
-        dispatch(changeStepIndex(newStepIndex));
-      }
-    }
+  const confirm = () => {
+    const cvr = cvrSearch.includes('DK') && cvrSearch.length < 12 ? cvrSearch.substring(2) : cvrSearch;
+    dispatch(postWorkspace(history, undefined, undefined, undefined, undefined, undefined, cvr));
   };
 
-  const localeSteps = {
-    skip: <Button size="small" style={{ color: '#bbb' }}>{t('personal-dashboard.skip')}</Button>,
-    back: <div>{t('personal-dashboard.previous')}</div>,
-    next: <div>{t('personal-dashboard.next')}</div>,
-  };
-
-  const steps = [
-    {
-      content: <div style={{
-        justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column'
-      }}
-      >
-        <h2>{t('personal-dashboard.welcome')}</h2>
-        <Lottie
-          animationData={raccoon}
-          style={{
-            width: '50%',
-          }}
-        />
-      </div>,
-      locale: localeSteps,
-      placement: 'center',
-      target: 'body',
-    },
-    {
-      target: '.for_intro_0',
-      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_frontpage')}</div>,
-      locale: localeSteps,
-    },
-    {
-      target: '.for_intro_1',
-      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_workspace')}</div>,
-      locale: localeSteps,
-    },
-    {
-      target: '.for_intro_2',
-      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_data_builder')}</div>,
-      locale: localeSteps,
-    },
-    // {
-    //   target: '.for_intro_Betingelser',
-    //   content: <div style={{ textAlign: 'left' }}>Betingelser er den måde, hvorpå du kan programmere Juristic. Tænk på det som logikken bag det juridiske indhold.</div>,
-    //   locale: localeSteps,
-    //   disableBeacon: true,
-    // },
-    // {
-    //   target: '.for_intro_Elementer',
-    //   content: <div style={{ textAlign: 'left' }}>Elementer er en anden grundsten. Det kan for eksempelvis være selskaber, personer eller andre interessenter i analysen!</div>,
-    //   locale: localeSteps,
-    //   disableBeacon: true,
-    // },
-    // {
-    //   target: '.for_intro_Kendetegn',
-    //   content: <div style={{ textAlign: 'left' }}>Ved at tilføje kendetegn, som fx land eller lignende, kan du gøre logikken i betingelserne eller dine tegninger mere detaljerede!</div>,
-    //   locale: localeSteps,
-    //   disableBeacon: true,
-    // },
-    // {
-    //   target: '.for_intro_Forbindelser',
-    //   content: <div style={{ textAlign: 'left' }}>Forbindelser er de streger, du tegner mellem elementerne, fx ejerskab mellem to selskaber!</div>,
-    //   locale: localeSteps,
-    //   disableBeacon: true,
-    // },
-    {
-      target: '.for_intro_3',
-      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_output')}</div>,
-      locale: localeSteps,
-    },
-    {
-      target: '.for_intro_4',
-      content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_red_flags')}</div>,
-      locale: localeSteps,
-    },
-    // {
-    //   target: '.for_intro_5',
-    //   content: <div style={{ textAlign: 'left' }}>Alt indhold, fx arbejdsområder og byggeklodser, kan opdeles i grupper, så du kun ser det, der er vigtigt for dig.</div>,
-    //   locale: localeSteps,
-    // },
-    // {
-    //   target: '.for_intro_7',
-    //   content: <div style={{ textAlign: 'left' }}>Hvis du har brug for mere hjælp, kan du altid trykke her og se svar på ofte stillede spørgsmål. Alternativt kan du altid skrive på vores chat.</div>,
-    //   locale: localeSteps,
-    // },
-
-
-    {
-      target: '.personal_dashboard_workspace_button',
-      content: t('personal-dashboard.try_creating_a_new_workspace'),
-      locale: localeSteps,
-      disableBeacon: true,
-      disableOverlayClose: true,
-      hideCloseButton: true,
-      hideFooter: true,
-      spotlightClicks: true,
-    },
-  ];
+  const getAsyncOptions = inputValue => axios
+    .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}
+  &countries=${countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI'])}`)
+    .then(res => res.data);
 
 
   return (
@@ -274,6 +195,141 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
       </Helmet>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
+      <Grid container spacing={3} className={classes.root} style={{ minHeight: '95vh' }}>
+        <Grid item xs={12}>
+          <Typography align="center" variant="h3">
+            {t('personal-dashboard.intro_greeting', { name: first_name })}
+          </Typography>
+          <Typography align="center" variant="h3">
+            {t('personal-dashboard.intro_text')}
+          </Typography>
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <PapperBlock title={t('workspaces.load_from_CVR')} whiteBg noMargin desc={t('workspaces.search_for_a_company_or_CVR_number')}>
+            <AsyncSelect
+              styles={selectStyles('relative')}
+              menuPlacement="auto"
+              autoFocus
+              maxMenuHeight={150}
+              onChange={changeCvrSearch}
+              placeholder={t('workspaces.search_for_a_company_or_CVR_number')}
+              loadOptions={getAsyncOptions}
+              noOptionsMessage={() => (
+                <Typography>
+                      Her er intet at vise.
+                </Typography>
+              )}
+            />
+            <div style={{ marginTop: theme.spacing(2) }}>
+              <Select
+                styles={selectStyles('relative')}
+                isMulti
+                inputId="react-select-single-relationship"
+                placeholder={t('workspaces.restrict_countries')}
+                options={countryDropDown}
+                value={countries}
+                onChange={handleChangeCountries}
+              />
+            </div>
+            <div style={{
+              marginTop: theme.spacing(2), display: 'flex', justifyContent: 'center', alignItems: 'center'
+            }}
+            >
+              <Lottie animationData={corporateChart} className={classes.lottie} />
+            </div>
+            <div style={{ marginTop: theme.spacing(2), }}>
+              <Button color="primary" variant="contained" onClick={confirm}>
+                {t('personal-dashboard.create_a_new_workspace')}
+              </Button>
+            </div>
+          </PapperBlock>
+        </Grid>
+        <Grid item md={6} xs={12}>
+          <PapperBlock title={t('personal-dashboard.start_empty')} whiteBg noMargin desc={t('personal-dashboard.create_empty_workspace')}>
+            <div className={classes.removeMargin}>
+              <TextField
+                name="label"
+                placeholder={t('workspaces.workspace-form.name')}
+                label={t('workspaces.workspace-form.name')}
+                className={classes.field}
+                value={label}
+                onChange={labelChange}
+              />
+            </div>
+            <div>
+              <TextField
+                name="description"
+                className={classes.field}
+                placeholder={t('workspaces.workspace-form.desc')}
+                label={t('workspaces.workspace-form.desc')}
+                multiline
+                rows={2}
+                value={workspacDescription}
+                onChange={descriptionChange}
+              />
+            </div>
+            <div
+              className={classes.field}
+              style={{ marginTop: theme.spacing(2) }}
+            >
+              <Select
+                classes={classes}
+                styles={selectStyles()}
+                inputId="react-select-single-workspace"
+                TextFieldProps={{
+                  label: t('workspaces.workspace-form.select_group'),
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single-workspace',
+                    shrink: true,
+                  },
+                  placeholder: t('workspaces.workspace-form.select_group'),
+                }}
+                placeholder={t('workspaces.workspace-form.select_group')}
+                options={mapSelectOptions(groupsDropDownOptions)}
+                value={group && { label: group, value: group }}
+                onChange={changeGroup}
+              />
+            </div>
+            <div
+              className={classes.field}
+              style={{ marginTop: theme.spacing(2) }}
+            >
+              <CreatableSelect
+                styles={selectStyles()}
+                isMulti
+                isClearable
+                value={tags.map(tagMapping)}
+                onChange={(newValue, meta) => hanldeOnChange(newValue, meta, changeTags, tags)
+                }
+                inputId="react-select-tags"
+                placeholder={t('workspaces.workspace-form.add_tags_to_your_workspace')}
+                options={tagOptions.map(tagMapping)}
+              />
+            </div>
+            {plan_id !== 1 && (
+              <ButtonBase
+                className={classes.row}
+                style={{ marginTop: 10 }}
+                onClick={changeShareOrg}
+              >
+                <Checkbox
+                  checked={shareOrg}
+                  name="show label"
+                  color="primary"
+                />
+                <Typography variant="subtitle2">
+                  {t('workspaces.workspace-form.checkbox')}
+                </Typography>
+              </ButtonBase>
+            )}
+            <div style={{ marginTop: theme.spacing(2) }}>
+              <Button color="primary" variant="contained" onClick={createEmptyWorkspace}>
+                {t('personal-dashboard.create_a_new_workspace')}
+              </Button>
+            </div>
+          </PapperBlock>
+        </Grid>
+      </Grid>
       <Grid container spacing={3} className={classes.root}>
         <Grid item md={6} xs={12}>
           <CounterIconsWidget elementCounts={elementCounts} history={history} />
@@ -331,9 +387,6 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
           setShowMobileDisclaimer(false);
         }}
       />
-      <Fab variant="extended" color="primary" className={classNames(classes.addBtn, 'personal_dashboard_workspace_button')} onClick={createWorkspace}>
-        {`${t('personal-dashboard.create_a_new_workspace')}`}
-      </Fab>
     </div>
   );
 };
@@ -356,3 +409,129 @@ const Dash = connect(
 )(PersonalDashboard);
 
 export default Dash;
+
+
+// const handleJoyrideCallback = (data: CallBackProps) => {
+//   const {
+//     action, index, type, status
+//   } = data;
+
+//   if ([STATUS.FINISHED, STATUS.SKIPPED].some(x => x === status)) {
+//     // Need to set our running state to false, so we can restart if we click start again.
+//     dispatch(handleRunIntro(false));
+//     dispatch(changeStepIndex(0));
+//   } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].some(x => x === type)) {
+//     const newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+
+//     if (index === 2) {
+//       openSubMenu('dataBuilder', undefined);
+//       setTimeout(() => {
+//         dispatch(changeStepIndex(newStepIndex));
+//       }, 400);
+//     } else if (index === 7) {
+//       openSubMenu('dataBuilder', undefined);
+//       setTimeout(() => {
+//         dispatch(changeStepIndex(newStepIndex));
+//       }, 400);
+//     } else {
+//       dispatch(changeStepIndex(newStepIndex));
+//     }
+//   }
+// };
+
+// const localeSteps = {
+//   skip: <Button size="small" style={{ color: '#bbb' }}>{t('personal-dashboard.skip')}</Button>,
+//   back: <div>{t('personal-dashboard.previous')}</div>,
+//   next: <div>{t('personal-dashboard.next')}</div>,
+// };
+
+// const steps = [
+//   {
+//     content: <div style={{
+//       justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column'
+//     }}
+//     >
+//       <h2>{t('personal-dashboard.welcome')}</h2>
+//       <Lottie
+//         animationData={raccoon}
+//         style={{
+//           width: '50%',
+//         }}
+//       />
+//     </div>,
+//     locale: localeSteps,
+//     placement: 'center',
+//     target: 'body',
+//   },
+//   {
+//     target: '.for_intro_0',
+//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_frontpage')}</div>,
+//     locale: localeSteps,
+//   },
+//   {
+//     target: '.for_intro_1',
+//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_workspace')}</div>,
+//     locale: localeSteps,
+//   },
+//   {
+//     target: '.for_intro_2',
+//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_data_builder')}</div>,
+//     locale: localeSteps,
+//   },
+//   // {
+//   //   target: '.for_intro_Betingelser',
+//   //   content: <div style={{ textAlign: 'left' }}>Betingelser er den måde, hvorpå du kan programmere Juristic. Tænk på det som logikken bag det juridiske indhold.</div>,
+//   //   locale: localeSteps,
+//   //   disableBeacon: true,
+//   // },
+//   // {
+//   //   target: '.for_intro_Elementer',
+//   //   content: <div style={{ textAlign: 'left' }}>Elementer er en anden grundsten. Det kan for eksempelvis være selskaber, personer eller andre interessenter i analysen!</div>,
+//   //   locale: localeSteps,
+//   //   disableBeacon: true,
+//   // },
+//   // {
+//   //   target: '.for_intro_Kendetegn',
+//   //   content: <div style={{ textAlign: 'left' }}>Ved at tilføje kendetegn, som fx land eller lignende, kan du gøre logikken i betingelserne eller dine tegninger mere detaljerede!</div>,
+//   //   locale: localeSteps,
+//   //   disableBeacon: true,
+//   // },
+//   // {
+//   //   target: '.for_intro_Forbindelser',
+//   //   content: <div style={{ textAlign: 'left' }}>Forbindelser er de streger, du tegner mellem elementerne, fx ejerskab mellem to selskaber!</div>,
+//   //   locale: localeSteps,
+//   //   disableBeacon: true,
+//   // },
+//   {
+//     target: '.for_intro_3',
+//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_output')}</div>,
+//     locale: localeSteps,
+//   },
+//   {
+//     target: '.for_intro_4',
+//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_red_flags')}</div>,
+//     locale: localeSteps,
+//   },
+//   // {
+//   //   target: '.for_intro_5',
+//   //   content: <div style={{ textAlign: 'left' }}>Alt indhold, fx arbejdsområder og byggeklodser, kan opdeles i grupper, så du kun ser det, der er vigtigt for dig.</div>,
+//   //   locale: localeSteps,
+//   // },
+//   // {
+//   //   target: '.for_intro_7',
+//   //   content: <div style={{ textAlign: 'left' }}>Hvis du har brug for mere hjælp, kan du altid trykke her og se svar på ofte stillede spørgsmål. Alternativt kan du altid skrive på vores chat.</div>,
+//   //   locale: localeSteps,
+//   // },
+
+
+//   {
+//     target: '.personal_dashboard_workspace_button',
+//     content: t('personal-dashboard.try_creating_a_new_workspace'),
+//     locale: localeSteps,
+//     disableBeacon: true,
+//     disableOverlayClose: true,
+//     hideCloseButton: true,
+//     hideFooter: true,
+//     spotlightClicks: true,
+//   },
+// ];

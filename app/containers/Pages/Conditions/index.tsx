@@ -122,7 +122,7 @@ function Conditions(props) {
         className={classes.addBtn}
         onClick={() => dispatch(postCondition(history))}
       >
-        {`${t('conditions.your_conditions')}`}
+        {`${t('conditions.btn_new_condition')}`}
       </Fab>
     </div>
   );

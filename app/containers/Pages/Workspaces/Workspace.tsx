@@ -29,6 +29,8 @@ import {
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import Skeleton from '@material-ui/lab/Skeleton';
+
 import { toast } from 'react-toastify';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import Notification from '@components/Notification/Notification';
@@ -530,49 +532,30 @@ const Workspace = (props) => {
     }
   }, [image]);
 
-  // const handleJoyrideCallback = (data) => {
-  //   const {
-  //     action, index, type, status
-  //   } = data;
 
-  //   if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-  //     // Need to set our running state to false, so we can restart if we click start again.
-  //     dispatch(handleRunIntro(false));
-  //     dispatch(changeStepIndex(0));
-  //   } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
-  //     let newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+  const onConfirm = (value, close) => {
+    const erstNodeArray = Object.values(erstTypes.nodes);
+    const erstEdgeArray = Object.values(erstTypes.edges);
+    const nodeLabels = nodes.map((node) => node.label);
+    const relationshipLabels = relationships.toJS().map((r) => r.label);
+    if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
+      if (!subscription) {
+        connection.connect();
+        const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
+        setSubscription(sub);
+      }
+      dispatch(cvrWorkspace(id, value, close, erstTypes));
+    } else {
+      setShowMapErst(true);
+    }
+  };
 
-  //     if (!metaOpen && index === 1) {
-  //       newStepIndex = 2;
-  //     }
-
-  //     if (index === 3) {
-  //       const hoverMenu = document.querySelector('.rtf:nth-of-type(3)');
-  //       if (hoverMenu) {
-  //         hoverMenu.classList.remove('closed');
-  //         hoverMenu.classList.add('open');
-  //         setTimeout(() => {
-  //           dispatch(changeStepIndex(newStepIndex));
-  //         }, 100);
-  //       }
-  //     } else {
-  //       dispatch(changeStepIndex(newStepIndex));
-  //     }
-  //   }
-  // };
-
-  // useCutCopyPaste(elements, onElementsRemove, setElements);
-
-  // useEffect(() => {
-  //   if (rfInstance) {
-  //     rfInstance.fitView();
-  //   }
-  // }, [elements, rfInstance]);
 
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
+
         <ReactFlow
           elements={elements}
           onElementsRemove={onElementsRemove}
@@ -625,6 +608,15 @@ const Workspace = (props) => {
                  />
                )}
         </ReactFlow>
+        {loading && (
+          <>
+            <div style={{
+              width: '100%', height: '100%', backgroundColor: 'white', position: 'absolute', zIndex: 10
+            }}
+            />
+            <Skeleton width="100%" variant="rect" height="100%" animation="wave" style={{ position: 'absolute', zIndex: 11 }} />
+          </>
+        )}
         {signed ? (
           <>
             <a
@@ -805,22 +797,7 @@ const Workspace = (props) => {
         changeUncertainCompanies={handleUncertainCompanies}
         uncertainCompanies={uncertainCompanies}
         mapUncertainCompanies={(uncertainMapping) => dispatch(mapUncertainCompanies(id, uncertainMapping, erstTypes))}
-        onConfirm={(value, close) => {
-          const erstNodeArray = Object.values(erstTypes.nodes);
-          const erstEdgeArray = Object.values(erstTypes.edges);
-          const nodeLabels = nodes.map((node) => node.label);
-          const relationshipLabels = relationships.toJS().map((r) => r.label);
-          if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
-            if (!subscription) {
-              connection.connect();
-              const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
-              setSubscription(sub);
-            }
-            dispatch(cvrWorkspace(id, value, close, erstTypes));
-          } else {
-            setShowMapErst(true);
-          }
-        }}
+        onConfirm={onConfirm}
       />
       <MapTypesForErst
         open={showMapErst}
@@ -911,3 +888,42 @@ Workspace.propTypes = {
 };
 
 export default withStyles(styles)(Workspace);
+
+// const handleJoyrideCallback = (data) => {
+//   const {
+//     action, index, type, status
+//   } = data;
+
+//   if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+//     // Need to set our running state to false, so we can restart if we click start again.
+//     dispatch(handleRunIntro(false));
+//     dispatch(changeStepIndex(0));
+//   } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].includes(type)) {
+//     let newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
+
+//     if (!metaOpen && index === 1) {
+//       newStepIndex = 2;
+//     }
+
+//     if (index === 3) {
+//       const hoverMenu = document.querySelector('.rtf:nth-of-type(3)');
+//       if (hoverMenu) {
+//         hoverMenu.classList.remove('closed');
+//         hoverMenu.classList.add('open');
+//         setTimeout(() => {
+//           dispatch(changeStepIndex(newStepIndex));
+//         }, 100);
+//       }
+//     } else {
+//       dispatch(changeStepIndex(newStepIndex));
+//     }
+//   }
+// };
+
+// useCutCopyPaste(elements, onElementsRemove, setElements);
+
+// useEffect(() => {
+//   if (rfInstance) {
+//     rfInstance.fitView();
+//   }
+// }, [elements, rfInstance]);
