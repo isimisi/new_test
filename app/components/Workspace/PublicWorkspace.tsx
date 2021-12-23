@@ -20,16 +20,15 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
-import {NodeDropdownInstance} from '../../types/reactFlow'
-import WorkspaceFabs from '@components/Workspace/WorkspaceFabs'
-import CustomNode from '@components/Workspace/Node/CustomNode'
-import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode'
-import DefineEdge from '@components/Workspace/Edge/DefineEdge'
-import CustomEdge from '@components/Workspace/Edge/CustomEdge'
-import DefineNode from '@components/Workspace/Node/DefineNode'
-import CompanyDataModel from '@components/Workspace/CompanyDataModel'
-import CvrDialog from '@components/DialogModal/CvrDialog'
-
+import WorkspaceFabs from '@components/Workspace/WorkspaceFabs';
+import CustomNode from '@components/Workspace/Node/CustomNode';
+import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
+import DefineEdge from '@components/Workspace/Edge/DefineEdge';
+import CustomEdge from '@components/Workspace/Edge/CustomEdge';
+import DefineNode from '@components/Workspace/Node/DefineNode';
+import CompanyDataModel from '@components/Workspace/CompanyDataModel';
+import CvrDialog from '@components/DialogModal/CvrDialog';
+import Skeleton from '@material-ui/lab/Skeleton';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
@@ -42,6 +41,7 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId } from '@api/constants';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+import { NodeDropdownInstance } from '../../types/reactFlow';
 import styles from './workspace-jss';
 import { reducer, initErstTypes as erstTypes } from '../../containers/Pages/Workspaces/constants';
 import {
@@ -179,6 +179,7 @@ const Workspace = (props) => {
 
   const onLoad = (_reactFlowInstance: OnLoadParams) => {
     setRfInstance(_reactFlowInstance);
+    dispatch(showWorkspace(id, undefined, undefined, _reactFlowInstance));
     _reactFlowInstance.fitView();
   };
 
@@ -223,7 +224,7 @@ const Workspace = (props) => {
   const onWorkspaceSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      
+
       const _nodes = flow.elements.filter((n): n is Node => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
       dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
@@ -231,7 +232,6 @@ const Workspace = (props) => {
   }, [rfInstance]);
 
   useEffect(() => {
-    dispatch(showWorkspace(id));
     dispatch(getRelationships(group));
     dispatch(getNodes(group));
     dispatch(getGroupDropDown());
@@ -242,14 +242,14 @@ const Workspace = (props) => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const rf = rfInstance?.toObject();
 
-    let x = 0
-    let y = 0
+    let x = 0;
+    let y = 0;
 
-    if(rf && reactFlowDimensions) {
+    if (rf && reactFlowDimensions) {
       x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
       y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
     }
-    if(choosenNode) {
+    if (choosenNode) {
       if (!editable) {
         dispatch(showNotifAction('At tilføje og ændre elementer i et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje og ændre elementer'));
       } else if (isUpdatingElement && elementToUpdate) {
@@ -372,8 +372,8 @@ const Workspace = (props) => {
   useEffect(() => {
     if (reactFlowContainer) {
       setReactFlowDimensions({
-        //@ts-ignore
-        height: reactFlowContainer.current.clientHeight, //@ts-ignore
+        // @ts-ignore
+        height: reactFlowContainer.current.clientHeight, // @ts-ignore
         width: reactFlowContainer.current.clientWidth
       });
     }
@@ -454,6 +454,15 @@ const Workspace = (props) => {
         >
           <img className={classes.img} src={logoBeta} alt={brand.name} />
         </a>
+        {loading && (
+          <>
+            <div style={{
+              width: '100%', height: '100%', backgroundColor: 'white', position: 'absolute', zIndex: 10
+            }}
+            />
+            <Skeleton width="100%" variant="rect" height="100%" animation="wave" style={{ position: 'absolute', zIndex: 11 }} />
+          </>
+        )}
         {signed && (
           <div className={classes.signed}>
             <div className={classes.signedRow}>
@@ -466,7 +475,7 @@ const Workspace = (props) => {
               </Typography>
             </div>
             <div className={classes.signedRow}>
-              <Typography  className={classes.signedId}>
+              <Typography className={classes.signedId}>
               ID:
                 {' '}
                 {window.btoa(signedBy + id)}
@@ -555,12 +564,12 @@ const Workspace = (props) => {
         handleRemoveAttributes={(_id, index) => {
           setAttributes(att => att.filter((v, i) => i !== index));
           if (_id) {
-            //@ts-ignore
+            // @ts-ignore
             setDeletedAttributes(attr => [...attr, _id]);
           }
         }}
         showCompanyData={() => {
-          if(elementToUpdate) {
+          if (elementToUpdate) {
             dispatch(getCompanyData(elementToUpdate.id, setShowCompanyData, setDefineNodeOpen, setNodeLabel, setIsUpdatingElement));
           }
         }}

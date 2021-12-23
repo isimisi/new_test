@@ -178,6 +178,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case SHOW_WORKSPACE_LOADING:
       return state.withMutations((mutableState) => {
+        mutableState.set('loading', true);
         mutableState.set('elements', List());
       });
     case SHOW_WORKSPACE_SUCCESS:
@@ -203,11 +204,13 @@ export default function reducer(state = initialImmutableState, action: any) {
         mutableState.set('signed', signed);
         mutableState.set('signedBy', signedBy);
         mutableState.set('specificWorkspaceTags', tags);
+        mutableState.set('loading', false);
       });
     case SHOW_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+        mutableState.set('loading', false);
       });
     case PUT_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {

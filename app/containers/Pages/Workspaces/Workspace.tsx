@@ -256,10 +256,6 @@ const Workspace = (props) => {
     dispatch(deleteWorkspaceElement(elementsToRemove, remainingElements));
   };
 
-  const onLoad = (_reactFlowInstance) => {
-    setRfInstance(_reactFlowInstance);
-    _reactFlowInstance.fitView();
-  };
 
   const onElementClick = (event, element) => {
     dispatch(setShowCompanyData(false));
@@ -355,8 +351,14 @@ const Workspace = (props) => {
     }
   };
 
+  const onLoad = (_reactFlowInstance) => {
+    setRfInstance(_reactFlowInstance);
+    dispatch(showWorkspace(id, setMetaOpen, handleAlerts, _reactFlowInstance));
+    _reactFlowInstance.fitView();
+  };
+
+
   useEffect(() => {
-    dispatch(showWorkspace(id, setMetaOpen, handleAlerts));
     dispatch(getGroupDropDown());
   }, []);
 
@@ -549,7 +551,6 @@ const Workspace = (props) => {
       setShowMapErst(true);
     }
   };
-
 
   return (
     <div>

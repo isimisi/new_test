@@ -99,7 +99,7 @@ export const postWorkspace = (history, label, description, group, tags, shareOrg
 };
 
 
-export const showWorkspace = (id, setMetaOpen = null, setAlerts = null) => async dispatch => {
+export const showWorkspace = (id, setMetaOpen = null, setAlerts = null, _reactFlowInstance = null) => async dispatch => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   dispatch({ type: types.SHOW_WORKSPACE_LOADING });
 
@@ -120,6 +120,10 @@ export const showWorkspace = (id, setMetaOpen = null, setAlerts = null) => async
       setMetaOpen && setMetaOpen(true);
     }
     setAlerts && dispatch(analyseAlerts(id, setAlerts, true));
+
+    if (_reactFlowInstance) {
+      _reactFlowInstance.fitView();
+    }
   } catch (error) {
     if (error?.response?.status === 403) {
       _history.replace('/app/not-found');
