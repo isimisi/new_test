@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { fromJS, List, Map } from 'immutable';
 import {
@@ -82,10 +83,13 @@ import {
   RUN_INTRO_WORKSPACE,
   CHANGE_STEP_INDEX_WORKSPACE,
   HANDLE_UNCERTAIN_COMPANIES,
+  WORKSPACE_ADD_ELEMENTS,
+  WORKSPACE_UPDATE_ELEMENTS
 } from './workspaceConstants';
 
 const initialState = {
   loading: false,
+  initialLoading: false,
   workspaces: List(),
   label: '',
   description: '',
@@ -154,6 +158,37 @@ export default function reducer(state = initialImmutableState, action: any) {
         const message = fromJS(action.message);
         mutableState.set('message', message);
       });
+    case WORKSPACE_ADD_ELEMENTS:
+      return state.withMutations((mutableState) => {
+        const newElements = action.elements;
+
+        const orgElements = mutableState.get('elements').toJS();
+        const elements = fromJS([...orgElements, ...newElements]);
+        mutableState.set('elements', elements);
+      });
+    case WORKSPACE_UPDATE_ELEMENTS:
+      return state.withMutations((mutableState) => {
+        const { nodesWithOrgId, edgesWithOrgId } = action;
+        const elements = mutableState.get('elements').toJS();
+        const elementsToEdit = elements.filter(el => el.id.includes('edit'));
+        const remainingElements = elements.filter(el => !el.id.includes('edit'));
+        const nodesToEdit = elementsToEdit.filter(el => isNode(el));
+        const edgesToEdit = elementsToEdit.filter(el => isEdge(el));
+        nodesToEdit.map(node => {
+          node.id = nodesWithOrgId[node.id];
+          return node;
+        });
+        edgesToEdit.map(edge => {
+          edge.id = edgesWithOrgId[edge.id];
+          edge.source = nodesWithOrgId[edge.source];
+          edge.target = nodesWithOrgId[edge.target];
+          return edge;
+        });
+
+        const newElements = [...remainingElements, ...nodesToEdit, ...edgesToEdit];
+        console.log(newElements);
+        mutableState.set('elements', fromJS(newElements));
+      });
     case DELETE_WORKSPACE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
         const elements = fromJS(action.remainingElements);
@@ -178,7 +213,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case SHOW_WORKSPACE_LOADING:
       return state.withMutations((mutableState) => {
-        mutableState.set('loading', true);
+        mutableState.set('initialLoading', true);
         mutableState.set('elements', List());
       });
     case SHOW_WORKSPACE_SUCCESS:
@@ -204,13 +239,13 @@ export default function reducer(state = initialImmutableState, action: any) {
         mutableState.set('signed', signed);
         mutableState.set('signedBy', signedBy);
         mutableState.set('specificWorkspaceTags', tags);
-        mutableState.set('loading', false);
+        mutableState.set('initialLoading', false);
       });
     case SHOW_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
-        mutableState.set('loading', false);
+        mutableState.set('initialLoading', false);
       });
     case PUT_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {

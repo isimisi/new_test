@@ -125,6 +125,7 @@ export const showWorkspace = (id, setMetaOpen = null, setAlerts = null, _reactFl
       _reactFlowInstance.fitView();
     }
   } catch (error) {
+    console.log(error.response);
     if (error?.response?.status === 403) {
       _history.replace('/app/not-found');
     } else {
@@ -241,6 +242,21 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, 
     close();
     setAlerts && dispatch(analyseAlerts(workspace_id, setAlerts));
   } catch (error) {
+    dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
+  }
+};
+
+export const addElements = (id, elements) => async dispatch => {
+  dispatch({ type: types.WORKSPACE_ADD_ELEMENTS, elements });
+  const url = `${baseUrl}/${WORKSPACES}/addElements/${id}`;
+  const body = { elements: JSON.stringify(elements) };
+  const header = authHeader();
+  try {
+    const response = await axios.post(url, body, header);
+    const { nodesWithOrgId, edgesWithOrgId } = response.data;
+    dispatch({ type: types.WORKSPACE_UPDATE_ELEMENTS, nodesWithOrgId, edgesWithOrgId });
+  } catch (error) {
+    console.log(error.response);
     dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
   }
 };

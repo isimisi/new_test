@@ -1,9 +1,10 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/prefer-default-export */
-/* eslint-disable no-return-assign */
 import { useEffect } from 'react';
-import { useStoreState, isEdge, getConnectedEdges } from 'react-flow-renderer';
+import {
+  useStoreState, isEdge, getConnectedEdges
+} from 'react-flow-renderer';
 function getSelectedGraph(selectedNodes, elements) {
   const allEdges = [];
   const allNodeMap = {};
@@ -39,9 +40,8 @@ function getSelectedGraph(selectedNodes, elements) {
 }
 const Format = 'application/react-flow-format';
 
-export function useCutCopyPaste(elements, onElementsRemove, setElements) {
+export function useCutCopyPaste(elements, onElementsRemove, handleSave) {
   const selectedElements = useStoreState((store) => store.selectedElements);
-
   useEffect(() => {
     function cut(event) {
       if (!event.target?.closest('.react-flow')) {
@@ -71,26 +71,13 @@ export function useCutCopyPaste(elements, onElementsRemove, setElements) {
       }
     }
     function paste(event) {
-      // read data from clipboard
-      // add elements to graph
       if (!event.target?.closest('.react-flow')) {
         return;
       }
       try {
         const elementsToAdd = JSON.parse(event.clipboardData.getData(Format));
-        const now = Date.now();
-        // change id/source/target of new elements
-        elementsToAdd.forEach((element) => {
-          if (isEdge(element)) {
-            element.id = `${element.id}_${now}`;
-            element.source = `${element.source}_${now}`;
-            element.target = `${element.target}_${now}`;
-          } else {
-            element.id = `${element.id}_${now}`;
-          }
-        });
         event.preventDefault();
-        setElements((elements = []) => [...elements, ...elementsToAdd]);
+        handleSave(elementsToAdd);
       } catch (error) {
         console.error(error);
       }
@@ -104,5 +91,5 @@ export function useCutCopyPaste(elements, onElementsRemove, setElements) {
       document.removeEventListener('copy', copy);
       document.removeEventListener('paste', paste);
     };
-  }, [elements, onElementsRemove, selectedElements, setElements]);
+  }, [elements, onElementsRemove, selectedElements, handleSave]);
 }

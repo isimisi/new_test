@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable new-cap */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
@@ -16,8 +18,10 @@ import ReactFlow, {
   ConnectionMode,
   BackgroundVariant,
   FlowElement,
-  OnLoadParams
+  OnLoadParams,
+  isEdge
 } from 'react-flow-renderer';
+import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
@@ -30,7 +34,7 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import Skeleton from '@material-ui/lab/Skeleton';
-
+import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import { toast } from 'react-toastify';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import Notification from '@components/Notification/Notification';
@@ -69,9 +73,8 @@ import {
   shareWorkspace, cvrSuccess, shareOrgChange,
   setShowCompanyData, setShowAddressInfo,
   handleRunIntro, uncertainCompaniesChange,
-  mapUncertainCompanies, changeTags
+  mapUncertainCompanies, changeTags, addElements
 } from './reducers/workspaceActions';
-// import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import './workspace.css';
 
 
@@ -104,6 +107,7 @@ const Workspace = (props) => {
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
+  const mouse = useMouse(reactFlowContainer, { fps: 10, enterDelay: 100, leaveDelay: 100 });
 
   const { plan_id } = loadFromLocalStorage();
 
@@ -122,6 +126,7 @@ const Workspace = (props) => {
   const attributesDropDownOptions = useAppSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const loading = useAppSelector(state => state[reducer].get('loading'));
+  const initialLoading = useAppSelector(state => state[reducer].get('initialLoading'));
   const companyData = useAppSelector(state => state[reducer].get('companyData'));
   const addressInfo = useAppSelector(state => state[reducer].get('addressInfo'));
   const signed = useAppSelector(state => state[reducer].get('signed'));
@@ -226,6 +231,7 @@ const Workspace = (props) => {
   // REACT FLOW SPECIFIC
 
   const onConnect = (data) => {
+    console.log(data);
     if (data.source !== data.target) {
       setCurrentConnectionData(data);
       setDefineEdgeOpen(true);
@@ -552,6 +558,42 @@ const Workspace = (props) => {
     }
   };
 
+  const handlePaste = (elementsToAdd) => {
+    // @ts-ignore
+    const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+    // @ts-ignore
+    const position = rfInstance.project({
+      // @ts-ignore
+      x: mouse.clientX - reactFlowBounds.left,
+      // @ts-ignore
+      y: mouse.clientY - reactFlowBounds.top,
+    });
+
+    const sortedByY = elementsToAdd.filter(e => isNode(e)).sort((a, b) => b.position.y - a.position.y);
+    const topNode = sortedByY[sortedByY.length - 1];
+
+    const now = Date.now();
+    elementsToAdd.map((element) => {
+      if (isEdge(element)) {
+        element.id = `${element.id}_${now}-edit`;
+        element.source = `${element.source}_${now}-edit`;
+        element.target = `${element.target}_${now}-edit`;
+      } else {
+        element.id = `${element.id}_${now}-edit`;
+        const xDistanceToTopNode = element.position.x - topNode.position.x;
+        const yDistanceToTopNode = element.position.y - topNode.position.y;
+
+        element.position.x = position.x + xDistanceToTopNode;
+        element.position.y = position.y + yDistanceToTopNode;
+      }
+      return element;
+    });
+
+    dispatch(addElements(id, elementsToAdd));
+  };
+
+  useCutCopyPaste(elements, onElementsRemove, handlePaste);
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -609,7 +651,8 @@ const Workspace = (props) => {
                  />
                )}
         </ReactFlow>
-        {loading && (
+
+        {initialLoading && (
           <>
             <div style={{
               width: '100%', height: '100%', backgroundColor: 'white', position: 'absolute', zIndex: 10
@@ -647,6 +690,7 @@ const Workspace = (props) => {
             </div>
           </>
         ) : null}
+
       </div>
       <WorkspaceMeta
         open={metaOpen}
@@ -920,8 +964,6 @@ export default withStyles(styles)(Workspace);
 //     }
 //   }
 // };
-
-// useCutCopyPaste(elements, onElementsRemove, setElements);
 
 // useEffect(() => {
 //   if (rfInstance) {

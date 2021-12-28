@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { loadFromLocalStorage } from '@utils/localStorage';
+import { ReactFlowProvider } from 'react-flow-renderer';
 import { ThemeContext } from './ThemeWrapper';
 import Dashboard from '../Templates/Dashboard';
 import {
@@ -62,7 +63,11 @@ function Application() {
           path="/app/workspaces/analysis/:id"
           component={WorkspaceAnalysis}
         />
-        <Route exact path="/app/workspaces/:id" component={Workspace} />
+        <Route exact path="/app/workspaces/:id">
+          <ReactFlowProvider>
+            <Workspace />
+          </ReactFlowProvider>
+        </Route>
         <Route exact path="/app/settings" component={Settings} />
         <Route exact path="/app/plan" component={ChoosePlan} />
         <Route path="/app/not-found" component={NotFound} />
