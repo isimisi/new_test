@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { fromJS, List } from 'immutable';
 import { CLOSE_NOTIF } from '@redux/constants/notifConstants';
 import {
@@ -42,7 +43,9 @@ import {
   CONDITION_RELATIONSHIP_ADD_TO_LIST,
   CONDITION_NODE_ADD_TO_LIST,
   CONDITION_NODE_ATTRIBUT_ADD_TO_LIST,
-  CHANGE_TAGS
+  CHANGE_TAGS,
+  CONDITION_ADD_ELEMENTS,
+  CONDITION_UPDATE_ELEMENTS
 } from './conditionConstants';
 
 const initialState = {
@@ -92,6 +95,37 @@ export default function reducer(state = initialImmutableState, action: any) {
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set('message', message);
+      });
+    case CONDITION_ADD_ELEMENTS:
+      return state.withMutations((mutableState) => {
+        const newElements = action.elements;
+
+        const orgElements = mutableState.get('elements').toJS();
+        const elements = fromJS([...orgElements, ...newElements]);
+        mutableState.set('elements', elements);
+      });
+    case CONDITION_UPDATE_ELEMENTS:
+      return state.withMutations((mutableState) => {
+        const { nodesWithOrgId, edgesWithOrgId } = action;
+        const elements = mutableState.get('elements').toJS();
+        const elementsToEdit = elements.filter(el => el.id.includes('edit'));
+        const remainingElements = elements.filter(el => !el.id.includes('edit'));
+        const nodesToEdit = elementsToEdit.filter(el => isNode(el));
+        const edgesToEdit = elementsToEdit.filter(el => isEdge(el));
+        nodesToEdit.map(node => {
+          node.id = nodesWithOrgId[node.id];
+          return node;
+        });
+        edgesToEdit.map(edge => {
+          edge.id = edgesWithOrgId[edge.id];
+          edge.source = nodesWithOrgId[edge.source];
+          edge.target = nodesWithOrgId[edge.target];
+          return edge;
+        });
+
+        const newElements = [...remainingElements, ...nodesToEdit, ...edgesToEdit];
+
+        mutableState.set('elements', fromJS(newElements));
       });
     case PUT_CONDITION_SUCCESS:
       return state.withMutations((mutableState) => {

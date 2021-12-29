@@ -186,7 +186,7 @@ export default function reducer(state = initialImmutableState, action: any) {
         });
 
         const newElements = [...remainingElements, ...nodesToEdit, ...edgesToEdit];
-        console.log(newElements);
+
         mutableState.set('elements', fromJS(newElements));
       });
     case DELETE_WORKSPACE_ELEMENTS_SUCCESS:

@@ -53,7 +53,11 @@ function Application() {
         <Route exact path="/app/relationships" component={Relationships} />
         <Route exact path="/app/relationships/:id" component={Relationship} />
         <Route exact path="/app/conditions" component={Conditions} />
-        <Route exact path="/app/conditions/:id" component={Condition} />
+        <Route exact path="/app/conditions/:id">
+          <ReactFlowProvider>
+            <Condition />
+          </ReactFlowProvider>
+        </Route>
         <Route exact path="/app/groups" component={Groups} />
         <Route exact path="/app/nodes" component={Nodes} />
         <Route exact path="/app/nodes/:id" component={Node} />

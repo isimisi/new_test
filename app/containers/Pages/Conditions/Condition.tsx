@@ -11,7 +11,8 @@ import ReactFlow, {
   isNode,
   BackgroundVariant,
   MiniMap,
-  Controls
+  Controls,
+  isEdge
 } from 'react-flow-renderer';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import CustomEdge from '@components/Workspace/Edge/CustomEdge';
@@ -22,6 +23,8 @@ import ConditionMeta from '@components/Condition/ConditionMeta';
 import ConditionFabs from '@components/Condition/ConditionFabs';
 import Notification from '@components/Notification/Notification';
 import PropTypes from 'prop-types';
+import useMouse from '@react-hook/mouse-position';
+import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import {
   useHistory
 } from 'react-router-dom';
@@ -35,7 +38,8 @@ import {
   getRelationships, postNode, postEdge,
   showCondition, putConditionMeta, saveCondition,
   putNode, putEdge, deleteConditionElement,
-  addRelationshipToList, addNodeToList, addAttributToList
+  addRelationshipToList, addNodeToList, addAttributToList,
+  addElements
 } from './reducers/conditionActions';
 
 const BASE_BG_GAP = 32;
@@ -47,8 +51,10 @@ const nonValueArray = ['exists', 'does not exist', 'any'];
 const Condition = (props) => {
   const { classes } = props;
   const dispatch = useAppDispatch();
+
   const history = useHistory();
   const reactFlowContainer = useRef(null);
+  const mouse = useMouse(reactFlowContainer, { fps: 10, enterDelay: 100, leaveDelay: 100 });
   const id = getId(history);
   const [metaOpen, setMetaOpen] = useState(false);
   const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
@@ -243,11 +249,42 @@ const Condition = (props) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (rfInstance) {
-  //     rfInstance.fitView();
-  //   }
-  // }, [elements, rfInstance]);
+
+  const handlePaste = (elementsToAdd) => {
+    // @ts-ignore
+    const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+    // @ts-ignore
+    const position = rfInstance.project({
+      // @ts-ignore
+      x: mouse.clientX - reactFlowBounds.left,
+      // @ts-ignore
+      y: mouse.clientY - reactFlowBounds.top,
+    });
+
+    const sortedByY = elementsToAdd.filter(e => isNode(e)).sort((a, b) => b.position.y - a.position.y);
+    const topNode = sortedByY[sortedByY.length - 1];
+
+    const now = Date.now();
+    elementsToAdd.map((element) => {
+      if (isEdge(element)) {
+        element.id = `${element.id}_${now}-edit`;
+        element.source = `${element.source}_${now}-edit`;
+        element.target = `${element.target}_${now}-edit`;
+      } else {
+        element.id = `${element.id}_${now}-edit`;
+        const xDistanceToTopNode = element.position.x - topNode.position.x;
+        const yDistanceToTopNode = element.position.y - topNode.position.y;
+
+        element.position.x = position.x + xDistanceToTopNode;
+        element.position.y = position.y + yDistanceToTopNode;
+      }
+      return element;
+    });
+
+    dispatch(addElements(id, elementsToAdd));
+  };
+
+  useCutCopyPaste(elements, onElementsRemove, handlePaste);
 
   return (
     <div>

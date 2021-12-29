@@ -42,6 +42,22 @@ export const postCondition = (history, fromContent = false) => async dispatch =>
   }
 };
 
+export const addElements = (id, elements) => async dispatch => {
+  dispatch({ type: types.CONDITION_ADD_ELEMENTS, elements });
+  const url = `${baseUrl}/${CONDITIONS}/addElements/${id}`;
+  const body = { elements: JSON.stringify(elements) };
+  const header = authHeader();
+  try {
+    const response = await axios.post(url, body, header);
+    const { nodesWithOrgId, edgesWithOrgId } = response.data;
+    dispatch({ type: types.CONDITION_UPDATE_ELEMENTS, nodesWithOrgId, edgesWithOrgId });
+  } catch (error) {
+    console.log(error.response);
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_CONDITION_FAILED, message });
+  }
+};
+
 export const showCondition = (id, setMetaOpen) => async dispatch => {
   const url = `${baseUrl}/${CONDITIONS}/${id}`;
   const header = authHeader();

@@ -19,7 +19,7 @@ import ReactFlow, {
   BackgroundVariant,
   FlowElement,
   OnLoadParams,
-  isEdge
+  isEdge,
 } from 'react-flow-renderer';
 import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -231,7 +231,6 @@ const Workspace = (props) => {
   // REACT FLOW SPECIFIC
 
   const onConnect = (data) => {
-    console.log(data);
     if (data.source !== data.target) {
       setCurrentConnectionData(data);
       setDefineEdgeOpen(true);
@@ -557,6 +556,7 @@ const Workspace = (props) => {
       setShowMapErst(true);
     }
   };
+
 
   const handlePaste = (elementsToAdd) => {
     // @ts-ignore
