@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import type { RootState } from '@redux/configureStore';
 import { useTheme } from '@material-ui/core/styles';
+import classNames from 'classnames';
 import {
   GuideSlider,
   CounterIconsWidget,
@@ -20,6 +21,7 @@ import {
   Notification
   // @ts-ignore
 } from '@components';
+import Paper from '@material-ui/core/Paper';
 import Select from 'react-select';
 import FormControl from '@material-ui/core/FormControl';
 import Send from '@material-ui/icons/Send';
@@ -195,54 +197,68 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
       </Helmet>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
-      <Grid container spacing={3} className={classes.root} style={{ minHeight: '95vh' }}>
+      <Grid container className={classes.root} spacing={3}>
         <Grid item xs={12}>
-          <Typography align="center" variant="h3">
+          <Typography align="center" variant="h5">
             {t('personal-dashboard.intro_greeting', { name: first_name })}
           </Typography>
-          <Typography align="center" variant="h3">
+          <Typography align="center" variant="h4" style={{ fontWeight: 'bold', marginBottom: 30 }}>
             {t('personal-dashboard.intro_text')}
           </Typography>
         </Grid>
         <Grid item md={6} xs={12}>
-          <PapperBlock title={t('workspaces.load_from_CVR')} whiteBg noMargin desc={t('workspaces.search_for_a_company_or_CVR_number')}>
-            <AsyncSelect
-              styles={selectStyles('relative')}
-              menuPlacement="auto"
-              autoFocus
-              maxMenuHeight={150}
-              onChange={changeCvrSearch}
-              placeholder={t('workspaces.search_for_a_company_or_CVR_number')}
-              loadOptions={getAsyncOptions}
-              noOptionsMessage={() => (
-                <Typography>
-                      Her er intet at vise.
+          <Paper className={classes.papperBlock} elevation={0}>
+            <div className={classes.descBlock}>
+              <div className={classes.titleText}>
+                <Typography variant="h6" component="h2" className={classes.title}>
+                  {t('workspaces.load_from_CVR')}
                 </Typography>
-              )}
-            />
-            <div style={{ marginTop: theme.spacing(2) }}>
-              <Select
+                <Typography component="p" className={classes.description}>
+                  {t('workspaces.search_for_a_company_or_CVR_number')}
+                </Typography>
+              </div>
+              <div style={{
+                marginTop: theme.spacing(2), display: 'flex', justifyContent: 'center', alignItems: 'center'
+              }}
+              >
+                <Lottie animationData={corporateChart} className={classes.lottie} />
+              </div>
+            </div>
+            <section className={classNames(classes.content, classes.whiteBg)}>
+              <AsyncSelect
                 styles={selectStyles('relative')}
-                isMulti
-                inputId="react-select-single-relationship"
-                placeholder={t('workspaces.restrict_countries')}
-                options={countryDropDown}
-                value={countries}
-                onChange={handleChangeCountries}
+                menuPlacement="auto"
+                autoFocus
+                maxMenuHeight={150}
+                onChange={changeCvrSearch}
+                placeholder={t('workspaces.search_for_a_company_or_CVR_number')}
+                loadOptions={getAsyncOptions}
+                noOptionsMessage={() => (
+                  <Typography>
+                      Her er intet at vise.
+                  </Typography>
+                )}
               />
-            </div>
-            <div style={{
-              marginTop: theme.spacing(2), display: 'flex', justifyContent: 'center', alignItems: 'center'
-            }}
-            >
-              <Lottie animationData={corporateChart} className={classes.lottie} />
-            </div>
-            <div style={{ marginTop: theme.spacing(2), }}>
-              <Button color="primary" variant="contained" onClick={confirm}>
-                {t('personal-dashboard.create_a_new_workspace')}
-              </Button>
-            </div>
-          </PapperBlock>
+              <div style={{ marginTop: theme.spacing(2) }}>
+                <Select
+                  styles={selectStyles('relative')}
+                  isMulti
+                  inputId="react-select-single-relationship"
+                  placeholder={t('workspaces.restrict_countries')}
+                  options={countryDropDown}
+                  value={countries}
+                  onChange={handleChangeCountries}
+                />
+              </div>
+
+              <div style={{ marginTop: theme.spacing(2), }}>
+                <Button color="primary" variant="contained" onClick={confirm}>
+                  {t('personal-dashboard.search')}
+                </Button>
+              </div>
+            </section>
+          </Paper>
+
         </Grid>
         <Grid item md={6} xs={12}>
           <PapperBlock title={t('personal-dashboard.start_empty')} whiteBg noMargin desc={t('personal-dashboard.create_empty_workspace')}>
@@ -330,6 +346,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
           </PapperBlock>
         </Grid>
       </Grid>
+
       <Grid container spacing={3} className={classes.root}>
         <Grid item md={6} xs={12}>
           <CounterIconsWidget elementCounts={elementCounts} history={history} />

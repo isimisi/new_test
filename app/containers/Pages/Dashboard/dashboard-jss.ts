@@ -1,6 +1,7 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { MyTheme } from '@customTypes/styling';
+import { makeStyles } from '@material-ui/core/styles';
 
-const styles = makeStyles((theme: Theme) => ({
+const styles = makeStyles((theme: MyTheme) => ({
   root: {
     flexGrow: 1,
     marginBottom: theme.spacing(3),
@@ -12,6 +13,61 @@ const styles = makeStyles((theme: Theme) => ({
     margin: `${theme.spacing(1.5)}px 0`,
     background: 'none'
   },
+  descBlock: {
+    display: 'flex',
+    marginBottom: theme.spacing(3),
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: theme.spacing(3),
+    },
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end'
+  },
+  title: {
+    position: 'relative',
+    fontSize: 18,
+    fontWeight: 400,
+    color: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center',
+      fontWeight: 600,
+      marginBottom: theme.spacing(1)
+    }
+  },
+  content: {
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(1),
+    borderRadius: theme.rounded.medium,
+    backgroundColor: theme.palette.background.default,
+    [theme.breakpoints.up('lg')]: {
+      padding: theme.spacing(2)
+    }
+  },
+  whiteBg: {
+    backgroundColor: 'transparent',
+    margin: 0,
+    padding: 0,
+  },
+  description: {
+    maxWidth: 960,
+    fontSize: 15,
+    paddingTop: theme.spacing(0.5),
+    [theme.breakpoints.down('xs')]: {
+      textAlign: 'center'
+    }
+  },
+  titleText: {
+    flex: 1,
+  },
+  papperBlock: theme.mixins.gutters({
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    boxShadow: theme.shade.light,
+    color: theme.palette.text.primary,
+    '&$noMargin': {
+      margin: 0
+    },
+  }),
   sliderWrap: {
     display: 'block',
     boxShadow: theme.shadows[1],
@@ -59,7 +115,8 @@ const styles = makeStyles((theme: Theme) => ({
   },
   lottie: {
     borderRadius: '50%',
-    height: 197.71,
+    height: 253.12,
+
   },
   removeMargin: {
     marginTop: -16,
