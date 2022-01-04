@@ -8,13 +8,13 @@ import { Handle, Position } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import HomeWorkIcon from '@material-ui/icons/HomeWork';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import InfoIcon from '@material-ui/icons/Info';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
-  getCompanyData, getAddressInfo
+  getCompanyData
 } from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
 
 import square from './square.svg';
@@ -190,7 +190,7 @@ const CustomNode = ({ data }) => {
           zIndex: -1
         }}
       >
-        {showContext && data.unitNumber && showHover && (
+        {showContext && showHover && (
           <div style={{
             position: 'absolute',
             right: 1,
@@ -199,39 +199,50 @@ const CustomNode = ({ data }) => {
             flexDirection: 'column'
           }}
           >
-
-            <Tooltip title="Selskabsinformation">
+            <Tooltip title="Mere">
               <IconButton
                 color="primary"
-                aria-label="Info om selskabet"
+                aria-label="mere"
                 size="small"
-                style={{ borderRadius: 5, backgroundColor: theme.palette.primary.main, marginBottom: 5, }}
+                style={{
+                  borderRadius: 5, backgroundColor: theme.palette.primary.main
+                }}
                 onClick={() => {
-                  dispatch(getCompanyData(data.id));
+                  const node = document.querySelector(`[data-id="${data.id}"]`);
+                  const event = new MouseEvent('contextmenu', {
+                    bubbles: true,
+                    cancelable: false,
+                    view: window,
+                    button: 2,
+                    buttons: 0,
+                    clientX: node.getBoundingClientRect().x + 250,
+                    clientY: node.getBoundingClientRect().y
+                  });
+                  node.dispatchEvent(event);
                 }}
               >
-
-                {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <InfoIcon style={{ fontSize: 8, color: 'white' }} />}
+                <MoreVertIcon style={{ fontSize: 8, color: 'white' }} />
               </IconButton>
             </Tooltip>
-            {data.data_provider === 'erst' && (
-              <Tooltip title="Ejendomsdata">
-                <IconButton
-                  color="primary"
-                  aria-label="ejendomsdata"
-                  size="small"
-                  style={{
-                    borderRadius: 5, backgroundColor: theme.palette.primary.main
-                  }}
-                  onClick={() => {
-                    dispatch(getAddressInfo(data.id));
-                  }}
-                >
-                  {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <HomeWorkIcon style={{ fontSize: 8, color: 'white' }} />}
+            {data.unitNumber
+              && (
+                <Tooltip title="Selskabsinformation">
+                  <IconButton
+                    color="primary"
+                    aria-label="Info om selskabet"
+                    size="small"
+                    style={{ borderRadius: 5, backgroundColor: theme.palette.primary.main, marginTop: 5, }}
+                    onClick={() => {
+                      dispatch(getCompanyData(data.id));
+                    }}
+                  >
 
-                </IconButton>
-              </Tooltip>
-            )}
+                    {loading ? <CircularProgress size={8} style={{ color: 'white' }} /> : <InfoIcon style={{ fontSize: 8, color: 'white' }} />}
+                  </IconButton>
+                </Tooltip>
+              )
+            }
+
           </div>
         )}
       </div>

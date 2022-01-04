@@ -437,7 +437,7 @@ export const putSticky = (id, text) => async dispatch => {
   }
 };
 
-export const getCompanyData = (id) => async dispatch => {
+export const getCompanyData = (id, setShowContextMenu) => async dispatch => {
   dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
   const url = `${baseUrl}/workspacenodes/company/info/${id}`;
   const header = authHeader();
@@ -445,10 +445,10 @@ export const getCompanyData = (id) => async dispatch => {
     const response = await axios.get(url, header);
 
     const companyData = response.data;
-    console.log(companyData);
     dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS, companyData });
 
     dispatch({ type: types.SET_SHOW_COMPANY_DATA, show: true });
+    setShowContextMenu(false);
   } catch (error) {
     let _message = message;
     if (error?.response?.status === 403) {
@@ -458,7 +458,7 @@ export const getCompanyData = (id) => async dispatch => {
   }
 };
 
-export const getAddressInfo = (id) => async dispatch => {
+export const getAddressInfo = (id, setShowContextMenu) => async dispatch => {
   dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_LOADING });
   const url = `${baseUrl}/workspacenodes/company/addressInfo/${id}`;
   const header = authHeader();
@@ -467,6 +467,7 @@ export const getAddressInfo = (id) => async dispatch => {
 
     const addressInfo = response.data;
     dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_SUCCESS, addressInfo });
+    setShowContextMenu(false);
   } catch (error) {
     let _message = message;
     if (error?.response?.status === 403) {

@@ -262,6 +262,26 @@
       "can_not_delete_it": "Hov, it appears that you are using this item in work areas or conditions, therefore you can not delete it. "
     }
   },
+  "flow": {
+    "node_context_menu": {
+      "edit": "Edit",
+      "relations_info": "Relations information",
+      "company_info": "Company information",
+      "building_info": "Building information",
+      "cut": "Cut",
+      "copy": "Copy",
+      "delete": "Delete"
+    },
+    "pane_context_menu": {
+      "paste": "Paste",
+      "create_node": "Add an element",
+      "create_sticky": "Add a note",
+      "show_all": "Show all",
+      "show_grid": "Show grid",
+      "lock": "Lock",
+      "snap": "Snap to grid"
+    }
+  },
   "workspaces": {
     "your_workspace": "Your workspace",
     "btn_new_workspace": "New workspace",

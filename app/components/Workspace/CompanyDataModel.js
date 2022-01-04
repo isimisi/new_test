@@ -34,6 +34,7 @@ function CompanyDataModel(props) {
     close,
     companyData
   } = props;
+
   const branch = '';
   const [value, setValue] = React.useState(0);
 
@@ -97,7 +98,7 @@ function CompanyDataModel(props) {
           </TableContainer>
         </div>
         <div className={css.buttonArea}>
-          {companyData.Virksomhedsdata && companyData.Land === 'DK' && (
+          {companyData.Virksomhedsdata && companyData.Virksomhedsdata.Land === 'DK' && (
             <Button
               variant="text"
               color="primary"

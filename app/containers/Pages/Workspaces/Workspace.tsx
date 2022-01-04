@@ -5,7 +5,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, {
-  useState, useEffect, useCallback, useRef
+  useState, useEffect, useCallback, useRef, MouseEvent
 } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
@@ -20,6 +20,7 @@ import ReactFlow, {
   FlowElement,
   OnLoadParams,
   isEdge,
+  Edge,
 } from 'react-flow-renderer';
 import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -49,6 +50,7 @@ import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
 import AlertLog from '@components/Alerts/AlertLog';
+import PaneContextMenu from '@components/Workspace/ContextMenu/PaneContextMenu';
 import CvrDialog from '@components/DialogModal/CvrDialog';
 import MapTypesForErst from '@components/Workspace/MapTypesForErst';
 import CompanyDataModel from '@components/Workspace/CompanyDataModel';
@@ -56,8 +58,12 @@ import AddressInfoModel from '@components/Workspace/AddressInfoModel';
 import ShareModal from '@components/Workspace/Share/ShareModal';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import WorkspaceFabs from '@components/Workspace/WorkspaceFabs';
+import RelationshipModal from '@components/Workspace/RelationshipModal';
+import NodeContextMenu from '@components/Workspace/ContextMenu/NodeContextMenu';
 import { useTranslation } from 'react-i18next';
-import { NodeDropdownInstance } from '../../../types/reactFlow';
+import useContextMenu from '@hooks/useContextMenu';
+import SelectionContextMenu from '@components/Workspace/ContextMenu/SelectionContextMenu';
+import { ContextTypes, NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
 import {
   reducer, initErstTypes, getLayoutedElements
@@ -73,7 +79,8 @@ import {
   shareWorkspace, cvrSuccess, shareOrgChange,
   setShowCompanyData, setShowAddressInfo,
   handleRunIntro, uncertainCompaniesChange,
-  mapUncertainCompanies, changeTags, addElements
+  mapUncertainCompanies, changeTags, addElements,
+  getCompanyData, getAddressInfo
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -108,6 +115,7 @@ const Workspace = (props) => {
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
   const mouse = useMouse(reactFlowContainer, { fps: 10, enterDelay: 100, leaveDelay: 100 });
+  const { show: showContextMenu, setShow: setShowContextMenu } = useContextMenu();
 
   const { plan_id } = loadFromLocalStorage();
 
@@ -144,6 +152,15 @@ const Workspace = (props) => {
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
+
+  const [showNodeRelations, setShowNodeRelations] = useState(false);
+  const [activeNodeRelations, setActiveNodeRelations] = useState<Node | null>(null);
+  const handleShowNodeRelations = (contextNode?: Node) => {
+    setShowNodeRelations(prevVal => !prevVal);
+    if (contextNode) {
+      setActiveNodeRelations(contextNode);
+    }
+  };
 
   const [showCvrModal, setShowCvrModal] = useState(false);
   const [showMapErst, setShowMapErst] = useState(false);
@@ -237,7 +254,7 @@ const Workspace = (props) => {
     }
   };
 
-  const onElementsRemove = (elementsToRemove) => {
+  const onElementsRemove = (elementsToRemove: FlowElement[]): void => {
     const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
     const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
     const remainingElements = elements.filter((el: FlowElement) => {
@@ -262,11 +279,12 @@ const Workspace = (props) => {
   };
 
 
-  const onElementClick = (event, element) => {
+  const onElementClick = (event: MouseEvent, element: FlowElement) => {
     dispatch(setShowCompanyData(false));
     setDefineEdgeOpen(false);
     setDefineNodeOpen(false);
     setIsUpdatingElement(true);
+    setShowContextMenu(false);
     setElementToUpdate(element);
     setDeletedAttributes([]);
     const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
@@ -288,7 +306,7 @@ const Workspace = (props) => {
       event.persist();
       setRelationshipLabel(element.data.label);
       setRelationshipValue(element.data.value);
-      setRelationshipType(element.type);
+      setRelationshipType(element.type || 'default');
       setRelationshipColor(element.data.color);
       setShowArrow(element.data.showArrow);
       setAnimatedLine(element.data.animated);
@@ -500,7 +518,7 @@ const Workspace = (props) => {
   const handleAnimatedLineChange = useCallback(() => setAnimatedLine(val => !val), []);
   const handleShowLabelChange = useCallback(() => setShowlabel(val => !val), []);
   const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
-  const handleDeleteEdge = useCallback(() => onElementsRemove([elementToUpdate]), [elementToUpdate]);
+  const handleDeleteEdge = useCallback(() => elementToUpdate && onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
   const handlePostSticky = () => {
     const rf = rfInstance?.toObject();
@@ -569,6 +587,15 @@ const Workspace = (props) => {
       y: mouse.clientY - reactFlowBounds.top,
     });
 
+    if (!mouse.clientY) {
+      const rf = rfInstance?.toObject();
+      if (rf && reactFlowDimensions) {
+        position.x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+        position.y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+      }
+    }
+
+
     const sortedByY = elementsToAdd.filter(e => isNode(e)).sort((a, b) => b.position.y - a.position.y);
     const topNode = sortedByY[sortedByY.length - 1];
 
@@ -592,11 +619,58 @@ const Workspace = (props) => {
     dispatch(addElements(id, elementsToAdd));
   };
 
-  useCutCopyPaste(elements, onElementsRemove, handlePaste);
+  const { cut, copy, paste } = useCutCopyPaste(elements, onElementsRemove, handlePaste);
+
+
+  const [contextAnchor, setContextAnchor] = useState({ x: 0, y: 0 });
+  const [contextNode, setContextNode] = useState<Node<any> | null>(null);
+  const [contextEdge, setContextEdge] = useState<Edge<any> | null>(null);
+  const [contextSelection, setContextSelction] = useState<Node<any>[] | null>(null);
+
+  const [contextType, setContextType] = useState<ContextTypes>(ContextTypes.Pane);
+
+  const handleNodeContextMenu = (e: MouseEvent, n: Node) => {
+    setContextAnchor({
+      x: e.pageX,
+      y: e.pageY
+    });
+    setContextNode(n);
+    setContextType(ContextTypes.Node);
+  };
+
+  const handlePaneContextMenu = (e: MouseEvent) => {
+    setContextAnchor({
+      x: e.pageX,
+      y: e.pageY
+    });
+    setContextType(ContextTypes.Pane);
+  };
+
+  const handleSelctionContextMenu = (e: MouseEvent, _nodes: Node[]) => {
+    setContextAnchor({
+      x: e.pageX,
+      y: e.pageY
+    });
+    setContextSelction(_nodes);
+    setContextType(ContextTypes.Selection);
+  };
+
+  const handleEdgeContextMenu = (e: MouseEvent, ed: Edge) => {
+    setContextAnchor({
+      x: e.pageX,
+      y: e.pageY
+    });
+    setContextEdge(ed);
+    setContextType(ContextTypes.Edge);
+  };
+
+  const [snapToGrid, setSnapToGrid] = useState(false);
+
 
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+
       <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
 
         <ReactFlow
@@ -607,6 +681,11 @@ const Workspace = (props) => {
           maxZoom={3}
           nodesDraggable={!signed}
           nodesConnectable={!signed}
+          onNodeContextMenu={handleNodeContextMenu}
+          onPaneContextMenu={handlePaneContextMenu}
+          onSelectionContextMenu={handleSelctionContextMenu}
+          onEdgeContextMenu={handleEdgeContextMenu}
+          snapToGrid={snapToGrid}
           elementsSelectable={!signed}
           selectNodesOnDrag={!signed}
           nodeTypes={nodeTypes}
@@ -690,8 +769,8 @@ const Workspace = (props) => {
             </div>
           </>
         ) : null}
-
       </div>
+
       <WorkspaceMeta
         open={metaOpen}
         label={label}
@@ -787,7 +866,7 @@ const Workspace = (props) => {
         isUpdatingElement={isUpdatingElement}
         elementToUpdate={elementToUpdate}
         handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
-        handleDeleteNode={() => onElementsRemove([elementToUpdate])}
+        handleDeleteNode={() => elementToUpdate && onElementsRemove([elementToUpdate])}
         loading={loading}
         attributesDropDownOptions={attributesDropDownOptions}
         handleRemoveAttributes={(_id, index) => {
@@ -877,7 +956,7 @@ const Workspace = (props) => {
         nodes={nodes}
         relationships={relationships}
       />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && !showCompanyData && !showAddressInfo && (
+      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && !showCompanyData && !showAddressInfo && !showNodeRelations && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
@@ -909,21 +988,52 @@ const Workspace = (props) => {
         close={() => setShareModalOpen(false)}
         onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, setShareModalOpen))}
       />
-      {/* <Joyride
-        continuous
-        run={runIntro}
-        stepIndex={introStepIndex}
-        scrollToFirstStep
-        showSkipButton
-        callback={handleJoyrideCallback}
-        steps={steps}
-        styles={{
-          options: {
-            zIndex: 10000,
-            primaryColor: '#36454F'
-          }
-        }}
-      /> */}
+      <RelationshipModal
+        open={showNodeRelations}
+        close={handleShowNodeRelations}
+        activeNodeRelations={activeNodeRelations}
+        elements={elements}
+      />
+      {!signed && (
+        <>
+          <NodeContextMenu
+            {...contextAnchor}
+            contextNode={contextNode}
+            contextType={contextType}
+            show={showContextMenu}
+            handleEdit={onElementClick}
+            handleShowNodeRelations={handleShowNodeRelations}
+            showCompanyInfo={(_id) => dispatch(getCompanyData(_id, setShowContextMenu))}
+            getAddressInfo={(_id) => dispatch(getAddressInfo(_id, setShowContextMenu))}
+            loading={loading}
+            cut={cut}
+            copy={copy}
+            onElementsRemove={onElementsRemove}
+          />
+          <SelectionContextMenu
+            {...contextAnchor}
+            contextSelection={contextSelection}
+            contextType={contextType}
+            show={showContextMenu}
+            cut={cut}
+            copy={copy}
+            onElementsRemove={onElementsRemove}
+          />
+          <PaneContextMenu
+            {...contextAnchor}
+            contextType={contextType}
+            show={showContextMenu}
+            paste={paste}
+            nodeClick={() => setDefineNodeOpen(true)}
+            stickyClick={handlePostSticky}
+            handleShowGrid={() => dispatch(changeHandleVisability(!handleVisability))}
+            handleVisability={handleVisability}
+            handleSnapToGrid={() => setSnapToGrid(prevVal => !prevVal)}
+            snapToGrid={snapToGrid}
+            fitView={() => rfInstance?.fitView()}
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -965,8 +1075,19 @@ export default withStyles(styles)(Workspace);
 //   }
 // };
 
-// useEffect(() => {
-//   if (rfInstance) {
-//     rfInstance.fitView();
-//   }
-// }, [elements, rfInstance]);
+
+/* <Joyride
+        continuous
+        run={runIntro}
+        stepIndex={introStepIndex}
+        scrollToFirstStep
+        showSkipButton
+        callback={handleJoyrideCallback}
+        steps={steps}
+        styles={{
+          options: {
+            zIndex: 10000,
+            primaryColor: '#36454F'
+          }
+        }}
+      /> */

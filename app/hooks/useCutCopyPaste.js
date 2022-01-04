@@ -38,51 +38,48 @@ function getSelectedGraph(selectedNodes, elements) {
 
   return nodes;
 }
-const Format = 'application/react-flow-format';
 
 export function useCutCopyPaste(elements, onElementsRemove, handleSave) {
   const selectedElements = useStoreState((store) => store.selectedElements);
-  useEffect(() => {
-    function cut(event) {
-      if (!event.target?.closest('.react-flow')) {
-        return;
-      }
-      // remove selected nodes from graph
-      // copy to clipboard
-      if (selectedElements && selectedElements.length) {
-        const data = JSON.stringify(
-          getSelectedGraph(selectedElements, elements)
-        );
-        event.clipboardData.setData(Format, data);
-        event.preventDefault();
+
+  function cut(event, element = null) {
+    // remove selected nodes from graph
+    // copy to clipboard
+    if ((selectedElements && selectedElements.length) || element) {
+      const data = element ? JSON.stringify([element]) : JSON.stringify(
+        getSelectedGraph(selectedElements, elements)
+      );
+      navigator.clipboard.writeText(data);
+
+      if (element) {
+        onElementsRemove([element]);
+      } else {
         onElementsRemove(selectedElements);
       }
-    }
-    function copy(event) {
-      if (!event.target?.closest('.react-flow')) {
-        return;
-      }
-      if (selectedElements && selectedElements.length) {
-        const data = JSON.stringify(
-          getSelectedGraph(selectedElements, elements)
-        );
-        event.clipboardData.setData(Format, data);
-        event.preventDefault();
-      }
-    }
-    function paste(event) {
-      if (!event.target?.closest('.react-flow')) {
-        return;
-      }
-      try {
-        const elementsToAdd = JSON.parse(event.clipboardData.getData(Format));
-        event.preventDefault();
-        handleSave(elementsToAdd);
-      } catch (error) {
-        console.error(error);
-      }
-    }
 
+      event.preventDefault();
+    }
+  }
+  function copy(event, element = null) {
+    if ((selectedElements && selectedElements.length) || element) {
+      const data = element ? JSON.stringify([element]) : JSON.stringify(
+        getSelectedGraph(selectedElements, elements)
+      );
+
+      navigator.clipboard.writeText(data);
+      event.preventDefault();
+    }
+  }
+  async function paste(event) {
+    try {
+      const elementsToAdd = JSON.parse(await navigator.clipboard.readText());
+      event.preventDefault();
+      handleSave(elementsToAdd);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
     document.addEventListener('cut', cut);
     document.addEventListener('copy', copy);
     document.addEventListener('paste', paste);
@@ -92,4 +89,6 @@ export function useCutCopyPaste(elements, onElementsRemove, handleSave) {
       document.removeEventListener('paste', paste);
     };
   }, [elements, onElementsRemove, selectedElements, handleSave]);
+
+  return { cut, copy, paste };
 }

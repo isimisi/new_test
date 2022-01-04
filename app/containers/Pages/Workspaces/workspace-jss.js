@@ -27,6 +27,7 @@ const styles = theme => ({
       }
     },
   },
+
   img: {
     width: 90
   },
