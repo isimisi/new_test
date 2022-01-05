@@ -336,7 +336,14 @@
         "add_tags_to_your_workspace": "Tilføj tags til dit arbejdsområde"
       },
       "metatext_is_now_updated": "Metatekst er nu opdateret",
-      "can_not_delete": "Du kan ikke slette arbejdsområder, som er udløbet."
+      "can_not_delete": "Du kan ikke slette arbejdsområder, som er udløbet.",
+      "relationship_modal": {
+        "outgoing": "Udgående",
+        "incomming": "Indgående",
+        "elements": "Elementer",
+        "relations": "Relationer",
+        "values": "Værdier"
+      }
     },
     "workspace-analysis": {
       "earlier_versions": "Tidligere versioner",

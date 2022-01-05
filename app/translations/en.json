@@ -337,7 +337,14 @@
       "add_tags_to_your_workspace": "Add tags to your workspace"
     },
     "metatext_is_now_updated": "Metatext is now updated",
-    "can_not_delete": "You can not delete expired workspaces."
+    "can_not_delete": "You can not delete expired workspaces.",
+    "relationship_modal": {
+      "outgoing": "Outgoing",
+      "incomming": "Incomming",
+      "elements": "Elements",
+      "relations": "Relations",
+      "values": "Values"
+    }
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",

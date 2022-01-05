@@ -62,6 +62,8 @@ import RelationshipModal from '@components/Workspace/RelationshipModal';
 import NodeContextMenu from '@components/Workspace/ContextMenu/NodeContextMenu';
 import { useTranslation } from 'react-i18next';
 import useContextMenu from '@hooks/useContextMenu';
+import { useHotkeys } from 'react-hotkeys-hook';
+
 import SelectionContextMenu from '@components/Workspace/ContextMenu/SelectionContextMenu';
 import { ContextTypes, NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
@@ -526,6 +528,7 @@ const Workspace = (props) => {
     const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
     dispatch(postSticky(id, x, y));
+    setShowContextMenu(false);
   };
 
   window.onbeforeunload = () => {
@@ -666,6 +669,7 @@ const Workspace = (props) => {
 
   const [snapToGrid, setSnapToGrid] = useState(false);
 
+  const hideContext = () => setShowContextMenu(false);
 
   return (
     <div>
@@ -679,6 +683,12 @@ const Workspace = (props) => {
           onConnect={onConnect}
           minZoom={0.3}
           maxZoom={3}
+          onNodeDragStart={hideContext}
+          onConnectStart={hideContext}
+          onMoveStart={hideContext}
+          onSelectionDragStart={hideContext}
+          onPaneScroll={hideContext}
+          onPaneClick={hideContext}
           nodesDraggable={!signed}
           nodesConnectable={!signed}
           onNodeContextMenu={handleNodeContextMenu}
@@ -821,62 +831,64 @@ const Workspace = (props) => {
         handleDeleteEdge={handleDeleteEdge}
         loading={loading}
       />
-      <DefineNode
-        open={defineNodeOpen}
-        close={closeNode}
-        nodes={nodes}
-        nodeLabel={nodeLabel}
-        handleChangeLabel={(_label) => {
-          if (_label.__isNew__ && plan_id !== 1) {
-            dispatch(addWorkspaceNodeToList({
-              attributes: [],
-              description: null,
-              id: null,
-              label: _label.value,
-              style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
-            }));
-          }
-          if (_label.__isNew__ && plan_id === 1) {
-            dispatch(showNotifAction(t('workspaces.you_can_not_create_new_item_types')));
-          } else {
-            setNodeLabel(_label.value);
-          }
-        }}
-        attributes={attributes}
-        handleChangeAttributes={(_attributes, newRow, isNew) => {
-          if (isNew && plan_id !== 1) {
-            newRow.value = newRow.label;
-            dispatch(addWorkspaceNodeAttributToList(newRow));
-          }
+      {defineNodeOpen && (
+        <DefineNode
+          open={defineNodeOpen}
+          close={closeNode}
+          nodes={nodes}
+          nodeLabel={nodeLabel}
+          handleChangeLabel={(_label) => {
+            if (_label.__isNew__ && plan_id !== 1) {
+              dispatch(addWorkspaceNodeToList({
+                attributes: [],
+                description: null,
+                id: null,
+                label: _label.value,
+                style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
+              }));
+            }
+            if (_label.__isNew__ && plan_id === 1) {
+              dispatch(showNotifAction(t('workspaces.you_can_not_create_new_item_types')));
+            } else {
+              setNodeLabel(_label.value);
+            }
+          }}
+          attributes={attributes}
+          handleChangeAttributes={(_attributes, newRow, isNew) => {
+            if (isNew && plan_id !== 1) {
+              newRow.value = newRow.label;
+              dispatch(addWorkspaceNodeAttributToList(newRow));
+            }
 
-          if (isNew && plan_id === 1) {
-            dispatch(showNotifAction(t('workspaces.you_can_not_create_new_attribute_types')));
-          } else {
-            setAttributes(_attributes);
-          }
-        }}
-        nodeColor={nodeColor}
-        handleChangeColor={(color) => setNodeColor(color.rgb)}
-        nodeBorderColor={nodeBorderColor}
-        handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
-        handleNodeSave={handleNodeSave}
-        nodeDisplayName={nodeDisplayName}
-        nodeFigur={nodeFigur}
-        handleNodeFigurChange={(_figur) => setNodeFigur(_figur ? _figur.value : null)}
-        isUpdatingElement={isUpdatingElement}
-        elementToUpdate={elementToUpdate}
-        handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
-        handleDeleteNode={() => elementToUpdate && onElementsRemove([elementToUpdate])}
-        loading={loading}
-        attributesDropDownOptions={attributesDropDownOptions}
-        handleRemoveAttributes={(_id, index) => {
-          setAttributes(att => att.filter((v, i) => i !== index));
-          if (_id) {
+            if (isNew && plan_id === 1) {
+              dispatch(showNotifAction(t('workspaces.you_can_not_create_new_attribute_types')));
+            } else {
+              setAttributes(_attributes);
+            }
+          }}
+          nodeColor={nodeColor}
+          handleChangeColor={(color) => setNodeColor(color.rgb)}
+          nodeBorderColor={nodeBorderColor}
+          handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
+          handleNodeSave={handleNodeSave}
+          nodeDisplayName={nodeDisplayName}
+          nodeFigur={nodeFigur}
+          handleNodeFigurChange={(_figur) => setNodeFigur(_figur ? _figur.value : null)}
+          isUpdatingElement={isUpdatingElement}
+          elementToUpdate={elementToUpdate}
+          handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
+          handleDeleteNode={() => elementToUpdate && onElementsRemove([elementToUpdate])}
+          loading={loading}
+          attributesDropDownOptions={attributesDropDownOptions}
+          handleRemoveAttributes={(_id, index) => {
+            setAttributes(att => att.filter((v, i) => i !== index));
+            if (_id) {
             // @ts-ignore
-            setDeletedAttributes(attr => [...attr, _id]);
-          }
-        }}
-      />
+              setDeletedAttributes(attr => [...attr, _id]);
+            }
+          }}
+        />
+      )}
       {(alertId || alertId === 0) && alerts[alertId] && (
         <AlertModal
           disabled={alerts[alertId]?.alert?.organization_id === 11}
@@ -1024,7 +1036,10 @@ const Workspace = (props) => {
             contextType={contextType}
             show={showContextMenu}
             paste={paste}
-            nodeClick={() => setDefineNodeOpen(true)}
+            nodeClick={() => {
+              setDefineNodeOpen(true);
+              setShowContextMenu(false);
+            }}
             stickyClick={handlePostSticky}
             handleShowGrid={() => dispatch(changeHandleVisability(!handleVisability))}
             handleVisability={handleVisability}

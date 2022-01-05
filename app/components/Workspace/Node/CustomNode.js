@@ -22,7 +22,7 @@ import triangle from './triangle.svg';
 import circle from './circle.svg';
 import person from './person.svg';
 
-const CustomNode = ({ data }) => {
+const CustomNode = ({ data, ...rest }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const history = useHistory();
@@ -209,13 +209,15 @@ const CustomNode = ({ data }) => {
                 }}
                 onClick={() => {
                   const node = document.querySelector(`[data-id="${data.id}"]`);
+                  console.log(node.getBoundingClientRect().x);
+                  console.log(rest, data);
                   const event = new MouseEvent('contextmenu', {
                     bubbles: true,
                     cancelable: false,
                     view: window,
                     button: 2,
                     buttons: 0,
-                    clientX: node.getBoundingClientRect().x + 250,
+                    clientX: node.getBoundingClientRect().x + 100,
                     clientY: node.getBoundingClientRect().y
                   });
                   node.dispatchEvent(event);

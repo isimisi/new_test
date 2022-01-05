@@ -49,8 +49,12 @@ import CreatableSelect from 'react-select/creatable';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import { SelectOptions } from '@customTypes/data';
+import { SelectOptions, WhereInApp } from '@customTypes/data';
 import { hanldeOnChange, MixedTagOptions, tagMapping } from '@components/Tags/constants';
+import {
+
+  getTags,
+} from '@components/Tags/reducers/tagsActions';
 import useStyles from './dashboard-jss';
 import {
   closeNotifAction,
@@ -63,7 +67,7 @@ import {
 import UpgradeModal from './UpgradeModal';
 import MobileDisclaimer from './MobileDisclaimer';
 import {
-  postWorkspace, showNotifAction
+  postWorkspace, showNotifAction, getGroupDropDown
   // @ts-ignore
 } from '../Workspaces/reducers/workspaceActions';
 
@@ -142,6 +146,8 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
     dispatch(getElementCounts());
     dispatch(getTimeline());
     dispatch(getUserInfo());
+    dispatch(getGroupDropDown());
+    dispatch(getTags(WhereInApp.workspace));
 
     if (history.location.search.includes('upgraded')) {
       setShowUpgrade(true);

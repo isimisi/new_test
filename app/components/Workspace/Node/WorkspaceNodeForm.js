@@ -95,6 +95,7 @@ const WorkspaceNodeForm = (props) => {
             classes={classes}
             styles={selectStyles('relative')}
             inputId="react-select-single-workspace-node"
+            autoFocus
             TextFieldProps={{
               label: 'Element',
               InputLabelProps: {
@@ -198,56 +199,56 @@ const WorkspaceNodeForm = (props) => {
         ))}
         {choosenNode
         && (
-        <>
-          <div className={classes.field} style={{ marginTop: 20 }}>
-            <Select
-              classes={classes}
-              styles={{ ...selectStyles('relative'), padding: 10 }}
-              isClearable
-              inputId="react-select-single-edge-type"
-              TextFieldProps={{
-                label: 'type',
-                InputLabelProps: {
-                  htmlFor: 'react-select-single-edge-type',
-                  shrink: true,
-                },
-                placeholder: 'type',
-              }}
-              placeholder="type"
-              options={figurTypeOptions}
-              value={nodeFigur && figurTypeOptions.find(x => x.value === nodeFigur)}
-              onChange={handleNodeFigurChange}
-            />
-          </div>
-          <div className={classes.row} style={{ marginTop: 10 }}>
-            <Typography variant="subtitle2">
+          <>
+            <div className={classes.field} style={{ marginTop: 20 }}>
+              <Select
+                classes={classes}
+                styles={{ ...selectStyles('relative'), padding: 10 }}
+                isClearable
+                inputId="react-select-single-edge-type"
+                TextFieldProps={{
+                  label: 'type',
+                  InputLabelProps: {
+                    htmlFor: 'react-select-single-edge-type',
+                    shrink: true,
+                  },
+                  placeholder: 'type',
+                }}
+                placeholder="type"
+                options={figurTypeOptions}
+                value={nodeFigur && figurTypeOptions.find(x => x.value === nodeFigur)}
+                onChange={handleNodeFigurChange}
+              />
+            </div>
+            <div className={classes.row} style={{ marginTop: 10 }}>
+              <Typography variant="subtitle2">
                 Vælg en farve for dit element
-            </Typography>
-            <div className={classes.swatch} onClick={() => setDisplayColorPickerColor(prevVal => !prevVal)}>
-              <div className={classes.color} style={{ backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeColor.a})` }} />
-            </div>
-            { displayColorPickerColor ? (
-              <div className={classes.popover}>
-                <div className={classes.cover} onClick={() => setDisplayColorPickerColor(false)} />
-                <SketchPicker color={nodeColor} onChange={handleChangeColor} />
+              </Typography>
+              <div className={classes.swatch} onClick={() => setDisplayColorPickerColor(prevVal => !prevVal)}>
+                <div className={classes.color} style={{ backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeColor.a})` }} />
               </div>
-            ) : null }
-          </div>
-          <div className={classes.row} style={{ marginTop: 10 }}>
-            <Typography variant="subtitle2">
+              { displayColorPickerColor ? (
+                <div className={classes.popover}>
+                  <div className={classes.cover} onClick={() => setDisplayColorPickerColor(false)} />
+                  <SketchPicker color={nodeColor} onChange={handleChangeColor} />
+                </div>
+              ) : null }
+            </div>
+            <div className={classes.row} style={{ marginTop: 10 }}>
+              <Typography variant="subtitle2">
                 Vælg en farve for kanterne på dit element
-            </Typography>
-            <div className={classes.swatch} onClick={() => setDisplayBorderColorPickerColor(prevVal => !prevVal)}>
-              <div className={classes.color} style={{ backgroundColor: `rgba(${nodeBorderColor.r}, ${nodeBorderColor.g}, ${nodeBorderColor.b}, ${nodeBorderColor.a})` }} />
-            </div>
-            { displayBorderColorPickerColor ? (
-              <div className={classes.popover}>
-                <div className={classes.cover} onClick={() => setDisplayBorderColorPickerColor(false)} />
-                <SketchPicker color={nodeBorderColor} onChange={handleBorderColorChange} />
+              </Typography>
+              <div className={classes.swatch} onClick={() => setDisplayBorderColorPickerColor(prevVal => !prevVal)}>
+                <div className={classes.color} style={{ backgroundColor: `rgba(${nodeBorderColor.r}, ${nodeBorderColor.g}, ${nodeBorderColor.b}, ${nodeBorderColor.a})` }} />
               </div>
-            ) : null }
-          </div>
-        </>
+              { displayBorderColorPickerColor ? (
+                <div className={classes.popover}>
+                  <div className={classes.cover} onClick={() => setDisplayBorderColorPickerColor(false)} />
+                  <SketchPicker color={nodeBorderColor} onChange={handleBorderColorChange} />
+                </div>
+              ) : null }
+            </div>
+          </>
         )}
       </section>
       <div className={css.buttonArea}>

@@ -16,6 +16,7 @@ import {
   Edge
 } from 'react-flow-renderer';
 import Typography from '@material-ui/core/Typography';
+import { useTranslation } from 'react-i18next';
 import FloatingPanel from '../Panel/FloatingPanel';
 
 const TableCell = withStyles({
@@ -45,6 +46,7 @@ function RelationshipModal({
   elements
 }: Props) {
   const branch = '';
+  const { t } = useTranslation();
 
   const [incommers, setIncommers] = useState<Row[]>([]);
   const [outgoers, setOutgoers] = useState<Row[]>([]);
@@ -93,14 +95,14 @@ function RelationshipModal({
           {outgoers.length > 0 && (
             <TableContainer component={Paper} style={{ padding: 14 }}>
               <Typography variant="h6" id="tableTitle" component="div">
-                Udgående
+                {t('workspaces.relationship_modal.outgoing')}
               </Typography>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Element</TableCell>
-                    <TableCell align="right">Relation</TableCell>
-                    <TableCell align="right">Værdi</TableCell>
+                    <TableCell>{t('workspaces.relationship_modal.elements')}</TableCell>
+                    <TableCell align="right">{t('workspaces.relationship_modal.relations')}</TableCell>
+                    <TableCell align="right">{t('workspaces.relationship_modal.values')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -122,14 +124,14 @@ function RelationshipModal({
           {incommers.length > 0 && (
             <TableContainer component={Paper} style={{ padding: 14 }}>
               <Typography variant="h6" id="tableTitle" component="div">
-                Indgående
+                {t('workspaces.relationship_modal.incomming')}
               </Typography>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Element</TableCell>
-                    <TableCell align="right">Relation</TableCell>
-                    <TableCell align="right">Værdi</TableCell>
+                    <TableCell>{t('workspaces.relationship_modal.elements')}</TableCell>
+                    <TableCell align="right">{t('workspaces.relationship_modal.relations')}</TableCell>
+                    <TableCell align="right">{t('workspaces.relationship_modal.values')}</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
