@@ -1,537 +1,546 @@
 {
-    "login-form": {
-      "create_account": "Opret ny konto",
-      "log_in": "Log ind",
-      "your_email": "Din Email",
-      "your_password": "Dit kodeord",
-      "forgot_password": "Glemt Kodeord",
-      "remember_me": "Husk mig",
-      "btn_continue": "Fortsæt"
+  "404": {
+    "not_found": "Hov, siden du leder efter findes vist ikke.",
+    "btn_return_to_home_page": "Gå til forside"
+  },
+  "login-form": {
+    "create_account": "Opret ny konto",
+    "log_in": "Log ind",
+    "your_email": "Din Email",
+    "your_password": "Password",
+    "forgot_password": "Glemt kodeord",
+    "remember_me": "Husk mig",
+    "btn_continue": "Fortsæt"
+  },
+  "register-form": {
+    "register": "Registrer dig",
+    "your_name": "Dit navn",
+    "employer": "Virksomhed",
+    "your_email": "Din Email",
+    "your_password": "Dit kodeord",
+    "enter_your_password_again": "Skriv dit kodeord igen",
+    "already_have_account": "Har du allerede en bruger ?",
+    "single_sign_on": "Med Email",
+    "company_login": "Virksomhedslogin",
+    "i_accept": "Jeg accepterer",
+    "terms_and_conditions": "Vilkår & betingelser",
+    "keep_me_updated": "Ja, jeg vil gerne modtage information om Juristics produkter via e-mail",
+    "btn_continue": "Fortsæt",
+    "invalid_email": "Invalid email",
+    "password_match": "Kodeordene er ikke ens",
+    "and": "og",
+    "privacy": "Privatlivspolitik"
+  },
+  "reset-form": {
+    "reset_password": "Reset kodeord",
+    "send_a_link": "Send et link til din email for at ændre dit kodeord",
+    "your_email": "Din Email",
+    "btn_send_link": "Send link"
+  },
+  "new-password-form": {
+    "enter_your_new_password": "Skriv dit nye kodeord",
+    "your_password": "Dit kodeord",
+    "enter_your_password_again": "Skriv dit kodeord igen",
+    "log_in": "Log ind"
+  },
+  "comming-soon": {
+    "Comming_soon": "Coming Soon",
+    "come_with_perform_in_design": "Will come with performance in design",
+    "email": "Email",
+    "notify_me": "Notify me"
+  },
+  "personal-dashboard": {
+    "intro_greeting": "Hej {{name}}",
+    "intro_text": "Hvad vil du gerne lave?",
+    "create_a_new_workspace": "Opret et nyt arbejdsområde",
+    "start_empty": "Start med et tomt whiteboard",
+    "create_empty_workspace": "Kun fantasien sætter grænser",
+    "send_us_a_request": "Send os et ønske",
+    "we_love_ideas": "Vi er glade for idéer og ser på det straks",
+    "write_your_wish_here": "Skriv dit ønske her",
+    "find_the_small_circle": "Find den lille cirkel der blinker og fortsæt hvor du slap fra",
+    "can_not_create_more_workspaces": "Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.",
+    "next": "Næste",
+    "previous": "Forrige",
+    "skip": "Spring over",
+    "search": "Søg",
+    "welcome": "Velkommen til Juristic",
+    "localsteps_frontpage": "Her er du nu! Forsiden indeholder et overblik over dine seneste arbejdsområder og ændringer.",
+    "localsteps_workspace": "Her finder du en oversigt over arbejdsområder. De er kernen af platformen, og det er der, du kan indhente koncerndiagrammer og lave analyser!",
+    "localsteps_data_builder": "Her finder du en oversigt over de enkelte byggeklodser, som du kan se og redigere. Byggeklodser er en samlet betegnelse for indholdet i arbejdsområdet.",
+    "localsteps_output": "Under Rapportindhold kan du uploade filer eller skrive paradigmetekster, som skal være resultatet af den juridiske analyse. På den måde kan Juristic udarbejde første udkast til fx et notat eller en strukturrapport - og endda på få minutter.",
+    "localsteps_red_flags": "Red flags er avancerede notifikationer, som dukker op, mens du tegner i de enkelte arbejdsområder - i realtime.",
+    "try_creating_a_new_workspace": "Prøv at oprette et nyt arbejdsområde!",
+    "CounterIconsWidget": {
+      "elements": "elementer",
+      "relationship": "forbindelser",
+      "features": "kendetegn",
+      "conditions": "betingelser",
+      "areas": "områder",
+      "groups": "grupper",
+      "outputs": "rapporter",
+      "alerts": "egne red flags"
     },
-    "register-form": {
-      "register": "Registrer dig",
-      "your_name": "Dit navn",
-      "employer": "Virksomhed",
-      "your_email": "Din Email",
-      "your_password": "Dit kodeord",
-      "enter_your_password_again": "Skriv dit kodeord igen",
-      "already_have_account": "Har du allerede en bruger ?",
-      "single_sign_on": "Med Email",
-      "company_login": "Virksomhedslogin",
-      "i_accept": "Jeg accepterer",
-      "terms_and_conditions": "Vilkår & betingelser",
-      "keep_me_updated": "Ja, jeg vil gerne modtage marketingkommunikation per elektronisk post.",
-      "btn_continue": "Fortsæt"
+    "HorizontalNewsCard": {
+      "btn_see_guide_here": "Se guide her",
+      "title": "Velkommen til Juristic (beta)",
+      "desc": "Tak for være med! Vi har arbejdet hårdt for at udvikle platformen, så den både er let og intuitiv at bruge. Hvis du har brug for en lille introduktion, har vi udarbejdet en lille guide."
+    }
+  },
+  "outputs": {
+    "outputs.title": "Dit indhold",
+    "btn_create_new_output": "Nyt indhold",
+    "outputs.loadingMessage": "Det ser vist ud som om du ikke har lavet noget rapportindhold endnu"
+  },
+  "output": {
+    "OutputNamingForm.name_output": "Navngiv output",
+    "OutputNamingForm.title": "Titel",
+    "OutputNamingForm.desc": "Beskrivelse",
+    "OutputNamingForm.groups": "Gruppe",
+    "btn_save_output": "Gem Output",
+    "ChooseConditions": {
+      "situations": "Situationer:",
+      "condition": "betingelse"
     },
-    "reset-form": {
-      "reset_password": "Reset kodeord",
-      "send_a_link": "Send et link til din email for at ændre dit kodeord",
-      "your_email": "Din Email",
-      "btn_send_link": "Send link"
+    "FileUpload": {
+      "upload_content": "Upload dit indhold:"
     },
-    "new-password-form": {
-      "enter_your_new_password": "Skriv dit nye kodeord",
-      "your_password": "Dit kodeord",
-      "enter_your_password_again": "Skriv dit kodeord igen",
-      "log_in": "Log ind"
+    "uploaded_content": "Uploaded indhold",
+    "editor_content": "editor indhold",
+    "both_upload_and_editor": "Det ser ud til, at du både har uploadet et dokument og lavet noget indhold selv i vores editor. Hvilken ønsker du at gemme?",
+    "upload_or_write_header": "Hov, du skal enten uploade eller skrive noget indhold"
+  },
+  "alerts": {
+    "your_red_flags": "Dine Red Flags",
+    "btn_new_red_flag": "Nyt red flag",
+    "alert-modal": {
+      "condition": "Se betingelse",
+      "close": "Luk"
+    }
+  },
+  "alert-naming-form": {
+    "red_flag_content": "Red flag-indhold",
+    "red_flag_title": "Titel",
+    "red_flag_desc": "Beskrivelse",
+    "red_flag_groups": "gruppe",
+    "btn_save_red_flag": "Gem Red Flag"
+  },
+  "attributes": {
+    "your_features": "Dine kendetegn",
+    "btn_new_features": "Nyt kendetegn",
+    "table_title": "Titel",
+    "table_desc": "Beskrivelse",
+    "table_groups": "Gruppe",
+    "table_see_features": "Se kendetegn",
+    "btn_open": "Åben",
+    "last_changed": "Sidst ændret",
+    "you_have_updated_your_element": "Du har opdateret dit element",
+    "create_new_feature": {
+      "dialog_title": "Skab nyt kendetegn",
+      "dialog_content_text": "Her kan du skabe en nyt kendetegn. Du skal først vælge, om der skal kunne indtastes en specifik værdi ('Værdi'), eller om brugeren skal kunne vælge mellem nogle specifikke ting ('Valgmugligheder').",
+      "select_group": "Vælg gruppe",
+      "dialog_name": "Navn (fx 'Antal medarbejdere' eller 'Land')",
+      "dialog_desc": "Beskrivelse",
+      "dialog_enter_default_options": "Indtast faste Valgmuligheder",
+      "options": "Valgmuligheder",
+      "value": "Værdi",
+      "btn_save": "Gem"
+    }
+  },
+  "relationships": {
+    "your_relationships": "Dine forbindelser",
+    "btn_new_relationship": "Ny forbindelse",
+    "table_title": "Titel",
+    "table_desc": "Beskrivelse",
+    "table_groups": "Gruppe",
+    "table_see_relationships": "Se forbindelse",
+    "btn_open": "Åben",
+    "btn_save_relationship": "Gem forbindelse",
+    "last_changed": "Sidst ændret",
+    "relationship_form": {
+      "name_your": "Navngiv din",
+      "_relationship": "forbindelse",
+      "name": "Navn",
+      "enter_options": "Indtast valgmuligheder, fx en talværdi",
+      "desc": "Beskrivelse",
+      "select_group": "Vælg gruppe"
     },
-    "comming-soon": {
-      "Comming_soon": "Coming Soon",
-      "come_with_perform_in_design": "Will come with performance in design",
-      "email": "Email",
-      "notify_me": "Notify me"
+    "relationship-demo": {
+      "your_relationship": "Din forbindelse"
     },
-    "404": {
-      "not_found": "Hov, siden du leder efter findes vist ikke.",
-      "btn_return_to_home_page": "Gå til forside"
+    "relationship-stylling": {
+      "standard_look": "Standard-udseende",
+      "pick_a_label_size": "Vælg en labelstørrelse",
+      "pick_a_color": "Vælg en farve",
+      "small": "lille",
+      "medium": "medium",
+      "large": "stor"
     },
-    "personal-dashboard": {
-      "intro_greeting": "Hej {{name}}",
-      "intro_text": "Hvad vil du gerne lave?",
-      "create_a_new_workspace": "Opret et nyt arbejdsområde",
-      "start_empty": "Start med et tomt whiteboard",
-      "create_empty_workspace": "Kun fantasien sætter grænser",
-      "send_us_a_request": "Send os et ønske",
-      "we_love_ideas": "Vi er glade for idéer og ser på det straks",
-      "write_your_wish_here": "Skriv dit ønske her",
-      "find_the_small_circle": "Find den lille cirkel der blinker og fortsæt hvor du slap fra",
-      "can_not_create_more_workspaces": "Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.",
-      "next": "Næste",
-      "previous": "Forrige",
-      "skip": "Spring over",
-      "search": "Søg",
-      "welcome": "Velkommen til Juristic",
-      "localsteps_frontpage": "Her er du nu! Forsiden indeholder et overblik over dine seneste arbejdsområder og ændringer.",
-      "localsteps_workspace": "Her finder du en oversigt over arbejdsområder. De er kernen af platformen, og det er der, du kan indhente koncerndiagrammer og lave analyser!",
-      "localsteps_data_builder": "Her finder du en oversigt over de enkelte byggeklodser, som du kan se og redigere. Byggeklodser er en samlet betegnelse for indholdet i arbejdsområdet.",
-      "localsteps_output": "Under Rapportindhold kan du uploade filer eller skrive paradigmetekster, som skal være resultatet af den juridiske analyse. På den måde kan Juristic udarbejde første udkast til fx et notat eller en strukturrapport - og endda på få minutter.",
-      "localsteps_red_flags": "Red flags er avancerede notifikationer, som dukker op, mens du tegner i de enkelte arbejdsområder - i realtime.",
-      "try_creating_a_new_workspace": "Prøv at oprette et nyt arbejdsområde!",
-      "CounterIconsWidget": {
-        "elements": "elementer",
-        "relationship": "forbindelser",
-        "features": "kendetegn",
-        "conditions": "betingelser",
-        "areas": "områder",
-        "groups": "grupper",
-        "outputs": "rapporter",
-        "alerts": "egne red flags"
-      },
-      "HorizontalNewsCard": {
-        "btn_see_guide_here": "Se guide her",
-        "title": "Velkommen til Juristic (beta)",
-        "desc": "Tak for være med! Vi har arbejdet hårdt for at udvikle platformen, så den både er let og intuitiv at bruge. Hvis du har brug for en lille introduktion, har vi udarbejdet en lille guide."
-      }
+    "save": "Gem relation"
+  },
+  "conditions": {
+    "your_conditions": "Dine betingelser",
+    "btn_new_condition": "Ny betingelse",
+    "table_title": "Titel",
+    "table_desc": "Beskrivelse",
+    "table_groups": "Gruppe",
+    "table_see_conditions": "Se betingelse",
+    "btn_open": "Åben",
+    "last_changed": "Sidst ændret",
+    "conditions-meta": {
+      "form_title": "Dit scenarie"
     },
-    "outputs": {
-      "outputs.title": "Dit indhold",
-      "btn_create_new_output": "Nyt indhold",
-      "outputs.loadingMessage": "Det ser vist ud som om du ikke har lavet noget rapportindhold endnu"
+    "condition-form": {
+      "form_name": "Navn",
+      "form_desc": "Indtast beskrivelse",
+      "select_group": "Vælg gruppe",
+      "btn_cnx": "Annuller",
+      "btn_save": "Gem"
     },
-    "output": {
-      "OutputNamingForm.name_output": "Navngiv output",
-      "OutputNamingForm.title": "Titel",
-      "OutputNamingForm.desc": "Beskrivelse",
-      "OutputNamingForm.groups": "Gruppe",
-      "btn_save_output": "Gem Output",
-      "ChooseConditions": {
-        "situations": "Situationer:",
-        "condition": "betingelse"
-      },
-      "FileUpload": {
-        "upload_content": "Upload dit indhold:"
-      }
+    "define-node": {
+      "define_your_element": "Definer dit element for et scenarie",
+      "modify_your_element": "Ændre dit element"
     },
-    "alerts": {
-      "your_red_flags": "Dine Red Flags",
-      "btn_new_red_flag": "Nyt red flag",
-      "alert-modal": {
-        "condition": "Se betingelse",
-        "close": "Luk"
-      }
+    "node-form": {
+      "select_your_element": "Vælg dit element",
+      "desc": "Beskrivelse",
+      "delete": "Slet",
+      "btn_cnx": "Annuller",
+      "btn_save": "Gem"
+    }
+  },
+  "groups": {
+    "btn_create_new_group": "Opret ny gruppe",
+    "group-card": {
+      "see_details": "Se detaljer"
     },
-    "alert-naming-form": {
-      "red_flag_content": "Red flag-indhold",
-      "red_flag_title": "Titel",
-      "red_flag_desc": "Beskrivelse",
-      "red_flag_groups": "gruppe",
-      "btn_save_red_flag": "Gem Red Flag"
+    "group-actions": {
+      "created_group": "Du har lavet en gruppe",
+      "image_not_supported": "Vi understøtter desværre ikke det uploadede billede. Prøv igen med et andet",
+      "group_deleted": "Du har nu slettet gruppe"
     },
-    "attributes": {
-      "your_features": "Dine kendetegn",
-      "btn_new_features": "Nyt kendetegn",
-      "table_title": "Titel",
-      "table_desc": "Beskrivelse",
-      "table_groups": "Gruppe",
-      "table_see_features": "Se kendetegn",
-      "btn_open": "Åben",
-      "last_changed": "Sidst ændret",
+    "search-group": {
+      "results": "Resultater",
+      "search_groups": "Søg blandt grupper"
+    },
+    "group-details": {
+      "output": "output",
+      "red_flags": "Red flags",
+      "connections": "forbindelser",
+      "conditions": "betingelser",
+      "elements": "elementer",
+      "features": "kendetegn",
+      "workspace": "arbejdsområdet"
+    },
+    "not_allowed": {
+      "change": "At ændre grupper er forbehold brugere på Pro abonnementer.",
+      "delete": "At slette grupper er forbehold brugere på Pro abonnementer.",
+      "add": "At oprette grupper er forbehold brugere på Pro abonnementer."
+    }
+  },
+  "nodes": {
+    "your_elements": "Dine elementer",
+    "btn_new_element": "Nyt element",
+    "table_title": "Titel",
+    "table_desc": "Beskrivelse",
+    "table_groups": "Gruppe",
+    "table_see_element": "Se element",
+    "btn_open": "Åben",
+    "last_changed": "Sidst ændret",
+    "btn_save": "Gem",
+    "node-form": {
+      "name_your": "Navngiv dit",
+      "_element": "element",
+      "name": "Navn",
+      "desc": "Beskrivelse",
+      "select_standard_look": "Vælg standard-kendetegn for elementet",
+      "select_group": "Vælg gruppe",
+      "value": "Værdi"
+    },
+    "node-demo": {
+      "your_elements": "Dine elementer"
+    },
+    "node-styling": {
+      "standard-look": "Standard-udseende",
+      "size": "Størrelse",
+      "color": "Farve",
+      "border_color": "Kantfarve",
+      "small": "lille",
+      "medium": "medium",
+      "large": "stor"
+    },
+    "node-actions": {
       "you_have_updated_your_element": "Du har opdateret dit element",
-      "create_new_feature": {
-        "dialog_title": "Skab nyt kendetegn",
-        "dialog_content_text": "Her kan du skabe en nyt kendetegn. Du skal først vælge, om der skal kunne indtastes en specifik værdi ('Værdi'), eller om brugeren skal kunne vælge mellem nogle specifikke ting ('Valgmugligheder').",
-        "select_group": "Vælg gruppe",
-        "dialog_name": "Navn (fx 'Antal medarbejdere' eller 'Land')",
-        "dialog_desc": "Beskrivelse",
-        "dialog_enter_default_options": "Indtast faste Valgmuligheder",
-        "options": "Valgmuligheder",
-        "value": "Værdi",
-        "btn_save": "Gem"
-      }
+      "you_have_deleted": "Du har slettet",
+      "can_not_delete_it": "Hov det ser vist ud til, at du bruger dette element i arbejdsområder eller betingelser, derfor kan du ikke slette den."
+    }
+  },
+  "flow": {
+    "node_context_menu": {
+      "edit": "Rediger",
+      "relations_info": "Relationsinformation",
+      "company_info": "Selskabsinformation",
+      "building_info": "Ejendomsinformation",
+      "cut": "Klip",
+      "copy": "Kopier",
+      "delete": "Slet"
     },
-    "relationships": {
-      "your_relationships": "Dine forbindelser",
-      "btn_new_relationship": "Ny forbindelse",
-      "table_title": "Titel",
-      "table_desc": "Beskrivelse",
-      "table_groups": "Gruppe",
-      "table_see_relationships": "Se forbindelse",
-      "btn_open": "Åben",
-      "btn_save_relationship": "Gem forbindelse",
-      "last_changed": "Sidst ændret",
-      "relationship_form": {
-        "name_your": "Navngiv din",
-        "_relationship": "forbindelse",
-        "name": "Navn",
-        "enter_options": "Indtast valgmuligheder, fx en talværdi",
-        "desc": "Beskrivelse",
-        "select_group": "Vælg gruppe"
-      },
-      "relationship-demo": {
-        "your_relationship": "Din forbindelse"
-      },
-      "relationship-stylling": {
-        "standard_look": "Standard-udseende",
-        "pick_a_label_size": "Vælg en labelstørrelse",
-        "pick_a_color": "Vælg en farve",
-        "small": "lille",
-        "medium": "medium",
-        "large": "stor"
-      }
-    },
-    "conditions": {
-      "your_conditions": "Dine betingelser",
-      "btn_new_condition": "Ny betingelse",
-      "table_title": "Titel",
-      "table_desc": "Beskrivelse",
-      "table_groups": "Gruppe",
-      "table_see_conditions": "Se betingelse",
-      "btn_open": "Åben",
-      "last_changed": "Sidst ændret",
-      "conditions-meta": {
-        "form_title": "Dit scenarie"
-      },
-      "condition-form": {
-        "form_name": "Navn",
-        "form_desc": "Indtast beskrivelse",
-        "select_group": "Vælg gruppe",
-        "btn_cnx": "Annuller",
-        "btn_save": "Gem"
-      },
-      "define-node": {
-        "define_your_element": "Definer dit element for et scenarie",
-        "modify_your_element": "Ændre dit element"
-      },
-      "node-form": {
-        "select_your_element": "Vælg dit element",
-        "desc": "Beskrivelse",
-        "delete": "Slet",
-        "btn_cnx": "Annuller",
-        "btn_save": "Gem"
-      }
-    },
-    "groups": {
-      "btn_create_new_group": "Opret ny gruppe",
-      "group-card": {
-        "see_details": "Se detaljer"
-      },
-      "group-actions": {
-        "created_group": "Du har lavet en gruppe",
-        "image_not_supported": "Vi understøtter desværre ikke det uploadede billede. Prøv igen med et andet",
-        "group_deleted": "Du har nu slettet gruppe"
-      },
-      "search-group": {
-        "results": "Resultater",
-        "search_groups": "Søg blandt grupper"
-      },
-      "group-details": {
-        "output": "output",
-        "red_flags": "Red flags",
-        "connections": "forbindelser",
-        "conditions": "betingelser",
-        "elements": "elementer",
-        "features": "kendetegn",
-        "workspace": "arbejdsområdet"
-      }
-    },
-    "nodes": {
-      "your_elements": "Dine elementer",
-      "btn_new_element": "Nyt element",
-      "table_title": "Titel",
-      "table_desc": "Beskrivelse",
-      "table_groups": "Gruppe",
-      "table_see_element": "Se element",
-      "btn_open": "Åben",
-      "last_changed": "Sidst ændret",
-      "btn_save": "Gem",
-      "node-form": {
-        "name_your": "Navngiv dit",
-        "_element": "element",
-        "name": "Navn",
-        "desc": "Beskrivelse",
-        "select_standard_look": "Vælg standard-kendetegn for elementet",
-        "select_group": "Vælg gruppe",
-        "value": "Værdi"
-      },
-      "node-demo": {
-        "your_elements": "Dine elementer"
-      },
-      "node-styling": {
-        "standard-look": "Standard-udseende",
-        "size": "Størrelse",
-        "color": "Farve",
-        "border_color": "Kantfarve",
-        "small": "lille",
-        "medium": "medium",
-        "large": "stor"
-      },
-      "node-actions": {
-        "you_have_updated_your_element": "Du har opdateret dit element",
-        "you_have_deleted": "Du har slettet",
-        "can_not_delete_it": "Hov det ser vist ud til, at du bruger dette element i arbejdsområder eller betingelser, derfor kan du ikke slette den."
-      }
-    },
-    "flow": {
-      "node_context_menu": {
-        "edit": "Rediger",
-        "relations_info": "Relationsinformation",
-        "company_info": "Selskabsinformation",
-        "building_info": "Ejendomsinformation",
-        "cut": "Klip",
-        "copy": "Kopier",
-        "delete": "Slet"
-      },
-      "pane_context_menu": {
-        "paste": "Indsæt",
-        "create_node": "Tilfæj et element",
-        "create_sticky": "Tilføj en note",
-        "show_all": "Vis alle",
-        "show_grid": "Vis hjælpelinjer",
-        "lock": "Lås",
-        "snap": "Snap via linjer"
-      }
-    },
-    "workspaces": {
-      "your_workspace": "Dine arbejdsområder",
-      "btn_new_workspace": "Nyt arbejdsområde",
-      "can_not_create_more_workspaces": "Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.",
-      "table_title": "Titel",
-      "table_desc": "Beskrivelse",
-      "tags": "Tags",
-      "table_groups": "Gruppe",
-      "table_see_element": "Se arbejdsområde",
-      "table_created": "Oprettet",
-      "btn_open": "Åben",
-      "last_changed": "Sidst ændret",
-      "previous": "Forrige",
-      "welcome_to_the_work_area": "Velkommen til arbejdsområdet",
-      "describing_the_work_area": "Start med at beskrive arbejdsområdet. Vælg gruppen 'Corporate'",
-      "insert_text_boxes_and_notes": "Du kan indsætte tekstbokse og noter via denne kvik-knap.",
-      "insert_elements": "Indsæt elementer, som fx selskaber og personer, via denne kvik-knap.",
-      "other_functions": "I denne menu finder du de øvrige funktioner. Her kan du gemme ændringerne i dit arbejdsområde!",
-      "change_name_description_and_group": "Hvis du vil ændre navn, beskrivelse og gruppe - eller ændre indstillingen for deling - skal du trykke her.",
-      "press_analyze_btn_to_create_a_note_or_report": "Tryk på Analyser-knappen for at skabe et notat eller en rapport på baggrund af tegningen i arbejdsområdet.",
-      "get_a_full_overview_of_red_flags": "Du kan også få en fuld oversigt over red flags i arbejdsområdet - også selvom du allerede har set dem.",
-      "share_workspace_with_non_juristic_user": "Hvis du får brug for at dele arbejdsområdet med nogen, der ikke er Juristic-brugere, kan du gøre det her.",
-      "connected_juristic_to_cvr_in_dk_swe_no_fi": "Vi har koblet Juristic direkte til CVR i Danmark, Sverige, Norge og Finland. Prøv at trykke her nu!",
-      "drawing_error": "Vi havde en fejl i forbindelse med at trække koncerndiagrammet. Vores udviklere er  underettet og er på sagen!",
-      "approved_and_locked_off": "Godkendt og låst af",
-      "id": "ID:",
-      "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.",
-      "you_can_not_create_new_item_types": "Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.",
-      "you_can_not_create_new_attribute_types": "Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.",
-      "load_from_CVR": "Indlæs fra CVR",
-      "search_for_a_company_or_CVR_number": "Søg på en virksomhed, en person eller et CVR-nummer",
-      "restrict_countries": "Søg kun i bestemte lande",
-      "your_work_areas_will_be_locked": "Dine arbejdsområder bliver låst efter 90 dage på base",
-      "go_to_workspace": "Gå til arbejdsområde",
-      "cvr_nr": "CVR-nummer",
-      "next":"Næste",
-      "skip": "Spring over",
-      "create-tag": {
-        "chg_tag": "Ændre dit tag",
-        "create_a_new_tag": "Lav et nyt tag",
-        "name":"Navn",
-        "cancel": "Annuller",
-        "save": "Gem"
-      },
-      "workspace-form": {
-        "your_workspace": "Dine arbejdsområder",
-        "name": "Navn",
-        "desc": "Indtast beskrivelse",
-        "select_group": "Vælg gruppe",
-        "checkbox": "Del dit arbejdsområde med det resterende af din organisation",
-        "btn_cnx": "Annuller",
-        "btn_save": "Gem",
-        "add_tags_to_your_workspace": "Tilføj tags til dit arbejdsområde"
-      },
-      "metatext_is_now_updated": "Metatekst er nu opdateret",
-      "can_not_delete": "Du kan ikke slette arbejdsområder, som er udløbet.",
-      "relationship_modal": {
-        "outgoing": "Udgående",
-        "incomming": "Indgående",
-        "elements": "Elementer",
-        "relations": "Relationer",
-        "values": "Værdier"
-      }
-    },
-    "workspace-analysis": {
-      "earlier_versions": "Tidligere versioner",
+    "pane_context_menu": {
+      "paste": "Indsæt",
+      "create_node": "Tilfæj et element",
+      "create_sticky": "Tilføj en note",
+      "show_all": "Vis alle",
+      "show_grid": "Vis hjælpelinjer",
+      "lock": "Lås",
+      "snap": "Snap via linjer"
+    }
+  },
+  "workspaces": {
+    "your_workspace": "Dine arbejdsområder",
+    "btn_new_workspace": "Nyt arbejdsområde",
+    "can_not_create_more_workspaces": "Du kan ikke lave flere arbejdsområder. Opgrader for at lave flere.",
+    "table_title": "Titel",
+    "table_desc": "Beskrivelse",
+    "tags": "Tags",
+    "table_groups": "Gruppe",
+    "table_see_element": "Se arbejdsområde",
+    "table_created": "Oprettet",
+    "btn_open": "Åben",
+    "last_changed": "Sidst ændret",
+    "previous": "Forrige",
+    "welcome_to_the_work_area": "Velkommen til arbejdsområdet",
+    "describing_the_work_area": "Start med at beskrive arbejdsområdet. Vælg gruppen 'Corporate'",
+    "insert_text_boxes_and_notes": "Du kan indsætte tekstbokse og noter via denne kvik-knap.",
+    "insert_elements": "Indsæt elementer, som fx selskaber og personer, via denne kvik-knap.",
+    "other_functions": "I denne menu finder du de øvrige funktioner. Her kan du gemme ændringerne i dit arbejdsområde!",
+    "change_name_description_and_group": "Hvis du vil ændre navn, beskrivelse og gruppe - eller ændre indstillingen for deling - skal du trykke her.",
+    "press_analyze_btn_to_create_a_note_or_report": "Tryk på Analyser-knappen for at skabe et notat eller en rapport på baggrund af tegningen i arbejdsområdet.",
+    "get_a_full_overview_of_red_flags": "Du kan også få en fuld oversigt over red flags i arbejdsområdet - også selvom du allerede har set dem.",
+    "share_workspace_with_non_juristic_user": "Hvis du får brug for at dele arbejdsområdet med nogen, der ikke er Juristic-brugere, kan du gøre det her.",
+    "connected_juristic_to_cvr_in_dk_swe_no_fi": "Vi har koblet Juristic direkte til CVR i Danmark, Sverige, Norge og Finland. Prøv at trykke her nu!",
+    "drawing_error": "Vi havde en fejl i forbindelse med at trække koncerndiagrammet. Vores udviklere er  underettet og er på sagen!",
+    "approved_and_locked_off": "Godkendt og låst af",
+    "id": "ID:",
+    "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_item_types": "Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_attribute_types": "Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.",
+    "load_from_CVR": "Indlæs fra CVR",
+    "search_for_a_company_or_CVR_number": "Søg på en virksomhed, en person eller et CVR-nummer",
+    "restrict_countries": "Søg kun i bestemte lande",
+    "your_work_areas_will_be_locked": "Dine arbejdsområder bliver låst efter 90 dage på base",
+    "go_to_workspace": "Gå til arbejdsområde",
+    "cvr_nr": "CVR-nummer",
+    "next": "Næste",
+    "skip": "Spring over",
+    "create-tag": {
+      "chg_tag": "Ændre dit tag",
+      "create_a_new_tag": "Lav et nyt tag",
+      "name": "Navn",
+      "cancel": "Annuller",
       "save": "Gem"
     },
-    "workspace-meta": {
-      "name_your_work_area":"Navngiv dit arbejdsområde"
+    "workspace-form": {
+      "your_workspace": "Dine arbejdsområder",
+      "name": "Navn",
+      "desc": "Indtast beskrivelse",
+      "select_group": "Select group",
+      "checkbox": "Del dit arbejdsområde med det resterende af din organisation",
+      "btn_cnx": "Annuller",
+      "btn_save": "Gem",
+      "add_tags_to_your_workspace": "Tilføj tags til dit arbejdsområde"
     },
-    "tag-list": {
-      "show_all": "Vis alle",
-      "add_new_tag": "Tilføj nyt tag"
+    "metatext_is_now_updated": "Metatekst er nu opdateret",
+    "can_not_delete": "Du kan ikke slette arbejdsområder, som er udløbet.",
+    "relationship_modal": {
+      "outgoing": "Udgående",
+      "incomming": "Indgående",
+      "elements": "Elementer",
+      "relations": "Relationer",
+      "values": "Værdier"
     },
-    "choose-plan": {
-      "free": "Gratis",
-      "excl_vat": "ekskl. moms",
-      "price": "499 DKK",
-      "contact": "Kontakt",
-      "workspaces": "Arbejdsområder",
-      "load_from_cvr": "Indlæs fra CVR",
-      "download_accounting_data": "Hent regnskabsdata",
-      "change_data_from_CVR": "Ændre data fra CVR",
-      "add_content": "Tilføj indhold",
-      "automatic_red_flags": "Automatiske red flags",
-      "secure_company_login": "Sikkert virksomhedslogin",
-      "design_your_own_red_flags": "Design egne red flags",
-      "design_your_own_content": "Design eget indhold",
-      "integrate_other_APIs": "Integrer andre API'er",
-      "own_subdomain": "Eget subdomæne",
-      "vpn_lock": "VPN lås",
-      "automatic_learning_content": "Automatisk læringsindhold",
-      "automatic_report_builde": "Automatisk report builder",
-      "btn_included": "Inkluderet",
-      "order_a_demo": "Bestil en demo",
-      "get_it_now": "Få det nu",
-      "unlimited": "Ubegr."
+    "public_editable_notification": "Du har ikke adgang til at ændre i elementer. Bed personen der har givet dig adgang til dette arbejdsområde om lov, såfremt dette er nødvendigt."
+  },
+  "workspace-analysis": {
+    "earlier_versions": "Tidligere versioner",
+    "save": "Gem"
+  },
+  "workspace-meta": {
+    "name_your_work_area": "Navngiv dit arbejdsområde"
+  },
+  "tag-list": {
+    "show_all": "Vis alle",
+    "add_new_tag": "Tilføj nyt tag"
+  },
+  "choose-plan": {
+    "free": "Gratis",
+    "excl_vat": "ekskl. moms",
+    "price": "499 DKK",
+    "contact": "Kontakt",
+    "workspaces": "Arbejdsområder",
+    "load_from_cvr": "Indlæs fra CVR",
+    "download_accounting_data": "Hent regnskabsdata",
+    "change_data_from_CVR": "Ændre data fra CVR",
+    "add_content": "Tilføj indhold",
+    "automatic_red_flags": "Automatiske red flags",
+    "secure_company_login": "Sikkert virksomhedslogin",
+    "design_your_own_red_flags": "Design egne red flags",
+    "design_your_own_content": "Design eget indhold",
+    "integrate_other_APIs": "Integrer andre API'er",
+    "own_subdomain": "Eget subdomæne",
+    "vpn_lock": "VPN lås",
+    "automatic_learning_content": "Automatisk læringsindhold",
+    "automatic_report_builde": "Automatisk report builder",
+    "btn_included": "Inkluderet",
+    "order_a_demo": "Bestil en demo",
+    "get_it_now": "Få det nu",
+    "unlimited": "Ubegr.",
+    "current": "Nuværende"
+  },
+  "invoice": {
+    "print_out": "Udskriv !"
+  },
+  "error": {
+    "server_goes_wrong": "Beklager, serveren går galt",
+    "btn_go_to_front_page": "Gå til forside"
+  },
+  "help-support": {
+    "faq": "Ofte stillede spørgsmåls",
+    "faq_text": "Vi har samlet de oftest stillede spørgsmål i en overskuelig oversigt nedenfor. Har du andre, er du naturligvis altid velkommen til at sende os en besked via kontaktformularen til højre.",
+    "what_is_a_red_flag?": "Hvad er et red flag?",
+    "red_flag_expl": {
+      "expl1": "Et red flag er en særlig funktion, som kan hjælpe dig med at analysere og identificere visse juridiske problemstillinger.",
+      "expl2": "Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Draw-abonnement kan endda designe og skabe deres egne red flags."
     },
-    "invoice": {
-      "print_out": "Udskriv !"
+    "is_it_really_free?": "Er det virkelig gratis?",
+    "is_it_really_free_expl": {
+      "expl1": "Afhængigt af det abonnement, du har valgt, vil du have adgang til forskellige funktioner eller udgaver af Juristic.",
+      "expl2": "Du kan selvfølgelig altid fortsætte som gratis-bruger."
     },
-    "error": {
-      "server_goes_wrong": "Beklager, serveren går galt",
-      "btn_go_to_front_page": "Gå til forside"
+    "how_can_i_get_further_help?": "Hvordan kan jeg få yderligere hjælp?",
+    "how_can_i_get_further_help_expl": {
+      "expl1": "Du er altid velkommen til at kontakte os for at få hjælp med funktioner eller din bruger. Dette gør du til højre eller via kontaktoplysningerne på vores hjemmeside.",
+      "expl2": "Vi svarer hurtigst muligt. Draw- og Pro-brugere har adgang til særlige supportfunktioner afhængigt af aftalen."
     },
-    "help-support": {
-      "faq": "Ofte stillede spørgsmåls",
-      "faq_text": "Vi har samlet de oftest stillede spørgsmål i en overskuelig oversigt nedenfor. Har du andre, er du naturligvis altid velkommen til at sende os en besked via kontaktformularen til højre.",
-  
-      "what_is_a_red_flag?": "Hvad er et red flag?",
-      "red_flag_expl": {
-        "expl1": "Et red flag er en særlig funktion, som kan hjælpe dig med at analysere og identificere visse juridiske problemstillinger.",
-        "expl2": "Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Draw-abonnement kan endda designe og skabe deres egne red flags."
-      },
-  
-      "is_it_really_free?": "Er det virkelig gratis?",
-      "is_it_really_free_expl": {
-        "expl1": "Afhængigt af det abonnement, du har valgt, vil du have adgang til forskellige funktioner eller udgaver af Juristic.",
-        "expl2": "Du kan selvfølgelig altid fortsætte som gratis-bruger."
-      },
-  
-      "how_can_i_get_further_help?": "Hvordan kan jeg få yderligere hjælp?",
-      "how_can_i_get_further_help_expl": {
-        "expl1": "Du er altid velkommen til at kontakte os for at få hjælp med funktioner eller din bruger. Dette gør du til højre eller via kontaktoplysningerne på vores hjemmeside.",
-        "expl2": "Vi svarer hurtigst muligt. Draw- og Pro-brugere har adgang til særlige supportfunktioner afhængigt af aftalen."
-      },
-  
-      "how_to_program_law?": "Hvordan programmerer man jura?",
-      "how_to_program_law_expl": {
-        "expl1": "Med Juristic Draw og Juristic Pro får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer.",
-        "expl2": "Det særlige er, at du hverken behøver andre programmer eller at kunne kode. Træk og slip elementer - ligesom du er vant til."
-      },
-  
-      "is_it_safe_to_use?": "Er det sikkert at bruge?",
-      "is_it_safe_to_use_expl": {
-        "expl1": "Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Draw- og Pro-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder.",
-        "expl2": "Du kan læse mere om, hvordan vi behandler data i vores forrretningsbetingelser og persondatapolitik. Du kan finde begge på vores hjemmeside."
-      },
-  
-      "why_are_not_all_features_available yet?": "Hvorfor er ikke alle funktioner tilgængelige endnu?",
-      "why_are_not_all_features_available yet_expl": {
-        "expl1": "Juristic er stadig i 'beta'. Det betyder, at platformen stadig er under udvikling - og der er derfor mange flere funktioner på vej.",
-        "expl2": "Det betyder dog også, at du vil opleve visse fejl, som vi stadig arbejder på højtryk for at løse."
-      },
-      "contact-form": {
-        "contact_us": "Kontakt os",
-        "name": "Navn",
-        "email": "E-mail",
-        "message": "Besked",
-        "send": "Send",
-        "reset": "Nulstil"
-      }
+    "how_to_program_law?": "Hvordan programmerer man jura?",
+    "how_to_program_law_expl": {
+      "expl1": "Med Juristic Draw og Juristic Pro får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer.",
+      "expl2": "Det særlige er, at du hverken behøver andre programmer eller at kunne kode. Træk og slip elementer - ligesom du er vant til."
     },
-    "user-menu": {
-      "log_out": "Log ud",
-      "plan_administrator": "Administrer plan"
+    "is_it_safe_to_use?": "Er det sikkert at bruge?",
+    "is_it_safe_to_use_expl": {
+      "expl1": "Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Draw- og Pro-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder.",
+      "expl2": "Du kan læse mere om, hvordan vi behandler data i vores forrretningsbetingelser og persondatapolitik. Du kan finde begge på vores hjemmeside."
     },
-    "header": {
-      "full_screen": "Fuldskærmsvisning",
-      "exit_full_screen": "Afslut fuldskærmsvisning",
-      "update": "Opdater",
-      "guide": "Vejlede"
+    "why_are_not_all_features_available yet?": "Hvorfor er ikke alle funktioner tilgængelige endnu?",
+    "why_are_not_all_features_available yet_expl": {
+      "expl1": "Juristic er stadig i 'beta'. Det betyder, at platformen stadig er under udvikling - og der er derfor mange flere funktioner på vej.",
+      "expl2": "Det betyder dog også, at du vil opleve visse fejl, som vi stadig arbejder på højtryk for at løse."
     },
-    "guide-slider": {
-      "exit": "Afslut",
-      "continue": "Fortsæt",
-      "back": "Tilbage",
-      "welcome": "Velkommen til Juristic",
-      "welcome_text": "Juristic er en visual platform for rådgivere.",
-  
-      "cvr_import": "CVR-import",
-      "cvr_import_text": "Med vores CVR-funktion kan du lynhurtigt få et overblik.",
-  
-      "red_flags": "Red flags",
-      "red_flags_text": "Med red flags får du input, mens du drafter.",
-  
-      "get_a_better_overview": "Få et bedre overblik",
-      "get_a_better_overview_text": "Med vores visuelle værktøj får du bedre overblik over problemstillinger.",
-  
-      "get_your_own_content": "Få dit eget indhold eller 1-kliks-rapporter",
-      "get_your_own_content_text": "Opgrader i dag for at få flere funktioner med Base, Draw og Pro."
-    },
-    "search": {
-      "search": "Søg"
-    },
-    "sidebar-menu": {
-      "front_page": "Forside",
-      "your_workspace": "Arbejdsområder",
-      "data_builder": "Byggeklodser",
-      "child": {
-        "conditions": "Betingelser",
-        "nodes": "Elementer",
-        "attributes": "Kendetegn",
-        "relationships": "Forbindelser"
-      },
-      "output": "Rapportindhold",
-      "red_flags": "Red flags",
-      "groups": "Gruppe",
-      "settings": "Indstillinger",
-      "help": "Hjælp"
-    },
-    "timeline-widget": {
-      "activity": "Aktivitet",
-      "go_to_workspace": "Gå til arbejdsområde",
-      "jump_into_a_work_area": "Du har endnu ikke brugt Juristic endnu. Hop ind i et arbejdsområde og kom godt i gang."
-    },
-    "columns": {
-      "title": "Titel",
-      "desc": "Beskrivelse",
-      "tags": "tags",
-      "groups" :"Gruppe",
-      "see_red_flag": "Se Red Flag",
-      "last_changed": "Sidst ændret",
-      "btn_open": "Åben"
-    },
-    "helpers": {
-      "toolbar": {
-        "downloadCsv": "Download som CSV fil",
-        "filterTable": "Filtrer tabel",
-        "print": "Print",
-        "search": "Søg",
-        "viewColumns": "Vis colonner"
-      },
-      "filter": {
-        "all": "alle",
-        "reset": "reset",
-        "filter": "Filtrer"
-      },
-      "pagination" : {
-        "rows_per_page": "Rækker per side:",
-        "display_rows": "af"
-      },
-      "selectedRows": {
-        "delete": "Slet",
-        "row_selected": "række(r) valgt"
-      },
-      "viewColumns": {
-        "view_columns": "Vis colonner"
-      }
-    },
-    "mobile-disclaimer": {
-      "you_re_on_a_mobile_device": "Det ser ud til, at du er på en mobil enhed 📱",
-      "desc": "Mange af vores funktioner virker på mobile enheder, men for den bedste oplevelse anbefaler vi, at du bruger en browser på din computer.",
-      "contact_us": "Har du spørgsmål, så kontakt os gerne.",
-      "btn_continue":"Fortsæt"
-    },
-    "upgrade-modal": {
-      "you_have_now_upgraded_your_user": "Tillykke, du har nu opgraderet din bruger!",
-      "desc": "Du har fået adgang til dine ekstra funktioner! Vi er glade for, at du finder værdi i Juristic. Oplever du problemer, eller har du bare spørgsmål, er du altid velkommen til at ringe eller skrive til os.",
-      "btn_continue": "Fortsæt"
+    "contact-form": {
+      "contact_us": "Kontakt os",
+      "name": "Navn",
+      "email": "E-mail",
+      "message": "Besked",
+      "send": "Send",
+      "reset": "Nulstil"
     }
+  },
+  "user-menu": {
+    "log_out": "Log ud",
+    "plan_administrator": "Administrer plan"
+  },
+  "header": {
+    "full_screen": "Fuldskærmsvisning",
+    "exit_full_screen": "Afslut fuldskærmsvisning",
+    "update": "Opdater",
+    "guide": "Vejlede"
+  },
+  "guide-slider": {
+    "exit": "Afslut",
+    "continue": "Fortsæt",
+    "back": "Tilbage",
+    "welcome": "Velkommen til Juristic",
+    "welcome_text": "Juristic er en visual platform for rådgivere.",
+    "cvr_import": "CVR-import",
+    "cvr_import_text": "Med vores CVR-funktion kan du lynhurtigt få et overblik.",
+    "red_flags": "Red flags",
+    "red_flags_text": "Med red flags får du input, mens du drafter.",
+    "get_a_better_overview": "Få et bedre overblik",
+    "get_a_better_overview_text": "Med vores visuelle værktøj får du bedre overblik over problemstillinger.",
+    "get_your_own_content": "Få dit eget indhold eller 1-kliks-rapporter",
+    "get_your_own_content_text": "Opgrader i dag for at få flere funktioner med Base, Draw og Pro."
+  },
+  "search": {
+    "search": "Søg"
+  },
+  "sidebar-menu": {
+    "front_page": "Forside",
+    "your_workspace": "Arbejdsområder",
+    "data_builder": "Byggeklodser",
+    "child": {
+      "conditions": "Betingelser",
+      "nodes": "Elementer",
+      "attributes": "Kendetegn",
+      "relationships": "Forbindelser"
+    },
+    "output": "Rapportindhold",
+    "red_flags": "Red flags",
+    "groups": "Gruppe",
+    "settings": "Indstillinger",
+    "help": "Hjælp"
+  },
+  "timeline-widget": {
+    "activity": "Aktivitet",
+    "go_to_workspace": "Gå til arbejdsområde",
+    "jump_into_a_work_area": "Du har endnu ikke brugt Juristic endnu. Hop ind i et arbejdsområde og kom godt i gang."
+  },
+  "columns": {
+    "title": "Titel",
+    "desc": "Beskrivelse",
+    "tags": "tags",
+    "groups": "Gruppe",
+    "see_red_flag": "Se Red Flag",
+    "last_changed": "Sidst ændret",
+    "btn_open": "Åben"
+  },
+  "helpers": {
+    "toolbar": {
+      "downloadCsv": "Download som CSV fil",
+      "filterTable": "Filtrer tabel",
+      "print": "Print",
+      "search": "Søg",
+      "viewColumns": "Vis colonner"
+    },
+    "filter": {
+      "all": "alle",
+      "reset": "reset",
+      "filter": "Filtrer"
+    },
+    "pagination": {
+      "rows_per_page": "Rækker per side:",
+      "display_rows": "af"
+    },
+    "selectedRows": {
+      "delete": "Slet",
+      "row_selected": "række(r) valgt"
+    },
+    "viewColumns": {
+      "view_columns": "Vis colonner"
+    }
+  },
+  "mobile-disclaimer": {
+    "you_re_on_a_mobile_device": "Det ser ud til, at du er på en mobil enhed 📱",
+    "desc": "Mange af vores funktioner virker på mobile enheder, men for den bedste oplevelse anbefaler vi, at du bruger en browser på din computer.",
+    "contact_us": "Har du spørgsmål, så kontakt os gerne.",
+    "btn_continue": "Fortsæt"
+  },
+  "upgrade-modal": {
+    "you_have_now_upgraded_your_user": "Tillykke, du har nu opgraderet din bruger!",
+    "desc": "Du har fået adgang til dine ekstra funktioner! Vi er glade for, at du finder værdi i Juristic. Oplever du problemer, eller har du bare spørgsmål, er du altid velkommen til at ringe eller skrive til os.",
+    "btn_continue": "Fortsæt"
+  },
+  "public_workspace": {
+    "you_security_code": "Din sikkerhedskode",
+    "hint": "Du har modtaget koden på sms. Hvis ikke så kontakt personen, som har delt dette arbejdsområde med dig."
   }
-  
+}

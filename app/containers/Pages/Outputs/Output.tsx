@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import {
   useHistory
 } from 'react-router-dom';
-import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -42,6 +41,7 @@ import {
   changeTags
 } from './reducers/outputActions';
 import { postCondition } from '../Conditions/reducers/conditionActions';
+import { useTranslation } from 'react-i18next';
 
 
 const Output = () => {
@@ -50,7 +50,7 @@ const Output = () => {
   const history = useHistory();
   const id = history.location.pathname.split('/').pop();
   const locationState = history.location.state as { fromCondition: boolean };
-
+  const { t } = useTranslation();
 
   const conditions = useAppSelector(state => state[reducer].get('outputConditions')).toJS();
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
@@ -142,7 +142,7 @@ const Output = () => {
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <OutputNamingForm
         title={title}
-        onTitleChange={(t) => dispatch(titleChange(t))}
+        onTitleChange={(_title) => dispatch(titleChange(_title))}
         description={description}
         onDescriptionChange={(d) => dispatch(descriptionChange(d))}
         group={group}
@@ -173,21 +173,19 @@ const Output = () => {
         onEditorStateChange={(v) => dispatch(editorStateChange(v))}
       />
       <div>
-        <Tooltip title="Save">
-          <Fab
-            variant="extended"
-            color="primary"
-            style={{
-              position: 'fixed',
-              bottom: 30,
-              right: 50,
-              zIndex: 100,
-            }}
-            onClick={() => onSave('fab')}
-          >
-            Save Output
-          </Fab>
-        </Tooltip>
+        <Fab
+          variant="extended"
+          color="primary"
+          style={{
+            position: 'fixed',
+            bottom: 30,
+            right: 50,
+            zIndex: 100,
+          }}
+          onClick={() => onSave('fab')}
+        >
+          {`${t('output.btn_save_output')}`}
+        </Fab>
       </div>
       <Dialog
         open={openAlert}
@@ -196,19 +194,19 @@ const Output = () => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-        Ooops you need to either upload or write
+          {t('output.upload_or_write_header')}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            It seems like you have both uploaded a document and created some content in the editor. Which one would you like to save?
+            {t('output.both_upload_and_editor')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => onSave('draft')} variant="contained" color="primary">
-            Editor Content
+            {t('output.editor_content')}
           </Button>
           <Button onClick={() => onSave('upload')} variant="contained" color="secondary" autoFocus>
-            Uploaded Content
+            {t('output.uploaded_content')}
           </Button>
         </DialogActions>
       </Dialog>

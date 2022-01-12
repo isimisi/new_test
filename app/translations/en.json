@@ -1,4 +1,8 @@
 {
+  "404": {
+    "not_found": "Whoops, the page you're looking for does not exist.",
+    "btn_return_to_home_page": "Return to home page"
+  },
   "login-form": {
     "create_account": "Create account",
     "log_in": "Log in",
@@ -21,7 +25,11 @@
     "i_accept": "I accept",
     "terms_and_conditions": "Terms & conditions",
     "keep_me_updated": "Yes, I would like to receive marketing communications by e-mail.",
-    "btn_continue": "Continue"
+    "btn_continue": "Continue",
+    "invalid_email": "Invalid email",
+    "password_match": "Password does not match",
+    "and": "and",
+    "privacy": "Privacy policy"
   },
   "reset-form": {
     "reset_password": "Reset password",
@@ -40,10 +48,6 @@
     "come_with_perform_in_design": "Will come with performance in design",
     "email": "Email",
     "notify_me": "Notify me"
-  },
-  "404": {
-    "not_found": "Whoops, the page you're looking for does not exist.",
-    "btn_return_to_home_page": "Return to home page"
   },
   "personal-dashboard": {
     "intro_greeting": "Hello {{name}}",
@@ -100,7 +104,11 @@
     },
     "FileUpload": {
       "upload_content": "Upload you content:"
-    }
+    },
+    "uploaded_content": "Uploaded content",
+    "editor_content": "Editor content",
+    "both_upload_and_editor": "It seems like you have both uploaded a document and created some content in the editor. Which one would you like to save?",
+    "upload_or_write_header": "Ooops you need to either upload or write"
   },
   "alerts": {
     "your_red_flags": "Your Red Flags",
@@ -167,7 +175,8 @@
       "small": "small",
       "medium": "medium",
       "large": "large"
-    }
+    },
+    "save": "Save relationship"
   },
   "conditions": {
     "your_conditions": "Your conditions",
@@ -222,6 +231,11 @@
       "elements": "nodes",
       "features": "features",
       "workspace": "workspace"
+    },
+    "not_allowed": {
+      "change": "To change groups are restricted to users on a pro subscription.",
+      "delete": "To delete groups are restricted to users on a pro subscription.",
+      "add": "To add groups are restricted to users on a pro subscription."
     }
   },
   "nodes": {
@@ -344,14 +358,15 @@
       "elements": "Elements",
       "relations": "Relations",
       "values": "Values"
-    }
+    },
+    "public_editable_notification": "You do not have access til change elements. Ask permission from the person, who invited you to this workspace."
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
     "save": "Save"
   },
   "workspace-meta": {
-    "name_your_work_area":"Name your work area"
+    "name_your_work_area": "Name your work area"
   },
   "tag-list": {
     "show_all": "Show all",
@@ -379,7 +394,8 @@
     "btn_included": "Included",
     "order_a_demo": "Order a demo",
     "get_it_now": "Get it now",
-    "unlimited": "Unltd."
+    "unlimited": "Unltd.",
+    "current": "Current"
   },
   "invoice": {
     "print_out": "Print this out!"
@@ -391,37 +407,31 @@
   "help-support": {
     "faq": "Frequently Asked Questions",
     "faq_text": "We have gathered the most frequently asked questions in a clear overview below. If you have others, you are of course always welcome to send us a message via the contact form on the right.",
-
     "what_is_a_red_flag?": "What is a red flag?",
     "red_flag_expl": {
       "expl1": "A red flag is a special feature that can help you analyze and identify certain legal issues.",
       "expl2": "Red flags automatically appear in your workspace as you draw - and users with a Draw subscription can even design and create their own red flags."
     },
-
     "is_it_really_free?": "Is it really free?",
     "is_it_really_free_expl": {
       "expl1": "Depending on the subscription you have selected, you will have access to different features or editions of Juristic. ",
       "expl2": "Of course, you can always continue as a free user. "
     },
-
     "how_can_i_get_further_help?": "How can I get further help?",
     "how_can_i_get_further_help_expl": {
       "expl1": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website.",
       "expl2": "We will respond as soon as possible. Draw and Pro users have access to special support features depending on the agreement."
     },
-
     "how_to_program_law?": "How to program law?",
     "how_to_program_law_expl": {
       "expl1": "With Juristic Draw and Juristic Pro, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms.",
       "expl2": "The special thing is that you do not need other programs or to be able to code. Drag and drop items - just like you are used to."
     },
-
     "is_it_safe_to_use?": "Is it safe to use?",
     "is_it_safe_to_use_expl": {
       "expl1": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Draw and Pro versions include additional security features that are targeted at businesses.",
       "expl2": "You can read more about how we process data in our business terms and personal data policy. You can find both on our website."
     },
-
     "why_are_not_all_features_available yet?": "Why are not all features available yet?",
     "why_are_not_all_features_available yet_expl": {
       "expl1": "Juristic is still in 'beta'. This means that the platform is still under development - and there are therefore many more features on the way.",
@@ -450,19 +460,14 @@
     "exit": "Exit",
     "continue": "Continue",
     "back": "Back",
-
     "welcome": "Welcome to Juristic",
     "welcome_text": "Juristic is a visual platform for advisors.",
-
     "cvr_import": "CVR-import",
     "cvr_import_text": "With our CVR function, you can get an overview in a flash.",
-
     "red_flags": "Red flags",
     "red_flags_text": "With red flags, you get input while drafting.",
-
     "get_a_better_overview": "Get a better overview",
     "get_a_better_overview_text": "With our visual tool you get a better overview of issues.",
-
     "get_your_own_content": "Get your own content or 1-click reports",
     "get_your_own_content_text": "Upgrade today to get more features with Base, Draw and Pro."
   },
@@ -492,12 +497,12 @@
   },
   "columns": {
     "title": "Title",
-      "desc": "Description",
-      "groups": "Groups",
-      "tags": "tags",
-      "see_red_flag": "See Red Flag",
-      "last_changed": "Last changed",
-      "btn_open": "Open"
+    "desc": "Description",
+    "groups": "Groups",
+    "tags": "tags",
+    "see_red_flag": "See Red Flag",
+    "last_changed": "Last changed",
+    "btn_open": "Open"
   },
   "helpers": {
     "toolbar": {
@@ -512,7 +517,7 @@
       "reset": "reset",
       "filter": "Filter"
     },
-    "pagination" : {
+    "pagination": {
       "rows_per_page": "Rows per page:",
       "display_rows": "of"
     },
@@ -524,15 +529,19 @@
       "view_columns": "View columns"
     }
   },
-    "mobile-disclaimer": {
-      "you_re_on_a_mobile_device": "It looks like you're on a mobile device 📱",
-      "desc": "Many of our features work on mobile devices, but for the best experience, we recommend that you use a browser on your computer.",
-      "contact_us": "If you have any questions, please contact us.",
-      "btn_continue": "Continue"
-    },
-    "upgrade-modal": {
-      "you_have_now_upgraded_your_user": "Congratulations, you have now upgraded your user!",
-      "desc": "You've got access to your extra features! We're glad you're finding value in Juristic. If you experience problems, or if you just have questions, you are always welcome to call or write to us.",
-      "btn_continue": "Continue"
-    }
+  "mobile-disclaimer": {
+    "you_re_on_a_mobile_device": "It looks like you're on a mobile device 📱",
+    "desc": "Many of our features work on mobile devices, but for the best experience, we recommend that you use a browser on your computer.",
+    "contact_us": "If you have any questions, please contact us.",
+    "btn_continue": "Continue"
+  },
+  "upgrade-modal": {
+    "you_have_now_upgraded_your_user": "Congratulations, you have now upgraded your user!",
+    "desc": "You've got access to your extra features! We're glad you're finding value in Juristic. If you experience problems, or if you just have questions, you are always welcome to call or write to us.",
+    "btn_continue": "Continue"
+  },
+  "public_workspace": {
+    "you_security_code": "Your security code",
+    "hint": "You have recieved the code on SMS. If not contact the persion, who has shared this workspace with you."
+  }
 }

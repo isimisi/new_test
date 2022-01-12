@@ -1,11 +1,11 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "git.ignoreLimitWarning": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-      },
-    "eslint.validate": [
-      "javascript"
-    ],
-    "i18next.i18nPaths": "/Users/keanottesen/Documents/GitHub/JuristicWebApp/app/translations"
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "git.ignoreLimitWarning": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript"],
+  "i18next.i18nPaths": "/Users/keanottesen/Documents/GitHub/JuristicWebApp/app/translations",
+  "i18n-ally.localesPaths": ["app/translations"],
+  "i18n-ally.keystyle": "nested"
 }

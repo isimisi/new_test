@@ -7,19 +7,19 @@ import Fab from '@material-ui/core/Fab';
 import { useSelector, useDispatch } from 'react-redux';
 import Notification from '@components/Notification/Notification';
 import CryptoJS from 'crypto-js';
+import { useTranslation } from 'react-i18next';
 import {
   useHistory
 } from 'react-router-dom';
+import {
+  getNodes, postNode, closeNotifAction, deleteNode
+} from './reducers/nodeActions';
 import tableOptions from '@helpers/tableOptions';
+import styles from './node-jss';
 import { loadFromLocalStorage } from '@utils/localStorage';
 import {
   tableColumns, reducer
 } from './constants';
-import styles from './node-jss';
-import {
-  getNodes, postNode, closeNotifAction, deleteNode
-} from './reducers/nodeActions';
-import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles(styles);
 

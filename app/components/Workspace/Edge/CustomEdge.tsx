@@ -1,14 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
-import React, { memo } from 'react';
+import React, { memo } from "react";
 import {
   EdgeText,
   getEdgeCenter,
   getMarkerEnd,
   Position
-} from 'react-flow-renderer';
-import { useHistory } from 'react-router-dom';
+} from "react-flow-renderer";
+import { useHistory } from "react-router-dom";
 
 type Point = [number, number];
 
@@ -25,6 +25,11 @@ const getFactor = (
 
   if (sourcePosition === targetPosition) {
     factor = 0.4;
+    if (sourceX + 100 < targetX) {
+      factor = 0.6;
+    } else if (targetX + 100 < sourceX) {
+      factor = 0.6;
+    }
   }
 
   if (sourcePosition === Position.Top && targetPosition === Position.Bottom) {
@@ -126,8 +131,8 @@ const drawCurve = (
     targetY
   });
 
-  const cX = typeof centerX !== 'undefined' ? centerX : _centerX;
-  const cY = typeof centerY !== 'undefined' ? centerY : _centerY;
+  const cX = typeof centerX !== "undefined" ? centerX : _centerX;
+  const cY = typeof centerY !== "undefined" ? centerY : _centerY;
 
   const lengthBetweenPoints = Math.sqrt(
     // eslint-disable-next-line no-mixed-operators
@@ -162,7 +167,7 @@ const drawCurve = (
     cp2y = cY - offset;
   } else if (
     sourcePosition === Position.Top
-    && targetPosition.includes('left')
+    && targetPosition.includes("left")
   ) {
     cp1x = sourceX;
     cp1y = sourceY - offset;
@@ -170,7 +175,7 @@ const drawCurve = (
     cp2y = targetY;
   } else if (
     sourcePosition === Position.Top
-    && targetPosition.includes('right')
+    && targetPosition.includes("right")
   ) {
     cp1x = sourceX;
     cp1y = sourceY - offset;
@@ -194,7 +199,7 @@ const drawCurve = (
     cp2y = cY - offset;
   } else if (
     sourcePosition === Position.Bottom
-    && targetPosition.includes('left')
+    && targetPosition.includes("left")
   ) {
     cp1x = sourceX;
     cp1y = cY + offset;
@@ -202,14 +207,14 @@ const drawCurve = (
     cp2y = targetY;
   } else if (
     sourcePosition === Position.Bottom
-    && targetPosition.includes('right')
+    && targetPosition.includes("right")
   ) {
     cp1x = sourceX;
     cp1y = cY + offset;
     cp2x = targetX + offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes('left')
+    sourcePosition.includes("left")
     && targetPosition === Position.Bottom
   ) {
     cp1x = sourceX - offset;
@@ -217,7 +222,7 @@ const drawCurve = (
     cp2x = targetX;
     cp2y = targetY + offset;
   } else if (
-    sourcePosition.includes('left')
+    sourcePosition.includes("left")
     && targetPosition === Position.Top
   ) {
     cp1x = sourceX - offset;
@@ -225,23 +230,23 @@ const drawCurve = (
     cp2x = targetX;
     cp2y = targetY - offset;
   } else if (
-    sourcePosition.includes('left')
-    && targetPosition.includes('left')
+    sourcePosition.includes("left")
+    && targetPosition.includes("left")
   ) {
     cp1x = cX - offset;
     cp1y = sourceY;
     cp2x = cX - offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes('left')
-    && targetPosition.includes('right')
+    sourcePosition.includes("left")
+    && targetPosition.includes("right")
   ) {
     cp1x = cX - offset;
     cp1y = sourceY;
     cp2x = cX + offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes('right')
+    sourcePosition.includes("right")
     && targetPosition === Position.Bottom
   ) {
     cp1x = sourceX + offset;
@@ -249,7 +254,7 @@ const drawCurve = (
     cp2x = targetX;
     cp2y = targetY + offset;
   } else if (
-    sourcePosition.includes('right')
+    sourcePosition.includes("right")
     && targetPosition === Position.Top
   ) {
     cp1x = sourceX + offset;
@@ -257,7 +262,7 @@ const drawCurve = (
     cp2x = targetX;
     cp2y = targetY - offset;
   } else if (
-    sourcePosition.includes('right')
+    sourcePosition.includes("right")
     && targetPosition === Position.Left
   ) {
     cp1x = cX + offset;
@@ -265,8 +270,8 @@ const drawCurve = (
     cp2x = cX - offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes('right')
-    && targetPosition.includes('right')
+    sourcePosition.includes("right")
+    && targetPosition.includes("right")
   ) {
     cp1x = cX + offset;
     cp1y = sourceY;
@@ -343,9 +348,9 @@ const CustomEdge = ({
   helperPoints[5] = lerp(helperPoints[3], helperPoints[4], t);
 
   const history = useHistory();
-  const isCondition = history.location.pathname.includes('conditions');
-  let label = `${data.showLabel || !data.value ? data.label : ''}${
-    data.showLabel ? ': ' : ''
+  const isCondition = history.location.pathname.includes("conditions");
+  let label = `${data.showLabel || !data.value ? data.label : ""}${
+    data.showLabel ? ": " : ""
   }${data.value}`;
 
   if (isCondition) {

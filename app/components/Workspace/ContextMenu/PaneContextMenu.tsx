@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent } from "react";
 import {
   Paper,
   MenuList,
@@ -7,16 +7,16 @@ import {
   ListItemText,
   Typography,
   Divider
-} from '@material-ui/core';
+} from "@material-ui/core";
 
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import NotesIcon from '@material-ui/icons/Notes';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckIcon from '@material-ui/icons/Check';
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
-import { ContextTypes } from '@customTypes/reactFlow';
-import { useTranslation } from 'react-i18next';
-import useStyles from './menu.jss';
+import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import NotesIcon from "@material-ui/icons/Notes";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckIcon from "@material-ui/icons/Check";
+import AspectRatioIcon from "@material-ui/icons/AspectRatio";
+import { ContextTypes } from "@customTypes/reactFlow";
+import { useTranslation } from "react-i18next";
+import useStyles from "./menu.jss";
 
 interface Props {
   x: number;
@@ -61,7 +61,7 @@ const PaneContextMenu = ({
             <ListItemIcon>
               <AccountTreeIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>{t('flow.pane_context_menu.paste')}</ListItemText>
+            <ListItemText>{t("flow.pane_context_menu.paste")}</ListItemText>
             <Typography variant="body2" color="textSecondary">
               ⌘V
             </Typography>
@@ -72,7 +72,7 @@ const PaneContextMenu = ({
               <CheckBoxOutlineBlankIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>
-              {t('flow.pane_context_menu.create_node')}
+              {t("flow.pane_context_menu.create_node")}
             </ListItemText>
             <Typography variant="body2" color="textSecondary">
               ⌘I
@@ -83,10 +83,10 @@ const PaneContextMenu = ({
               <NotesIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText>
-              {t('flow.pane_context_menu.create_sticky')}
+              {t("flow.pane_context_menu.create_sticky")}
             </ListItemText>
             <Typography variant="body2" color="textSecondary">
-              ⌘N
+              alt + N
             </Typography>
           </MenuItem>
           <Divider />
@@ -96,18 +96,18 @@ const PaneContextMenu = ({
                 <CheckIcon fontSize="small" color="primary" />
               )}
             </ListItemIcon>
-            <ListItemText>{t('flow.pane_context_menu.show_grid')}</ListItemText>
+            <ListItemText>{t("flow.pane_context_menu.show_grid")}</ListItemText>
             <Typography variant="body2" color="textSecondary">
-              ⌘G
+              alt + G
             </Typography>
           </MenuItem>
           <MenuItem onClick={handleSnapToGrid}>
             <ListItemIcon>
               {snapToGrid && <CheckIcon fontSize="small" color="primary" />}
             </ListItemIcon>
-            <ListItemText>{t('flow.pane_context_menu.snap')}</ListItemText>
+            <ListItemText>{t("flow.pane_context_menu.snap")}</ListItemText>
             <Typography variant="body2" color="textSecondary">
-              ⌘S
+              alt + K
             </Typography>
           </MenuItem>
           <Divider />
@@ -115,7 +115,7 @@ const PaneContextMenu = ({
             <ListItemIcon>
               <AspectRatioIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>{t('flow.pane_context_menu.show_all')}</ListItemText>
+            <ListItemText>{t("flow.pane_context_menu.show_all")}</ListItemText>
             <Typography variant="body2" color="textSecondary">
               ⌘1
             </Typography>

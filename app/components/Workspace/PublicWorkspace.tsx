@@ -3,7 +3,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, {
-  useState, useEffect, useCallback, useRef, MutableRefObject
+  useState, useEffect, useCallback, useRef
 } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
@@ -41,6 +41,7 @@ import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId } from '@api/constants';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
+import { useTranslation } from 'react-i18next';
 import { NodeDropdownInstance } from '../../types/reactFlow';
 import styles from './workspace-jss';
 import { reducer, initErstTypes as erstTypes } from '../../containers/Pages/Workspaces/constants';
@@ -86,7 +87,7 @@ const Workspace = (props) => {
   const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
-
+  const { t } = useTranslation();
 
   // REDUX
   const relationships = useSelector(state => state[reducer].get('relationships'));
@@ -251,7 +252,7 @@ const Workspace = (props) => {
     }
     if (choosenNode) {
       if (!editable) {
-        dispatch(showNotifAction('At tilføje og ændre elementer i et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje og ændre elementer'));
+        dispatch(showNotifAction(t('workspaces.public_editable_notification')));
       } else if (isUpdatingElement && elementToUpdate) {
         dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
       } else {
@@ -285,7 +286,7 @@ const Workspace = (props) => {
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
     if (!editable) {
-      dispatch(showNotifAction('At tilføje og ændre relationer i et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje og ændre relationer'));
+      dispatch(showNotifAction(t('workspaces.public_editable_notification')));
     } else if (isUpdatingElement && elementToUpdate) {
       dispatch(putEdge(
         elementToUpdate.id,
@@ -335,7 +336,7 @@ const Workspace = (props) => {
       }));
     }
     if (_label.__isNew__ && !editable) {
-      dispatch(showNotifAction('Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
+      dispatch(showNotifAction(t('workspaces.public_editable_notification')));
     } else {
       setRelationshipLabel(_label.value);
     }
@@ -351,7 +352,7 @@ const Workspace = (props) => {
 
   const handlePostSticky = () => {
     if (!editable) {
-      dispatch(showNotifAction('At tilføje noter til et arbejdsområde er en Base-feature. Opgrader til Base for at tilføje noter'));
+      dispatch(showNotifAction(t('workspaces.public_editable_notification')));
     } else {
       const rf = rfInstance?.toObject();
       const x = rf && reactFlowDimensions && (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
@@ -468,7 +469,7 @@ const Workspace = (props) => {
             <div className={classes.signedRow}>
               <div className={classes.signedCircle} />
               <Typography className={classes.signedText}>
-            Godkendt og låst af
+                {t('workspaces.approved_and_locked_off')}
                 {' '}
                 {' '}
                 {signedBy}
@@ -476,7 +477,7 @@ const Workspace = (props) => {
             </div>
             <div className={classes.signedRow}>
               <Typography className={classes.signedId}>
-              ID:
+                {t('workspaces.id')}
                 {' '}
                 {window.btoa(signedBy + id)}
               </Typography>
@@ -529,7 +530,7 @@ const Workspace = (props) => {
             }));
           }
           if (_label.__isNew__ && !editable) {
-            dispatch(showNotifAction('Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.'));
+            dispatch(showNotifAction(t('workspaces.public_editable_notification')));
           } else {
             setNodeLabel(_label.value);
           }
@@ -542,7 +543,7 @@ const Workspace = (props) => {
           }
 
           if (isNew && !editable) {
-            dispatch(showNotifAction('Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.'));
+            dispatch(showNotifAction(t('workspaces.public_editable_notification')));
           } else {
             setAttributes(_attributes);
           }
@@ -578,9 +579,9 @@ const Workspace = (props) => {
         loading={loading}
         open={showCvrModal}
         handleClose={() => setShowCvrModal(false)}
-        title="Indlæs fra CVR"
-        description="Søg på en virksomhed eller et CVR-nummer:"
-        textFielLabel="CVR-nummer"
+        title={t('workspaces.load_from_CVR')}
+        description={t('workspaces.search_for_a_company_or_CVR_number')}
+        textFielLabel={t('workspaces.cvr_nr')}
         onConfirm={(value, close) => {
           dispatch(cvrWorkspace(id, value, close, erstTypes));
         }}

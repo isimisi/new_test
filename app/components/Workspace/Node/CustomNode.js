@@ -209,15 +209,13 @@ const CustomNode = ({ data, ...rest }) => {
                 }}
                 onClick={() => {
                   const node = document.querySelector(`[data-id="${data.id}"]`);
-                  console.log(node.getBoundingClientRect().x);
-                  console.log(rest, data);
                   const event = new MouseEvent('contextmenu', {
                     bubbles: true,
                     cancelable: false,
                     view: window,
                     button: 2,
                     buttons: 0,
-                    clientX: node.getBoundingClientRect().x + 100,
+                    clientX: node.getBoundingClientRect().x + 250,
                     clientY: node.getBoundingClientRect().y
                   });
                   node.dispatchEvent(event);

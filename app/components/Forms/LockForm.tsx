@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import React, { useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Field, reduxForm } from 'redux-form/immutable';
@@ -12,16 +13,15 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Help from '@material-ui/icons/Help';
 import Lottie from 'lottie-react';
 import { useHistory } from 'react-router-dom';
-// @ts-ignore
+import { useTranslation } from 'react-i18next';
 import { TextFieldRedux } from './ReduxFormMUI';
-// @ts-ignore
 import styles from './user-jss';
 const lock = require('@lotties/lock.json');
 
 interface Props {
-  handleSubmit: () => {},
-  pristine: boolean,
-  submitting: () => {}
+  handleSubmit: () => void;
+  pristine: boolean;
+  submitting: () => void;
 }
 
 // validation functions
@@ -29,14 +29,12 @@ const required = (value?: null) => (value === null ? 'Required' : undefined);
 const useStyles = makeStyles(styles);
 
 function LockForm(props: Props) {
-  const {
-    handleSubmit,
-    pristine,
-    submitting
-  } = props;
+  const { handleSubmit, pristine, submitting } = props;
+
   const history = useHistory();
   const { search } = history.location;
   const classes = useStyles();
+  const { t } = useTranslation();
 
   const firstName = new URLSearchParams(search).get('firstName');
   const lastName = new URLSearchParams(search).get('lastName');
@@ -53,13 +51,16 @@ function LockForm(props: Props) {
 
   return (
     <div>
-      <Paper className={classes.paperWrap} style={{ paddingTop: 60, paddingBottom: 60 }}>
+      <Paper
+        className={classes.paperWrap}
+        style={{ paddingTop: 60, paddingBottom: 60 }}
+      >
         <form onSubmit={handleSubmit}>
           <section className={classes.lockWrap}>
             <Lottie
               animationData={lock}
               style={{
-                width: '30%',
+                width: '30%'
               }}
             />
             <div>
@@ -74,7 +75,7 @@ function LockForm(props: Props) {
                     name="securityCode"
                     component={TextFieldRedux}
                     type="password"
-                    label="Din sikkerhedskode"
+                    label={t('public_workspace.you_security_code')}
                     required
                     className={classes.field}
                     validate={required}
@@ -92,7 +93,12 @@ function LockForm(props: Props) {
                     }}
                   />
                 </FormControl>
-                <Fab className={classes.unlockBtn} color="primary" type="submit" disabled={Boolean(submitting) || pristine}>
+                <Fab
+                  className={classes.unlockBtn}
+                  color="primary"
+                  type="submit"
+                  disabled={Boolean(submitting) || pristine}
+                >
                   <ArrowForward style={{ color: 'white' }} />
                 </Fab>
                 <Popover
@@ -101,14 +107,16 @@ function LockForm(props: Props) {
                   onClose={handleClose}
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'center',
+                    horizontal: 'center'
                   }}
                   transformOrigin={{
                     vertical: 'top',
-                    horizontal: 'center',
+                    horizontal: 'center'
                   }}
                 >
-                  <Typography className={classes.hint}>Du har modtaget koden på sms. Hvis ikke så kontakt personen, som har delt dette arbejdsområde med dig.</Typography>
+                  <Typography className={classes.hint}>
+                    {t('public_workspace.hint')}
+                  </Typography>
                 </Popover>
               </div>
             </div>
@@ -119,10 +127,9 @@ function LockForm(props: Props) {
   );
 }
 
-
 const LockFormReduxed = reduxForm({
   form: 'immutableELockFrm',
-  enableReinitialize: true,
+  enableReinitialize: true
   // @ts-ignore
 })(LockForm);
 

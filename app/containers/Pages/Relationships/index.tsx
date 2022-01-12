@@ -1,32 +1,32 @@
 /* eslint-disable camelcase */
-import React, { useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import MUIDataTable from 'mui-datatables';
-import Tooltip from '@material-ui/core/Tooltip';
-import Fab from '@material-ui/core/Fab';
-import { useHistory } from 'react-router-dom';
-import CryptoJS from 'crypto-js';
-import tableOptions from '@helpers/tableOptions';
-import Notification from '@components/Notification/Notification';
-import { loadFromLocalStorage } from '@utils/localStorage';
-import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import { useTranslation } from 'react-i18next';
-import styles from './relationship-jss';
-import { tableColumns, reducer } from './constants';
+import React, { useEffect } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import MUIDataTable from "mui-datatables";
+import Fab from "@material-ui/core/Fab";
+import { useHistory } from "react-router-dom";
+import CryptoJS from "crypto-js";
+import tableOptions from "@helpers/tableOptions";
+import Notification from "@components/Notification/Notification";
+import { loadFromLocalStorage } from "@utils/localStorage";
+import { useAppDispatch, useAppSelector } from "@hooks/redux";
+import { useTranslation } from "react-i18next";
+import styles from "./relationship-jss";
+import { tableColumns, reducer } from "./constants";
 import {
   getRelationships,
   postRelationship,
   closeNotifAction,
   deleteRelationship
-} from './reducers/relationshipActions';
+} from "./reducers/relationshipActions";
 
 function Relationships(props) {
   const { classes } = props;
   const dispatch = useAppDispatch();
-  const relationships = useAppSelector(state => state[reducer].get('relationships')
+  const relationships = useAppSelector(state =>
+    state[reducer].get("relationships")
   ).toJS();
-  const messageNotif = useAppSelector(state => state[reducer].get('message'));
+  const messageNotif = useAppSelector(state => state[reducer].get("message"));
   const history = useHistory();
   const { plan_id } = loadFromLocalStorage();
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ function Relationships(props) {
     dispatch(getRelationships());
 
     if (plan_id === 1) {
-      history.push('/app/plan');
+      history.push("/app/plan");
     }
   }, []);
 
@@ -47,7 +47,7 @@ function Relationships(props) {
     deletedRelationships.forEach(e => {
       const id = CryptoJS.AES.decrypt(
         decodeURIComponent(e.id),
-        'path'
+        "path"
       ).toString(CryptoJS.enc.Utf8);
       dispatch(deleteRelationship(id, e.title));
     });
@@ -60,21 +60,19 @@ function Relationships(props) {
         message={messageNotif}
       />
       <MUIDataTable
-        title={t('relationships.your_relationships')}
+        title={t("relationships.your_relationships")}
         data={relationships}
         columns={tableColumns(t)}
         options={tableOptions(onDelete, false)}
       />
-      <Tooltip title="Ny forbindelse">
-        <Fab
-          variant="extended"
-          color="primary"
-          className={classes.addBtn}
-          onClick={() => dispatch(postRelationship(history))}
-        >
-          {`${t('relationships.btn_new_relationship')}`}
-        </Fab>
-      </Tooltip>
+      <Fab
+        variant="extended"
+        color="primary"
+        className={classes.addBtn}
+        onClick={() => dispatch(postRelationship(history))}
+      >
+        {`${t("relationships.btn_new_relationship")}`}
+      </Fab>
     </div>
   );
 }

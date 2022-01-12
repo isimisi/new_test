@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Tooltip from '@material-ui/core/Tooltip';
+
 import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import {
@@ -101,21 +101,20 @@ const Alert = () => {
           />
         </Grid>
       </Grid>
-      <Tooltip title="Save">
-        <Fab
-          variant="extended"
-          color="primary"
-          style={{
-            position: 'fixed',
-            bottom: 30,
-            right: 50,
-            zIndex: 100,
-          }}
-          onClick={onSave}
-        >
-          {`${t('alert-naming-form.btn_save_red_flag')}`}
-        </Fab>
-      </Tooltip>
+      <Fab
+        variant="extended"
+        color="primary"
+        style={{
+          position: 'fixed',
+          bottom: 30,
+          right: 50,
+          zIndex: 100,
+        }}
+        onClick={onSave}
+      >
+        {`${t('alert-naming-form.btn_save_red_flag')}`}
+      </Fab>
+
     </div>
   );
 };

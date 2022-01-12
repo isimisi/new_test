@@ -137,7 +137,7 @@ const styles = theme => ({
   },
   menuButton: {},
   menuIcon: {
-    color: theme.palette.secondary.light
+    color: 'black'
   },
   hide: {
     display: 'none',

@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useMemo, memo } from 'react';
 import {
   Paper,
   MenuList,
@@ -63,6 +63,10 @@ const NodeContextMenu = ({
   const handleRemove = () => contextNode && onElementsRemove([contextNode]);
   const showNodeRelationships = () => contextNode && handleShowNodeRelations(contextNode);
 
+  const showInfoButtons = useMemo(() => contextNode?.data.unitNumber, [contextNode]);
+  const isNote = useMemo(() => contextNode?.type !== 'sticky', [contextNode]);
+
+
   if (show && contextType === ContextTypes.Node) {
     return (
       <Paper
@@ -76,7 +80,9 @@ const NodeContextMenu = ({
         )
           : (
             <MenuList>
-              <MenuItem onClick={hanldeEditClick}>
+
+
+              {isNote && <MenuItem onClick={hanldeEditClick}>
                 <ListItemIcon>
                   <EditIcon fontSize="small" />
                 </ListItemIcon>
@@ -90,25 +96,27 @@ const NodeContextMenu = ({
                 >
                   {contextNode?.data?.displayName}
                 </Typography>
-              </MenuItem>
-              <MenuItem onClick={showNodeRelationships}>
+              </MenuItem>}
+              {isNote && <MenuItem onClick={showNodeRelationships}>
                 <ListItemText>{t('flow.node_context_menu.relations_info')}</ListItemText>
                 <Typography variant="body2" color="textSecondary">
-              Ctrl + R
+              alt + R
                 </Typography>
-              </MenuItem>
-              <MenuItem onClick={hanldeShowCompanyInfo}>
+              </MenuItem>}
+              {showInfoButtons && (<MenuItem onClick={hanldeShowCompanyInfo}>
                 <ListItemText>{t('flow.node_context_menu.company_info')}</ListItemText>
                 <Typography variant="body2" color="textSecondary">
-                    Ctrl + S
+                    alt + S
                 </Typography>
-              </MenuItem>
-              <MenuItem onClick={hanldeShowAddressInfo}>
+              </MenuItem>)}
+              {showInfoButtons && <MenuItem onClick={hanldeShowAddressInfo}>
                 <ListItemText>{t('flow.node_context_menu.building_info')}</ListItemText>
                 <Typography variant="body2" color="textSecondary">
-            Ctrl + E
+            alt + E
                 </Typography>
               </MenuItem>
+              }
+
               <MenuItem onClick={handleCut}>
                 <ListItemIcon>
                   <FlipToBackIcon fontSize="small" />
@@ -162,4 +170,4 @@ const NodeContextMenu = ({
   return <></>;
 };
 
-export default NodeContextMenu;
+export default memo(NodeContextMenu);

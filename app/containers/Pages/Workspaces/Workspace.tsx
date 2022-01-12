@@ -62,9 +62,10 @@ import RelationshipModal from '@components/Workspace/RelationshipModal';
 import NodeContextMenu from '@components/Workspace/ContextMenu/NodeContextMenu';
 import { useTranslation } from 'react-i18next';
 import useContextMenu from '@hooks/useContextMenu';
-import { useHotkeys } from 'react-hotkeys-hook';
+import useWorkspaceHotKeys from '@hooks/useWorkspaceHotKeys';
 
 import SelectionContextMenu from '@components/Workspace/ContextMenu/SelectionContextMenu';
+import { openMenuAction, closeMenuAction } from '@redux/actions/uiActions';
 import { ContextTypes, NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
 import {
@@ -117,9 +118,11 @@ const Workspace = (props) => {
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
   const mouse = useMouse(reactFlowContainer, { fps: 10, enterDelay: 100, leaveDelay: 100 });
+
   const { show: showContextMenu, setShow: setShowContextMenu } = useContextMenu();
 
   const { plan_id } = loadFromLocalStorage();
+
 
   // REDUX
   const relationships = useAppSelector(state => state[reducer].get('relationships'));
@@ -211,6 +214,7 @@ const Workspace = (props) => {
   // socket for cvr
   const [subscription, setSubscription] = useState(null);
 
+  const handleVisabilityChange = () => dispatch(changeHandleVisability(!handleVisability));
 
   const handleCvrSuccess = (el) => {
     setShowCvrModal(false);
@@ -385,6 +389,11 @@ const Workspace = (props) => {
 
   useEffect(() => {
     dispatch(getGroupDropDown());
+    dispatch(closeMenuAction);
+
+    return () => {
+      dispatch(openMenuAction);
+    };
   }, []);
 
   useEffect(() => {
@@ -522,10 +531,20 @@ const Workspace = (props) => {
   const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
   const handleDeleteEdge = useCallback(() => elementToUpdate && onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
-  const handlePostSticky = () => {
+  const handlePostSticky = (e?: any, shortcut = false) => {
     const rf = rfInstance?.toObject();
-    const x = rf && reactFlowDimensions && (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
-    const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+    // @ts-ignore
+    const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+
+    const position = rfInstance?.project({
+      // @ts-ignore
+      x: mouse.clientX - reactFlowBounds.left,
+      // @ts-ignore
+      y: mouse.clientY - reactFlowBounds.top,
+    });
+
+    const x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250 : 0;
+    const y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150 : 0;
 
     dispatch(postSticky(id, x, y));
     setShowContextMenu(false);
@@ -633,6 +652,7 @@ const Workspace = (props) => {
   const [contextType, setContextType] = useState<ContextTypes>(ContextTypes.Pane);
 
   const handleNodeContextMenu = (e: MouseEvent, n: Node) => {
+    console.log('new position node_:_______________-');
     setContextAnchor({
       x: e.pageX,
       y: e.pageY
@@ -642,6 +662,7 @@ const Workspace = (props) => {
   };
 
   const handlePaneContextMenu = (e: MouseEvent) => {
+    console.log('new position pane_:_______________-');
     setContextAnchor({
       x: e.pageX,
       y: e.pageY
@@ -650,6 +671,7 @@ const Workspace = (props) => {
   };
 
   const handleSelctionContextMenu = (e: MouseEvent, _nodes: Node[]) => {
+    console.log('new position selection_:_______________-');
     setContextAnchor({
       x: e.pageX,
       y: e.pageY
@@ -659,6 +681,7 @@ const Workspace = (props) => {
   };
 
   const handleEdgeContextMenu = (e: MouseEvent, ed: Edge) => {
+    console.log('new position edge_:_______________-');
     setContextAnchor({
       x: e.pageX,
       y: e.pageY
@@ -670,6 +693,20 @@ const Workspace = (props) => {
   const [snapToGrid, setSnapToGrid] = useState(false);
 
   const hideContext = () => setShowContextMenu(false);
+
+  useWorkspaceHotKeys(
+    setDefineNodeOpen,
+    setShowContextMenu,
+    handlePostSticky,
+    handleVisabilityChange,
+    setSnapToGrid,
+    rfInstance,
+    contextNode,
+    handleShowNodeRelations,
+    (_id) => dispatch(getCompanyData(_id, setShowContextMenu)),
+    (_id) => dispatch(getAddressInfo(_id, setShowContextMenu))
+  );
+
 
   return (
     <div>
@@ -725,7 +762,7 @@ const Workspace = (props) => {
                 <PhotoCameraIcon />
               </ControlButton>
               {!signed && (
-                <ControlButton onClick={() => dispatch(changeHandleVisability(!handleVisability))}>
+                <ControlButton onClick={handleVisabilityChange}>
                   {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </ControlButton>
               )}
@@ -1041,7 +1078,7 @@ const Workspace = (props) => {
               setShowContextMenu(false);
             }}
             stickyClick={handlePostSticky}
-            handleShowGrid={() => dispatch(changeHandleVisability(!handleVisability))}
+            handleShowGrid={handleVisabilityChange}
             handleVisability={handleVisability}
             handleSnapToGrid={() => setSnapToGrid(prevVal => !prevVal)}
             snapToGrid={snapToGrid}
