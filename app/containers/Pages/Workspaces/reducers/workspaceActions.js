@@ -1,24 +1,25 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable consistent-return */
 /* eslint-disable camelcase */
-import axios from 'axios';
-import * as notification from '@redux/constants/notifConstants';
+import axios from "axios";
+import * as notification from "@redux/constants/notifConstants";
 import {
-  baseUrl, authHeader, genericErrorMessage as message, getIdFromEncrypted
-} from '@api/constants';
-import {
-  isNode,
-} from 'react-flow-renderer';
-import _history from '@utils/history';
-import { saveToLocalStorage } from '@utils/localStorage';
-import LogRocket from 'logrocket';
-import { toast } from 'react-toastify';
-import * as types from './workspaceConstants';
-import { initErstTypes } from '../constants';
+  baseUrl,
+  authHeader,
+  genericErrorMessage as message,
+  getIdFromEncrypted,
+} from "@api/constants";
+import { isNode } from "react-flow-renderer";
+import _history from "@utils/history";
+import { saveToLocalStorage } from "@utils/localStorage";
+import LogRocket from "logrocket";
+import { toast } from "react-toastify";
+import * as types from "./workspaceConstants";
+import { initErstTypes } from "../constants";
 
-const WORKSPACES = 'workspaces';
+const WORKSPACES = "workspaces";
 
-export const getWorkspaces = () => async dispatch => {
+export const getWorkspaces = () => async (dispatch) => {
   dispatch({ type: types.GET_WORKSPACES_LOADING });
   const url = `${baseUrl}/${WORKSPACES}`;
   const header = authHeader();
@@ -31,8 +32,7 @@ export const getWorkspaces = () => async dispatch => {
   }
 };
 
-
-export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
+export const cvrWorkspace = (id, cvr, close, erstTypes) => async (dispatch) => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/${id}/cvr`;
   const body = { cvr, erstTypes };
@@ -42,17 +42,21 @@ export const cvrWorkspace = (id, cvr, close, erstTypes) => async dispatch => {
     await axios.post(url, body, header);
   } catch (error) {
     console.log(error.response);
-    let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
+    let _message = "Vi har desværre nogle problemer med kommunkationen til CVR";
 
     if (error?.response?.status === 503) {
-      _message = 'Du skal være på et Draw plan for at trække selskaber med over 100 elementer';
+      _message =
+        "Du skal være på et Draw plan for at trække selskaber med over 100 elementer";
     }
     dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
   }
 };
 
-
-export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async () => {
+export const analyseAlerts = (
+  workspaceId,
+  setAlerts,
+  initial = false
+) => async () => {
   const url = `${baseUrl}/${WORKSPACES}/analyse/alerts/${workspaceId}`;
   const header = authHeader();
   try {
@@ -65,7 +69,7 @@ export const analyseAlerts = (workspaceId, setAlerts, initial = false) => async 
   }
 };
 
-export const analyseOutput = (workspaceId) => async dispatch => {
+export const analyseOutput = (workspaceId) => async (dispatch) => {
   const url = `${baseUrl}/${WORKSPACES}/analyse/actions/${workspaceId}`;
   const header = authHeader();
   try {
@@ -78,10 +82,22 @@ export const analyseOutput = (workspaceId) => async dispatch => {
   }
 };
 
-export const postWorkspace = (history, label, description, group, tags, shareOrg, cvr) => async dispatch => {
+export const postWorkspace = (
+  history,
+  label,
+  description,
+  group,
+  tags,
+  shareOrg,
+  cvr
+) => async (dispatch) => {
   const url = `${baseUrl}/${WORKSPACES}`;
   const body = {
-    label, description, group, tags, shareOrg
+    label,
+    description,
+    group,
+    tags,
+    shareOrg,
   };
   const header = authHeader();
 
@@ -90,7 +106,9 @@ export const postWorkspace = (history, label, description, group, tags, shareOrg
     const id = response.data;
     dispatch({ type: types.POST_WORKSPACE_SUCCESS });
     if (cvr) {
-      dispatch(cvrWorkspace(getIdFromEncrypted(id), cvr, undefined, initErstTypes));
+      dispatch(
+        cvrWorkspace(getIdFromEncrypted(id), cvr, undefined, initErstTypes)
+      );
     }
     history.push(`/app/${WORKSPACES}/${id}`);
   } catch (error) {
@@ -98,8 +116,12 @@ export const postWorkspace = (history, label, description, group, tags, shareOrg
   }
 };
 
-
-export const showWorkspace = (id, setMetaOpen = null, setAlerts = null, _reactFlowInstance = null) => async dispatch => {
+export const showWorkspace = (
+  id,
+  setMetaOpen = null,
+  setAlerts = null,
+  _reactFlowInstance = null
+) => async (dispatch) => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   dispatch({ type: types.SHOW_WORKSPACE_LOADING });
 
@@ -108,15 +130,37 @@ export const showWorkspace = (id, setMetaOpen = null, setAlerts = null, _reactFl
   try {
     const response = await axios.get(url, header);
     const {
-      elements, label, description, group, zoom, x_position, y_position, signed, signed_by, tags
+      elements,
+      label,
+      description,
+      group,
+      zoom,
+      x_position,
+      y_position,
+      signed,
+      signed_by,
+      tags,
     } = response.data;
 
     dispatch({
-      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position, signed, signed_by, tags
+      type: types.SHOW_WORKSPACE_SUCCESS,
+      label,
+      description,
+      group,
+      elements,
+      zoom,
+      x_position,
+      y_position,
+      signed,
+      signed_by,
+      tags,
     });
 
-
-    if ((!label || label?.length === 0) && (!description || description?.length === 0) && !group) {
+    if (
+      (!label || label?.length === 0) &&
+      (!description || description?.length === 0) &&
+      !group
+    ) {
       setMetaOpen && setMetaOpen(true);
     }
     setAlerts && dispatch(analyseAlerts(id, setAlerts, true));
@@ -127,18 +171,29 @@ export const showWorkspace = (id, setMetaOpen = null, setAlerts = null, _reactFl
   } catch (error) {
     console.log(error.response);
     if (error?.response?.status === 403) {
-      _history.replace('/app/not-found');
+      _history.replace("/app/not-found");
     } else {
       dispatch({ type: types.SHOW_WORKSPACE_FAILED, message });
     }
   }
 };
 
-
-export const putWorkspace = (workspace_id, label, description, group, tags, shareOrg, setMetaOpen) => async dispatch => {
+export const putWorkspace = (
+  workspace_id,
+  label,
+  description,
+  group,
+  tags,
+  shareOrg,
+  setMetaOpen
+) => async (dispatch) => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}`;
   const body = {
-    label, description, group, shareOrg, tags
+    label,
+    description,
+    group,
+    shareOrg,
+    tags,
   };
   const header = authHeader();
 
@@ -157,11 +212,19 @@ export const putWorkspace = (workspace_id, label, description, group, tags, shar
   }
 };
 
-
-export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, workspaceYPosition, nodes) => async dispatch => {
+export const saveWorkspace = (
+  workspace_id,
+  workspaceZoom,
+  workspaceXPosition,
+  workspaceYPosition,
+  nodes
+) => async (dispatch) => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}/position`;
   const body = {
-    workspaceZoom, workspaceXPosition, workspaceYPosition, nodes
+    workspaceZoom,
+    workspaceXPosition,
+    workspaceYPosition,
+    nodes,
   };
   const header = authHeader();
   try {
@@ -173,7 +236,7 @@ export const saveWorkspace = (workspace_id, workspaceZoom, workspaceXPosition, w
   }
 };
 
-export const deleteWorkspaces = (id, title) => async dispatch => {
+export const deleteWorkspaces = (id, title) => async (dispatch) => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   const header = authHeader();
   try {
@@ -187,29 +250,42 @@ export const deleteWorkspaces = (id, title) => async dispatch => {
       _message = error.response.data;
     }
     if (!id) {
-      _message = 'Du kan ikke slette arbejdsområder, som er udløbet.';
+      _message = "Du kan ikke slette arbejdsområder, som er udløbet.";
     }
     dispatch({ type: types.DELETE_WORKSPACE_FAILED, message: _message });
   }
 };
 
-export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => async dispatch => {
+export const deleteWorkspaceElement = (
+  elementsToRemove,
+  remainingElements
+) => async (dispatch) => {
   if (elementsToRemove.length === 1 && !isNode(elementsToRemove[0])) {
-    const url = `${baseUrl}/${WORKSPACES}/relationship/${elementsToRemove[0].id}`;
+    const url = `${baseUrl}/${WORKSPACES}/relationship/${
+      elementsToRemove[0].id
+    }`;
     const header = authHeader();
     try {
       await axios.delete(url, header);
-      dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
+      dispatch({
+        type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS,
+        remainingElements,
+      });
     } catch (error) {
       dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_FAILED, message });
     }
   } else {
     const url = `${baseUrl}/${WORKSPACES}/elements`;
-    const elements = elementsToRemove.filter(element => isNode(element)).map(element => element.id);
+    const elements = elementsToRemove
+      .filter((element) => isNode(element))
+      .map((element) => element.id);
     const body = { elements };
     const header = authHeader();
 
-    dispatch({ type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS, remainingElements });
+    dispatch({
+      type: types.DELETE_WORKSPACE_ELEMENTS_SUCCESS,
+      remainingElements,
+    });
     try {
       await axios.post(url, body, header);
     } catch (error) {
@@ -218,7 +294,20 @@ export const deleteWorkspaceElement = (elementsToRemove, remainingElements) => a
   }
 };
 
-export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, background_color, border_color, attributes, close, setAlerts, x, y) => async dispatch => {
+export const postNode = (
+  workspace_id,
+  node_id,
+  nodeLabel,
+  display_name,
+  figur,
+  background_color,
+  border_color,
+  attributes,
+  close,
+  setAlerts,
+  x,
+  y
+) => async (dispatch) => {
   dispatch({ type: types.WORKSPACE_POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
@@ -230,8 +319,8 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, 
     background_color,
     border_color,
     attributes,
-    'x-value': x,
-    'y-value': y
+    "x-value": x,
+    "y-value": y,
   };
   const header = authHeader();
 
@@ -246,7 +335,7 @@ export const postNode = (workspace_id, node_id, nodeLabel, display_name, figur, 
   }
 };
 
-export const addElements = (id, elements) => async dispatch => {
+export const addElements = (id, elements) => async (dispatch) => {
   dispatch({ type: types.WORKSPACE_ADD_ELEMENTS, elements });
   const url = `${baseUrl}/${WORKSPACES}/addElements/${id}`;
   const body = { elements: JSON.stringify(elements) };
@@ -254,14 +343,29 @@ export const addElements = (id, elements) => async dispatch => {
   try {
     const response = await axios.post(url, body, header);
     const { nodesWithOrgId, edgesWithOrgId } = response.data;
-    dispatch({ type: types.WORKSPACE_UPDATE_ELEMENTS, nodesWithOrgId, edgesWithOrgId });
+    dispatch({
+      type: types.WORKSPACE_UPDATE_ELEMENTS,
+      nodesWithOrgId,
+      edgesWithOrgId,
+    });
   } catch (error) {
     console.log(error.response);
     dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
   }
 };
 
-export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, figur, backgroundColor, borderColor, attributes, deletedAttributes, close) => async dispatch => {
+export const putNode = (
+  workspaceNodeId,
+  node_id,
+  nodeLabel,
+  display_name,
+  figur,
+  backgroundColor,
+  borderColor,
+  attributes,
+  deletedAttributes,
+  close
+) => async (dispatch) => {
   dispatch({ type: types.WORKSPACE_PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
@@ -285,8 +389,9 @@ export const putNode = (workspaceNodeId, node_id, nodeLabel, display_name, figur
   }
 };
 
-
-export const postEdge = (workspace_id, edge, close, setAlert) => async dispatch => {
+export const postEdge = (workspace_id, edge, close, setAlert) => async (
+  dispatch
+) => {
   dispatch({ type: types.POST_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship`;
   const body = {
@@ -303,7 +408,7 @@ export const postEdge = (workspace_id, edge, close, setAlert) => async dispatch 
     arrow: edge.showArrow,
     animated: edge.animatedLine,
     show_label: edge.showLabel,
-    line_through: edge.lineThrough
+    line_through: edge.lineThrough,
   };
   const header = authHeader();
 
@@ -330,7 +435,7 @@ export const putEdge = (
   showLabel,
   lineThrough,
   close
-) => async dispatch => {
+) => async (dispatch) => {
   dispatch({ type: types.PUT_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
   const body = {
@@ -342,7 +447,7 @@ export const putEdge = (
     arrow: showArrow,
     animated: animatedLine,
     show_label: showLabel,
-    line_through: lineThrough
+    line_through: lineThrough,
   };
   const header = authHeader();
 
@@ -357,19 +462,19 @@ export const putEdge = (
   }
 };
 
-export const getNodes = (group) => async dispatch => {
+export const getNodes = (group) => async (dispatch) => {
   const url = `${baseUrl}/nodes/workspace?group=${group}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
-    const nodes = response.data.filter(n => n.label !== '*');
+    const nodes = response.data.filter((n) => n.label !== "*");
     dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
   } catch (error) {
     dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
   }
 };
 
-export const getRelationships = (group) => async dispatch => {
+export const getRelationships = (group) => async (dispatch) => {
   const url = `${baseUrl}/relationships/workspace?group=${group}`;
   const header = authHeader();
   try {
@@ -381,7 +486,7 @@ export const getRelationships = (group) => async dispatch => {
   }
 };
 
-export const getGroupDropDown = () => async dispatch => {
+export const getGroupDropDown = () => async (dispatch) => {
   const url = `${baseUrl}/groups/dropDownValues`;
   const header = authHeader();
   try {
@@ -393,7 +498,7 @@ export const getGroupDropDown = () => async dispatch => {
   }
 };
 
-export const getAttributeDropDown = (group) => async dispatch => {
+export const getAttributeDropDown = (group) => async (dispatch) => {
   const url = `${baseUrl}/attributs/dropDownValues?group=${group}`;
   const header = authHeader();
   try {
@@ -405,12 +510,12 @@ export const getAttributeDropDown = (group) => async dispatch => {
   }
 };
 
-export const postSticky = (workspace_id, x, y) => async dispatch => {
+export const postSticky = (workspace_id, x, y) => async (dispatch) => {
   const url = `${baseUrl}/workspaces/sticky`;
   const body = {
     workspace_id,
-    'x-value': x,
-    'y-value': y
+    "x-value": x,
+    "y-value": y,
   };
   const header = authHeader();
   try {
@@ -423,7 +528,7 @@ export const postSticky = (workspace_id, x, y) => async dispatch => {
 };
 
 // eslint-disable-next-line no-unused-vars
-export const putSticky = (id, text) => async dispatch => {
+export const putSticky = (id, text) => async (dispatch) => {
   const url = `${baseUrl}/workspaces/sticky/${id}`;
   const body = {
     text,
@@ -432,12 +537,11 @@ export const putSticky = (id, text) => async dispatch => {
   try {
     await axios.put(url, body, header);
   } catch (error) {
-
     // do something
   }
 };
 
-export const getCompanyData = (id, setShowContextMenu) => async dispatch => {
+export const getCompanyData = (id, setShowContextMenu) => async (dispatch) => {
   dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
   const url = `${baseUrl}/workspacenodes/company/info/${id}`;
   const header = authHeader();
@@ -445,7 +549,10 @@ export const getCompanyData = (id, setShowContextMenu) => async dispatch => {
     const response = await axios.get(url, header);
 
     const companyData = response.data;
-    dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS, companyData });
+    dispatch({
+      type: types.GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS,
+      companyData,
+    });
 
     dispatch({ type: types.SET_SHOW_COMPANY_DATA, show: true });
     setShowContextMenu(false);
@@ -454,11 +561,14 @@ export const getCompanyData = (id, setShowContextMenu) => async dispatch => {
     if (error?.response?.status === 403) {
       _message = error.response.data;
     }
-    dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_FAILED, message: _message });
+    dispatch({
+      type: types.GET_WORKSPACE_NODE_COMPANY_DATA_FAILED,
+      message: _message,
+    });
   }
 };
 
-export const getAddressInfo = (id, setShowContextMenu) => async dispatch => {
+export const getAddressInfo = (id, setShowContextMenu) => async (dispatch) => {
   dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_LOADING });
   const url = `${baseUrl}/workspacenodes/company/addressInfo/${id}`;
   const header = authHeader();
@@ -466,29 +576,47 @@ export const getAddressInfo = (id, setShowContextMenu) => async dispatch => {
     const response = await axios.get(url, header);
 
     const addressInfo = response.data;
-    dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_SUCCESS, addressInfo });
+    dispatch({
+      type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_SUCCESS,
+      addressInfo,
+    });
     setShowContextMenu(false);
   } catch (error) {
     let _message = message;
     if (error?.response?.status === 403) {
       _message = error.response.data;
     }
-    dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_FAILED, message: _message });
+    dispatch({
+      type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_FAILED,
+      message: _message,
+    });
   }
 };
 
-export const shareWorkspace = (id, firstName, lastName, email, phone, editable, setShareModalOpen) => async dispatch => {
+export const shareWorkspace = (
+  id,
+  firstName,
+  lastName,
+  email,
+  phone,
+  editable,
+  setShareModalOpen
+) => async (dispatch) => {
   dispatch({ type: types.SHARE_WORKSPACE_LOADING });
 
   const url = `${baseUrl}/workspaces/share/${id}`;
   const body = {
-    firstName, lastName, email, phone, editable
+    firstName,
+    lastName,
+    email,
+    phone,
+    editable,
   };
   const header = authHeader();
   try {
     const response = await axios.post(url, body, header);
 
-    toast.info('Kopier link til offenligt arbejdsområde', {
+    toast.info("Kopier link til offenligt arbejdsområde", {
       position: toast.POSITION.BOTTOM_CENTER,
       autoClose: 5000,
       hideProgressBar: false,
@@ -497,8 +625,8 @@ export const shareWorkspace = (id, firstName, lastName, email, phone, editable, 
       toastId: Math.random() * 100 + 10,
       onClick: (e) => {
         navigator.clipboard.writeText(response.data);
-        e.target.innerText = 'Kopieret';
-      }
+        e.target.innerText = "Kopieret";
+      },
     });
 
     setShareModalOpen(false);
@@ -509,41 +637,70 @@ export const shareWorkspace = (id, firstName, lastName, email, phone, editable, 
   }
 };
 
-export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, publicUserLastName, securityCode) => async dispatch => {
+export const accessPublicWorkspace = (
+  workspaceId,
+  userId,
+  publicUserFirstName,
+  publicUserLastName,
+  securityCode
+) => async (dispatch) => {
   dispatch({ type: types.PUBLIC_ACCESS_WORKSPACE_LOADING });
 
   const url = `${baseUrl}/workspaces/public/access/${workspaceId}`;
   const body = {
-    userId, securityCode
+    userId,
+    securityCode,
   };
   const header = authHeader();
   try {
     const response = await axios.post(url, body, header);
     const { workspace, accessToken, user } = response.data;
     const {
-      elements, label, description, group, zoom, x_position, y_position, signed, signed_by
+      elements,
+      label,
+      description,
+      group,
+      zoom,
+      x_position,
+      y_position,
+      signed,
+      signed_by,
     } = workspace;
 
     dispatch({
-      type: types.SHOW_WORKSPACE_SUCCESS, label, description, group, elements, zoom, x_position, y_position, signed, signed_by
+      type: types.SHOW_WORKSPACE_SUCCESS,
+      label,
+      description,
+      group,
+      elements,
+      zoom,
+      x_position,
+      y_position,
+      signed,
+      signed_by,
     });
 
     saveToLocalStorage({
-      ...accessToken, ...user
+      ...accessToken,
+      ...user,
     });
 
     LogRocket.identify(user.id, {
-      name: user.first_name + ' ' + user.last_name,
+      name: user.first_name + " " + user.last_name,
       email: user.email,
     });
 
     analytics.identify(user.id, {
-      name: user.first_name + ' ' + user.last_name,
+      name: user.first_name + " " + user.last_name,
       email: user.email,
     });
 
     dispatch({
-      type: types.PUBLIC_ACCESS_WORKSPACE_SUCCESS, publicUserFirstName, publicUserLastName, workspaceId, editable: user.editable
+      type: types.PUBLIC_ACCESS_WORKSPACE_SUCCESS,
+      publicUserFirstName,
+      publicUserLastName,
+      workspaceId,
+      editable: user.editable,
     });
   } catch (error) {
     console.log(error.response);
@@ -556,7 +713,7 @@ export const accessPublicWorkspace = (workspaceId, userId, publicUserFirstName, 
   }
 };
 
-export const signWorkspace = (id, setShowSignWorkspace) => async dispatch => {
+export const signWorkspace = (id, setShowSignWorkspace) => async (dispatch) => {
   const url = `${baseUrl}/workspaces/sign/${id}`;
   const body = {};
   const header = authHeader();
@@ -569,7 +726,7 @@ export const signWorkspace = (id, setShowSignWorkspace) => async dispatch => {
   }
 };
 
-export const saveAnalysis = (id, output, subgraph) => async dispatch => {
+export const saveAnalysis = (id, output, subgraph) => async (dispatch) => {
   const url = `${baseUrl}/workspaces/analysis/${id}`;
   const body = { output, subgraph };
   const header = authHeader();
@@ -581,49 +738,58 @@ export const saveAnalysis = (id, output, subgraph) => async dispatch => {
   }
 };
 
-export const revisionHistory = (id) => async dispatch => {
+export const revisionHistory = (id) => async (dispatch) => {
   const url = `${baseUrl}/workspaces/analysis/${id}`;
   const header = authHeader();
   try {
     const response = await axios.get(url, header);
 
-    dispatch({ type: types.WORKSPACE_ANALYSIS_REVISION_SUCCESS, revisionHistory: response.data });
+    dispatch({
+      type: types.WORKSPACE_ANALYSIS_REVISION_SUCCESS,
+      revisionHistory: response.data,
+    });
   } catch (error) {
     dispatch({ type: types.WORKSPACE_ANALYSIS_REVISION_FAILED, message });
   }
 };
 
-export const cvrWorkspacePublic = (id, cvr, erstTypes) => async dispatch => {
+export const cvrWorkspacePublic = (id, cvr, erstTypes) => async (dispatch) => {
   const url = `${baseUrl}/koncerndiagrammer/${id}`;
   const body = {
     cvr,
-    erstTypes
+    erstTypes,
   };
   try {
     await axios.post(url, body);
   } catch (error) {
-    let _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
+    let _message = "Vi har desværre nogle problemer med kommunkationen til CVR";
 
     if (error?.response?.status === 503) {
-      _message = 'Du skal være på et Draw plan for at trække selskaber med over 100 elementer';
+      _message =
+        "Du skal være på et Draw plan for at trække selskaber med over 100 elementer";
     }
     dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
   }
 };
 
-export const mapUncertainCompanies = (id, uncertainCompanies, erstTypes) => async dispatch => {
+export const mapUncertainCompanies = (
+  id,
+  uncertainCompanies,
+  erstTypes
+) => async (dispatch) => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/uncertainCompanies/${id}`;
   const header = authHeader();
   const body = {
     uncertainCompanies,
-    erstTypes
+    erstTypes,
   };
   try {
     await axios.post(url, body, header);
   } catch (error) {
     console.log(error.response);
-    const _message = 'Vi har desværre nogle problemer med kommunkationen til CVR';
+    const _message =
+      "Vi har desværre nogle problemer med kommunkationen til CVR";
     dispatch({ type: types.GET_CVR_NODES_FAILED, message: _message });
   }
 };
@@ -631,98 +797,99 @@ export const mapUncertainCompanies = (id, uncertainCompanies, erstTypes) => asyn
 export const analysisTextChange = (text, index) => ({
   type: types.ANALYSIS_TEXT_CHANGE,
   text,
-  index
+  index,
 });
-
 
 export const cvrSuccess = (elements) => ({
   type: types.GET_CVR_NODES_SUCCESS,
-  elements
+  elements,
+});
+
+export const layoutElements = (elements) => ({
+  type: types.LAYOUT_ELEMENTS,
+  elements,
 });
 
 export const uncertainCompaniesChange = (companies) => ({
   type: types.HANDLE_UNCERTAIN_COMPANIES,
-  companies
+  companies,
 });
 
-
-export const labelChange = label => ({
+export const labelChange = (label) => ({
   type: types.LABEL_CHANGE,
   label,
 });
 
-export const descriptionChange = description => ({
+export const descriptionChange = (description) => ({
   type: types.DESCRIPTION_CHANGE,
   description,
 });
 
-export const addGroup = group => ({
+export const addGroup = (group) => ({
   type: types.ADD_GROUP,
-  group
+  group,
 });
 
-export const changeTags = tags => ({
+export const changeTags = (tags) => ({
   type: types.CHANGE_TAGS,
-  tags
+  tags,
 });
-
 
 export const shareOrgChange = { type: types.SHARE_ORG_CHANGE };
 
-
-export const addEdgeToList = edge => ({
+export const addEdgeToList = (edge) => ({
   type: types.EDGE_ADD_TO_LIST,
   edge,
 });
 
-export const addWorkspaceNodeToList = node => ({
+export const addWorkspaceNodeToList = (node) => ({
   type: types.WORKSPACE_NODE_ADD_TO_LIST,
   node,
 });
 
-export const addWorkspaceNodeAttributToList = attribut => ({
+export const addWorkspaceNodeAttributToList = (attribut) => ({
   type: types.WORKSPACE_NODE_ATTRIBUT_ADD_TO_LIST,
   attribut,
 });
 
-export const changeHandleVisability = bool => ({
+export const changeHandleVisability = (bool) => ({
   type: types.SHOW_HANDLES_CHANGE,
   bool,
 });
 
 export const closeNotifAction = {
-  type: notification.CLOSE_NOTIF
+  type: notification.CLOSE_NOTIF,
 };
 
-export const showNotifAction = _message => ({
+export const showNotifAction = (_message) => ({
   type: notification.SHOW_NOTIF,
-  message: _message
+  message: _message,
 });
 
 export const setPublicAccessFalse = {
-  type: types.SET_PUBLIC_ACCESS_FALSE
+  type: types.SET_PUBLIC_ACCESS_FALSE,
 };
 
 export const firstPublicVisit = {
   type: types.SET_PUBLIC_VISITED,
 };
 
-export const setShowCompanyData = show => ({
+export const setShowCompanyData = (show) => ({
   type: types.SET_SHOW_COMPANY_DATA,
-  show
+  show,
 });
 
-export const setShowAddressInfo = show => ({
+export const setShowAddressInfo = (show) => ({
   type: types.SET_SHOW_ADDRESS_INFO,
-  show
+  show,
 });
 
-export const handleRunIntro = run => ({
+export const handleRunIntro = (run) => ({
   type: types.RUN_INTRO_WORKSPACE,
-  run
+  run,
 });
 
-export const changeStepIndex = index => ({
+export const changeStepIndex = (index) => ({
   type: types.CHANGE_STEP_INDEX_WORKSPACE,
-  index
+  index,
 });

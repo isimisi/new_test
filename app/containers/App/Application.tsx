@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
-import { loadFromLocalStorage } from '@utils/localStorage';
-import { ReactFlowProvider } from 'react-flow-renderer';
-import { ThemeContext } from './ThemeWrapper';
-import Dashboard from '../Templates/Dashboard';
+import React, { useContext, useEffect } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
+import { loadFromLocalStorage } from "@utils/localStorage";
+import { ReactFlowProvider } from "react-flow-renderer";
+import { ThemeContext } from "./ThemeWrapper";
+import Dashboard from "../Templates/Dashboard";
 import {
   PersonalDashboard,
   Error,
@@ -26,7 +26,7 @@ import {
   Attributes,
   ChoosePlan,
   WorkspaceAnalysis
-} from '../pageListAsync';
+} from "../pageListAsync";
 
 function Application() {
   const history = useHistory();
@@ -35,7 +35,7 @@ function Application() {
   useEffect(() => {
     const { type } = loadFromLocalStorage();
 
-    if (type === 'client') {
+    if (type === "client") {
       localStorage.clear();
     }
   }, []);

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable array-callback-return */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable new-cap */
@@ -9,9 +12,6 @@ import React, {
 } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
-  Controls,
-  MiniMap,
-  ControlButton,
   Background,
   isNode,
   Node,
@@ -26,14 +26,18 @@ import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
+
 import brand from '@api/dummy/brand';
 import PropTypes from 'prop-types';
 import {
   useHistory
 } from 'react-router-dom';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+
+import ChatIcon from '@material-ui/icons/Chat';
+import MouseIcon from '@material-ui/icons/Mouse';
+
+import HistoryIcon from '@material-ui/icons/History';
+
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import { toast } from 'react-toastify';
@@ -57,7 +61,6 @@ import CompanyDataModel from '@components/Workspace/CompanyDataModel';
 import AddressInfoModel from '@components/Workspace/AddressInfoModel';
 import ShareModal from '@components/Workspace/Share/ShareModal';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import WorkspaceFabs from '@components/Workspace/WorkspaceFabs';
 import RelationshipModal from '@components/Workspace/RelationshipModal';
 import NodeContextMenu from '@components/Workspace/ContextMenu/NodeContextMenu';
 import { useTranslation } from 'react-i18next';
@@ -65,7 +68,7 @@ import useContextMenu from '@hooks/useContextMenu';
 import useWorkspaceHotKeys from '@hooks/useWorkspaceHotKeys';
 
 import SelectionContextMenu from '@components/Workspace/ContextMenu/SelectionContextMenu';
-import { openMenuAction, closeMenuAction } from '@redux/actions/uiActions';
+import { openMenuAction, closeMenuAction, toggleAction } from '@redux/actions/uiActions';
 import { ContextTypes, NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
 import {
@@ -83,9 +86,37 @@ import {
   setShowCompanyData, setShowAddressInfo,
   handleRunIntro, uncertainCompaniesChange,
   mapUncertainCompanies, changeTags, addElements,
-  getCompanyData, getAddressInfo
+  getCompanyData, getAddressInfo, layoutElements
 } from './reducers/workspaceActions';
 import './workspace.css';
+import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
+
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Avatar, { genConfig } from 'react-nice-avatar';
+import Controls from '@components/Workspace/Actions/Controls';
+import Items from '@components/Workspace/Actions/Items';
+import Meta from '@components/Workspace/Actions/Meta';
+const config = genConfig({
+  sex: "man",
+  faceColor: "#F9C9B6",
+  earSize: "big",
+  eyeStyle: "oval",
+  noseStyle: "round",
+  mouthStyle: "peace",
+  shirtStyle: "polo",
+  glassesStyle: "none",
+  hairColor: "#000",
+  hairStyle: "thick",
+  hatStyle: "none",
+  hatColor: "#FC909F",
+  eyeBrowStyle: "up",
+  shirtColor: "#F4D150",
+  bgColor: "#E0DDFF"
+});
+
+const { first_name, last_name } = loadFromLocalStorage();
 
 
 const nodeTypes = {
@@ -140,6 +171,8 @@ const Workspace = (props) => {
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const loading = useAppSelector(state => state[reducer].get('loading'));
   const initialLoading = useAppSelector(state => state[reducer].get('initialLoading'));
+  const initialLoadingCvr = useAppSelector(state => state[reducer].get('initialLoadingCvr'));
+
   const companyData = useAppSelector(state => state[reducer].get('companyData'));
   const addressInfo = useAppSelector(state => state[reducer].get('addressInfo'));
   const signed = useAppSelector(state => state[reducer].get('signed'));
@@ -386,6 +419,7 @@ const Workspace = (props) => {
     _reactFlowInstance.fitView();
   };
 
+  const toggleSubMenu = () => dispatch(toggleAction);
 
   useEffect(() => {
     dispatch(getGroupDropDown());
@@ -543,8 +577,9 @@ const Workspace = (props) => {
       y: mouse.clientY - reactFlowBounds.top,
     });
 
-    const x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250 : 0;
-    const y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150 : 0;
+    // TODO: fix position in new version
+    const x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width / 3) / rf.zoom - 250 : 0;
+    const y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height / 2) / rf.zoom - 150 : 0;
 
     dispatch(postSticky(id, x, y));
     setShowContextMenu(false);
@@ -707,6 +742,12 @@ const Workspace = (props) => {
     (_id) => dispatch(getAddressInfo(_id, setShowContextMenu))
   );
 
+  const handleOpenCvr = () => {
+    dispatch(handleRunIntro(false));
+    setShowCvrModal(true);
+  };
+
+  const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
 
   return (
     <div>
@@ -733,6 +774,7 @@ const Workspace = (props) => {
           onSelectionContextMenu={handleSelctionContextMenu}
           onEdgeContextMenu={handleEdgeContextMenu}
           snapToGrid={snapToGrid}
+          snapGrid={[BASE_BG_GAP / currentZoom, BASE_BG_GAP / currentZoom]}
           elementsSelectable={!signed}
           selectNodesOnDrag={!signed}
           nodeTypes={nodeTypes}
@@ -746,14 +788,7 @@ const Workspace = (props) => {
           connectionMode={ConnectionMode.Loose}
           onElementClick={!signed ? onElementClick : undefined}
         >
-          <div data-html2canvas-ignore="true">
-            <MiniMap
-              nodeStrokeWidth={3}
-              nodeColor={theme.palette.secondary.main}
-              style={{ top: 10, right: 10, borderRadius: 10 }}
-            />
-          </div>
-          <div data-html2canvas-ignore="true">
+          {/* <div data-html2canvas-ignore="true">
             <Controls showInteractive={!signed} style={{ borderRadius: 4 }}>
               <ControlButton onClick={() => {
                 takeScreenShot(reactFlowContainer?.current);
@@ -767,18 +802,94 @@ const Workspace = (props) => {
                 </ControlButton>
               )}
             </Controls>
-          </div>
+          </div> */}
+          <Paper
+            elevation={4}
+            style={{
+
+              position: 'absolute',
+              zIndex: 1000,
+              backgroundColor: "#fff",
+              right: 10,
+              top: 10,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'row',
+            }}
+          >
+            <Tooltip arrow title={`${t('workspaces.history')}`} placement="bottom">
+              <IconButton className={classes.buttons}>
+                <HistoryIcon className={classes.buttons} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip arrow title={`${t('workspaces.chat')}`} placement="bottom">
+              <IconButton className={classes.buttons}>
+                <ChatIcon className={classes.buttons} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip arrow title={`${t('workspaces.collaborators_curser')}`} placement="bottom">
+              <IconButton className={classes.buttons}>
+                <MouseIcon className={classes.buttons} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              arrow
+              title={<>
+                <Typography variant="subtitle1" style={{ fontSize: 16 }} align="center">
+                  {t('workspaces.you', { first_name, last_name })}
+                </Typography>
+                <Typography style={{ fontSize: 12, color: 'gray' }} align="center">
+                Workspace owner
+                </Typography>
+              </>}
+              placement="bottom"
+            >
+              <div
+                onClick={() => {
+                  console.log('sdnlks');
+                }}
+                style={{ cursor: "pointer", margin: "0 12px" }}
+              >
+                <Avatar style={{ width: 30, height: 30 }} {...config} />
+              </div>
+            </Tooltip>
+            <Button variant="contained" color="primary" style={{ borderRadius: 4, padding: "2px 6px", margin: "0 12px" }}>
+              {t('workspaces.share')}
+            </Button>
+          </Paper>
+          <Meta
+            label={label}
+            setMetaOpen={setMetaOpen}
+            handleVisabilityChange={handleVisabilityChange}
+            handleVisability={handleVisability}
+            setSnapToGrid={setSnapToGrid}
+            snapToGrid={snapToGrid}
+            handleAutoLayout={handleAutoLayout}
+            handleOpenMenu={toggleSubMenu}
+          />
+          <Items
+            setDefineNodeOpen={setDefineNodeOpen}
+            defineNodeOpen={defineNodeOpen}
+            handlePostSticky={handlePostSticky}
+            handleOpenCvr={handleOpenCvr}
+            setShowAlertLog={setShowAlertLog}
+            showAlertLog={showAlertLog}
+            history={history}
+            id={id}
+          />
+          <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
           {handleVisability && !signed
                && (
                  <Background
                    variant={BackgroundVariant.Lines}
                    gap={BASE_BG_GAP / currentZoom}
                    size={BASE_BG_STROKE / currentZoom / 2}
+                   color="#dadcdf"
                  />
                )}
         </ReactFlow>
-
-        {initialLoading && (
+        {(initialLoading || initialLoadingCvr) && (
           <>
             <div style={{
               width: '100%', height: '100%', backgroundColor: 'white', position: 'absolute', zIndex: 10
@@ -841,7 +952,6 @@ const Workspace = (props) => {
           shareOrg,
           setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
-
       />
       <DefineEdge
         open={defineEdgeOpen}
@@ -1005,7 +1115,7 @@ const Workspace = (props) => {
         nodes={nodes}
         relationships={relationships}
       />
-      {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && !showCompanyData && !showAddressInfo && !showNodeRelations && (
+      {/* {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && !showCompanyData && !showAddressInfo && !showNodeRelations && (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
           metaClick={() => setMetaOpen(true)}
@@ -1020,7 +1130,7 @@ const Workspace = (props) => {
           onShareClick={() => setShareModalOpen(true)}
           plan_id={plan_id}
         />
-      )}
+      )} */}
       <CompanyDataModel
         open={showCompanyData}
         close={() => dispatch(setShowCompanyData(false))}
@@ -1043,6 +1153,7 @@ const Workspace = (props) => {
         activeNodeRelations={activeNodeRelations}
         elements={elements}
       />
+
       {!signed && (
         <>
           <NodeContextMenu

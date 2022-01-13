@@ -1,15 +1,12 @@
-import React, { Fragment } from 'react';
-import { PropTypes } from 'prop-types';
-import classNames from 'classnames';
-import Fade from '@material-ui/core/Fade';
-import { withStyles } from '@material-ui/core/styles';
-import {
-  Header,
-  Sidebar,
-} from '@components';
-import dataMenu from '@api/ui/menu';
-import Decoration from '../Decoration';
-import styles from '../appStyles-jss';
+import React, { Fragment } from "react";
+import { PropTypes } from "prop-types";
+import classNames from "classnames";
+import Fade from "@material-ui/core/Fade";
+import { withStyles } from "@material-ui/core/styles";
+import { Header, Sidebar } from "@components";
+import dataMenu from "@api/ui/menu";
+import Decoration from "../Decoration";
+import styles from "../appStyles-jss";
 
 function LeftSidebarLayout(props) {
   const {
@@ -26,22 +23,26 @@ function LeftSidebarLayout(props) {
     bgPosition,
     changeMode,
     place,
-    handleOpenGuide
+    handleOpenGuide,
   } = props;
+
+  const isWorkspace = history.location.pathname.includes("workspaces/");
 
   return (
     <Fragment>
-      <Header
-        toggleDrawerOpen={toggleDrawer}
-        margin={sidebarOpen}
-        gradient={gradient}
-        position="left-sidebar"
-        changeMode={changeMode}
-        mode={mode}
-        title={place}
-        history={history}
-        openGuide={handleOpenGuide}
-      />
+      {!isWorkspace && (
+        <Header
+          toggleDrawerOpen={toggleDrawer}
+          margin={sidebarOpen}
+          gradient={gradient}
+          position="left-sidebar"
+          changeMode={changeMode}
+          mode={mode}
+          title={place}
+          history={history}
+          openGuide={handleOpenGuide}
+        />
+      )}
       <Sidebar
         open={sidebarOpen}
         toggleDrawerOpen={toggleDrawer}
@@ -49,7 +50,18 @@ function LeftSidebarLayout(props) {
         dataMenu={dataMenu}
         leftSidebar
       />
-      <main className={classNames(classes.content, !sidebarOpen ? classes.contentPaddingLeft : '')} id="mainContent">
+      <main
+        className={classNames(
+          classes.content,
+          !sidebarOpen
+            ? isWorkspace
+              ? classes.contentPaddingLeftWorkspace
+              : classes.contentPaddingLeft
+            : "",
+          isWorkspace ? classes.contentPaddingNone : ""
+        )}
+        id="mainContent"
+      >
         <Decoration
           mode={mode}
           gradient={gradient}
@@ -57,15 +69,24 @@ function LeftSidebarLayout(props) {
           bgPosition={bgPosition}
           horizontalMenu={false}
         />
-        <section className={classNames(classes.mainWrap, classes.sidebarLayout)}>
-          { !pageLoaded && (<img src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/spinner.gif" alt="spinner" className={classes.circularProgress} />) }
-          <Fade
-            in={pageLoaded}
-            {...(pageLoaded ? { timeout: 700 } : {})}
-          >
-            <div className={!pageLoaded ? classes.hideApp : ''}>
+        <section
+          className={classNames(
+            classes.mainWrap,
+            classes.sidebarLayout,
+            isWorkspace ? classes.wrapSidebarPaddingNone : ""
+          )}
+        >
+          {!pageLoaded && (
+            <img
+              src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/spinner.gif"
+              alt="spinner"
+              className={classes.circularProgress}
+            />
+          )}
+          <Fade in={pageLoaded} {...(pageLoaded ? { timeout: 700 } : {})}>
+            <div className={!pageLoaded ? classes.hideApp : ""}>
               {/* Application content will load here */}
-              { children }
+              {children}
             </div>
           </Fade>
         </section>
@@ -88,7 +109,7 @@ LeftSidebarLayout.propTypes = {
   deco: PropTypes.bool.isRequired,
   bgPosition: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
-  handleOpenGuide: PropTypes.func.isRequired
+  handleOpenGuide: PropTypes.func.isRequired,
 };
 
-export default (withStyles(styles)(LeftSidebarLayout));
+export default withStyles(styles)(LeftSidebarLayout);

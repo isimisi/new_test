@@ -358,7 +358,59 @@
       "relations": "Relationer",
       "values": "Værdier"
     },
-    "public_editable_notification": "Du har ikke adgang til at ændre i elementer. Bed personen der har givet dig adgang til dette arbejdsområde om lov, såfremt dette er nødvendigt."
+    "public_editable_notification": "Du har ikke adgang til at ændre i elementer. Bed personen der har givet dig adgang til dette arbejdsområde om lov, såfremt dette er nødvendigt.",
+    "goBack": "Gå tilbage",
+    "editMeta": "Rediger arbejdsområde indstillinger",
+    "settings": "Indstillinger",
+    "export": "Eksport",
+    "search": "Søg",
+    "share": "Del",
+    "you": "{{first_name}} {{last_name}} (dig)",
+    "collaborators_curser": "Vis andres mus",
+    "chat": "Samtaletråd",
+    "menu": "Vis Menu",
+    "full_screen": "Fuld Skærm",
+    "map": "Vis Kort over elementer",
+    "fit_to_view": "Fit elementer til skærm",
+    "zoom_out": "Zoom ud",
+    "zoom_to_100": "Zoom til 100%",
+    "zoom_in": "Zoom ind",
+    "help": "Læring og hjælp",
+    "add_node": "Tilføj Element",
+    "add_note": "Tilføj Note",
+    "get_from_company_data": "Hent fra virksomhedsregistre",
+    "undo": "Tilbage",
+    "redo": "Fremad",
+    "analyse": "Analyser",
+    "red_flags": "Red flags",
+    "dont_show_map": "Vis ikke kort over elementer",
+    "exit_full_screen": "Afslut fuldskærmsvisning",
+    "history": "Historie",
+    "open_shotcuts": "Genveje",
+    "beautify": "Auto layout elementer",
+    "tools": "Værktøjer",
+    "shortcuts": {
+      "element": "Element",
+      "note": "Note",
+      "company data": "Selskabsdata",
+      "red_flags": "Red flags",
+      "analyse": "Analyser",
+      "copy": "Kopier",
+      "paste": "Indsæt",
+      "cut": "Klip",
+      "multi_select": "Vælg flere elementer",
+      "delete": "Slet",
+      "mini_map": "Kort over elementer",
+      "zoom_in": "Zoom ind",
+      "zoom_out": "Zoom ud",
+      "zoom_to_100": "Zoom til 100%",
+      "navigation": "Navigation"
+    },
+    "general": "Generalt",
+    "node_data": "Data på element",
+    "picture": "Image",
+    "pdf": "PDF",
+    "power_point": "Powerpoint (Kommer snart)"
   },
   "workspace-analysis": {
     "earlier_versions": "Tidligere versioner",
@@ -542,5 +594,8 @@
   "public_workspace": {
     "you_security_code": "Din sikkerhedskode",
     "hint": "Du har modtaget koden på sms. Hvis ikke så kontakt personen, som har delt dette arbejdsområde med dig."
+  },
+  "workspace": {
+    "open_shotcuts": "Genveje"
   }
 }

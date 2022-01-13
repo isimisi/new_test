@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
-import Hidden from '@material-ui/core/Hidden';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
+import Hidden from "@material-ui/core/Hidden";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
-import { useTranslation } from 'react-i18next';
-import UserMenu from './UserMenu';
+import { useTranslation } from "react-i18next";
+import UserMenu from "./UserMenu";
 // import LanguageSelector from '../LanguageSelector';
-import styles from './header-jss';
-
-const elem = document.documentElement;
+import styles from "./header-jss";
+import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
 
 function Header(props) {
   const [open] = useState(false);
@@ -32,8 +31,8 @@ function Header(props) {
   const handleScroll = () => {
     const doc = document.documentElement;
     const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    const newFlagDarker = (scroll > 30);
-    const newFlagTitle = (scroll > 40);
+    const newFlagDarker = scroll > 30;
+    const newFlagTitle = scroll > 40;
     if (flagDarker !== newFlagDarker) {
       setTurnDarker(newFlagDarker);
       flagDarker = newFlagDarker;
@@ -45,38 +44,11 @@ function Header(props) {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const openFullScreen = () => {
-    setFullScreen(true);
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  };
-
-  const closeFullScreen = () => {
-    setFullScreen(false);
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-  };
-
 
   const {
     classes,
@@ -84,14 +56,14 @@ function Header(props) {
     margin,
     position,
     openGuide,
-    history
+    history,
   } = props;
 
   const setMargin = (sidebarPosition) => {
-    if (sidebarPosition === 'right-sidebar') {
+    if (sidebarPosition === "right-sidebar") {
       return classes.right;
     }
-    if (sidebarPosition === 'left-sidebar-big') {
+    if (sidebarPosition === "left-sidebar-big") {
       return classes.leftBig;
     }
     return classes.left;
@@ -103,16 +75,14 @@ function Header(props) {
 
   return (
     <AppBar
-      className={
-        classNames(
-          classes.appBar,
-          classes.floatingBar,
-          margin && classes.appBarShift,
-          setMargin(position),
-          turnDarker && classes.darker,
-          classes.solidBg
-        )
-      }
+      className={classNames(
+        classes.appBar,
+        classes.floatingBar,
+        margin && classes.appBarShift,
+        setMargin(position),
+        turnDarker && classes.darker,
+        classes.solidBg
+      )}
     >
       <Toolbar disableGutters={!open}>
         <Fab
@@ -127,15 +97,24 @@ function Header(props) {
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction)}>
               {fullScreen ? (
-                <Tooltip title={t('header.exit_full_screen')} placement="bottom">
-                  <IconButton className={classes.button} onClick={closeFullScreen}>
+                <Tooltip
+                  title={t("header.exit_full_screen")}
+                  placement="bottom"
+                >
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => closeFullScreen(setFullScreen)}
+                  >
                     <i className="ion-ios-crop" />
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title={t('header.full_screen')} placement="bottom">
-                  <IconButton className={classes.button} onClick={openFullScreen}>
-                    <i className="ion-ios-crop" style={{ color: '#333' }} />
+                <Tooltip title={t("header.full_screen")} placement="bottom">
+                  <IconButton
+                    className={classes.button}
+                    onClick={() => openFullScreen(setFullScreen)}
+                  >
+                    <i className="ion-ios-crop" style={{ color: "#333" }} />
                   </IconButton>
                 </Tooltip>
               )}
@@ -145,15 +124,21 @@ function Header(props) {
                 </IconButton>
               </Tooltip> */}
 
-              <Tooltip title={t('header.update')} placement="bottom">
+              <Tooltip title={t("header.update")} placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
-                  <i className="ion-ios-refresh-outline" style={{ color: '#333' }} />
+                  <i
+                    className="ion-ios-refresh-outline"
+                    style={{ color: "#333" }}
+                  />
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title={t('header.guide')} placement="bottom">
+              <Tooltip title={t("header.guide")} placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
-                  <i className="ion-ios-help-outline" style={{ color: '#333' }} />
+                  <i
+                    className="ion-ios-help-outline"
+                    style={{ color: "#333" }}
+                  />
                 </IconButton>
               </Tooltip>
             </div>

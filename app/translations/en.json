@@ -359,7 +359,59 @@
       "relations": "Relations",
       "values": "Values"
     },
-    "public_editable_notification": "You do not have access til change elements. Ask permission from the person, who invited you to this workspace."
+    "public_editable_notification": "You do not have access til change elements. Ask permission from the person, who invited you to this workspace.",
+    "goBack": "Go Back",
+    "editMeta": "Edit board settings",
+    "settings": "Settings",
+    "export": "Export",
+    "search": "Search",
+    "share": "Share",
+    "you": "{{first_name}} {{last_name}} (you)",
+    "collaborators_curser": "Show collaborator's cursor",
+    "chat": "Chat",
+    "menu": "Show Menu",
+    "full_screen": "Full Screen",
+    "map": "Show elements map",
+    "fit_to_view": "Fit to view",
+    "zoom_out": "Zoom out",
+    "zoom_to_100": "Zoom to 100%",
+    "zoom_in": "Zoom in",
+    "help": "Learnings and help",
+    "add_node": "Add element",
+    "add_note": "Add sticky note",
+    "get_from_company_data": "Get from company register",
+    "undo": "Undo",
+    "redo": "Redo",
+    "analyse": "Analyse",
+    "red_flags": "Red flags",
+    "dont_show_map": "Do not show elements map",
+    "exit_full_screen": "Exit full screen view",
+    "history": "History",
+    "open_shotcuts": "Shortcuts",
+    "beautify": "Auto layout",
+    "tools": "Tools",
+    "shortcuts": {
+      "element": "Element",
+      "note": "Note",
+      "company data": "Company Data",
+      "red_flags": "Red flags",
+      "analyse": "Analyse",
+      "copy": "Copy",
+      "paste": "Paste",
+      "cut": "Cut",
+      "multi_select": "Multi select",
+      "delete": "Delete",
+      "navigation": "Navigation",
+      "mini_map": "Mini Map",
+      "zoom_in": "Zoom in",
+      "zoom_out": "Zoom out",
+      "zoom_to_100": "Zoom to 100%"
+    },
+    "general": "General",
+    "node_data": "Element data",
+    "picture": "Picture",
+    "pdf": "PDF",
+    "power_point": "Powerpoint (Comming soon)"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
@@ -543,5 +595,8 @@
   "public_workspace": {
     "you_security_code": "Your security code",
     "hint": "You have recieved the code on SMS. If not contact the persion, who has shared this workspace with you."
+  },
+  "workspace": {
+    "open_shotcuts": "Shortcuts"
   }
 }

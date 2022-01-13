@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core/styles/colorManipulator";
 
 const drawerWidth = 300;
-const drawerHeight = "87vh";
+const drawerHeight = "100vh";
 
 const styles = (theme) => ({
   table: {
@@ -31,7 +31,12 @@ const styles = (theme) => ({
       },
     },
   },
-
+  buttons: {
+    "&:hover": {
+      backgroundColor: "transparent",
+      color: theme.palette.primary.main,
+    },
+  },
   img: {
     width: 90,
   },
@@ -81,9 +86,7 @@ const styles = (theme) => ({
     zIndex: 1,
     overflow: "hidden",
     position: "relative",
-    borderRadius: theme.rounded.medium,
     boxShadow: theme.shade.light,
-    marginBottom: theme.spacing(3),
     [theme.breakpoints.up("sm")]: {
       display: "flex",
     },

@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import Hidden from '@material-ui/core/Hidden';
-import Drawer from '@material-ui/core/Drawer';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import useStyle from './sidebar-jss';
-import SidebarContent from './SidebarContent';
+import React, { useState, useEffect, Fragment } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import Hidden from "@material-ui/core/Hidden";
+import Drawer from "@material-ui/core/Drawer";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import useStyle from "./sidebar-jss";
+import SidebarContent from "./SidebarContent";
 
 function Sidebar(props) {
   const classes = useStyle();
@@ -17,7 +17,7 @@ function Sidebar(props) {
   const handleScroll = () => {
     const doc = document.documentElement;
     const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    const newFlagDarker = (scroll > 30);
+    const newFlagDarker = scroll > 30;
     if (flagDarker !== newFlagDarker) {
       setTurnDarker(newFlagDarker);
       flagDarker = newFlagDarker;
@@ -25,9 +25,9 @@ function Sidebar(props) {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -46,7 +46,7 @@ function Sidebar(props) {
           onClose={toggleDrawerOpen}
           onOpen={toggleDrawerOpen}
           open={!open}
-          anchor={leftSidebar ? 'left' : 'right'}
+          anchor="left"
         >
           <div className={classes.swipeDrawerPaper}>
             <SidebarContent
@@ -63,12 +63,16 @@ function Sidebar(props) {
         <Drawer
           variant="permanent"
           onClose={toggleDrawerOpen}
-          className={open ? classes.drawer : ''}
+          className={open ? classes.drawer : ""}
           classes={{
-            paper: classNames(classes.drawer, classes.drawerPaper, !open ? classes.drawerPaperClose : ''),
+            paper: classNames(
+              classes.drawer,
+              classes.drawerPaper,
+              !open ? classes.drawerPaperClose : ""
+            )
           }}
           open={open}
-          anchor={leftSidebar ? 'left' : 'right'}
+          anchor="left"
         >
           <SidebarContent
             drawerPaper={open}
@@ -88,7 +92,7 @@ Sidebar.propTypes = {
   loadTransition: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   leftSidebar: PropTypes.bool,
-  dataMenu: PropTypes.array.isRequired,
+  dataMenu: PropTypes.array.isRequired
 };
 
 Sidebar.defaultProps = {

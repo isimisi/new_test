@@ -182,7 +182,8 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
 
   const confirm = () => {
     const cvr = cvrSearch.includes('DK') && cvrSearch.length < 12 ? cvrSearch.substring(2) : cvrSearch;
-    dispatch(postWorkspace(history, undefined, undefined, undefined, undefined, undefined, cvr));
+
+    dispatch(postWorkspace(history, cvr, undefined, 'Corporate', undefined, undefined, cvr));
   };
 
   const getAsyncOptions = inputValue => axios

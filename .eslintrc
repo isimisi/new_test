@@ -60,6 +60,7 @@
     // ],
     "@typescript-eslint/ban-ts-comment": 0,
     "jsx-a11y/anchor-is-valid": 0,
+    "operator-linebreak": 0,
     "react/default-props-match-prop-types": 0,
     "arrow-parens": 0,
     "react/jsx-closing-tag-location": 0,
