@@ -14,6 +14,9 @@ const styles = makeStyles((theme: MyTheme) => ({
   drawer: {
     width: drawerWidth,
   },
+  tooltip: {
+    right: 180,
+  },
   drawerPaper: {
     position: "relative",
     height: "100%",

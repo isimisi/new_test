@@ -95,18 +95,22 @@ const Items = (props: Props) => {
       </Tooltip>
       <Divider flexItem className={classes.horDivider} />
       <Tooltip arrow title={`${t("workspaces.undo")}`} placement="right">
-        <IconButton className={classes.buttons} disabled>
-          <UndoIcon
-            className={classNames(classes.buttons, classes.biggerIcon)}
-          />
-        </IconButton>
+        <span>
+          <IconButton className={classes.buttons} disabled>
+            <UndoIcon
+              className={classNames(classes.buttons, classes.biggerIcon)}
+            />
+          </IconButton>
+        </span>
       </Tooltip>
       <Tooltip arrow title={`${t("workspaces.redo")}`} placement="right">
-        <IconButton className={classes.buttons} disabled>
-          <RedoIcon
-            className={classNames(classes.buttons, classes.biggerIcon)}
-          />
-        </IconButton>
+        <span>
+          <IconButton className={classes.buttons} disabled>
+            <RedoIcon
+              className={classNames(classes.buttons, classes.biggerIcon)}
+            />
+          </IconButton>
+        </span>
       </Tooltip>
     </Paper>
   );

@@ -5,6 +5,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import MenuIcon from "@material-ui/icons/Menu";
 import { NavLink } from "react-router-dom";
 import logo from "@images/logo.svg";
+import powerpoint from "@images/icons/powerpoint.png";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
@@ -21,6 +22,8 @@ import Popper from "@material-ui/core/Popper";
 import Grow from "@material-ui/core/Grow";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList";
+import ImageIcon from "@material-ui/icons/Image";
+import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CustomSwitch from "@components/Switch/CustomSwitch";
@@ -35,6 +38,8 @@ interface Props {
   snapToGrid: boolean;
   handleAutoLayout: () => void;
   handleOpenMenu: () => void;
+  handleImage: () => void;
+  setExporting: React.Dispatch<React.SetStateAction<"image" | "pdf">>;
 }
 
 const Meta = (props: Props) => {
@@ -46,7 +51,9 @@ const Meta = (props: Props) => {
     setSnapToGrid,
     snapToGrid,
     handleAutoLayout,
-    handleOpenMenu
+    handleOpenMenu,
+    handleImage,
+    setExporting
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -111,6 +118,11 @@ const Meta = (props: Props) => {
   const handleToggleShortCuts = () => setShowShortCuts(prevVal => !prevVal);
   const handleCloseShortcuts = () => setShowShortCuts(false);
 
+  const handleExport = (type: "image" | "pdf") => {
+    handleImage();
+    setExporting(type);
+  };
+
   return (
     <>
       <Paper elevation={4} className={classes.metaPaper}>
@@ -162,9 +174,11 @@ const Meta = (props: Props) => {
           </IconButton>
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.search")}`} placement="bottom">
-          <IconButton className={classes.buttons}>
-            <SearchIcon className={classes.buttons} />
-          </IconButton>
+          <span>
+            <IconButton className={classes.buttons} disabled>
+              <SearchIcon className={classes.buttons} />
+            </IconButton>
+          </span>
         </Tooltip>
       </Paper>
       <Popper
@@ -245,19 +259,19 @@ const Meta = (props: Props) => {
                 <MenuList autoFocusItem={settingsOpen}>
                   <MenuItem
                     className={classes.menuItem}
-                    onClick={handleToggleShortCuts}
+                    onClick={() => handleExport("image")}
                   >
                     <ListItemIcon>
-                      <KeyboardIcon fontSize="small" />
+                      <ImageIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.picture")}</ListItemText>
                   </MenuItem>
                   <MenuItem
                     className={classes.menuItem}
-                    onClick={handleToggleShortCuts}
+                    onClick={() => handleExport("pdf")}
                   >
                     <ListItemIcon>
-                      <KeyboardIcon fontSize="small" />
+                      <PictureAsPdfIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.pdf")}</ListItemText>
                   </MenuItem>
@@ -266,7 +280,11 @@ const Meta = (props: Props) => {
                     onClick={handleAutoLayout}
                   >
                     <ListItemIcon>
-                      <AccountTreeIcon fontSize="small" />
+                      <img
+                        src={powerpoint}
+                        alt="juristic"
+                        style={{ width: 18, height: 18 }}
+                      />
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.power_point")}</ListItemText>
                   </MenuItem>

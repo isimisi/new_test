@@ -22,6 +22,8 @@ import ReactFlow, {
   isEdge,
   Edge,
 } from 'react-flow-renderer';
+import { jsPDF } from "jspdf";
+
 import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import Typography from '@material-ui/core/Typography';
@@ -33,10 +35,6 @@ import {
   useHistory
 } from 'react-router-dom';
 
-import ChatIcon from '@material-ui/icons/Chat';
-import MouseIcon from '@material-ui/icons/Mouse';
-
-import HistoryIcon from '@material-ui/icons/History';
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
@@ -89,34 +87,11 @@ import {
   getCompanyData, getAddressInfo, layoutElements
 } from './reducers/workspaceActions';
 import './workspace.css';
-import Paper from '@material-ui/core/Paper';
-import Tooltip from '@material-ui/core/Tooltip';
 
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Avatar, { genConfig } from 'react-nice-avatar';
 import Controls from '@components/Workspace/Actions/Controls';
 import Items from '@components/Workspace/Actions/Items';
 import Meta from '@components/Workspace/Actions/Meta';
-const config = genConfig({
-  sex: "man",
-  faceColor: "#F9C9B6",
-  earSize: "big",
-  eyeStyle: "oval",
-  noseStyle: "round",
-  mouthStyle: "peace",
-  shirtStyle: "polo",
-  glassesStyle: "none",
-  hairColor: "#000",
-  hairStyle: "thick",
-  hatStyle: "none",
-  hatColor: "#FC909F",
-  eyeBrowStyle: "up",
-  shirtColor: "#F4D150",
-  bgColor: "#E0DDFF"
-});
-
-const { first_name, last_name } = loadFromLocalStorage();
+import Collaboration from '@components/Workspace/Actions/Collaborations';
 
 
 const nodeTypes = {
@@ -145,6 +120,7 @@ const Workspace = (props) => {
   const id = getId(history);
   const reactFlowContainer = useRef(null);
   const [image, takeScreenShot] = useScreenshot();
+  const [exporting, setExporting] = useState<'image' | 'pdf'>('image');
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
@@ -606,13 +582,25 @@ const Workspace = (props) => {
 
   useEffect(() => {
     if (image) {
-      const a = document.createElement('a');
-      a.href = image;
+      if (exporting === "image") {
+        const a = document.createElement('a');
+        a.href = image;
 
-      a.download = createFileName('jpg', label);
-      a.click();
+        a.download = createFileName('jpg', label);
+        a.click();
+      } else {
+        const doc = new jsPDF({ orientation: 'l' });
+
+        const imgProps = doc.getImageProperties(image);
+
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        doc.addImage(image, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+        doc.save(`${label}.pdf`);
+      }
     }
-  }, [image]);
+  }, [image, exporting]);
 
 
   const onConfirm = (value, close) => {
@@ -749,6 +737,10 @@ const Workspace = (props) => {
 
   const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
 
+  const handleImage = () => {
+    takeScreenShot(reactFlowContainer?.current);
+  };
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -788,97 +780,34 @@ const Workspace = (props) => {
           connectionMode={ConnectionMode.Loose}
           onElementClick={!signed ? onElementClick : undefined}
         >
-          {/* <div data-html2canvas-ignore="true">
-            <Controls showInteractive={!signed} style={{ borderRadius: 4 }}>
-              <ControlButton onClick={() => {
-                takeScreenShot(reactFlowContainer?.current);
-              }}
-              >
-                <PhotoCameraIcon />
-              </ControlButton>
-              {!signed && (
-                <ControlButton onClick={handleVisabilityChange}>
-                  {handleVisability ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </ControlButton>
-              )}
-            </Controls>
-          </div> */}
-          <Paper
-            elevation={4}
-            style={{
-
-              position: 'absolute',
-              zIndex: 1000,
-              backgroundColor: "#fff",
-              right: 10,
-              top: 10,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}
-          >
-            <Tooltip arrow title={`${t('workspaces.history')}`} placement="bottom">
-              <IconButton className={classes.buttons}>
-                <HistoryIcon className={classes.buttons} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow title={`${t('workspaces.chat')}`} placement="bottom">
-              <IconButton className={classes.buttons}>
-                <ChatIcon className={classes.buttons} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip arrow title={`${t('workspaces.collaborators_curser')}`} placement="bottom">
-              <IconButton className={classes.buttons}>
-                <MouseIcon className={classes.buttons} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip
-              arrow
-              title={<>
-                <Typography variant="subtitle1" style={{ fontSize: 16 }} align="center">
-                  {t('workspaces.you', { first_name, last_name })}
-                </Typography>
-                <Typography style={{ fontSize: 12, color: 'gray' }} align="center">
-                Workspace owner
-                </Typography>
-              </>}
-              placement="bottom"
-            >
-              <div
-                onClick={() => {
-                  console.log('sdnlks');
-                }}
-                style={{ cursor: "pointer", margin: "0 12px" }}
-              >
-                <Avatar style={{ width: 30, height: 30 }} {...config} />
-              </div>
-            </Tooltip>
-            <Button variant="contained" color="primary" style={{ borderRadius: 4, padding: "2px 6px", margin: "0 12px" }}>
-              {t('workspaces.share')}
-            </Button>
-          </Paper>
-          <Meta
-            label={label}
-            setMetaOpen={setMetaOpen}
-            handleVisabilityChange={handleVisabilityChange}
-            handleVisability={handleVisability}
-            setSnapToGrid={setSnapToGrid}
-            snapToGrid={snapToGrid}
-            handleAutoLayout={handleAutoLayout}
-            handleOpenMenu={toggleSubMenu}
-          />
-          <Items
-            setDefineNodeOpen={setDefineNodeOpen}
-            defineNodeOpen={defineNodeOpen}
-            handlePostSticky={handlePostSticky}
-            handleOpenCvr={handleOpenCvr}
-            setShowAlertLog={setShowAlertLog}
-            showAlertLog={showAlertLog}
-            history={history}
-            id={id}
-          />
-          <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
+          {!signed && <div data-html2canvas-ignore="true">
+            <Collaboration
+              setShareModalOpen={setShareModalOpen}
+            />
+            <Meta
+              label={label}
+              setMetaOpen={setMetaOpen}
+              handleVisabilityChange={handleVisabilityChange}
+              handleVisability={handleVisability}
+              setSnapToGrid={setSnapToGrid}
+              snapToGrid={snapToGrid}
+              handleAutoLayout={handleAutoLayout}
+              handleOpenMenu={toggleSubMenu}
+              handleImage={handleImage}
+              setExporting={setExporting}
+            />
+            <Items
+              setDefineNodeOpen={setDefineNodeOpen}
+              defineNodeOpen={defineNodeOpen}
+              handlePostSticky={handlePostSticky}
+              handleOpenCvr={handleOpenCvr}
+              setShowAlertLog={setShowAlertLog}
+              showAlertLog={showAlertLog}
+              history={history}
+              id={id}
+            />
+            <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
+          </div>}
           {handleVisability && !signed
                && (
                  <Background
@@ -1115,22 +1044,6 @@ const Workspace = (props) => {
         nodes={nodes}
         relationships={relationships}
       />
-      {/* {!metaOpen && !defineEdgeOpen && !defineNodeOpen && !showAlertLog && !showCompanyData && !shareModalOpen && !signed && !showCompanyData && !showAddressInfo && !showNodeRelations && (
-        <WorkspaceFabs
-          nodeClick={() => setDefineNodeOpen(true)}
-          metaClick={() => setMetaOpen(true)}
-          saveClick={onWorkspaceSave}
-          onAlertClick={() => setShowAlertLog(true)}
-          onAnalysisClick={() => history.push(`analysis/${id}`)}
-          onCvrClick={() => {
-            dispatch(handleRunIntro(false));
-            setShowCvrModal(true);
-          }}
-          stickyClick={handlePostSticky}
-          onShareClick={() => setShareModalOpen(true)}
-          plan_id={plan_id}
-        />
-      )} */}
       <CompanyDataModel
         open={showCompanyData}
         close={() => dispatch(setShowCompanyData(false))}

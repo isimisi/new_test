@@ -13,6 +13,17 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     justifyContent: "center",
     flexDirection: "row"
   },
+  collaborationPaper: {
+    position: "absolute",
+    zIndex: 1000,
+    backgroundColor: "#fff",
+    right: 10,
+    top: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row"
+  },
   itemsPaper: {
     position: "absolute",
     zIndex: 1000,
@@ -83,6 +94,19 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 5
+  },
+  userName: {
+    fontSize: 16
+  },
+  userRole: {
+    fontSize: 12,
+    color: "gray"
+  },
+  avatar: { width: 30, height: 30 },
+  shareButton: {
+    borderRadius: 4,
+    padding: "2px 6px",
+    margin: "0 12px"
   }
 }));
 

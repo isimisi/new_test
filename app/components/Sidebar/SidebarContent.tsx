@@ -1,32 +1,33 @@
 /* eslint-disable camelcase */
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
-import { NavLink } from 'react-router-dom';
-import brand from '@api/dummy/brand';
-import logoBeta from '@images/logoBeta.svg';
-import Typography from '@material-ui/core/Typography';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { lightGreen } from '@api/palette/colorfull';
-import CheckCircleOutlineOutlinedIcon from '@material-ui/icons/CheckCircleOutlineOutlined';
-import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
-import { loadFromLocalStorage } from '@utils/localStorage';
-import MainMenu from './MainMenu';
-import useStyle from './sidebar-jss';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
+import { NavLink } from "react-router-dom";
+import brand from "@api/dummy/brand";
+import logoBeta from "@images/logoBeta.svg";
+import Typography from "@material-ui/core/Typography";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { lightGreen } from "@api/palette/colorfull";
+import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
+import RadioButtonUncheckedOutlinedIcon from "@material-ui/icons/RadioButtonUncheckedOutlined";
+import { loadFromLocalStorage } from "@utils/localStorage";
+import MainMenu from "./MainMenu";
+import useStyle from "./sidebar-jss";
 
-const BorderLinearProgress = withStyles((theme) => ({
+const BorderLinearProgress = withStyles(theme => ({
   root: {
     height: 10,
     marginTop: 10,
-    borderRadius: 5,
+    borderRadius: 5
   },
   colorPrimary: {
-    backgroundColor: theme.palette.grey[theme.palette.type === 'light' ? 200 : 700],
+    backgroundColor:
+      theme.palette.grey[theme.palette.type === "light" ? 200 : 700]
   },
   bar: {
     borderRadius: 5,
-    backgroundColor: lightGreen,
-  },
+    backgroundColor: lightGreen
+  }
 }))(LinearProgress);
 
 interface Props {
@@ -48,38 +49,56 @@ function SidebarContent(props: Props) {
     toggleDrawerOpen,
     loadTransition,
     leftSidebar,
-    dataMenu,
+    dataMenu
   } = props;
 
-
   return (
-    <div className={classNames(classes.drawerInner, !drawerPaper ? classes.drawerPaperClose : '')}>
+    <div
+      className={classNames(
+        classes.drawerInner,
+        !drawerPaper ? classes.drawerPaperClose : ""
+      )}
+    >
       <div className={classes.drawerHeader}>
-        <NavLink to="/app" className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}>
-          <img src={user_id === 75 ? 'https://kammeradvokaten.dk//media/8878/poul-schmith-kammeradvokaten-sort.svg' : logoBeta} alt={brand.name} style={{ width: 120 }} />
+        <NavLink
+          to="/app"
+          className={classNames(
+            classes.brand,
+            classes.brandBar,
+            turnDarker && classes.darker
+          )}
+        >
+          <img
+            src={
+              user_id === 75
+                ? "https://kammeradvokaten.dk//media/8878/poul-schmith-kammeradvokaten-sort.svg"
+                : logoBeta
+            }
+            alt={brand.name}
+            style={{ width: 120 }}
+          />
         </NavLink>
       </div>
       <div
         id="sidebar"
-        className={
-          classNames(
-            classes.menuContainer,
-            leftSidebar && classes.rounded,
-            classes.withProfile
-          )
-        }
+        className={classNames(
+          classes.menuContainer,
+          leftSidebar && classes.rounded,
+          classes.withProfile
+        )}
       >
         <MainMenu
           loadTransition={loadTransition}
           dataMenu={dataMenu}
+          drawerPaper={drawerPaper}
           toggleDrawerOpen={toggleDrawerOpen}
         />
-        {status === 'need_confirmation' && (
+        {status === "need_confirmation" && (
           <div className={classes.confirmEmail}>
             <Typography variant="subtitle2">Opsætning af konto</Typography>
             <BorderLinearProgress value={50} variant="indeterminate" />
             <div className={classes.inlineWrap}>
-              <CheckCircleOutlineOutlinedIcon style={{ color: 'green' }} />
+              <CheckCircleOutlineOutlinedIcon style={{ color: "green" }} />
               <Typography>Profil information</Typography>
             </div>
             <div className={classes.inlineWrap}>
@@ -93,11 +112,12 @@ function SidebarContent(props: Props) {
   );
 }
 
-
 SidebarContent.defaultProps = {
   turnDarker: false,
+  // eslint-disable-next-line
   toggleDrawerOpen: () => {},
-  loadTransition: () => {},
+  // eslint-disable-next-line
+  loadTransition: () => {}
 };
 
 export default SidebarContent;

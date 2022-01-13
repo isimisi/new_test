@@ -25,7 +25,8 @@ import {
   Relationship,
   Attributes,
   ChoosePlan,
-  WorkspaceAnalysis
+  WorkspaceAnalysis,
+  ChangeAvatar
 } from "../pageListAsync";
 
 function Application() {
@@ -45,6 +46,7 @@ function Application() {
       <Switch>
         {/* Home */}
         <Route exact path="/app" component={PersonalDashboard} />
+        <Route exact path="/app/avatar" component={ChangeAvatar} />
         <Route exact path="/app/outputs" component={Outputs} />
         <Route exact path="/app/outputs/:id" component={Output} />
         <Route exact path="/app/red flags" component={Alerts} />
@@ -53,6 +55,7 @@ function Application() {
         <Route exact path="/app/relationships" component={Relationships} />
         <Route exact path="/app/relationships/:id" component={Relationship} />
         <Route exact path="/app/conditions" component={Conditions} />
+
         <Route exact path="/app/conditions/:id">
           <ReactFlowProvider>
             <Condition />
