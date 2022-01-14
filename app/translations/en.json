@@ -1,7 +1,8 @@
 {
   "404": {
     "not_found": "Whoops, the page you're looking for does not exist.",
-    "btn_return_to_home_page": "Return to home page"
+    "btn_return_to_home_page": "Return to home page",
+    "btn_return_to_workspace": "Return to workspace"
   },
   "login-form": {
     "create_account": "Create account",
@@ -597,6 +598,9 @@
     "hint": "You have recieved the code on SMS. If not contact the persion, who has shared this workspace with you."
   },
   "workspace": {
-    "open_shotcuts": "Shortcuts"
+    "open_shotcuts": "Shortcuts",
+    "analysis": {
+      "nothing": "There is nothing to analyse yet"
+    }
   }
 }

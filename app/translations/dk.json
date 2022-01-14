@@ -1,7 +1,8 @@
 {
   "404": {
     "not_found": "Hov, siden du leder efter findes vist ikke.",
-    "btn_return_to_home_page": "Gå til forside"
+    "btn_return_to_home_page": "Gå til forside",
+    "btn_return_to_workspace": "Gå tilbage til arbejdsområde"
   },
   "login-form": {
     "create_account": "Opret ny konto",
@@ -596,6 +597,9 @@
     "hint": "Du har modtaget koden på sms. Hvis ikke så kontakt personen, som har delt dette arbejdsområde med dig."
   },
   "workspace": {
-    "open_shotcuts": "Genveje"
+    "open_shotcuts": "Genveje",
+    "analysis": {
+      "nothing": "Der ikke er noget at analysere endnu"
+    }
   }
 }

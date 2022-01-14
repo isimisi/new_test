@@ -12,6 +12,10 @@ export default function useWorkspaceHotKeys(
   handleShowNodeRelations: (node: Node) => void,
   getCompanyData: (id: string) => void,
   getAddressData: (id: string) => void,
+  handleOpenCvr: () => void,
+  setShowAlertLog: React.Dispatch<React.SetStateAction<boolean>>,
+  history: any,
+  id: string | undefined,
 ) {
   // indsæt element
   useHotkeys("cmd+i", () => {
@@ -20,7 +24,17 @@ export default function useWorkspaceHotKeys(
   });
 
   // indsæt note
-  useHotkeys("alt+n", handlePostSticky, [handlePostSticky]);
+  useHotkeys("n", handlePostSticky, [handlePostSticky]);
+
+  // open company data modal
+  useHotkeys("cmd+c", handleOpenCvr, [handleOpenCvr]);
+
+  // open red flags
+  useHotkeys("r", () => setShowAlertLog(true), [handleOpenCvr]);
+
+  // go to analysis
+  useHotkeys("a", () => history.push(`analysis/${id}`), [handleOpenCvr]);
+
 
   // show lines
   useHotkeys("alt+g", handleVisabilityChange, [handleVisabilityChange]);
@@ -31,9 +45,26 @@ export default function useWorkspaceHotKeys(
   });
 
   // fit to view
-  useHotkeys("cmd+1", () => {
-    console.log(rfInstance);
+  useHotkeys("alt+1", () => {
     rfInstance?.fitView();
+  }, [rfInstance]);
+
+  // zoom to 100
+  useHotkeys("alt+0", () => {
+    rfInstance?.zoomTo(1);
+  }, [rfInstance]);
+
+  // zoom out
+  useHotkeys("alt+-", () => {
+    rfInstance?.zoomOut();
+  }, [rfInstance]);
+
+  // zoom in
+  useHotkeys("alt+*", (e) => {
+    console.log(e.key);
+    if (e.key === "±") {
+      rfInstance?.zoomIn();
+    }
   }, [rfInstance]);
 
 

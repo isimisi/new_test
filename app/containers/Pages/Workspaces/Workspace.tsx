@@ -717,6 +717,11 @@ const Workspace = (props) => {
 
   const hideContext = () => setShowContextMenu(false);
 
+  const handleOpenCvr = () => {
+    dispatch(handleRunIntro(false));
+    setShowCvrModal(true);
+  };
+
   useWorkspaceHotKeys(
     setDefineNodeOpen,
     setShowContextMenu,
@@ -727,13 +732,13 @@ const Workspace = (props) => {
     contextNode,
     handleShowNodeRelations,
     (_id) => dispatch(getCompanyData(_id, setShowContextMenu)),
-    (_id) => dispatch(getAddressInfo(_id, setShowContextMenu))
+    (_id) => dispatch(getAddressInfo(_id, setShowContextMenu)),
+    handleOpenCvr,
+    setShowAlertLog,
+    history,
+    id
   );
 
-  const handleOpenCvr = () => {
-    dispatch(handleRunIntro(false));
-    setShowCvrModal(true);
-  };
 
   const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
 

@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { useTranslation } from 'react-i18next';
-import WorkspaceForm from './WorkspaceForm';
-import FloatingPanel from '../Panel/FloatingPanel';
-import styles from './workspace-jss';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import { useTranslation } from "react-i18next";
+import WorkspaceForm from "./WorkspaceForm";
+import FloatingPanel from "../Panel/FloatingPanel";
+import styles from "./workspace-jss";
 
 function WorkspaceMeta(props) {
   const {
@@ -22,9 +22,9 @@ function WorkspaceMeta(props) {
     handleShareOrg,
     tagOptions,
     tags,
-    changeTags
+    changeTags,
   } = props;
-  const branch = '';
+  const branch = "";
   const { t } = useTranslation();
 
   return (
@@ -33,7 +33,8 @@ function WorkspaceMeta(props) {
         openForm={open}
         branch={branch}
         closeForm={closeForm}
-        title={t('workspace-meta.name_your_work_area')}
+        title={t("workspace-meta.name_your_work_area")}
+        expanded
       >
         <WorkspaceForm
           label={label}
@@ -51,7 +52,6 @@ function WorkspaceMeta(props) {
           tags={tags}
           changeTags={changeTags}
         />
-
       </FloatingPanel>
     </div>
   );
@@ -76,8 +76,8 @@ WorkspaceMeta.propTypes = {
 };
 
 WorkspaceMeta.defaultProps = {
-  label: '',
-  description: ''
+  label: "",
+  description: "",
 };
 
 export default withStyles(styles)(WorkspaceMeta);

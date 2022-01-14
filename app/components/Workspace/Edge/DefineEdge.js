@@ -1,11 +1,11 @@
 /* eslint-disable react/require-default-props */
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Loader from '@components/Loading/LongLoader';
-import EdgeForm from './EdgeForm';
-import FloatingPanel from '../../Panel/FloatingPanel';
-import styles from '../workspace-jss';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Loader from "@components/Loading/LongLoader";
+import EdgeForm from "./EdgeForm";
+import FloatingPanel from "../../Panel/FloatingPanel";
+import styles from "../workspace-jss";
 
 const DefineEdge = (props) => {
   const {
@@ -31,7 +31,7 @@ const DefineEdge = (props) => {
     relationships,
     isUpdatingElement,
     handleDeleteEdge,
-    loading
+    loading,
   } = props;
 
   return (
@@ -39,9 +39,11 @@ const DefineEdge = (props) => {
       <FloatingPanel
         openForm={open}
         closeForm={close}
-        title={isUpdatingElement ? 'Ændre din Relation' : 'Lav din relation'}
+        title={isUpdatingElement ? "Ændre din Relation" : "Lav din relation"}
       >
-        {loading ? <Loader /> : (
+        {loading ? (
+          <Loader />
+        ) : (
           <EdgeForm
             relationships={relationships}
             relationshipLabel={relationshipLabel}

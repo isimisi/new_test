@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Loader from '@components/Loading/LongLoader';
-import WorkspaceNodeForm from './WorkspaceNodeForm';
-import FloatingPanel from '../../Panel/FloatingPanel';
-import styles from '../workspace-jss';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Loader from "@components/Loading/LongLoader";
+import WorkspaceNodeForm from "./WorkspaceNodeForm";
+import FloatingPanel from "../../Panel/FloatingPanel";
+import styles from "../workspace-jss";
 
 function DefineNode(props) {
   const {
@@ -35,36 +35,37 @@ function DefineNode(props) {
   return (
     <div>
       <FloatingPanel
+        expanded
         openForm={open}
         closeForm={close}
-        title={isUpdatingElement ? 'Ændre dit element' : 'Definer dit element'}
+        title={isUpdatingElement ? "Ændre dit element" : "Definer dit element"}
       >
-        {loading ? <Loader />
-          : (
-            <WorkspaceNodeForm
-              nodes={nodes}
-              close={close}
-              nodeLabel={nodeLabel}
-              handleChangeLabel={handleChangeLabel}
-              attributes={attributes}
-              handleChangeAttributes={handleChangeAttributes}
-              nodeColor={nodeColor}
-              handleChangeColor={handleChangeColor}
-              nodeBorderColor={nodeBorderColor}
-              handleBorderColorChange={handleBorderColorChange}
-              handleNodeSave={handleNodeSave}
-              nodeDisplayName={nodeDisplayName}
-              isUpdatingElement={isUpdatingElement}
-              elementToUpdate={elementToUpdate}
-              handleDisplayNameChange={handleDisplayNameChange}
-              handleDeleteNode={handleDeleteNode}
-              attributesDropDownOptions={attributesDropDownOptions}
-              handleRemoveAttributes={handleRemoveAttributes}
-              nodeFigur={nodeFigur}
-              handleNodeFigurChange={handleNodeFigurChange}
-            />
-          )}
-
+        {loading ? (
+          <Loader />
+        ) : (
+          <WorkspaceNodeForm
+            nodes={nodes}
+            close={close}
+            nodeLabel={nodeLabel}
+            handleChangeLabel={handleChangeLabel}
+            attributes={attributes}
+            handleChangeAttributes={handleChangeAttributes}
+            nodeColor={nodeColor}
+            handleChangeColor={handleChangeColor}
+            nodeBorderColor={nodeBorderColor}
+            handleBorderColorChange={handleBorderColorChange}
+            handleNodeSave={handleNodeSave}
+            nodeDisplayName={nodeDisplayName}
+            isUpdatingElement={isUpdatingElement}
+            elementToUpdate={elementToUpdate}
+            handleDisplayNameChange={handleDisplayNameChange}
+            handleDeleteNode={handleDeleteNode}
+            attributesDropDownOptions={attributesDropDownOptions}
+            handleRemoveAttributes={handleRemoveAttributes}
+            nodeFigur={nodeFigur}
+            handleNodeFigurChange={handleNodeFigurChange}
+          />
+        )}
       </FloatingPanel>
     </div>
   );
@@ -96,7 +97,7 @@ DefineNode.propTypes = {
 };
 
 DefineNode.defaultProps = {
-  nodeFigur: null
+  nodeFigur: null,
 };
 
 export default withStyles(styles)(DefineNode);

@@ -86,7 +86,7 @@ const PaneContextMenu = ({
               {t("flow.pane_context_menu.create_sticky")}
             </ListItemText>
             <Typography variant="body2" color="textSecondary">
-              alt + N
+              N
             </Typography>
           </MenuItem>
           <Divider />

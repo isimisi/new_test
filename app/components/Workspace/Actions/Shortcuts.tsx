@@ -37,7 +37,7 @@ const Shortcuts = (props: Props) => {
         <Divider className={classes.divider} />
         <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
-            <Typography className={classes.shortCut}>E</Typography>
+            <Typography className={classes.shortCut}>⌘ + I</Typography>
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.shortCutText}>
@@ -59,7 +59,7 @@ const Shortcuts = (props: Props) => {
         <Divider className={classes.divider} />
         <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
-            <Typography className={classes.shortCut}>C</Typography>
+            <Typography className={classes.shortCut}>⌘ + C</Typography>
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.shortCutText}>
@@ -213,7 +213,7 @@ const Shortcuts = (props: Props) => {
           {t("workspaces.shortcuts.navigation")}
         </Typography>
         <Divider className={classes.divider} />
-        <Grid spacing={3} container className={classes.shortCutRow}>
+        {/* <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
             <Typography className={classes.shortCut}>M</Typography>
           </Grid>
@@ -223,7 +223,7 @@ const Shortcuts = (props: Props) => {
             </Typography>
           </Grid>
         </Grid>
-        <Divider className={classes.divider} />
+        <Divider className={classes.divider} /> */}
         <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
             <Typography className={classes.shortCut}>alt+</Typography>
@@ -247,7 +247,7 @@ const Shortcuts = (props: Props) => {
         </Grid>
         <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
-            <Typography className={classes.shortCut}>⌘ + 0</Typography>
+            <Typography className={classes.shortCut}>alt + 0</Typography>
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.shortCutText}>
@@ -258,7 +258,7 @@ const Shortcuts = (props: Props) => {
         <Divider className={classes.divider} />
         <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
-            <Typography className={classes.shortCut}>⌘ + 1</Typography>
+            <Typography className={classes.shortCut}>alt + 1</Typography>
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.shortCutText}>
@@ -269,7 +269,7 @@ const Shortcuts = (props: Props) => {
         <Divider className={classes.divider} />
         <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
-            <Typography className={classes.shortCut}>G</Typography>
+            <Typography className={classes.shortCut}>alt + G</Typography>
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.shortCutText}>
