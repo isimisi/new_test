@@ -84,7 +84,8 @@ import {
   setShowCompanyData, setShowAddressInfo,
   handleRunIntro, uncertainCompaniesChange,
   mapUncertainCompanies, changeTags, addElements,
-  getCompanyData, getAddressInfo, layoutElements
+  getCompanyData, getAddressInfo, layoutElements,
+  stopLoading
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -235,6 +236,7 @@ const Workspace = (props) => {
   const handleCvrError = () => {
     setShowCvrModal(false);
     dispatch(showNotifAction(t('workspaces.drawing_error')));
+    dispatch(stopLoading);
   };
 
   const handleUncertainCompanies = (companies = []) => {
@@ -1007,6 +1009,7 @@ const Workspace = (props) => {
         handleClose={() => {
           setShowCvrModal(false);
           handleUncertainCompanies();
+          dispatch(stopLoading);
         }}
         title={t('workspaces.load_from_CVR')}
         description={t('workspaces.search_for_a_company_or_CVR_number')}

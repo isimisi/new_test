@@ -73,7 +73,8 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   },
   logo: {
     width: 80,
-    marginLeft: 12
+    marginLeft: 12,
+    userSelect: "none"
   },
 
   biggerIcon: {

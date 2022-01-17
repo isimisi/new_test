@@ -46,6 +46,7 @@ import {
   SAVE_WORKSPACE_FAILED,
   DELETE_WORKSPACE_ELEMENTS_SUCCESS,
   DELETE_WORKSPACE_ELEMENTS_FAILED,
+  STOP_LOADING,
   WORKSPACE_PUT_NODE_LOADING,
   WORKSPACE_PUT_NODE_SUCCESS,
   WORKSPACE_PUT_NODE_FAILED,
@@ -609,7 +610,11 @@ export default function reducer(state = initialImmutableState, action: any) {
         mutableState.set("uncertainCompanies", companies);
         mutableState.set("loading", false);
       });
-
+    case STOP_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("loading", false);
+        mutableState.set("initialLoadingCvr", false);
+      });
     default:
       return state;
   }

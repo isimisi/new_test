@@ -874,6 +874,10 @@ export const firstPublicVisit = {
   type: types.SET_PUBLIC_VISITED,
 };
 
+export const stopLoading = {
+  type: types.STOP_LOADING,
+};
+
 export const setShowCompanyData = (show) => ({
   type: types.SET_SHOW_COMPANY_DATA,
   show,

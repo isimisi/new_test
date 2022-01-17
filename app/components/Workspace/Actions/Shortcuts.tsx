@@ -59,7 +59,7 @@ const Shortcuts = (props: Props) => {
         <Divider className={classes.divider} />
         <Grid spacing={3} container className={classes.shortCutRow}>
           <Grid item xs={5}>
-            <Typography className={classes.shortCut}>⌘ + C</Typography>
+            <Typography className={classes.shortCut}>ctrl + C</Typography>
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.shortCutText}>

@@ -27,7 +27,7 @@ export default function useWorkspaceHotKeys(
   useHotkeys("n", handlePostSticky, [handlePostSticky]);
 
   // open company data modal
-  useHotkeys("cmd+c", handleOpenCvr, [handleOpenCvr]);
+  useHotkeys("ctrl+c", handleOpenCvr, [handleOpenCvr]);
 
   // open red flags
   useHotkeys("r", () => setShowAlertLog(true), [handleOpenCvr]);
