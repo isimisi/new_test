@@ -17,11 +17,11 @@
     "register": "Register",
     "your_name": "Your name",
     "employer": "Company name",
-    "your_email": "Your Email",
+    "your_email": "Your email",
     "your_password": "Your password",
     "enter_your_password_again": "Re-enter password",
-    "already_have_account": "Do you already have an account ?",
-    "single_sign_on": "Single sign on",
+    "already_have_account": "Do you already have an account?",
+    "single_sign_on": "Single Sign On",
     "company_login": "Company Login",
     "i_accept": "I accept",
     "terms_and_conditions": "Terms & conditions",
@@ -35,7 +35,7 @@
   "reset-form": {
     "reset_password": "Reset password",
     "send_a_link": "Send a link to your email to change your password",
-    "your_email": "Your Email",
+    "your_email": "Your email",
     "btn_send_link": "Send link"
   },
   "new-password-form": {
@@ -54,7 +54,7 @@
     "intro_greeting": "Hello {{name}}",
     "intro_text": "What do you want to do?",
     "create_a_new_workspace": "Create a new workspace",
-    "start_empty": "Start with an whiteboard",
+    "start_empty": "Start with a whiteboard",
     "create_empty_workspace": "Create whatever you want on an empty canvas",
     "send_us_a_request": "Send us a request",
     "we_love_ideas": "We love ideas and look at it right away",
@@ -217,7 +217,7 @@
     },
     "group-actions": {
       "created_group": "You have created a group ",
-      "image_not_supported": "Sorry, we do not support the uploaded image. Try again with another",
+      "image_not_supported": "Sorry, we do not support the uploaded image type. Try again with another",
       "group_deleted": "You have now deleted a group"
     },
     "search-group": {
@@ -255,7 +255,7 @@
       "_element": "element",
       "name": "Name",
       "desc": "Description",
-      "select_standard_look": "Select the default look for the element",
+      "select_standard_look": "Select the default style for the element",
       "select_group": "Select groups",
       "value": "Value"
     },
@@ -263,7 +263,7 @@
       "your_elements": "Your Nodes"
     },
     "node-styling": {
-      "standard-look": "Standard-look",
+      "standard-look": "Default style",
       "size": "Size",
       "color": "Color",
       "border_color": "Border color",
@@ -274,7 +274,7 @@
     "node-actions": {
       "you_have_updated_your_element": "You have updated your element ",
       "you_have_deleted": "You have deleted",
-      "can_not_delete_it": "Hov, it appears that you are using this item in work areas or conditions, therefore you can not delete it. "
+      "can_not_delete_it": "It appears that you are using this item in workspaces or in conditions. You cannot delete it until you have removed it from these. "
     }
   },
   "flow": {
@@ -352,7 +352,7 @@
       "add_tags_to_your_workspace": "Add tags to your workspace"
     },
     "metatext_is_now_updated": "Metatext is now updated",
-    "can_not_delete": "You can not delete expired workspaces.",
+    "can_not_delete": "You cannot delete expired workspaces.",
     "relationship_modal": {
       "outgoing": "Outgoing",
       "incomming": "Incomming",
@@ -360,7 +360,7 @@
       "relations": "Relations",
       "values": "Values"
     },
-    "public_editable_notification": "You do not have access til change elements. Ask permission from the person, who invited you to this workspace.",
+    "public_editable_notification": "You do not have access. Ask permission from the person, who invited you to this workspace.",
     "goBack": "Go Back",
     "editMeta": "Edit board settings",
     "settings": "Settings",
@@ -433,7 +433,7 @@
     "workspaces": "Workspaces",
     "load_from_cvr": "Load from CVR",
     "download_accounting_data": "Download accounting data",
-    "change_data_from_CVR": "Change data from CVR",
+    "change_data_from_CVR": "Change data from corporate registers",
     "add_content": "Add content",
     "automatic_red_flags": "Automatic red flags",
     "secure_company_login": "Secure company login",
@@ -463,7 +463,7 @@
     "what_is_a_red_flag?": "What is a red flag?",
     "red_flag_expl": {
       "expl1": "A red flag is a special feature that can help you analyze and identify certain legal issues.",
-      "expl2": "Red flags automatically appear in your workspace as you draw - and users with a Draw subscription can even design and create their own red flags."
+      "expl2": "Red flags automatically appear in your workspace as you draw - and users with a Pro subscription can even design and create their own red flags."
     },
     "is_it_really_free?": "Is it really free?",
     "is_it_really_free_expl": {
@@ -473,7 +473,7 @@
     "how_can_i_get_further_help?": "How can I get further help?",
     "how_can_i_get_further_help_expl": {
       "expl1": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website.",
-      "expl2": "We will respond as soon as possible. Draw and Pro users have access to special support features depending on the agreement."
+      "expl2": "We will respond as soon as possible. Pro and Enterprise users have access to special support features depending on the agreement."
     },
     "how_to_program_law?": "How to program law?",
     "how_to_program_law_expl": {
@@ -482,7 +482,7 @@
     },
     "is_it_safe_to_use?": "Is it safe to use?",
     "is_it_safe_to_use_expl": {
-      "expl1": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Draw and Pro versions include additional security features that are targeted at businesses.",
+      "expl1": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Pro and Enterprise versions include additional security features that are targeted at businesses.",
       "expl2": "You can read more about how we process data in our business terms and personal data policy. You can find both on our website."
     },
     "why_are_not_all_features_available yet?": "Why are not all features available yet?",
@@ -584,7 +584,7 @@
   },
   "mobile-disclaimer": {
     "you_re_on_a_mobile_device": "It looks like you're on a mobile device 📱",
-    "desc": "Many of our features work on mobile devices, but for the best experience, we recommend that you use a browser on your computer.",
+    "desc": "Many of our features work on mobile devices but for the best experience, we recommend that you use a browser on your computer.",
     "contact_us": "If you have any questions, please contact us.",
     "btn_continue": "Continue"
   },
@@ -595,7 +595,7 @@
   },
   "public_workspace": {
     "you_security_code": "Your security code",
-    "hint": "You have recieved the code on SMS. If not contact the persion, who has shared this workspace with you."
+    "hint": "You have recieved the code via SMS. If you have any issues, please contact the person who has shared this workspace with you."
   },
   "workspace": {
     "open_shotcuts": "Shortcuts",
