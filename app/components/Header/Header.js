@@ -12,7 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useTranslation } from "react-i18next";
 import UserMenu from "./UserMenu";
-// import LanguageSelector from '../LanguageSelector';
+import LanguageSelector from "../LanguageSelector";
 import styles from "./header-jss";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
 
@@ -152,7 +152,7 @@ function Header(props) {
             <SearchUi history={history} />
           </div>
         </div> */}
-        {/* <LanguageSelector /> */}
+        <LanguageSelector />
         <Hidden xsDown>
           <span className={classes.separatorV} />
         </Hidden>
