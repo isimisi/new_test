@@ -80,6 +80,7 @@ const Meta = (props: Props) => {
   const prevOpen = React.useRef(settingsOpen);
   React.useEffect(() => {
     if (prevOpen.current === true && settingsOpen === false) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       anchorRefSettings.current!.focus();
     }
 
@@ -106,6 +107,7 @@ const Meta = (props: Props) => {
   const prevOpenExports = React.useRef(exportOpen);
   React.useEffect(() => {
     if (prevOpenExports.current === true && exportOpen === false) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       anchorRefexport.current!.focus();
     }
 

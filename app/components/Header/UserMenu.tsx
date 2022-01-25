@@ -12,14 +12,15 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import link from "@api/ui/link";
 import { useAppDispatch } from "@hooks/redux";
-import { loadFromLocalStorage } from "@utils/localStorage";
 import store from "@redux/configureStore";
 import { customerPortal } from "../../containers/Pages/CreateOrganization/reducers/createOrganizationActions";
 import { useTranslation } from "react-i18next";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./header-jss";
 
 import Avatar, { genConfig } from "react-nice-avatar";
+import { UserMeta } from "@helpers/userInfo";
 const config = genConfig({
   isGradient: Boolean(Math.round(Math.random()))
 });
@@ -27,6 +28,7 @@ const config = genConfig({
 function UserMenu() {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const { logout, user } = useAuth0();
 
   const { t } = useTranslation();
 
@@ -50,16 +52,17 @@ function UserMenu() {
   const admonistratePlan = () => {
     handleClose();
 
-    dispatch(customerPortal(history.location.pathname));
+    user && dispatch(customerPortal(user, history.location.pathname));
   };
 
   const handleLogOut = () => {
-    localStorage.clear();
     store.dispatch({ type: "RESET" });
+    logout({ returnTo: window.location.origin });
   };
 
   const { anchorEl, openMenu } = menuState;
-  const { first_name, last_name, stripe_customer_id } = loadFromLocalStorage();
+  const meta: UserMeta = user && user["https://juristic.io/meta"];
+  const { first_name, last_name, stripe_customer_id } = meta.dbUser;
   const name = `${first_name} ${last_name}`;
   return (
     <div>

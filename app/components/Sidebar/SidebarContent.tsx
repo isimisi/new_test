@@ -10,9 +10,10 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import { lightGreen } from "@api/palette/colorfull";
 import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
 import RadioButtonUncheckedOutlinedIcon from "@material-ui/icons/RadioButtonUncheckedOutlined";
-import { loadFromLocalStorage } from "@utils/localStorage";
 import MainMenu from "./MainMenu";
 import useStyle from "./sidebar-jss";
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserMeta } from "@helpers/userInfo";
 
 const BorderLinearProgress = withStyles(theme => ({
   root: {
@@ -40,7 +41,9 @@ interface Props {
 }
 
 function SidebarContent(props: Props) {
-  const { status, user_id } = loadFromLocalStorage();
+  const { user } = useAuth0();
+  const meta: UserMeta = user && user["https://juristic.io/meta"];
+  const { status, id: user_id } = meta.dbUser;
   const classes = useStyle();
 
   const {
@@ -87,6 +90,7 @@ function SidebarContent(props: Props) {
           classes.withProfile
         )}
       >
+        {/** @ts-ignore  map state to props */}
         <MainMenu
           loadTransition={loadTransition}
           dataMenu={dataMenu}

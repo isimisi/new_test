@@ -412,7 +412,8 @@
     "node_data": "Element data",
     "picture": "Picture",
     "pdf": "PDF",
-    "power_point": "Powerpoint (Comming soon)"
+    "power_point": "Powerpoint (Comming soon)",
+    "describing_the_work_area": "Descripe the workspace"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
@@ -572,7 +573,10 @@
     },
     "pagination": {
       "rows_per_page": "Rows per page:",
-      "display_rows": "of"
+      "display_rows": "of",
+      "display": {
+        "view_columns": "View Columns"
+      }
     },
     "selectedRows": {
       "delete": "Delete",

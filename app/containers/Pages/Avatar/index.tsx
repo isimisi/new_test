@@ -4,7 +4,6 @@ import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 
 import Avatar, { genConfig } from "react-nice-avatar";
-import AvatarEditor from "./AvatarEditor/index";
 import AvatarList from "./AvatarList/index";
 
 require("./index.scss");

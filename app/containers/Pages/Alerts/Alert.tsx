@@ -20,12 +20,14 @@ import {
 } from './reducers/alertActions';
 import { postCondition } from '../Conditions/reducers/conditionActions';
 import { reducer } from './constants';
+import { useAuth0, User } from "@auth0/auth0-react";
 
 const Alert = () => {
   const dispatch = useAppDispatch();
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const history = useHistory();
-  const id = getId(history);
+  const id = getId(history) as string;
+  const user = useAuth0().user as User;
   const title = useAppSelector(state => state[reducer].get('title'));
   const description = useAppSelector(state => state[reducer].get('description'));
   const group = useAppSelector(state => state[reducer].get('group'));
@@ -40,18 +42,18 @@ const Alert = () => {
 
 
   const onSave = () => {
-    dispatch(putAlert(history, id, title, description, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags)));
+    dispatch(putAlert(user, history, id, title, description, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags)));
   };
 
   useEffect(() => {
     // @ts-ignore
     if (!history?.location?.state?.fromCondition) {
-      dispatch(showAlert(id));
+      dispatch(showAlert(user, id));
     }
 
-    dispatch(getConditionsDropDown());
-    dispatch(getGroupDropDown());
-  }, []);
+    dispatch(getConditionsDropDown(user));
+    dispatch(getGroupDropDown(user));
+  }, [user]);
 
   const handleDelteCondition = (cond, index) => {
     dispatch(deleteCondition(index));
@@ -71,7 +73,7 @@ const Alert = () => {
     if (see) {
       window.open('/app/conditions/' + encryptId(condition.condition_id), '_blank');
     } else {
-      dispatch(postCondition(history, true));
+      dispatch(postCondition(user, history, true));
     }
   };
 

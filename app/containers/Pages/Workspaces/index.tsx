@@ -1,58 +1,62 @@
 /* eslint-disable camelcase */
-import React, { useEffect } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
-import MUIDataTable from 'mui-datatables';
+import React, { useEffect } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import Grid from "@material-ui/core/Grid";
+import MUIDataTable from "mui-datatables";
 
-import Fab from '@material-ui/core/Fab';
-import { useHistory } from 'react-router-dom';
-import tableOptions from '@helpers/tableOptions';
-import CryptoJS from 'crypto-js';
-import Notification from '@components/Notification/Notification';
-import { loadFromLocalStorage } from '@utils/localStorage';
+import Fab from "@material-ui/core/Fab";
+import { useHistory } from "react-router-dom";
+import tableOptions from "@helpers/tableOptions";
+import CryptoJS from "crypto-js";
+import Notification from "@components/Notification/Notification";
 
-import TagList from '@components/Tags/TagList';
-import { Tag, WhereInApp } from '@customTypes/data';
+import TagList from "@components/Tags/TagList";
+import { Tag, WhereInApp } from "@customTypes/data";
 import {
   changeTagActivity,
   deleteTag,
   getTags,
   postTag,
   updateTag
-} from '@components/Tags/reducers/tagsActions';
-import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import { useTranslation } from 'react-i18next';
-import { columns, reducer } from './constants';
-import styles from './workspace-jss';
+} from "@components/Tags/reducers/tagsActions";
+import { useAppDispatch, useAppSelector } from "@hooks/redux";
+import { useTranslation } from "react-i18next";
+import { columns, reducer } from "./constants";
+import styles from "./workspace-jss";
 import {
   getWorkspaces,
   closeNotifAction,
   postWorkspace,
   deleteWorkspaces,
   showNotifAction
-} from './reducers/workspaceActions';
-
-const { plan_id } = loadFromLocalStorage();
+} from "./reducers/workspaceActions";
+import { useAuth0, User } from "@auth0/auth0-react";
+import { getPlanId } from "@helpers/userInfo";
 
 const Workspaces = props => {
   const { classes } = props;
 
   const dispatch = useAppDispatch();
-  const workspaces = useAppSelector(state => state[reducer].get('workspaces')
+  const workspaces = useAppSelector(state =>
+    state[reducer].get("workspaces")
   ).toJS();
-  const messageNotif = useAppSelector(state => state[reducer].get('message'));
-  const loading = useAppSelector(state => state[reducer].get('loading'));
-  const tags = useAppSelector(state => state.tags.get('tags')).toJS();
+  const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const loading = useAppSelector(state => state[reducer].get("loading"));
+  const tags = useAppSelector(state => state.tags.get("tags")).toJS();
   const history = useHistory();
   const { t } = useTranslation();
+  const user = useAuth0().user as User;
+  const plan_id = getPlanId(user);
 
   const col = columns(t);
 
   useEffect(() => {
-    dispatch(getWorkspaces());
-    dispatch(getTags(WhereInApp.workspace));
-  }, []);
+    if (user) {
+      dispatch(getWorkspaces(user));
+      dispatch(getTags(user, WhereInApp.workspace));
+    }
+  }, [user]);
 
   const onDelete = ({ data }) => {
     const deletedWorkspaces = data.map(v => ({
@@ -62,32 +66,32 @@ const Workspaces = props => {
     deletedWorkspaces.forEach(e => {
       const id = CryptoJS.AES.decrypt(
         decodeURIComponent(e.id),
-        'path'
+        "path"
       ).toString(CryptoJS.enc.Utf8);
 
-      const title = e.title.split('∉')[0];
-      dispatch(deleteWorkspaces(id, title));
+      const title = e.title.split("∉")[0];
+      dispatch(deleteWorkspaces(user, id, title));
     });
   };
 
   const createWorkspace = () => {
     if (plan_id === 1 && workspaces.length === 50) {
-      dispatch(showNotifAction(t('workspaces.can_not_create_more_workspaces')));
+      dispatch(showNotifAction(t("workspaces.can_not_create_more_workspaces")));
     } else {
-      dispatch(postWorkspace(history));
+      dispatch(postWorkspace(user, history));
     }
   };
 
   const handleDeleteTag = id => {
-    dispatch(deleteTag(id));
+    dispatch(deleteTag(user, id));
   };
 
   const handlePostTag = (emoji, emojiName, name) => {
-    dispatch(postTag(emoji, emojiName, name));
+    dispatch(postTag(user, emoji, emojiName, name));
   };
 
   const handleUpdateTag = (id, emoji, emojiName, name) => {
-    dispatch(updateTag(id, emoji, emojiName, name));
+    dispatch(updateTag(user, id, emoji, emojiName, name));
   };
 
   const handleMakeActiveTag = (tag: Tag) => {
@@ -96,15 +100,15 @@ const Workspaces = props => {
 
   const activeTags = tags
     .filter(tag => tag.active)
-    .map(tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}`);
+    .map(tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}`);
   col[2].options.filterList = activeTags;
 
   const handleFilterChanged = (changedColumn, filterList) => {
-    if (changedColumn === 'Tags') {
+    if (changedColumn === "Tags") {
       const deleted = activeTags.find(tag => !filterList[2].includes(tag));
       if (deleted) {
         const tagObj = tags.find(
-          tag => `${tag.emoji ? tag.emoji : ''} ${tag.name}` === deleted
+          tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}` === deleted
         );
         handleMakeActiveTag(tagObj);
       }
@@ -139,15 +143,10 @@ const Workspaces = props => {
         </Grid>
         <Grid item md={9} lg={10}>
           <MUIDataTable
-            title={t('workspaces.your_workspace')}
+            title={t("workspaces.your_workspace")}
             data={workspaces}
             columns={col}
-            options={tableOptions(
-              onDelete,
-              loading,
-              'arbejdsområder',
-              handleFilterChanged
-            )}
+            options={tableOptions(onDelete, loading, handleFilterChanged)}
           />
         </Grid>
       </Grid>
@@ -157,7 +156,7 @@ const Workspaces = props => {
         className={classes.addBtn}
         onClick={createWorkspace}
       >
-        {`${t('workspaces.btn_new_workspace')}`}
+        {`${t("workspaces.btn_new_workspace")}`}
       </Fab>
     </div>
   );

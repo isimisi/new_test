@@ -8,4 +8,5 @@
   "i18next.i18nPaths": "/Users/keanottesen/Documents/GitHub/JuristicWebApp/app/translations",
   "i18n-ally.localesPaths": ["app/translations"],
   "i18n-ally.keystyle": "nested"
+  // "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

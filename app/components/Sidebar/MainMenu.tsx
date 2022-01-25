@@ -1,6 +1,6 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable camelcase */
-// @ts-nocheck
 
 import React from "react";
 import classNames from "classnames";
@@ -18,22 +18,23 @@ import Ionicon from "react-ionicons";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { plans } from "@api/constants";
-import { loadFromLocalStorage } from "@utils/localStorage";
 import { useTranslation } from "react-i18next";
 import useStyle from "./sidebar-jss";
 import Tooltip from "@material-ui/core/Tooltip";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getPlanId } from "@helpers/userInfo";
 
 const LinkBtn = React.forwardRef((props, ref) => (
-  // eslint-disable-next-line react/prop-types
+  // @ts-ignore
   <NavLink to={props.to} {...props} innerRef={ref} />
 ));
 
 interface Props {
-  open?: boolean;
-  openSubMenu?: () => void;
+  open: [];
+  openSubMenu: (key, keyParent) => void;
   toggleDrawerOpen: () => void;
-  loadTransition: () => void;
-  dataMenu: [any];
+  loadTransition: (bol: boolean) => void;
+  dataMenu: any[];
   drawerPaper?: boolean;
 }
 
@@ -44,21 +45,22 @@ const MainMenu = (props: Props) => {
     loadTransition(false);
   };
 
-  const { plan_id } = loadFromLocalStorage();
+  const { user } = useAuth0();
+  const plan_id = getPlanId(user);
 
-  const notIncludedPlans = plans.slice(plan_id, plans.length);
+  const notIncludedPlans = plan_id ? plans.slice(plan_id, plans.length) : plans;
   const classes = useStyle();
 
   const { openSubMenu, open, dataMenu, drawerPaper } = props;
 
   const getMenus = menuArray =>
-    menuArray.map((item, index) => {
+    menuArray.map((item: any, index) => {
       if (item.child || item.linkParent) {
         const { t } = useTranslation();
         return (
           <Tooltip
             arrow
-            title={drawerPaper === false ? t(`${item.name}`) : ""}
+            title={drawerPaper === false ? `${t(item.name)}` : ""}
             placement="right"
             classes={{
               tooltip: classes.tooltip
@@ -83,6 +85,7 @@ const MainMenu = (props: Props) => {
                 className={classNames(
                   classes.head,
                   item.icon ? classes.iconed : "",
+                  // @ts-ignore
                   open.indexOf(item.key) > -1 ? classes.opened : ""
                 )}
                 onClick={() => openSubMenu(item.key, item.keyParent)}
@@ -98,6 +101,7 @@ const MainMenu = (props: Props) => {
                 />
                 {!item.linkParent && (
                   <span>
+                    {/** @ts-ignore */}
                     {open.indexOf(item.key) > -1 ? (
                       <ExpandLess />
                     ) : (
@@ -121,12 +125,13 @@ const MainMenu = (props: Props) => {
                     classes.nolist,
                     item.keyParent ? classes.child : ""
                   )}
+                  // @ts-ignore
                   in={open.indexOf(item.key) > -1}
                   timeout="auto"
                   unmountOnExit
                 >
                   <List className={classes.dense} component="nav" dense>
-                    {getMenus(item.child, "key")}
+                    {getMenus(item.child)}
                   </List>
                 </Collapse>
               )}
@@ -151,6 +156,7 @@ const MainMenu = (props: Props) => {
         <ListItem
           key={index.toString()}
           button
+          // @ts-ignore
           exact
           className={classNames(classes.nested, `for_intro_${item.name}`)}
           activeClassName={classes.active}

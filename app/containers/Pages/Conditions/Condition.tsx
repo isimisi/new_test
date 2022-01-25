@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
-// @ts-nocheck
 import React, {
   useState, useEffect, useRef
 } from 'react';
@@ -12,7 +11,13 @@ import ReactFlow, {
   BackgroundVariant,
   MiniMap,
   Controls,
-  isEdge
+  isEdge,
+  Node,
+  FlowElement,
+  Connection,
+  OnLoadParams,
+  Dimensions,
+  ConnectionMode
 } from 'react-flow-renderer';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
 import CustomEdge from '@components/Workspace/Edge/CustomEdge';
@@ -41,28 +46,41 @@ import {
   addRelationshipToList, addNodeToList, addAttributToList,
   addElements
 } from './reducers/conditionActions';
+import { useAuth0, User } from "@auth0/auth0-react";
 
 const BASE_BG_GAP = 32;
 const BASE_BG_STROKE = 1;
 
 const nonValueArray = ['exists', 'does not exist', 'any'];
 
+export interface ConditionValue {
+  conditionNodeValueId?: string;
+  attribut: string | null;
+  comparison_type: string;
+  comparison_value: string;
+}
 
 const Condition = (props) => {
   const { classes } = props;
   const dispatch = useAppDispatch();
-
+  const user = useAuth0().user as User;
   const history = useHistory();
   const reactFlowContainer = useRef(null);
   const mouse = useMouse(reactFlowContainer, { fps: 10, enterDelay: 100, leaveDelay: 100 });
-  const id = getId(history);
+  const id = getId(history) as string;
   const [metaOpen, setMetaOpen] = useState(false);
-  const [reactFlowDimensions, setReactFlowDimensions] = useState(null);
-  const [rfInstance, setRfInstance] = useState(null);
+  const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
+  const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
+  // @ts-ignore
   const fromContent = history?.location?.state?.fromContent;
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
-  const [currentConnectionData, setCurrentConnectionData] = useState({});
+  const [currentConnectionData, setCurrentConnectionData] = useState<Connection>({
+    source: "",
+    target: "",
+    sourceHandle: "",
+    targetHandle: "",
+  });
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipType, setRelationshipType] = useState('custom');
   const [comparisonType, setComparisonType] = useState('exists');
@@ -87,23 +105,24 @@ const Condition = (props) => {
 
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
-  const [conditionValues, setConditionValues] = useState([]);
+  const [conditionValues, setConditionValues] = useState<ConditionValue[]>([]);
+
 
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
-  const [elementToUpdate, setElementToUpdate] = useState(null);
+  const [elementToUpdate, setElementToUpdate] = useState<FlowElement | null>(null);
 
   useEffect(() => {
-    dispatch(getGroupDropDown());
-    dispatch(showCondition(id, setMetaOpen));
-  }, []);
+    dispatch(getGroupDropDown(user));
+    dispatch(showCondition(user, id, setMetaOpen));
+  }, [user]);
 
   useEffect(() => {
     if (group?.length > 0) {
-      dispatch(getNodes(group));
-      dispatch(getRelationships(group));
-      dispatch(getBuildTypeValueOptions(group));
+      dispatch(getNodes(user, group));
+      dispatch(getRelationships(user, group));
+      dispatch(getBuildTypeValueOptions(user, group));
     }
-  }, [group]);
+  }, [user, group]);
 
 
   const choosenNode = nodes.find(r => r.label === nodeLabel);
@@ -127,8 +146,8 @@ const Condition = (props) => {
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
 
-    if (isUpdatingElement) {
-      dispatch(putEdge(elementToUpdate.id, choosenRelationship.id, choosenRelationship.label, comparisonType, comparisonValue, relationshipType, closeEdge));
+    if (isUpdatingElement && elementToUpdate) {
+      dispatch(putEdge(user, elementToUpdate.id, choosenRelationship.id, choosenRelationship.label, comparisonType, comparisonValue, relationshipType, closeEdge));
     } else {
       const edge = {
         relationship_id: choosenRelationship.id,
@@ -139,7 +158,7 @@ const Condition = (props) => {
         ...currentConnectionData
       };
 
-      dispatch(postEdge(id, edge, closeEdge));
+      dispatch(postEdge(user, id, edge, closeEdge));
     }
   };
 
@@ -151,23 +170,23 @@ const Condition = (props) => {
   }, []);
 
   const handleNodeSave = () => {
-    const rf = rfInstance.toObject();
+    const rf = rfInstance?.toObject();
 
-    const _x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
-    const _y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+    const _x = rf && reactFlowDimensions && (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+    const _y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
-    if (isUpdatingElement) {
+    if (isUpdatingElement && elementToUpdate) {
       const originalElementIds = elementToUpdate.data.conditionValues.map(cv => cv.id);
       const newConditionValueIds = conditionValues.map(cv => cv.conditionNodeValueId);
       const deletedConditionValues = originalElementIds.filter(x => !newConditionValueIds.includes(x));
-      dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), closeNode));
+      dispatch(putNode(user, elementToUpdate.id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), JSON.stringify(deletedConditionValues), closeNode));
     } else {
-      dispatch(postNode(id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), _x, _y, closeNode));
+      dispatch(postNode(user, id, choosenNode.id, choosenNode.label, JSON.stringify(conditionValues), _x, _y, closeNode));
     }
   };
 
 
-  const onElementsRemove = (elementsToRemove) => {
+  const onElementsRemove = (elementsToRemove: FlowElement[]) => {
     const remainingElements = removeElements(elementsToRemove, elements);
     setIsUpdatingElement(false);
     setElementToUpdate(null);
@@ -180,7 +199,7 @@ const Condition = (props) => {
       }
     }
 
-    dispatch(deleteConditionElement(elementsToRemove, remainingElements));
+    dispatch(deleteConditionElement(user, elementsToRemove, remainingElements));
   };
 
   const onLoad = (_reactFlowInstance) => {
@@ -213,9 +232,9 @@ const Condition = (props) => {
   const onConditionSave = () => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      const _nodes = flow.elements.filter(n => isNode(n));
+      const _nodes = flow.elements.filter((n): n is Node => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      dispatch(saveCondition(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history, label));
+      dispatch(saveCondition(user, id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history, label));
     }
   };
 
@@ -243,7 +262,8 @@ const Condition = (props) => {
   useEffect(() => {
     if (reactFlowContainer) {
       setReactFlowDimensions({
-        height: reactFlowContainer.current.clientHeight,
+        // @ts-ignore
+        height: reactFlowContainer.current.clientHeight, // @ts-ignore
         width: reactFlowContainer.current.clientWidth
       });
     }
@@ -281,7 +301,7 @@ const Condition = (props) => {
       return element;
     });
 
-    dispatch(addElements(id, elementsToAdd));
+    dispatch(addElements(user, id, elementsToAdd));
   };
 
   useCutCopyPaste(elements, onElementsRemove, handlePaste);
@@ -298,7 +318,7 @@ const Condition = (props) => {
           nodeTypes={{ custom: CustomNode }}
           edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
-          connectionMode="loose"
+          connectionMode={ConnectionMode.Loose}
           onElementClick={onElementClick}
           onMove={(flowTransform) => {
             if (flowTransform) {
@@ -329,7 +349,7 @@ const Condition = (props) => {
         descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
         addGroup={(_group) => dispatch(addGroup(_group.value))}
         groupsDropDownOptions={groupsDropDownOptions}
-        onSave={() => dispatch(putConditionMeta(id, label, description, group, JSON.stringify(tags), setMetaOpen))}
+        onSave={() => dispatch(putConditionMeta(user, id, label, description, group, JSON.stringify(tags), setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
         tagOptions={tagOptions}
         tags={tags}
@@ -366,7 +386,7 @@ const Condition = (props) => {
         comparisonValue={comparisonValue}
         handleComparisonValueChange={(v) => setComparisonValue(v)}
         isUpdatingElement={isUpdatingElement}
-        handleDeleteEdge={() => onElementsRemove([elementToUpdate])}
+        handleDeleteEdge={() => elementToUpdate && onElementsRemove([elementToUpdate])}
       />
       <ConditionDefineNode
         open={defineNodeOpen}
@@ -392,7 +412,7 @@ const Condition = (props) => {
         addConditionValue={() => setConditionValues([...conditionValues, { attribut: null, comparison_type: 'is equal to', comparison_value: '' }])}
         deleteConditionValue={(index) => setConditionValues(values => values.filter((v, i) => i !== index))}
         isUpdatingElement={isUpdatingElement}
-        handleDeleteNode={() => onElementsRemove([elementToUpdate])}
+        handleDeleteNode={() => elementToUpdate && onElementsRemove([elementToUpdate])}
       />
       {!metaOpen && !defineEdgeOpen && !defineNodeOpen && (
         <ConditionFabs

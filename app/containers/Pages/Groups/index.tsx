@@ -11,7 +11,6 @@ import GroupModal from "@components/Group/GroupModal";
 import Tooltip from "@material-ui/core/Tooltip";
 import Fab from "@material-ui/core/Fab";
 import { makeStyles } from "@material-ui/core/styles";
-import { loadFromLocalStorage } from "@utils/localStorage";
 import { useTranslation } from "react-i18next";
 import {
   getGroups,
@@ -23,6 +22,8 @@ import {
   closeNotifAction,
   showNotifAction
 } from "./reducers/groupActions";
+import { useAuth0, User } from "@auth0/auth0-react";
+import { getPlanId } from "@helpers/userInfo";
 
 const useStyles = makeStyles(() => ({
   addBtn: {
@@ -33,10 +34,10 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const { plan_id } = loadFromLocalStorage();
-
 function Groups() {
   const classes = useStyles();
+  const user = useAuth0().user as User;
+  const plan_id = getPlanId(user);
   const [open, setOpen] = useState(false);
   const [listView, setListView] = useState("grid");
   // Redux State
@@ -55,15 +56,15 @@ function Groups() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getGroups());
-  }, []);
+    dispatch(getGroups(user));
+  }, [user]);
 
   const handleSwitchView = (event, value) => {
     setListView(value);
   };
 
   const handleSubmit = () => {
-    dispatch(postGroup(title, description, image[0], setOpen));
+    dispatch(postGroup(user, title, description, image[0], setOpen));
   };
 
   const metaTitle = brand.name + " - Groups";
@@ -93,8 +94,8 @@ function Groups() {
       <GroupGallery
         listView={listView}
         dataProduct={groups}
-        showDetail={payload => dispatch(showGroup(payload.get("id")))}
-        updateDetail={(x, d) => dispatch(putGroup(activeGroup.id, x, d))}
+        showDetail={payload => dispatch(showGroup(user, payload.get("id")))}
+        updateDetail={(x, d) => dispatch(putGroup(user, activeGroup.id, x, d))}
         activeGroup={activeGroup}
         plan_id={plan_id}
         notif={() => dispatch(showNotifAction(t("groups.not_allowed.change")))}
@@ -103,7 +104,7 @@ function Groups() {
           if (plan_id === 1) {
             dispatch(showNotifAction(t("groups.not_allowed.delete")));
           } else {
-            dispatch(deleteGroup(id));
+            dispatch(deleteGroup(user, id));
           }
         }}
       />

@@ -42,15 +42,16 @@ import {
 } from './reducers/outputActions';
 import { postCondition } from '../Conditions/reducers/conditionActions';
 import { useTranslation } from 'react-i18next';
-
+import { useAuth0, User } from "@auth0/auth0-react";
 
 const Output = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const id = history.location.pathname.split('/').pop();
+  const id = history.location.pathname.split('/').pop() as string;
   const locationState = history.location.state as { fromCondition: boolean };
   const { t } = useTranslation();
+  const user = useAuth0().user as User;
 
   const conditions = useAppSelector(state => state[reducer].get('outputConditions')).toJS();
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
@@ -71,18 +72,18 @@ const Output = () => {
 
   useEffect(() => {
     if (!locationState?.fromCondition) {
-      dispatch(showOutput(id));
+      dispatch(showOutput(user, id));
     }
 
-    dispatch(getConditionsDropDown());
-    dispatch(getGroupDropDown());
+    dispatch(getConditionsDropDown(user));
+    dispatch(getGroupDropDown(user));
   }, []);
 
   const handleClose = () => {
     setOpenAlert(false);
   };
 
-  const onSave = (from) => {
+  const onSave = (from: string) => {
     switch (from) {
       case 'fab':
         if (outputFileUrl?.length > 0 && editorState.getCurrentContent().hasText()) {
@@ -101,15 +102,15 @@ const Output = () => {
 
         const markup = draftToHtml(rawContentState);
 
-        dispatch(putOutput(id, title, description, markup, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
+        dispatch(putOutput(user, id, title, description, markup, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
         break;
       case 'upload':
         setOpenAlert(false);
 
         if (typeof outputFile === 'object') {
-          dispatch(putOutput(id, title, description, outputFile, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
+          dispatch(putOutput(user, id, title, description, outputFile, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
         } else {
-          dispatch(putOutput(id, title, description, outputFileUrl, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
+          dispatch(putOutput(user, id, title, description, outputFileUrl, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
         }
         break;
     }
@@ -133,7 +134,7 @@ const Output = () => {
     if (see) {
       window.open('/app/conditions/' + condition.condition_id, '_blank');
     } else {
-      dispatch(postCondition(history, true));
+      dispatch(postCondition(user, history, true));
     }
   };
 

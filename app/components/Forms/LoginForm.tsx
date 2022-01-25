@@ -1,36 +1,38 @@
 /* eslint-disable react/prop-types */
 // @ts-nocheck
 
-import React, { Fragment, useState } from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
-import { Field, reduxForm } from 'redux-form/immutable';
-import Button from '@material-ui/core/Button';
-import { NavLink } from 'react-router-dom';
-import IconButton from '@material-ui/core/IconButton';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import ArrowForward from '@material-ui/icons/ArrowForward';
-import Paper from '@material-ui/core/Paper';
-import Icon from '@material-ui/core/Icon';
-import Hidden from '@material-ui/core/Hidden';
-import brand from '@api/dummy/brand';
-import logo from '@images/logo.svg';
-import { useAppSelector } from '@hooks/redux';
-import { useTranslation } from 'react-i18next';
-import { TextFieldRedux, CheckboxRedux } from './ReduxFormMUI';
-import styles from './user-jss';
+import React, { Fragment, useState } from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import classNames from "classnames";
+import { Field, reduxForm } from "redux-form/immutable";
+import Button from "@material-ui/core/Button";
+import { NavLink } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Typography from "@material-ui/core/Typography";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ArrowForward from "@material-ui/icons/ArrowForward";
+import Paper from "@material-ui/core/Paper";
+import Icon from "@material-ui/core/Icon";
+import Hidden from "@material-ui/core/Hidden";
+import brand from "@api/dummy/brand";
+import logo from "@images/logo.svg";
+import { useAppSelector } from "@hooks/redux";
+import { useTranslation } from "react-i18next";
+import { TextFieldRedux, CheckboxRedux } from "./ReduxFormMUI";
+import styles from "./user-jss";
+import { useAuth0 } from "@auth0/auth0-react";
 
 // validation functions
-const required = value => (value === null ? 'Required' : undefined);
-const email = value => (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-  ? 'Invalid email'
-  : undefined);
+const required = value => (value === null ? "Required" : undefined);
+const email = value =>
+  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+    ? "Invalid email"
+    : undefined;
 
 const useStyles = makeStyles(styles);
 
@@ -42,7 +44,7 @@ const LinkBtn = React.forwardRef((props, ref) => (
 
 const LoginForm = props => {
   const [showPassword, setShowPassword] = useState(false);
-  const deco = useAppSelector(state => state.ui.get('decoration'));
+  const deco = useAppSelector(state => state.ui.get("decoration"));
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -53,7 +55,7 @@ const LoginForm = props => {
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
-
+  const { loginWithRedirect } = useAuth0();
   const { handleSubmit, pristine, submitting } = props;
   return (
     <Fragment>
@@ -75,12 +77,12 @@ const LoginForm = props => {
               to="/register"
             >
               <Icon className={classes.icon}>arrow_forward</Icon>
-              {t('login-form.create_account')}
+              {t("login-form.create_account")}
             </Button>
           </div>
         </Hidden>
         <Typography variant="h4" className={classes.title} gutterBottom>
-          {t('login-form.log_in')}
+          {t("login-form.log_in")}
         </Typography>
 
         <section className={classes.formWrap}>
@@ -90,8 +92,8 @@ const LoginForm = props => {
                 <Field
                   name="email"
                   component={TextFieldRedux}
-                  placeholder={t('login-form.your_email')}
-                  label={t('login-form.your_email')}
+                  placeholder={t("login-form.your_email")}
+                  label={t("login-form.your_email")}
                   required
                   validate={[required, email]}
                   className={classes.field}
@@ -103,8 +105,8 @@ const LoginForm = props => {
                 <Field
                   name="password"
                   component={TextFieldRedux}
-                  type={showPassword ? 'text' : 'password'}
-                  label={t('login-form.your_password')}
+                  type={showPassword ? "text" : "password"}
+                  label={t("login-form.your_password")}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -128,7 +130,7 @@ const LoginForm = props => {
               <FormControlLabel
                 className={classes.label}
                 control={<Field name="checkbox" component={CheckboxRedux} />}
-                label={t('login-form.remember_me')}
+                label={t("login-form.remember_me")}
               />
               <Button
                 size="small"
@@ -136,7 +138,7 @@ const LoginForm = props => {
                 to="/reset-password"
                 className={classes.buttonLink}
               >
-                {t('login-form.forgot_password')}
+                {t("login-form.forgot_password")}
               </Button>
             </div>
             <div className={classes.btnArea}>
@@ -144,9 +146,9 @@ const LoginForm = props => {
                 variant="contained"
                 color="primary"
                 size="large"
-                type="submit"
+                onClick={() => loginWithRedirect()}
               >
-                {t('login-form.btn_continue')}
+                {t("login-form.btn_continue")}
                 <ArrowForward
                   className={classNames(classes.rightIcon, classes.iconSmall)}
                   disabled={submitting || pristine}
@@ -167,7 +169,7 @@ LoginForm.propTypes = {
 };
 
 const LoginFormReduxed = reduxForm({
-  form: 'immutableExample',
+  form: "immutableExample",
   enableReinitialize: true
 })(LoginForm);
 

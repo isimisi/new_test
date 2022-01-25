@@ -12,7 +12,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useTranslation } from "react-i18next";
 import UserMenu from "./UserMenu";
-// import LanguageSelector from '../LanguageSelector';
+import LanguageSelector from "../LanguageSelector";
 import styles from "./header-jss";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
 
@@ -50,14 +50,7 @@ function Header(props) {
     };
   }, []);
 
-  const {
-    classes,
-    toggleDrawerOpen,
-    margin,
-    position,
-    openGuide,
-    history,
-  } = props;
+  const { classes, toggleDrawerOpen, margin, position, openGuide, history } = props;
 
   const setMargin = (sidebarPosition) => {
     if (sidebarPosition === "right-sidebar") {
@@ -97,10 +90,7 @@ function Header(props) {
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction)}>
               {fullScreen ? (
-                <Tooltip
-                  title={t("header.exit_full_screen")}
-                  placement="bottom"
-                >
+                <Tooltip title={t("header.exit_full_screen")} placement="bottom">
                   <IconButton
                     className={classes.button}
                     onClick={() => closeFullScreen(setFullScreen)}
@@ -126,19 +116,13 @@ function Header(props) {
 
               <Tooltip title={t("header.update")} placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
-                  <i
-                    className="ion-ios-refresh-outline"
-                    style={{ color: "#333" }}
-                  />
+                  <i className="ion-ios-refresh-outline" style={{ color: "#333" }} />
                 </IconButton>
               </Tooltip>
 
               <Tooltip title={t("header.guide")} placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
-                  <i
-                    className="ion-ios-help-outline"
-                    style={{ color: "#333" }}
-                  />
+                  <i className="ion-ios-help-outline" style={{ color: "#333" }} />
                 </IconButton>
               </Tooltip>
             </div>
@@ -152,7 +136,7 @@ function Header(props) {
             <SearchUi history={history} />
           </div>
         </div> */}
-        {/* <LanguageSelector /> */}
+        <LanguageSelector />
         <Hidden xsDown>
           <span className={classes.separatorV} />
         </Hidden>

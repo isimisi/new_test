@@ -14,19 +14,19 @@ import NoSsr from '@material-ui/core/NoSsr';
 import Select from 'react-select';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
 import Tooltip from '@material-ui/core/Tooltip';
-import { loadFromLocalStorage } from '@utils/localStorage';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import CreatableSelect from 'react-select/creatable';
 import { useTranslation } from 'react-i18next';
 import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
 import styles from './workspace-jss';
+import { useAuth0 } from "@auth0/auth0-react";
+import { getPlanId } from '@helpers/userInfo';
 
-
-const localeStorage = loadFromLocalStorage();
-const plan_id = localeStorage?.plan_id;
 
 const WorkspaceForm = (props) => {
   const theme = useTheme();
+  const { user } = useAuth0();
+  const plan_id = getPlanId(user);
 
   const {
     classes,
