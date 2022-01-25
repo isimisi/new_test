@@ -12,7 +12,9 @@ import MouseIcon from "@material-ui/icons/Mouse";
 import HistoryIcon from "@material-ui/icons/History";
 import Typography from "@material-ui/core/Typography";
 import Avatar, { genConfig } from "react-nice-avatar";
-import { loadFromLocalStorage } from "@utils/localStorage";
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserMeta } from "@helpers/userInfo";
+
 const config = genConfig({
   isGradient: Boolean(Math.round(Math.random()))
 });
@@ -21,12 +23,14 @@ interface Props {
   setShareModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const { first_name, last_name } = loadFromLocalStorage();
-
 const Collaboration = (props: Props) => {
   const { setShareModalOpen } = props;
   const classes = useStyles();
   const { t } = useTranslation();
+  const { user } = useAuth0();
+  const meta: UserMeta = user && user["https://juristic.io/meta"];
+  const { first_name, last_name } = meta.dbUser;
+
   const toggleShare = () => setShareModalOpen(prevVal => !prevVal);
 
   return (

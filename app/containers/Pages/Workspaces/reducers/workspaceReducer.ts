@@ -170,9 +170,7 @@ export default function reducer(state = initialImmutableState, action: any) {
         const { nodesWithOrgId, edgesWithOrgId } = action;
         const elements = mutableState.get("elements").toJS();
         const elementsToEdit = elements.filter((el) => el.id.includes("edit"));
-        const remainingElements = elements.filter(
-          (el) => !el.id.includes("edit")
-        );
+        const remainingElements = elements.filter((el) => !el.id.includes("edit"));
         const nodesToEdit = elementsToEdit.filter((el) => isNode(el));
         const edgesToEdit = elementsToEdit.filter((el) => isEdge(el));
         nodesToEdit.map((node) => {
@@ -186,11 +184,7 @@ export default function reducer(state = initialImmutableState, action: any) {
           return edge;
         });
 
-        const newElements = [
-          ...remainingElements,
-          ...nodesToEdit,
-          ...edgesToEdit,
-        ];
+        const newElements = [...remainingElements, ...nodesToEdit, ...edgesToEdit];
 
         mutableState.set("elements", fromJS(newElements));
       });
@@ -253,7 +247,7 @@ export default function reducer(state = initialImmutableState, action: any) {
         mutableState.set("initialLoading", false);
       });
     case PUT_WORKSPACE_SUCCESS:
-      return state.withMutations((mutableState) => {});
+      return state.withMutations(() => {});
     case PUT_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
@@ -282,10 +276,7 @@ export default function reducer(state = initialImmutableState, action: any) {
     case GET_ATTRIBUTE_DROPDOWN_SUCCESS:
       return state.withMutations((mutableState) => {
         const attributesDropDownOptions = fromJS(action.attributes);
-        mutableState.set(
-          "attributesDropDownOptions",
-          attributesDropDownOptions
-        );
+        mutableState.set("attributesDropDownOptions", attributesDropDownOptions);
       });
     case GET_ATTRIBUTE_DROPDOWN_FAILED:
       return state.withMutations((mutableState) => {
@@ -344,9 +335,7 @@ export default function reducer(state = initialImmutableState, action: any) {
     case PUT_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
         const elements = mutableState.get("elements").toJS();
-        const index = elements.findIndex(
-          (e) => e.id === action.edge.id && isEdge(e)
-        );
+        const index = elements.findIndex((e) => e.id === action.edge.id && isEdge(e));
         elements[index] = action.edge;
         mutableState.set("elements", fromJS(elements));
         mutableState.set("loading", false);
@@ -380,9 +369,7 @@ export default function reducer(state = initialImmutableState, action: any) {
     case WORKSPACE_PUT_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const elements = mutableState.get("elements").toJS();
-        const index = elements.findIndex(
-          (e) => e.id === action.node.id && isNode(e)
-        );
+        const index = elements.findIndex((e) => e.id === action.node.id && isNode(e));
         elements[index] = action.node;
 
         mutableState.set("elements", fromJS(elements));

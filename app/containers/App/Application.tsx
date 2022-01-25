@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
-import { loadFromLocalStorage } from "@utils/localStorage";
 import { ReactFlowProvider } from "react-flow-renderer";
 import { ThemeContext } from "./ThemeWrapper";
 import Dashboard from "../Templates/Dashboard";
@@ -28,13 +27,17 @@ import {
   WorkspaceAnalysis,
   ChangeAvatar
 } from "../pageListAsync";
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserMeta } from "@helpers/userInfo";
 
 function Application() {
   const history = useHistory();
   const changeMode = useContext(ThemeContext);
+  const { user } = useAuth0();
 
   useEffect(() => {
-    const { type } = loadFromLocalStorage();
+    const meta: UserMeta = user && user["https://juristic.io/meta"];
+    const { type } = meta.dbUser;
 
     if (type === "client") {
       localStorage.clear();

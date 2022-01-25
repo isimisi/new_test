@@ -16,7 +16,8 @@ import ReactFlow, {
   BackgroundVariant,
   OnLoadParams,
   FlowElement,
-  Node
+  Node,
+  Connection
 } from 'react-flow-renderer';
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
@@ -56,6 +57,7 @@ import {
 } from '../../containers/Pages/Workspaces/reducers/workspaceActions';
 import '../../containers/Pages/Workspaces/workspace.css';
 import SignWorkspace from './SignWorkspace';
+import { useAuth0, User } from "@auth0/auth0-react";
 
 
 const nodeTypes = {
@@ -82,12 +84,13 @@ const Workspace = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const theme = useTheme();
-  const id = getId(history);
+  const id = getId(history) as string;
   const reactFlowContainer = useRef(null);
   const [image, takeScreenShot] = useScreenshot();
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
+  const user = useAuth0().user as User;
 
   // REDUX
   const relationships = useSelector(state => state[reducer].get('relationships'));
@@ -115,7 +118,12 @@ const Workspace = (props) => {
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
-  const [currentConnectionData, setCurrentConnectionData] = useState({});
+  const [currentConnectionData, setCurrentConnectionData] = useState<Connection>({
+    source: "",
+    target: "",
+    sourceHandle: "",
+    targetHandle: "",
+  });
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
   const [relationshipType, setRelationshipType] = useState(null);
@@ -175,12 +183,12 @@ const Workspace = (props) => {
       }
     }
 
-    dispatch(deleteWorkspaceElement(elementsToRemove, remainingElements));
+    dispatch(deleteWorkspaceElement(user, elementsToRemove, remainingElements));
   };
 
   const onLoad = (_reactFlowInstance: OnLoadParams) => {
     setRfInstance(_reactFlowInstance);
-    dispatch(showWorkspace(id, undefined, undefined, _reactFlowInstance));
+    dispatch(showWorkspace(user, id, undefined, undefined, _reactFlowInstance));
     _reactFlowInstance.fitView();
   };
 
@@ -228,16 +236,20 @@ const Workspace = (props) => {
 
       const _nodes = flow.elements.filter((n): n is Node => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
+      dispatch(saveWorkspace(user, id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes)));
     }
   }, [rfInstance]);
 
   useEffect(() => {
-    dispatch(getRelationships(group));
-    dispatch(getNodes(group));
-    dispatch(getGroupDropDown());
-    dispatch(getAttributeDropDown(group));
-  }, []);
+    dispatch(getRelationships(user, group));
+    dispatch(getNodes(user, group));
+    dispatch(getGroupDropDown(user));
+    dispatch(getAttributeDropDown(user, group));
+  }, [user]);
+
+  const closehandleNode = () => {
+    setDefineNodeOpen(false);
+  };
 
   const handleNodeSave = () => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
@@ -254,14 +266,15 @@ const Workspace = (props) => {
       if (!editable) {
         dispatch(showNotifAction(t('workspaces.public_editable_notification')));
       } else if (isUpdatingElement && elementToUpdate) {
-        dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), setDefineNodeOpen));
+        dispatch(putNode(user, elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closehandleNode));
       } else {
         dispatch(postNode(
+          user,
           id,
           choosenNode.id, choosenNode.label,
           nodeDisplayName, nodeFigur,
           JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
-          _attributes, setDefineNodeOpen, null,
+          _attributes, closehandleNode, null,
           x, y
         ));
         setNodeLabel('');
@@ -283,12 +296,17 @@ const Workspace = (props) => {
 
   // RELATIONSHIP
 
+  const closeEdge = () => {
+    setDefineEdgeOpen(false);
+  };
+
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
     if (!editable) {
       dispatch(showNotifAction(t('workspaces.public_editable_notification')));
     } else if (isUpdatingElement && elementToUpdate) {
       dispatch(putEdge(
+        user,
         elementToUpdate.id,
         choosenRelationship.id,
         choosenRelationship.label,
@@ -299,7 +317,7 @@ const Workspace = (props) => {
         animatedLine,
         showLabel,
         lineThrough,
-        setDefineEdgeOpen
+        closeEdge
       ));
     } else {
       const edge = {
@@ -314,7 +332,7 @@ const Workspace = (props) => {
         lineThrough,
         ...currentConnectionData
       };
-      dispatch(postEdge(id, edge, setDefineEdgeOpen, null));
+      dispatch(postEdge(user, id, edge, closeEdge, null));
     }
 
     setIsUpdatingElement(false);
@@ -358,7 +376,7 @@ const Workspace = (props) => {
       const x = rf && reactFlowDimensions && (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
       const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
 
-      dispatch(postSticky(id, x, y));
+      x && y && dispatch(postSticky(user, id, x, y));
     }
   };
 
@@ -571,7 +589,7 @@ const Workspace = (props) => {
         }}
         showCompanyData={() => {
           if (elementToUpdate) {
-            dispatch(getCompanyData(elementToUpdate.id, setShowCompanyData, setDefineNodeOpen, setNodeLabel, setIsUpdatingElement));
+            dispatch(getCompanyData(user, elementToUpdate.id, setShowCompanyData));
           }
         }}
       />
@@ -583,7 +601,7 @@ const Workspace = (props) => {
         description={t('workspaces.search_for_a_company_or_CVR_number')}
         textFielLabel={t('workspaces.cvr_nr')}
         onConfirm={(value, close) => {
-          dispatch(cvrWorkspace(id, value, close, erstTypes));
+          dispatch(cvrWorkspace(user, id, value, close, erstTypes));
         }}
       />
       {!defineEdgeOpen && !defineNodeOpen && !showCompanyData && !showSignWorkspace && editable && !signed && (
@@ -612,7 +630,7 @@ const Workspace = (props) => {
       <SignWorkspace
         open={showSignWorkspace}
         closeForm={() => setShowSignWorkspace(false)}
-        onSave={() => dispatch(signWorkspace(id, setShowSignWorkspace))}
+        onSave={() => dispatch(signWorkspace(user, id, setShowSignWorkspace))}
       />
 
     </div>

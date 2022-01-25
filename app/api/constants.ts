@@ -2,7 +2,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
 
-import { loadFromLocalStorage } from '@utils/localStorage';
+import { AuthUser, getToken } from '@helpers/userInfo';
 import CryptoJS from 'crypto-js';
 import { History } from 'history';
 
@@ -12,24 +12,15 @@ export const baseUrl = window.location.hostname === 'juristic-web-app-staging.he
     ? 'https://juristic-api-gateway.herokuapp.com'
     : 'http://127.0.0.1:3333';
 
-export const isAuthenticated = () => {
-  const tokenMatch = /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/;
-  const { token } = loadFromLocalStorage() || {};
-  return tokenMatch.test(token);
-};
+export interface HttpHeader {
+  headers: {
+    Authorization: string
+  };
+  params?: any
+}
 
-export const getStatus = (): string => {
-  const { status } = loadFromLocalStorage() || {};
-  return status;
-};
-
-export const getToken = (): string => {
-  const { token } = loadFromLocalStorage() || {};
-  return token;
-};
-
-export const authHeader = () => ({
-  headers: { Authorization: `Bearer ${getToken()}` },
+export const authHeader = (user: AuthUser): HttpHeader => ({
+  headers: { Authorization: `Bearer ${getToken(user)}` },
 });
 
 export const genericErrorMessage = 'Oops, it seems like we have some problems with our servers, try again later';

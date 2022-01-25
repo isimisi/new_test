@@ -21,6 +21,7 @@ import ReactFlow, {
   OnLoadParams,
   isEdge,
   Edge,
+  Connection,
 } from 'react-flow-renderer';
 import { jsPDF } from "jspdf";
 
@@ -34,12 +35,13 @@ import PropTypes from 'prop-types';
 import {
   useHistory
 } from 'react-router-dom';
+import { useAuth0, User } from "@auth0/auth0-react";
 
 
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import { toast } from 'react-toastify';
-import { loadFromLocalStorage } from '@utils/localStorage';
+import { getPlanId } from "@helpers/userInfo";
 import Notification from '@components/Notification/Notification';
 import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId, encryptId } from '@api/constants';
@@ -93,6 +95,7 @@ import Controls from '@components/Workspace/Actions/Controls';
 import Items from '@components/Workspace/Actions/Items';
 import Meta from '@components/Workspace/Actions/Meta';
 import Collaboration from '@components/Workspace/Actions/Collaborations';
+import { RGBA } from '@customTypes/data';
 
 
 const nodeTypes = {
@@ -129,7 +132,8 @@ const Workspace = (props) => {
 
   const { show: showContextMenu, setShow: setShowContextMenu } = useContextMenu();
 
-  const { plan_id } = loadFromLocalStorage();
+  const user = useAuth0().user as User;
+  const plan_id = getPlanId(user);
 
 
   // REDUX
@@ -177,6 +181,7 @@ const Workspace = (props) => {
     }
   };
 
+
   const [showCvrModal, setShowCvrModal] = useState(false);
   const [showMapErst, setShowMapErst] = useState(false);
   const [erstTypes, setErstTypes] = useState(initErstTypes);
@@ -193,11 +198,16 @@ const Workspace = (props) => {
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
-  const [currentConnectionData, setCurrentConnectionData] = useState({});
+  const [currentConnectionData, setCurrentConnectionData] = useState<Connection>({
+    source: "",
+    target: "",
+    sourceHandle: "",
+    targetHandle: "",
+  });
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
   const [relationshipType, setRelationshipType] = useState('custom');
-  const [relationshipColor, setRelationshipColor] = useState({
+  const [relationshipColor, setRelationshipColor] = useState<RGBA>({
     r: 0, g: 0, b: 0, a: 1
   });
   const [showArrow, setShowArrow] = useState(false);
@@ -224,6 +234,7 @@ const Workspace = (props) => {
   // socket for cvr
   const [subscription, setSubscription] = useState(null);
 
+
   const handleVisabilityChange = () => dispatch(changeHandleVisability(!handleVisability));
 
   const handleCvrSuccess = (el) => {
@@ -244,7 +255,7 @@ const Workspace = (props) => {
   };
 
   useEffect(() => {
-    connection.connect();
+    connection.connect(user);
 
     // storing the subscription in the global variable
     // passing the incoming data handler fn as a second argument
@@ -292,7 +303,7 @@ const Workspace = (props) => {
       }
     }
 
-    dispatch(deleteWorkspaceElement(elementsToRemove, remainingElements));
+    dispatch(deleteWorkspaceElement(user, elementsToRemove, remainingElements));
   };
 
 
@@ -341,9 +352,9 @@ const Workspace = (props) => {
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter((n): n is Node => isNode(n));
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      dispatch(saveWorkspace(id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes), history));
+      user && id && dispatch(saveWorkspace(user, id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes)));
     }
-  }, [rfInstance]);
+  }, [rfInstance, user]);
 
   const highlightAlertItems = (alert, constant = false) => {
     alert.elements.forEach((element) => {
@@ -393,28 +404,28 @@ const Workspace = (props) => {
 
   const onLoad = (_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
-    dispatch(showWorkspace(id, setMetaOpen, handleAlerts, _reactFlowInstance));
+    dispatch(showWorkspace(user, id as string, setMetaOpen, handleAlerts, _reactFlowInstance));
     _reactFlowInstance.fitView();
   };
 
   const toggleSubMenu = () => dispatch(toggleAction);
 
   useEffect(() => {
-    dispatch(getGroupDropDown());
+    dispatch(getGroupDropDown(user));
     dispatch(closeMenuAction);
 
     return () => {
       dispatch(openMenuAction);
     };
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (group) {
-      dispatch(getRelationships(group));
-      dispatch(getNodes(group));
-      dispatch(getAttributeDropDown(group));
+      dispatch(getRelationships(user, group));
+      dispatch(getNodes(user, group));
+      dispatch(getAttributeDropDown(user, group));
     }
-  }, [group]);
+  }, [user, group]);
 
   useEffect(() => {
     if (alertId || alertId === 0) {
@@ -441,10 +452,11 @@ const Workspace = (props) => {
     const y = rf && reactFlowDimensions && (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
     if (choosenNode) {
       if (isUpdatingElement && elementToUpdate) {
-        dispatch(putNode(elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
+        dispatch(putNode(user, elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
       } else {
         dispatch(postNode(
-          id,
+          user,
+          id as string,
           choosenNode.id, choosenNode.label,
           nodeDisplayName, nodeFigur,
           JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
@@ -487,6 +499,7 @@ const Workspace = (props) => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
     if (isUpdatingElement && elementToUpdate) {
       dispatch(putEdge(
+        user,
         elementToUpdate.id,
         choosenRelationship.id,
         choosenRelationship.label,
@@ -512,7 +525,7 @@ const Workspace = (props) => {
         lineThrough,
         ...currentConnectionData
       };
-      dispatch(postEdge(id, edge, closeDefineEdge, handleAlerts));
+      dispatch(postEdge(user, id as string, edge, closeDefineEdge, handleAlerts));
     }
 
     setIsUpdatingElement(false);
@@ -559,7 +572,10 @@ const Workspace = (props) => {
     const x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width / 3) / rf.zoom - 250 : 0;
     const y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height / 2) / rf.zoom - 150 : 0;
 
-    dispatch(postSticky(id, x, y));
+    if (x && y) {
+      dispatch(postSticky(user, id as string, x, y));
+    }
+
     setShowContextMenu(false);
   };
 
@@ -616,7 +632,7 @@ const Workspace = (props) => {
         const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
         setSubscription(sub);
       }
-      dispatch(cvrWorkspace(id, value, close, erstTypes));
+      dispatch(cvrWorkspace(user, id as string, value, close, erstTypes));
     } else {
       setShowMapErst(true);
     }
@@ -663,7 +679,7 @@ const Workspace = (props) => {
       return element;
     });
 
-    dispatch(addElements(id, elementsToAdd));
+    dispatch(addElements(user, id as string, elementsToAdd));
   };
 
   const { cut, copy, paste } = useCutCopyPaste(elements, onElementsRemove, handlePaste);
@@ -671,6 +687,7 @@ const Workspace = (props) => {
 
   const [contextAnchor, setContextAnchor] = useState({ x: 0, y: 0 });
   const [contextNode, setContextNode] = useState<Node<any> | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [contextEdge, setContextEdge] = useState<Edge<any> | null>(null);
   const [contextSelection, setContextSelction] = useState<Node<any>[] | null>(null);
 
@@ -733,8 +750,8 @@ const Workspace = (props) => {
     rfInstance,
     contextNode,
     handleShowNodeRelations,
-    (_id) => dispatch(getCompanyData(_id, setShowContextMenu)),
-    (_id) => dispatch(getAddressInfo(_id, setShowContextMenu)),
+    (_id) => dispatch(getCompanyData(user, _id, setShowContextMenu)),
+    (_id) => dispatch(getAddressInfo(user, _id, setShowContextMenu)),
     handleOpenCvr,
     setShowAlertLog,
     history,
@@ -880,7 +897,8 @@ const Workspace = (props) => {
         shareOrg={shareOrg}
         handleShareOrg={() => dispatch(shareOrgChange)}
         onSave={() => dispatch(putWorkspace(
-          id,
+          user,
+          id as string,
           label,
           description,
           group,
@@ -1016,7 +1034,7 @@ const Workspace = (props) => {
         textFielLabel={t('workspaces.cvr_nr')}
         changeUncertainCompanies={handleUncertainCompanies}
         uncertainCompanies={uncertainCompanies}
-        mapUncertainCompanies={(uncertainMapping) => dispatch(mapUncertainCompanies(id, uncertainMapping, erstTypes))}
+        mapUncertainCompanies={(uncertainMapping) => dispatch(mapUncertainCompanies(user, id as string, uncertainMapping, erstTypes))}
         onConfirm={onConfirm}
       />
       <MapTypesForErst
@@ -1066,7 +1084,7 @@ const Workspace = (props) => {
         open={shareModalOpen}
         loading={loading}
         close={() => setShareModalOpen(false)}
-        onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(id, firstName, lastName, email, phone, editable, setShareModalOpen))}
+        onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(user, id as string, firstName, lastName, email, phone, editable, setShareModalOpen))}
       />
       <RelationshipModal
         open={showNodeRelations}
@@ -1084,8 +1102,8 @@ const Workspace = (props) => {
             show={showContextMenu}
             handleEdit={onElementClick}
             handleShowNodeRelations={handleShowNodeRelations}
-            showCompanyInfo={(_id) => dispatch(getCompanyData(_id, setShowContextMenu))}
-            getAddressInfo={(_id) => dispatch(getAddressInfo(_id, setShowContextMenu))}
+            showCompanyInfo={(_id) => dispatch(getCompanyData(user, _id, setShowContextMenu))}
+            getAddressInfo={(_id) => dispatch(getAddressInfo(user, _id, setShowContextMenu))}
             loading={loading}
             cut={cut}
             copy={copy}

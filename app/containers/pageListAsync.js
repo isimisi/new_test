@@ -11,21 +11,6 @@ export const PersonalDashboard = loadable(
   }
 );
 // Pages
-export const Login = loadable(() => import("./Pages/Users/Login"), {
-  fallback: <Loading />,
-});
-export const Register = loadable(() => import("./Pages/Users/Register"), {
-  fallback: <Loading />,
-});
-export const ResetPassword = loadable(
-  () => import("./Pages/Users/ResetPassword"),
-  {
-    fallback: <Loading />,
-  }
-);
-export const NewPassword = loadable(() => import("./Pages/Users/NewPassword"), {
-  fallback: <Loading />,
-});
 
 export const ComingSoon = loadable(() => import("./Pages/ComingSoon"), {
   fallback: <Loading />,

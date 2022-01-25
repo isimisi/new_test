@@ -40,7 +40,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
-import { loadFromLocalStorage } from '@utils/localStorage';
+
 import Button from '@material-ui/core/Button';
 import { bindActionCreators } from 'redux';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
@@ -61,7 +61,6 @@ import {
   getElementCounts,
   getTimeline,
   postFeatureRequest,
-  getUserInfo,
   // @ts-ignore
 } from './reducers/dashboardActions';
 import UpgradeModal from './UpgradeModal';
@@ -70,6 +69,8 @@ import {
   postWorkspace, showNotifAction, getGroupDropDown
   // @ts-ignore
 } from '../Workspaces/reducers/workspaceActions';
+import { useAuth0 } from "@auth0/auth0-react";
+import { getPlanId, UserMeta } from '@helpers/userInfo';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
@@ -77,9 +78,7 @@ import {
 const corporateChart = require('@lotties/racoon/corporateChart.json');
 
 
-const { plan_id, first_name } = loadFromLocalStorage();
-
-const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
+const PersonalDashboard = () => {
   const classes = useStyles();
   const title = brand.name + ' - Personal Dashboard';
   const description = brand.desc;
@@ -91,6 +90,10 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
   // const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
   const { t } = useTranslation();
+  const { user } = useAuth0();
+  const plan_id = getPlanId(user);
+  const meta: UserMeta = user && user["https://juristic.io/meta"];
+  const { first_name } = meta.dbUser;
   const theme = useTheme();
 
   // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
@@ -143,11 +146,13 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
 
 
   useEffect(() => {
-    dispatch(getElementCounts());
-    dispatch(getTimeline());
-    dispatch(getUserInfo());
-    dispatch(getGroupDropDown());
-    dispatch(getTags(WhereInApp.workspace));
+    if (user) {
+      dispatch(getElementCounts(user));
+      dispatch(getTimeline(user));
+      dispatch(getGroupDropDown(user));
+      dispatch(getTags(user, WhereInApp.workspace));
+    }
+
 
     if (history.location.search.includes('upgraded')) {
       setShowUpgrade(true);
@@ -160,14 +165,16 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
     if (isMobile) {
       setShowMobileDisclaimer(true);
     }
-  }, []);
+  }, [user]);
 
   const handleFeatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFeatureValue(e.target.value);
   };
 
   const handleSubmitFeature = () => {
-    dispatch(postFeatureRequest(featureValue, setFeatureValue));
+    if (user) {
+      dispatch(postFeatureRequest(user, featureValue, setFeatureValue));
+    }
   };
 
 
@@ -175,7 +182,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
     if (plan_id === 1 && workspaces.length === 50) {
       dispatch(showNotifAction(t('personal-dashboard.can_not_create_more_workspaces')));
     } else {
-      dispatch(postWorkspace(history, label, workspacDescription, group, JSON.stringify(tags), shareOrg));
+      user && dispatch(postWorkspace(user, history, label, workspacDescription, group, JSON.stringify(tags), shareOrg));
     }
   };
 
@@ -183,7 +190,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
   const confirm = () => {
     const cvr = cvrSearch.includes('DK') && cvrSearch.length < 12 ? cvrSearch.substring(2) : cvrSearch;
 
-    dispatch(postWorkspace(history, cvr, undefined, 'Corporate', undefined, undefined, cvr));
+    user && dispatch(postWorkspace(user, history, cvr, undefined, 'Corporate', undefined, undefined, cvr));
   };
 
   const getAsyncOptions = inputValue => axios
@@ -322,7 +329,7 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
                 isMulti
                 isClearable
                 value={tags.map(tagMapping)}
-                onChange={(newValue, meta) => hanldeOnChange(newValue, meta, changeTags, tags)
+                onChange={(newValue, _meta) => hanldeOnChange(newValue, _meta, changeTags, tags)
                 }
                 inputId="react-select-tags"
                 placeholder={t('workspaces.workspace-form.add_tags_to_your_workspace')}
@@ -385,7 +392,6 @@ const PersonalDashboard = ({ openSubMenu }: {openSubMenu: any}) => {
       <UpgradeModal
         open={showUpgrade}
         close={() => {
-          dispatch(getUserInfo());
           setShowUpgrade(false);
         }}
       />
