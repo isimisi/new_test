@@ -35,10 +35,10 @@ import "./i18n";
 import Auth0ProviderWithHistory from "./containers/App/auth0-provider-with-history";
 
 //  logrocket
-LogRocket.init("pm66tw/juristic-web-app");
 
 // bugsnag
 if (process.env.NODE_ENV === "production") {
+  LogRocket.init("pm66tw/juristic-web-app");
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()]
@@ -104,9 +104,11 @@ if (process.env.NODE_ENV === "production") {
       <ErrorBoundary>
         <Provider store={store}>
           <ConnectedRouter history={history}>
-            <App />
-            <ToastContainer />
-            <CookieBot domainGroupId={domainGroupId} />
+            <Auth0ProviderWithHistory>
+              <App />
+              <ToastContainer />
+              <CookieBot domainGroupId={domainGroupId} />
+            </Auth0ProviderWithHistory>
           </ConnectedRouter>
         </Provider>
       </ErrorBoundary>,
