@@ -22,12 +22,14 @@ const App = () => {
     isLoading,
     error
   } = useAuth0();
-
+  console.log({ user, loginWithRedirect, isAuthenticated, isLoading, error });
   if (error) {
-    return <div>
-Oops...
-      {error.message}
-    </div>;
+    return (
+      <div>
+        Oops...
+        {error.message}
+      </div>
+    );
   }
 
   if (isLoading) {
