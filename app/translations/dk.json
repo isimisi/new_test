@@ -413,11 +413,14 @@
     "picture": "Image",
     "pdf": "PDF",
     "power_point": "Powerpoint (Kommer snart)",
-    "describing the work area": "Start med at beskrive dit arbejdsområde. Vælg gruppen \"Corporate\""
+    "describing the work area": "Start med at beskrive dit arbejdsområde. Vælg gruppen \"Corporate\"",
+    "relations_for": "Relationtioner for {{for}}",
+    "relations": "Relationer"
   },
   "workspace-analysis": {
     "earlier_versions": "Tidligere versioner",
-    "save": "Gem"
+    "save": "Gem",
+    "convert_to_pp": "Konverter til powerpoint"
   },
   "workspace-meta": {
     "name_your_work_area": "Navngiv dit arbejdsområde"

@@ -1,22 +1,33 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 /* eslint-disable react/prop-types */
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import ReactFlow, {
-  ConnectionMode, ReactFlowProvider, Controls, ControlButton,
-} from 'react-flow-renderer';
-import { CustomNode, CustomEdge } from '@components';
-import { useScreenshot, createFileName } from 'use-react-screenshot';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+  ConnectionMode,
+  ReactFlowProvider,
+  Controls,
+  ControlButton,
+} from "react-flow-renderer";
+import { CustomNode, CustomEdge } from "@components";
+import { useScreenshot, createFileName } from "use-react-screenshot";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 
 const nodeTypes = { custom: CustomNode };
 
-const MiniFlow = (props) => {
-  const { elements } = props;
+const MiniFlow = forwardRef((props, ref) => {
+  const { elements, html } = props;
 
   const reactFlowContainer = useRef(null);
   const [rfInstance, setRfInstance] = useState(null);
 
   const [hover, setHover] = useState(false);
   const [image, takeScreenShot] = useScreenshot();
+  const [dontDownload, setDontDownload] = useState(false);
 
   const onLoad = (_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
@@ -30,14 +41,21 @@ const MiniFlow = (props) => {
   }, [elements, rfInstance]);
 
   useEffect(() => {
-    if (image) {
-      const a = document.createElement('a');
+    if (image && !dontDownload) {
+      const a = document.createElement("a");
       a.href = image;
 
-      a.download = createFileName('jpg', '4');
+      a.download = createFileName("jpg", "4");
       a.click();
     }
-  }, [image]);
+  }, [image, dontDownload]);
+
+  useImperativeHandle(ref, () => ({ handleImage, image, html }), [image]);
+
+  const handleImage = () => {
+    setDontDownload(true);
+    takeScreenShot(reactFlowContainer?.current);
+  };
 
   return (
     <ReactFlowProvider>
@@ -63,12 +81,11 @@ const MiniFlow = (props) => {
         connectionMode={ConnectionMode.Loose}
       >
         {hover && (
-          <Controls
-            showZoom={false}
-          >
-            <ControlButton onClick={() => {
-              takeScreenShot(reactFlowContainer?.current);
-            }}
+          <Controls showZoom={false}>
+            <ControlButton
+              onClick={() => {
+                takeScreenShot(reactFlowContainer?.current);
+              }}
             >
               <PhotoCameraIcon />
             </ControlButton>
@@ -77,7 +94,6 @@ const MiniFlow = (props) => {
       </ReactFlow>
     </ReactFlowProvider>
   );
-};
-
+});
 
 export default MiniFlow;

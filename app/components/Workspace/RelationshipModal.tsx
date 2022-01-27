@@ -88,7 +88,7 @@ function RelationshipModal({
         openForm={open}
         branch={branch}
         closeForm={close}
-        title={'Relationer for ' + activeNodeRelations?.data.displayName}
+        title={activeNodeRelations?.data.displayName ? t("workspaces.relations_for", { for: activeNodeRelations?.data.displayName }) : t("workspaces.relations")}
         extraSize
       >
         <div style={{ maxHeight: 400, overflow: 'auto' }}>

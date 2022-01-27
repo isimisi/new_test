@@ -26,7 +26,9 @@ function LeftSidebarLayout(props) {
     handleOpenGuide,
   } = props;
 
-  const isWorkspace = history.location.pathname.includes("workspaces/");
+  const isWorkspace =
+    history.location.pathname.includes("workspaces/") &&
+    !history.location.pathname.includes("analysis");
 
   return (
     <Fragment>

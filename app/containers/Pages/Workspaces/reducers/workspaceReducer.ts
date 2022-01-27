@@ -50,6 +50,7 @@ import {
   WORKSPACE_PUT_NODE_LOADING,
   WORKSPACE_PUT_NODE_SUCCESS,
   WORKSPACE_PUT_NODE_FAILED,
+  ANALYSE_OUTPUT_LOADING,
   ANALYSE_OUTPUT_SUCCESS,
   ANALYSE_OUTPUT_FAILED,
   WORKSPACE_NODE_ADD_TO_LIST,
@@ -401,15 +402,22 @@ export default function reducer(state = initialImmutableState, action: any) {
         const message = fromJS(action.message);
         mutableState.set("message", message);
       });
+
+    case ANALYSE_OUTPUT_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("loading", true);
+      });
     case ANALYSE_OUTPUT_SUCCESS:
       return state.withMutations((mutableState) => {
         const outputs = fromJS(action.outputs);
         mutableState.set("outputs", outputs);
+        mutableState.set("loading", false);
       });
     case ANALYSE_OUTPUT_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set("message", message);
+        mutableState.set("loading", false);
       });
     case GET_CVR_NODES_LOADING:
       return state.withMutations((mutableState) => {

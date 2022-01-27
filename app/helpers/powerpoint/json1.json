@@ -1,0 +1,691 @@
+{
+    "id": 1571,
+    "label": "Workspace til Malthe",
+    "description": "",
+    "is_private": 0,
+    "type": "flow",
+    "x_position": 281,
+    "y_position": 229,
+    "zoom": 1,
+    "organization_id": 1,
+    "owner_id": 1,
+    "group_id": 133,
+    "public": 0,
+    "signed": 0,
+    "signed_by": null,
+    "created_at": "2021-12-14 10:08:39",
+    "updated_at": "2021-12-16 18:27:35",
+    "elements": [
+        {
+            "id": "38241",
+            "type": "custom",
+            "data": {
+                "label": "Selskab",
+                "id": "38241",
+                "displayName": "Lux HoldCo",
+                "figur": null,
+                "unitNumber": "4008840817",
+                "data_provider": "erst",
+                "attributes": [
+                    {
+                        "label": "Land",
+                        "value": "Luxembourg",
+                        "show": true,
+                        "workspace_node_attribut_id": 235,
+                        "type": "Value",
+                        "selectionOptions": null
+                    }
+                ],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": 0,
+                "y": 35
+            }
+        },
+        {
+            "id": "38242",
+            "type": "custom",
+            "data": {
+                "label": "Person",
+                "id": "38242",
+                "displayName": "Christian Aarrebo Hjortshøj",
+                "figur": null,
+                "unitNumber": null,
+                "data_provider": "erst",
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": 10,
+                "y": -83
+            }
+        },
+        {
+            "id": "38243",
+            "type": "custom",
+            "data": {
+                "label": "Selskab",
+                "id": "38243",
+                "displayName": "Juristic ApS",
+                "figur": null,
+                "unitNumber": "4008862861",
+                "data_provider": "erst",
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": 230,
+                "y": 325
+            }
+        },
+        {
+            "id": "38300",
+            "type": "custom",
+            "data": {
+                "label": "Selskab",
+                "id": "38300",
+                "displayName": "3 LIEBST ApS",
+                "figur": null,
+                "unitNumber": "4653342",
+                "data_provider": "erst",
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": -188,
+                "y": 135
+            }
+        },
+        {
+            "id": "38302",
+            "type": "custom",
+            "data": {
+                "label": "Selskab",
+                "id": "38302",
+                "displayName": "KNO Holding ApS",
+                "figur": null,
+                "unitNumber": "4008840832",
+                "data_provider": "erst",
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": 201,
+                "y": 98
+            }
+        },
+        {
+            "id": "38303",
+            "type": "custom",
+            "data": {
+                "label": "Person",
+                "id": "38303",
+                "displayName": "Kean Nøbølle Ottesen",
+                "figur": null,
+                "unitNumber": null,
+                "data_provider": "erst",
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": 404,
+                "y": -25
+            }
+        },
+        {
+            "id": "38304",
+            "type": "custom",
+            "data": {
+                "label": "Person",
+                "id": "38304",
+                "displayName": "Helene Bang Liebst",
+                "figur": null,
+                "unitNumber": null,
+                "data_provider": "erst",
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": -214,
+                "y": -113
+            }
+        },
+        {
+            "id": "38395",
+            "type": "custom",
+            "data": {
+                "label": "Selskab",
+                "id": "38395",
+                "displayName": "Buyer",
+                "figur": null,
+                "unitNumber": null,
+                "data_provider": null,
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": 481,
+                "y": 80
+            }
+        },
+        {
+            "id": "38396",
+            "type": "custom",
+            "data": {
+                "label": "Selskab",
+                "id": "38396",
+                "displayName": "Bank",
+                "figur": null,
+                "unitNumber": null,
+                "data_provider": null,
+                "attributes": [],
+                "backgroundColor": "rgba(255, 255, 255, 1)",
+                "borderColor": "rgba(0, 0, 0, 1)"
+            },
+            "position": {
+                "x": 874,
+                "y": 332
+            }
+        },
+        {
+            "id": "38076",
+            "source": "38242",
+            "target": "38241",
+            "sourceHandle": "bottom",
+            "targetHandle": "top",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38076",
+            "data": {
+                "label": "Ejerskab",
+                "value": "100%",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "label": "100%",
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "default"
+        },
+        {
+            "id": "38077",
+            "source": "38241",
+            "target": "38243",
+            "sourceHandle": "bottom",
+            "targetHandle": "top",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38077",
+            "data": {
+                "label": "Ejerskab",
+                "value": "33,33-49,99%",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "label": "33,33-49,99%",
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "default"
+        },
+        {
+            "id": "38128",
+            "source": "38300",
+            "target": "38243",
+            "sourceHandle": "bottom",
+            "targetHandle": "top",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38128",
+            "data": {
+                "label": "Ejerskab",
+                "value": "15-19,99%",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": false,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "label": "15-19,99%",
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": false,
+            "type": "default"
+        },
+        {
+            "id": "38130",
+            "source": "38302",
+            "target": "38243",
+            "sourceHandle": "bottom",
+            "targetHandle": "top",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38130",
+            "data": {
+                "label": "Ejerskab",
+                "value": "33,33-49,99%",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "label": "33,33-49,99%",
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "default"
+        },
+        {
+            "id": "38131",
+            "source": "38303",
+            "target": "38302",
+            "sourceHandle": "bottom",
+            "targetHandle": "top",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38131",
+            "data": {
+                "label": "Ejerskab",
+                "value": "100%",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": false,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "label": "100%",
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": false,
+            "type": "default"
+        },
+        {
+            "id": "38132",
+            "source": "38242",
+            "target": "38241",
+            "sourceHandle": "bottom",
+            "targetHandle": "top",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38132",
+            "data": {
+                "label": "Ejerskab",
+                "value": "100%",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": false,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "label": "100%",
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": false,
+            "type": "default"
+        },
+        {
+            "id": "38133",
+            "source": "38304",
+            "target": "38300",
+            "sourceHandle": "bottom",
+            "targetHandle": "top",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38133",
+            "data": {
+                "label": "Ejerskab",
+                "value": "100%",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": false,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "label": "100%",
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": false,
+            "type": "default"
+        },
+        {
+            "id": "38207",
+            "source": "38243",
+            "target": "38241",
+            "sourceHandle": "leftBottom",
+            "targetHandle": "leftTop",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38207",
+            "data": {
+                "label": "Transaktion",
+                "value": "Dividends",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "custom"
+        },
+        {
+            "id": "38230",
+            "source": "38302",
+            "target": "38395",
+            "sourceHandle": "rightTop",
+            "targetHandle": "leftTop",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38230",
+            "data": {
+                "label": "Transaktion",
+                "value": "Shares",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "custom"
+        },
+        {
+            "id": "38231",
+            "source": "38395",
+            "target": "38302",
+            "sourceHandle": "leftBottom",
+            "targetHandle": "rightBottom",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38231",
+            "data": {
+                "label": "Transaktion",
+                "value": "Cash",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "custom"
+        },
+        {
+            "id": "38235",
+            "source": "38243",
+            "target": "38396",
+            "sourceHandle": "rightTop",
+            "targetHandle": "leftTop",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38235",
+            "data": {
+                "label": "Transaktion",
+                "value": "Cash",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "custom"
+        },
+        {
+            "id": "38236",
+            "source": "38396",
+            "target": "38395",
+            "sourceHandle": "leftTop",
+            "targetHandle": "rightTop",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38236",
+            "data": {
+                "label": "Transaktion",
+                "value": "Loan",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "custom"
+        },
+        {
+            "id": "38240",
+            "source": "38243",
+            "target": "38395",
+            "sourceHandle": "rightTop",
+            "targetHandle": "bottom",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38240",
+            "data": {
+                "label": "Transaktion",
+                "value": "Dividends",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": true,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": "arrowclosed",
+            "type": "custom"
+        },
+        {
+            "id": "38262",
+            "source": "38241",
+            "target": "38242",
+            "sourceHandle": "leftBottom",
+            "targetHandle": "leftTop",
+            "style": {
+                "stroke": "rgba(0, 0, 0, 1)"
+            },
+            "className": "id_38262",
+            "data": {
+                "label": "Transaktion",
+                "value": "Dividends",
+                "showLabel": false,
+                "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                },
+                "showArrow": false,
+                "animated": false,
+                "lineThrough": false,
+                "stroke": false
+            },
+            "labelBgPadding": [
+                0,
+                0
+            ],
+            "labelStyle": {},
+            "animated": false,
+            "arrowHeadType": false,
+            "type": "custom"
+        }
+    ],
+    "group": "Corporate",
+    "tags": [
+        {
+            "id": 39,
+            "name": "ZentoSoft",
+            "emoji": "💻"
+        }
+    ]
+}

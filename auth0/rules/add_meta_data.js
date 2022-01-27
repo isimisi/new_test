@@ -2,7 +2,12 @@ function addUserMetaData(user, context, callback) {
   const axios = require("axios");
 
   const url = "https://juristic-api-gateway.herokuapp.com/metadata/auth0";
-  const body = { email: user.email, token: configuration.token };
+  const body = {
+    email: user.email,
+    token: configuration.token,
+    user_id: user.user_id,
+    name: user.name,
+  };
 
   const options = {
     method: "POST",
@@ -23,14 +28,14 @@ function addUserMetaData(user, context, callback) {
         organization,
       };
 
+      context.idToken["https://juristic.io/meta"] = user.user_metadata;
+
       auth0.users
         .updateUserMetadata(user.user_id, user.user_metadata)
         .then(function() {
-          console.log("finish");
           callback(null, user, context);
         })
         .catch(function(err) {
-          console.log(err);
           callback(err);
         });
     })

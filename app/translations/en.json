@@ -413,11 +413,14 @@
     "picture": "Picture",
     "pdf": "PDF",
     "power_point": "Powerpoint (Comming soon)",
-    "describing_the_work_area": "Descripe the workspace"
+    "describing_the_work_area": "Descripe the workspace",
+    "relations_for": "Relations for {{for}}",
+    "relations": "Relations"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
-    "save": "Save"
+    "save": "Save",
+    "convert_to_pp": "Convert to powerpoint"
   },
   "workspace-meta": {
     "name_your_work_area": "Name your work area"

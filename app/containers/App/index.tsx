@@ -15,7 +15,7 @@ import Loader from "@components/Loading/LongLoader";
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
 const App = () => {
-  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
+  const { user, loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
     return <Loader />;

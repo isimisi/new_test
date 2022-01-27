@@ -1,9 +1,12 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-return-assign */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-shadow */
 /* eslint-disable no-bitwise */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory, Prompt } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -23,7 +26,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { useTranslation } from "react-i18next";
 import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
-
+import SlideshowIcon from '@material-ui/icons/Slideshow';
+import Loader from "@components/Loading/LongLoader";
 import {
   analyseOutput,
   saveAnalysis,
@@ -35,6 +39,8 @@ import notFound from "@lotties/racoon/noContent.json";
 import { MyTheme } from "@customTypes/styling";
 import Notification from "@components/Notification/Notification";
 import MiniFlow from "@components/Workspace/Analysis/MiniFlow";
+import { generatePPTX } from "@helpers/powerpoint/pptx-gen";
+
 
 const useStyles = makeStyles((theme: MyTheme) => ({
   root: {
@@ -96,6 +102,7 @@ const WorkspaceAnalysis = () => {
   const history = useHistory();
   const id = history.location.pathname.split("/").pop();
   const outputs = useSelector((state) => state[reducer].get("outputs")).toJS();
+  const loading = useSelector((state) => state[reducer].get("loading"));
   const revisionHistoryList = useSelector((state) =>
     state[reducer].get("revisionHistory")
   ).toJS();
@@ -220,6 +227,61 @@ const WorkspaceAnalysis = () => {
     handleQuillChange(revisionString, index);
   };
 
+
+  const itemsRef = useRef([]);
+
+
+  useEffect(() => {
+    itemsRef.current = itemsRef.current.slice(0, outputs.length);
+  }, [outputs]);
+
+  const [readyForDownload, setReadyForDownload] = useState(false);
+
+  const handleImagesForPp = () => {
+    itemsRef.current.forEach((item) => {
+      // @ts-ignore
+      item.handleImage();
+    });
+    setReadyForDownload(true);
+  };
+
+  const handlePp = async () => {
+    setReadyForDownload(false);
+    // @ts-ignore
+    const param = {
+      html: [],
+      body: []
+    };
+    for (let index = 0; index < itemsRef.current.length; index++) {
+      const element = itemsRef.current[index];
+      // @ts-ignore
+      param.html.push(element.html);
+      // @ts-ignore
+      param.body.push(element.image);
+    }
+
+    await generatePPTX(param);
+  };
+
+  useEffect(() => {
+    if (readyForDownload) {
+      toast.info("Download powerpoint", {
+        position: toast.POSITION.BOTTOM_CENTER,
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        toastId: Math.random() * 100 + 10,
+        onClick: handlePp,
+        onClose: () => setReadyForDownload(false)
+      });
+    }
+  }, [readyForDownload]);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <>
       <Notification
@@ -241,6 +303,7 @@ const WorkspaceAnalysis = () => {
           </Button>
         </div>
       )}
+
       {outputs.map((output, index) => (
         <Grid container className={classes.root}>
           <Grid
@@ -249,7 +312,12 @@ const WorkspaceAnalysis = () => {
             style={{ marginBottom: 40, paddingLeft: 20, paddingTop: 20 }}
           >
             <Typography variant="h6">{output.conditionLabel}</Typography>
-            <MiniFlow elements={output.elements} />
+            <MiniFlow
+              html={output.action.output}
+              elements={output.elements}
+              // @ts-ignore
+              ref={el => itemsRef.current[index] = el}
+            />
           </Grid>
           <Grid
             item
@@ -355,7 +423,21 @@ const WorkspaceAnalysis = () => {
           )}
         </Grid>
       ))}
-
+      <Tooltip title={`${t("workspace-analysis.convert_to_pp")}`}>
+        <Fab
+          variant="extended"
+          color="secondary"
+          style={{
+            position: "fixed",
+            bottom: 30,
+            right: 190,
+            zIndex: 100,
+          }}
+          onClick={handleImagesForPp}
+        >
+          <SlideshowIcon />
+        </Fab>
+      </Tooltip>
       <Tooltip title={`${t("workspace-analysis.earlier_versions")}`}>
         <Fab
           variant="extended"

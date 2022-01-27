@@ -32,7 +32,6 @@ function WorkspaceMeta(props) {
       <FloatingPanel
         openForm={open}
         branch={branch}
-        closeForm={closeForm}
         title={t("workspace-meta.name_your_work_area")}
         expanded
       >
@@ -45,7 +44,6 @@ function WorkspaceMeta(props) {
           descriptionChange={descriptionChange}
           addGroup={addGroup}
           groupsDropDownOptions={groupsDropDownOptions}
-          closeForm={closeForm}
           onSave={onSave}
           shareOrg={shareOrg}
           handleShareOrg={handleShareOrg}

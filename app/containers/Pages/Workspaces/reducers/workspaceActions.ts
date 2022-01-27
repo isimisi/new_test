@@ -73,6 +73,7 @@ export const analyseAlerts = (
 };
 
 export const analyseOutput = (user: User, workspaceId: string) => async (dispatch) => {
+  dispatch({ type: types.ANALYSE_OUTPUT_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/analyse/actions/${workspaceId}`;
   const header = authHeader(user);
   try {
