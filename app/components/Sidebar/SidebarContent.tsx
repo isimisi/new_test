@@ -71,15 +71,7 @@ function SidebarContent(props: Props) {
             turnDarker && classes.darker
           )}
         >
-          <img
-            src={
-              user_id === 75
-                ? "https://kammeradvokaten.dk//media/8878/poul-schmith-kammeradvokaten-sort.svg"
-                : logoBeta
-            }
-            alt={brand.name}
-            style={{ width: 120 }}
-          />
+          <img src={logoBeta} alt={brand.name} style={{ width: 120 }} />
         </NavLink>
       </div>
       <div
