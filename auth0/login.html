@@ -62,7 +62,16 @@
           transform: scale(0.4);
         }
       }
-
+      @media (max-width: 450px) {
+        .main {
+          transform: scale(0.3);
+        }
+      }
+      @media (max-width: 300px) {
+        .main {
+          transform: scale(0.2);
+        }
+      }
       .container {
         display: flex;
         justify-content: center;
@@ -109,6 +118,7 @@
         transition: 0.25s ease !important;
         border-radius: 8px !important;
         box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #f9f9f9 !important;
+        -webkit-appearance: none;
       }
       .auth0-lock-tabs-container {
         display: none !important;

@@ -561,7 +561,7 @@ export const putSticky = (user: User, id: string, text: string) => async (dispat
   }
 };
 
-export const getCompanyData = (user: User, id: string, setShowContextMenu: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch) => {
+export const getCompanyData = (user: User, id: string, setShowContextMenu?: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch) => {
   dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
   const url = `${baseUrl}/workspacenodes/company/info/${id}`;
   const header = authHeader(user);
@@ -575,7 +575,7 @@ export const getCompanyData = (user: User, id: string, setShowContextMenu: React
     });
 
     dispatch({ type: types.SET_SHOW_COMPANY_DATA, show: true });
-    setShowContextMenu(false);
+    setShowContextMenu && setShowContextMenu(false);
   } catch (error) {
     let _message = message;
     // @ts-ignore

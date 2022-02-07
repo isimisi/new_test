@@ -1,7 +1,7 @@
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import MapIcon from "@material-ui/icons/Map";
@@ -40,6 +40,25 @@ const Controls = (props: Props) => {
   const zoomIn = () => reactFlowInstance?.zoomIn();
   const zoomOut = () => reactFlowInstance?.zoomOut();
   const zoomTo = () => reactFlowInstance?.zoomTo(1);
+
+  const [fitViewOpen, setFitViewOpen] = useState(false);
+  const handleCloseFitTooltip = () => setFitViewOpen(false);
+  const handleOpenFitTooltip = () => setFitViewOpen(true);
+
+  useEffect(() => {
+    const timer1 = setTimeout(() => {
+      handleOpenFitTooltip();
+    }, 1000);
+
+    const timer2 = setTimeout(() => {
+      handleCloseFitTooltip();
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
 
   return (
     <>
@@ -81,7 +100,7 @@ const Controls = (props: Props) => {
             />
           </IconButton>
         </Tooltip>
-        <Tooltip arrow title={`${t("workspaces.fit_to_view")}`} placement="top">
+        <Tooltip arrow title={`${t("workspaces.fit_to_view")}`} placement="top" open={fitViewOpen} onOpen={handleOpenFitTooltip} onClose={handleCloseFitTooltip}>
           <IconButton className={classes.buttons} onClick={fitToView}>
             <SelectAllIcon className={classes.buttons} />
           </IconButton>
