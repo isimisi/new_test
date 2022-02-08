@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.3.46",
+  "version": "1.3.47",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -260,7 +260,6 @@
     "html-webpack-plugin": "3.2.0",
     "imports-loader": "0.8.0",
     "lint-staged": "8.1.5",
-    "ngrok": "3.1.1",
     "node-plop": "0.18.0",
     "null-loader": "0.1.1",
     "offline-plugin": "5.0.6",
