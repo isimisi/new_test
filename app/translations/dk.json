@@ -273,7 +273,7 @@
     "node-actions": {
       "you_have_updated_your_element": "Du har opdateret dit element",
       "you_have_deleted": "Du har slettet",
-      "can_not_delete_it": "Hov det ser vist ud til, at du bruger dette element i arbejdsområder eller betingelser, derfor kan du ikke slette den."
+      "can_not_delete_it": "Hov, det ser vist ud til, at du bruger dette element i arbejdsområder eller betingelser, derfor kan du ikke slette den."
     },
     "tags": "Tags"
   },
@@ -289,7 +289,7 @@
     },
     "pane_context_menu": {
       "paste": "Indsæt",
-      "create_node": "Tilfæj et element",
+      "create_node": "Tilføj et element",
       "create_sticky": "Tilføj en note",
       "show_all": "Vis alle",
       "show_grid": "Vis hjælpelinjer",
