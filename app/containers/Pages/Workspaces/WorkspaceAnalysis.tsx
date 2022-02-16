@@ -39,7 +39,7 @@ import notFound from "@lotties/racoon/noContent.json";
 import { MyTheme } from "@customTypes/styling";
 import Notification from "@components/Notification/Notification";
 import MiniFlow from "@components/Workspace/Analysis/MiniFlow";
-import { generatePPTX } from "@helpers/powerpoint/pptx-gen";
+import { generatePPTX } from "@helpers/export/powerpoint/pptx-gen";
 
 
 const useStyles = makeStyles((theme: MyTheme) => ({

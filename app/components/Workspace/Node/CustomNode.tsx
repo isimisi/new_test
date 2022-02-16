@@ -81,7 +81,7 @@ const CustomNode = ({ data }) => {
     () => ({
       height: showHandles ? 8 : 0,
       width: showHandles ? 8 : 0,
-      backgroundClip: "padding-box"
+      backgroundColor: showHandles ? "black" : "white"
     }),
     [handleVisability, signed]
   );
@@ -90,6 +90,8 @@ const CustomNode = ({ data }) => {
     () => ({
       height: showHandles ? 8 : 0,
       width: showHandles ? 8 : 0,
+      backgroundColor: showHandles ? "black" : "white",
+
       top: "70%"
     }),
     [handleVisability, signed]
@@ -98,7 +100,9 @@ const CustomNode = ({ data }) => {
   const handleStyleSideTop = useMemo(
     () => ({
       height: showHandles ? 8 : 0,
+
       width: showHandles ? 8 : 0,
+      backgroundColor: showHandles ? "black" : "white",
       top: "30%"
     }),
     [handleVisability, signed]
@@ -265,7 +269,6 @@ const CustomNode = ({ data }) => {
                     marginTop: 5
                   }}
                   onClick={() => {
-                    console.log(data);
                     dispatch(getCompanyData(user, data.id));
                   }}
                 >

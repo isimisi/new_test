@@ -327,9 +327,7 @@ const applicationTheme = (color) => ({
         },
         "&$expanded": {
           borderRadius: 16,
-          boxShadow: `0px 0px 0px 1px ${
-            themePalette[color].palette.primary.main
-          }`,
+          boxShadow: `0px 0px 0px 1px ${themePalette[color].palette.primary.main}`,
           "& + div": {
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,

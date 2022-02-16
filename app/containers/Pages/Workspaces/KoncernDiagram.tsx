@@ -12,13 +12,12 @@ import ReactFlow, {
   Background,
   ConnectionMode,
   BackgroundVariant,
-  OnLoadParams,
+  OnLoadParams
 } from "react-flow-renderer";
 import logoBeta from "@images/logoBeta.svg";
 import brand from "@api/dummy/brand";
 import Grid from "@material-ui/core/Grid";
 import { Link, useHistory, useLocation } from "react-router-dom";
-
 import Notification from "@components/Notification/Notification";
 import CustomNode from "@components/Workspace/Node/CustomNode";
 import StickyNoteNode from "@components/Workspace/Node/StickyNoteNode";
@@ -35,7 +34,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Typography from "@material-ui/core/Typography";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { useScreenshot, createFileName } from "use-react-screenshot";
 import { getId } from "@api/constants";
 import connection from "@api/socket/SocketConnection";
 import Loader from "@components/Loading/LongLoader";
@@ -47,19 +45,20 @@ import {
   cvrSuccess,
   cvrWorkspacePublic,
   closeNotifAction,
-  firstPublicVisit,
+  firstPublicVisit
 } from "./reducers/workspaceActions";
 import "./workspace.css";
 import { useAuth0, User } from "@auth0/auth0-react";
+import { handleExport } from "@helpers/export/handleExport";
 
 const nodeTypes = {
   custom: CustomNode,
-  sticky: StickyNoteNode,
+  sticky: StickyNoteNode
 };
 const BASE_BG_GAP = 32;
 const BASE_BG_STROKE = 1;
 
-const Workspace = (props) => {
+const Workspace = props => {
   const { classes } = props;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -69,17 +68,14 @@ const Workspace = (props) => {
   const id = getId(history);
   const { search } = useLocation();
   const cvr = new URLSearchParams(search).get("cvr");
-  const messageNotif = useSelector((state) => state[reducer].get("message"));
-  const hasVisitedPublic = useSelector((state) =>
+  const messageNotif = useSelector(state => state[reducer].get("message"));
+  const hasVisitedPublic = useSelector(state =>
     state[reducer].get("hasVisitedPublic")
   );
 
   const reactFlowContainer = useRef(null);
-  const [image, takeScreenShot] = useScreenshot();
   const [currentZoom, setCurrentZoom] = useState(1);
-  const elements = useSelector((state) =>
-    state[reducer].get("elements")
-  ).toJS();
+  const elements = useSelector(state => state[reducer].get("elements")).toJS();
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
   const [showInitModal, setShowInitModal] = useState(false);
   const [showAgain, setShowAgain] = useState(false);
@@ -87,7 +83,7 @@ const Workspace = (props) => {
   const [loading, setLoading] = useState(true);
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
 
-  const handleCvrSuccess = (el) => {
+  const handleCvrSuccess = el => {
     dispatch(cvrSuccess(getLayoutedElements(el)));
     setLoading(false);
     setShowInitModal(!hasVisitedPublic);
@@ -115,27 +111,25 @@ const Workspace = (props) => {
 
   useEffect(() => {
     if (subscription) {
-      dispatch(cvrWorkspacePublic(user as User, id as string, cvr as string, initErstTypes));
+      dispatch(
+        cvrWorkspacePublic(
+          user as User,
+          id as string,
+          cvr as string,
+          initErstTypes
+        )
+      );
     }
   }, [subscription, user]);
 
-  const onLoad = (_reactFlowInstance) => {
+  const onLoad = _reactFlowInstance => {
     setRfInstance(_reactFlowInstance);
     _reactFlowInstance.fitView();
   };
 
   const flowStyle = {
-    backgroundColor: "white",
+    backgroundColor: "white"
   };
-
-  useEffect(() => {
-    if (image) {
-      const a = document.createElement("a");
-      a.href = image;
-      a.download = createFileName("jpg", cvr);
-      a.click();
-    }
-  }, [image]);
 
   const handleActions = () => {
     setOpenRegisterModal(true);
@@ -152,9 +146,11 @@ const Workspace = (props) => {
     }
   };
 
-  const handleShowAgain = (e) => {
+  const handleShowAgain = e => {
     setShowAgain(e.target.checked);
   };
+
+  const handleImage = () => handleExport("image", reactFlowContainer, cvr);
 
   return (
     <div>
@@ -167,16 +163,17 @@ const Workspace = (props) => {
           <Loader bigFont />
         </div>
       )}
-      <div className={classes.canvasRoot} ref={reactFlowContainer}>
+      <div className={classes.canvasRoot}>
         <ReactFlow
           elements={elements}
           onElementsRemove={handleActions}
           onConnect={handleActions}
+          ref={reactFlowContainer}
           minZoom={0.3}
           maxZoom={3}
           style={flowStyle}
           nodeTypes={nodeTypes}
-          onMove={(flowTransform) => {
+          onMove={flowTransform => {
             if (flowTransform) {
               setCurrentZoom(flowTransform.zoom);
             }
@@ -195,11 +192,7 @@ const Workspace = (props) => {
           </div>
           <div data-html2canvas-ignore="true">
             <Controls className={classes.controls}>
-              <ControlButton
-                onClick={() => {
-                  takeScreenShot(reactFlowContainer?.current);
-                }}
-              >
+              <ControlButton onClick={handleImage}>
                 <PhotoCameraIcon />
               </ControlButton>
             </Controls>
@@ -244,7 +237,7 @@ const Workspace = (props) => {
                 style={{
                   backgroundColor: theme.palette.primary.main,
                   borderTopRightRadius: 10,
-                  borderTopLeftRadius: 10,
+                  borderTopLeftRadius: 10
                 }}
               >
                 <Typography className={classes.packageHeader}>
@@ -298,7 +291,7 @@ const Workspace = (props) => {
                 style={{
                   backgroundColor: theme.palette.primary.main,
                   borderTopRightRadius: 10,
-                  borderTopLeftRadius: 10,
+                  borderTopLeftRadius: 10
                 }}
               >
                 <Typography className={classes.packageHeader}>
@@ -379,7 +372,7 @@ const Workspace = (props) => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                justifyContent: "center"
               }}
               xs={12}
               sm={3}
@@ -501,7 +494,7 @@ const Workspace = (props) => {
 };
 
 Workspace.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Workspace);

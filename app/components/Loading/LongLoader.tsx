@@ -28,9 +28,11 @@ const Loader = ({ bigFont = false }) => {
   ];
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setRaccoon(true);
     }, 5000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const Loader = ({ bigFont = false }) => {
       setTextIndex(Math.floor(Math.random() * (loadingTexts.length - 0)));
     }, 8000);
 
-    return () => clearTimeout(intervalId);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

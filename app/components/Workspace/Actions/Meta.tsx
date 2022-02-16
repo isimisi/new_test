@@ -38,8 +38,7 @@ interface Props {
   snapToGrid: boolean;
   handleAutoLayout: () => void;
   handleOpenMenu: () => void;
-  handleImage: () => void;
-  setExporting: React.Dispatch<React.SetStateAction<"image" | "pdf">>;
+  handleImage: (type: "image" | "pdf") => void;
 }
 
 const Meta = (props: Props) => {
@@ -52,8 +51,7 @@ const Meta = (props: Props) => {
     snapToGrid,
     handleAutoLayout,
     handleOpenMenu,
-    handleImage,
-    setExporting
+    handleImage
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -121,8 +119,7 @@ const Meta = (props: Props) => {
   const handleCloseShortcuts = () => setShowShortCuts(false);
 
   const handleExport = (type: "image" | "pdf") => {
-    handleImage();
-    setExporting(type);
+    handleImage(type);
   };
 
   return (
@@ -277,10 +274,7 @@ const Meta = (props: Props) => {
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.pdf")}</ListItemText>
                   </MenuItem>
-                  <MenuItem
-                    className={classes.menuItem}
-                    onClick={handleAutoLayout}
-                  >
+                  <MenuItem className={classes.menuItem} disabled>
                     <ListItemIcon>
                       <img
                         src={powerpoint}

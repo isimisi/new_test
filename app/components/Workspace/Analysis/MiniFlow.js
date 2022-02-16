@@ -48,7 +48,7 @@ const MiniFlow = forwardRef((props, ref) => {
       a.download = createFileName("jpg", "4");
       a.click();
     }
-  }, [image, dontDownload]);
+  }, [image]);
 
   useImperativeHandle(ref, () => ({ handleImage, image, html }), [image]);
 
@@ -56,6 +56,16 @@ const MiniFlow = forwardRef((props, ref) => {
     setDontDownload(true);
     takeScreenShot(reactFlowContainer?.current);
   };
+
+  const download = (_image) => {
+    const a = document.createElement("a");
+    a.href = _image;
+    a.download = createFileName("jpg", "4");
+    a.click();
+  };
+
+  const downloadScreenshot = () =>
+    takeScreenShot(reactFlowContainer?.current).then(download);
 
   return (
     <ReactFlowProvider>
@@ -82,11 +92,7 @@ const MiniFlow = forwardRef((props, ref) => {
       >
         {hover && (
           <Controls showZoom={false}>
-            <ControlButton
-              onClick={() => {
-                takeScreenShot(reactFlowContainer?.current);
-              }}
-            >
+            <ControlButton onClick={downloadScreenshot}>
               <PhotoCameraIcon />
             </ControlButton>
           </Controls>

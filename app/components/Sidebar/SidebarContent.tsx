@@ -57,6 +57,7 @@ function SidebarContent(props: Props) {
 
   return (
     <div
+      id="sidebar"
       className={classNames(
         classes.drawerInner,
         !drawerPaper ? classes.drawerPaperClose : ""

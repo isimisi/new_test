@@ -23,6 +23,7 @@ import useStyle from "./sidebar-jss";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
+import { openMenuAction } from "@redux/actions/uiActions";
 
 const LinkBtn = React.forwardRef((props, ref) => (
   // @ts-ignore
@@ -33,14 +34,24 @@ interface Props {
   open: [];
   openSubMenu: (key, keyParent) => void;
   toggleDrawerOpen: () => void;
+  openDrawer: () => void;
   loadTransition: (bol: boolean) => void;
   dataMenu: any[];
   drawerPaper?: boolean;
 }
 
 const MainMenu = (props: Props) => {
+  const {
+    openSubMenu,
+    open,
+    dataMenu,
+    drawerPaper,
+    toggleDrawerOpen,
+    loadTransition,
+    openDrawer
+  } = props;
+
   const handleClick = () => {
-    const { toggleDrawerOpen, loadTransition } = props;
     toggleDrawerOpen();
     loadTransition(false);
   };
@@ -50,8 +61,6 @@ const MainMenu = (props: Props) => {
 
   const notIncludedPlans = plan_id ? plans.slice(plan_id, plans.length) : plans;
   const classes = useStyle();
-
-  const { openSubMenu, open, dataMenu, drawerPaper } = props;
 
   const getMenus = menuArray =>
     menuArray.map((item: any, index) => {
@@ -88,7 +97,11 @@ const MainMenu = (props: Props) => {
                   // @ts-ignore
                   open.indexOf(item.key) > -1 ? classes.opened : ""
                 )}
-                onClick={() => openSubMenu(item.key, item.keyParent)}
+                onClick={() => {
+                  console.log("øsanljsa");
+                  openDrawer();
+                  openSubMenu(item.key, item.keyParent);
+                }}
               >
                 {item.icon && (
                   <ListItemIcon className={classes.icon}>
@@ -166,7 +179,7 @@ const MainMenu = (props: Props) => {
               ? "/app/plan"
               : item.link
           }
-          onClick={() => handleClick()}
+          onClick={handleClick}
         >
           <ListItemText
             classes={{ primary: classes.primary }}
@@ -199,7 +212,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  openSubMenu: bindActionCreators(openAction, dispatch)
+  openSubMenu: bindActionCreators(openAction, dispatch),
+  openDrawer: () => dispatch(openMenuAction)
 });
 
 const MainMenuMapped = connect(

@@ -39,7 +39,6 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
-import { useScreenshot, createFileName } from 'use-react-screenshot';
 import { getId } from '@api/constants';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import { useTranslation } from 'react-i18next';
@@ -58,6 +57,7 @@ import {
 import '../../containers/Pages/Workspaces/workspace.css';
 import SignWorkspace from './SignWorkspace';
 import { useAuth0, User } from "@auth0/auth0-react";
+import { handleExport } from '@helpers/export/handleExport';
 
 
 const nodeTypes = {
@@ -86,7 +86,7 @@ const Workspace = (props) => {
   const theme = useTheme();
   const id = getId(history) as string;
   const reactFlowContainer = useRef(null);
-  const [image, takeScreenShot] = useScreenshot();
+
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
@@ -402,14 +402,8 @@ const Workspace = (props) => {
     onWorkspaceSave();
   }, [rfInstance, elements]);
 
-  useEffect(() => {
-    if (image) {
-      const a = document.createElement('a');
-      a.href = image;
-      a.download = createFileName('jpg', label);
-      a.click();
-    }
-  }, [image]);
+
+  const handleImage = () => handleExport("image", reactFlowContainer, label);
 
   return (
     <div>
@@ -445,10 +439,7 @@ const Workspace = (props) => {
           </div>
           <div data-html2canvas-ignore="true">
             <Controls className={classes.controls} showInteractive={editable ? !signed : false}>
-              <ControlButton onClick={() => {
-                takeScreenShot(reactFlowContainer?.current);
-              }}
-              >
+              <ControlButton onClick={handleImage}>
                 <PhotoCameraIcon />
               </ControlButton>
               {editable ? !signed : false && (

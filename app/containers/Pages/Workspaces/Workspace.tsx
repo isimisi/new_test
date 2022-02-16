@@ -23,7 +23,7 @@ import ReactFlow, {
   Edge,
   Connection,
 } from 'react-flow-renderer';
-import { jsPDF } from "jspdf";
+
 
 import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -43,7 +43,7 @@ import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import { toast } from 'react-toastify';
 import { getPlanId } from "@helpers/userInfo";
 import Notification from '@components/Notification/Notification';
-import { useScreenshot, createFileName } from 'use-react-screenshot';
+
 import { getId, encryptId } from '@api/constants';
 import connection from '@api/socket/SocketConnection';
 import AlertModal from '@components/Alerts/AlertModal';
@@ -66,7 +66,6 @@ import NodeContextMenu from '@components/Workspace/ContextMenu/NodeContextMenu';
 import { useTranslation } from 'react-i18next';
 import useContextMenu from '@hooks/useContextMenu';
 import useWorkspaceHotKeys from '@hooks/useWorkspaceHotKeys';
-
 import SelectionContextMenu from '@components/Workspace/ContextMenu/SelectionContextMenu';
 import { openMenuAction, closeMenuAction, toggleAction } from '@redux/actions/uiActions';
 import { ContextTypes, NodeDropdownInstance } from '../../../types/reactFlow';
@@ -96,6 +95,8 @@ import Items from '@components/Workspace/Actions/Items';
 import Meta from '@components/Workspace/Actions/Meta';
 import Collaboration from '@components/Workspace/Actions/Collaborations';
 import { RGBA } from '@customTypes/data';
+import ReactDOM from 'react-dom';
+import { handleExport } from '@helpers/export/handleExport';
 
 
 const nodeTypes = {
@@ -123,8 +124,7 @@ const Workspace = (props) => {
   const theme = useTheme();
   const id = getId(history);
   const reactFlowContainer = useRef(null);
-  const [image, takeScreenShot] = useScreenshot();
-  const [exporting, setExporting] = useState<'image' | 'pdf'>('image');
+
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
@@ -598,29 +598,6 @@ const Workspace = (props) => {
     onWorkspaceSave();
   }, [rfInstance, elements]);
 
-  useEffect(() => {
-    if (image) {
-      if (exporting === "image") {
-        const a = document.createElement('a');
-        a.href = image;
-
-        a.download = createFileName('jpg', label);
-        a.click();
-      } else {
-        const doc = new jsPDF({ orientation: 'l' });
-
-        const imgProps = doc.getImageProperties(image);
-
-        const pdfWidth = doc.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-        doc.addImage(image, 'JPEG', 0, 0, pdfWidth, pdfHeight);
-        doc.save(`${label}.pdf`);
-      }
-    }
-  }, [image, exporting]);
-
-
   const onConfirm = (value, close) => {
     const erstNodeArray = Object.values(erstTypes.nodes);
     const erstEdgeArray = Object.values(erstTypes.edges);
@@ -761,13 +738,12 @@ const Workspace = (props) => {
 
   const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
 
-  const handleImage = () => {
-    takeScreenShot(reactFlowContainer?.current);
-  };
+  const handleImage = (type) => handleExport(type, reactFlowContainer, label);
 
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+
 
       <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
 
@@ -818,7 +794,6 @@ const Workspace = (props) => {
               handleAutoLayout={handleAutoLayout}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
-              setExporting={setExporting}
             />
             <Items
               setDefineNodeOpen={setDefineNodeOpen}

@@ -45,6 +45,8 @@ function Conditions(props) {
   const plan_id = getPlanId(user);
   const { t } = useTranslation();
 
+  const col = columns(t);
+
   useEffect(() => {
     dispatch(getConditions(user));
     dispatch(getTags(user, WhereInApp.condition));
@@ -84,13 +86,30 @@ function Conditions(props) {
     dispatch(changeTagActivity(tag));
   };
 
+  const activeTags = tags
+    .filter(tag => tag.active)
+    .map(tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}`);
+  col[1].options.filterList = activeTags;
+
+  const handleFilterChanged = (changedColumn, filterList) => {
+    if (changedColumn === "Tags") {
+      const deleted = activeTags.find(tag => !filterList[1].includes(tag));
+      if (deleted) {
+        const tagObj = tags.find(
+          tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}` === deleted
+        );
+        handleMakeActiveTag(tagObj);
+      }
+    }
+  };
+
   const handleShowAll = () => {
     const actTags = tags.filter(tag => tag.active);
     actTags.forEach(tag => {
       dispatch(changeTagActivity(tag));
     });
   };
-  console.log(tags);
+
   return (
     <div className={classes.table}>
       <Notification
@@ -114,8 +133,8 @@ function Conditions(props) {
           <MUIDataTable
             title={t("conditions.your_conditions")}
             data={conditions}
-            columns={columns(t)}
-            options={tableOptions(onDelete, loading)}
+            columns={col}
+            options={tableOptions(onDelete, loading, handleFilterChanged)}
           />
         </Grid>
       </Grid>
