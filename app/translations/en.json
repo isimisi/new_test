@@ -355,7 +355,7 @@
     "can_not_delete": "You cannot delete expired workspaces.",
     "relationship_modal": {
       "outgoing": "Outgoing",
-      "incomming": "Incomming",
+      "incomming": "Incoming",
       "elements": "Elements",
       "relations": "Relations",
       "values": "Values"
@@ -381,8 +381,8 @@
     "add_node": "Add element",
     "add_note": "Add sticky note",
     "get_from_company_data": "Get from company register",
-    "undo": "Undo (Comming soon)",
-    "redo": "Redo (Comming soon)",
+    "undo": "Undo (Coming soon)",
+    "redo": "Redo (Coming soon)",
     "analyse": "Analyse",
     "red_flags": "Red flags",
     "dont_show_map": "Do not show elements map",
@@ -412,7 +412,7 @@
     "node_data": "Element data",
     "picture": "Picture",
     "pdf": "PDF",
-    "power_point": "Powerpoint (Comming soon)",
+    "power_point": "PowerPoint (Coming soon)",
     "describing_the_work_area": "Descripe the workspace",
     "relations_for": "Relations for {{for}}",
     "relations": "Relations"
