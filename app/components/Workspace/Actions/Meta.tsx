@@ -140,8 +140,9 @@ const Meta = (props: Props) => {
   const handleExcel = () => {
     const wb = XLSX.utils.book_new();
     const nodes = elements.filter((e): e is Node => isNode(e));
+    const names = nodes.map(n => n.data.displayName.substring(0, 30));
 
-    wb.SheetNames = nodes.map(n => n.data.displayName);
+    wb.SheetNames = names.filter((c, index) => names.indexOf(c) === index);
 
     const header = [
       t("workspace.meta.excel.headers.element"),
@@ -191,7 +192,7 @@ const Meta = (props: Props) => {
     const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
     saveAs(
       new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-      `${label.substring(0, 25)}.xlsx`
+      `${label}.xlsx`
     );
   };
 
