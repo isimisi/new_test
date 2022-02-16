@@ -415,7 +415,8 @@
     "power_point": "PowerPoint (Coming soon)",
     "describing_the_work_area": "Descripe the workspace",
     "relations_for": "Relations for {{for}}",
-    "relations": "Relations"
+    "relations": "Relations",
+    "excel": "Excel"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
@@ -608,6 +609,21 @@
     "open_shotcuts": "Shortcuts",
     "analysis": {
       "nothing": "There is nothing to analyse yet"
+    },
+    "alerts": {
+      "nothing": "There is no red flags yet"
+    },
+    "meta": {
+      "excel": {
+        "headers": {
+          "element": "Element",
+          "relation": "Relation",
+          "value": "Value",
+          "type": "Type",
+          "outgoer": "Outgoer",
+          "incommer": "Incommer"
+        }
+      }
     }
   }
 }

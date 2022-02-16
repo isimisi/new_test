@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import css from '@styles/Form.scss';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Tooltip from '@material-ui/core/Tooltip';
-import { encryptId } from '@api/constants';
-import FlashOnIcon from '@material-ui/icons/FlashOn';
-import FlashOffIcon from '@material-ui/icons/FlashOff';
-import FloatingPanel from '../Panel/FloatingPanel';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import css from "@styles/Form.scss";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Tooltip from "@material-ui/core/Tooltip";
+import { encryptId } from "@api/constants";
+import FlashOnIcon from "@material-ui/icons/FlashOn";
+import FlashOffIcon from "@material-ui/icons/FlashOff";
+import FloatingPanel from "../Panel/FloatingPanel";
+import notFound from "@lotties/racoon/noContent.json";
+import Lottie from "lottie-react";
+import { useTranslation } from "react-i18next";
 
 function AlertLog(props) {
   const {
@@ -19,11 +22,11 @@ function AlertLog(props) {
     history,
     seeAlert,
     highlightAlertItems,
-    removeHighlightAlert
+    removeHighlightAlert,
   } = props;
 
   const [flashOn, setFlashOn] = useState(false);
-
+  const { t } = useTranslation();
   const alertMargin = {
     marginLeft: 10,
     marginRight: 10,
@@ -35,29 +38,44 @@ function AlertLog(props) {
       history.location.pathname,
       `/app/red%20flags/${encryptId(alerts[0]?.alert?.id)}`
     );
-    const win = window.open(location, '_blank');
+    const win = window.open(location, "_blank");
     win.focus();
   };
 
   return (
     <div>
-      <FloatingPanel
-        openForm={open}
-        closeForm={close}
-        title="Dine tidligere red flags"
-      >
+      <FloatingPanel openForm={open} closeForm={close} title="Dine tidligere red flags">
         <div className={css.bodyForm}>
+          {alerts.length === 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Lottie animationData={notFound} />
+              <Typography variant="subtitle1">{t("workspace.alerts.nothing")}</Typography>
+            </div>
+          )}
           {alerts.map((alert, index) => (
             <div key={alert?.alert?.id} style={alertMargin}>
-              <div style={{
-                backgroundColor: '#fafafa', padding: 5, paddingLeft: 10, borderRadius: 5, display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'
-              }}
+              <div
+                style={{
+                  backgroundColor: "#fafafa",
+                  padding: 5,
+                  paddingLeft: 10,
+                  borderRadius: 5,
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
               >
-                <Typography>
-                  {alert?.alert?.label}
-                </Typography>
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <Tooltip title={flashOn ? 'Stop highlight' : 'Highlight'}>
+                <Typography>{alert?.alert?.label}</Typography>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  <Tooltip title={flashOn ? "Stop highlight" : "Highlight"}>
                     <IconButton
                       color="primary"
                       onClick={() => {
@@ -67,7 +85,7 @@ function AlertLog(props) {
                           highlightAlertItems(alert, true);
                         }
 
-                        setFlashOn(prevVal => !prevVal);
+                        setFlashOn((prevVal) => !prevVal);
                       }}
                     >
                       {flashOn ? <FlashOffIcon /> : <FlashOnIcon />}
@@ -79,15 +97,18 @@ function AlertLog(props) {
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Gå til red flag">
-                    <IconButton color="primary" onClick={leave} disabled={alert?.alert?.organization_id === 11}>
+                    <IconButton
+                      color="primary"
+                      onClick={leave}
+                      disabled={alert?.alert?.organization_id === 11}
+                    >
                       <ExitToAppIcon />
                     </IconButton>
                   </Tooltip>
                 </div>
               </div>
             </div>
-          )
-          )}
+          ))}
         </div>
       </FloatingPanel>
     </div>

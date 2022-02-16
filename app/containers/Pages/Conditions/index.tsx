@@ -58,8 +58,8 @@ function Conditions(props) {
 
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({
-      id: conditions[v.index][3],
-      title: conditions[v.index][0]
+      id: conditions[v.dataIndex][3],
+      title: conditions[v.dataIndex][0]
     }));
     deletedNodes.forEach(e => {
       const id = CryptoJS.AES.decrypt(

@@ -44,8 +44,8 @@ function Relationships() {
 
   const onDelete = ({ data }) => {
     const deletedRelationships = data.map(v => ({
-      id: relationships[v.index][3],
-      title: relationships[v.index][0]
+      id: relationships[v.dataIndex][3],
+      title: relationships[v.dataIndex][0]
     }));
     deletedRelationships.forEach(e => {
       const id = CryptoJS.AES.decrypt(

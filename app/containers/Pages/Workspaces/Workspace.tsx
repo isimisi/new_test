@@ -95,7 +95,7 @@ import Items from '@components/Workspace/Actions/Items';
 import Meta from '@components/Workspace/Actions/Meta';
 import Collaboration from '@components/Workspace/Actions/Collaborations';
 import { RGBA } from '@customTypes/data';
-import ReactDOM from 'react-dom';
+
 import { handleExport } from '@helpers/export/handleExport';
 
 
@@ -510,7 +510,8 @@ const Workspace = (props) => {
         animatedLine,
         showLabel,
         lineThrough,
-        closeDefineEdge
+        closeDefineEdge,
+        setIsUpdatingElement
       ));
     } else {
       const edge = {
@@ -527,8 +528,6 @@ const Workspace = (props) => {
       };
       dispatch(postEdge(user, id as string, edge, closeDefineEdge, handleAlerts));
     }
-
-    setIsUpdatingElement(false);
   };
 
   const handleChangeLabel = useCallback((_label) => {
@@ -789,6 +788,7 @@ const Workspace = (props) => {
               setMetaOpen={setMetaOpen}
               handleVisabilityChange={handleVisabilityChange}
               handleVisability={handleVisability}
+              elements={elements}
               setSnapToGrid={setSnapToGrid}
               snapToGrid={snapToGrid}
               handleAutoLayout={handleAutoLayout}

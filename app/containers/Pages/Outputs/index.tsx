@@ -50,8 +50,8 @@ const Outputs = () => {
 
   const onDelete = ({ data }) => {
     const deletedOutput = data.map(v => ({
-      id: outputs[v.index][3],
-      title: outputs[v.index][0]
+      id: outputs[v.dataIndex][3],
+      title: outputs[v.dataIndex][0]
     }));
     deletedOutput.forEach(e => {
       dispatch(deleteOutput(user, e.id, e.title));

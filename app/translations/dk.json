@@ -415,7 +415,8 @@
     "power_point": "Powerpoint (Kommer snart)",
     "describing the work area": "Start med at beskrive dit arbejdsområde. Vælg gruppen \"Corporate\"",
     "relations_for": "Relationtioner for {{for}}",
-    "relations": "Relationer"
+    "relations": "Relationer",
+    "excel": "Excel"
   },
   "workspace-analysis": {
     "earlier_versions": "Tidligere versioner",
@@ -608,6 +609,21 @@
     "open_shotcuts": "Genveje",
     "analysis": {
       "nothing": "Der ikke er noget at analysere endnu"
+    },
+    "alerts": {
+      "nothing": "Der er ingen red flags endnu"
+    },
+    "meta": {
+      "excel": {
+        "headers": {
+          "element": "Element",
+          "relation": "Relation",
+          "value": "Værdi",
+          "type": "Type",
+          "outgoer": "Udgående",
+          "incommer": "Ingående"
+        }
+      }
     }
   }
 }

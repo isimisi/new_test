@@ -85,28 +85,28 @@ const getFactor = (
   }
 
   if (
-    sourcePosition === Position.Top
-    && leftAndRight.includes(targetPosition)
+    sourcePosition === Position.Top &&
+    leftAndRight.includes(targetPosition)
   ) {
     factor = sourceY + 60 < targetY ? 0.6 : 0.4;
   }
   if (
-    sourcePosition === Position.Bottom
-    && leftAndRight.includes(targetPosition)
+    sourcePosition === Position.Bottom &&
+    leftAndRight.includes(targetPosition)
   ) {
     factor = targetY + 60 < sourceY ? 0.6 : 0.4;
   }
 
   if (
-    leftAndRight.includes(sourcePosition)
-    && targetPosition === Position.Bottom
+    leftAndRight.includes(sourcePosition) &&
+    targetPosition === Position.Bottom
   ) {
     factor = targetY + 60 < sourceY ? 0.6 : 0.4;
   }
 
   if (
-    leftAndRight.includes(sourcePosition)
-    && targetPosition === Position.Top
+    leftAndRight.includes(sourcePosition) &&
+    targetPosition === Position.Top
   ) {
     factor = sourceY + 60 < targetY ? 0.6 : 0.4;
   }
@@ -158,120 +158,120 @@ const drawCurve = (
     cp2x = targetX;
     cp2y = cY + offset;
   } else if (
-    sourcePosition === Position.Top
-    && targetPosition === Position.Top
+    sourcePosition === Position.Top &&
+    targetPosition === Position.Top
   ) {
     cp1x = sourceX;
     cp1y = cY - offset;
     cp2x = targetX;
     cp2y = cY - offset;
   } else if (
-    sourcePosition === Position.Top
-    && targetPosition.includes("left")
+    sourcePosition === Position.Top &&
+    targetPosition.includes("left")
   ) {
     cp1x = sourceX;
     cp1y = sourceY - offset;
     cp2x = targetX - offset;
     cp2y = targetY;
   } else if (
-    sourcePosition === Position.Top
-    && targetPosition.includes("right")
+    sourcePosition === Position.Top &&
+    targetPosition.includes("right")
   ) {
     cp1x = sourceX;
     cp1y = sourceY - offset;
     cp2x = targetX + offset;
     cp2y = targetY;
   } else if (
-    sourcePosition === Position.Bottom
-    && targetPosition === Position.Bottom
+    sourcePosition === Position.Bottom &&
+    targetPosition === Position.Bottom
   ) {
     cp1x = sourceX;
     cp1y = cY + offset;
     cp2x = targetX;
     cp2y = cY + offset;
   } else if (
-    sourcePosition === Position.Bottom
-    && targetPosition === Position.Top
+    sourcePosition === Position.Bottom &&
+    targetPosition === Position.Top
   ) {
     cp1x = sourceX;
     cp1y = cY + offset;
     cp2x = targetX;
     cp2y = cY - offset;
   } else if (
-    sourcePosition === Position.Bottom
-    && targetPosition.includes("left")
+    sourcePosition === Position.Bottom &&
+    targetPosition.includes("left")
   ) {
     cp1x = sourceX;
     cp1y = cY + offset;
     cp2x = targetX - offset;
     cp2y = targetY;
   } else if (
-    sourcePosition === Position.Bottom
-    && targetPosition.includes("right")
+    sourcePosition === Position.Bottom &&
+    targetPosition.includes("right")
   ) {
     cp1x = sourceX;
     cp1y = cY + offset;
     cp2x = targetX + offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes("left")
-    && targetPosition === Position.Bottom
+    sourcePosition.includes("left") &&
+    targetPosition === Position.Bottom
   ) {
     cp1x = sourceX - offset;
     cp1y = sourceY;
     cp2x = targetX;
     cp2y = targetY + offset;
   } else if (
-    sourcePosition.includes("left")
-    && targetPosition === Position.Top
+    sourcePosition.includes("left") &&
+    targetPosition === Position.Top
   ) {
     cp1x = sourceX - offset;
     cp1y = sourceY;
     cp2x = targetX;
     cp2y = targetY - offset;
   } else if (
-    sourcePosition.includes("left")
-    && targetPosition.includes("left")
+    sourcePosition.includes("left") &&
+    targetPosition.includes("left")
   ) {
     cp1x = cX - offset;
     cp1y = sourceY;
     cp2x = cX - offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes("left")
-    && targetPosition.includes("right")
+    sourcePosition.includes("left") &&
+    targetPosition.includes("right")
   ) {
     cp1x = cX - offset;
     cp1y = sourceY;
     cp2x = cX + offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes("right")
-    && targetPosition === Position.Bottom
+    sourcePosition.includes("right") &&
+    targetPosition === Position.Bottom
   ) {
     cp1x = sourceX + offset;
     cp1y = sourceY;
     cp2x = targetX;
     cp2y = targetY + offset;
   } else if (
-    sourcePosition.includes("right")
-    && targetPosition === Position.Top
+    sourcePosition.includes("right") &&
+    targetPosition === Position.Top
   ) {
     cp1x = sourceX + offset;
     cp1y = sourceY;
     cp2x = targetX;
     cp2y = targetY - offset;
   } else if (
-    sourcePosition.includes("right")
-    && targetPosition === Position.Left
+    sourcePosition.includes("right") &&
+    targetPosition === Position.Left
   ) {
     cp1x = cX + offset;
     cp1y = sourceY;
     cp2x = cX - offset;
     cp2y = targetY;
   } else if (
-    sourcePosition.includes("right")
-    && targetPosition.includes("right")
+    sourcePosition.includes("right") &&
+    targetPosition.includes("right")
   ) {
     cp1x = cX + offset;
     cp1y = sourceY;

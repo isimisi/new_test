@@ -60,8 +60,8 @@ const Workspaces = props => {
 
   const onDelete = ({ data }) => {
     const deletedWorkspaces = data.map(v => ({
-      id: workspaces[v.index][4],
-      title: workspaces[v.index][0]
+      id: workspaces[v.dataIndex][4],
+      title: workspaces[v.dataIndex][0]
     }));
     deletedWorkspaces.forEach(e => {
       const id = CryptoJS.AES.decrypt(

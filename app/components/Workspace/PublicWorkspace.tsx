@@ -317,7 +317,8 @@ const Workspace = (props) => {
         animatedLine,
         showLabel,
         lineThrough,
-        closeEdge
+        closeEdge,
+        setIsUpdatingElement
       ));
     } else {
       const edge = {
@@ -334,8 +335,6 @@ const Workspace = (props) => {
       };
       dispatch(postEdge(user, id, edge, closeEdge, null));
     }
-
-    setIsUpdatingElement(false);
   };
 
   const closeDefineEdge = useCallback(() => {

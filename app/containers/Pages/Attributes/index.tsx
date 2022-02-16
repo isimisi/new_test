@@ -75,8 +75,8 @@ function Attributes(props) {
 
   const onDelete = ({ data }) => {
     const deletedAttributes = data.map(v => ({
-      id: attributes[v.index][3],
-      title: attributes[v.index][0]
+      id: attributes[v.dataIndex][3],
+      title: attributes[v.dataIndex][0]
     }));
     deletedAttributes.forEach(e => {
       user && dispatch(deleteAttribute(user, e.id, e.title));

@@ -1,3 +1,5 @@
+/* eslint-disable no-bitwise */
+/* eslint-disable no-plusplus */
 import React from "react";
 import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt";
 import SearchIcon from "@material-ui/icons/Search";
@@ -6,6 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { NavLink } from "react-router-dom";
 import logo from "@images/logo.svg";
 import powerpoint from "@images/icons/powerpoint.png";
+import excel from "@images/icons/excel.png";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Divider from "@material-ui/core/Divider";
@@ -28,6 +31,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CustomSwitch from "@components/Switch/CustomSwitch";
 import Shortcuts from "./Shortcuts";
+import * as XLSX from "xlsx";
+import { Edge, getIncomers, getOutgoers, isEdge, isNode, Node } from "react-flow-renderer";
+import { saveAs } from "file-saver";
 
 interface Props {
   label: string;
@@ -39,11 +45,13 @@ interface Props {
   handleAutoLayout: () => void;
   handleOpenMenu: () => void;
   handleImage: (type: "image" | "pdf") => void;
+  elements: any;
 }
 
 const Meta = (props: Props) => {
   const {
     label,
+    elements,
     setMetaOpen,
     handleVisabilityChange,
     handleVisability,
@@ -120,6 +128,71 @@ const Meta = (props: Props) => {
 
   const handleExport = (type: "image" | "pdf") => {
     handleImage(type);
+  };
+
+  const s2ab = s => {
+    const buf = new ArrayBuffer(s.length); // convert s to arrayBuffer
+    const view = new Uint8Array(buf); // create uint8array as viewer
+    for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff; // convert to octet
+    return buf;
+  };
+
+  const handleExcel = () => {
+    const wb = XLSX.utils.book_new();
+    const nodes = elements.filter((e): e is Node => isNode(e));
+
+    wb.SheetNames = nodes.map(n => n.data.displayName);
+
+    const header = [
+      t("workspace.meta.excel.headers.element"),
+      t("workspace.meta.excel.headers.relation"),
+      t("workspace.meta.excel.headers.value"),
+      t("workspace.meta.excel.headers.type")
+    ];
+
+    for (let index = 0; index < nodes.length; index++) {
+      const node = nodes[index];
+
+      const outgoers = getOutgoers(node, elements);
+      const incommers = getIncomers(node, elements);
+
+      const outData = outgoers.map(o => {
+        const relation = elements.filter((x): x is Edge => isEdge(x))
+          .find(x => x.source === node.id && x.target === o.id);
+
+        return (
+          {
+            [header[0]]: o.data.displayName,
+            [header[1]]: relation?.data.label || '',
+            [header[2]]: relation?.data.value || '',
+            [header[3]]: t("workspace.meta.excel.headers.outgoer")
+          });
+      });
+
+      const inData = incommers.map(o => {
+        const relation = elements.filter((x): x is Edge => isEdge(x))
+          .find(x => x.source === o.id && x.target === node.id);
+
+        return (
+          {
+            [header[0]]: o.data.displayName,
+            [header[1]]: relation?.data.label || '',
+            [header[2]]: relation?.data.value || '',
+            [header[3]]: t("workspace.meta.excel.headers.incommer")
+          });
+      });
+
+      const wsData = [...outData, ...inData];
+
+      const ws = XLSX.utils.json_to_sheet(wsData, { header });
+
+      wb.Sheets[node.data.displayName] = ws;
+    }
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
+    saveAs(
+      new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
+      `${label}.xlsx`
+    );
   };
 
   return (
@@ -274,6 +347,18 @@ const Meta = (props: Props) => {
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.pdf")}</ListItemText>
                   </MenuItem>
+
+                  <MenuItem className={classes.menuItem} onClick={handleExcel}>
+                    <ListItemIcon>
+                      <img
+                        src={excel}
+                        alt="juristic"
+                        style={{ width: 18, height: 18 }}
+                      />
+                    </ListItemIcon>
+                    <ListItemText>{t("workspaces.excel")}</ListItemText>
+                  </MenuItem>
+
                   <MenuItem className={classes.menuItem} disabled>
                     <ListItemIcon>
                       <img

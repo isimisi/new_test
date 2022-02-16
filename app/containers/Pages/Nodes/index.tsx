@@ -41,8 +41,8 @@ const Nodes = () => {
 
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({
-      id: nodes[v.index][3],
-      title: nodes[v.index][0]
+      id: nodes[v.dataIndex][3],
+      title: nodes[v.dataIndex][0]
     }));
     deletedNodes.forEach(e => {
       const id = CryptoJS.AES.decrypt(

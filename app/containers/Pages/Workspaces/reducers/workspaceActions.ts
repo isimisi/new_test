@@ -176,6 +176,8 @@ export const showWorkspace = (
     }
   } catch (error) {
     // @ts-ignore
+    console.log(error.response);
+    // @ts-ignore
     if (error?.response?.status === 403) {
       _history.replace("/app/not-found");
     } else {
@@ -438,6 +440,7 @@ export const postEdge = (
     close();
     setAlert && dispatch(analyseAlerts(user, workspace_id, setAlert));
   } catch (error) {
+    console.log(error);
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
 };
@@ -454,7 +457,8 @@ export const putEdge = (
   animatedLine: boolean,
   showLabel: boolean,
   lineThrough: boolean,
-  close: () => void
+  close: () => void,
+  setIsUpdatingElement: React.Dispatch<React.SetStateAction<boolean>>
 ) => async (dispatch) => {
   dispatch({ type: types.PUT_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
@@ -477,7 +481,9 @@ export const putEdge = (
 
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
     close();
+    setIsUpdatingElement(false);
   } catch (error) {
+    console.log({ error });
     dispatch({ type: types.PUT_EDGE_FAILED, message });
   }
 };
