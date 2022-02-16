@@ -190,9 +190,9 @@ const PersonalDashboard = () => {
   const confirm = () => {
     const cvr = cvrSearch.includes('DK') && cvrSearch.length < 12 ? cvrSearch.substring(2) : cvrSearch;
 
-    user && dispatch(postWorkspace(user, history, cvr, undefined, 'Corporate', undefined, undefined, cvr));
+    user && dispatch(postWorkspace(user, history, cvrSearch, undefined, 'Corporate', undefined, undefined, cvr));
   };
-
+  console.log(cvrSearch);
   const getAsyncOptions = inputValue => axios
     .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}
   &countries=${countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI'])}`)

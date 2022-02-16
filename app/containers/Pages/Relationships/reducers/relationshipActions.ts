@@ -48,7 +48,7 @@ export const showRelationship = (user: User, id: string) => async dispatch => {
       return null;
     }
     const {
-      label, description, style: _style, label_style, group, values
+      label, description, style: _style, label_style, group, values, use_suggestions
     } = relationship;
     const style = JSON.parse(_style);
     const labelStyle = JSON.parse(label_style);
@@ -63,7 +63,8 @@ export const showRelationship = (user: User, id: string) => async dispatch => {
       color,
       size,
       group,
-      values
+      values,
+      use_suggestions
     });
   } catch (error) {
     const message = genericErrorMessage;
@@ -74,10 +75,10 @@ export const showRelationship = (user: User, id: string) => async dispatch => {
 export const putRelationship = (user: User,
   id: string, label: string, values: string,
   description: string, style: any,
-  label_style: string, group: string, history: History) => async dispatch => {
+  label_style: string, group: string, useSuggestion: boolean, history: History) => async dispatch => {
   const url = `${baseUrl}/${RELATIONSHIPS}/${id}`;
   const body = {
-    label, values, description, style, label_style, group
+    label, values, description, style, label_style, group, useSuggestion
   };
   const header = authHeader(user);
   try {
@@ -156,6 +157,10 @@ export const colorChange = color => ({
   type: types.CHANGE_COLOR,
   color,
 });
+
+export const useSuggestionChange = {
+  type: types.CHANGE_USE_SUGGESTION
+};
 
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF

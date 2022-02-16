@@ -10,7 +10,8 @@ import {
   closeNotifAction,
   putRelationship,
   showRelationship,
-  getGroupDropDown
+  getGroupDropDown,
+  useSuggestionChange
 } from "./reducers/relationshipActions";
 import { useTranslation } from "react-i18next";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -28,6 +29,9 @@ const Relationship = () => {
 
   const id = getId(history);
   const label = useSelector(state => state[reducer].get("label"));
+  const useSuggestions = useSelector(state =>
+    state[reducer].get("useSuggestions")
+  );
   const values = useSelector(state => state[reducer].get("values")).toJS();
   const description = useSelector(state => state[reducer].get("description"));
   const group = useSelector(state => state[reducer].get("group"));
@@ -52,6 +56,7 @@ const Relationship = () => {
           style,
           labelStyle,
           group,
+          useSuggestions,
           history
         )
       );
@@ -63,6 +68,8 @@ const Relationship = () => {
       dispatch(getGroupDropDown(user));
     }
   }, [user]);
+
+  const changeSuggestions = () => dispatch(useSuggestionChange);
 
   return (
     <div>
@@ -78,6 +85,8 @@ const Relationship = () => {
             group={group}
             values={values}
             groupsDropDownOptions={groupsDropDownOptions}
+            useSuggestions={useSuggestions}
+            changeSuggestions={changeSuggestions}
           />
         </Grid>
         <Grid item md={4}>

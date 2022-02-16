@@ -1,6 +1,6 @@
 // external
 declare module "redux-persist-transform-immutable";
-
+declare module "classnames";
 // internal
 declare module "@utils/history";
 declare module "@redux/autoMergeLevel2Immutable";

@@ -164,7 +164,8 @@
       "name": "Navn",
       "enter_options": "Indtast valgmuligheder, fx en talværdi",
       "desc": "Beskrivelse",
-      "select_group": "Vælg gruppe"
+      "select_group": "Vælg gruppe",
+      "useSuggestions": "Benyt foreslag"
     },
     "relationship-demo": {
       "your_relationship": "Din forbindelse"

@@ -1,50 +1,54 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable default-case */
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Select from 'react-select';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import { useDispatch } from 'react-redux';
-import { mapSelectOptions, selectStyles } from '@api/ui/helper';
-import CreatableSelect from 'react-select/creatable';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Select from "react-select";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import { useDispatch } from "react-redux";
+import { mapSelectOptions, selectStyles } from "@api/ui/helper";
+import CreatableSelect from "react-select/creatable";
 import {
-  labelChange, descriptionChange, addGroup, valuesChange
-} from '../../containers/Pages/Relationships/reducers/relationshipActions';
-import {useTranslation} from 'react-i18next';
+  labelChange,
+  descriptionChange,
+  addGroup,
+  valuesChange,
+} from "../../containers/Pages/Relationships/reducers/relationshipActions";
+import { useTranslation } from "react-i18next";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import Checkbox from "@material-ui/core/Checkbox";
 
-
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    padding: 30
+    padding: 30,
   },
   field: {
-    width: '100%',
-    marginBottom: 10
+    width: "100%",
+    marginBottom: 10,
   },
   fieldBasic: {
-    width: '100%',
+    width: "100%",
     marginBottom: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   inlineWrap: {
-    display: 'flex',
-    flexDirection: 'row'
+    display: "flex",
+    flexDirection: "row",
   },
   buttonInit: {
     margin: theme.spacing(4),
-    textAlign: 'center'
+    textAlign: "center",
   },
 });
 
-
 function RelationshipForm(props) {
   const dispatch = useDispatch();
-  const [inputValue, setInputValue] = useState('');
-  const {t} = useTranslation();
+  const [inputValue, setInputValue] = useState("");
+  const { t } = useTranslation();
 
   const {
     classes,
@@ -52,7 +56,9 @@ function RelationshipForm(props) {
     description,
     group,
     groupsDropDownOptions,
-    values
+    values,
+    useSuggestions,
+    changeSuggestions,
   } = props;
 
   const handleLabelChange = (e) => {
@@ -76,12 +82,12 @@ function RelationshipForm(props) {
     value: _label,
   });
 
-  const handleKeyDown = event => {
+  const handleKeyDown = (event) => {
     if (!inputValue) return;
     switch (event.key) {
-      case 'Enter':
-      case 'Tab':
-        setInputValue('');
+      case "Enter":
+      case "Tab":
+        setInputValue("");
         dispatch(valuesChange([...values, createOption(inputValue)]));
         event.preventDefault();
     }
@@ -89,27 +95,44 @@ function RelationshipForm(props) {
 
   return (
     <div style={{ marginBottom: 20 }}>
-      <Grid container spacing={3} alignItems="flex-start" direction="row" justify="center">
+      <Grid
+        container
+        spacing={3}
+        alignItems="flex-start"
+        direction="row"
+        justify="center"
+      >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
-              {t('relationships.relationship_form.name_your')}
-              {' '}
-              {t('relationships.relationship_form._relationship')}
+              {t("relationships.relationship_form.name_your")}{" "}
+              {t("relationships.relationship_form._relationship")}
             </Typography>
             <div>
               <TextField
                 name="label"
-                placeholder={t('relationships.relationship_form.name')}
-                label={t('relationships.relationship_form.name')}
+                placeholder={t("relationships.relationship_form.name")}
+                label={t("relationships.relationship_form.name")}
                 className={classes.field}
                 onChange={handleLabelChange}
                 value={label}
               />
             </div>
-            <div>
+            <ButtonBase
+              className={classes.field}
+              style={{ marginTop: 10, justifyContent: "flex-start" }}
+              onClick={changeSuggestions}
+            >
+              <Checkbox checked={useSuggestions} name="show label" color="primary" />
+              <Typography variant="subtitle2">
+                {t("relationships.relationship_form.useSuggestions")}
+              </Typography>
+            </ButtonBase>
+
+            {useSuggestions ? (
               <CreatableSelect
                 style={selectStyles}
+                className={classes.field}
                 inputValue={inputValue}
                 isClearable
                 isMulti
@@ -117,17 +140,17 @@ function RelationshipForm(props) {
                 onChange={onValueChanged}
                 onInputChange={(v) => setInputValue(v)}
                 onKeyDown={handleKeyDown}
-                placeholder={t('relationships.relationship_form.enter_options')}
+                placeholder={t("relationships.relationship_form.enter_options")}
                 value={values}
               />
-            </div>
+            ) : null}
+
             <div className={classes.field}>
               <TextField
                 name="description"
                 className={classes.field}
-                placeholder={t('relationships.relationship_form.desc')}
-                label={t('relationships.relationship_form.desc')}
-
+                placeholder={t("relationships.relationship_form.desc")}
+                label={t("relationships.relationship_form.desc")}
                 multiline
                 rows={2}
                 onChange={handleDescriptionChange}
@@ -140,14 +163,14 @@ function RelationshipForm(props) {
                 styles={selectStyles()}
                 inputId="react-select-single-relationship"
                 TextFieldProps={{
-                  label: 'groups',
+                  label: "groups",
                   InputLabelProps: {
-                    htmlFor: 'react-select-single-relationship',
+                    htmlFor: "react-select-single-relationship",
                     shrink: true,
                   },
-                  placeholder: t('relationships.relationship_form.select_group'),
+                  placeholder: t("relationships.relationship_form.select_group"),
                 }}
-                placeholder={t('relationships.relationship_form.select_group')}
+                placeholder={t("relationships.relationship_form.select_group")}
                 options={mapSelectOptions(groupsDropDownOptions)}
                 value={group && { label: group, value: group }}
                 onChange={handleChangeGroups}
@@ -167,6 +190,8 @@ RelationshipForm.propTypes = {
   description: PropTypes.string.isRequired,
   group: PropTypes.string.isRequired,
   groupsDropDownOptions: PropTypes.any.isRequired,
+  useSuggestions: PropTypes.bool.isRequired,
+  changeSuggestions: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(RelationshipForm);

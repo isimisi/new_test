@@ -164,7 +164,8 @@
       "name": "Name",
       "enter_options": "Enter options, eg a number value",
       "desc": "Description",
-      "select_group": "Select group"
+      "select_group": "Select group",
+      "useSuggestions": "Use suggestion"
     },
     "relationship-demo": {
       "your_relationship": "Your relationship"
