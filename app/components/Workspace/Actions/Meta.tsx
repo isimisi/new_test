@@ -191,7 +191,7 @@ const Meta = (props: Props) => {
     const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
     saveAs(
       new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-      `${label}.xlsx`
+      `${label.substring(0, 25)}.xlsx`
     );
   };
 
