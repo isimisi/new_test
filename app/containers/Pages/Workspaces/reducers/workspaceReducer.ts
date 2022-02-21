@@ -85,6 +85,8 @@ import {
   WORKSPACE_ADD_ELEMENTS,
   WORKSPACE_UPDATE_ELEMENTS,
   LAYOUT_ELEMENTS,
+  SET_CONNECTED_USERS,
+  REMOVE_CONNECTED_USERS,
 } from "./workspaceConstants";
 
 const initialState = {
@@ -127,6 +129,7 @@ const initialState = {
   introStepIndex: 0,
   uncertainCompanies: List(),
   specificWorkspaceTags: List(),
+  connectedUsers: List(),
 };
 
 const initialImmutableState = fromJS(initialState);
@@ -604,6 +607,18 @@ export default function reducer(state = initialImmutableState, action: any) {
         const companies = fromJS(action.companies);
         mutableState.set("uncertainCompanies", companies);
         mutableState.set("loading", false);
+      });
+    case SET_CONNECTED_USERS:
+      return state.withMutations((mutableState) => {
+        const user = fromJS(action.edge);
+        mutableState.update("connectedUsers", (myList) => myList.push(user));
+      });
+    case REMOVE_CONNECTED_USERS:
+      return state.withMutations((mutableState) => {
+        const user = fromJS(action.edge);
+        mutableState.update("connectedUsers", (myList) =>
+          myList.filter((x) => user.id !== x.id)
+        );
       });
     case STOP_LOADING:
       return state.withMutations((mutableState) => {

@@ -86,7 +86,7 @@ import {
   handleRunIntro, uncertainCompaniesChange,
   mapUncertainCompanies, changeTags, addElements,
   getCompanyData, getAddressInfo, layoutElements,
-  stopLoading
+  stopLoading, connectNewUser, setConnectedUsers
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -142,6 +142,7 @@ const Workspace = (props) => {
 
   const handleVisability = useAppSelector(state => state[reducer].get('handleVisability'));
   const elements = useAppSelector(state => state[reducer].get('elements')).toJS();
+  const connectedUsers = useAppSelector(state => state[reducer].get('connectedUsers')).toJS();
   const label = useAppSelector(state => state[reducer].get('label'));
   const description = useAppSelector(state => state[reducer].get('description'));
   const group = useAppSelector(state => state[reducer].get('group'));
@@ -233,6 +234,7 @@ const Workspace = (props) => {
 
   // socket for cvr
   const [subscription, setSubscription] = useState(null);
+  const [colabSubscription, setColabSubscription] = useState(null);
 
 
   const handleVisabilityChange = () => dispatch(changeHandleVisability(!handleVisability));
@@ -254,6 +256,10 @@ const Workspace = (props) => {
     dispatch(uncertainCompaniesChange(companies));
   };
 
+  const handleNewConnection = (data) => {
+    dispatch(setConnectedUsers(data));
+  };
+
   useEffect(() => {
     connection.connect(user);
 
@@ -263,11 +269,24 @@ const Workspace = (props) => {
     const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
     setSubscription(sub);
 
+    const sub2 = connection.subscribeToWorkspace(`collaboration:${id}`, handleNewConnection);
+    setColabSubscription(sub2);
+
+    if (id) {
+      dispatch(connectNewUser(user, id));
+    }
+
+
     // Specify how to clean up after this effect:
     return function cleanup() {
       if (subscription) {
         // @ts-ignore
         subscription.close();
+      }
+
+      if (colabSubscription) {
+        // @ts-ignore
+        colabSubscription.close();
       }
     };
   }, []);

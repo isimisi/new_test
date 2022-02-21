@@ -140,7 +140,7 @@ const Meta = (props: Props) => {
   const handleExcel = () => {
     const wb = XLSX.utils.book_new();
     const nodes = elements.filter((e): e is Node => isNode(e));
-    const names = nodes.map(n => n.data.displayName.substring(0, 30));
+    const names = nodes.map(n => n.data.displayName ? n.data.displayName.substring(0, 30) : n.data.label.substring(0, 30));
 
     wb.SheetNames = names.filter((c, index) => names.indexOf(c) === index);
 

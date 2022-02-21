@@ -801,6 +801,18 @@ export const cvrWorkspacePublic = (user: User, id: string, cvr: string, erstType
   }
 };
 
+export const connectNewUser = (user: User, id: string) => async (dispatch) => {
+  const url = `${baseUrl}/workspaces/newUserConnected/${id}`;
+  const header = authHeader(user);
+  try {
+    await axios.get(url, header);
+  } catch (error) {
+    // @ts-ignore
+    console.log(error.response);
+  }
+};
+
+
 export const mapUncertainCompanies = (
   user: User,
   id: string,
@@ -922,7 +934,18 @@ export const handleRunIntro = (run) => ({
   run,
 });
 
+
 export const changeStepIndex = (index) => ({
   type: types.CHANGE_STEP_INDEX_WORKSPACE,
   index,
+});
+
+export const setConnectedUsers = (user) => ({
+  type: types.SET_CONNECTED_USERS,
+  user,
+});
+
+export const removeConnectedUsers = (user) => ({
+  type: types.REMOVE_CONNECTED_USERS,
+  user,
 });

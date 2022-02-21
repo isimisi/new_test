@@ -625,6 +625,12 @@
           "incommer": "Incommer"
         }
       }
+    },
+    "companyData": {
+      "result": "Result",
+      "balance": "Balance",
+      "moneystream": "Cash flow",
+      "keyFigures": "Key Figures"
     }
   }
 }

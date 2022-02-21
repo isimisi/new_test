@@ -192,13 +192,12 @@ const PersonalDashboard = () => {
 
     user && dispatch(postWorkspace(user, history, cvrSearch, undefined, 'Corporate', undefined, undefined, cvr));
   };
-  console.log(cvrSearch);
+
   const getAsyncOptions = inputValue => axios
-    .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}
-  &countries=${countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI'])}`)
+    .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}&countries=${plan_id === 1 ? JSON.stringify(["DK"]) : countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI'])}`)
     .then(res => res.data);
 
-
+  const countryOptions = countryDropDown(plan_id);
   return (
     <div>
       <Helmet>
@@ -259,7 +258,7 @@ const PersonalDashboard = () => {
                   isMulti
                   inputId="react-select-single-relationship"
                   placeholder={t('workspaces.restrict_countries')}
-                  options={countryDropDown}
+                  options={countryOptions}
                   value={countries}
                   onChange={handleChangeCountries}
                 />

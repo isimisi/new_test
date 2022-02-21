@@ -29,6 +29,18 @@ export class SocketConnection {
     return this;
   }
 
+  subscribeToWorkspace(channel, handleConnection) {
+    if (!this.ws) {
+      setTimeout(() => this.subscribe(channel), 1000);
+    } else {
+      const result = this.ws.subscribe(channel);
+
+      result.on("connected", handleConnection);
+
+      return result;
+    }
+  }
+
   subscribeToCvr(
     channel,
     handleCompleted,

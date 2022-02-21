@@ -625,6 +625,12 @@
           "incommer": "Ingående"
         }
       }
+    },
+    "companyData": {
+      "result": "Resultat",
+      "balance": "Balance",
+      "moneystream": "Pengestrømme",
+      "keyFigures": "Nøgletal"
     }
   }
 }

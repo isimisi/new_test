@@ -1,16 +1,16 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable import/prefer-default-export */
-import React from 'react';
-import dk from '@images/countries/dk.svg';
-import no from '@images/countries/no.svg';
-import se from '@images/countries/se.svg';
-import fi from '@images/countries/fi.svg';
+import React from "react";
+import dk from "@images/countries/dk.svg";
+import no from "@images/countries/no.svg";
+import se from "@images/countries/se.svg";
+import fi from "@images/countries/fi.svg";
 
-export const countryDropDown = [
+export const countryDropDown = planId => [
   {
-    value: 'DK',
+    value: "DK",
     label: (
-      <div style={{ width: '100%', height: '100%' }}>
+      <div style={{ width: "100%", height: "100%" }}>
         <img
           src={dk}
           alt="Denmark"
@@ -25,9 +25,9 @@ export const countryDropDown = [
     )
   },
   {
-    value: 'SE',
+    value: "SE",
     label: (
-      <div style={{ width: '100%', height: '100%' }}>
+      <div style={{ width: "100%", height: "100%" }}>
         <img
           src={se}
           alt="Sverige"
@@ -39,12 +39,13 @@ export const countryDropDown = [
         />
         <span>Sverige</span>
       </div>
-    )
+    ),
+    isDisabled: planId === 1
   },
   {
-    value: 'NO',
+    value: "NO",
     label: (
-      <div style={{ width: '100%', height: '100%' }}>
+      <div style={{ width: "100%", height: "100%" }}>
         <img
           src={no}
           alt="Norge"
@@ -56,12 +57,13 @@ export const countryDropDown = [
         />
         <span>Norge</span>
       </div>
-    )
+    ),
+    isDisabled: planId === 1
   },
   {
-    value: 'FI',
+    value: "FI",
     label: (
-      <div style={{ width: '100%', height: '100%' }}>
+      <div style={{ width: "100%", height: "100%" }}>
         <img
           src={fi}
           alt="Finland"
@@ -73,6 +75,7 @@ export const countryDropDown = [
         />
         <span>Finland</span>
       </div>
-    )
+    ),
+    isDisabled: planId === 1
   }
 ];
