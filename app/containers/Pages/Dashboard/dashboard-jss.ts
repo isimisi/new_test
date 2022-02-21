@@ -1,5 +1,5 @@
-import { MyTheme } from '@customTypes/styling';
-import { makeStyles } from '@material-ui/core/styles';
+import { MyTheme } from "@customTypes/styling";
+import { makeStyles } from "@material-ui/core/styles";
 
 const styles = makeStyles((theme: MyTheme) => ({
   root: {
@@ -7,43 +7,71 @@ const styles = makeStyles((theme: MyTheme) => ({
     marginBottom: theme.spacing(3),
   },
   rootGeneral: {
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
   },
   divider: {
     margin: `${theme.spacing(1.5)}px 0`,
-    background: 'none'
+    background: "none",
   },
   descBlock: {
-    display: 'flex',
+    display: "flex",
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       marginBottom: theme.spacing(3),
     },
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end'
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   title: {
-    position: 'relative',
+    position: "relative",
     fontSize: 18,
     fontWeight: 400,
-    color: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,
-    [theme.breakpoints.down('xs')]: {
-      textAlign: 'center',
+    color:
+      theme.palette.type === "dark"
+        ? theme.palette.primary.main
+        : theme.palette.primary.dark,
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center",
       fontWeight: 600,
-      marginBottom: theme.spacing(1)
-    }
+      marginBottom: theme.spacing(1),
+    },
+  },
+  textEditor: {
+    background: theme.palette.background.paper,
+    height: 400,
+    border: `1px solid ${theme.palette.divider}`,
+    padding: "0 10px",
+    color: theme.palette.text.primary,
+    borderRadius: theme.rounded.small,
+  },
+  toolbarEditor: {
+    borderRadius: theme.rounded.small,
+    background: theme.palette.background.default,
+    border: "none",
+    "& > div": {
+      background: theme.palette.background.paper,
+      "& img": {
+        filter: theme.palette.type === "dark" ? "invert(100%)" : "invert(0%)",
+      },
+      "& a": {
+        color: theme.palette.text.primary,
+        "& > div": {
+          borderTopColor: theme.palette.text.primary,
+        },
+      },
+    },
   },
   content: {
     marginTop: theme.spacing(2),
     padding: theme.spacing(1),
     borderRadius: theme.rounded.medium,
     backgroundColor: theme.palette.background.default,
-    [theme.breakpoints.up('lg')]: {
-      padding: theme.spacing(2)
-    }
+    [theme.breakpoints.up("lg")]: {
+      padding: theme.spacing(2),
+    },
   },
   whiteBg: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     margin: 0,
     padding: 0,
   },
@@ -51,9 +79,9 @@ const styles = makeStyles((theme: MyTheme) => ({
     maxWidth: 960,
     fontSize: 15,
     paddingTop: theme.spacing(0.5),
-    [theme.breakpoints.down('xs')]: {
-      textAlign: 'center'
-    }
+    [theme.breakpoints.down("xs")]: {
+      textAlign: "center",
+    },
   },
   titleText: {
     flex: 1,
@@ -64,63 +92,62 @@ const styles = makeStyles((theme: MyTheme) => ({
     marginBottom: theme.spacing(3),
     boxShadow: theme.shade.light,
     color: theme.palette.text.primary,
-    '&$noMargin': {
-      margin: 0
+    "&$noMargin": {
+      margin: 0,
     },
   }),
   sliderWrap: {
-    display: 'block',
+    display: "block",
     boxShadow: theme.shadows[1],
-    width: '100%',
-    borderRadius: '12px',
-    overflow: 'hidden'
+    width: "100%",
+    borderRadius: "12px",
+    overflow: "hidden",
   },
   noPadding: {
-    paddingTop: '0 !important',
-    paddingBottom: '0 !important',
-    [theme.breakpoints.up('sm')]: {
-      padding: '0 !important'
-    }
+    paddingTop: "0 !important",
+    paddingBottom: "0 !important",
+    [theme.breakpoints.up("sm")]: {
+      padding: "0 !important",
+    },
   },
   subscribeForm: {
     marginTop: theme.spacing(1) * -6,
-    display: 'flex',
-    '& > div': {
-      flex: 1
+    display: "flex",
+    "& > div": {
+      flex: 1,
     },
-    '& button': {
+    "& button": {
       marginTop: theme.spacing(4.5),
-      marginLeft: theme.spacing(4)
-    }
+      marginLeft: theme.spacing(4),
+    },
   },
   addBtn: {
-    position: 'fixed',
+    position: "fixed",
     bottom: 30,
     right: 50,
     zIndex: 100,
   },
   row: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     marginLeft: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   field: {
-    width: '100%',
+    width: "100%",
     marginTop: 0,
-    '& svg': {
+    "& svg": {
       color: theme.palette.grey[400],
       fontSize: 18,
-    }
+    },
   },
   lottie: {
-    borderRadius: '50%',
+    borderRadius: "50%",
     height: 253.12,
-
   },
   removeMargin: {
     marginTop: -16,
-  }
+  },
 }));
 
 export default styles;

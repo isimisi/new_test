@@ -22,8 +22,11 @@ import {
   // @ts-ignore
 } from '@components';
 import Paper from '@material-ui/core/Paper';
+
 import Select from 'react-select';
 import FormControl from '@material-ui/core/FormControl';
+
+
 import Send from '@material-ui/icons/Send';
 import axios from 'axios';
 import { baseUrl } from '@api/constants';
@@ -40,6 +43,7 @@ import {
   useHistory
 } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
+
 
 import Button from '@material-ui/core/Button';
 import { bindActionCreators } from 'redux';
@@ -61,18 +65,15 @@ import {
   getElementCounts,
   getTimeline,
   postFeatureRequest,
-  // @ts-ignore
+  getNotifications
 } from './reducers/dashboardActions';
 import UpgradeModal from './UpgradeModal';
 import MobileDisclaimer from './MobileDisclaimer';
 import {
   postWorkspace, showNotifAction, getGroupDropDown
-  // @ts-ignore
 } from '../Workspaces/reducers/workspaceActions';
 import { useAuth0 } from "@auth0/auth0-react";
 import { getPlanId, UserMeta } from '@helpers/userInfo';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const corporateChart = require('@lotties/racoon/corporateChart.json');
@@ -151,6 +152,7 @@ const PersonalDashboard = () => {
       dispatch(getTimeline(user));
       dispatch(getGroupDropDown(user));
       dispatch(getTags(user, WhereInApp.workspace));
+      dispatch(getNotifications(user));
     }
 
 
@@ -198,6 +200,7 @@ const PersonalDashboard = () => {
     .then(res => res.data);
 
   const countryOptions = countryDropDown(plan_id);
+
   return (
     <div>
       <Helmet>
@@ -382,7 +385,8 @@ const PersonalDashboard = () => {
               </Fab>
             </div>
           </PapperBlock>
-          <Divider className={classes.divider} />
+
+
         </Grid>
         <Grid item md={6} sm={12} xs={12}>
           <TimelineWidget timeline={timeline} history={history} />

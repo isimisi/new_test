@@ -21,6 +21,50 @@ export const getElementCounts = (user: User) => async (dispatch) => {
   }
 };
 
+export const getNotifications = (user: User) => async (dispatch) => {
+  const url = `${baseUrl}/notifications`;
+  const header = authHeader(user);
+  try {
+    const response = await axios.get(url, header);
+    const notifications = response.data;
+    dispatch({ type: types.GET_NOTIFICATIONS_SUCCESS, notifications });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.GET_NOTIFICATIONS_FAILED, message });
+  }
+};
+
+export const postNotifications = (
+  user: User,
+  header: string,
+  body: string,
+  icon: string,
+  intrusive: boolean
+) => async (dispatch) => {
+  const url = `${baseUrl}/notifications`;
+  const _header = authHeader(user);
+  const _body = { header, body, icon, intrusive };
+  try {
+    await axios.post(url, _body, _header);
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_NOTIFICATIONS_FAILED, message });
+  }
+};
+
+export const readNotification = (user: User, id: string) => async (dispatch) => {
+  const url = `${baseUrl}/read/notifications`;
+  const _header = authHeader(user);
+  const _body = { id };
+  try {
+    await axios.post(url, _body, _header);
+    dispatch({ type: types.READ_NOTIFICATIONS_SUCCESS, id });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.POST_NOTIFICATIONS_FAILED, message });
+  }
+};
+
 export const getTimeline = (user: User) => async (dispatch) => {
   const url = `${baseUrl}/${DASHBOARD}/activity`;
   const header = authHeader(user);
@@ -53,12 +97,9 @@ export const postFeatureRequest = (
   }
 };
 
-export const helpMe = (
-  user: User,
-  name: string,
-  email: string,
-  mesg: string
-) => async (dispatch) => {
+export const helpMe = (user: User, name: string, email: string, mesg: string) => async (
+  dispatch
+) => {
   const url = `${baseUrl}/helpMe`;
   const body = { name, email, mesg };
   const header = authHeader(user);

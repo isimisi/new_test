@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
-import Loading from '@material-ui/core/LinearProgress';
-import { create } from 'jss';
-import rtl from 'jss-rtl';
-import { StylesProvider, jssPreset } from '@material-ui/styles';
-import { bindActionCreators } from 'redux';
-import { withStyles, createTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import React, { useState, useEffect } from "react";
+import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
+import Loading from "@material-ui/core/LinearProgress";
+import { create } from "jss";
+import rtl from "jss-rtl";
+import { StylesProvider, jssPreset } from "@material-ui/styles";
+import { bindActionCreators } from "redux";
+import { withStyles, createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {
   changeThemeAction,
   changeModeAction,
@@ -14,35 +14,35 @@ import {
   changeDecoAction,
   changeBgPositionAction,
   changeLayoutAction,
-  changeDirectionAction
-} from '@redux/actions/uiActions';
-import applicationTheme from '../../styles/theme/applicationTheme';
+  changeDirectionAction,
+} from "@redux/actions/uiActions";
+import applicationTheme from "../../styles/theme/applicationTheme";
 
 const styles = {
   root: {
-    width: '100%',
-    minHeight: '100%',
+    width: "100%",
+    minHeight: "100%",
     marginTop: 0,
     zIndex: 1,
   },
   loading: {
     zIndex: 10,
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
-    width: '100%',
+    width: "100%",
     opacity: 1,
-    transition: 'opacity .5s ease'
+    transition: "opacity .5s ease",
   },
   loadingWrap: {
-    background: 'none'
+    background: "none",
   },
   bar: {
-    background: 'rgba(255, 255, 255, 0.7)'
+    background: "#73B1FF",
   },
   hide: {
-    opacity: 0
-  }
+    opacity: 0,
+  },
 };
 
 // Configure JSS
@@ -57,12 +57,7 @@ function ThemeWrapper(props) {
     createTheme(applicationTheme(props.color, props.mode, props.direction))
   );
 
-  const {
-    classes,
-    children,
-    color,
-    direction
-  } = props;
+  const { classes, children, color, direction } = props;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -80,17 +75,11 @@ function ThemeWrapper(props) {
     };
   }, []);
 
-
-  const handleChangeMode = modeParam => {
+  const handleChangeMode = (modeParam) => {
     const { changeMode } = props;
-    setTheme(
-      createTheme(
-        applicationTheme(color, modeParam, direction)
-      )
-    );
+    setTheme(createTheme(applicationTheme(color, modeParam, direction)));
     changeMode(modeParam);
   };
-
 
   return (
     <StylesProvider jss={jss}>
@@ -99,11 +88,11 @@ function ThemeWrapper(props) {
           <Loading
             variant="determinate"
             value={progress}
-            className={progress >= 100 ? classes.hide : ''}
+            className={progress >= 100 ? classes.hide : ""}
             classes={{
               root: classes.loading,
               colorPrimary: classes.loadingWrap,
-              barColorPrimary: classes.bar
+              barColorPrimary: classes.bar,
             }}
           />
           <ThemeContext.Provider value={handleChangeMode}>
@@ -124,20 +113,20 @@ ThemeWrapper.propTypes = {
   changeMode: PropTypes.func.isRequired,
 };
 
-const reducer = 'ui';
-const mapStateToProps = state => ({
+const reducer = "ui";
+const mapStateToProps = (state) => ({
   force: state, // force state from reducer
-  color: state[reducer].get('theme'),
-  palette: state[reducer].get('palette'),
-  mode: state[reducer].get('type'),
-  gradient: state[reducer].get('gradient'),
-  decoration: state[reducer].get('decoration'),
-  bgPosition: state[reducer].get('bgPosition'),
-  layout: state[reducer].get('layout'),
-  direction: state[reducer].get('direction'),
+  color: state[reducer].get("theme"),
+  palette: state[reducer].get("palette"),
+  mode: state[reducer].get("type"),
+  gradient: state[reducer].get("gradient"),
+  decoration: state[reducer].get("decoration"),
+  bgPosition: state[reducer].get("bgPosition"),
+  layout: state[reducer].get("layout"),
+  direction: state[reducer].get("direction"),
 });
 
-const dispatchToProps = dispatch => ({
+const dispatchToProps = (dispatch) => ({
   changeTheme: bindActionCreators(changeThemeAction, dispatch),
   changeMode: bindActionCreators(changeModeAction, dispatch),
   changeGradient: bindActionCreators(changeGradientAction, dispatch),
