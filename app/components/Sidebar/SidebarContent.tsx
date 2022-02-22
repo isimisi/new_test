@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { NavLink } from "react-router-dom";
 import brand from "@api/dummy/brand";
 import logoBeta from "@images/logoBeta.svg";
+import pwc from "@images/logo/pwc.svg";
 import Typography from "@material-ui/core/Typography";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { lightGreen } from "@api/palette/colorfull";
@@ -44,6 +45,7 @@ function SidebarContent(props: Props) {
   const { user } = useAuth0();
   const meta: UserMeta = user && user["https://juristic.io/meta"];
   const { status, id: user_id } = meta.dbUser;
+  const organization_id = meta.organization.id;
   const classes = useStyle();
 
   const {
@@ -72,7 +74,11 @@ function SidebarContent(props: Props) {
             turnDarker && classes.darker
           )}
         >
-          <img src={logoBeta} alt={brand.name} style={{ width: 120 }} />
+          <img
+            src={organization_id === 50 ? pwc : logoBeta}
+            alt={brand.name}
+            style={{ width: 120 }}
+          />
         </NavLink>
       </div>
       <div

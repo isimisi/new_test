@@ -41,7 +41,7 @@ function CompanyDataModel(props) {
   const { t } = useTranslation();
   const branch = "";
   const [value, setValue] = React.useState(0);
-  const years = Object.keys(companyData.Regnskab.Resultat).map((x) => ({
+  const years = Object.keys(companyData?.Regnskab?.Resultat).map((x) => ({
     value: x,
     label: x,
   }));
