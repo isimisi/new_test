@@ -452,7 +452,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS:
       return state.withMutations((mutableState) => {
-        mutableState.set("companyData", action.companyData);
+        mutableState.set("companyData", fromJS(action.companyData));
         mutableState.set("loading", false);
       });
     case GET_WORKSPACE_NODE_COMPANY_DATA_FAILED:

@@ -156,7 +156,7 @@ const Workspace = (props) => {
   const initialLoading = useAppSelector(state => state[reducer].get('initialLoading'));
   const initialLoadingCvr = useAppSelector(state => state[reducer].get('initialLoadingCvr'));
 
-  const companyData = useAppSelector(state => state[reducer].get('companyData'));
+  const companyData = useAppSelector(state => state[reducer].get('companyData')).toJS();
   const addressInfo = useAppSelector(state => state[reducer].get('addressInfo'));
   const signed = useAppSelector(state => state[reducer].get('signed'));
   const signedBy = useAppSelector(state => state[reducer].get('signedBy'));
