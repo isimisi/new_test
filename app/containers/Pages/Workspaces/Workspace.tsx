@@ -1065,11 +1065,11 @@ const Workspace = (props) => {
         nodes={nodes}
         relationships={relationships}
       />
-      <CompanyDataModel
+      {companyData && Object.keys(companyData).length > 0 && <CompanyDataModel
         open={showCompanyData}
         close={() => dispatch(setShowCompanyData(false))}
         companyData={companyData}
-      />
+      />}
       <AddressInfoModel
         open={showAddressInfo}
         close={() => dispatch(setShowAddressInfo(false))}

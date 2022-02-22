@@ -38,13 +38,16 @@ const tabs = ["Virksomhedsdata", "Regnskab"];
 
 function CompanyDataModel(props) {
   const { open, close, companyData } = props;
+
   const { t } = useTranslation();
   const branch = "";
   const [value, setValue] = React.useState(0);
-  const years = Object.keys(companyData?.Regnskab?.Resultat).map((x) => ({
-    value: x,
-    label: x,
-  }));
+  const years = companyData
+    ? Object.keys(companyData?.Regnskab?.Resultat).map((x) => ({
+        value: x,
+        label: x,
+      }))
+    : [{ value: 2022, label: 2022 }];
   const [year, setYear] = React.useState(years[years.length - 1]);
   const handleYear = (v) => setYear(v);
   const [activeChip, setActiveChip] = React.useState(t("workspace.companyData.result"));
