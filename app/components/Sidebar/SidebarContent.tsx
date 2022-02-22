@@ -77,7 +77,7 @@ function SidebarContent(props: Props) {
           <img
             src={organization_id === 50 ? pwc : logoBeta}
             alt={brand.name}
-            style={{ width: 120 }}
+            style={{ width: organization_id === 50 ? 80 : 120 }}
           />
         </NavLink>
       </div>

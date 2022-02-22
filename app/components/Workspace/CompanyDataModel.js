@@ -38,7 +38,7 @@ const tabs = ["Virksomhedsdata", "Regnskab"];
 
 function CompanyDataModel(props) {
   const { open, close, companyData } = props;
-  console.log(companyData);
+
   const { t } = useTranslation();
   const branch = "";
   const [value, setValue] = React.useState(0);
