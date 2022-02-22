@@ -146,7 +146,7 @@ function UserMenu({ classes }) {
         open={openMenu === "notification"}
         onClose={handleClose}
       >
-        {notifications.notifications.length > 0 &&
+        {notifications?.notifications?.length > 0 &&
           notifications.notifications.map(n => (
             <MenuItem
               onClick={() => handleOpenNotificationModal(n)}
