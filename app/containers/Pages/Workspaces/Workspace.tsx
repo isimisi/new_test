@@ -141,6 +141,7 @@ const Workspace = (props) => {
   const nodes = useAppSelector(state => state[reducer].get('nodes')).toJS();
 
   const handleVisability = useAppSelector(state => state[reducer].get('handleVisability'));
+
   const elements = useAppSelector(state => state[reducer].get('elements')).toJS();
   const connectedUsers = useAppSelector(state => state[reducer].get('connectedUsers')).toJS();
   const label = useAppSelector(state => state[reducer].get('label'));
