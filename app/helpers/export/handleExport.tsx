@@ -6,7 +6,7 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { createFileName } from "use-react-screenshot";
 
-const download = (_image: string, type: "image" | "pdf", label: string | null) => {
+const download = (_image: string, type: "image" | "pdf", label: string | null, stopLoading?: () => void) => {
   if (!label) {
     label = "download";
   }
@@ -28,18 +28,20 @@ const download = (_image: string, type: "image" | "pdf", label: string | null) =
     doc.addImage(_image, "JPEG", 0, 0, pdfWidth, pdfHeight);
     doc.save(`${label}.pdf`);
   }
+  stopLoading && stopLoading();
 };
 
 export const handleExport = (
   type: "image" | "pdf",
   target: React.MutableRefObject<any>,
-  label: string | null
+  label: string | null,
+  stopLoading?: () => void
 ) => {
   const currTarget: HTMLElement = target?.current;
   if (currTarget) {
     html2canvas(currTarget).then(canvas => {
       const base64Image = canvas.toDataURL("image/jpeg", 1.0);
-      download(base64Image, type, label);
+      download(base64Image, type, label, stopLoading);
     });
   }
 };

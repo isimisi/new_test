@@ -11,6 +11,8 @@ import powerpoint from "@images/icons/powerpoint.png";
 import excel from "@images/icons/excel.png";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import Divider from "@material-ui/core/Divider";
 import { useTranslation } from "react-i18next";
 import Button from "@material-ui/core/Button";
@@ -44,7 +46,7 @@ interface Props {
   snapToGrid: boolean;
   handleAutoLayout: () => void;
   handleOpenMenu: () => void;
-  handleImage: (type: "image" | "pdf") => void;
+  handleImage: (type: "image" | "pdf", stopLoading: () => void) => void;
   elements: any;
 }
 
@@ -64,6 +66,18 @@ const Meta = (props: Props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const handleOpenMeta = () => setMetaOpen(prevVal => !prevVal);
+
+  const [loadingImg, setLoadingImg] = React.useState(false);
+  const stopLoadingImg = () => setLoadingImg(false);
+  const startLoadingImg = () => setLoadingImg(true);
+
+  const [loadingPdf, setLoadingPdf] = React.useState(false);
+  const stopLoadingPdf = () => setLoadingPdf(false);
+  const startLoadingPdf = () => setLoadingPdf(true);
+
+  const [loadingExcel, setLoadingExcel] = React.useState(false);
+  const stopLoadingExcel = () => setLoadingExcel(false);
+  const startLoadingExcel = () => setLoadingExcel(true);
 
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const anchorRefSettings = React.useRef<HTMLButtonElement>(null);
@@ -127,7 +141,14 @@ const Meta = (props: Props) => {
   const handleCloseShortcuts = () => setShowShortCuts(false);
 
   const handleExport = (type: "image" | "pdf") => {
-    handleImage(type);
+    let stopLoading = stopLoadingImg;
+    if (type === "pdf") {
+      stopLoading = stopLoadingPdf;
+      startLoadingPdf();
+    } else {
+      startLoadingImg();
+    }
+    handleImage(type, stopLoading);
   };
 
   const s2ab = s => {
@@ -138,9 +159,14 @@ const Meta = (props: Props) => {
   };
 
   const handleExcel = () => {
+    startLoadingExcel();
+
     const wb = XLSX.utils.book_new();
     const nodes = elements.filter((e): e is Node => isNode(e));
-    const names = nodes.map(n => n.data.displayName ? n.data.displayName.substring(0, 30) : n.data.label.substring(0, 30));
+    const regex = /[^A-Za-z0-9]/g;
+
+    const names = nodes.map(n => n.data.displayName ? n.data.displayName.substring(0, 30).replace(regex, "") : n.data.label.substring(0, 30).replace(regex, ""));
+
 
     wb.SheetNames = names.filter((c, index) => names.indexOf(c) === index);
 
@@ -194,6 +220,9 @@ const Meta = (props: Props) => {
       new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
       `${label}.xlsx`
     );
+    setTimeout(() => {
+      stopLoadingExcel();
+    }, 500);
   };
 
   return (
@@ -332,30 +361,33 @@ const Meta = (props: Props) => {
                 <MenuList autoFocusItem={settingsOpen}>
                   <MenuItem
                     className={classes.menuItem}
+                    disabled={loadingImg}
                     onClick={() => handleExport("image")}
                   >
                     <ListItemIcon>
-                      <ImageIcon fontSize="small" />
+                      {loadingImg ? <CircularProgress size={25} />
+                        : <ImageIcon fontSize="small" />}
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.picture")}</ListItemText>
                   </MenuItem>
                   <MenuItem
                     className={classes.menuItem}
+                    disabled={loadingPdf}
                     onClick={() => handleExport("pdf")}
                   >
                     <ListItemIcon>
-                      <PictureAsPdfIcon fontSize="small" />
+                      {loadingPdf ? <CircularProgress size={25} /> : <PictureAsPdfIcon fontSize="small" />}
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.pdf")}</ListItemText>
                   </MenuItem>
 
-                  <MenuItem className={classes.menuItem} onClick={handleExcel}>
+                  <MenuItem className={classes.menuItem} onClick={handleExcel} disabled={loadingExcel}>
                     <ListItemIcon>
-                      <img
+                      {loadingExcel ? <CircularProgress size={25} /> : <img
                         src={excel}
                         alt="juristic"
                         style={{ width: 18, height: 18 }}
-                      />
+                      />}
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.excel")}</ListItemText>
                   </MenuItem>

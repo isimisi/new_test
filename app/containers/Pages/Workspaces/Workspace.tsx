@@ -757,7 +757,7 @@ const Workspace = (props) => {
 
   const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
 
-  const handleImage = (type) => handleExport(type, reactFlowContainer, label);
+  const handleImage = (type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading);
 
   return (
     <div>
