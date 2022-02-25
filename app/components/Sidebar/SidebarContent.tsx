@@ -96,7 +96,7 @@ function SidebarContent(props: Props) {
           drawerPaper={drawerPaper}
           toggleDrawerOpen={toggleDrawerOpen}
         />
-        {status === "need_confirmation" && (
+        {status === "need_confirmation" && drawerPaper && (
           <div className={classes.confirmEmail}>
             <Typography variant="subtitle2">Opsætning af konto</Typography>
             <BorderLinearProgress value={50} variant="indeterminate" />

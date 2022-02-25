@@ -413,11 +413,12 @@
     "node_data": "Data på element",
     "picture": "Image",
     "pdf": "PDF",
-    "power_point": "Powerpoint (Kommer snart)",
+    "power_point": "Powerpoint",
     "describing the work area": "Start med at beskrive dit arbejdsområde. Vælg gruppen \"Corporate\"",
     "relations_for": "Relationtioner for {{for}}",
     "relations": "Relationer",
-    "excel": "Excel"
+    "excel": "Excel",
+    "add_step": "Tilføj step"
   },
   "workspace-analysis": {
     "earlier_versions": "Tidligere versioner",
@@ -631,6 +632,10 @@
       "balance": "Balance",
       "moneystream": "Pengestrømme",
       "keyFigures": "Nøgletal"
-    }
+    },
+    "smart_step_automatic": "Smart step automatisk",
+    "smart_step_manuel": "Smart step manuelt",
+    "non_smart_step_manuel": "Ikke",
+    "edit_steps": "Rediger steps"
   }
 }

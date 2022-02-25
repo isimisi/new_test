@@ -19,6 +19,8 @@ import { User } from "@auth0/auth0-react";
 import { RGBA } from "@customTypes/data";
 import { History } from 'history';
 import { EdgeData } from "@customTypes/reactFlow";
+import { saveAs } from "file-saver";
+import { s2ab } from '@helpers/export/handleExport';
 
 const WORKSPACES = "workspaces";
 
@@ -812,6 +814,27 @@ export const connectNewUser = (user: User, id: string) => async (dispatch) => {
   }
 };
 
+export const workspacePowerpoint = (user: User, id: string, label: string, stopLoading: () => void) => async (dispatch) => {
+  const url = `${baseUrl}/workspaces/powerpoint/${id}`;
+  const header = authHeader(user);
+  try {
+    const response = await axios.get(url, header);
+    const { powerpoint } = response.data;
+    const linkSource = `data:application/pptx;base64,${powerpoint}`;
+    const downloadLink = document.createElement("a");
+    const fileName = label + ".pptx";
+
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+
+
+    stopLoading();
+  } catch (error) {
+    console.log(error);
+    stopLoading();
+  }
+};
 
 export const mapUncertainCompanies = (
   user: User,

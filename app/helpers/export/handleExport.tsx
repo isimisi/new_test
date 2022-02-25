@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable no-bitwise */
 /* eslint-disable no-param-reassign */
 /* eslint-disable new-cap */
 /* eslint-disable import/prefer-default-export */
@@ -5,6 +7,14 @@
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { createFileName } from "use-react-screenshot";
+
+
+export const s2ab = s => {
+  const buf = new ArrayBuffer(s.length); // convert s to arrayBuffer
+  const view = new Uint8Array(buf); // create uint8array as viewer
+  for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff; // convert to octet
+  return buf;
+};
 
 const download = (_image: string, type: "image" | "pdf", label: string | null, stopLoading?: () => void) => {
   if (!label) {

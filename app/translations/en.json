@@ -413,11 +413,12 @@
     "node_data": "Element data",
     "picture": "Picture",
     "pdf": "PDF",
-    "power_point": "PowerPoint (Coming soon)",
+    "power_point": "PowerPoint",
     "describing_the_work_area": "Descripe the workspace",
     "relations_for": "Relations for {{for}}",
     "relations": "Relations",
-    "excel": "Excel"
+    "excel": "Excel",
+    "add_step": "Add step"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
@@ -631,6 +632,10 @@
       "balance": "Balance",
       "moneystream": "Cash flow",
       "keyFigures": "Key Figures"
-    }
+    },
+    "smart_step_automatic": "Smart step automatic",
+    "smart_step_manuel": "Smart step manuel",
+    "non_smart_step_manuel": "Non smart step",
+    "edit_steps": "Edit steps"
   }
 }

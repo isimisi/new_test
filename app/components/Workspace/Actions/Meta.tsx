@@ -36,6 +36,7 @@ import Shortcuts from "./Shortcuts";
 import * as XLSX from "xlsx";
 import { Edge, getIncomers, getOutgoers, isEdge, isNode, Node } from "react-flow-renderer";
 import { saveAs } from "file-saver";
+import { s2ab } from '@helpers/export/handleExport';
 
 interface Props {
   label: string;
@@ -48,6 +49,7 @@ interface Props {
   handleOpenMenu: () => void;
   handleImage: (type: "image" | "pdf", stopLoading: () => void) => void;
   elements: any;
+  handlePowerpoint: (stopLoading: () => void) => void;
 }
 
 const Meta = (props: Props) => {
@@ -61,7 +63,8 @@ const Meta = (props: Props) => {
     snapToGrid,
     handleAutoLayout,
     handleOpenMenu,
-    handleImage
+    handleImage,
+    handlePowerpoint: generatePp
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -78,6 +81,10 @@ const Meta = (props: Props) => {
   const [loadingExcel, setLoadingExcel] = React.useState(false);
   const stopLoadingExcel = () => setLoadingExcel(false);
   const startLoadingExcel = () => setLoadingExcel(true);
+
+  const [loadingPp, setLoadingPp] = React.useState(false);
+  const stopLoadingPp = () => setLoadingPp(false);
+  const startLoadingPp = () => setLoadingPp(true);
 
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const anchorRefSettings = React.useRef<HTMLButtonElement>(null);
@@ -151,12 +158,6 @@ const Meta = (props: Props) => {
     handleImage(type, stopLoading);
   };
 
-  const s2ab = s => {
-    const buf = new ArrayBuffer(s.length); // convert s to arrayBuffer
-    const view = new Uint8Array(buf); // create uint8array as viewer
-    for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff; // convert to octet
-    return buf;
-  };
 
   const handleExcel = () => {
     startLoadingExcel();
@@ -223,6 +224,11 @@ const Meta = (props: Props) => {
     setTimeout(() => {
       stopLoadingExcel();
     }, 500);
+  };
+
+  const handlePowerpoint = () => {
+    startLoadingPp();
+    generatePp(stopLoadingPp);
   };
 
   return (
@@ -392,13 +398,13 @@ const Meta = (props: Props) => {
                     <ListItemText>{t("workspaces.excel")}</ListItemText>
                   </MenuItem>
 
-                  <MenuItem className={classes.menuItem} disabled>
+                  <MenuItem className={classes.menuItem} onClick={handlePowerpoint}>
                     <ListItemIcon>
-                      <img
+                      {loadingPp ? <CircularProgress size={25} /> : <img
                         src={powerpoint}
                         alt="juristic"
                         style={{ width: 18, height: 18 }}
-                      />
+                      />}
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.power_point")}</ListItemText>
                   </MenuItem>

@@ -86,7 +86,7 @@ import {
   handleRunIntro, uncertainCompaniesChange,
   mapUncertainCompanies, changeTags, addElements,
   getCompanyData, getAddressInfo, layoutElements,
-  stopLoading, connectNewUser, setConnectedUsers
+  stopLoading, connectNewUser, setConnectedUsers, workspacePowerpoint
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -758,6 +758,7 @@ const Workspace = (props) => {
   const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
 
   const handleImage = (type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading);
+  const handlePowerpoint = (_stopLoading) => id && dispatch(workspacePowerpoint(user, id, label, _stopLoading));
 
   return (
     <div>
@@ -807,6 +808,7 @@ const Workspace = (props) => {
               label={label}
               setMetaOpen={setMetaOpen}
               handleVisabilityChange={handleVisabilityChange}
+              handlePowerpoint={handlePowerpoint}
               handleVisability={handleVisability}
               elements={elements}
               setSnapToGrid={setSnapToGrid}
