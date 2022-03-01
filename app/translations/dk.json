@@ -423,7 +423,9 @@
   "workspace-analysis": {
     "earlier_versions": "Tidligere versioner",
     "save": "Gem",
-    "convert_to_pp": "Konverter til powerpoint"
+    "convert_to_pp": "Konverter til powerpoint",
+    "convert_to_pp_dynamic": "Konverter til Powerpoint (Dynamisk)",
+    "convert_to_pp_static": "Konveter til Powerpoint (statisk)"
   },
   "workspace-meta": {
     "name_your_work_area": "Navngiv dit arbejdsområde"

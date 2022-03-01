@@ -12,10 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import ReactQuill from "react-quill";
-import Tooltip from "@material-ui/core/Tooltip";
-import Fab from "@material-ui/core/Fab";
-import SaveIcon from "@material-ui/icons/Save";
-import AssignmentIcon from "@material-ui/icons/Assignment";
+
 import "react-quill/dist/quill.bubble.css";
 import Drawer from "@material-ui/core/Drawer";
 import { makeStyles } from "@material-ui/core/styles";
@@ -26,7 +23,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { useTranslation } from "react-i18next";
 import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
-import SlideshowIcon from '@material-ui/icons/Slideshow';
+
 import Loader from "@components/Loading/LongLoader";
 import {
   analyseOutput,
@@ -34,12 +31,14 @@ import {
   closeNotifAction,
   revisionHistory,
   analysisTextChange,
+  analysisPowerpoint
 } from "./reducers/workspaceActions";
 import notFound from "@lotties/racoon/noContent.json";
 import { MyTheme } from "@customTypes/styling";
 import Notification from "@components/Notification/Notification";
 import MiniFlow from "@components/Workspace/Analysis/MiniFlow";
-import { generatePPTX } from "@helpers/export/powerpoint/pptx-gen";
+
+import SidePanel from "@components/Workspace/Analysis/SidePanel";
 
 
 const useStyles = makeStyles((theme: MyTheme) => ({
@@ -95,6 +94,7 @@ const useStyles = makeStyles((theme: MyTheme) => ({
       height: 400 / 1.5,
     },
   },
+  container: { display: "flex", overflow: "scroll", height: "90vh", alignSelf: "flex-start" }
 }));
 
 const WorkspaceAnalysis = () => {
@@ -236,31 +236,35 @@ const WorkspaceAnalysis = () => {
   }, [outputs]);
 
   const [readyForDownload, setReadyForDownload] = useState(false);
+  const [loadingPp, setLoadingPp] = useState(false);
 
   const handleImagesForPp = () => {
+    setLoadingPp(true);
     itemsRef.current.forEach((item) => {
       // @ts-ignore
       item.handleImage();
     });
     setReadyForDownload(true);
+    setTimeout(() => {
+      setLoadingPp(false);
+    }, 1000);
   };
 
-  const handlePp = async () => {
+  const handlePp = () => {
     setReadyForDownload(false);
     // @ts-ignore
     const param = {
-      html: [],
-      body: []
+      data: []
     };
     for (let index = 0; index < itemsRef.current.length; index++) {
       const element = itemsRef.current[index];
       // @ts-ignore
-      param.html.push(element.html);
+      const obj = { html: element.html, body: element.image };
       // @ts-ignore
-      param.body.push(element.image);
+      param.data.push(obj);
     }
 
-    await generatePPTX(param);
+    dispatch(analysisPowerpoint(user as User, param));
   };
 
   useEffect(() => {
@@ -303,172 +307,130 @@ const WorkspaceAnalysis = () => {
           </Button>
         </div>
       )}
-
-      {outputs.map((output, index) => (
-        <Grid container className={classes.root}>
-          <Grid
-            item
-            xs={open && !matchpattern.test(output.action.output) ? 5 : 6}
-            style={{ marginBottom: 40, paddingLeft: 20, paddingTop: 20 }}
-          >
-            <Typography variant="h6">{output.conditionLabel}</Typography>
-            <MiniFlow
-              html={output.action.output}
-              elements={output.elements}
-              // @ts-ignore
-              ref={el => itemsRef.current[index] = el}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={open && !matchpattern.test(output.action.output) ? 5 : 6}
-            style={{ paddingTop: 20 }}
-          >
-            <Typography variant="h6">{output.action.label}</Typography>
-            {matchpattern.test(output.action.output) ? (
-              <div
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
-                }}
+      <div className={classes.container}>
+        <div>
+          {outputs.map((output, index) => (
+            <Grid container className={classes.root}>
+              <Grid
+                item
+                xs={open && !matchpattern.test(output.action.output) ? 5 : 6}
+                style={{ marginBottom: 40, paddingLeft: 20, paddingTop: 20 }}
               >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  href={output.action.output}
-                  target="_blank"
-                >
+                <Typography variant="h6">{output.conditionLabel}</Typography>
+                <MiniFlow
+                  html={output.action.output}
+                  elements={output.elements}
+                  // @ts-ignore
+                  ref={el => itemsRef.current[index] = el}
+                />
+              </Grid>
+              <Grid
+                item
+                xs={open && !matchpattern.test(output.action.output) ? 5 : 6}
+                style={{ paddingTop: 20 }}
+              >
+                <Typography variant="h6">{output.action.label}</Typography>
+                {matchpattern.test(output.action.output) ? (
+                  <div
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      href={output.action.output}
+                      target="_blank"
+                    >
                   Åben fil
-                </Button>
-              </div>
-            ) : (
-              <ReactQuill
-                placeholder="Note"
-                theme="bubble"
-                value={output.action.output}
-                onChange={(v) => handleQuillChange(v, index)}
-                modules={modules}
-              />
-            )}
-          </Grid>
-          {open && (
-            <Grid
-              item
-              xs={open && !matchpattern.test(output.action.output) ? 2 : false}
-              style={{
-                display: matchpattern.test(output.action.output) ? "none" : undefined,
-              }}
-            >
-              <Hidden smDown>
-                <Drawer
-                  variant="permanent"
-                  classes={{
-                    paper: classes.drawerPaper,
+                    </Button>
+                  </div>
+                ) : (
+                  <ReactQuill
+                    placeholder="Note"
+                    theme="bubble"
+                    value={output.action.output}
+                    onChange={(v) => handleQuillChange(v, index)}
+                    modules={modules}
+                  />
+                )}
+              </Grid>
+              {open && (
+                <Grid
+                  item
+                  xs={open && !matchpattern.test(output.action.output) ? 2 : false}
+                  style={{
+                    display: matchpattern.test(output.action.output) ? "none" : undefined,
                   }}
-                  style={{ height: "100%" }}
                 >
-                  <List style={{ padding: 0 }}>
-                    {revisionHistoryList[
-                      JSON.stringify(
-                        removePositionFromElements(output.elements)
-                      )
-                    ]
-                      ?.reverse()
-                      .map((list, revisionIndex) => (
-                        <ListItem
-                          button
-                          selected={
-                            activeRevision[
-                              JSON.stringify(
-                                removePositionFromElements(output.elements)
-                              )
-                            ]
-                              ? activeRevision[
-                                JSON.stringify(
-                                  removePositionFromElements(output.elements)
+                  <Hidden smDown>
+                    <Drawer
+                      variant="permanent"
+                      classes={{
+                        paper: classes.drawerPaper,
+                      }}
+                      style={{ height: "100%" }}
+                    >
+                      <List style={{ padding: 0 }}>
+                        {revisionHistoryList[
+                          JSON.stringify(
+                            removePositionFromElements(output.elements)
+                          )
+                        ]
+                          ?.reverse()
+                          .map((list, revisionIndex) => (
+                            <ListItem
+                              button
+                              selected={
+                                activeRevision[
+                                  JSON.stringify(
+                                    removePositionFromElements(output.elements)
+                                  )
+                                ]
+                                  ? activeRevision[
+                                    JSON.stringify(
+                                      removePositionFromElements(output.elements)
+                                    )
+                                  ] === list.id
+                                  : revisionIndex === 0
+                              }
+                              key={list.id.toString()}
+                              onClick={() =>
+                                handleSelectRevision(
+                                  JSON.stringify(
+                                    removePositionFromElements(output.elements)
+                                  ),
+                                  list.id,
+                                  index
                                 )
-                              ] === list.id
-                              : revisionIndex === 0
-                          }
-                          key={list.id.toString()}
-                          onClick={() =>
-                            handleSelectRevision(
-                              JSON.stringify(
-                                removePositionFromElements(output.elements)
-                              ),
-                              list.id,
-                              index
-                            )
-                          }
-                        >
-                          <ListItemText
-                            primaryTypographyProps={{
-                              variant: "body1",
-                              style: { fontSize: 12 },
-                            }}
-                            primary={list.created_at}
-                            secondary={
-                              list.user.firstName + " " + list.user.lastName
-                            }
-                          />
-                        </ListItem>
-                      ))}
-                  </List>
-                </Drawer>
-              </Hidden>
+                              }
+                            >
+                              <ListItemText
+                                primaryTypographyProps={{
+                                  variant: "body1",
+                                  style: { fontSize: 12 },
+                                }}
+                                primary={list.created_at}
+                                secondary={
+                                  list.user.firstName + " " + list.user.lastName
+                                }
+                              />
+                            </ListItem>
+                          ))}
+                      </List>
+                    </Drawer>
+                  </Hidden>
+                </Grid>
+              )}
             </Grid>
-          )}
-        </Grid>
-      ))}
-      <Tooltip title={`${t("workspace-analysis.convert_to_pp")}`}>
-        <Fab
-          variant="extended"
-          color="secondary"
-          style={{
-            position: "fixed",
-            bottom: 30,
-            right: 190,
-            zIndex: 100,
-          }}
-          onClick={handleImagesForPp}
-        >
-          <SlideshowIcon />
-        </Fab>
-      </Tooltip>
-      <Tooltip title={`${t("workspace-analysis.earlier_versions")}`}>
-        <Fab
-          variant="extended"
-          color="secondary"
-          disabled={Object.keys(revisionHistoryList).length === 0}
-          style={{
-            position: "fixed",
-            bottom: 30,
-            right: 120,
-            zIndex: 100,
-          }}
-          onClick={handleDrawer}
-        >
-          <AssignmentIcon />
-        </Fab>
-      </Tooltip>
-      <Tooltip title={`${t("workspace-analysis.save")}`}>
-        <Fab
-          variant="extended"
-          color="primary"
-          style={{
-            position: "fixed",
-            bottom: 30,
-            right: 50,
-            zIndex: 100,
-          }}
-          onClick={save}
-        >
-          <SaveIcon />
-        </Fab>
-      </Tooltip>
+          ))}
+        </div>
+        <SidePanel handleImagesForPp={handleImagesForPp} handleVersions={handleDrawer} save={save} />
+      </div>
       <Prompt
         when
         message={() =>

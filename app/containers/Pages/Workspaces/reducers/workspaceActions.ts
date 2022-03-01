@@ -836,6 +836,29 @@ export const workspacePowerpoint = (user: User, id: string, label: string, stopL
   }
 };
 
+export const analysisPowerpoint = (user: User, params) => async (dispatch) => {
+  const url = `${baseUrl}/analysis/powerpoint`;
+  const body = { params };
+  const header = authHeader(user);
+  try {
+    const response = await axios.post(url, body, header);
+    const { powerpoint } = response.data;
+    const linkSource = `data:application/pptx;base64,${powerpoint}`;
+    const downloadLink = document.createElement("a");
+    const fileName = "assa.pptx";
+
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+
+
+    // stopLoading();
+  } catch (error) {
+    console.log(error);
+    // stopLoading();
+  }
+};
+
 export const mapUncertainCompanies = (
   user: User,
   id: string,

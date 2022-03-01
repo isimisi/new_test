@@ -423,7 +423,9 @@
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
     "save": "Save",
-    "convert_to_pp": "Convert to powerpoint"
+    "convert_to_pp": "Convert to powerpoint",
+    "convert_to_pp_dynamic": "Convert to Powerpoint (Dynamic)",
+    "convert_to_pp_static": "Convert to Powerpoint (static)"
   },
   "workspace-meta": {
     "name_your_work_area": "Name your work area"

@@ -158,15 +158,19 @@ const Meta = (props: Props) => {
     handleImage(type, stopLoading);
   };
 
+  const getSheetName = (node) => {
+    const regex = /[^A-Za-z0-9]/g;
+    return node.data.displayName ? node.data.displayName.substring(0, 30).replace(regex, "") : node.data.label.substring(0, 30).replace(regex, "");
+  };
 
   const handleExcel = () => {
     startLoadingExcel();
 
     const wb = XLSX.utils.book_new();
     const nodes = elements.filter((e): e is Node => isNode(e));
-    const regex = /[^A-Za-z0-9]/g;
 
-    const names = nodes.map(n => n.data.displayName ? n.data.displayName.substring(0, 30).replace(regex, "") : n.data.label.substring(0, 30).replace(regex, ""));
+
+    const names = nodes.map(n => getSheetName(n));
 
 
     wb.SheetNames = names.filter((c, index) => names.indexOf(c) === index);
@@ -177,6 +181,7 @@ const Meta = (props: Props) => {
       t("workspace.meta.excel.headers.value"),
       t("workspace.meta.excel.headers.type")
     ];
+    console.log(header);
 
     for (let index = 0; index < nodes.length; index++) {
       const node = nodes[index];
@@ -214,7 +219,7 @@ const Meta = (props: Props) => {
 
       const ws = XLSX.utils.json_to_sheet(wsData, { header });
 
-      wb.Sheets[node.data.displayName] = ws;
+      wb.Sheets[getSheetName(node)] = ws;
     }
     const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
     saveAs(
