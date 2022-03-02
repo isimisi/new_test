@@ -78,10 +78,18 @@ const Items = (props: Props) => {
   const goToAnalysis = () => history.push(`analysis/${id}`);
 
   // const [dragging, setDragging] = React.useState(false);
-  // const onDragStart = (event, nodeType) => {
+  // const onDragStart = event => {
   //   setDragging(true);
-  //   event.dataTransfer.setData("application/reactflow", nodeType);
+  //   console.log(event.target);
+  //   event.target.style.border = "1px solid";
+  //   event.target.style.backgroundColor = "pink";
+  //   event.dataTransfer.setData("application/reactflow", "input");
   //   event.dataTransfer.effectAllowed = "move";
+  // };
+  // const onDragEnd = event => {
+  //   setDragging(false);
+  //   event.target.style.border = "none";
+  //   event.target.style.backgroundColor = "transparant";
   // };
 
   return (
@@ -97,11 +105,13 @@ const Items = (props: Props) => {
               )}
             />
             {/* <div
+              onDragStart={onDragStart}
+              onDragEnd={onDragEnd}
+              draggable
               style={{
                 position: "absolute",
                 width: "100%",
-                height: "100%",
-                backgroundColor: "#fc00fc"
+                height: "100%"
               }}
             /> */}
           </IconButton>

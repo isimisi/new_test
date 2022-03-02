@@ -150,7 +150,7 @@ export const countryDropDown = planId => [
             marginRight: 10
           }}
         />
-        <span>Stor britanien</span>
+        <span>Storbritannien</span>
       </div>
     ),
     isDisabled: planId === 1

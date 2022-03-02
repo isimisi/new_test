@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     flexDirection: "row"
   },
   buttons: {
-    visability: "visible",
     "&:hover": {
       backgroundColor: "transparent",
       color: theme.palette.primary.main
