@@ -638,6 +638,12 @@
     "smart_step_automatic": "Smart step automatisk",
     "smart_step_manuel": "Smart step manuelt",
     "non_smart_step_manuel": "Ikke",
-    "edit_steps": "Rediger steps"
+    "edit_steps": "Rediger steps",
+    "internation_disclaimer": {
+      "header": "Vær opmærksom på diagrammer uden for Danmark",
+      "body": "Når du henter diagrammer uden for Danmark, så kan vi desværre ikke konsolidere datterselskaber på tværs af grænser.",
+      "close": "Forstået",
+      "do_not_show_again": "Vis ikke igen"
+    }
   }
 }

@@ -87,6 +87,7 @@ import {
   LAYOUT_ELEMENTS,
   SET_CONNECTED_USERS,
   REMOVE_CONNECTED_USERS,
+  DO_NOT_SHOW_INTERNATIONAL_DISCLAIMER_AGAIN,
 } from "./workspaceConstants";
 
 const initialState = {
@@ -130,6 +131,7 @@ const initialState = {
   uncertainCompanies: List(),
   specificWorkspaceTags: List(),
   connectedUsers: List(),
+  showInternationalDisclaimer: true,
 };
 
 const initialImmutableState = fromJS(initialState);
@@ -619,6 +621,10 @@ export default function reducer(state = initialImmutableState, action: any) {
         mutableState.update("connectedUsers", (myList) =>
           myList.filter((x) => user.id !== x.id)
         );
+      });
+    case DO_NOT_SHOW_INTERNATIONAL_DISCLAIMER_AGAIN:
+      return state.withMutations((mutableState) => {
+        mutableState.set("showInternationalDisclaimer", false);
       });
     case STOP_LOADING:
       return state.withMutations((mutableState) => {

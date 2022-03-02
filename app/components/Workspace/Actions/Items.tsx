@@ -96,6 +96,14 @@ const Items = (props: Props) => {
                 defineNodeOpen ? classes.activeButton : ""
               )}
             />
+            {/* <div
+              style={{
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#fc00fc"
+              }}
+            /> */}
           </IconButton>
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.add_note")}`} placement="right">

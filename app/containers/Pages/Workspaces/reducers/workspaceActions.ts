@@ -965,6 +965,10 @@ export const stopLoading = {
   type: types.STOP_LOADING,
 };
 
+export const doNotShowInternationalDisclaimerAgain = {
+  type: types.DO_NOT_SHOW_INTERNATIONAL_DISCLAIMER_AGAIN,
+};
+
 export const setShowCompanyData = (show) => ({
   type: types.SET_SHOW_COMPANY_DATA,
   show,

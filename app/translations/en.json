@@ -638,6 +638,12 @@
     "smart_step_automatic": "Smart step automatic",
     "smart_step_manuel": "Smart step manuel",
     "non_smart_step_manuel": "Non smart step",
-    "edit_steps": "Edit steps"
+    "edit_steps": "Edit steps",
+    "internation_disclaimer": {
+      "header": "Pay attention to charts outside Denmark",
+      "body": "Unfortunately, when you download charts from outside Denmark, we cannot consolidate subsidiaries across borders.",
+      "close": "Got it",
+      "do_not_show_again": "Do not show this again"
+    }
   }
 }

@@ -193,19 +193,27 @@ function CompanyDataModel(props) {
           </TableContainer>
         </div>
         <div className={css.buttonArea}>
-          {companyData.Virksomhedsdata && companyData.Virksomhedsdata.Land === "DK" && (
-            <Button
-              variant="text"
-              color="primary"
-              type="button"
-              target="_blank"
-              href={`https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${
-                companyData?.Virksomhedsdata["CVR-nummer"]
-              }`}
-            >
-              Åben i enhedsvisning for {companyData.navn} direkte i CVR
-            </Button>
-          )}
+          {companyData.Virksomhedsdata &&
+            ["DK", "GB"].includes(companyData.Virksomhedsdata.Land) && (
+              <Button
+                variant="text"
+                color="primary"
+                type="button"
+                target="_blank"
+                href={
+                  companyData.Virksomhedsdata.Land === "DK"
+                    ? `https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${
+                        companyData?.Virksomhedsdata["CVR-nummer"]
+                      }`
+                    : `https://find-and-update.company-information.service.gov.uk/company/${companyData?.Virksomhedsdata[
+                        "CVR-nummer"
+                      ].substring(2)}/persons-with-significant-control`
+                }
+              >
+                Åben i enhedsvisning for {companyData.navn} direkte i{" "}
+                {companyData.Virksomhedsdata.Land === "DK" ? "CVR" : "Companies House"}
+              </Button>
+            )}
         </div>
       </FloatingPanel>
     </div>

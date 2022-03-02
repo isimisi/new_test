@@ -50,6 +50,7 @@ import AlertModal from '@components/Alerts/AlertModal';
 import CustomNode from '@components/Workspace/Node/CustomNode';
 import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
 import WorkspaceMeta from '@components/Workspace/WorkspaceMeta';
+import InternationalStructureAlert from '@components/Workspace/InternationalStructureAlert';
 import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
@@ -86,7 +87,8 @@ import {
   handleRunIntro, uncertainCompaniesChange,
   mapUncertainCompanies, changeTags, addElements,
   getCompanyData, getAddressInfo, layoutElements,
-  stopLoading, connectNewUser, setConnectedUsers, workspacePowerpoint
+  stopLoading, connectNewUser, setConnectedUsers, workspacePowerpoint,
+  doNotShowInternationalDisclaimerAgain
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -143,7 +145,7 @@ const Workspace = (props) => {
   const handleVisability = useAppSelector(state => state[reducer].get('handleVisability'));
 
   const elements = useAppSelector(state => state[reducer].get('elements')).toJS();
-  const connectedUsers = useAppSelector(state => state[reducer].get('connectedUsers')).toJS();
+  // const connectedUsers = useAppSelector(state => state[reducer].get('connectedUsers')).toJS();
   const label = useAppSelector(state => state[reducer].get('label'));
   const description = useAppSelector(state => state[reducer].get('description'));
   const group = useAppSelector(state => state[reducer].get('group'));
@@ -169,6 +171,8 @@ const Workspace = (props) => {
   const uncertainCompanies = useAppSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
   const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
   const tags = useAppSelector(state => state[reducer].get('specificWorkspaceTags'))?.toJS();
+
+  const internationalDisclaimer = useAppSelector(state => state[reducer].get('showInternationalDisclaimer'));
 
 
   const [metaOpen, setMetaOpen] = useState(false);
@@ -240,9 +244,24 @@ const Workspace = (props) => {
 
   const handleVisabilityChange = () => dispatch(changeHandleVisability(!handleVisability));
 
+
+  const [showInternationalDisclaimer, setShowInternationalDisclaimer] = useState(false);
+
+  const closeInternationalDisclaimer = (doNotShowAgain) => {
+    setShowInternationalDisclaimer(false);
+    if (doNotShowAgain) {
+      dispatch(doNotShowInternationalDisclaimerAgain);
+    }
+  };
+
+
   const handleCvrSuccess = (el) => {
     setShowCvrModal(false);
     dispatch(cvrSuccess(getLayoutedElements(el)));
+
+    if (internationalDisclaimer && el[0].data.data_provider === "firmnav") {
+      setShowInternationalDisclaimer(true);
+    }
     // dispatch(changeStepIndex(10));
     // dispatch(handleRunIntro(true));
   };
@@ -273,9 +292,9 @@ const Workspace = (props) => {
     // const sub2 = connection.subscribeToWorkspace(`collaboration:${id}`, handleNewConnection);
     // setColabSubscription(sub2);
 
-    if (id) {
-      dispatch(connectNewUser(user, id));
-    }
+    // if (id) {
+    //   dispatch(connectNewUser(user, id));
+    // }
 
 
     // Specify how to clean up after this effect:
@@ -761,31 +780,29 @@ const Workspace = (props) => {
   const handlePowerpoint = (_stopLoading) => id && dispatch(workspacePowerpoint(user, id, label, _stopLoading));
 
 
-  // const onDragOver = (event) => {
-  //   event.preventDefault();
-  //   event.dataTransfer.dropEffect = 'move';
-  // };
+  const onDragOver = (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  };
 
-  // const onDrop = (event) => {
-  //   event.preventDefault();
-  //   if (reactFlowContainer && rfInstance) {
-  //     // @ts-ignore
-  //     const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
-  //     const type = event.dataTransfer.getData('application/reactflow');
-  //     const position = rfInstance.project({
-  //       x: event.clientX - reactFlowBounds.left,
-  //       y: event.clientY - reactFlowBounds.top,
-  //     });
-  //     console.log(type, position);
-  //   }
-  // };
+  const onDrop = (event) => {
+    event.preventDefault();
+    if (reactFlowContainer && rfInstance) {
+      // @ts-ignore
+      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
+      const position = rfInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+      console.log(type, position);
+    }
+  };
 
 
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-
-
       <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
 
         <ReactFlow
@@ -796,8 +813,8 @@ const Workspace = (props) => {
           maxZoom={3}
           onNodeDragStart={hideContext}
           onConnectStart={hideContext}
-          // onDrop={onDrop}
-          // onDragOver={onDragOver}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
           onMoveStart={hideContext}
           onSelectionDragStart={hideContext}
           onPaneScroll={hideContext}
@@ -1154,6 +1171,7 @@ const Workspace = (props) => {
             snapToGrid={snapToGrid}
             fitView={() => rfInstance?.fitView()}
           />
+          <InternationalStructureAlert open={showInternationalDisclaimer} close={closeInternationalDisclaimer} />
         </>
       )}
     </div>
