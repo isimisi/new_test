@@ -4,7 +4,7 @@ import React, {
   ChangeEvent, useEffect, useState
 } from 'react';
 import brand from '@api/dummy/brand';
-import { countryDropDown } from '@helpers/countryOptions';
+import { countryDropDown, getCountryOptions } from '@helpers/countryOptions';
 import Typography from '@material-ui/core/Typography';
 import { Helmet } from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
@@ -196,8 +196,8 @@ const PersonalDashboard = () => {
   };
 
   const getAsyncOptions = inputValue => axios
-    .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}&countries=${plan_id === 1 ? JSON.stringify(["DK"]) : countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI'])}`)
-    .then(res => res.data);
+    .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}&countries=${plan_id === 1 ? JSON.stringify(["DK"]) : countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI', 'GB'])}`)
+    .then(res => getCountryOptions(res.data));
 
   const countryOptions = countryDropDown(plan_id);
 

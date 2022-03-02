@@ -270,8 +270,8 @@ const Workspace = (props) => {
     const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
     setSubscription(sub);
 
-    const sub2 = connection.subscribeToWorkspace(`collaboration:${id}`, handleNewConnection);
-    setColabSubscription(sub2);
+    // const sub2 = connection.subscribeToWorkspace(`collaboration:${id}`, handleNewConnection);
+    // setColabSubscription(sub2);
 
     if (id) {
       dispatch(connectNewUser(user, id));
@@ -285,10 +285,10 @@ const Workspace = (props) => {
         subscription.close();
       }
 
-      if (colabSubscription) {
-        // @ts-ignore
-        colabSubscription.close();
-      }
+      // if (colabSubscription) {
+      //   // @ts-ignore
+      //   colabSubscription.close();
+      // }
     };
   }, []);
 
@@ -760,6 +760,27 @@ const Workspace = (props) => {
   const handleImage = (type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading);
   const handlePowerpoint = (_stopLoading) => id && dispatch(workspacePowerpoint(user, id, label, _stopLoading));
 
+
+  // const onDragOver = (event) => {
+  //   event.preventDefault();
+  //   event.dataTransfer.dropEffect = 'move';
+  // };
+
+  // const onDrop = (event) => {
+  //   event.preventDefault();
+  //   if (reactFlowContainer && rfInstance) {
+  //     // @ts-ignore
+  //     const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+  //     const type = event.dataTransfer.getData('application/reactflow');
+  //     const position = rfInstance.project({
+  //       x: event.clientX - reactFlowBounds.left,
+  //       y: event.clientY - reactFlowBounds.top,
+  //     });
+  //     console.log(type, position);
+  //   }
+  // };
+
+
   return (
     <div>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
@@ -775,6 +796,8 @@ const Workspace = (props) => {
           maxZoom={3}
           onNodeDragStart={hideContext}
           onConnectStart={hideContext}
+          // onDrop={onDrop}
+          // onDragOver={onDragOver}
           onMoveStart={hideContext}
           onSelectionDragStart={hideContext}
           onPaneScroll={hideContext}

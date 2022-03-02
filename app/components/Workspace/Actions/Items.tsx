@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -75,6 +76,13 @@ const Items = (props: Props) => {
   const toggleOpenNode = () => setDefineNodeOpen(prevVal => !prevVal);
   const toggleShowAlerts = () => setShowAlertLog(prevVal => !prevVal);
   const goToAnalysis = () => history.push(`analysis/${id}`);
+
+  // const [dragging, setDragging] = React.useState(false);
+  // const onDragStart = (event, nodeType) => {
+  //   setDragging(true);
+  //   event.dataTransfer.setData("application/reactflow", nodeType);
+  //   event.dataTransfer.effectAllowed = "move";
+  // };
 
   return (
     <>

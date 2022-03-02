@@ -14,7 +14,7 @@ import axios from "axios";
 import { selectStyles } from "@api/ui/helper";
 import { baseUrl } from "@api/constants";
 import { useTranslation } from "react-i18next";
-import { countryDropDown } from "@helpers/countryOptions";
+import { countryDropDown, getCountryOptions } from "@helpers/countryOptions";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import UncertainCompanies from "../Workspace/UncertainCompanies";
@@ -91,10 +91,10 @@ const FormDialog = (props) => {
         ? JSON.stringify(["DK"])
         : countries.length > 0
         ? JSON.stringify(countries.map((x) => x.value))
-        : JSON.stringify(["DK", "SE", "NO", "FI"])
+        : JSON.stringify(["DK", "SE", "NO", "FI", "GB"])
     }`
       )
-      .then((res) => res.data);
+      .then((res) => getCountryOptions(res.data));
 
   const handleChangeCountries = (values) => {
     setCountries(values || []);
