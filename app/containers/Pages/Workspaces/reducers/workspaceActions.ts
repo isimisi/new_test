@@ -19,8 +19,7 @@ import { User } from "@auth0/auth0-react";
 import { RGBA } from "@customTypes/data";
 import { History } from 'history';
 import { EdgeData } from "@customTypes/reactFlow";
-import { saveAs } from "file-saver";
-import { s2ab } from '@helpers/export/handleExport';
+
 
 const WORKSPACES = "workspaces";
 
@@ -814,11 +813,22 @@ export const connectNewUser = (user: User, id: string) => async (dispatch) => {
   }
 };
 
-export const workspacePowerpoint = (user: User, id: string, label: string, stopLoading: () => void) => async (dispatch) => {
+export const workspacePowerpoint = (
+  user: User,
+  id: string,
+  label: string,
+  elements: any[],
+  stopLoading: () => void,
+) => async (dispatch) => {
   const url = `${baseUrl}/workspaces/powerpoint/${id}`;
+  const body = {
+    elements
+  };
   const header = authHeader(user);
+
+
   try {
-    const response = await axios.get(url, header);
+    const response = await axios.post(url, body, header);
     const { powerpoint } = response.data;
     const linkSource = `data:application/pptx;base64,${powerpoint}`;
     const downloadLink = document.createElement("a");

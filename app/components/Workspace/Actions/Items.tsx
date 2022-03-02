@@ -77,25 +77,40 @@ const Items = (props: Props) => {
   const toggleShowAlerts = () => setShowAlertLog(prevVal => !prevVal);
   const goToAnalysis = () => history.push(`analysis/${id}`);
 
-  // const [dragging, setDragging] = React.useState(false);
-  // const onDragStart = event => {
-  //   setDragging(true);
-  //   console.log(event.target);
-  //   event.target.style.border = "1px solid";
-  //   event.target.style.backgroundColor = "pink";
-  //   event.dataTransfer.setData("application/reactflow", "input");
-  //   event.dataTransfer.effectAllowed = "move";
-  // };
-  // const onDragEnd = event => {
-  //   setDragging(false);
-  //   event.target.style.border = "none";
-  //   event.target.style.backgroundColor = "transparant";
-  // };
+  const [dragging, setDragging] = React.useState(false);
+  const onDragStart = event => {
+    setDragging(true);
+
+    const drag_icon = document.createElement("div");
+
+    drag_icon.style.position = "absolute";
+    drag_icon.style.top = "-100px";
+    drag_icon.style.right = "0px";
+    drag_icon.style.width = "80px";
+    drag_icon.style.height = "50px";
+    drag_icon.style.backgroundColor = "white";
+    drag_icon.style.border = "1px solid #73B1FF";
+    drag_icon.style.boxShadow = "none";
+    drag_icon.style.opacity = "1";
+
+    document.body.appendChild(drag_icon);
+
+    const dt = event.dataTransfer;
+
+    dt.setDragImage(drag_icon, 25, 25);
+
+    dt.setData("application/reactflow", "input");
+    dt.effectAllowed = "move";
+  };
+  const onDragEnd = () => {
+    setDragging(false);
+  };
 
   return (
     <>
       <Paper elevation={4} className={classes.itemsPaper}>
         <Tooltip arrow title={`${t("workspaces.add_node")}`} placement="right">
+          {/* <div onDragStart={onDragStart} onDragEnd={onDragEnd} draggable> */}
           <IconButton className={classes.buttons} onClick={toggleOpenNode}>
             <AddBoxIcon
               className={classNames(
@@ -104,17 +119,8 @@ const Items = (props: Props) => {
                 defineNodeOpen ? classes.activeButton : ""
               )}
             />
-            {/* <div
-              onDragStart={onDragStart}
-              onDragEnd={onDragEnd}
-              draggable
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%"
-              }}
-            /> */}
           </IconButton>
+          {/* </div> */}
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.add_note")}`} placement="right">
           <IconButton className={classes.buttons} onClick={handlePostSticky}>

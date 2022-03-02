@@ -777,7 +777,9 @@ const Workspace = (props) => {
   const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
 
   const handleImage = (type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading);
-  const handlePowerpoint = (_stopLoading) => id && dispatch(workspacePowerpoint(user, id, label, _stopLoading));
+  const handlePowerpoint = (_stopLoading) => {
+    id && dispatch(workspacePowerpoint(user, id, label, elements, _stopLoading));
+  };
 
 
   const onDragOver = (event) => {
