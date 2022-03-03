@@ -63,7 +63,7 @@ function CompanyDataModel(props) {
   };
 
   const data =
-    companyData[tabs] && value === 0
+    value === 0
       ? companyData[tabs[value]]
       : companyData[tabs[value]][chips[activeChip]][year.value];
 
