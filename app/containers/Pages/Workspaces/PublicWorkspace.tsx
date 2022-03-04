@@ -15,11 +15,10 @@ import {
   accessPublicWorkspace,
   setPublicAccessFalse
 } from "./reducers/workspaceActions";
-import { useAuth0, User } from "@auth0/auth0-react";
 
 function PublicFirewall(props) {
   const reducer = "workspace";
-  const { user } = useAuth0();
+
   const messageNotif = useSelector(state => state[reducer].get("message"));
   const publicAuthenticated = useSelector(state =>
     state[reducer].get("publicAuthenticated")
@@ -43,7 +42,6 @@ function PublicFirewall(props) {
     const securityCode = values.get("securityCode");
     dispatch(
       accessPublicWorkspace(
-        user as User,
         workspaceId as string,
         userId,
         firstName as string,

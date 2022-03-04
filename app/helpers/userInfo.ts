@@ -1,3 +1,5 @@
+import { loadFromLocalStorage } from "@api/localStorage/localStorage";
+
 export interface DbUser {
   id: number;
   email: string;
@@ -72,5 +74,6 @@ export const getToken = (user?: AuthUser): string => {
   if (meta) {
     return meta.access_token.token;
   }
-  return "";
+  const { token } = loadFromLocalStorage() || {};
+  return token || "";
 };

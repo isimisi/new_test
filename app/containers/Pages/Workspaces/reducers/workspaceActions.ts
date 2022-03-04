@@ -19,6 +19,7 @@ import { User } from "@auth0/auth0-react";
 import { RGBA } from "@customTypes/data";
 import { History } from 'history';
 import { EdgeData } from "@customTypes/reactFlow";
+import { saveToLocalStorage } from "@api/localStorage/localStorage";
 
 
 const WORKSPACES = "workspaces";
@@ -671,7 +672,6 @@ export const shareWorkspace = (
 };
 
 export const accessPublicWorkspace = (
-  dbuser: User,
   workspaceId: string,
   userId: string,
   publicUserFirstName: string,
@@ -685,10 +685,10 @@ export const accessPublicWorkspace = (
     userId,
     securityCode,
   };
-  const header = authHeader(dbuser);
+
   try {
-    const response = await axios.post(url, body, header);
-    const { workspace, user } = response.data;
+    const response = await axios.post(url, body);
+    const { workspace, user, accessToken } = response.data;
     const {
       elements,
       label,
@@ -712,6 +712,10 @@ export const accessPublicWorkspace = (
       y_position,
       signed,
       signed_by,
+    });
+
+    saveToLocalStorage({
+      ...accessToken, ...user
     });
 
     LogRocket.identify(user.id, {

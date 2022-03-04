@@ -105,7 +105,7 @@ const Workspace = (props) => {
 
   const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
   const loading = useSelector(state => state[reducer].get('loading'));
-  const companyData = useSelector(state => state[reducer].get('companyData'));
+  const companyData = useSelector(state => state[reducer].get('companyData')).toJS();
 
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
 
@@ -594,7 +594,7 @@ const Workspace = (props) => {
           dispatch(cvrWorkspace(user, id, value, close, erstTypes));
         }}
       />
-      {!defineEdgeOpen && !defineNodeOpen && !showCompanyData && !showSignWorkspace && editable && !signed && (
+      {!defineEdgeOpen && !defineNodeOpen && !showCompanyData && !showSignWorkspace && editable && !signed ? (
         <WorkspaceFabs
           nodeClick={() => setDefineNodeOpen(true)}
           saveClick={onWorkspaceSave}
@@ -603,7 +603,7 @@ const Workspace = (props) => {
           signWorkspaceClick={() => setShowSignWorkspace(true)}
           editable={editable}
         />
-      )}
+      ) : null}
       {!editable && !showSignWorkspace && !signed && (
         <Fab
           onClick={() => setShowSignWorkspace(true)}
@@ -611,12 +611,12 @@ const Workspace = (props) => {
           mainButtonStyles={{ backgroundColor: theme.palette.secondary.main }}
         />
       )}
-      <CompanyDataModel
+      {companyData && Object.keys(companyData).length > 0 && <CompanyDataModel
         open={showCompanyData}
         close={() => setShowCompanyData(false)}
-        displayName={elementToUpdate?.data?.displayName}
+
         companyData={companyData}
-      />
+      />}
       <SignWorkspace
         open={showSignWorkspace}
         closeForm={() => setShowSignWorkspace(false)}
