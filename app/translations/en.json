@@ -418,14 +418,16 @@
     "relations_for": "Relations for {{for}}",
     "relations": "Relations",
     "excel": "Excel",
-    "add_step": "Add step"
+    "add_step": "Add step",
+    "mouse": "Mouse"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
     "save": "Save",
     "convert_to_pp": "Convert to powerpoint",
     "convert_to_pp_dynamic": "Convert to Powerpoint (Dynamic)",
-    "convert_to_pp_static": "Convert to Powerpoint (static)"
+    "convert_to_pp_static": "Convert to Powerpoint (static)",
+    "export": "Export"
   },
   "workspace-meta": {
     "name_your_work_area": "Name your work area"
@@ -640,9 +642,9 @@
     "non_smart_step_manuel": "Non smart step",
     "edit_steps": "Edit steps",
     "internation_disclaimer": {
-      "header": "Pay attention to charts outside Denmark",
-      "body": "Unfortunately, when you download charts from outside Denmark, we cannot consolidate subsidiaries across borders.",
-      "close": "Got it",
+      "header": "The selected company data is not from the Danish Corporate Register",
+      "body": "Unfortunately, it is not currently possible to fetch cross-border information about subsidiaries. That is only possible when basing the group chart on Danish corporate data - so far! For example, if you select a Swedish company, it will only show Swedish subsidiaries./n This does not affect the ownership information which will always be cross-border where applicable./n Should you have any questions, please do not hesitate reaching out to us via the chatbox in the lower-left corner.",
+      "close": "ALRIGHT, I UNDERSTAND",
       "do_not_show_again": "Do not show this again"
     }
   }

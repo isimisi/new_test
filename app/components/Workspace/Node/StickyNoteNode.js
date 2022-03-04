@@ -45,7 +45,8 @@ const StickyNote = ({ data }) => {
       width: "100%",
       height: "100%",
       backgroundColor: "#fdfdfd",
-      borderRadius: 5,
+      borderBottomLeftRadius: 5,
+      borderBottomRightRadius: 5,
     }),
     []
   );

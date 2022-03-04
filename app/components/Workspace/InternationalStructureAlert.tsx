@@ -37,7 +37,11 @@ const InternationalStructureAlert = (props: Props) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {t("workspace.internation_disclaimer.body")}
+            {t("workspace.internation_disclaimer.body")
+              .split("/n")
+              .map(line => (
+                <p>{line}</p>
+              ))}
           </DialogContentText>
         </DialogContent>
         <DialogActions
