@@ -11,6 +11,7 @@ import BusinessIcon from "@material-ui/icons/Business";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import UndoIcon from "@material-ui/icons/Undo";
 import RedoIcon from "@material-ui/icons/Redo";
+import MouseIcon from "@material-ui/icons/Mouse";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import FlagIcon from "@material-ui/icons/Flag";
@@ -30,29 +31,38 @@ import LowPriorityIcon from "@material-ui/icons/LowPriority";
 interface Props {
   setDefineNodeOpen: React.Dispatch<React.SetStateAction<boolean>>;
   defineNodeOpen: boolean;
-  handlePostSticky: () => void;
+  mouseActive: boolean;
+  stickyActive: boolean;
+  toggleMouse: () => void;
+  toggleSticky: () => void;
   handleOpenCvr: () => void;
   setShowAlertLog: React.Dispatch<React.SetStateAction<boolean>>;
   showAlertLog: boolean;
   history: any;
   id: string | undefined;
+  zoom: number;
 }
 
 const Items = (props: Props) => {
   const {
     setDefineNodeOpen,
     defineNodeOpen,
-    handlePostSticky,
+    mouseActive,
+    stickyActive,
+    toggleMouse,
+    toggleSticky,
     handleOpenCvr,
     setShowAlertLog,
     showAlertLog,
     history,
-    id
+    id,
+    zoom
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
 
   const [stepsOpen, setStepsOpen] = React.useState(false);
+
   const stepRef = React.useRef<HTMLButtonElement>(null);
 
   const handleToggleStep = () => {
@@ -77,73 +87,160 @@ const Items = (props: Props) => {
   const toggleShowAlerts = () => setShowAlertLog(prevVal => !prevVal);
   const goToAnalysis = () => history.push(`analysis/${id}`);
 
-  const [dragging, setDragging] = React.useState(false);
-  const onDragStart = event => {
-    setDragging(true);
-
+  const onDragStartNode = event => {
     const drag_icon = document.createElement("div");
 
     drag_icon.style.position = "absolute";
-    drag_icon.style.top = "-100px";
+    drag_icon.style.top = "-300px";
     drag_icon.style.right = "0px";
-    drag_icon.style.width = "80px";
-    drag_icon.style.height = "50px";
-    drag_icon.style.backgroundColor = "white";
+    drag_icon.style.width = `${172 * zoom}px`;
+    drag_icon.style.height = `${36 * zoom}px`;
+    // drag_icon.style.backgroundColor = "white";
+    drag_icon.style.borderRadius = "8px";
     drag_icon.style.border = "1px solid #73B1FF";
-    drag_icon.style.boxShadow = "none";
-    drag_icon.style.opacity = "1";
+    drag_icon.style.opacity = "0.99999";
 
     document.body.appendChild(drag_icon);
 
     const dt = event.dataTransfer;
 
-    dt.setDragImage(drag_icon, 25, 25);
+    dt.setDragImage(drag_icon, 0, 0);
+
+    dt.setData("application/reactflow", "custom");
+    dt.effectAllowed = "move";
+  };
+
+  const onDragStartNote = event => {
+    const drag_icon = document.createElement("div");
+    const header = document.createElement("div");
+    const body = document.createElement("div");
+    drag_icon.appendChild(header);
+    drag_icon.appendChild(body);
+
+    header.style.backgroundColor = "#f1f1f1";
+    header.style.width = "100%";
+    header.style.height = `${20 * zoom}px`;
+    header.style.borderTopLeftRadius = `${5 * zoom}px`;
+    header.style.borderTopRightRadius = `${5 * zoom}px`;
+    header.style.opacity = "0.99999";
+
+    body.style.backgroundColor = "#fdfdfd";
+    body.style.width = "100%";
+    body.style.height = "100%";
+    body.style.borderBottomLeftRadius = `${5 * zoom}px`;
+    body.style.borderBottomRightRadius = `${5 * zoom}px`;
+    body.style.opacity = "0.99999";
+
+    drag_icon.style.position = "absolute";
+    drag_icon.style.top = "-300px";
+    drag_icon.style.right = "0px";
+    drag_icon.style.width = `${100 * zoom}px`;
+    drag_icon.style.height = `${45 * zoom}px`;
+    drag_icon.style.borderRadius = `${5 * zoom}px`;
+    drag_icon.style.border = "2px solid #f1f1f1";
+    drag_icon.style.opacity = "0.99999";
+
+    document.body.appendChild(drag_icon);
+
+    const dt = event.dataTransfer;
+
+    dt.setDragImage(drag_icon, 0, 0);
+
+    dt.setData("application/reactflow", "sticky");
+    dt.effectAllowed = "move";
+  };
+
+  const onDragStartStep = event => {
+    const drag_icon = document.createElement("div");
+    const number = document.createElement("p");
+
+    drag_icon.appendChild(number);
+
+    number.innerHTML = "1";
+    number.style.fontSize = `${10 * zoom}px`;
+    number.style.textAlign = "center";
+    number.style.marginTop = `${5 * zoom}px`;
+
+    drag_icon.style.position = "absolute";
+    drag_icon.style.top = "-300px";
+    drag_icon.style.right = "0px";
+    drag_icon.style.width = `${20 * zoom}px`;
+    drag_icon.style.height = `${20 * zoom}px`;
+    drag_icon.style.borderRadius = `100%`;
+    drag_icon.style.backgroundColor = "#fdfdfd";
+    drag_icon.style.border = "1px solid #f1f1f1";
+    drag_icon.style.opacity = "0.99999";
+    drag_icon.style.display = "flex";
+    drag_icon.style.justifyContent = "center";
+    drag_icon.style.alignItems = "center";
+
+    document.body.appendChild(drag_icon);
+
+    const dt = event.dataTransfer;
+
+    dt.setDragImage(drag_icon, 0, 0);
 
     dt.setData("application/reactflow", "input");
     dt.effectAllowed = "move";
-  };
-  const onDragEnd = () => {
-    setDragging(false);
   };
 
   return (
     <>
       <Paper elevation={4} className={classes.itemsPaper}>
-        <Tooltip arrow title={`${t("workspaces.add_node")}`} placement="right">
-          {/* <div onDragStart={onDragStart} onDragEnd={onDragEnd} draggable> */}
-          <IconButton className={classes.buttons} onClick={toggleOpenNode}>
-            <AddBoxIcon
+        <Tooltip arrow title={`${t("workspaces.mouse")}`} placement="right">
+          <IconButton className={classes.buttons} onClick={toggleMouse}>
+            <MouseIcon
               className={classNames(
                 classes.buttons,
                 classes.biggerIcon,
-                defineNodeOpen ? classes.activeButton : ""
+                mouseActive ? classes.activeButton : ""
               )}
             />
           </IconButton>
-          {/* </div> */}
+        </Tooltip>
+        <Tooltip arrow title={`${t("workspaces.add_node")}`} placement="right">
+          <div onDragStart={onDragStartNode} draggable>
+            <IconButton className={classes.buttons} onClick={toggleOpenNode}>
+              <AddBoxIcon
+                className={classNames(
+                  classes.buttons,
+                  classes.biggerIcon,
+                  defineNodeOpen ? classes.activeButton : ""
+                )}
+              />
+            </IconButton>
+          </div>
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.add_note")}`} placement="right">
-          <IconButton className={classes.buttons} onClick={handlePostSticky}>
-            <NoteAddIcon
-              className={classNames(classes.buttons, classes.biggerIcon)}
-            />
-          </IconButton>
+          <div onDragStart={onDragStartNote} draggable>
+            <IconButton className={classes.buttons} onClick={toggleSticky}>
+              <NoteAddIcon
+                className={classNames(
+                  classes.buttons,
+                  classes.biggerIcon,
+                  stickyActive ? classes.activeButton : ""
+                )}
+              />
+            </IconButton>
+          </div>
         </Tooltip>
-        {/* <Tooltip arrow title={`${t("workspaces.add_step")}`} placement="right">
-          <IconButton
-            className={classes.buttons}
-            onClick={handleToggleStep}
-            ref={stepRef}
-          >
-            <FormatListNumberedIcon
-              className={classNames(
-                classes.buttons,
-                classes.biggerIcon,
-                stepsOpen ? classes.activeButton : ""
-              )}
-            />
-          </IconButton>
-        </Tooltip> */}
+        <Tooltip arrow title={`${t("workspaces.add_step")}`} placement="right">
+          <div onDragStart={onDragStartStep} draggable>
+            <IconButton
+              className={classes.buttons}
+              onClick={handleToggleStep}
+              ref={stepRef}
+            >
+              <FormatListNumberedIcon
+                className={classNames(
+                  classes.buttons,
+                  classes.biggerIcon,
+                  stepsOpen ? classes.activeButton : ""
+                )}
+              />
+            </IconButton>
+          </div>
+        </Tooltip>
         <Tooltip
           arrow
           title={`${t("workspaces.get_from_company_data")}`}
@@ -194,7 +291,7 @@ const Items = (props: Props) => {
           </span>
         </Tooltip>
       </Paper>
-      {/* <Popper
+      <Popper
         open={stepsOpen}
         anchorEl={stepRef.current}
         role={undefined}
@@ -239,7 +336,7 @@ const Items = (props: Props) => {
             </Paper>
           </Grow>
         )}
-      </Popper> */}
+      </Popper>
     </>
   );
 };

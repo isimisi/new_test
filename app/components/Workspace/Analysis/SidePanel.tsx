@@ -41,6 +41,7 @@ const SidePanel = (props: Props) => {
       </div>
       <div className={classes.buttonContainer}>
         <ButtonGroup
+          disabled
           disableElevation
           style={{ borderRadius: 18 }}
           variant="contained"
@@ -66,7 +67,9 @@ const SidePanel = (props: Props) => {
             </IconButton>
           </Tooltip>
         </ButtonGroup>
-        <Typography className={classes.buttonText}>Eksporter</Typography>
+        <Typography className={classes.buttonText}>
+          {t("workspace-analysis.export")}
+        </Typography>
       </div>
     </div>
   );

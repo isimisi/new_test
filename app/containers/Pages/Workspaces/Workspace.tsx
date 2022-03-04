@@ -8,7 +8,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, {
-  useState, useEffect, useCallback, useRef, MouseEvent
+  useState, useEffect, useCallback, useRef, MouseEvent, useMemo
 } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
@@ -594,7 +594,7 @@ const Workspace = (props) => {
   const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
   const handleDeleteEdge = useCallback(() => elementToUpdate && onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
-  const handlePostSticky = (e?: any, shortcut = false) => {
+  const handlePostSticky = (e?: any, shortcut = false, x?: number, y?: number) => {
     const rf = rfInstance?.toObject();
     // @ts-ignore
     const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
@@ -606,9 +606,12 @@ const Workspace = (props) => {
       y: mouse.clientY - reactFlowBounds.top,
     });
 
-    // TODO: fix position in new version
-    const x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width / 3) / rf.zoom - 250 : 0;
-    const y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height / 2) / rf.zoom - 150 : 0;
+
+    if (!x && !y) {
+      x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width / 3) / rf.zoom - 250 : 0;
+      y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height / 2) / rf.zoom - 150 : 0;
+    }
+
 
     if (x && y) {
       dispatch(postSticky(user, id as string, x, y));
@@ -797,13 +800,60 @@ const Workspace = (props) => {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      console.log(type, position);
+
+
+      if (type === "sticky") {
+        handlePostSticky(event, false, position.x, position.y);
+      }
     }
   };
 
+  const [cursor, setCursor] = useState("auto");
+  const handleCursor = (_type) => setCursor(_type);
+  const [mouseActive, setMouseActive] = useState(true);
+  const [stickyActive, setStickyActive] = useState(false);
+
+  const toggleMouse = () =>
+    setMouseActive(prevVal => {
+      if (!prevVal) {
+        setStickyActive(false);
+        handleCursor("auto");
+      }
+      return !prevVal;
+    });
+
+  const toggleSticky = () => {
+    setStickyActive(prevVal => {
+      if (!prevVal) {
+        setMouseActive(false);
+        handleCursor("crosshair");
+      }
+      if (prevVal) {
+        setMouseActive(true);
+        handleCursor("auto");
+      }
+      return !prevVal;
+    });
+  };
+
+  const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
+    if (reactFlowContainer && rfInstance) {
+      if (stickyActive) {
+        // @ts-ignore
+        const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+        const position = rfInstance.project({
+          x: event.clientX - reactFlowBounds.left,
+          y: event.clientY - reactFlowBounds.top,
+        });
+        handlePostSticky(event, false, position.x, position.y);
+      }
+    }
+  };
+
+  const interactive = useMemo(() => !signed && !stickyActive, [signed, stickyActive]);
 
   return (
-    <div>
+    <div style={{ cursor }}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
       <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
 
@@ -820,17 +870,22 @@ const Workspace = (props) => {
           onMoveStart={hideContext}
           onSelectionDragStart={hideContext}
           onPaneScroll={hideContext}
-          onPaneClick={hideContext}
-          nodesDraggable={!signed}
-          nodesConnectable={!signed}
+          onPaneClick={onPaneClick}
+          nodesDraggable={interactive}
+          nodesConnectable={interactive}
+          elementsSelectable={interactive}
+          selectNodesOnDrag={interactive}
+          paneMoveable={interactive}
+          zoomOnDoubleClick={interactive}
+          zoomOnPinch={interactive}
+          zoomOnScroll={interactive}
           onNodeContextMenu={handleNodeContextMenu}
           onPaneContextMenu={handlePaneContextMenu}
           onSelectionContextMenu={handleSelctionContextMenu}
           onEdgeContextMenu={handleEdgeContextMenu}
           snapToGrid={snapToGrid}
           snapGrid={[BASE_BG_GAP / currentZoom, BASE_BG_GAP / currentZoom]}
-          elementsSelectable={!signed}
-          selectNodesOnDrag={!signed}
+
           nodeTypes={nodeTypes}
           onMove={(flowTransform) => {
             if (flowTransform) {
@@ -862,12 +917,17 @@ const Workspace = (props) => {
             <Items
               setDefineNodeOpen={setDefineNodeOpen}
               defineNodeOpen={defineNodeOpen}
-              handlePostSticky={handlePostSticky}
+
               handleOpenCvr={handleOpenCvr}
               setShowAlertLog={setShowAlertLog}
               showAlertLog={showAlertLog}
               history={history}
               id={id}
+              mouseActive={mouseActive}
+              stickyActive={stickyActive}
+              toggleMouse={toggleMouse}
+              toggleSticky={toggleSticky}
+              zoom={currentZoom}
             />
             <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
           </div>}

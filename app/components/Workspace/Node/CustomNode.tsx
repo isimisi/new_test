@@ -36,6 +36,7 @@ const CustomNode = ({ data }) => {
     !signed;
   const showHover = !history.location.pathname.includes("public");
   const user = useAuth0().user as User;
+  const [innerShowHandles, setInnerShowHandles] = useState(false);
 
   const getSVG = useCallback(figur => {
     switch (figur) {
@@ -79,33 +80,33 @@ const CustomNode = ({ data }) => {
 
   const handleStyle = useMemo(
     () => ({
-      height: showHandles ? 8 : 0,
-      width: showHandles ? 8 : 0,
-      backgroundColor: showHandles ? "black" : "white"
+      height: showHandles && innerShowHandles ? 8 : 0,
+      width: showHandles && innerShowHandles ? 8 : 0,
+      backgroundColor: showHandles && innerShowHandles ? "black" : "white"
     }),
-    [handleVisability, signed]
+    [handleVisability, signed, innerShowHandles]
   );
 
   const handleStyleSideBottom = useMemo(
     () => ({
-      height: showHandles ? 8 : 0,
-      width: showHandles ? 8 : 0,
-      backgroundColor: showHandles ? "black" : "white",
+      height: showHandles && innerShowHandles ? 8 : 0,
+      width: showHandles && innerShowHandles ? 8 : 0,
+      backgroundColor: showHandles && innerShowHandles ? "black" : "white",
 
       top: "70%"
     }),
-    [handleVisability, signed]
+    [handleVisability, signed, innerShowHandles]
   );
 
   const handleStyleSideTop = useMemo(
     () => ({
-      height: showHandles ? 8 : 0,
+      height: showHandles && innerShowHandles ? 8 : 0,
 
-      width: showHandles ? 8 : 0,
-      backgroundColor: showHandles ? "black" : "white",
+      width: showHandles && innerShowHandles ? 8 : 0,
+      backgroundColor: showHandles && innerShowHandles ? "black" : "white",
       top: "30%"
     }),
-    [handleVisability, signed]
+    [handleVisability, signed, innerShowHandles]
   );
 
   const header = useMemo(
@@ -124,9 +125,11 @@ const CustomNode = ({ data }) => {
 
   const handelShowContext = useCallback(() => {
     setShowContext(true);
+    setInnerShowHandles(true);
   }, []);
   const handelHideContext = useCallback(() => {
     setShowContext(false);
+    setInnerShowHandles(false);
   }, []);
 
   return (
@@ -215,8 +218,9 @@ const CustomNode = ({ data }) => {
         style={{
           position: "absolute",
           width: "calc(100% + 50px)",
-          height: "100%",
-          zIndex: -1
+          height: "calc(100% + 50px)",
+          zIndex: -1,
+          cursor: "default"
         }}
       >
         {showContext && showHover && (
@@ -236,6 +240,7 @@ const CustomNode = ({ data }) => {
                 size="small"
                 style={{
                   borderRadius: 5,
+                  marginTop: 25,
                   backgroundColor: theme.palette.primary.main
                 }}
                 onClick={() => {

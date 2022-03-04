@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     marginBottom: theme.spacing(3),
     borderRadius: theme.rounded.medium,
     boxShadow: theme.shade.light,
+
   },
   drawerPaper: {
     position: "relative",
@@ -94,7 +95,12 @@ const useStyles = makeStyles((theme: MyTheme) => ({
       height: 400 / 1.5,
     },
   },
-  container: { display: "flex", overflow: "scroll", height: "90vh", alignSelf: "flex-start" }
+  container: { display: "flex",
+    overflow: "scroll",
+    height: "90vh",
+    alignSelf: "flex-start",
+
+  },
 }));
 
 const WorkspaceAnalysis = () => {
