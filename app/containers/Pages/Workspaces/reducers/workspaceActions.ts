@@ -313,8 +313,8 @@ export const deleteWorkspaceElement = (
 export const postNode = (
   user: User,
   workspace_id: string,
-  node_id: number,
-  nodeLabel: string,
+  node_id: number | null,
+  nodeLabel: string | null,
   display_name: string,
   figur: string | null,
   background_color: string,
@@ -373,8 +373,8 @@ export const addElements = (user: User, id: string, elements: FlowElement[]) => 
 export const putNode = (
   user: User,
   workspaceNodeId: string,
-  node_id: number,
-  nodeLabel: string,
+  node_id: number | null,
+  nodeLabel: string | null,
   display_name: string,
   figur: string | null,
   backgroundColor: string,
@@ -845,7 +845,8 @@ export const workspacePowerpoint = (
 
     stopLoading();
   } catch (error) {
-    console.log(error);
+    // @ts-ignore
+    console.log(error.response);
     stopLoading();
   }
 };

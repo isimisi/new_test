@@ -32,6 +32,15 @@ path.react-flow__edge-path:hover {
   animation-timing-function: ease-out;
 }
 
+.textCursor {
+  cursor: text;
+}
+
+#nodeLabel:empty::before {
+  content: ".";
+  visibility: hidden;
+}
+
 .pulseConstant > path {
   animation-duration: 1s;
   animation-name: pulse;
