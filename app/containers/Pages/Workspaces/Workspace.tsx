@@ -165,7 +165,7 @@ const Workspace = (props) => {
   const initialLoading = useAppSelector(state => state[reducer].get('initialLoading'));
   const initialLoadingCvr = useAppSelector(state => state[reducer].get('initialLoadingCvr'));
 
-  const companyData = useAppSelector(state => state[reducer].get('companyData')).toJS();
+  const companyData = useAppSelector(state => state[reducer].get('companyData'))?.toJS();
   const addressInfo = useAppSelector(state => state[reducer].get('addressInfo'));
   const signed = useAppSelector(state => state[reducer].get('signed'));
   const signedBy = useAppSelector(state => state[reducer].get('signedBy'));
@@ -371,8 +371,20 @@ const Workspace = (props) => {
     const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
     const borderColor = element.data.backgroundColor ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
     if (isNode(element)) {
-      console.log(event.target);
-      setNodePopperRef(event.target);
+      setNodeLabel(element.data.label);
+      setNodeDisplayName(element.data.displayName || '');
+      setNodeFigur(element.data.figur);
+      setAttributes([...element.data.attributes, initialAttribut]);
+      setNodeColor({
+        r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
+      });
+      setNodeBorderColor({
+        r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
+      });
+
+      setDefineNodeOpen(true);
+      // console.log(event.target);
+      // setNodePopperRef(event.target);
     } else {
       event.persist();
       setRelationshipLabel(element.data.label);
@@ -488,17 +500,18 @@ const Workspace = (props) => {
   }, []);
 
 
-  const handleNodeSave = (x?: number, y?: number) => {
+  const handleNodeSave = (x?: number, y?: number, drag?: boolean) => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const rf = rfInstance?.toObject();
     if (!x && !y) {
       x = rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250 : undefined;
       y = rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150 : undefined;
     }
+    console.log(choosenNode, isUpdatingElement, elementToUpdate);
     const nodeId = choosenNode ? choosenNode.id : null;
     const _nodeLabel = choosenNode ? choosenNode.label : null;
 
-    if (isUpdatingElement && elementToUpdate) {
+    if (isUpdatingElement && elementToUpdate && !drag) {
       dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
     } else {
       dispatch(postNode(
@@ -774,7 +787,8 @@ const Workspace = (props) => {
         handlePostSticky(event, false, position.x, position.y);
       }
       if (type === "custom") {
-        handleNodeSave(position.x, position.y);
+        closeNode();
+        handleNodeSave(position.x, position.y, true);
       }
     }
   };
@@ -785,14 +799,18 @@ const Workspace = (props) => {
   const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     removeNodeTextTarget();
     if (reactFlowContainer && rfInstance) {
+      // @ts-ignore
+      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+      const position = rfInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
       if (stickyActive) {
-        // @ts-ignore
-        const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
-        const position = rfInstance.project({
-          x: event.clientX - reactFlowBounds.left,
-          y: event.clientY - reactFlowBounds.top,
-        });
         handlePostSticky(event, false, position.x, position.y);
+      }
+      if (nodeActive) {
+        closeNode();
+        handleNodeSave(position.x, position.y, true);
       }
     }
   };

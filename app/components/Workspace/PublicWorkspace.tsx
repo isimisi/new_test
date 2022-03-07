@@ -105,7 +105,7 @@ const Workspace = (props) => {
 
   const attributesDropDownOptions = useSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
   const loading = useSelector(state => state[reducer].get('loading'));
-  const companyData = useSelector(state => state[reducer].get('companyData')).toJS();
+  const companyData = useSelector(state => state[reducer].get('companyData'))?.toJS();
 
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
 

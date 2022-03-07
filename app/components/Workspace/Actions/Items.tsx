@@ -136,7 +136,7 @@ const Items = (props: Props) => {
             </IconButton>
           </div>
         </Tooltip>
-        <Tooltip arrow title={`${t("workspaces.add_step")}`} placement="right">
+        {/* <Tooltip arrow title={`${t("workspaces.add_step")}`} placement="right">
           <div onDragStart={handleDragStep} draggable>
             <IconButton
               className={classes.buttons}
@@ -152,7 +152,7 @@ const Items = (props: Props) => {
               />
             </IconButton>
           </div>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip
           arrow
           title={`${t("workspaces.get_from_company_data")}`}

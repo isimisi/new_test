@@ -41,7 +41,6 @@ const SidePanel = (props: Props) => {
       </div>
       <div className={classes.buttonContainer}>
         <ButtonGroup
-          disabled
           disableElevation
           style={{ borderRadius: 18 }}
           variant="contained"

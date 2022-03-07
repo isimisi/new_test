@@ -10,6 +10,7 @@ const useItemSidePanel = () => {
   const toggleMouse = () => {
     setNodeActive(false);
     setStickyActive(false);
+    handleCursor("auto");
     setMouseActive(true);
   };
 
