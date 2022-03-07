@@ -815,7 +815,7 @@ const Workspace = (props) => {
     }
   };
 
-  const interactive = useMemo(() => !signed && !stickyActive, [signed, stickyActive]);
+  const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
 
 
   return (
