@@ -185,7 +185,7 @@ const CustomNode = ({ data }) => {
         {data.figur && (
           <img src={getSVG(data.figur)} alt={data.figur} style={iconStyle} />
         )}
-        <Typography variant="subtitle1" style={header}>
+        <Typography variant="subtitle1" style={header} id="nodeLabel">
           {data.displayName || data.label}
         </Typography>
       </div>
