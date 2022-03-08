@@ -419,7 +419,17 @@
     "relations": "Relationer",
     "excel": "Excel",
     "add_step": "Tilføj step",
-    "mouse": "Mus"
+    "mouse": "Mus",
+    "node": {
+      "no_label": "Dette element har ikke noget label.",
+      "edit_label": "Rediger label",
+      "edit_attributes": "Rediger attributes",
+      "edit_icon": "Rediger ikon",
+      "edit_background_color": "Rediger baggrundsfarve",
+      "edit_border_color": "Rediger farven på kanten",
+      "see_company_info": "Se virksomhedsinformation",
+      "see more": "Mere"
+    }
   },
   "workspace-analysis": {
     "earlier_versions": "Tidligere versioner",
@@ -646,6 +656,11 @@
       "body": "Vær opmærksom på, at vi desværre ikke kan hente data om datterselskaber i andre jurisdiktioner end den, du har hentet diagrammet fra. Det kan vi indtil videre kun i Danmark. Det betyder eksempelvis, at der kun vises svenske datterselskaber, hvis du henter diagrammet med udgangspunkt i et svensk selskab./n Du kan naturligvis altid hente informationer om ejerskab på tværs af grænser./n Hvis du har spørgsmål, er du altid velkommen til at kontakte os via chatfunktionen i nederste venstre hjørne.",
       "close": "OKAY, JEG FORSTÅR",
       "do_not_show_again": "Vis ikke igen"
-    }
-  }
+    },
+    "node": {
+      "label_placeholder": "Vælg eller lav et label"
+    },
+    "edit_node_data": "Rediger stamdata"
+  },
+  "save": "Gem"
 }

@@ -5,53 +5,48 @@ import { useTheme } from "@material-ui/core/styles";
 import { Handle, Position } from "react-flow-renderer";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import InfoIcon from "@material-ui/icons/Info";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { getCompanyData } from "../../../containers/Pages/Workspaces/reducers/workspaceActions";
 
 import square from "./square.svg";
 import triangle from "./triangle.svg";
 import circle from "./circle.svg";
 import person from "./person.svg";
-import { useAuth0, User } from "@auth0/auth0-react";
+import ErrorIcon from "@material-ui/icons/Error";
 import { useAppSelector, useAppDispatch } from "@hooks/redux";
 import { MyTheme } from "@customTypes/styling";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import { useTranslation } from "react-i18next";
+
+export const getSVG = figur => {
+  switch (figur) {
+    case "triangle":
+      return triangle;
+    case "square":
+      return square;
+    case "circle":
+      return circle;
+    case "person":
+      return person;
+    default:
+      return square;
+  }
+};
 
 const CustomNode = ({ data }) => {
-  const dispatch = useAppDispatch();
   const theme = useTheme<MyTheme>();
   const history = useHistory();
+  const { t } = useTranslation();
   const handleVisability = useAppSelector(state =>
     state.workspace.get("handleVisability")
   );
   const signed = useAppSelector(state => state.workspace.get("signed"));
-  const loading = useAppSelector(state => state.workspace.get("loading"));
-  const [showContext, setShowContext] = useState(false);
+
   const showHandles =
     !history.location.pathname.includes("analysis") &&
     handleVisability &&
     !signed;
-  const showHover = !history.location.pathname.includes("public");
-  const user = useAuth0().user as User;
-  const [innerShowHandles, setInnerShowHandles] = useState(false);
 
-  const getSVG = useCallback(figur => {
-    switch (figur) {
-      case "triangle":
-        return triangle;
-      case "square":
-        return square;
-      case "circle":
-        return circle;
-      case "person":
-        return person;
-      default:
-        return square;
-    }
-  }, []);
+  const [innerShowHandles, setInnerShowHandles] = useState(false);
 
   const nodeStyle = {
     border: "1px solid",
@@ -124,14 +119,11 @@ const CustomNode = ({ data }) => {
   );
 
   const handelShowContext = useCallback(() => {
-    setShowContext(true);
     setInnerShowHandles(true);
   }, []);
   const handelHideContext = useCallback(() => {
-    setShowContext(false);
     setInnerShowHandles(false);
   }, []);
-
   return (
     <div
       onMouseOver={handelShowContext}
@@ -188,6 +180,25 @@ const CustomNode = ({ data }) => {
         <Typography variant="subtitle1" style={header} id="nodeLabel">
           {data.displayName || data.label}
         </Typography>
+        {!data.label && (
+          <Tooltip
+            arrow
+            title={`${t("workspaces.node.no_label")}`}
+            placement="top"
+          >
+            <ErrorIcon
+              data-html2canvas-ignore="true"
+              style={{
+                color: "#FFDC79",
+                fontSize: 10,
+                position: "absolute",
+                top: 2,
+                right: 2,
+                cursor: "auto"
+              }}
+            />
+          </Tooltip>
+        )}
       </div>
       {data.conditionValues &&
         data.conditionValues.map(cv => (
@@ -222,72 +233,7 @@ const CustomNode = ({ data }) => {
           zIndex: -1,
           cursor: "default"
         }}
-      >
-        {showContext && showHover && (
-          <div
-            style={{
-              position: "absolute",
-              right: 1,
-              top: 5,
-              display: "flex",
-              flexDirection: "column"
-            }}
-          >
-            <Tooltip title="Mere">
-              <IconButton
-                color="primary"
-                aria-label="mere"
-                size="small"
-                style={{
-                  borderRadius: 5,
-                  marginTop: 25,
-                  backgroundColor: theme.palette.primary.main
-                }}
-                onClick={() => {
-                  const node = document.querySelector(`[data-id="${data.id}"]`);
-                  if (node) {
-                    const event = new MouseEvent("contextmenu", {
-                      bubbles: true,
-                      cancelable: false,
-                      view: window,
-                      button: 2,
-                      buttons: 0,
-                      clientX: node.getBoundingClientRect().x + 250,
-                      clientY: node.getBoundingClientRect().y
-                    });
-                    node.dispatchEvent(event);
-                  }
-                }}
-              >
-                <MoreVertIcon style={{ fontSize: 8, color: "white" }} />
-              </IconButton>
-            </Tooltip>
-            {data.unitNumber && (
-              <Tooltip title="Selskabsinformation">
-                <IconButton
-                  color="primary"
-                  aria-label="Info om selskabet"
-                  size="small"
-                  style={{
-                    borderRadius: 5,
-                    backgroundColor: theme.palette.primary.main,
-                    marginTop: 5
-                  }}
-                  onClick={() => {
-                    dispatch(getCompanyData(user, data.id));
-                  }}
-                >
-                  {loading ? (
-                    <CircularProgress size={8} style={{ color: "white" }} />
-                  ) : (
-                    <InfoIcon style={{ fontSize: 8, color: "white" }} />
-                  )}
-                </IconButton>
-              </Tooltip>
-            )}
-          </div>
-        )}
-      </div>
+      />
     </div>
   );
 };

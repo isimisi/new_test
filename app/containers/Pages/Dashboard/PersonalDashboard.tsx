@@ -242,7 +242,7 @@ const PersonalDashboard = () => {
             </div>
             <section className={classNames(classes.content, classes.whiteBg)}>
               <AsyncSelect
-                styles={selectStyles('relative')}
+                styles={selectStyles()}
                 menuPlacement="auto"
                 autoFocus
                 maxMenuHeight={150}

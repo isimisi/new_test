@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Node } from "react-flow-renderer";
 
-const useDoubbleClick = () => {
+const useDoubbleClick = (saveNode) => {
   const [nodeTextTarget, setNodeTextTarget] = useState<HTMLElement | null>(null);
   const [nodeTarget, setNodeTarget] = useState<Node | null>(null);
 
@@ -9,8 +9,10 @@ const useDoubbleClick = () => {
     setNodeTextTarget(target);
   };
 
+
   const removeNodeTextTarget = () => {
     if (nodeTextTarget) {
+      saveNode(nodeTextTarget.innerText);
       nodeTextTarget.classList.remove("nodrag");
       nodeTextTarget.classList.remove("textCursor");
       nodeTextTarget.blur();

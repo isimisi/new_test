@@ -54,6 +54,7 @@ import InternationalStructureAlert from '@components/Workspace/InternationalStru
 import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
+import NodePopper from '@components/Workspace/Node/Popper';
 import AlertLog from '@components/Alerts/AlertLog';
 import PaneContextMenu from '@components/Workspace/ContextMenu/PaneContextMenu';
 import CvrDialog from '@components/DialogModal/CvrDialog';
@@ -101,10 +102,6 @@ import { RGBA } from '@customTypes/data';
 import { handleExport } from '@helpers/export/handleExport';
 import useFlowContextMenus from '@hooks/flow/flowContexts';
 import useItemSidePanel from '@hooks/flow/itemPanel';
-import Popper from '@material-ui/core/Popper';
-import Paper from '@material-ui/core/Paper';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Fade from '@material-ui/core/Fade';
 import useDoubbleClick from '@hooks/flow/doubbleClick';
 
 
@@ -193,7 +190,23 @@ const Workspace = (props) => {
       setActiveNodeRelations(contextNode);
     }
   };
-  const hideContext = () => setShowContextMenu(false);
+
+  const [showNodePopper, setShowNodePopper] = useState(false);
+  const handleShowNodePopper = () => {
+    setShowNodePopper(true);
+  };
+
+  const handleHideNodePopper = () => {
+    setShowNodePopper(false);
+  };
+
+
+  const hideContext = () => {
+    handleHideNodePopper();
+
+    setShowContextMenu(false);
+  };
+
 
   const [showCvrModal, setShowCvrModal] = useState(false);
   const [showMapErst, setShowMapErst] = useState(false);
@@ -231,18 +244,61 @@ const Workspace = (props) => {
   // NODE
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
+  const handleChangeLabelNode = (_label) => {
+    if (_label.__isNew__ && plan_id !== 1) {
+      dispatch(addWorkspaceNodeToList({
+        attributes: [],
+        description: null,
+        id: null,
+        label: _label.value,
+        style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
+      }));
+    }
+    if (_label.__isNew__ && plan_id === 1) {
+      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_item_types')));
+    } else {
+      setNodeLabel(_label.value);
+    }
+  };
+
   const [nodeDisplayName, setNodeDisplayName] = useState('');
   const [nodeFigur, setNodeFigur] = useState(null);
+  const handleNodeFigur = (_figur) => setNodeFigur(_figur ? _figur.value : null);
   const [attributes, setAttributes] = useState([initialAttribut]);
+
+  const handleChangeAttributes = (_attributes, newRow, isNew) => {
+    if (isNew && plan_id !== 1) {
+      newRow.value = newRow.label;
+      dispatch(addWorkspaceNodeAttributToList(newRow));
+    }
+
+    if (isNew && plan_id === 1) {
+      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_attribute_types')));
+    } else {
+      setAttributes(_attributes);
+    }
+  };
+
   const [choosenNode, setChoosenNode] = useState<NodeDropdownInstance | null>(null);
 
   const [deletedAttributes, setDeletedAttributes] = useState([]);
+
+  const handelRemoveAttributes = (_id, index) => {
+    setAttributes(att => att.filter((v, i) => i !== index));
+    if (_id) {
+    // @ts-ignore
+      setDeletedAttributes(attr => [...attr, _id]);
+    }
+  };
+
   const [nodeColor, setNodeColor] = useState({
     r: 255, g: 255, b: 255, a: 1
   });
+  const handleNodeColorChange = (color) => setNodeColor(color.rgb);
   const [nodeBorderColor, setNodeBorderColor] = useState({
     r: 0, g: 0, b: 0, a: 1
   });
+  const handleBorderColorChange = (color) => setNodeBorderColor(color.rgb);
 
   // socket for cvr
   const [subscription, setSubscription] = useState(null);
@@ -318,99 +374,18 @@ const Workspace = (props) => {
     };
   }, []);
 
-  const {
-    removeNodeTextTarget,
-    onNodeDoubleClick
-  } = useDoubbleClick();
 
-
-  const onConnect = (data) => {
-    removeNodeTextTarget();
-    if (data.source !== data.target) {
-      setCurrentConnectionData(data);
-      setDefineEdgeOpen(true);
+  const closeNode = useCallback(() => {
+    if (!showNodePopper) {
+      setDefineNodeOpen(false);
+      setNodeLabel('');
+      setNodeDisplayName('');
+      setNodeFigur(null);
+      setAttributes([initialAttribut]);
+      setChoosenNode(null);
+      setIsUpdatingElement(false);
     }
-  };
-
-  const onElementsRemove = (elementsToRemove: FlowElement[]): void => {
-    const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
-    const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
-    const remainingElements = elements.filter((el: FlowElement) => {
-      if (isNode(el)) {
-        return !nodeIdsToRemove.includes(el.id);
-      }
-      return !edgeIdsToRemove.includes(el.id);
-    });
-
-    setIsUpdatingElement(false);
-    setElementToUpdate(null);
-
-    if (elementsToRemove.length === 1) {
-      if (isNode(elementsToRemove[0]) || elementsToRemove.length > 1) {
-        setDefineNodeOpen(false);
-      } else {
-        setDefineEdgeOpen(false);
-      }
-    }
-
-    dispatch(deleteWorkspaceElement(user, elementsToRemove, remainingElements));
-    hideContext();
-  };
-
-
-  const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
-  const onElementClick = (event: MouseEvent, element: FlowElement) => {
-    dispatch(setShowCompanyData(false));
-    setDefineEdgeOpen(false);
-    setDefineNodeOpen(false);
-    setIsUpdatingElement(true);
-    setShowContextMenu(false);
-    setElementToUpdate(element);
-    setDeletedAttributes([]);
-    removeNodeTextTarget();
-    const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
-    const borderColor = element.data.backgroundColor ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
-    if (isNode(element)) {
-      setNodeLabel(element.data.label);
-      setNodeDisplayName(element.data.displayName || '');
-      setNodeFigur(element.data.figur);
-      setAttributes([...element.data.attributes, initialAttribut]);
-      setNodeColor({
-        r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
-      });
-      setNodeBorderColor({
-        r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
-      });
-
-      setDefineNodeOpen(true);
-      // console.log(event.target);
-      // setNodePopperRef(event.target);
-    } else {
-      event.persist();
-      setRelationshipLabel(element.data.label);
-      setRelationshipValue(element.data.value);
-      setRelationshipType(element.type || 'default');
-      setRelationshipColor(element.data.color);
-      setShowArrow(element.data.showArrow);
-      setAnimatedLine(element.data.animated);
-      setShowlabel(element.data.showLabel);
-      setLineThrough(element.data.lineThrough);
-      setDefineEdgeOpen(true);
-    }
-  };
-
-
-  // WORKSPACE GENERAL
-
-  const onWorkspaceSave = useCallback(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      const _nodes = flow.elements.filter((n): n is Node => isNode(n));
-      console.log(_nodes);
-      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      user && id && dispatch(saveWorkspace(user, id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes)));
-    }
-  }, [rfInstance, user]);
+  }, [showNodePopper]);
 
   const highlightAlertItems = (alert, constant = false) => {
     alert.elements.forEach((element) => {
@@ -458,6 +433,158 @@ const Workspace = (props) => {
     }
   };
 
+  const updateNodeDisplayName = (name) => {
+    const _attributes = JSON.stringify(attributes.filter(a => a.label));
+    const nodeId = choosenNode ? choosenNode.id : null;
+    const _nodeLabel = choosenNode ? choosenNode.label : null;
+    if (isUpdatingElement && elementToUpdate) {
+      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, name, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
+    }
+  };
+
+  const handleNodeSave = (x?: number, y?: number, drag?: boolean) => {
+    const _attributes = JSON.stringify(attributes.filter(a => a.label));
+    const rf = rfInstance?.toObject();
+    if (!x && !y) {
+      x = rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250 : undefined;
+      y = rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150 : undefined;
+    }
+
+    const nodeId = choosenNode ? choosenNode.id : null;
+    const _nodeLabel = choosenNode ? choosenNode.label : null;
+
+    if (isUpdatingElement && elementToUpdate && !drag) {
+      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
+    } else if (drag) {
+      dispatch(postNode(
+        user,
+            id as string,
+            null, null,
+            "", null,
+            JSON.stringify({
+              r: 255, g: 255, b: 255, a: 1
+            }), JSON.stringify({
+              r: 0, g: 0, b: 0, a: 1
+            }),
+            JSON.stringify([initialAttribut].filter(a => a.label)), closeNode, handleAlerts,
+            x, y
+      ));
+    } else {
+      dispatch(postNode(
+        user,
+            id as string,
+            nodeId, _nodeLabel,
+            nodeDisplayName, nodeFigur,
+            JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
+            _attributes, closeNode, handleAlerts,
+            x, y
+      ));
+    }
+  };
+
+  const {
+    removeNodeTextTarget,
+    onNodeDoubleClick,
+  } = useDoubbleClick(updateNodeDisplayName);
+
+
+  const onConnect = (data) => {
+    removeNodeTextTarget();
+    if (data.source !== data.target) {
+      setCurrentConnectionData(data);
+      setDefineEdgeOpen(true);
+    }
+  };
+
+  const onElementsRemove = (elementsToRemove: FlowElement[]): void => {
+    const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
+    const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
+    const remainingElements = elements.filter((el: FlowElement) => {
+      if (isNode(el)) {
+        return !nodeIdsToRemove.includes(el.id);
+      }
+      return !edgeIdsToRemove.includes(el.id);
+    });
+
+    setIsUpdatingElement(false);
+    setElementToUpdate(null);
+
+    if (elementsToRemove.length === 1) {
+      if (isNode(elementsToRemove[0]) || elementsToRemove.length > 1) {
+        setDefineNodeOpen(false);
+      } else {
+        setDefineEdgeOpen(false);
+      }
+    }
+
+    dispatch(deleteWorkspaceElement(user, elementsToRemove, remainingElements));
+    hideContext();
+  };
+
+  const [activeElement, setActiveElement] = useState<Node | Edge | null>(null);
+
+  const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
+  const onElementClick = (event: MouseEvent, element: FlowElement, showFull?: boolean) => {
+    setActiveElement(element);
+    dispatch(setShowCompanyData(false));
+    setDefineEdgeOpen(false);
+    setDefineNodeOpen(false);
+    setIsUpdatingElement(true);
+    setShowContextMenu(false);
+    setElementToUpdate(element);
+    setDeletedAttributes([]);
+    removeNodeTextTarget();
+    const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
+    const borderColor = element.data.backgroundColor ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+    if (isNode(element)) {
+      setNodePopperRef(null);
+      handleHideNodePopper();
+      setNodeLabel(element.data.label);
+      setNodeDisplayName(element.data.displayName || '');
+      setNodeFigur(element.data.figur);
+      setAttributes([...element.data.attributes, initialAttribut]);
+      setNodeColor({
+        r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
+      });
+      setNodeBorderColor({
+        r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
+      });
+      if (showFull) {
+        setDefineNodeOpen(true);
+      } else if (element.type === "custom") {
+        const target = event.target as HTMLElement;
+        const ifDivtarget = target.querySelector("#nodeLabel");
+        handleShowNodePopper();
+        setNodePopperRef(target.nodeName === "H6" ? event.target : ifDivtarget);
+      }
+    } else {
+      event.persist();
+      setRelationshipLabel(element.data.label);
+      setRelationshipValue(element.data.value);
+      setRelationshipType(element.type || 'default');
+      setRelationshipColor(element.data.color);
+      setShowArrow(element.data.showArrow);
+      setAnimatedLine(element.data.animated);
+      setShowlabel(element.data.showLabel);
+      setLineThrough(element.data.lineThrough);
+      setDefineEdgeOpen(true);
+    }
+  };
+
+
+  // WORKSPACE GENERAL
+
+  const onWorkspaceSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      const _nodes = flow.elements.filter((n): n is Node => isNode(n));
+
+      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
+      user && id && dispatch(saveWorkspace(user, id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes)));
+    }
+  }, [rfInstance, user]);
+
+
   const onLoad = (_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
     dispatch(showWorkspace(user, id as string, setMetaOpen, handleAlerts, _reactFlowInstance));
@@ -489,43 +616,6 @@ const Workspace = (props) => {
     }
   }, [alertId]);
 
-  const closeNode = useCallback(() => {
-    setDefineNodeOpen(false);
-    setNodeLabel('');
-    setNodeDisplayName('');
-    setNodeFigur(null);
-    setAttributes([initialAttribut]);
-    setChoosenNode(null);
-    setIsUpdatingElement(false);
-  }, []);
-
-
-  const handleNodeSave = (x?: number, y?: number, drag?: boolean) => {
-    const _attributes = JSON.stringify(attributes.filter(a => a.label));
-    const rf = rfInstance?.toObject();
-    if (!x && !y) {
-      x = rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250 : undefined;
-      y = rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150 : undefined;
-    }
-    console.log(choosenNode, isUpdatingElement, elementToUpdate);
-    const nodeId = choosenNode ? choosenNode.id : null;
-    const _nodeLabel = choosenNode ? choosenNode.label : null;
-
-    if (isUpdatingElement && elementToUpdate && !drag) {
-      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
-    } else {
-      dispatch(postNode(
-        user,
-          id as string,
-          nodeId, _nodeLabel,
-          nodeDisplayName, nodeFigur,
-          JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
-          _attributes, closeNode, handleAlerts,
-          x, y
-      ));
-    }
-  };
-
 
   useEffect(() => {
     const _node = nodes.find(r => r.label === nodeLabel);
@@ -536,6 +626,7 @@ const Workspace = (props) => {
       setAttributes([..._node.attributes, initialAttribut]);
     }
   }, [nodeLabel]);
+
 
   // RELATIONSHIP
 
@@ -739,7 +830,9 @@ const Workspace = (props) => {
     dispatch(handleRunIntro(false));
     setShowCvrModal(true);
   };
-
+  const handleGetCompanyData = (_id) => {
+    dispatch(getCompanyData(user, _id, setShowContextMenu, handleHideNodePopper));
+  };
   useWorkspaceHotKeys(
     setDefineNodeOpen,
     setShowContextMenu,
@@ -749,7 +842,7 @@ const Workspace = (props) => {
     rfInstance,
     contextNode,
     handleShowNodeRelations,
-    (_id) => dispatch(getCompanyData(user, _id, setShowContextMenu)),
+    handleGetCompanyData,
     (_id) => dispatch(getAddressInfo(user, _id, setShowContextMenu)),
     handleOpenCvr,
     setShowAlertLog,
@@ -788,6 +881,7 @@ const Workspace = (props) => {
       }
       if (type === "custom") {
         closeNode();
+
         handleNodeSave(position.x, position.y, true);
       }
     }
@@ -798,6 +892,8 @@ const Workspace = (props) => {
 
   const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     removeNodeTextTarget();
+    handleHideNodePopper();
+    setNodePopperRef(null);
     if (reactFlowContainer && rfInstance) {
       // @ts-ignore
       const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
@@ -830,6 +926,11 @@ const Workspace = (props) => {
           minZoom={0.3}
           maxZoom={3}
           onNodeDragStart={hideContext}
+          onNodeDragStop={handleShowNodePopper}
+          onConnectStop={handleShowNodePopper}
+          onConnectEnd={handleShowNodePopper}
+          onMoveEnd={handleShowNodePopper}
+          onSelectionDragStop={handleShowNodePopper}
           onConnectStart={hideContext}
           onDrop={onDrop}
           onDragOver={onDragOver}
@@ -1004,56 +1105,24 @@ const Workspace = (props) => {
           close={closeNode}
           nodes={nodes}
           nodeLabel={nodeLabel}
-          handleChangeLabel={(_label) => {
-            if (_label.__isNew__ && plan_id !== 1) {
-              dispatch(addWorkspaceNodeToList({
-                attributes: [],
-                description: null,
-                id: null,
-                label: _label.value,
-                style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
-              }));
-            }
-            if (_label.__isNew__ && plan_id === 1) {
-              dispatch(showNotifAction(t('workspaces.you_can_not_create_new_item_types')));
-            } else {
-              setNodeLabel(_label.value);
-            }
-          }}
+          handleChangeLabel={handleChangeLabelNode}
           attributes={attributes}
-          handleChangeAttributes={(_attributes, newRow, isNew) => {
-            if (isNew && plan_id !== 1) {
-              newRow.value = newRow.label;
-              dispatch(addWorkspaceNodeAttributToList(newRow));
-            }
-
-            if (isNew && plan_id === 1) {
-              dispatch(showNotifAction(t('workspaces.you_can_not_create_new_attribute_types')));
-            } else {
-              setAttributes(_attributes);
-            }
-          }}
+          handleChangeAttributes={handleChangeAttributes}
           nodeColor={nodeColor}
           handleChangeColor={(color) => setNodeColor(color.rgb)}
           nodeBorderColor={nodeBorderColor}
-          handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
+          handleBorderColorChange={handleBorderColorChange}
           handleNodeSave={handleNodeSave}
           nodeDisplayName={nodeDisplayName}
           nodeFigur={nodeFigur}
-          handleNodeFigurChange={(_figur) => setNodeFigur(_figur ? _figur.value : null)}
+          handleNodeFigurChange={handleNodeFigur}
           isUpdatingElement={isUpdatingElement}
           elementToUpdate={elementToUpdate}
           handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
           handleDeleteNode={() => elementToUpdate && onElementsRemove([elementToUpdate])}
           loading={loading}
           attributesDropDownOptions={attributesDropDownOptions}
-          handleRemoveAttributes={(_id, index) => {
-            setAttributes(att => att.filter((v, i) => i !== index));
-            if (_id) {
-            // @ts-ignore
-              setDeletedAttributes(attr => [...attr, _id]);
-            }
-          }}
+          handleRemoveAttributes={handelRemoveAttributes}
         />
       )}
       {(alertId || alertId === 0) && alerts[alertId] && (
@@ -1168,7 +1237,7 @@ const Workspace = (props) => {
             show={showContextMenu}
             handleEdit={onElementClick}
             handleShowNodeRelations={handleShowNodeRelations}
-            showCompanyInfo={(_id) => dispatch(getCompanyData(user, _id, setShowContextMenu))}
+            showCompanyInfo={handleGetCompanyData}
             getAddressInfo={(_id) => dispatch(getAddressInfo(user, _id, setShowContextMenu))}
             loading={loading}
             cut={cut}
@@ -1201,22 +1270,30 @@ const Workspace = (props) => {
             fitView={() => rfInstance?.fitView()}
           />
           <InternationalStructureAlert open={showInternationalDisclaimer} close={closeInternationalDisclaimer} />
-          {/* <Popper
-            open={Boolean(nodePopperRef)}
-            // @ts-ignore
-            anchorEl={nodePopperRef}
-            role={undefined}
-            transition
-
-            style={{ zIndex: 1000, marginBottom: 30 * currentZoom }}
-            placement="top"
-          >
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps}>
-                <Paper elevation={6} style={{ backgroundColor: "#fcfcfc", width: 200, height: 50 }} />
-              </Fade>
-            )}
-          </Popper> */}
+          {showNodePopper && <NodePopper
+            nodePopperRef={nodePopperRef}
+            showNodePopper={showNodePopper}
+            currentZoom={currentZoom}
+            close={handleHideNodePopper}
+            nodeBorderColor={nodeBorderColor}
+            handleBorderColorChange={handleBorderColorChange}
+            nodeColor={nodeColor}
+            handleColorChange={handleNodeColorChange}
+            nodes={nodes}
+            nodeLabel={nodeLabel}
+            handleChangeLabel={handleChangeLabelNode}
+            handleNodeSave={handleNodeSave}
+            editData={onElementClick}
+            loading={loading}
+            activeElement={activeElement}
+            getCompanyData={handleGetCompanyData}
+            attributesDropDownOptions={attributesDropDownOptions}
+            attributes={attributes}
+            handleChangeAttributes={handleChangeAttributes}
+            handelRemoveAttributes={handelRemoveAttributes}
+            handleNodeFigur={handleNodeFigur}
+            nodeFigur={nodeFigur}
+          />}
         </>
       )}
     </div>

@@ -1,28 +1,63 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, useTheme } from '@material-ui/core/styles';
-import Select from 'react-select';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import css from '@styles/Form.scss';
-import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
-import { selectStyles } from '@api/ui/helper';
-import { SketchPicker } from 'react-color';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@api/palette/colorfull';
-import CreatableSelect from 'react-select/creatable';
-import DeleteIcon from '@material-ui/icons/Delete';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import IconButton from '@material-ui/core/IconButton';
-import styles from '../workspace-jss';
-import square from './square.svg';
-import triangle from './triangle.svg';
-import circle from './circle.svg';
-import person from './person.svg';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { withStyles, useTheme } from "@material-ui/core/styles";
+import Select from "react-select";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import css from "@styles/Form.scss";
+import "@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css";
+import { selectStyles } from "@api/ui/helper";
+import { SketchPicker } from "react-color";
+import Typography from "@material-ui/core/Typography";
+import { red } from "@api/palette/colorfull";
+import CreatableSelect from "react-select/creatable";
+import DeleteIcon from "@material-ui/icons/Delete";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
+import styles from "../workspace-jss";
+import square from "./square.svg";
+import triangle from "./triangle.svg";
+import circle from "./circle.svg";
+import person from "./person.svg";
+
+export const figurTypeOptions = [
+  {
+    value: "triangle",
+    label: (
+      <>
+        <img src={triangle} alt="triangle" style={{ height: 26 }} />
+      </>
+    ),
+  },
+  {
+    value: "square",
+    label: (
+      <>
+        <img src={square} alt="square" style={{ height: 26 }} />
+      </>
+    ),
+  },
+  {
+    value: "circle",
+    label: (
+      <>
+        <img src={circle} alt="circle" style={{ height: 26 }} />
+      </>
+    ),
+  },
+  {
+    value: "person",
+    label: (
+      <>
+        <img src={person} alt="person" style={{ height: 26 }} />
+      </>
+    ),
+  },
+];
 
 const WorkspaceNodeForm = (props) => {
   const {
@@ -48,44 +83,8 @@ const WorkspaceNodeForm = (props) => {
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
-  const choosenNode = nodes.find(r => r.label === nodeLabel);
+  const choosenNode = nodes.find((r) => r.label === nodeLabel);
   const theme = useTheme();
-
-  const figurTypeOptions = [
-    {
-      value: 'triangle',
-      label: (
-        <>
-          <img src={triangle} alt="triangle" style={{ height: 26 }} />
-        </>
-      )
-    },
-    {
-      value: 'square',
-      label: (
-        <>
-          <img src={square} alt="square" style={{ height: 26 }} />
-        </>
-      )
-    },
-    {
-      value: 'circle',
-      label: (
-        <>
-          <img src={circle} alt="circle" style={{ height: 26 }} />
-        </>
-      )
-    },
-    {
-      value: 'person',
-      label: (
-        <>
-          <img src={person} alt="person" style={{ height: 26 }} />
-        </>
-      )
-    }
-  ];
-
 
   return (
     <div>
@@ -93,22 +92,21 @@ const WorkspaceNodeForm = (props) => {
         <div className={classes.field}>
           <CreatableSelect
             classes={classes}
-            styles={selectStyles('relative')}
+            styles={selectStyles("relative")}
             inputId="react-select-single-workspace-node"
             autoFocus
             TextFieldProps={{
-              label: 'Element',
+              label: "Element",
               InputLabelProps: {
-                htmlFor: 'react-select-single-workspace-node',
+                htmlFor: "react-select-single-workspace-node",
                 shrink: true,
               },
-              placeholder: 'Element',
+              placeholder: "Element",
             }}
             placeholder="Vælg dit element"
-            options={nodes.map(n => ({ value: n.label, label: n.label }))}
+            options={nodes.map((n) => ({ value: n.label, label: n.label }))}
             value={nodeLabel && { label: nodeLabel, value: nodeLabel }}
             onChange={handleChangeLabel}
-
           />
         </div>
         {choosenNode && (
@@ -125,50 +123,59 @@ const WorkspaceNodeForm = (props) => {
             </div>
           </>
         )}
-        {choosenNode && attributes.map((attribut, index) => (
-          <div className={classes.inlineWrap} style={{ marginTop: 15 }}>
-            <div className={classes.field}>
-              <CreatableSelect
-                styles={selectStyles('relative')}
-                placeholder="Kendetegn"
-                options={attributesDropDownOptions}
-                value={attribut.label && { label: attribut.label, value: attribut.label }}
-                isDisabled={Boolean(attribut.label)}
-                isOptionDisabled={(option) => attributes.map(a => a.label).includes(option.label)}
-                onChange={(value) => {
-                  const newRow = { ...attribut };
-                  newRow.label = value.label;
-                  newRow.type = value.type || 'Value';
-                  newRow.selectionOptions = value.selectionOptions || null;
+        {choosenNode &&
+          attributes.map((attribut, index) => (
+            <div className={classes.inlineWrap} style={{ marginTop: 15 }}>
+              <div className={classes.field}>
+                <CreatableSelect
+                  styles={selectStyles("relative")}
+                  placeholder="Kendetegn"
+                  options={attributesDropDownOptions}
+                  value={
+                    attribut.label && { label: attribut.label, value: attribut.label }
+                  }
+                  isDisabled={Boolean(attribut.label)}
+                  isOptionDisabled={(option) =>
+                    attributes.map((a) => a.label).includes(option.label)
+                  }
+                  onChange={(value) => {
+                    const newRow = { ...attribut };
+                    newRow.label = value.label;
+                    newRow.type = value.type || "Value";
+                    newRow.selectionOptions = value.selectionOptions || null;
 
-                  const i = attributes.length - 1;
-                  const mutableArray = [...attributes];
-                  mutableArray.splice(i, 0, newRow);
-                  handleChangeAttributes(mutableArray, { ...newRow }, value.__isNew__);
-                }}
-              />
-            </div>
-            {attribut.label && (
-              <>
-                <div className={classes.field} style={{ marginLeft: 20 }}>
-                  {attribut.type === 'Value' ? (
-                    <TextField
-                      value={attribut.value}
-                      placeholder="Værdi"
-                      onChange={(e) => {
-                        const newArray = [...attributes];
-                        newArray[index] = { ...newArray[index], value: e.target.value };
+                    const i = attributes.length - 1;
+                    const mutableArray = [...attributes];
+                    mutableArray.splice(i, 0, newRow);
+                    handleChangeAttributes(mutableArray, { ...newRow }, value.__isNew__);
+                  }}
+                />
+              </div>
+              {attribut.label && (
+                <>
+                  <div className={classes.field} style={{ marginLeft: 20 }}>
+                    {attribut.type === "Value" ? (
+                      <TextField
+                        value={attribut.value}
+                        placeholder="Værdi"
+                        onChange={(e) => {
+                          const newArray = [...attributes];
+                          newArray[index] = { ...newArray[index], value: e.target.value };
 
-                        handleChangeAttributes(newArray);
-                      }}
-                    />
-                  )
-                    : (
+                          handleChangeAttributes(newArray);
+                        }}
+                      />
+                    ) : (
                       <CreatableSelect
                         styles={selectStyles()}
                         placeholder="Værdi"
                         options={JSON.parse(attribut.selectionOptions)}
-                        value={attribut.value && { label: attribut.value, value: attribut.value }}
+                        value={
+                          attribut.value && {
+                            label: attribut.value,
+                            value: attribut.value,
+                          }
+                        }
                         onChange={(value) => {
                           const newArray = [...attributes];
                           newArray[index] = { ...newArray[index], value: value.value };
@@ -176,77 +183,110 @@ const WorkspaceNodeForm = (props) => {
                           handleChangeAttributes(newArray);
                         }}
                       />
-                    )
-                  }
-                </div>
-                <IconButton
-                  style={{ bottom: 3 }}
-                  onClick={() => {
-                    const newArray = [...attributes];
-                    newArray[index] = { ...newArray[index], show: !newArray[index].show };
+                    )}
+                  </div>
+                  <IconButton
+                    style={{ bottom: 3 }}
+                    onClick={() => {
+                      const newArray = [...attributes];
+                      newArray[index] = {
+                        ...newArray[index],
+                        show: !newArray[index].show,
+                      };
 
-                    handleChangeAttributes(newArray);
-                  }}
-                >
-                  {attribut.show ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                </IconButton>
-                <IconButton style={{ color: `${red}55`, bottom: 5 }} onClick={() => handleRemoveAttributes(attribut.workspace_node_attribut_id, index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </>
-            )}
-          </div>
-        ))}
-        {choosenNode
-        && (
+                      handleChangeAttributes(newArray);
+                    }}
+                  >
+                    {attribut.show ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                  <IconButton
+                    style={{ color: `${red}55`, bottom: 5 }}
+                    onClick={() =>
+                      handleRemoveAttributes(attribut.workspace_node_attribut_id, index)
+                    }
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </>
+              )}
+            </div>
+          ))}
+        {choosenNode && (
           <>
             <div className={classes.field} style={{ marginTop: 20 }}>
               <Select
                 classes={classes}
-                styles={{ ...selectStyles('relative'), padding: 10 }}
+                styles={{ ...selectStyles("relative"), padding: 10 }}
                 isClearable
                 inputId="react-select-single-edge-type"
                 TextFieldProps={{
-                  label: 'type',
+                  label: "type",
                   InputLabelProps: {
-                    htmlFor: 'react-select-single-edge-type',
+                    htmlFor: "react-select-single-edge-type",
                     shrink: true,
                   },
-                  placeholder: 'type',
+                  placeholder: "type",
                 }}
                 placeholder="type"
                 options={figurTypeOptions}
-                value={nodeFigur && figurTypeOptions.find(x => x.value === nodeFigur)}
+                value={nodeFigur && figurTypeOptions.find((x) => x.value === nodeFigur)}
                 onChange={handleNodeFigurChange}
               />
             </div>
             <div className={classes.row} style={{ marginTop: 10 }}>
-              <Typography variant="subtitle2">
-                Vælg en farve for dit element
-              </Typography>
-              <div className={classes.swatch} onClick={() => setDisplayColorPickerColor(prevVal => !prevVal)}>
-                <div className={classes.color} style={{ backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeColor.a})` }} />
+              <Typography variant="subtitle2">Vælg en farve for dit element</Typography>
+              <div
+                className={classes.swatch}
+                onClick={() => setDisplayColorPickerColor((prevVal) => !prevVal)}
+              >
+                <div
+                  className={classes.color}
+                  style={{
+                    backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${
+                      nodeColor.b
+                    }, ${nodeColor.a})`,
+                  }}
+                />
               </div>
-              { displayColorPickerColor ? (
+              {displayColorPickerColor ? (
                 <div className={classes.popover}>
-                  <div className={classes.cover} onClick={() => setDisplayColorPickerColor(false)} />
+                  <div
+                    className={classes.cover}
+                    onClick={() => setDisplayColorPickerColor(false)}
+                  />
                   <SketchPicker color={nodeColor} onChange={handleChangeColor} />
                 </div>
-              ) : null }
+              ) : null}
             </div>
             <div className={classes.row} style={{ marginTop: 10 }}>
               <Typography variant="subtitle2">
                 Vælg en farve for kanterne på dit element
               </Typography>
-              <div className={classes.swatch} onClick={() => setDisplayBorderColorPickerColor(prevVal => !prevVal)}>
-                <div className={classes.color} style={{ backgroundColor: `rgba(${nodeBorderColor.r}, ${nodeBorderColor.g}, ${nodeBorderColor.b}, ${nodeBorderColor.a})` }} />
+              <div
+                className={classes.swatch}
+                onClick={() => setDisplayBorderColorPickerColor((prevVal) => !prevVal)}
+              >
+                <div
+                  className={classes.color}
+                  style={{
+                    backgroundColor: `rgba(${nodeBorderColor.r}, ${nodeBorderColor.g}, ${
+                      nodeBorderColor.b
+                    }, ${nodeBorderColor.a})`,
+                  }}
+                />
               </div>
-              { displayBorderColorPickerColor ? (
+              {displayBorderColorPickerColor ? (
                 <div className={classes.popover}>
-                  <div className={classes.cover} onClick={() => setDisplayBorderColorPickerColor(false)} />
-                  <SketchPicker color={nodeBorderColor} onChange={handleBorderColorChange} />
+                  <div
+                    className={classes.cover}
+                    onClick={() => setDisplayBorderColorPickerColor(false)}
+                  />
+                  <SketchPicker
+                    color={nodeBorderColor}
+                    onChange={handleBorderColorChange}
+                  />
                 </div>
-              ) : null }
+              ) : null}
             </div>
           </>
         )}
@@ -257,7 +297,11 @@ const WorkspaceNodeForm = (props) => {
             variant="contained"
             type="button"
             onClick={handleDeleteNode}
-            style={{ backgroundColor: theme.palette.error.dark, color: 'white', marginRight: 10 }}
+            style={{
+              backgroundColor: theme.palette.error.dark,
+              color: "white",
+              marginRight: 10,
+            }}
           >
             Slet
           </Button>
@@ -269,7 +313,7 @@ const WorkspaceNodeForm = (props) => {
           onClick={handleNodeSave}
           disabled={!choosenNode}
         >
-            Gem
+          Gem
         </Button>
       </div>
     </div>
@@ -299,7 +343,7 @@ WorkspaceNodeForm.propTypes = {
 };
 
 WorkspaceNodeForm.defaultProps = {
-  nodeFigur: null
+  nodeFigur: null,
 };
 
 export default withStyles(styles)(WorkspaceNodeForm);

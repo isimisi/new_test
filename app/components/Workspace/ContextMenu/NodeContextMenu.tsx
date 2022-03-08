@@ -27,7 +27,7 @@ interface Props {
   contextNode: Node<any> | null;
   contextType: ContextTypes;
   show: boolean;
-  handleEdit: (event: MouseEvent, element: FlowElement) => void;
+  handleEdit: (event: MouseEvent, element: FlowElement, showFull: boolean) => void;
   handleShowNodeRelations: (node: Node) => void;
   showCompanyInfo: (id: string) => void;
   getAddressInfo: (id: string) => void;
@@ -55,7 +55,7 @@ const NodeContextMenu = ({
   const { t } = useTranslation();
   const classes = useStyles();
 
-  const hanldeEditClick = (e) => contextNode && handleEdit(e, contextNode);
+  const hanldeEditClick = (e) => contextNode && handleEdit(e, contextNode, true);
   const hanldeShowCompanyInfo = () => contextNode && showCompanyInfo(contextNode.id);
   const hanldeShowAddressInfo = () => contextNode && getAddressInfo(contextNode.id);
   const handleCut = (e) => contextNode && cut(e, contextNode);

@@ -419,7 +419,17 @@
     "relations": "Relations",
     "excel": "Excel",
     "add_step": "Add step",
-    "mouse": "Mouse"
+    "mouse": "Mouse",
+    "node": {
+      "no_label": "This element does not have any label.",
+      "edit_label": "Edit label",
+      "edit_attributes": "Edit attributes",
+      "edit_icon": "Edit icon",
+      "edit_background_color": "Edit background color",
+      "edit_border_color": "Edit border color",
+      "see_company_info": "See company info",
+      "see more": "More"
+    }
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",
@@ -646,6 +656,11 @@
       "body": "Unfortunately, it is not currently possible to fetch cross-border information about subsidiaries. That is only possible when basing the group chart on Danish corporate data - so far! For example, if you select a Swedish company, it will only show Swedish subsidiaries./n This does not affect the ownership information which will always be cross-border where applicable./n Should you have any questions, please do not hesitate reaching out to us via the chatbox in the lower-left corner.",
       "close": "ALRIGHT, I UNDERSTAND",
       "do_not_show_again": "Do not show this again"
-    }
-  }
+    },
+    "node": {
+      "label_placeholder": "Choose or create a label"
+    },
+    "edit_node_data": "Edit data"
+  },
+  "save": "Save"
 }

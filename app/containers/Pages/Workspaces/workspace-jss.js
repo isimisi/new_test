@@ -4,11 +4,7 @@ import purple from "@material-ui/core/colors/deepPurple";
 import teal from "@material-ui/core/colors/teal";
 import brown from "@material-ui/core/colors/brown";
 import red from "@material-ui/core/colors/red";
-import {
-  lighten,
-  darken,
-  alpha,
-} from "@material-ui/core/styles/colorManipulator";
+import { lighten, darken, alpha } from "@material-ui/core/styles/colorManipulator";
 
 const drawerWidth = 300;
 const drawerHeight = "100vh";
@@ -37,6 +33,7 @@ const styles = (theme) => ({
       color: theme.palette.primary.main,
     },
   },
+
   img: {
     width: 90,
   },
@@ -362,9 +359,7 @@ const styles = (theme) => ({
     width: "100%",
     height: "100%",
     background:
-      theme.palette.type === "dark"
-        ? theme.palette.grey[700]
-        : theme.palette.grey[100],
+      theme.palette.type === "dark" ? theme.palette.grey[700] : theme.palette.grey[100],
   },
   selected: {
     background:
