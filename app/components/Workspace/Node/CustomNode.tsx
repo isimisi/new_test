@@ -16,6 +16,7 @@ import { MyTheme } from "@customTypes/styling";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useTranslation } from "react-i18next";
+import { deltaE } from "@api/ui/colors";
 
 export const getSVG = figur => {
   switch (figur) {
@@ -189,12 +190,16 @@ const CustomNode = ({ data }) => {
             <ErrorIcon
               data-html2canvas-ignore="true"
               style={{
-                color: "#FFDC79",
+                color:
+                  deltaE("rgb(255, 220, 121, 1)", data.backgroundColor) < 10
+                    ? "black"
+                    : "rgb(255,220,121)",
                 fontSize: 10,
                 position: "absolute",
                 top: 2,
                 right: 2,
-                cursor: "auto"
+                cursor: "auto",
+                zIndex: 110
               }}
             />
           </Tooltip>

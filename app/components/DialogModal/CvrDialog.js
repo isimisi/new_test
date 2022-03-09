@@ -132,8 +132,10 @@ const FormDialog = (props) => {
           <>
             <DialogContentText>{description}</DialogContentText>
             <AsyncSelect
-              styles={selectStyles("relative")}
+              styles={selectStyles()}
+              menuPortalTarget={document.body}
               menuPlacement="auto"
+              menuPosition="absolute"
               autoFocus
               maxMenuHeight={150}
               onChange={changeTextField}
@@ -143,7 +145,10 @@ const FormDialog = (props) => {
             />
             <Divider style={{ margin: 20 }} />
             <Select
-              styles={selectStyles("relative")}
+              styles={selectStyles()}
+              menuPortalTarget={document.body}
+              menuPlacement="auto"
+              menuPosition="absolute"
               isMulti
               inputId="react-select-single-relationship"
               placeholder="Søg kun i bestemte lande"

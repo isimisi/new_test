@@ -587,6 +587,10 @@ export default function reducer(state = initialImmutableState, action: any) {
     case SET_SHOW_COMPANY_DATA:
       return state.withMutations((mutableState) => {
         const show = fromJS(action.show);
+        if (!action.show) {
+          mutableState.set("companyData", Map());
+        }
+
         mutableState.set("showCompanyData", show);
       });
     case SET_SHOW_ADDRESS_INFO:

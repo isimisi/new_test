@@ -11,7 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import styles from "../workspace-jss";
 import { RGBA } from "@customTypes/data";
 import ListIcon from "@material-ui/icons/List";
-import { TwitterPicker, ColorResult } from "react-color";
+import { SketchPicker, ColorResult } from "react-color";
 import LabelIcon from "@material-ui/icons/Label";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import InfoIcon from "@material-ui/icons/Info";
@@ -123,7 +123,6 @@ const NodePopper = (props: Props) => {
     setDisplayBorderColorPickerColor(prevVal => !prevVal);
   };
 
-
   const toggleLabelMenu = e => {
     setTypeRef(null);
     setDisplayBorderColorPickerColor(false);
@@ -175,6 +174,8 @@ const NodePopper = (props: Props) => {
     setLabelRef(null);
     setAttributRefRef(null);
     setTypeRef(null);
+    setDisplayBorderColorPickerColor(false);
+    setDisplayColorPickerColor(false);
     handleNodeSave();
   };
   const figurValue = React.useMemo(
@@ -183,19 +184,33 @@ const NodePopper = (props: Props) => {
   );
 
   React.useEffect(() => {
-    const picker = document.getElementsByClassName("twitter-picker");
-    if (picker.length > 0) {
-      const actPicker = picker[0].lastChild?.lastChild;
-      console.log(actPicker);
-      // @ts-ignore
-      ReactDOM.render(<div className={classes.attributSaveButtonContainer}>
-        <Button color="primary" onClick={handleSave}>
-          {t("save")}
-        </Button>
-      </div>, actPicker);
-    }
-  }, [displayBorderColorPickerColor, displayColorPickerColor, nodeColor, nodeBorderColor]);
+    const picker = document.getElementsByClassName("sketch-picker");
 
+    if (picker.length > 0) {
+      let div = document.getElementById("saveContainer");
+
+      if (!div) {
+        div = document.createElement("div");
+        div.setAttribute("id", "saveContainer");
+        picker[0].appendChild(div);
+      }
+
+      // @ts-ignore
+      ReactDOM.render(
+        <div className={classes.attributSaveButtonContainer}>
+          <Button color="primary" onClick={handleSave}>
+            {t("save")}
+          </Button>
+        </div>,
+        div
+      );
+    }
+  }, [
+    displayBorderColorPickerColor,
+    displayColorPickerColor,
+    nodeColor,
+    nodeBorderColor
+  ]);
 
   return (
     <>
@@ -209,7 +224,7 @@ const NodePopper = (props: Props) => {
         placement="top"
       >
         {({ TransitionProps }) => (
-          <Fade {...TransitionProps}>
+          <Fade {...TransitionProps} timeout={{ enter: 50 }}>
             <Paper elevation={6} className={classes.nodePopper}>
               <Button variant="text" color="primary" onClick={handleEditData}>
                 {t("workspace.edit_node_data")}
@@ -225,7 +240,15 @@ const NodePopper = (props: Props) => {
                 placement="top"
               >
                 <ButtonBase onClick={toggleLabelMenu}>
-                  <LabelIcon className={classes.nodePopperIcon} style={{ color: activeElement.data.label ? "black" : "#FFDC79" }} />
+                  <LabelIcon
+                    className={classes.nodePopperIcon}
+                    style={{
+                      color:
+                        activeElement.data.label || nodeLabel
+                          ? "black"
+                          : "#FFDC79"
+                    }}
+                  />
                 </ButtonBase>
               </Tooltip>
               <Tooltip
@@ -233,7 +256,10 @@ const NodePopper = (props: Props) => {
                 title={`${t("workspaces.node.edit_attributes")}`}
                 placement="top"
               >
-                <ButtonBase onClick={toggleAttributMenu}>
+                <ButtonBase
+                  onClick={toggleAttributMenu}
+                  disabled={!activeElement.data.label}
+                >
                   <ListIcon className={classes.nodePopperIcon} />
                 </ButtonBase>
               </Tooltip>
@@ -281,7 +307,7 @@ const NodePopper = (props: Props) => {
               </Tooltip>
               {displayColorPickerColor ? (
                 <div className={classes.popover}>
-                  <TwitterPicker
+                  <SketchPicker
                     color={nodeColor}
                     onChange={handleColorChange}
                   />
@@ -308,7 +334,7 @@ const NodePopper = (props: Props) => {
               </Tooltip>
               {displayBorderColorPickerColor ? (
                 <div className={classes.popover2}>
-                  <TwitterPicker
+                  <SketchPicker
                     color={nodeBorderColor}
                     onChange={handleBorderColorChange}
                   />
@@ -319,31 +345,33 @@ const NodePopper = (props: Props) => {
                 className={classes.verDivider}
                 orientation="vertical"
               />
-              {activeElement.data.unitNumber && <>
-                <Tooltip
-                  arrow
-                  title={`${t("workspaces.node.see_company_info")}`}
-                  placement="top"
-                >
-                  {loading ? (
-                    <div className={classes.loadingConatiner}>
-                      <CircularProgress size={25} />
-                    </div>
-                  ) : (
-                    <ButtonBase onClick={handleGetCompanyData}>
-                      <InfoIcon
-                        className={classes.nodePopperIcon}
-                        color="primary"
-                      />
-                    </ButtonBase>
-                  )}
-                </Tooltip>
-                <Divider
-                  flexItem
-                  className={classes.verDivider}
-                  orientation="vertical"
-                />
-              </>}
+              {activeElement.data.unitNumber && (
+                <>
+                  <Tooltip
+                    arrow
+                    title={`${t("workspaces.node.see_company_info")}`}
+                    placement="top"
+                  >
+                    {loading ? (
+                      <div className={classes.loadingConatiner}>
+                        <CircularProgress size={25} />
+                      </div>
+                    ) : (
+                      <ButtonBase onClick={handleGetCompanyData}>
+                        <InfoIcon
+                          className={classes.nodePopperIcon}
+                          color="primary"
+                        />
+                      </ButtonBase>
+                    )}
+                  </Tooltip>
+                  <Divider
+                    flexItem
+                    className={classes.verDivider}
+                    orientation="vertical"
+                  />
+                </>
+              )}
               <Tooltip
                 arrow
                 title={`${t("workspaces.node.see more")}`}

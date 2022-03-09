@@ -476,7 +476,8 @@ const styles = (theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: 5,
+    marginBottom: 5,
   },
   labelConfirmButton: { marginLeft: 5 },
   packageContent: {

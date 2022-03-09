@@ -61,11 +61,11 @@ function CompanyDataModel(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const data =
-    value === 0
-      ? companyData[tabs[value]]
-      : companyData[tabs[value]][chips[activeChip]][year.value];
+  const accountingData =
+    years.length > 0
+      ? companyData[tabs[1]][chips[activeChip]][year.value]
+      : companyData[tabs[1]][chips[activeChip]];
+  const data = value === 0 ? companyData[tabs[value]] : accountingData;
 
   return (
     <div>
@@ -85,7 +85,11 @@ function CompanyDataModel(props) {
           textColor="primary"
         >
           <Tab icon={<InfoIcon />} label="Generelt" />
-          <Tab icon={<TrendingUpIcon />} label="Regnskab" />
+          <Tab
+            icon={<TrendingUpIcon />}
+            label="Regnskab"
+            disabled={Object.keys(accountingData).length === 0}
+          />
         </Tabs>
         {value === 1 ? (
           <Grid container spacing={3} style={{ margin: 10, marginBottom: 0 }}>
@@ -93,17 +97,11 @@ function CompanyDataModel(props) {
               <Select
                 styles={selectStyles()}
                 inputId="react-select-single-workspace"
-                TextFieldProps={{
-                  label: t("workspaces.workspace-form.select_group"),
-                  InputLabelProps: {
-                    htmlFor: "react-select-single-workspace",
-                    shrink: true,
-                  },
-                  placeholder: t("workspaces.workspace-form.select_group"),
-                }}
-                placeholder={t("workspaces.workspace-form.select_group")}
                 options={years}
                 value={year}
+                menuPortalTarget={document.body}
+                menuPlacement="auto"
+                menuPosition="absolute"
                 onChange={handleYear}
               />
             </Grid>

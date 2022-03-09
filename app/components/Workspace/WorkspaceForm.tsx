@@ -77,7 +77,10 @@ const WorkspaceForm = (props) => {
             <NoSsr>
               <Select
                 classes={classes}
-                styles={selectStyles('relative')}
+                styles={selectStyles()}
+                menuPortalTarget={document.body}
+                menuPlacement="auto"
+                menuPosition="absolute"
                 inputId="react-select-single-workspace"
                 TextFieldProps={{
                   label: t('workspaces.workspace-form.select_group'),
@@ -98,7 +101,10 @@ const WorkspaceForm = (props) => {
         </Tooltip>
         <div className={classes.field} style={{ marginTop: theme.spacing(2) }}>
           <CreatableSelect
-            styles={selectStyles('relative')}
+            styles={selectStyles()}
+            menuPortalTarget={document.body}
+            menuPlacement="auto"
+            menuPosition="absolute"
             isMulti
             isClearable
             value={tags.map(tagMapping)}

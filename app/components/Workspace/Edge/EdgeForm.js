@@ -1,54 +1,53 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, useTheme } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import css from '@styles/Form.scss';
-import '@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css';
-import Select from 'react-select';
-import { mapSelectOptions, selectStyles } from '@api/ui/helper';
-import CreatableSelect from 'react-select/creatable';
-import { SketchPicker } from 'react-color';
-import Typography from '@material-ui/core/Typography';
-import Checkbox from '@material-ui/core/Checkbox';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import styles from '../workspace-jss';
-import BeizerCurve from './beizerCurve.svg';
-import StraightLine from './straightLine.svg';
-import SmoothStep from './smoothStep.svg';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { withStyles, useTheme } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import css from "@styles/Form.scss";
+import "@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css";
+import Select from "react-select";
+import { mapSelectOptions, selectStyles } from "@api/ui/helper";
+import CreatableSelect from "react-select/creatable";
+import { SketchPicker } from "react-color";
+import Typography from "@material-ui/core/Typography";
+import Checkbox from "@material-ui/core/Checkbox";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import styles from "../workspace-jss";
+import BeizerCurve from "./beizerCurve.svg";
+import StraightLine from "./straightLine.svg";
+import SmoothStep from "./smoothStep.svg";
 
 const relationshipTypeOptions = [
   {
-    value: 'straight',
+    value: "straight",
     label: (
       <>
-        <span style={{ paddingRight: '5px' }}>Lige linje</span>
+        <span style={{ paddingRight: "5px" }}>Lige linje</span>
         <img src={StraightLine} alt="straight line" style={{ height: 36 }} />
       </>
-    )
+    ),
   },
   {
-    value: 'custom',
+    value: "custom",
     label: (
       <>
-        <span style={{ paddingRight: '5px' }}>Beizer Kurve</span>
+        <span style={{ paddingRight: "5px" }}>Beizer Kurve</span>
         <img src={BeizerCurve} alt="beizer curve" style={{ height: 36 }} />
       </>
-    )
+    ),
   },
   {
-    value: 'smoothstep',
+    value: "smoothstep",
     label: (
       <>
-        <span style={{ paddingRight: '5px' }}>Step kurve</span>
+        <span style={{ paddingRight: "5px" }}>Step kurve</span>
         <img src={SmoothStep} alt="smooth step" style={{ height: 36 }} />
       </>
-    )
+    ),
   },
 ];
-
 
 const EdgeForm = (props) => {
   const {
@@ -73,14 +72,13 @@ const EdgeForm = (props) => {
     handleSave,
     relationships: iRelationships,
     isUpdatingElement,
-    handleDeleteEdge
+    handleDeleteEdge,
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const editable = relationshipLabel.length === 0;
   const relationships = iRelationships.toJS();
-  const choosenRelationship = relationships.find(r => r.label === relationshipLabel);
+  const choosenRelationship = relationships.find((r) => r.label === relationshipLabel);
   const theme = useTheme();
-
 
   return (
     <div>
@@ -88,19 +86,26 @@ const EdgeForm = (props) => {
         <div className={classes.field}>
           <CreatableSelect
             classes={classes}
-            styles={selectStyles('relative')}
+            styles={selectStyles()}
+            menuPortalTarget={document.body}
+            menuPlacement="auto"
+            menuPosition="absolute"
             inputId="react-select-single-edgelabel"
             TextFieldProps={{
-              label: 'label',
+              label: "label",
               InputLabelProps: {
-                htmlFor: 'react-select-single-edgelabel',
+                htmlFor: "react-select-single-edgelabel",
                 shrink: true,
               },
-              placeholder: 'label',
+              placeholder: "label",
             }}
             placeholder="label"
-            options={mapSelectOptions(relationships.map(r => ({ value: r?.label, label: r?.description })))}
-            value={relationshipLabel && { label: relationshipLabel, value: relationshipLabel }}
+            options={mapSelectOptions(
+              relationships.map((r) => ({ value: r?.label, label: r?.description }))
+            )}
+            value={
+              relationshipLabel && { label: relationshipLabel, value: relationshipLabel }
+            }
             onChange={handleChangeLabel}
           />
         </div>
@@ -108,19 +113,30 @@ const EdgeForm = (props) => {
           <div className={classes.field} style={{ marginTop: 20 }}>
             <CreatableSelect
               isClearable
-              styles={selectStyles('relative')}
+              styles={selectStyles()}
+              menuPortalTarget={document.body}
+              menuPlacement="auto"
+              menuPosition="absolute"
               inputId="react-select-single-edge-value"
               TextFieldProps={{
-                label: 'Værdi',
+                label: "Værdi",
                 InputLabelProps: {
-                  htmlFor: 'react-select-single-edge-value',
+                  htmlFor: "react-select-single-edge-value",
                   shrink: true,
                 },
-                placeholder: 'Værdi',
+                placeholder: "Værdi",
               }}
               placeholder="Værdi"
-              options={choosenRelationship && choosenRelationship.values.map(r => ({ value: r, label: r }))}
-              value={relationshipValue && { label: relationshipValue, value: relationshipValue }}
+              options={
+                choosenRelationship &&
+                choosenRelationship.values.map((r) => ({ value: r, label: r }))
+              }
+              value={
+                relationshipValue && {
+                  label: relationshipValue,
+                  value: relationshipValue,
+                }
+              }
               onChange={handleChangeValue}
             />
           </div>
@@ -128,36 +144,48 @@ const EdgeForm = (props) => {
         <div className={classes.field} style={{ marginTop: 20 }}>
           <Select
             classes={classes}
-            styles={selectStyles('relative')}
+            menuPortalTarget={document.body}
+            menuPlacement="auto"
+            menuPosition="absolute"
+            styles={selectStyles()}
             inputId="react-select-single-edge-workspace-type"
             TextFieldProps={{
-              label: 'type',
+              label: "type",
               InputLabelProps: {
-                htmlFor: 'react-select-single-edge-workspace-type',
+                htmlFor: "react-select-single-edge-workspace-type",
                 shrink: true,
               },
-              placeholder: 'type',
+              placeholder: "type",
             }}
             placeholder="type"
             options={relationshipTypeOptions}
-            value={type && relationshipTypeOptions.find(x => x.value === type)}
+            value={type && relationshipTypeOptions.find((x) => x.value === type)}
             onChange={handleTypeChange}
           />
         </div>
 
         <div className={classes.colorRow}>
-          <Typography variant="subtitle2">
-                Pick a Color
-          </Typography>
-          <div className={classes.swatch} onClick={() => !editable && setDisplayColorPickerColor(prevVal => !prevVal)}>
-            <div className={classes.color} style={{ backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})` }} />
+          <Typography variant="subtitle2">Pick a Color</Typography>
+          <div
+            className={classes.swatch}
+            onClick={() => !editable && setDisplayColorPickerColor((prevVal) => !prevVal)}
+          >
+            <div
+              className={classes.color}
+              style={{
+                backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`,
+              }}
+            />
           </div>
-          { displayColorPickerColor ? (
+          {displayColorPickerColor ? (
             <div className={classes.popover}>
-              <div className={classes.cover} onClick={() => setDisplayColorPickerColor(false)} />
+              <div
+                className={classes.cover}
+                onClick={() => setDisplayColorPickerColor(false)}
+              />
               <SketchPicker color={color} onChange={handleColorChange} />
             </div>
-          ) : null }
+          ) : null}
         </div>
         <ButtonBase className={classes.row} onClick={handleShowArrowChange}>
           <Checkbox
@@ -166,9 +194,7 @@ const EdgeForm = (props) => {
             color="primary"
             disabled={editable}
           />
-          <Typography variant="subtitle2">
-                Vis som pil
-          </Typography>
+          <Typography variant="subtitle2">Vis som pil</Typography>
         </ButtonBase>
         <ButtonBase className={classes.row} onClick={handleAnimatedLineChange}>
           <Checkbox
@@ -177,9 +203,7 @@ const EdgeForm = (props) => {
             color="primary"
             disabled={editable}
           />
-          <Typography variant="subtitle2">
-                Animeret linje
-          </Typography>
+          <Typography variant="subtitle2">Animeret linje</Typography>
         </ButtonBase>
         <ButtonBase className={classes.row} onClick={handleLineThroughChange}>
           <Checkbox
@@ -188,9 +212,7 @@ const EdgeForm = (props) => {
             color="primary"
             disabled={editable}
           />
-          <Typography variant="subtitle2">
-                Vis som overstreget
-          </Typography>
+          <Typography variant="subtitle2">Vis som overstreget</Typography>
         </ButtonBase>
         <ButtonBase className={classes.row} onClick={handleShowLabelChange}>
           <Checkbox
@@ -199,9 +221,7 @@ const EdgeForm = (props) => {
             color="primary"
             disabled={editable}
           />
-          <Typography variant="subtitle2">
-                Vis label
-          </Typography>
+          <Typography variant="subtitle2">Vis label</Typography>
         </ButtonBase>
       </section>
       <div className={css.buttonArea}>
@@ -210,13 +230,13 @@ const EdgeForm = (props) => {
             variant="contained"
             type="button"
             onClick={handleDeleteEdge}
-            style={{ backgroundColor: theme.palette.error.dark, color: 'white' }}
+            style={{ backgroundColor: theme.palette.error.dark, color: "white" }}
           >
             Delete
           </Button>
         )}
         <Button type="button" onClick={() => close()}>
-            Annuller
+          Annuller
         </Button>
         <Button
           variant="contained"
@@ -225,7 +245,7 @@ const EdgeForm = (props) => {
           onClick={handleSave}
           disabled={relationshipLabel.length === 0 && relationshipValue === 0}
         >
-            Gem
+          Gem
         </Button>
       </div>
     </div>

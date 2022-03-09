@@ -92,7 +92,7 @@ const WorkspaceNodeForm = (props) => {
         <div className={classes.field}>
           <CreatableSelect
             classes={classes}
-            styles={selectStyles("relative")}
+            styles={selectStyles()}
             inputId="react-select-single-workspace-node"
             autoFocus
             TextFieldProps={{
@@ -107,6 +107,9 @@ const WorkspaceNodeForm = (props) => {
             options={nodes.map((n) => ({ value: n.label, label: n.label }))}
             value={nodeLabel && { label: nodeLabel, value: nodeLabel }}
             onChange={handleChangeLabel}
+            menuPortalTarget={document.body}
+            menuPlacement="auto"
+            menuPosition="absolute"
           />
         </div>
         {choosenNode && (
@@ -128,7 +131,10 @@ const WorkspaceNodeForm = (props) => {
             <div className={classes.inlineWrap} style={{ marginTop: 15 }}>
               <div className={classes.field}>
                 <CreatableSelect
-                  styles={selectStyles("relative")}
+                  styles={selectStyles()}
+                  menuPortalTarget={document.body}
+                  menuPlacement="auto"
+                  menuPosition="absolute"
                   placeholder="Kendetegn"
                   options={attributesDropDownOptions}
                   value={
@@ -216,7 +222,10 @@ const WorkspaceNodeForm = (props) => {
             <div className={classes.field} style={{ marginTop: 20 }}>
               <Select
                 classes={classes}
-                styles={{ ...selectStyles("relative"), padding: 10 }}
+                styles={{ ...selectStyles(), padding: 10 }}
+                menuPortalTarget={document.body}
+                menuPlacement="auto"
+                menuPosition="absolute"
                 isClearable
                 inputId="react-select-single-edge-type"
                 TextFieldProps={{

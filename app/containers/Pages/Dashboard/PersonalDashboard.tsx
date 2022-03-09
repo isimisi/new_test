@@ -257,7 +257,7 @@ const PersonalDashboard = () => {
               />
               <div style={{ marginTop: theme.spacing(2) }}>
                 <Select
-                  styles={selectStyles('relative')}
+                  styles={selectStyles()}
                   isMulti
                   inputId="react-select-single-relationship"
                   placeholder={t('workspaces.restrict_countries')}
