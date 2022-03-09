@@ -66,6 +66,7 @@ interface Props {
   handelRemoveAttributes: any;
   handleNodeFigur: any;
   nodeFigur: any;
+  removeNodeTextTarget: () => void;
 }
 
 const NodePopper = (props: Props) => {
@@ -90,7 +91,8 @@ const NodePopper = (props: Props) => {
     handleChangeAttributes,
     handelRemoveAttributes,
     handleNodeFigur,
-    nodeFigur
+    nodeFigur,
+    removeNodeTextTarget
   } = props;
   // eslint-disable-next-line react/destructuring-assignment
   const activeElement = props.activeElement as Node;
@@ -124,6 +126,7 @@ const NodePopper = (props: Props) => {
   };
 
   const toggleLabelMenu = e => {
+    removeNodeTextTarget();
     setTypeRef(null);
     setDisplayBorderColorPickerColor(false);
     setDisplayColorPickerColor(false);
@@ -148,6 +151,7 @@ const NodePopper = (props: Props) => {
   };
 
   const handleEditData = e => {
+    removeNodeTextTarget();
     editData(e, activeElement, true);
   };
 

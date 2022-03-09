@@ -1293,6 +1293,7 @@ const Workspace = (props) => {
             handelRemoveAttributes={handelRemoveAttributes}
             handleNodeFigur={handleNodeFigur}
             nodeFigur={nodeFigur}
+            removeNodeTextTarget={removeNodeTextTarget}
           />}
         </>
       )}
