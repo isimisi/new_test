@@ -172,7 +172,7 @@
     },
     "relationship-stylling": {
       "standard_look": "Standard-udseende",
-      "pick_a_label_size": "Vælg en labelstørrelse",
+      "pick_a_label_size": "Vælg en elementstørrelse",
       "pick_a_color": "Vælg en farve",
       "small": "lille",
       "medium": "medium",
@@ -235,9 +235,9 @@
       "workspace": "arbejdsområdet"
     },
     "not_allowed": {
-      "change": "At ændre grupper er forbehold brugere på Pro abonnementer.",
-      "delete": "At slette grupper er forbehold brugere på Pro abonnementer.",
-      "add": "At oprette grupper er forbehold brugere på Pro abonnementer."
+      "change": "At ændre grupper er forbeholdt brugere på Pro-abonnementer.",
+      "delete": "At slette grupper er forbeholdt brugere på Pro- abonnementer.",
+      "add": "At oprette grupper er forbeholdt brugere på Pro-abonnementer."
     }
   },
   "nodes": {
@@ -421,12 +421,12 @@
     "add_step": "Tilføj step",
     "mouse": "Mus",
     "node": {
-      "no_label": "Dette element har ikke noget label.",
-      "edit_label": "Rediger label",
-      "edit_attributes": "Rediger attributes",
+      "no_label": "Stamdata mangler.",
+      "edit_label": "Rediger elementtype",
+      "edit_attributes": "Rediger kendetegn",
       "edit_icon": "Rediger ikon",
       "edit_background_color": "Rediger baggrundsfarve",
-      "edit_border_color": "Rediger farven på kanten",
+      "edit_border_color": "Rediger kantfarve",
       "see_company_info": "Se virksomhedsinformation",
       "see more": "Mere"
     }
@@ -435,8 +435,8 @@
     "earlier_versions": "Tidligere versioner",
     "save": "Gem",
     "convert_to_pp": "Konverter til powerpoint",
-    "convert_to_pp_dynamic": "Konverter til Powerpoint (Dynamisk)",
-    "convert_to_pp_static": "Konveter til Powerpoint (statisk)",
+    "convert_to_pp_dynamic": "Konverter til PowerPoint (Dynamisk)",
+    "convert_to_pp_static": "Konverter til PowerPoint (statisk)",
     "export": "Eksporter"
   },
   "workspace-meta": {
@@ -658,7 +658,7 @@
       "do_not_show_again": "Vis ikke igen"
     },
     "node": {
-      "label_placeholder": "Vælg eller lav et label"
+      "label_placeholder": "Tilføj elementtype"
     },
     "edit_node_data": "Rediger stamdata"
   },
