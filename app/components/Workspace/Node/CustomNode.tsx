@@ -237,7 +237,7 @@ const CustomNode = ({ data }) => {
           height: "calc(100% + 20px)",
           zIndex: -1,
           cursor: "default",
-          backgroundColor: "pink",
+
           borderRadius: 10
         }}
       />
