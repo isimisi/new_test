@@ -233,10 +233,12 @@ const CustomNode = ({ data }) => {
         className="nodrag"
         style={{
           position: "absolute",
-          width: "calc(100% + 50px)",
-          height: "calc(100% + 50px)",
+          width: "calc(100% + 20px)",
+          height: "calc(100% + 20px)",
           zIndex: -1,
-          cursor: "default"
+          cursor: "default",
+          backgroundColor: "pink",
+          borderRadius: 10
         }}
       />
     </div>
