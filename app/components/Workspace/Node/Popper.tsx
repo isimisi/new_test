@@ -198,13 +198,45 @@ const NodePopper = (props: Props) => {
         div.setAttribute("id", "saveContainer");
         picker[0].appendChild(div);
       }
+      // let button = document.getElementById("saveButton");
+      // if (!button) {
+      //   button = document.createElement("div");
+      //   button.setAttribute("id", "saveButton");
+      //   button.className = classes.attributSaveButtonContainer;
 
+      //   const innerButton = document.createElement("button");
+      //   innerButton.className =
+      //     "MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary";
+      //   innerButton.setAttribute("tabIndex", "0");
+      //   innerButton.setAttribute("type", "button");
+      //   innerButton.setAttribute("onClick", "console.log('maslkmnsklnd')");
+
+      //   const innerSpan1 = document.createElement("span");
+      //   const innerSpan2 = document.createElement("span");
+
+      //   innerSpan1.className = "MuiButton-label";
+      //   innerSpan1.innerText = "Gem";
+      //   innerSpan2.className = "MuiTouchRipple-root";
+
+      //   button.appendChild(innerButton);
+      //   button.appendChild(innerSpan1);
+      //   button.appendChild(innerSpan2);
+
+      //   div.appendChild(button);
+      // }
       // @ts-ignore
+
       ReactDOM.render(
         <div className={classes.attributSaveButtonContainer}>
-          <Button color="primary" onClick={handleSave}>
-            {t("save")}
-          </Button>
+          <button
+            className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+            tabIndex={0}
+            type="button"
+            onClick={handleSave}
+          >
+            <span className="MuiButton-label">Gem</span>
+            <span className="MuiTouchRipple-root" />
+          </button>
         </div>,
         div
       );
@@ -426,8 +458,9 @@ const NodePopper = (props: Props) => {
               <IconButton
                 className={classes.labelConfirmButton}
                 onClick={handleSave}
+                size="small"
               >
-                <CheckCircleIcon />
+                <CheckCircleIcon color="primary" fontSize="large" />
               </IconButton>
             </Paper>
           </Fade>
@@ -617,8 +650,9 @@ const NodePopper = (props: Props) => {
               <IconButton
                 className={classes.labelConfirmButton}
                 onClick={handleSave}
+                size="small"
               >
-                <CheckCircleIcon />
+                <CheckCircleIcon color="primary" fontSize="large" />
               </IconButton>
             </Paper>
           </Fade>

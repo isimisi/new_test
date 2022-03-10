@@ -487,9 +487,12 @@ const Workspace = (props) => {
     onNodeDoubleClick,
   } = useDoubbleClick(updateNodeDisplayName);
 
-
+  const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
   const onConnect = (data) => {
     removeNodeTextTarget();
+    setNodePopperRef(null);
+    setIsUpdatingElement(false);
+    handleHideNodePopper();
     if (data.source !== data.target) {
       setCurrentConnectionData(data);
       setDefineEdgeOpen(true);
@@ -523,7 +526,7 @@ const Workspace = (props) => {
 
   const [activeElement, setActiveElement] = useState<Node | Edge | null>(null);
 
-  const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
+
   const onElementClick = (event: MouseEvent, element: FlowElement, showFull?: boolean) => {
     setActiveElement(element);
     dispatch(setShowCompanyData(false));
@@ -534,11 +537,11 @@ const Workspace = (props) => {
     setElementToUpdate(element);
     setDeletedAttributes([]);
     removeNodeTextTarget();
+    setNodePopperRef(null);
+    handleHideNodePopper();
     const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
     const borderColor = element.data.backgroundColor ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
     if (isNode(element)) {
-      setNodePopperRef(null);
-      handleHideNodePopper();
       setNodeLabel(element.data.label);
       setNodeDisplayName(element.data.displayName || '');
       setNodeFigur(element.data.figur);
@@ -1270,7 +1273,7 @@ const Workspace = (props) => {
             fitView={() => rfInstance?.fitView()}
           />
           <InternationalStructureAlert open={showInternationalDisclaimer} close={closeInternationalDisclaimer} />
-          {showNodePopper && <NodePopper
+          {showNodePopper && nodePopperRef && <NodePopper
             nodePopperRef={nodePopperRef}
             showNodePopper={showNodePopper}
             currentZoom={currentZoom}
