@@ -9,7 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "../workspace-jss";
-import { RGBA } from "@customTypes/data";
+import { RGBA, SelectChoice } from "@customTypes/data";
 import ListIcon from "@material-ui/icons/List";
 import { SketchPicker, ColorResult } from "react-color";
 import LabelIcon from "@material-ui/icons/Label";
@@ -31,12 +31,7 @@ import { red } from "@api/palette/colorfull";
 import TextField from "@material-ui/core/TextField";
 import { figurTypeOptions } from "./WorkspaceNodeForm";
 import ReactDOM from "react-dom";
-
-interface Label {
-  value: string;
-  label: string;
-  __isNew__: boolean;
-}
+import FormatColorTextIcon from "@material-ui/icons/FormatColorText";
 
 interface Props {
   classes: any;
@@ -50,7 +45,7 @@ interface Props {
   handleColorChange: (color: ColorResult) => void;
   nodes: any[];
   nodeLabel: string;
-  handleChangeLabel: (label: Label) => void;
+  handleChangeLabel: (label: SelectChoice) => void;
   handleNodeSave: () => void;
   editData: (
     event: MouseEvent,
@@ -67,6 +62,8 @@ interface Props {
   handleNodeFigur: any;
   nodeFigur: any;
   removeNodeTextTarget: () => void;
+  nodeLabelColor: RGBA;
+  handleLabelColorChange: (color: RGBA) => void;
 }
 
 const NodePopper = (props: Props) => {
@@ -92,7 +89,9 @@ const NodePopper = (props: Props) => {
     handelRemoveAttributes,
     handleNodeFigur,
     nodeFigur,
-    removeNodeTextTarget
+    removeNodeTextTarget,
+    nodeLabelColor,
+    handleLabelColorChange
   } = props;
   // eslint-disable-next-line react/destructuring-assignment
   const activeElement = props.activeElement as Node;
@@ -108,9 +107,14 @@ const NodePopper = (props: Props) => {
     displayBorderColorPickerColor,
     setDisplayBorderColorPickerColor
   ] = useState(false);
+  const [
+    displayLabelColorPickerColor,
+    setDisplayLabelColorPickerColor
+  ] = useState(false);
 
   const toggleDisplayColor = () => {
     setTypeRef(null);
+    setDisplayLabelColorPickerColor(false);
     setDisplayBorderColorPickerColor(false);
     setAttributRefRef(null);
     setLabelRef(null);
@@ -119,14 +123,25 @@ const NodePopper = (props: Props) => {
 
   const toggleDisplayBorderColor = () => {
     setTypeRef(null);
+    setDisplayLabelColorPickerColor(false);
     setDisplayColorPickerColor(false);
     setLabelRef(null);
     setAttributRefRef(null);
     setDisplayBorderColorPickerColor(prevVal => !prevVal);
   };
 
+  const toggleDisplayLabelColor = () => {
+    setTypeRef(null);
+    setDisplayColorPickerColor(false);
+    setLabelRef(null);
+    setAttributRefRef(null);
+    setDisplayBorderColorPickerColor(false);
+    setDisplayLabelColorPickerColor(prevVal => !prevVal);
+  };
+
   const toggleLabelMenu = e => {
     removeNodeTextTarget();
+    setDisplayLabelColorPickerColor(false);
     setTypeRef(null);
     setDisplayBorderColorPickerColor(false);
     setDisplayColorPickerColor(false);
@@ -136,6 +151,7 @@ const NodePopper = (props: Props) => {
 
   const toggleAttributMenu = e => {
     setTypeRef(null);
+    setDisplayLabelColorPickerColor(false);
     setDisplayBorderColorPickerColor(false);
     setDisplayColorPickerColor(false);
     setLabelRef(null);
@@ -144,6 +160,7 @@ const NodePopper = (props: Props) => {
 
   const toggleTypeMenu = e => {
     setDisplayBorderColorPickerColor(false);
+    setDisplayLabelColorPickerColor(false);
     setDisplayColorPickerColor(false);
     setAttributRefRef(null);
     setLabelRef(null);
@@ -245,7 +262,9 @@ const NodePopper = (props: Props) => {
     displayBorderColorPickerColor,
     displayColorPickerColor,
     nodeColor,
-    nodeBorderColor
+    nodeBorderColor,
+    displayLabelColorPickerColor,
+    nodeLabelColor
   ]);
 
   return (
@@ -373,6 +392,33 @@ const NodePopper = (props: Props) => {
                   <SketchPicker
                     color={nodeBorderColor}
                     onChange={handleBorderColorChange}
+                  />
+                </div>
+              ) : null}
+              <Tooltip
+                arrow
+                title={`${t("workspaces.node.edit_border_color")}`}
+                placement="top"
+              >
+                <ButtonBase
+                  className={classes.swatchQuick}
+                  onClick={toggleDisplayLabelColor}
+                >
+                  <FormatColorTextIcon
+                    style={{
+                      color: `rgba(${nodeLabelColor.r}, ${nodeLabelColor.g}, ${
+                        nodeLabelColor.b
+                      }, ${nodeLabelColor.a})`,
+                      fontSize: 25
+                    }}
+                  />
+                </ButtonBase>
+              </Tooltip>
+              {displayLabelColorPickerColor ? (
+                <div className={classes.popover2}>
+                  <SketchPicker
+                    color={nodeLabelColor}
+                    onChange={handleLabelColorChange}
                   />
                 </div>
               ) : null}

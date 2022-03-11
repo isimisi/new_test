@@ -1,12 +1,41 @@
 import React from "react";
-import PropTypes from "prop-types";
+
 import { withStyles } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import WorkspaceNodeForm from "./WorkspaceNodeForm";
 import FloatingPanel from "../../Panel/FloatingPanel";
 import styles from "../workspace-jss";
+import { RGBA, SelectChoice, SelectOptions } from "@customTypes/data";
+import { ColorResult } from "react-color";
+import { FlowElement } from "react-flow-renderer";
+interface Props {
+  open: boolean;
+  close: () => void;
+  nodes: any;
+  nodeLabel: string;
+  handleChangeLabel: (label: SelectChoice) => void;
+  attributes: any;
+  handleChangeAttributes: (attr: any, newRow: any, isNew: boolean) => void;
+  nodeColor: RGBA;
+  handleChangeColor: (color: ColorResult) => void;
+  nodeBorderColor: RGBA;
+  handleBorderColorChange: (color: ColorResult) => void;
+  handleNodeSave: () => void;
+  nodeDisplayName: string;
+  handleDisplayNameChange: (event: any) => void;
+  isUpdatingElement: boolean;
+  elementToUpdate: FlowElement | null;
+  handleDeleteNode: () => void;
+  loading: boolean;
+  attributesDropDownOptions: SelectOptions[];
+  handleRemoveAttributes: (id: any, index: number) => void;
+  nodeFigur: string | null;
+  handleNodeFigurChange: (figur: SelectOptions) => void;
+  nodeLabelColor: RGBA;
+  handleLabelColorChange: (color: ColorResult) => void;
+}
 
-function DefineNode(props) {
+function DefineNode(props: Props) {
   const {
     open,
     close,
@@ -30,6 +59,8 @@ function DefineNode(props) {
     handleRemoveAttributes,
     nodeFigur,
     handleNodeFigurChange,
+    nodeLabelColor,
+    handleLabelColorChange
   } = props;
 
   return (
@@ -64,40 +95,13 @@ function DefineNode(props) {
             handleRemoveAttributes={handleRemoveAttributes}
             nodeFigur={nodeFigur}
             handleNodeFigurChange={handleNodeFigurChange}
+            nodeLabelColor={nodeLabelColor}
+            handleLabelColorChange={handleLabelColorChange}
           />
         )}
       </FloatingPanel>
     </div>
   );
 }
-
-DefineNode.propTypes = {
-  open: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-  nodes: PropTypes.array.isRequired,
-  nodeLabel: PropTypes.string.isRequired,
-  handleChangeLabel: PropTypes.func.isRequired,
-  attributes: PropTypes.array.isRequired,
-  handleChangeAttributes: PropTypes.func.isRequired,
-  nodeColor: PropTypes.object.isRequired,
-  handleChangeColor: PropTypes.func.isRequired,
-  nodeBorderColor: PropTypes.object.isRequired,
-  handleBorderColorChange: PropTypes.func.isRequired,
-  handleNodeSave: PropTypes.func.isRequired,
-  nodeDisplayName: PropTypes.string.isRequired,
-  handleDisplayNameChange: PropTypes.func.isRequired,
-  isUpdatingElement: PropTypes.bool.isRequired,
-  elementToUpdate: PropTypes.object.isRequired,
-  handleDeleteNode: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
-  attributesDropDownOptions: PropTypes.array.isRequired,
-  handleRemoveAttributes: PropTypes.func.isRequired,
-  nodeFigur: PropTypes.string,
-  handleNodeFigurChange: PropTypes.func.isRequired,
-};
-
-DefineNode.defaultProps = {
-  nodeFigur: null,
-};
 
 export default withStyles(styles)(DefineNode);

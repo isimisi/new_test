@@ -31,3 +31,9 @@ export interface RGBA {
   b: number;
   a: number;
 }
+
+export interface SelectChoice {
+  value: string;
+  label: string;
+  __isNew__: boolean;
+}

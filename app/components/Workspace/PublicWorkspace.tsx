@@ -52,7 +52,7 @@ import {
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
-  getCompanyData, signWorkspace, showWorkspace
+  signWorkspace, showWorkspace
 } from '../../containers/Pages/Workspaces/reducers/workspaceActions';
 import '../../containers/Pages/Workspaces/workspace.css';
 import SignWorkspace from './SignWorkspace';
@@ -139,7 +139,7 @@ const Workspace = (props) => {
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
   const [nodeDisplayName, setNodeDisplayName] = useState('');
-  const [nodeFigur, setNodeFigur] = useState(null);
+  const [nodeFigur, setNodeFigur] = useState<string | null>(null);
   const [attributes, setAttributes] = useState([initialAttribut]);
   const [choosenNode, setChoosenNode] = useState<NodeDropdownInstance | null>(null);
 
@@ -151,6 +151,13 @@ const Workspace = (props) => {
     r: 0, g: 0, b: 0, a: 1
   });
 
+  const [nodeLabelColor, setNodeLabelColor] = useState({
+    r: 0, g: 0, b: 0, a: 1
+  });
+  const handleLabelColorChange = (color) => {
+    console.log(color);
+    setNodeLabelColor(color.rgb);
+  };
 
   // REACT FLOW SPECIFIC
 
@@ -266,7 +273,8 @@ const Workspace = (props) => {
       if (!editable) {
         dispatch(showNotifAction(t('workspaces.public_editable_notification')));
       } else if (isUpdatingElement && elementToUpdate) {
-        dispatch(putNode(user, elementToUpdate.id, choosenNode.id, choosenNode.label, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closehandleNode));
+        dispatch(putNode(user, elementToUpdate.id, choosenNode.id, choosenNode.label,
+          nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closehandleNode));
       } else {
         dispatch(postNode(
           user,
@@ -560,6 +568,8 @@ const Workspace = (props) => {
         handleChangeColor={(color) => setNodeColor(color.rgb)}
         nodeBorderColor={nodeBorderColor}
         handleBorderColorChange={(color) => setNodeBorderColor(color.rgb)}
+        nodeLabelColor={nodeLabelColor}
+        handleLabelColorChange={handleLabelColorChange}
         handleNodeSave={handleNodeSave}
         nodeDisplayName={nodeDisplayName}
         nodeFigur={nodeFigur}
@@ -577,11 +587,7 @@ const Workspace = (props) => {
             setDeletedAttributes(attr => [...attr, _id]);
           }
         }}
-        showCompanyData={() => {
-          if (elementToUpdate) {
-            dispatch(getCompanyData(user, elementToUpdate.id, setShowCompanyData));
-          }
-        }}
+
       />
       <CvrDialog
         loading={loading}

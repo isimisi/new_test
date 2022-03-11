@@ -80,9 +80,12 @@ const WorkspaceNodeForm = (props) => {
     handleRemoveAttributes,
     nodeFigur,
     handleNodeFigurChange,
+    nodeLabelColor,
+    handleLabelColorChange,
   } = props;
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState();
   const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] = useState();
+  const [displayLabelColorPickerColor, setDisplayLabelColorPickerColor] = useState();
   const choosenNode = nodes.find((r) => r.label === nodeLabel);
   const theme = useTheme();
 
@@ -297,6 +300,34 @@ const WorkspaceNodeForm = (props) => {
                 </div>
               ) : null}
             </div>
+            <div className={classes.row} style={{ marginTop: 10 }}>
+              <Typography variant="subtitle2">Vælg en farve for teksten</Typography>
+              <div
+                className={classes.swatch}
+                onClick={() => setDisplayLabelColorPickerColor((prevVal) => !prevVal)}
+              >
+                <div
+                  className={classes.color}
+                  style={{
+                    backgroundColor: `rgba(${nodeLabelColor.r}, ${nodeLabelColor.g}, ${
+                      nodeLabelColor.b
+                    }, ${nodeLabelColor.a})`,
+                  }}
+                />
+              </div>
+              {displayLabelColorPickerColor ? (
+                <div className={classes.popover}>
+                  <div
+                    className={classes.cover}
+                    onClick={() => setDisplayLabelColorPickerColor(false)}
+                  />
+                  <SketchPicker
+                    color={nodeLabelColor}
+                    onChange={handleLabelColorChange}
+                  />
+                </div>
+              ) : null}
+            </div>
           </>
         )}
       </section>
@@ -349,6 +380,8 @@ WorkspaceNodeForm.propTypes = {
   handleRemoveAttributes: PropTypes.func.isRequired,
   nodeFigur: PropTypes.string,
   handleNodeFigurChange: PropTypes.func.isRequired,
+  nodeLabelColor: PropTypes.string.isRequired,
+  handleLabelColorChange: PropTypes.func.isRequired,
 };
 
 WorkspaceNodeForm.defaultProps = {

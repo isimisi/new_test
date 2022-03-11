@@ -97,7 +97,7 @@ import Controls from '@components/Workspace/Actions/Controls';
 import Items from '@components/Workspace/Actions/Items';
 import Meta from '@components/Workspace/Actions/Meta';
 import Collaboration from '@components/Workspace/Actions/Collaborations';
-import { RGBA } from '@customTypes/data';
+import { RGBA, SelectChoice } from '@customTypes/data';
 
 import { handleExport } from '@helpers/export/handleExport';
 import useFlowContextMenus from '@hooks/flow/flowContexts';
@@ -244,7 +244,7 @@ const Workspace = (props) => {
   // NODE
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
-  const handleChangeLabelNode = (_label) => {
+  const handleChangeLabelNode = (_label: SelectChoice) => {
     if (_label.__isNew__ && plan_id !== 1) {
       dispatch(addWorkspaceNodeToList({
         attributes: [],
@@ -299,6 +299,11 @@ const Workspace = (props) => {
     r: 0, g: 0, b: 0, a: 1
   });
   const handleBorderColorChange = (color) => setNodeBorderColor(color.rgb);
+
+  const [nodeLabelColor, setNodeLabelColor] = useState({
+    r: 0, g: 0, b: 0, a: 1
+  });
+  const handleLabelColorChange = (color) => setNodeLabelColor(color.rgb);
 
   // socket for cvr
   const [subscription, setSubscription] = useState(null);
@@ -438,7 +443,7 @@ const Workspace = (props) => {
     const nodeId = choosenNode ? choosenNode.id : null;
     const _nodeLabel = choosenNode ? choosenNode.label : null;
     if (isUpdatingElement && elementToUpdate) {
-      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, name, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
+      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, name, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
     }
   };
 
@@ -454,7 +459,7 @@ const Workspace = (props) => {
     const _nodeLabel = choosenNode ? choosenNode.label : null;
 
     if (isUpdatingElement && elementToUpdate && !drag) {
-      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
+      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
     } else if (drag) {
       dispatch(postNode(
         user,
@@ -540,7 +545,8 @@ const Workspace = (props) => {
     setNodePopperRef(null);
     handleHideNodePopper();
     const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
-    const borderColor = element.data.backgroundColor ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+    const borderColor = element.data.borderColor && !element.data.borderColor.includes("undefined") ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+    const labelColor = element.data.labelColor ? element.data.labelColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
     if (isNode(element)) {
       setNodeLabel(element.data.label);
       setNodeDisplayName(element.data.displayName || '');
@@ -549,9 +555,11 @@ const Workspace = (props) => {
       setNodeColor({
         r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
       });
+
       setNodeBorderColor({
         r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
       });
+      setNodeLabelColor({ r: labelColor[0], g: labelColor[1], b: labelColor[2], a: labelColor[3] });
       if (showFull) {
         setDefineNodeOpen(true);
       } else if (element.type === "custom") {
@@ -1115,6 +1123,8 @@ const Workspace = (props) => {
           handleChangeColor={(color) => setNodeColor(color.rgb)}
           nodeBorderColor={nodeBorderColor}
           handleBorderColorChange={handleBorderColorChange}
+          nodeLabelColor={nodeLabelColor}
+          handleLabelColorChange={handleLabelColorChange}
           handleNodeSave={handleNodeSave}
           nodeDisplayName={nodeDisplayName}
           nodeFigur={nodeFigur}
@@ -1280,6 +1290,8 @@ const Workspace = (props) => {
             close={handleHideNodePopper}
             nodeBorderColor={nodeBorderColor}
             handleBorderColorChange={handleBorderColorChange}
+            nodeLabelColor={nodeLabelColor}
+            handleLabelColorChange={handleLabelColorChange}
             nodeColor={nodeColor}
             handleColorChange={handleNodeColorChange}
             nodes={nodes}

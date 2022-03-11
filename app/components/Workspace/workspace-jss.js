@@ -420,9 +420,9 @@ const styles = (theme) => ({
     cursor: "pointer",
   },
   popover: {
-    position: "absolute",
-    top: 55,
-    left: 275,
+    position: "fixed",
+    bottom: 30,
+    right: 10,
     zIndex: "2",
   },
   popover2: {

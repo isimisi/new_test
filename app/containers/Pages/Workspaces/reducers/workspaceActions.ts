@@ -379,6 +379,7 @@ export const putNode = (
   figur: string | null,
   backgroundColor: string,
   borderColor: string,
+  labelColor: string,
   attributes: string,
   deletedAttributes: string,
   close: () => void
@@ -393,6 +394,7 @@ export const putNode = (
     figur,
     backgroundColor,
     borderColor,
+    labelColor,
     attributes,
     deletedAttributes,
   };

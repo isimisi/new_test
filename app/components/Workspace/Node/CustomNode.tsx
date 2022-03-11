@@ -107,9 +107,10 @@ const CustomNode = ({ data }) => {
 
   const header = useMemo(
     () => ({
-      fontSize: 10
+      fontSize: 10,
+      color: data.labelColor || "#000"
     }),
-    []
+    [data.labelColor]
   );
 
   const attr = useMemo(
@@ -191,7 +192,7 @@ const CustomNode = ({ data }) => {
               data-html2canvas-ignore="true"
               style={{
                 color:
-                  deltaE("rgb(255, 220, 121, 1)", data.backgroundColor) < 10
+                  deltaE("rgb(255, 220, 121, 1)", data.backgroundColor) < 30
                     ? "black"
                     : "rgb(255,220,121)",
                 fontSize: 10,
