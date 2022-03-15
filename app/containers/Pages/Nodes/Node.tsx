@@ -14,7 +14,7 @@ import {
   closeNotifAction
 } from "./reducers/nodeActions";
 import { reducer, generateNodeStyle } from "./constants";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
 import Notification from "@components/Notification/Notification";
 import NodeForm from "@components/Forms/NodeForm";
 import NodeDemo from "@components/Nodes/NodeDemo";
@@ -22,11 +22,11 @@ import NodeStyling from "@components/Nodes/NodeStyling";
 
 const Node = () => {
   const dispatch = useDispatch();
-  const { user } = useAuth0();
+  const user = useAuth0().user as User;
   const messageNotif = useSelector(state => state[reducer].get("message"));
   const history = useHistory();
   const theme = useTheme();
-  const id = getId(history);
+  const id = getId(history) as string;
   const title = useSelector(state => state[reducer].get("title"));
   const description = useSelector(state => state[reducer].get("description"));
   const attributes = useSelector(state =>
@@ -75,15 +75,16 @@ const Node = () => {
   };
 
   useEffect(() => {
-    if (user && id) {
-      dispatch(showNode(user, id));
-      if (group) {
-        dispatch(getAttributeDropDown(user, group));
-      }
+    dispatch(showNode(user, id));
+  }, [user]);
 
-      dispatch(getGroupDropDown(user));
+  useEffect(() => {
+    if (group) {
+      dispatch(getAttributeDropDown(user, group));
     }
-  }, [user, id, group]);
+
+    dispatch(getGroupDropDown(user));
+  }, [user, group]);
 
   return (
     <div>
