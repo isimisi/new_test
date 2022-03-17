@@ -612,7 +612,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       return state.withMutations((mutableState) => {
         const companies = fromJS(action.companies);
         mutableState.set("uncertainCompanies", companies);
-        mutableState.set("loading", false);
+        action.companies.length > 0 && mutableState.set("loading", false);
       });
     case SET_CONNECTED_USERS:
       return state.withMutations((mutableState) => {

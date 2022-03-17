@@ -341,6 +341,7 @@ const Workspace = (props) => {
   };
 
   const handleUncertainCompanies = (companies = []) => {
+    setShowCvrModal(true);
     dispatch(uncertainCompaniesChange(companies));
   };
 
@@ -716,7 +717,7 @@ const Workspace = (props) => {
   const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
   const handleDeleteEdge = useCallback(() => elementToUpdate && onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
-
+  console.log(rfInstance);
   const handlePostSticky = (e?: any, shortcut = false, x?: number, y?: number) => {
     const rf = rfInstance?.toObject();
     // @ts-ignore
