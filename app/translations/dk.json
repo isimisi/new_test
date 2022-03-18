@@ -324,9 +324,9 @@
     "drawing_error": "Vi havde en fejl i forbindelse med at trække koncerndiagrammet. Vores udviklere er  underettet og er på sagen!",
     "approved_and_locked_off": "Godkendt og låst af",
     "id": "ID:",
-    "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.",
-    "you_can_not_create_new_item_types": "Du kan ikke lave nye elementtyper. Dette er en Draw-feature. Kontakt os for mere information.",
-    "you_can_not_create_new_attribute_types": "Du kan ikke lave nye kendetegnstyper. Dette er en Draw-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Pro-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_item_types": "Du kan ikke lave nye elementtyper. Dette er en Pro-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_attribute_types": "Du kan ikke lave nye kendetegnstyper. Dette er en Pro-feature. Kontakt os for mere information.",
     "load_from_CVR": "Indlæs fra virksomhedsregistre",
     "search_for_a_company_or_CVR_number": "Søg på en virksomhed, en person eller et CVR-nummer",
     "restrict_countries": "Søg kun i bestemte lande",
@@ -484,7 +484,7 @@
     "what_is_a_red_flag?": "Hvad er et red flag?",
     "red_flag_expl": {
       "expl1": "Et red flag er en særlig funktion, som kan hjælpe dig med at analysere og identificere visse juridiske problemstillinger.",
-      "expl2": "Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Draw-abonnement kan endda designe og skabe deres egne red flags."
+      "expl2": "Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Pro-abonnement kan endda designe og skabe deres egne red flags."
     },
     "is_it_really_free?": "Er det virkelig gratis?",
     "is_it_really_free_expl": {
@@ -494,16 +494,16 @@
     "how_can_i_get_further_help?": "Hvordan kan jeg få yderligere hjælp?",
     "how_can_i_get_further_help_expl": {
       "expl1": "Du er altid velkommen til at kontakte os for at få hjælp med funktioner eller din bruger. Dette gør du til højre eller via kontaktoplysningerne på vores hjemmeside.",
-      "expl2": "Vi svarer hurtigst muligt. Draw- og Pro-brugere har adgang til særlige supportfunktioner afhængigt af aftalen."
+      "expl2": "Vi svarer hurtigst muligt. Pro- og Enterprise-brugere har adgang til særlige supportfunktioner afhængigt af aftalen."
     },
     "how_to_program_law?": "Hvordan programmerer man jura?",
     "how_to_program_law_expl": {
-      "expl1": "Med Juristic Draw og Juristic Pro får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer.",
+      "expl1": "Med Juristic Pro og Juristic Enterprise får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer.",
       "expl2": "Det særlige er, at du hverken behøver andre programmer eller at kunne kode. Træk og slip elementer - ligesom du er vant til."
     },
     "is_it_safe_to_use?": "Er det sikkert at bruge?",
     "is_it_safe_to_use_expl": {
-      "expl1": "Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Draw- og Pro-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder.",
+      "expl1": "Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Pro- og Enterprise-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder.",
       "expl2": "Du kan læse mere om, hvordan vi behandler data i vores forrretningsbetingelser og persondatapolitik. Du kan finde begge på vores hjemmeside."
     },
     "why_are_not_all_features_available yet?": "Hvorfor er ikke alle funktioner tilgængelige endnu?",
@@ -543,7 +543,7 @@
     "get_a_better_overview": "Få et bedre overblik",
     "get_a_better_overview_text": "Med vores visuelle værktøj får du bedre overblik over problemstillinger.",
     "get_your_own_content": "Få dit eget indhold eller 1-kliks-rapporter",
-    "get_your_own_content_text": "Opgrader i dag for at få flere funktioner med Base, Draw og Pro."
+    "get_your_own_content_text": "Opgrader i dag for at få flere funktioner med Base, Pro og Enterprise."
   },
   "search": {
     "search": "Søg"

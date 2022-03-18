@@ -324,9 +324,9 @@
     "drawing_error": "We had an error drawing the group chart. Our developers are informed and are on the case!",
     "approved_and_locked_off": "Approved and locked off",
     "id": "ID:",
-    "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Draw-feature. Kontakt os for mere information.",
-    "you_can_not_create_new_item_types": "You can not create new item types. This is a Draw feature. Contact us for more information.",
-    "you_can_not_create_new_attribute_types": "You can not create new attribute types. This is a Draw feature. Contact us for more information.",
+    "you_can_not_create_new_relationship_types": "Du kan ikke lave nye relationstyper. Dette er en Pro-feature. Kontakt os for mere information.",
+    "you_can_not_create_new_item_types": "You can not create new item types. This is a Pro feature. Contact us for more information.",
+    "you_can_not_create_new_attribute_types": "You can not create new attribute types. This is a Pro feature. Contact us for more information.",
     "load_from_CVR": "Search in Company Registers",
     "search_for_a_company_or_CVR_number": "Search for a company or registration number",
     "restrict_countries": "Search only in specific countries",
@@ -484,7 +484,7 @@
     "what_is_a_red_flag?": "What is a red flag?",
     "red_flag_expl": {
       "expl1": "A red flag is a special feature that can help you analyze and identify certain legal issues.",
-      "expl2": "Red flags automatically appear in your workspace as you draw - and users with a Pro subscription can even design and create their own red flags."
+      "expl2": "Red flags automatically appear in your workspace as you draw - and users with a Enterprise subscription can even design and create their own red flags."
     },
     "is_it_really_free?": "Is it really free?",
     "is_it_really_free_expl": {
@@ -494,16 +494,16 @@
     "how_can_i_get_further_help?": "How can I get further help?",
     "how_can_i_get_further_help_expl": {
       "expl1": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website.",
-      "expl2": "We will respond as soon as possible. Pro and Enterprise users have access to special support features depending on the agreement."
+      "expl2": "We will respond as soon as possible. Enterprise and Enterprise users have access to special support features depending on the agreement."
     },
     "how_to_program_law?": "How to program law?",
     "how_to_program_law_expl": {
-      "expl1": "With Juristic Draw and Juristic Pro, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms.",
+      "expl1": "With Juristic Pro and Juristic Enterprise, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms.",
       "expl2": "The special thing is that you do not need other programs or to be able to code. Drag and drop items - just like you are used to."
     },
     "is_it_safe_to_use?": "Is it safe to use?",
     "is_it_safe_to_use_expl": {
-      "expl1": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Pro and Enterprise versions include additional security features that are targeted at businesses.",
+      "expl1": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Enterprise and Enterprise versions include additional security features that are targeted at businesses.",
       "expl2": "You can read more about how we process data in our business terms and personal data policy. You can find both on our website."
     },
     "why_are_not_all_features_available yet?": "Why are not all features available yet?",
@@ -543,7 +543,7 @@
     "get_a_better_overview": "Get a better overview",
     "get_a_better_overview_text": "With our visual tool you get a better overview of issues.",
     "get_your_own_content": "Get your own content or 1-click reports",
-    "get_your_own_content_text": "Upgrade today to get more features with Base, Draw and Pro."
+    "get_your_own_content_text": "Upgrade today to get more features with Base, Pro and Enterprise."
   },
   "search": {
     "search": "Search"
