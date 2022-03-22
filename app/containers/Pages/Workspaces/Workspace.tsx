@@ -341,7 +341,7 @@ const Workspace = (props) => {
   };
 
   const handleUncertainCompanies = (companies = []) => {
-    setShowCvrModal(true);
+    companies.length > 0 && setShowCvrModal(true);
     dispatch(uncertainCompaniesChange(companies));
   };
 

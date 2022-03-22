@@ -200,9 +200,9 @@ function CompanyDataModel(props) {
                 target="_blank"
                 href={
                   companyData.Virksomhedsdata.Land === "DK"
-                    ? `https://datacvr.virk.dk/data/visenhed?enhedstype=virksomhed&id=${
-                        companyData?.Virksomhedsdata["CVR-nummer"]
-                      }`
+                    ? `https://datacvr.virk.dk/enhed/virksomhed/${companyData?.Virksomhedsdata[
+                        "CVR-nummer"
+                      ].substring(2)}`
                     : `https://find-and-update.company-information.service.gov.uk/company/${companyData?.Virksomhedsdata[
                         "CVR-nummer"
                       ].substring(2)}/persons-with-significant-control`
