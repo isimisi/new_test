@@ -181,6 +181,12 @@ const styles = (theme) => ({
     border: "none",
     minHeight: "100%",
   },
+  moreEdgeSave: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 5,
+  },
   selected: {
     background:
       theme.palette.type === "dark"
@@ -423,6 +429,24 @@ const styles = (theme) => ({
     position: "fixed",
     bottom: 30,
     right: 10,
+    zIndex: "2",
+  },
+  popover3: {
+    position: "fixed",
+    top: 55,
+    right: 10,
+    zIndex: "2",
+  },
+  popover4: {
+    position: "fixed",
+    top: 55,
+    left: 355,
+    zIndex: "2",
+  },
+  popover5: {
+    position: "fixed",
+    top: 55,
+    left: 220,
     zIndex: "2",
   },
   popover2: {

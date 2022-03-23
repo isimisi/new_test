@@ -33,7 +33,22 @@ const App = () => {
   }
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#F3F5F8",
+          position: "absolute",
+          zIndex: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <Loader />
+      </div>
+    );
   }
 
   return (

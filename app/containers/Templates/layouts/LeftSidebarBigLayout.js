@@ -1,17 +1,14 @@
-import React, { Fragment } from 'react';
-import { PropTypes } from 'prop-types';
-import classNames from 'classnames';
-import Fade from '@material-ui/core/Fade';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-import {
-  Header,
-  SidebarBig,
-  BreadCrumb,
-} from '@components';
-import dataMenu from '@api/ui/menu';
-import Decoration from '../Decoration';
-import styles from '../appStyles-jss';
+import React, { Fragment } from "react";
+import { PropTypes } from "prop-types";
+import classNames from "classnames";
+import Fade from "@material-ui/core/Fade";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import { Header, SidebarBig, BreadCrumb } from "@components";
+import dataMenu from "@api/ui/menu";
+import Decoration from "../Decoration";
+import styles from "../appStyles-jss";
+import Loader from "@components/Loading/LongLoader";
 
 function LeftSidebarBigLayout(props) {
   const {
@@ -50,7 +47,13 @@ function LeftSidebarBigLayout(props) {
         open={sidebarOpen}
         toggleDrawerOpen={toggleDrawer}
       />
-      <main className={classNames(classes.content, !sidebarOpen ? classes.contentPaddingLeftBig : '')} id="mainContent">
+      <main
+        className={classNames(
+          classes.content,
+          !sidebarOpen ? classes.contentPaddingLeftBig : ""
+        )}
+        id="mainContent"
+      >
         <Decoration
           mode={mode}
           gradient={gradient}
@@ -61,18 +64,42 @@ function LeftSidebarBigLayout(props) {
         <section className={classNames(classes.mainWrap, classes.sidebarLayout)}>
           {titleException.indexOf(history.location.pathname) < 0 && (
             <div className={classes.pageTitle}>
-              <Typography component="h4" className={bgPosition === 'header' ? classes.darkTitle : classes.lightTitle} variant="h4">{place}</Typography>
-              <BreadCrumb separator=" / " theme={bgPosition === 'header' ? 'dark' : 'light'} location={history.location} />
+              <Typography
+                component="h4"
+                className={
+                  bgPosition === "header" ? classes.darkTitle : classes.lightTitle
+                }
+                variant="h4"
+              >
+                {place}
+              </Typography>
+              <BreadCrumb
+                separator=" / "
+                theme={bgPosition === "header" ? "dark" : "light"}
+                location={history.location}
+              />
             </div>
           )}
-          { !pageLoaded && (<img src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/spinner.gif" alt="spinner" className={classes.circularProgress} />) }
-          <Fade
-            in={pageLoaded}
-            {...(pageLoaded ? { timeout: 700 } : {})}
-          >
-            <div className={!pageLoaded ? classes.hideApp : ''}>
+          {!pageLoaded && (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#F3F5F8",
+                position: "absolute",
+                zIndex: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Loader />
+            </div>
+          )}
+          <Fade in={pageLoaded} {...(pageLoaded ? { timeout: 700 } : {})}>
+            <div className={!pageLoaded ? classes.hideApp : ""}>
               {/* Application content will load here */}
-              { children }
+              {children}
             </div>
           </Fade>
         </section>

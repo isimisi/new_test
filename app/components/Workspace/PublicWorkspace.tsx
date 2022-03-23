@@ -305,6 +305,7 @@ const Workspace = (props) => {
 
   const closeEdge = () => {
     setDefineEdgeOpen(false);
+    setIsUpdatingElement(false);
   };
 
   const handleRelationshipSave = () => {
@@ -325,7 +326,7 @@ const Workspace = (props) => {
         showLabel,
         lineThrough,
         closeEdge,
-        setIsUpdatingElement
+
       ));
     } else {
       const edge = {

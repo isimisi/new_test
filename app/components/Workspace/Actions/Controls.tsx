@@ -45,20 +45,6 @@ const Controls = (props: Props) => {
   const handleCloseFitTooltip = () => setFitViewOpen(false);
   const handleOpenFitTooltip = () => setFitViewOpen(true);
 
-  useEffect(() => {
-    const timer1 = setTimeout(() => {
-      handleOpenFitTooltip();
-    }, 1000);
-
-    const timer2 = setTimeout(() => {
-      handleCloseFitTooltip();
-    }, 5000);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
-  }, []);
 
   return (
     <>
@@ -101,7 +87,7 @@ const Controls = (props: Props) => {
           </IconButton>
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.fit_to_view")}`} placement="top" open={fitViewOpen} onOpen={handleOpenFitTooltip} onClose={handleCloseFitTooltip}>
-          <IconButton className={classes.buttons} onClick={fitToView}>
+          <IconButton id="fitView" className={classes.buttons} onClick={fitToView}>
             <SelectAllIcon className={classes.buttons} />
           </IconButton>
         </Tooltip>

@@ -215,32 +215,6 @@ const NodePopper = (props: Props) => {
         div.setAttribute("id", "saveContainer");
         picker[0].appendChild(div);
       }
-      // let button = document.getElementById("saveButton");
-      // if (!button) {
-      //   button = document.createElement("div");
-      //   button.setAttribute("id", "saveButton");
-      //   button.className = classes.attributSaveButtonContainer;
-
-      //   const innerButton = document.createElement("button");
-      //   innerButton.className =
-      //     "MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary";
-      //   innerButton.setAttribute("tabIndex", "0");
-      //   innerButton.setAttribute("type", "button");
-      //   innerButton.setAttribute("onClick", "console.log('maslkmnsklnd')");
-
-      //   const innerSpan1 = document.createElement("span");
-      //   const innerSpan2 = document.createElement("span");
-
-      //   innerSpan1.className = "MuiButton-label";
-      //   innerSpan1.innerText = "Gem";
-      //   innerSpan2.className = "MuiTouchRipple-root";
-
-      //   button.appendChild(innerButton);
-      //   button.appendChild(innerSpan1);
-      //   button.appendChild(innerSpan2);
-
-      //   div.appendChild(button);
-      // }
       // @ts-ignore
 
       ReactDOM.render(
@@ -361,7 +335,7 @@ const NodePopper = (props: Props) => {
                 </ButtonBase>
               </Tooltip>
               {displayColorPickerColor ? (
-                <div className={classes.popover}>
+                <div className={classes.popover3}>
                   <SketchPicker
                     color={nodeColor}
                     onChange={handleColorChange}
@@ -409,13 +383,14 @@ const NodePopper = (props: Props) => {
                       color: `rgba(${nodeLabelColor.r}, ${nodeLabelColor.g}, ${
                         nodeLabelColor.b
                       }, ${nodeLabelColor.a})`,
-                      fontSize: 25
+                      fontSize: 25,
+                      stroke: "gray"
                     }}
                   />
                 </ButtonBase>
               </Tooltip>
               {displayLabelColorPickerColor ? (
-                <div className={classes.popover2}>
+                <div className={classes.popover4}>
                   <SketchPicker
                     color={nodeLabelColor}
                     onChange={handleLabelColorChange}

@@ -120,9 +120,9 @@ const PersonalDashboard = () => {
   const changeShareOrg = () => setShareOrg(prevVal => !prevVal);
 
 
-  const [cvrSearch, setCvrSearch] = useState('');
+  const [cvrSearch, setCvrSearch] = useState<SelectOptions | null>(null);
 
-  const changeCvrSearch = (val: SelectOptions) => setCvrSearch(val.value);
+  const changeCvrSearch = (val: SelectOptions) => setCvrSearch(val);
   const [countries, setCountries] = useState<SelectOptions[]>([]);
   const handleChangeCountries = (values: SelectOptions[]) => setCountries(values || []);
   // const [companyMapping, setCompanyMapping] = useState(uncertainCompanies?.reduce((obj, item) => ({ ...obj, [item.soughtAfterName]: { id: item.id, name: item.name, orgGuessedName: item.name } }), {}));
@@ -190,9 +190,12 @@ const PersonalDashboard = () => {
 
 
   const confirm = () => {
-    const cvr = cvrSearch.includes('DK') && cvrSearch.length < 12 ? cvrSearch.substring(2) : cvrSearch;
-
-    user && dispatch(postWorkspace(user, history, cvrSearch, undefined, 'Corporate', undefined, undefined, cvr));
+    if (cvrSearch && user) {
+      const cvr = cvrSearch.value.includes('DK') && cvrSearch.value.length < 12 ? cvrSearch.value.substring(2) : cvrSearch.value;
+      const cvrLabel = cvrSearch.label as JSX.Element;
+      const name = cvrLabel.props.children[1].props.children;
+      dispatch(postWorkspace(user, history, name, undefined, 'Corporate', undefined, undefined, cvr));
+    }
   };
 
   const getAsyncOptions = inputValue => axios

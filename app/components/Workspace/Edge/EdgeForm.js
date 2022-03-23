@@ -19,13 +19,13 @@ import BeizerCurve from "./beizerCurve.svg";
 import StraightLine from "./straightLine.svg";
 import SmoothStep from "./smoothStep.svg";
 
-const relationshipTypeOptions = [
+export const relationshipTypeOptions = [
   {
     value: "straight",
     label: (
       <>
         <span style={{ paddingRight: "5px" }}>Lige linje</span>
-        <img src={StraightLine} alt="straight line" style={{ height: 36 }} />
+        <img src={StraightLine} alt="straight line" style={{ height: 25 }} />
       </>
     ),
   },
@@ -34,7 +34,7 @@ const relationshipTypeOptions = [
     label: (
       <>
         <span style={{ paddingRight: "5px" }}>Beizer Kurve</span>
-        <img src={BeizerCurve} alt="beizer curve" style={{ height: 36 }} />
+        <img src={BeizerCurve} alt="beizer curve" style={{ height: 25 }} />
       </>
     ),
   },
@@ -43,7 +43,7 @@ const relationshipTypeOptions = [
     label: (
       <>
         <span style={{ paddingRight: "5px" }}>Step kurve</span>
-        <img src={SmoothStep} alt="smooth step" style={{ height: 36 }} />
+        <img src={SmoothStep} alt="smooth step" style={{ height: 25 }} />
       </>
     ),
   },

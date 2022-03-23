@@ -344,7 +344,7 @@ const Workspace = props => {
           <Button onClick={handleCloseActions} color="primary">
             Nej tak
           </Button>
-          <Link to="/register" style={{ textDecoration: "none" }}>
+          <Link to="/app" style={{ textDecoration: "none" }}>
             <Button color="primary" variant="contained">
               Opret GRATIS bruger
             </Button>

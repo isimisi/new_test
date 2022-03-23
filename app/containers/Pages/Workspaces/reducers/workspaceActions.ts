@@ -463,7 +463,7 @@ export const putEdge = (
   showLabel: boolean,
   lineThrough: boolean,
   close: () => void,
-  setIsUpdatingElement: React.Dispatch<React.SetStateAction<boolean>>
+
 ) => async (dispatch) => {
   dispatch({ type: types.PUT_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
@@ -486,7 +486,6 @@ export const putEdge = (
 
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
     close();
-    setIsUpdatingElement(false);
   } catch (error) {
     console.log({ error });
     dispatch({ type: types.PUT_EDGE_FAILED, message });
@@ -572,7 +571,7 @@ export const putSticky = (user: User, id: string, text: string) => async (dispat
   }
 };
 
-export const getCompanyData = (user: User, id: string, setShowContextMenu?: React.Dispatch<React.SetStateAction<boolean>>, handleNodePopper?: () => void) => async (dispatch) => {
+export const getCompanyData = (user: User, id: string, setShowContextMenu?: React.Dispatch<React.SetStateAction<boolean>>, handleNodePopper?: () => void, handleHideEdgePopper?: () => void) => async (dispatch) => {
   dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
   const url = `${baseUrl}/workspacenodes/company/info/${id}`;
   const header = authHeader(user);
@@ -588,6 +587,7 @@ export const getCompanyData = (user: User, id: string, setShowContextMenu?: Reac
     dispatch({ type: types.SET_SHOW_COMPANY_DATA, show: true });
     setShowContextMenu && setShowContextMenu(false);
     handleNodePopper && handleNodePopper();
+    handleHideEdgePopper && handleHideEdgePopper();
   } catch (error) {
     let _message = message;
     // @ts-ignore

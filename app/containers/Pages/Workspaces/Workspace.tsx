@@ -38,7 +38,6 @@ import {
 import { useAuth0, User } from "@auth0/auth0-react";
 
 
-import Skeleton from '@material-ui/lab/Skeleton';
 import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import { toast } from 'react-toastify';
 import { getPlanId } from "@helpers/userInfo";
@@ -48,6 +47,8 @@ import { getId, encryptId } from '@api/constants';
 import connection from '@api/socket/SocketConnection';
 import AlertModal from '@components/Alerts/AlertModal';
 import CustomNode from '@components/Workspace/Node/CustomNode';
+import ControlPoint from '@components/Workspace/Node/ControlPoint';
+
 import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
 import WorkspaceMeta from '@components/Workspace/WorkspaceMeta';
 import InternationalStructureAlert from '@components/Workspace/InternationalStructureAlert';
@@ -55,6 +56,7 @@ import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
 import NodePopper from '@components/Workspace/Node/Popper';
+import EdgePopper from '@components/Workspace/Edge/Popper';
 import AlertLog from '@components/Alerts/AlertLog';
 import PaneContextMenu from '@components/Workspace/ContextMenu/PaneContextMenu';
 import CvrDialog from '@components/DialogModal/CvrDialog';
@@ -103,11 +105,13 @@ import { handleExport } from '@helpers/export/handleExport';
 import useFlowContextMenus from '@hooks/flow/flowContexts';
 import useItemSidePanel from '@hooks/flow/itemPanel';
 import useDoubbleClick from '@hooks/flow/doubbleClick';
+import Loader from '@components/Loading/LongLoader';
 
 
 const nodeTypes = {
   custom: CustomNode,
-  sticky: StickyNoteNode
+  sticky: StickyNoteNode,
+  controlPoint: ControlPoint
 };
 
 const initialAttribut = {
@@ -191,6 +195,16 @@ const Workspace = (props) => {
     }
   };
 
+  const [showEdgePopper, setShowEdgePopper] = useState(false);
+  const handleShowEdgePopper = () => {
+    setShowEdgePopper(true);
+  };
+
+  const handleHideEdgePopper = () => {
+    setShowEdgePopper(false);
+  };
+
+
   const [showNodePopper, setShowNodePopper] = useState(false);
   const handleShowNodePopper = () => {
     setShowNodePopper(true);
@@ -203,7 +217,7 @@ const Workspace = (props) => {
 
   const hideContext = () => {
     handleHideNodePopper();
-
+    handleHideEdgePopper();
     setShowContextMenu(false);
   };
 
@@ -330,9 +344,11 @@ const Workspace = (props) => {
     if (internationalDisclaimer && el[0].data.data_provider === "firmnav") {
       setShowInternationalDisclaimer(true);
     }
+    document.getElementById("fitView")?.click();
     // dispatch(changeStepIndex(10));
     // dispatch(handleRunIntro(true));
   };
+
 
   const handleCvrError = () => {
     setShowCvrModal(false);
@@ -491,14 +507,19 @@ const Workspace = (props) => {
   const {
     removeNodeTextTarget,
     onNodeDoubleClick,
+    onEdgeDoubleClick
   } = useDoubbleClick(updateNodeDisplayName);
+
+  const [edgePopperRef, setEdgePopperRef] = useState<EventTarget | null>(null);
 
   const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
   const onConnect = (data) => {
     removeNodeTextTarget();
     setNodePopperRef(null);
+    setEdgePopperRef(null);
     setIsUpdatingElement(false);
     handleHideNodePopper();
+    handleHideEdgePopper();
     if (data.source !== data.target) {
       setCurrentConnectionData(data);
       setDefineEdgeOpen(true);
@@ -544,7 +565,9 @@ const Workspace = (props) => {
     setDeletedAttributes([]);
     removeNodeTextTarget();
     setNodePopperRef(null);
+    setEdgePopperRef(null);
     handleHideNodePopper();
+    handleHideEdgePopper();
     const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
     const borderColor = element.data.borderColor && !element.data.borderColor.includes("undefined") ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
     const labelColor = element.data.labelColor ? element.data.labelColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
@@ -579,7 +602,13 @@ const Workspace = (props) => {
       setAnimatedLine(element.data.animated);
       setShowlabel(element.data.showLabel);
       setLineThrough(element.data.lineThrough);
-      setDefineEdgeOpen(true);
+      if (showFull) {
+        setDefineEdgeOpen(true);
+      } else {
+        const target = event.target as HTMLElement;
+        handleShowEdgePopper();
+        setEdgePopperRef(target);
+      }
     }
   };
 
@@ -643,22 +672,25 @@ const Workspace = (props) => {
   // RELATIONSHIP
 
   const closeDefineEdge = useCallback(() => {
-    setDefineEdgeOpen(false);
-    setIsUpdatingElement(false);
-    setRelationshipLabel('');
-    setRelationshipValue('');
-    setRelationshipType('custom');
-    setRelationshipColor({
-      r: 0, g: 0, b: 0, a: 1
-    });
-    setShowArrow(false);
-    setAnimatedLine(false);
-    setShowlabel(false);
-    setLineThrough(false);
-  }, []);
+    if (!showEdgePopper) {
+      setDefineEdgeOpen(false);
+      setIsUpdatingElement(false);
+      setRelationshipLabel('');
+      setRelationshipValue('');
+      setRelationshipType('custom');
+      setRelationshipColor({
+        r: 0, g: 0, b: 0, a: 1
+      });
+      setShowArrow(false);
+      setAnimatedLine(false);
+      setShowlabel(false);
+      setLineThrough(false);
+    }
+  }, [showEdgePopper]);
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
+
     if (isUpdatingElement && elementToUpdate) {
       dispatch(putEdge(
         user,
@@ -673,7 +705,6 @@ const Workspace = (props) => {
         showLabel,
         lineThrough,
         closeDefineEdge,
-        setIsUpdatingElement
       ));
     } else {
       const edge = {
@@ -717,7 +748,7 @@ const Workspace = (props) => {
   const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
   const handleDeleteEdge = useCallback(() => elementToUpdate && onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
-  console.log(rfInstance);
+
   const handlePostSticky = (e?: any, shortcut = false, x?: number, y?: number) => {
     const rf = rfInstance?.toObject();
     // @ts-ignore
@@ -843,7 +874,7 @@ const Workspace = (props) => {
     setShowCvrModal(true);
   };
   const handleGetCompanyData = (_id) => {
-    dispatch(getCompanyData(user, _id, setShowContextMenu, handleHideNodePopper));
+    dispatch(getCompanyData(user, _id, setShowContextMenu, handleHideNodePopper, handleHideEdgePopper));
   };
   useWorkspaceHotKeys(
     setDefineNodeOpen,
@@ -905,7 +936,9 @@ const Workspace = (props) => {
   const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     removeNodeTextTarget();
     handleHideNodePopper();
+    handleHideEdgePopper();
     setNodePopperRef(null);
+    setEdgePopperRef(null);
     if (reactFlowContainer && rfInstance) {
       // @ts-ignore
       const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
@@ -925,6 +958,10 @@ const Workspace = (props) => {
 
   const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
 
+  const showPopperAgain = () => {
+    handleShowEdgePopper();
+    handleShowNodePopper();
+  };
 
   return (
     <div style={{ cursor }}>
@@ -938,11 +975,11 @@ const Workspace = (props) => {
           minZoom={0.3}
           maxZoom={3}
           onNodeDragStart={hideContext}
-          onNodeDragStop={handleShowNodePopper}
-          onConnectStop={handleShowNodePopper}
-          onConnectEnd={handleShowNodePopper}
-          onMoveEnd={handleShowNodePopper}
-          onSelectionDragStop={handleShowNodePopper}
+          onNodeDragStop={showPopperAgain}
+          onConnectStop={showPopperAgain}
+          onConnectEnd={showPopperAgain}
+          onMoveEnd={showPopperAgain}
+          onSelectionDragStop={showPopperAgain}
           onConnectStart={hideContext}
           onDrop={onDrop}
           onDragOver={onDragOver}
@@ -951,6 +988,7 @@ const Workspace = (props) => {
           onPaneScroll={hideContext}
           onPaneClick={onPaneClick}
           onNodeDoubleClick={onNodeDoubleClick}
+          onEdgeDoubleClick={onEdgeDoubleClick}
           nodesDraggable={interactive}
           nodesConnectable={interactive}
           elementsSelectable={interactive}
@@ -1024,10 +1062,11 @@ const Workspace = (props) => {
         {(initialLoading || initialLoadingCvr) && (
           <>
             <div style={{
-              width: '100%', height: '100%', backgroundColor: 'white', position: 'absolute', zIndex: 10
+              width: '100%', height: '100%', backgroundColor: theme.palette.background.default, position: 'absolute', zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center"
             }}
-            />
-            <Skeleton width="100%" variant="rect" height="100%" animation="wave" style={{ position: 'absolute', zIndex: 11 }} />
+            >
+              <Loader bigFont />
+            </div>
           </>
         )}
         {signed ? (
@@ -1310,6 +1349,33 @@ const Workspace = (props) => {
             handleNodeFigur={handleNodeFigur}
             nodeFigur={nodeFigur}
             removeNodeTextTarget={removeNodeTextTarget}
+          />}
+
+          {showEdgePopper && edgePopperRef && <EdgePopper
+            edgePopperRef={edgePopperRef}
+            showEdgePopper={showEdgePopper}
+            currentZoom={currentZoom}
+            editData={onElementClick}
+            activeElement={activeElement}
+            edgeLabel={relationshipLabel}
+            relationships={relationships}
+            relationshipLabel={relationshipLabel}
+            handleChangeLabel={handleChangeLabel}
+            handleEdgeSave={handleRelationshipSave}
+            type={relationshipType}
+            handleTypeChange={handleTypeChange}
+            edgeColor={relationshipColor}
+            handleColorChange={handleColorChange}
+            showArrow={showArrow}
+            handleShowArrowChange={handleShowArrowChange}
+            animatedLine={animatedLine}
+            handleAnimatedLineChange={handleAnimatedLineChange}
+            showLabel={showLabel}
+            handleShowLabelChange={handleShowLabelChange}
+            lineThrough={lineThrough}
+            handleLineThroughChange={handleLineThroughChange}
+            handleDeleteEdge={handleDeleteEdge}
+            handleHideEdgePopper={handleHideEdgePopper}
           />}
         </>
       )}

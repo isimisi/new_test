@@ -10,27 +10,20 @@ import {
 } from "react-flow-renderer";
 import { useHistory } from "react-router-dom";
 
-type Point = [number, number];
-
 const getFactor = (
-  sourcePosition,
-  targetPosition,
-  sourceY,
-  targetY,
-  sourceX,
-  targetX
+  sourcePosition: Position,
+  targetPosition: Position,
+  sourceY: number,
+  targetY: number,
+  sourceX: number,
+  targetX: number,
+  cpComputedPosition: { x: number; y: number } | undefined
 ) => {
   const leftAndRight = [Position.Left, Position.Right];
   let factor = 0;
 
-  if (sourcePosition === targetPosition) {
-    factor = 0.4;
-    if (sourceX + 100 < targetX) {
-      factor = 0.6;
-    } else if (targetX + 100 < sourceX) {
-      factor = 0.6;
-    }
-  }
+  const comparisonPointY = cpComputedPosition ? cpComputedPosition.y : targetY;
+  const comparisonPointX = cpComputedPosition ? cpComputedPosition.x : targetX;
 
   if (sourcePosition === Position.Top && targetPosition === Position.Bottom) {
     factor = 0.2;
@@ -58,37 +51,18 @@ const getFactor = (
     }
   }
 
-  if (sourcePosition === Position.Left && targetPosition === Position.Right) {
+  if (
+    leftAndRight.includes(sourcePosition) &&
+    leftAndRight.includes(targetPosition)
+  ) {
     factor = 0.2;
-    if (targetX + 100 < sourceX) {
-      factor = 0.1;
-    } else if (targetX - 120 > sourceX) {
-      factor = 0.8;
-    } else if (targetX - 60 > sourceX) {
-      factor = 0.6;
-    } else if (targetX > sourceX) {
-      factor = 0.4;
-    }
-  }
-
-  if (targetPosition === Position.Left && sourcePosition === Position.Right) {
-    factor = 0.2;
-    if (sourceX + 100 < targetX) {
-      factor = 0.1;
-    } else if (sourceX - 120 > targetX) {
-      factor = 0.8;
-    } else if (sourceX - 60 > targetX) {
-      factor = 0.6;
-    } else if (sourceX > targetX) {
-      factor = 0.4;
-    }
   }
 
   if (
     sourcePosition === Position.Top &&
     leftAndRight.includes(targetPosition)
   ) {
-    factor = sourceY + 60 < targetY ? 0.6 : 0.4;
+    factor = 0.2;
   }
   if (
     sourcePosition === Position.Bottom &&
@@ -111,6 +85,30 @@ const getFactor = (
     factor = sourceY + 60 < targetY ? 0.6 : 0.4;
   }
 
+  if (
+    sourcePosition === targetPosition &&
+    leftAndRight.includes(sourcePosition)
+  ) {
+    factor = 0.3;
+    if (sourceX + 100 < targetX) {
+      factor = 0.6;
+    } else if (targetX + 100 < sourceX) {
+      factor = 0.6;
+    }
+  }
+
+  if (
+    sourcePosition === targetPosition &&
+    !leftAndRight.includes(sourcePosition)
+  ) {
+    factor = 0.3;
+    if (sourceY + 100 < targetY) {
+      factor = 0.6;
+    } else if (targetY + 100 < sourceY) {
+      factor = 0.6;
+    }
+  }
+
   return factor;
 };
 
@@ -121,9 +119,8 @@ const drawCurve = (
   targetX: number,
   targetY: number,
   targetPosition: Position,
-  centerX?: number,
-  centerY?: number
-): { path: string; points: Point[] } => {
+  controlPoints: string
+): string => {
   const [_centerX, _centerY] = getEdgeCenter({
     sourceX,
     sourceY,
@@ -131,25 +128,45 @@ const drawCurve = (
     targetY
   });
 
-  const cX = typeof centerX !== "undefined" ? centerX : _centerX;
-  const cY = typeof centerY !== "undefined" ? centerY : _centerY;
+  const cX = _centerX;
+  const cY = _centerY;
 
   const lengthBetweenPoints = Math.sqrt(
-    // eslint-disable-next-line no-mixed-operators
-    (sourceX - targetX) ** 2 + (sourceY - targetY) ** 2
+    // eslint-disable-next-line no-restricted-properties
+    Math.pow(sourceX - targetX, 2) + Math.pow(sourceY - targetY, 2)
   );
-  let cp1x;
-  let cp1y;
-  let cp2x;
-  let cp2y;
+
+  let cp1x = 0;
+  let cp1y = 0;
+  let cp2x = 0;
+  let cp2y = 0;
+
+  const cpMiddle = document.querySelector(`[data-id=${controlPoints}]`);
+
+  const middleRadius = 3;
+  let cpComputedPosition;
+  if (cpMiddle) {
+    // @ts-ignore
+    const { x, y } = cpMiddle.computedStyleMap().get("transform")[0];
+    cpComputedPosition = {
+      x: x.value,
+      y: y.value
+    };
+  }
+
+  let cpMidX = cpComputedPosition ? cpComputedPosition.x - 50 : 0;
+  const cpMidY = cpComputedPosition ? cpComputedPosition.y : 0;
+
   const factor = getFactor(
     sourcePosition,
     targetPosition,
     sourceY,
     targetY,
     sourceX,
-    targetX
+    targetX,
+    cpComputedPosition
   );
+
   const offset = lengthBetweenPoints * factor;
 
   if (sourcePosition === Position.Top && targetPosition === Position.Bottom) {
@@ -165,6 +182,7 @@ const drawCurve = (
     cp1y = cY - offset;
     cp2x = targetX;
     cp2y = cY - offset;
+    cpMidX = cpComputedPosition ? cpComputedPosition.x - 10 : 0;
   } else if (
     sourcePosition === Position.Top &&
     targetPosition.includes("left")
@@ -263,12 +281,13 @@ const drawCurve = (
     cp2y = targetY - offset;
   } else if (
     sourcePosition.includes("right") &&
-    targetPosition === Position.Left
+    targetPosition.includes("left")
   ) {
-    cp1x = cX + offset;
+    cp1x = sourceX + offset;
     cp1y = sourceY;
-    cp2x = cX - offset;
+    cp2x = targetX - offset;
     cp2y = targetY;
+    cpMidX = cpComputedPosition ? cpComputedPosition.x - 50 : 0;
   } else if (
     sourcePosition.includes("right") &&
     targetPosition.includes("right")
@@ -279,33 +298,42 @@ const drawCurve = (
     cp2y = targetY;
   }
 
-  const path = `M${sourceX},${sourceY} C${cp1x},${cp1y} ${cp2x},${cp2y} ${targetX},${targetY}`;
-  const points: Point[] = [
-    [sourceX, sourceY],
-    [cp1x, cp1y],
-    [cp2x, cp2y],
-    [targetX, targetY]
-  ];
+  let path = `
+  M${sourceX},${sourceY}
+  C${cp1x},${cp1y} ${cp2x},${cp2y} ${targetX},${targetY}`;
 
-  return { path, points };
+  if (cpComputedPosition) {
+    path = `
+    M${sourceX},${sourceY}
+    C${cp1x},${cp1y} ${cpMidX},${cpMidY} ${cpComputedPosition.x +
+      middleRadius},${cpComputedPosition.y + middleRadius}
+    S${cp2x},${cp2y} ${targetX},${targetY}`;
+  }
+
+  return path;
 };
 
-/**
- *
- * @param A array: [x,y] coordiantes
- * @param B array: [x,y] coordiantes
- * @param t 0 <= t <= 1
- * @returns [x,y] coordiantes
- */
-// A and B are arrays where the first element is the x
-// and the second element is the y coordinate of the point
-// if(t == .5) the function returns a point in the center of the line AB
-// t is always a number between 0 and 1
-// 0 <= t <= 1
-const lerp = (A: Point, B: Point, t: number): Point => [
-  (B[0] - A[0]) * t + A[0],
-  (B[1] - A[1]) * t + A[1]
-];
+const findPointOnEdge = (
+  d: string,
+  prcnt: number
+): { x: number; y: number } => {
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", d);
+
+  const pathLength = Math.floor(path.getTotalLength());
+
+  // eslint-disable-next-line no-param-reassign
+  prcnt = (prcnt * pathLength) / 100;
+
+  // Get x and y values at a certain point in the line
+  const pt = path.getPointAtLength(prcnt);
+  const x = Math.round(pt.x);
+  const y = Math.round(pt.y);
+
+  path.remove();
+
+  return { x, y };
+};
 
 const CustomEdge = ({
   id,
@@ -328,24 +356,17 @@ const CustomEdge = ({
 }) => {
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
 
-  const { path, points } = drawCurve(
+  const path = drawCurve(
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
-    targetPosition
+    targetPosition,
+    data.controlPoints
   );
 
-  const t = 0.5;
-  const helperPoints: Point[] | [] = [];
-  // https://codepen.io/enxaneta/post/how-to-add-a-point-to-an-svg-path
-  helperPoints[0] = lerp(points[0], points[1], t);
-  helperPoints[1] = lerp(points[1], points[2], t);
-  helperPoints[2] = lerp(points[2], points[3], t);
-  helperPoints[3] = lerp(helperPoints[0], helperPoints[1], t);
-  helperPoints[4] = lerp(helperPoints[1], helperPoints[2], t);
-  helperPoints[5] = lerp(helperPoints[3], helperPoints[4], t);
+  const center = findPointOnEdge(path, 50);
 
   const history = useHistory();
   const isCondition = history.location.pathname.includes("conditions");
@@ -359,8 +380,8 @@ const CustomEdge = ({
 
   const text = label ? (
     <EdgeText
-      x={helperPoints[5][0]}
-      y={helperPoints[5][1]}
+      x={center.x}
+      y={center.y}
       label={label}
       labelStyle={labelStyle}
       labelShowBg={labelShowBg}

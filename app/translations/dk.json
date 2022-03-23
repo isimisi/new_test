@@ -2,7 +2,15 @@
   "404": {
     "not_found": "Hov, siden du leder efter findes vist ikke.",
     "btn_return_to_home_page": "Gå til forside",
-    "btn_return_to_workspace": "Gå tilbage til arbejdsområde"
+    "btn_return_to_workspace": "Gå tilbage til arbejdsområde",
+    "go_back": "Gå tilbage"
+  },
+  "500": {
+    "error_header": "Hvis du ser dette gik noget galt. Bare rolig, det er ikke dig, det er os",
+    "oops": "Hov!",
+    "error_body": "Vi er på problemet og fikser det hurtigst muligt",
+    "error_body_quick": "Hvis det haster, så skriv til os på <0>hej@juristic.io</0> eller skriv til os i chatten, når du går tilbage til applicationen.",
+    "error_code": "Fejlkode: {{errorCode}}"
   },
   "login-form": {
     "create_account": "Opret ny konto",
@@ -429,6 +437,15 @@
       "edit_border_color": "Rediger kantfarve",
       "see_company_info": "Se virksomhedsinformation",
       "see more": "Mere"
+    },
+    "edge": {
+      "type": "Type",
+      "edit_color": "Rediger farven på relationen",
+      "show_strike": "Streg over",
+      "show_label": "Vis relationstype",
+      "animated": "Animeret linje",
+      "show_arrow": "Vis som pil",
+      "more": "Mere"
     }
   },
   "workspace-analysis": {
@@ -660,7 +677,8 @@
     "node": {
       "label_placeholder": "Tilføj elementtype"
     },
-    "edit_node_data": "Rediger stamdata"
+    "edit_node_data": "Rediger stamdata",
+    "edit_edge_delete": "Slet"
   },
   "save": "Gem"
 }

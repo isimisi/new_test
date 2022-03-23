@@ -2,7 +2,15 @@
   "404": {
     "not_found": "Whoops, the page you're looking for does not exist.",
     "btn_return_to_home_page": "Return to home page",
-    "btn_return_to_workspace": "Return to workspace"
+    "btn_return_to_workspace": "Return to workspace",
+    "go_back": "Go back"
+  },
+  "500": {
+    "error_header": "If you see this something went wrong. Don't worry, it's not you, it's us",
+    "error_body": "We are on it to fix the problem.",
+    "oops": "Oops!",
+    "error_body_quick": "If it's really urgent contact us at <0>hej@juristic.io</0> or write to us in the chat, when you return to the application.",
+    "error_code": "Error code: {{errorCode}}"
   },
   "login-form": {
     "create_account": "Create account",
@@ -429,6 +437,15 @@
       "edit_border_color": "Edit border color",
       "see_company_info": "See company info",
       "see more": "More"
+    },
+    "edge": {
+      "type": "Type",
+      "edit_color": "Edit color of relation",
+      "show_arrow": "Show Arrow",
+      "show_strike": "Show Strike through",
+      "show_label": "Show label",
+      "animated": "Animated",
+      "more": "More"
     }
   },
   "workspace-analysis": {
@@ -660,7 +677,8 @@
     "node": {
       "label_placeholder": "Choose or create a label"
     },
-    "edit_node_data": "Edit data"
+    "edit_node_data": "Edit data",
+    "edit_edge_delete": "Delete"
   },
   "save": "Save"
 }

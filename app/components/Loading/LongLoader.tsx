@@ -6,7 +6,7 @@ import ReactTextTransition, { presets } from "react-text-transition";
 import walking from "@lotties/racoon/walk.json";
 import loader from "@lotties/loader.json";
 
-const Loader = ({ bigFont = false }) => {
+const Loader = ({ bigFont = false, size = "20%" }) => {
   const [raccoon, setRaccoon] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
 
@@ -64,8 +64,9 @@ const Loader = ({ bigFont = false }) => {
       )}
       <Lottie
         animationData={raccoon ? walking : loader}
+        loop
         style={{
-          width: "20%"
+          width: size
         }}
       />
     </div>

@@ -7,6 +7,7 @@ import { Header, Sidebar } from "@components";
 import dataMenu from "@api/ui/menu";
 import Decoration from "../Decoration";
 import styles from "../appStyles-jss";
+import Loader from "@components/Loading/LongLoader";
 
 function LeftSidebarLayout(props) {
   const {
@@ -79,11 +80,20 @@ function LeftSidebarLayout(props) {
           )}
         >
           {!pageLoaded && (
-            <img
-              src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/spinner.gif"
-              alt="spinner"
-              className={classes.circularProgress}
-            />
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#F3F5F8",
+                position: "absolute",
+                zIndex: 10,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Loader />
+            </div>
           )}
           <Fade in={pageLoaded} {...(pageLoaded ? { timeout: 700 } : {})}>
             <div className={!pageLoaded ? classes.hideApp : ""}>

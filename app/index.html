@@ -73,6 +73,8 @@
           }
       })();
     </script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="/favicons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-icon-57x57.png" />
@@ -146,11 +148,13 @@
         position: absolute;
         top: 0;
         left: 0;
-        background: #fafafa;
+        background: #f3f5f8;
         width: 100%;
         min-height: 100%;
         z-index: 1000;
         display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .preloader-init {
         position: absolute;
@@ -169,11 +173,14 @@
 
     <!-- The app hooks into this div -->
     <div id="app">
-      <img
-        src="https://app-juristic-media.s3.eu-north-1.amazonaws.com/spinner.gif"
-        class="preloader-init"
-        alt="spinner"
-      />
+      <lottie-player
+        src="https://assets9.lottiefiles.com/packages/lf20_t8jhdiii.json"
+        background="transparent"
+        speed="1"
+        style="width: 400px; height: 400px;"
+        loop
+        autoplay
+      ></lottie-player>
     </div>
     <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically includes all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this HTML file. Don't add any assets here! (Check out webpackconfig.js if you want to know more) -->
   </body>

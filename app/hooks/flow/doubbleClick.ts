@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { Node } from "react-flow-renderer";
+import { Node, Edge } from "react-flow-renderer";
 
 const useDoubbleClick = (saveNode) => {
   const [nodeTextTarget, setNodeTextTarget] = useState<HTMLElement | null>(null);
   const [nodeTarget, setNodeTarget] = useState<Node | null>(null);
 
+  const [edgeTextTarget, setEdgeTextTarget] = useState<HTMLElement | null>(null);
+  const [edgeTarget, setEdgeTarget] = useState<Edge | null>(null);
+
   const addNodeTextTarget = (target: HTMLElement) => {
     setNodeTextTarget(target);
+  };
+
+  const addEdgeTextTarget = (target: HTMLElement) => {
+    setEdgeTextTarget(target);
   };
 
 
@@ -61,10 +68,18 @@ const useDoubbleClick = (saveNode) => {
     }
   };
 
+  const onEdgeDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge<any>) => {
+    const target = event.target as HTMLElement;
+    const actualTarget = target.nextElementSibling as HTMLElement;
+    console.log(actualTarget);
+  };
+
+
   return { nodeTextTarget,
     addNodeTextTarget,
     removeNodeTextTarget,
-    onNodeDoubleClick
+    onNodeDoubleClick,
+    onEdgeDoubleClick
   };
 };
 

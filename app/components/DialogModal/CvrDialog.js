@@ -114,7 +114,7 @@ const FormDialog = (props) => {
       </DialogTitle>
       <DialogContent>
         {loading ? (
-          <Loader />
+          <Loader size="30%" />
         ) : uncertainCompanies?.length > 0 ? (
           <UncertainCompanies
             uncertainCompanies={companyMapping}

@@ -1,5 +1,4 @@
 // Import all the third party stuff
-// @ts-nocheck
 
 import React from "react";
 import ReactDOM from "react-dom";
@@ -13,7 +12,6 @@ import "regenerator-runtime/runtime";
 
 import "./styles/layout/base.scss";
 import { ToastContainer } from "react-toastify";
-
 import CookieBot from "react-cookiebot/lib/CookieBot";
 
 import "react-toastify/dist/ReactToastify.min.css";
@@ -21,7 +19,12 @@ import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-
+import CryptoJS from "crypto-js";
+import Lottie from "lottie-react";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import logo from "@images/logo.svg";
 // Load the favicon and the .htaccess file
 import "!file-loader?name=[name].[ext]!../public/favicons/favicon.ico"; // eslint-disable-line
 import "file-loader?name=.htaccess!./.htaccess"; // eslint-disable-line
@@ -33,17 +36,19 @@ import history from "./utils/history";
 import store from "./redux/configureStore";
 import "./i18n";
 import Auth0ProviderWithHistory from "./containers/App/auth0-provider-with-history";
+import { Trans, useTranslation } from "react-i18next";
+import question from "@lotties/racoon/question.json";
+import ButtonBase from "@material-ui/core/ButtonBase";
 
 //  logrocket
 
 // bugsnag
-if (process.env.NODE_ENV === "production") {
-  LogRocket.init("pm66tw/juristic-web-app");
-  Bugsnag.start({
-    apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
-    plugins: [new BugsnagPluginReact()]
-  });
-}
+
+LogRocket.init("pm66tw/juristic-web-app");
+Bugsnag.start({
+  apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
+  plugins: [new BugsnagPluginReact()]
+});
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -78,30 +83,121 @@ if (!isMobile) {
 }
 
 const persistor = persistStore(store);
+// @ts-ignore
+const ErrorBoundary = Bugsnag.getPlugin("react").createErrorBoundary(React);
+
+interface ErrorProps {
+  clearError: () => void;
+  error: Error;
+  info: React.ErrorInfo;
+}
+
+const ErrorView = ({ clearError, error, info }: ErrorProps) => {
+  const { t } = useTranslation();
+  const errorCode = CryptoJS.AES.encrypt(
+    error.name.toString(),
+    "errorCode"
+  ).toString();
+
+  return (
+    <Paper
+      style={{
+        padding: 24,
+        display: "flex",
+        position: "relative"
+      }}
+    >
+      <ButtonBase
+        style={{
+          position: "absolute",
+          left: 20,
+          top: 20
+        }}
+        onClick={clearError}
+      >
+        <img src={logo} alt="juristic" style={{ width: 100 }} />
+      </ButtonBase>
+      <Lottie animationData={question} />
+      <div
+        style={{
+          marginLeft: 50,
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: 400
+        }}
+      >
+        <div>
+          <Typography
+            variant="h1"
+            style={{ marginTop: 20, textAlign: "center" }}
+          >
+            {t("500.oops")}
+          </Typography>
+          <Typography variant="h4" style={{ marginTop: 20 }}>
+            {t("500.error_header")}
+          </Typography>
+          <Typography style={{ marginTop: 20 }}>
+            {t("500.error_body")}
+          </Typography>
+          <Typography style={{ marginTop: 20 }}>
+            <Trans
+              i18nKey="500.error_body_quick" // optional -> fallbacks to defaults if not provided
+              components={[
+                <a
+                  href={
+                    "mailto: hej@juristic.io?subject=fejlkode: " + errorCode
+                  }
+                >
+                  hej@juristic.io
+                </a>
+              ]}
+            />
+          </Typography>
+          <Typography style={{ marginTop: 20, fontSize: 11 }}>
+            {t("500.error_code", { errorCode })}
+          </Typography>
+        </div>
+        <Button
+          variant="contained"
+          style={{
+            backgroundColor: "#73B1FF",
+            color: "white",
+            width: "50%",
+            marginTop: 50
+          }}
+          onClick={clearError}
+        >
+          {t("404.go_back")}
+        </Button>
+      </div>
+    </Paper>
+  );
+};
 
 let render = () => {
   ReactDOM.render(
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+    <ErrorBoundary FallbackComponent={ErrorView}>
+      {/* @ts-ignore */}
+      <Provider store={store}>
         <ConnectedRouter history={history}>
           <Auth0ProviderWithHistory>
             <App />
             <ToastContainer />
+            <CookieBot domainGroupId={domainGroupId} />
           </Auth0ProviderWithHistory>
         </ConnectedRouter>
-      </PersistGate>
-    </Provider>,
+      </Provider>
+    </ErrorBoundary>,
     MOUNT_NODE
   );
 };
 
 if (process.env.NODE_ENV === "production") {
-  // @ts-ignore
-  const ErrorBoundary = Bugsnag.getPlugin("react").createErrorBoundary(React);
-
   render = () => {
     ReactDOM.render(
-      <ErrorBoundary>
+      <ErrorBoundary FallbackComponent={ErrorView}>
+        {/* @ts-ignore */}
         <Provider store={store}>
           <ConnectedRouter history={history}>
             <Auth0ProviderWithHistory>
