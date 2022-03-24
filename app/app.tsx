@@ -43,8 +43,9 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 //  logrocket
 
 // bugsnag
-
-LogRocket.init("pm66tw/juristic-web-app");
+if (process.env.NODE_ENV === "production") {
+  LogRocket.init("pm66tw/juristic-web-app");
+}
 Bugsnag.start({
   apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
   plugins: [new BugsnagPluginReact()]

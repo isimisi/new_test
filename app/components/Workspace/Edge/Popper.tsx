@@ -57,7 +57,7 @@ interface Props {
   lineThrough: boolean;
   handleLineThroughChange: () => void;
   handleDeleteEdge: () => void;
-  handleHideEdgePopper: () => void;
+  handleHideEdgePopper: (stopReffrence?: boolean) => void;
 }
 
 const EdgePopper = (props: Props) => {
@@ -399,7 +399,7 @@ const EdgePopper = (props: Props) => {
                 className={classes.labelConfirmButton}
                 onClick={() => {
                   handleSave();
-                  handleHideEdgePopper();
+                  handleHideEdgePopper(true);
                 }}
                 size="small"
               >

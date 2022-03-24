@@ -195,13 +195,18 @@ const Workspace = (props) => {
     }
   };
 
+  const [edgePopperRef, setEdgePopperRef] = useState<EventTarget | null>(null);
   const [showEdgePopper, setShowEdgePopper] = useState(false);
   const handleShowEdgePopper = () => {
     setShowEdgePopper(true);
   };
 
-  const handleHideEdgePopper = () => {
+
+  const handleHideEdgePopper = (stopReffrence = false) => {
     setShowEdgePopper(false);
+    if (stopReffrence) {
+      setEdgePopperRef(null);
+    }
   };
 
 
@@ -510,7 +515,6 @@ const Workspace = (props) => {
     onEdgeDoubleClick
   } = useDoubbleClick(updateNodeDisplayName);
 
-  const [edgePopperRef, setEdgePopperRef] = useState<EventTarget | null>(null);
 
   const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
   const onConnect = (data) => {
@@ -672,6 +676,7 @@ const Workspace = (props) => {
   // RELATIONSHIP
 
   const closeDefineEdge = useCallback(() => {
+    console.log(showEdgePopper);
     if (!showEdgePopper) {
       setDefineEdgeOpen(false);
       setIsUpdatingElement(false);
@@ -959,8 +964,12 @@ const Workspace = (props) => {
   const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
 
   const showPopperAgain = () => {
-    handleShowEdgePopper();
-    handleShowNodePopper();
+    if (edgePopperRef) {
+      handleShowEdgePopper();
+    }
+    if (nodePopperRef) {
+      handleShowNodePopper();
+    }
   };
 
   return (
