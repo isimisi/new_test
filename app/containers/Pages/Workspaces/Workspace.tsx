@@ -209,14 +209,18 @@ const Workspace = (props) => {
     }
   };
 
-
+  const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
   const [showNodePopper, setShowNodePopper] = useState(false);
   const handleShowNodePopper = () => {
     setShowNodePopper(true);
   };
 
-  const handleHideNodePopper = () => {
+  const handleHideNodePopper = (stopReffrence = false) => {
     setShowNodePopper(false);
+
+    if (stopReffrence) {
+      setNodePopperRef(null);
+    }
   };
 
 
@@ -469,6 +473,47 @@ const Workspace = (props) => {
     }
   };
 
+  const closeDefineEdge = useCallback(() => {
+    if (!showEdgePopper) {
+      setDefineEdgeOpen(false);
+      setIsUpdatingElement(false);
+      setRelationshipLabel('');
+      setRelationshipValue('');
+      setRelationshipType('custom');
+      setRelationshipColor({
+        r: 0, g: 0, b: 0, a: 1
+      });
+      setShowArrow(false);
+      setAnimatedLine(false);
+      setShowlabel(false);
+      setLineThrough(false);
+    }
+  }, [showEdgePopper]);
+
+  const updateEdgeDisplayName = (name, edgeTextTarget, edgeTextActualTarget) => {
+    console.log(name);
+    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
+
+    if (isUpdatingElement && elementToUpdate) {
+      dispatch(putEdge(
+        user,
+        elementToUpdate.id,
+        choosenRelationship.id,
+        choosenRelationship.label,
+        name,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        lineThrough,
+        closeDefineEdge,
+        edgeTextTarget,
+        edgeTextActualTarget
+      ));
+    }
+  };
+
   const handleNodeSave = (x?: number, y?: number, drag?: boolean) => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const rf = rfInstance?.toObject();
@@ -512,11 +557,12 @@ const Workspace = (props) => {
   const {
     removeNodeTextTarget,
     onNodeDoubleClick,
-    onEdgeDoubleClick
-  } = useDoubbleClick(updateNodeDisplayName);
+    onEdgeDoubleClick,
+    edgeTarget,
+    removeEdgeTextTarget
+  } = useDoubbleClick(updateNodeDisplayName, updateEdgeDisplayName, relationships, handleHideEdgePopper, handleHideNodePopper);
 
 
-  const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
   const onConnect = (data) => {
     removeNodeTextTarget();
     setNodePopperRef(null);
@@ -568,6 +614,7 @@ const Workspace = (props) => {
     setElementToUpdate(element);
     setDeletedAttributes([]);
     removeNodeTextTarget();
+    removeEdgeTextTarget();
     setNodePopperRef(null);
     setEdgePopperRef(null);
     handleHideNodePopper();
@@ -597,6 +644,11 @@ const Workspace = (props) => {
         setNodePopperRef(target.nodeName === "H6" ? event.target : ifDivtarget);
       }
     } else {
+      // @ts-ignore
+      if (edgeTarget) {
+        return;
+      }
+
       event.persist();
       setRelationshipLabel(element.data.label);
       setRelationshipValue(element.data.value);
@@ -675,23 +727,6 @@ const Workspace = (props) => {
 
   // RELATIONSHIP
 
-  const closeDefineEdge = useCallback(() => {
-    console.log(showEdgePopper);
-    if (!showEdgePopper) {
-      setDefineEdgeOpen(false);
-      setIsUpdatingElement(false);
-      setRelationshipLabel('');
-      setRelationshipValue('');
-      setRelationshipType('custom');
-      setRelationshipColor({
-        r: 0, g: 0, b: 0, a: 1
-      });
-      setShowArrow(false);
-      setAnimatedLine(false);
-      setShowlabel(false);
-      setLineThrough(false);
-    }
-  }, [showEdgePopper]);
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
@@ -940,6 +975,7 @@ const Workspace = (props) => {
 
   const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     removeNodeTextTarget();
+    removeEdgeTextTarget();
     handleHideNodePopper();
     handleHideEdgePopper();
     setNodePopperRef(null);
@@ -997,7 +1033,7 @@ const Workspace = (props) => {
           onPaneScroll={hideContext}
           onPaneClick={onPaneClick}
           onNodeDoubleClick={onNodeDoubleClick}
-          onEdgeDoubleClick={onEdgeDoubleClick}
+          // onEdgeDoubleClick={onEdgeDoubleClick}
           nodesDraggable={interactive}
           nodesConnectable={interactive}
           elementsSelectable={interactive}

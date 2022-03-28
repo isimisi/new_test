@@ -43,7 +43,9 @@ import {
   CHANGE_TAGS,
   CONDITION_ADD_ELEMENTS,
   CONDITION_UPDATE_ELEMENTS,
+  ConditionActions,
 } from "./conditionConstants";
+import { IImmutableConditionState } from "@customTypes/reducers/conditions";
 
 const initialState = {
   loading: false,
@@ -61,8 +63,11 @@ const initialState = {
   conditionTags: List(),
 };
 
-const initialImmutableState = fromJS(initialState);
-export default function reducer(state = initialImmutableState, action: any) {
+const initialImmutableState: IImmutableConditionState = fromJS(initialState);
+export default function reducer(
+  state = initialImmutableState,
+  action: ConditionActions
+): IImmutableConditionState {
   switch (action.type) {
     case GET_CONDITIONS_LOADING:
       return state.withMutations((mutableState) => {
@@ -84,7 +89,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       return state.withMutations((mutableState) => {
         mutableState.set("label", "");
         mutableState.set("description", "");
-        mutableState.set("type", "");
+
         mutableState.set("group", "");
       });
     case POST_CONDITION_FAILED:
@@ -96,6 +101,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       return state.withMutations((mutableState) => {
         const newElements = action.elements;
 
+        // @ts-ignore
         const orgElements = mutableState.get("elements").toJS();
         const elements = fromJS([...orgElements, ...newElements]);
         mutableState.set("elements", elements);
@@ -103,6 +109,7 @@ export default function reducer(state = initialImmutableState, action: any) {
     case CONDITION_UPDATE_ELEMENTS:
       return state.withMutations((mutableState) => {
         const { nodesWithOrgId, edgesWithOrgId } = action;
+        // @ts-ignore
         const elements = mutableState.get("elements").toJS();
         const elementsToEdit = elements.filter((el) => el.id.includes("edit"));
         const remainingElements = elements.filter((el) => !el.id.includes("edit"));
@@ -242,6 +249,7 @@ export default function reducer(state = initialImmutableState, action: any) {
     case CONDITION_POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const node = fromJS(action.node);
+        // @ts-ignore
         mutableState.update("elements", (myList) => myList.push(node));
       });
     case CONDITION_POST_NODE_FAILED:
@@ -251,6 +259,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case CONDITION_PUT_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
+        // @ts-ignore
         const elements = mutableState.get("elements").toJS();
         const index = elements.findIndex((e) => e.id === action.node.id && isNode(e));
         elements[index] = action.node;
@@ -264,6 +273,7 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case CONDITION_PUT_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
+        // @ts-ignore
         const elements = mutableState.get("elements").toJS();
         const index = elements.findIndex((e) => e.id === action.edge.id && isEdge(e));
         elements[index] = action.edge;
@@ -277,6 +287,7 @@ export default function reducer(state = initialImmutableState, action: any) {
     case CONDITION_POST_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
         const edge = fromJS(action.edge);
+        // @ts-ignore
         mutableState.update("elements", (myList) => myList.push(edge));
       });
     case CONDITION_POST_EDGE_FAILED:
@@ -287,16 +298,19 @@ export default function reducer(state = initialImmutableState, action: any) {
     case CONDITION_RELATIONSHIP_ADD_TO_LIST:
       return state.withMutations((mutableState) => {
         const relationship = fromJS(action.relationship);
+        // @ts-ignore
         mutableState.update("relationships", (myList) => myList.push(relationship));
       });
     case CONDITION_NODE_ADD_TO_LIST:
       return state.withMutations((mutableState) => {
         const node = fromJS(action.node);
+        // @ts-ignore
         mutableState.update("nodes", (myList) => myList.push(node));
       });
     case CONDITION_NODE_ATTRIBUT_ADD_TO_LIST:
       return state.withMutations((mutableState) => {
         const attribut = fromJS(action.attribut);
+        // @ts-ignore
         mutableState.update("nodeAttributes", (myList) => myList.push(attribut));
       });
     case CHANGE_TAGS:

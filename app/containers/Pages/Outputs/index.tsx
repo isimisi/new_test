@@ -18,7 +18,7 @@ import {
 } from "@components/Tags/reducers/tagsActions";
 import Grid from "@material-ui/core/Grid";
 import TagList from "@components/Tags/TagList";
-import { Tag, WhereInApp } from "@customTypes/data";
+import { WhereInApp } from "@customTypes/data";
 import { useTranslation } from "react-i18next";
 import { columns, reducer } from "./constants";
 import useStyles from "./output-jss";
@@ -28,6 +28,7 @@ import {
   closeNotifAction,
   deleteOutput
 } from "./reducers/outputActions";
+import { Tag } from "@customTypes/reducers/tags";
 
 const Outputs = () => {
   const classes = useStyles();

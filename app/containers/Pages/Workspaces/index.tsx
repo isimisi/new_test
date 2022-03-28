@@ -12,7 +12,7 @@ import CryptoJS from "crypto-js";
 import Notification from "@components/Notification/Notification";
 
 import TagList from "@components/Tags/TagList";
-import { Tag, WhereInApp } from "@customTypes/data";
+import { WhereInApp } from "@customTypes/data";
 import {
   changeTagActivity,
   deleteTag,
@@ -33,6 +33,7 @@ import {
 } from "./reducers/workspaceActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
+import { Tag } from "@customTypes/reducers/tags";
 
 const Workspaces = props => {
   const { classes } = props;

@@ -16,11 +16,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { Tag } from '@customTypes/data';
+
 import { useTranslation } from 'react-i18next';
 import useStyles from './tag.jss';
 
 import CreateTag from './CreateTag';
+import { Tag } from '@customTypes/reducers/tags';
 
 
 interface Props {

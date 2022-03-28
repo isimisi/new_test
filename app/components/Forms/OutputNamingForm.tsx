@@ -11,11 +11,8 @@ import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import CreatableSelect from "react-select/creatable";
-import {
-  hanldeOnChange,
-  MixedTagOptions,
-  tagMapping
-} from "@components/Tags/constants";
+import { hanldeOnChange, tagMapping } from "@components/Tags/constants";
+import { MixedTagOptions } from "@customTypes/reducers/tags";
 
 const useStyles = makeStyles(theme => ({
   root: {

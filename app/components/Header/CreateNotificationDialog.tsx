@@ -41,6 +41,7 @@ export default function NotificationDialog({ handleClose, open }: Props) {
 
   const [chosenEmoji, setChosenEmoji] = useState<IEmojiData | null>(null);
   const [showEmoji, setShowEmoji] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [emoji, setEmoji] = useState("");
 
 

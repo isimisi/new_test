@@ -54,7 +54,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import { SelectOptions, WhereInApp } from '@customTypes/data';
-import { hanldeOnChange, MixedTagOptions, tagMapping } from '@components/Tags/constants';
+import { hanldeOnChange, tagMapping } from '@components/Tags/constants';
 import {
 
   getTags,
@@ -74,6 +74,7 @@ import {
 } from '../Workspaces/reducers/workspaceActions';
 import { useAuth0 } from "@auth0/auth0-react";
 import { getPlanId, UserMeta } from '@helpers/userInfo';
+import { MixedTagOptions } from '@customTypes/reducers/tags';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const corporateChart = require('@lotties/racoon/corporateChart.json');

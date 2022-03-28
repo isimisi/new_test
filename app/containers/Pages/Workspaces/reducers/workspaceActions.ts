@@ -20,6 +20,7 @@ import { RGBA } from "@customTypes/data";
 import { History } from 'history';
 import { EdgeData } from "@customTypes/reactFlow";
 import { saveToLocalStorage } from "@api/localStorage/localStorage";
+import { findPointOnEdge } from "@components/Workspace/Edge/CustomEdge";
 
 
 const WORKSPACES = "workspaces";
@@ -463,6 +464,8 @@ export const putEdge = (
   showLabel: boolean,
   lineThrough: boolean,
   close: () => void,
+  edgeTextTarget?: HTMLElement,
+  edgeTextActualTarget?: SVGGraphicsElement,
 
 ) => async (dispatch) => {
   dispatch({ type: types.PUT_EDGE_LOADING });
@@ -486,6 +489,29 @@ export const putEdge = (
 
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
     close();
+    edgeTextTarget && edgeTextTarget.remove();
+    if (edgeTextActualTarget) {
+      // @ts-ignore
+      const d = edgeTextActualTarget?.parentElement?.previousSibling?.getAttribute("d");
+      const center = findPointOnEdge(d, 50);
+      const textBbox = edgeTextActualTarget.getBBox();
+      const rect = edgeTextActualTarget.previousSibling as SVGRectElement;
+
+      rect.setAttribute("height", `${textBbox.height}px`);
+      rect.setAttribute("width", `${textBbox.width}px`);
+
+
+      console.log(textBbox);
+      console.log(center);
+      console.log({ edgeTextActualTarget }, edgeTextActualTarget.style.width);
+      edgeTextActualTarget?.parentElement
+        ?.setAttribute(
+          'transform',
+          `translate(${center.x - textBbox.width / 2} ${center.y - textBbox.height / 2})`
+        );
+      console.log(`translate(${center.x - textBbox.width / 2} ${center.y - textBbox.height / 2})`);
+      edgeTextActualTarget.style.display = "block";
+    }
   } catch (error) {
     console.log({ error });
     dispatch({ type: types.PUT_EDGE_FAILED, message });

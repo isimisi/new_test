@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { useTranslation } from "react-i18next";
 import Grid from "@material-ui/core/Grid";
 import TagList from "@components/Tags/TagList";
-import { Tag, WhereInApp } from "@customTypes/data";
+import { WhereInApp } from "@customTypes/data";
 import {
   deleteTag,
   postTag,
@@ -30,6 +30,7 @@ import {
 } from "./reducers/conditionActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
+import { Tag } from "@customTypes/reducers/tags";
 
 function Conditions(props) {
   const { classes } = props;

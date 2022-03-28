@@ -14,7 +14,6 @@ import {
   SHOW_WORKSPACE_SUCCESS,
   SHOW_WORKSPACE_FAILED,
   LABEL_CHANGE,
-  VALUES_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
   CHANGE_TAGS,
@@ -88,9 +87,14 @@ import {
   SET_CONNECTED_USERS,
   REMOVE_CONNECTED_USERS,
   DO_NOT_SHOW_INTERNATIONAL_DISCLAIMER_AGAIN,
+  WorkspaceActions,
 } from "./workspaceConstants";
+import {
+  IImmutableWorkspaceState,
+  WorkspaceState,
+} from "@customTypes/reducers/workspace";
 
-const initialState = {
+const initialState: WorkspaceState = {
   loading: false,
   initialLoading: false,
   initialLoadingCvr: false,
@@ -134,8 +138,11 @@ const initialState = {
   showInternationalDisclaimer: true,
 };
 
-const initialImmutableState = fromJS(initialState);
-export default function reducer(state = initialImmutableState, action: any) {
+const initialImmutableState: IImmutableWorkspaceState = fromJS(initialState);
+export default function reducer(
+  state = initialImmutableState,
+  action: WorkspaceActions
+): IImmutableWorkspaceState {
   switch (action.type) {
     case GET_WORKSPACES_LOADING:
       return state.withMutations((mutableState) => {
@@ -298,11 +305,6 @@ export default function reducer(state = initialImmutableState, action: any) {
       return state.withMutations((mutableState) => {
         const description = fromJS(action.description);
         mutableState.set("description", description);
-      });
-    case VALUES_CHANGE:
-      return state.withMutations((mutableState) => {
-        const values = fromJS(action.values);
-        mutableState.set("values", values);
       });
     case ADD_GROUP:
       return state.withMutations((mutableState) => {
@@ -616,12 +618,12 @@ export default function reducer(state = initialImmutableState, action: any) {
       });
     case SET_CONNECTED_USERS:
       return state.withMutations((mutableState) => {
-        const user = fromJS(action.edge);
+        const user = fromJS(action.user);
         mutableState.update("connectedUsers", (myList) => myList.push(user));
       });
     case REMOVE_CONNECTED_USERS:
       return state.withMutations((mutableState) => {
-        const user = fromJS(action.edge);
+        const user = fromJS(action.user);
         mutableState.update("connectedUsers", (myList) =>
           myList.filter((x) => user.id !== x.id)
         );

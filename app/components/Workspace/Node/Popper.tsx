@@ -1,7 +1,7 @@
 import React, { MouseEvent, useState } from "react";
 import Popper from "@material-ui/core/Popper";
 import Paper from "@material-ui/core/Paper";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+
 import Fade from "@material-ui/core/Fade";
 import { useTranslation } from "react-i18next";
 import MoreVertIcon from "@material-ui/icons/MoreVert";

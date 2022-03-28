@@ -1,7 +1,5 @@
-import { fromJS, List } from 'immutable';
+import { fromJS, List } from "immutable";
 
-import { Tag } from '@customTypes/data';
-import { Immutable } from '@redux/configureStore';
 import {
   TAG_INDEX_SUCCESS,
   TAG_INDEX_FAILED,
@@ -12,46 +10,48 @@ import {
   TAG_DELETE_SUCCESS,
   TAG_DELETE_FAILED,
   CHANGE_TAGS_ACTIVE,
-  TagActions
-} from './tagsConstants';
-
-interface TagState {
-  tags: List<Tag>,
-  message: string
-}
-
-export type IImmutableTagState = Immutable<TagState>
+  TagActions,
+} from "./tagsConstants";
+import { IImmutableTagState, TagState } from "@customTypes/reducers/tags";
 
 const initialState: TagState = {
   tags: List(),
-  message: ''
+  message: "",
 };
 
-const initialImmutableState = fromJS(initialState);
+const initialImmutableState: IImmutableTagState = fromJS(initialState);
 
-export default function reducer(state = initialImmutableState, action: TagActions): IImmutableTagState {
+export default function reducer(
+  state = initialImmutableState,
+  action: TagActions
+): IImmutableTagState {
   switch (action.type) {
     case TAG_INDEX_SUCCESS:
       return state.withMutations((mutableState) => {
         const tags = fromJS(action.tags);
-        mutableState.set('tags', tags);
+        mutableState.set("tags", tags);
       });
     case TAG_DELETE_SUCCESS:
       return state.withMutations((mutableState) => {
         const { id } = action;
-        mutableState.update('tags', myList => myList.filter(tag => tag.toJS().id !== id));
+        mutableState.update("tags", (myList) =>
+          // @ts-ignore
+          myList.filter((tag) => Boolean(tag) && tag.toJS().id !== id)
+        );
       });
     case TAG_POST_SUCCESS:
       return state.withMutations((mutableState) => {
         const tag = fromJS(action.tag);
-        mutableState.update('tags', myList => myList.push(tag));
+        // @ts-ignore
+        mutableState.update("tags", (myList) => myList.push(tag));
       });
     case TAG_UPDATE_SUCCESS:
       return state.withMutations((mutableState) => {
         const tag = action.tag;
-        mutableState.update('tags', myList => {
+        mutableState.update("tags", (myList) => {
+          // @ts-ignore
           const newList = [...myList.toJS()];
-          const index = newList.findIndex(item => item.id === tag.id);
+          const index = newList.findIndex((item) => item.id === tag.id);
           newList[index].name = tag.name;
           newList[index].emoji = tag.emoji;
           newList[index].emoji_name = tag.emoji_name;
@@ -61,9 +61,10 @@ export default function reducer(state = initialImmutableState, action: TagAction
     case CHANGE_TAGS_ACTIVE:
       return state.withMutations((mutableState) => {
         const tag = action.tag;
-        mutableState.update('tags', myList => {
+        mutableState.update("tags", (myList) => {
+          // @ts-ignore
           const newList = [...myList.toJS()];
-          const index = newList.findIndex(item => item.id === tag.id);
+          const index = newList.findIndex((item) => item.id === tag.id);
           newList[index].active = !newList[index].active;
           return fromJS(newList);
         });
@@ -74,7 +75,7 @@ export default function reducer(state = initialImmutableState, action: TagAction
     case TAG_INDEX_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
-        mutableState.set('message', message);
+        mutableState.set("message", message);
       });
     default:
       return state;

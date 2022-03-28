@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import IconButton from "@material-ui/core/IconButton";
-import cursor from "@images/icons/cursor.svg";
+
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import useStyles from "./actions.jss";
@@ -29,11 +29,7 @@ import Filter1Icon from "@material-ui/icons/Filter1";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import CustomSwitch from "@components/Switch/CustomSwitch";
 import LowPriorityIcon from "@material-ui/icons/LowPriority";
-import {
-  onDragStartNode,
-  onDragStartNote,
-  onDragStartStep
-} from "@helpers/flow/dragHelper";
+import { onDragStartNode, onDragStartNote } from "@helpers/flow/dragHelper";
 
 interface Props {
   defineNodeOpen: boolean;
@@ -73,9 +69,9 @@ const Items = (props: Props) => {
 
   const stepRef = React.useRef<HTMLButtonElement>(null);
 
-  const handleToggleStep = () => {
-    setStepsOpen(prevOpen => !prevOpen);
-  };
+  // const handleToggleStep = () => {
+  //   setStepsOpen(prevOpen => !prevOpen);
+  // };
 
   const handleCloseSteps = (event: React.MouseEvent<EventTarget>) => {
     if (
@@ -96,7 +92,7 @@ const Items = (props: Props) => {
 
   const handleDragNode = e => onDragStartNode(e, zoom);
   const handleDragNote = e => onDragStartNote(e, zoom);
-  const handleDragStep = e => onDragStartStep(e, zoom);
+  // const handleDragStep = e => (e, zoom);
 
   return (
     <>

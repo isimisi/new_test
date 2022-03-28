@@ -20,9 +20,14 @@ import {
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
   CHANGE_USE_SUGGESTION,
+  RelationshipActions,
 } from "./relationshipConstants";
+import {
+  IImmutableRelationshipState,
+  RelationshipState,
+} from "@customTypes/reducers/relationship";
 
-const initialState = {
+const initialState: RelationshipState = {
   relationships: List(),
   label: "",
   values: List(),
@@ -36,8 +41,11 @@ const initialState = {
   useSuggestions: true,
 };
 
-const initialImmutableState = fromJS(initialState);
-export default function reducer(state = initialImmutableState, action: any) {
+const initialImmutableState: IImmutableRelationshipState = fromJS(initialState);
+export default function reducer(
+  state = initialImmutableState,
+  action: RelationshipActions
+): IImmutableRelationshipState {
   switch (action.type) {
     case GET_RELATIONSHIPS_SUCCESS:
       return state.withMutations((mutableState) => {

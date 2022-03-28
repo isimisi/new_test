@@ -19,25 +19,32 @@ import conditions from "../containers/Pages/Conditions/reducers/conditionReducer
 import output from "../containers/Pages/Outputs/reducers/outputReducer";
 import alert from "../containers/Pages/Alerts/reducers/alertReducer";
 import workspace from "../containers/Pages/Workspaces/reducers/workspaceReducer";
-import tags, {
-  IImmutableTagState,
-} from "../components/Tags/reducers/tagsReducer";
+import tags from "../components/Tags/reducers/tagsReducer";
+import { IImmutableTagState } from "@customTypes/reducers/tags";
+import { IImmutableAlertState } from "@customTypes/reducers/alert";
+import { IImmutableAttributState } from "@customTypes/reducers/attribute";
+import { IImmutableConditionState } from "@customTypes/reducers/conditions";
+import { IImmutableDashboardState } from "@customTypes/reducers/dashbord";
+import { IImmutableGroupState } from "@customTypes/reducers/groups";
+import { IImmutableNodeState } from "@customTypes/reducers/node";
+import { IImmutableOutputState } from "@customTypes/reducers/output";
+import { IImmutableRelationshipState } from "@customTypes/reducers/relationship";
 
 // The top-level state object
 export interface ApplicationState {
-  dashboard: any;
-  attribute: any;
-  node: any;
-  relationship: any;
+  dashboard: IImmutableDashboardState;
+  attribute: IImmutableAttributState;
+  node: IImmutableNodeState;
+  relationship: IImmutableRelationshipState;
   workspace: any;
-  conditions: any;
-  output: any;
-  alert: any;
+  conditions: IImmutableConditionState;
+  output: IImmutableOutputState;
+  alert: IImmutableAlertState;
   createOrganization: any;
   form: any;
   ui: any;
   initval: any;
-  groups: any;
+  groups: IImmutableGroupState;
   tags: IImmutableTagState;
   router: routerReducer;
 }

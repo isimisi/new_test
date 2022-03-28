@@ -1,7 +1,7 @@
-import { makeStyles, alpha } from "@material-ui/core/styles";
-import { MyTheme } from "@customTypes/styling";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme: MyTheme) => ({
+
+const useStyles = makeStyles(() => ({
   container: {
     marginLeft: 30,
     width: 250,

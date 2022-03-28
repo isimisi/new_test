@@ -44,7 +44,7 @@ interface Props {
 function SidebarContent(props: Props) {
   const { user } = useAuth0();
   const meta: UserMeta = user && user["https://juristic.io/meta"];
-  const { status, id: user_id } = meta.dbUser;
+  const { status } = meta.dbUser;
   const organization_id = meta.organization.id;
   const classes = useStyle();
 

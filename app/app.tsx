@@ -17,8 +17,7 @@ import CookieBot from "react-cookiebot/lib/CookieBot";
 import "react-toastify/dist/ReactToastify.min.css";
 import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
-import { PersistGate } from "redux-persist/integration/react";
-import { persistStore } from "redux-persist";
+
 import CryptoJS from "crypto-js";
 import Lottie from "lottie-react";
 import Typography from "@material-ui/core/Typography";
@@ -45,11 +44,11 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 // bugsnag
 if (process.env.NODE_ENV === "production") {
   LogRocket.init("pm66tw/juristic-web-app");
+  Bugsnag.start({
+    apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
+    plugins: [new BugsnagPluginReact()]
+  });
 }
-Bugsnag.start({
-  apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
-  plugins: [new BugsnagPluginReact()]
-});
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)
@@ -83,9 +82,7 @@ if (!isMobile) {
   }());
 }
 
-const persistor = persistStore(store);
-// @ts-ignore
-const ErrorBoundary = Bugsnag.getPlugin("react").createErrorBoundary(React);
+// const persistor = persistStore(store);
 
 interface ErrorProps {
   clearError: () => void;
@@ -93,7 +90,7 @@ interface ErrorProps {
   info: React.ErrorInfo;
 }
 
-const ErrorView = ({ clearError, error, info }: ErrorProps) => {
+const ErrorView = ({ clearError, error }: ErrorProps) => {
   const { t } = useTranslation();
   const errorCode = CryptoJS.AES.encrypt(
     error.name.toString(),
@@ -178,7 +175,7 @@ const ErrorView = ({ clearError, error, info }: ErrorProps) => {
 
 let render = () => {
   ReactDOM.render(
-    <ErrorBoundary FallbackComponent={ErrorView}>
+    <>
       {/* @ts-ignore */}
       <Provider store={store}>
         <ConnectedRouter history={history}>
@@ -189,12 +186,14 @@ let render = () => {
           </Auth0ProviderWithHistory>
         </ConnectedRouter>
       </Provider>
-    </ErrorBoundary>,
+    </>,
     MOUNT_NODE
   );
 };
 
 if (process.env.NODE_ENV === "production") {
+  // @ts-ignore
+  const ErrorBoundary = Bugsnag.getPlugin("react").createErrorBoundary(React);
   render = () => {
     ReactDOM.render(
       <ErrorBoundary FallbackComponent={ErrorView}>

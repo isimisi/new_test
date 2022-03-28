@@ -28,6 +28,7 @@ export default function NotificationDialog({
       </DialogTitle>
       <DialogContent>
         <div
+          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: activeNotification
               ? activeNotification.notification.body

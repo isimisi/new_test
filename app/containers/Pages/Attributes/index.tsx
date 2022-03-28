@@ -118,6 +118,7 @@ function Attributes(props) {
         handleSave={() => {
           setOpen(false);
           user &&
+            id &&
             dispatch(
               putAttribute(
                 user,

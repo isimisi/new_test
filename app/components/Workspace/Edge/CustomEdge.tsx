@@ -22,9 +22,6 @@ const getFactor = (
   const leftAndRight = [Position.Left, Position.Right];
   let factor = 0;
 
-  const comparisonPointY = cpComputedPosition ? cpComputedPosition.y : targetY;
-  const comparisonPointX = cpComputedPosition ? cpComputedPosition.x : targetX;
-
   if (sourcePosition === Position.Top && targetPosition === Position.Bottom) {
     factor = 0.2;
     if (targetY + 100 < sourceY) {
@@ -313,7 +310,7 @@ const drawCurve = (
   return path;
 };
 
-const findPointOnEdge = (
+export const findPointOnEdge = (
   d: string,
   prcnt: number
 ): { x: number; y: number } => {

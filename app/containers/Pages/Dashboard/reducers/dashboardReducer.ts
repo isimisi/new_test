@@ -14,10 +14,23 @@ import {
   GET_NOTIFICATIONS_FAILED,
   POST_NOTIFICATIONS_FAILED,
   READ_NOTIFICATIONS_SUCCESS,
+  DashboardActions,
 } from "./dashboardConstants";
+import { DashboardState, IImmutableDashboardState } from "@customTypes/reducers/dashbord";
 
-const initialState = {
-  elementCounts: {},
+const initElementCounts = {
+  alerts: 0,
+  attributes: 0,
+  conditions: 0,
+  groups: 0,
+  nodes: 0,
+  outputs: 0,
+  relationships: 0,
+  workspaces: 0,
+};
+
+const initialState: DashboardState = {
+  elementCounts: initElementCounts,
   timeline: [],
   message: "",
   runIntro: false,
@@ -25,39 +38,23 @@ const initialState = {
   notifications: {},
 };
 
-const initialImmutableState = fromJS(initialState);
+const initialImmutableState: IImmutableDashboardState = fromJS(initialState);
 
-export default function reducer(state = initialImmutableState, action: any): any {
+export default function reducer(
+  state = initialImmutableState,
+  action: DashboardActions
+): IImmutableDashboardState {
   switch (action.type) {
     case GET_ELEMET_COUNTS_SUCCESS:
       return state.withMutations((mutableState) => {
         const elementCounts = fromJS(action.elementCounts);
         mutableState.set("elementCounts", elementCounts);
       });
-    case GET_ELEMET_COUNTS_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
-      });
+
     case GET_TIMELINE_SUCCESS:
       return state.withMutations((mutableState) => {
         const timeline = fromJS(action.timeline);
         mutableState.set("timeline", timeline);
-      });
-    case GET_TIMELINE_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
-      });
-    case POST_FEATURE_SUCCESS:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
-      });
-    case POST_FEATURE_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
       });
     case RUN_INTRO:
       return state.withMutations((mutableState) => {
@@ -74,11 +71,7 @@ export default function reducer(state = initialImmutableState, action: any): any
         const notifications = fromJS(action.notifications);
         mutableState.set("notifications", notifications);
       });
-    case GET_NOTIFICATIONS_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
-      });
+
     case READ_NOTIFICATIONS_SUCCESS:
       return state.withMutations((mutableState) => {
         const notifications = mutableState.get("notifications").toJS();
@@ -87,8 +80,12 @@ export default function reducer(state = initialImmutableState, action: any): any
         currNotif.read = true;
         mutableState.set("notifications", fromJS(notifications));
       });
-
+    case GET_NOTIFICATIONS_FAILED:
     case POST_NOTIFICATIONS_FAILED:
+    case POST_FEATURE_FAILED:
+    case GET_TIMELINE_FAILED:
+    case GET_ELEMET_COUNTS_FAILED:
+    case POST_FEATURE_SUCCESS:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set("message", message);

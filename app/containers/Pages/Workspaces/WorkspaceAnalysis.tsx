@@ -435,7 +435,7 @@ const WorkspaceAnalysis = () => {
             </Grid>
           ))}
         </div>
-        <SidePanel handleImagesForPp={handleImagesForPp} handleVersions={handleDrawer} save={save} />
+        {outputs.length === 0 ? null : <SidePanel handleImagesForPp={handleImagesForPp} handleVersions={handleDrawer} save={save} />}
       </div>
       <Prompt
         when
