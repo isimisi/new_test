@@ -28,7 +28,7 @@ export const deltaE = (rgbA, rgbB) => {
   const deltaL = labA[0] - labB[0];
   const deltaA = labA[1] - labB[1];
   const deltaB = labA[2] - labB[2];
-  console.log(convertToArray(rgbA), convertToArray(rgbB));
+
   const c1 = Math.sqrt(labA[1] * labA[1] + labA[2] * labA[2]);
   const c2 = Math.sqrt(labB[1] * labB[1] + labB[2] * labB[2]);
   const deltaC = c1 - c2;

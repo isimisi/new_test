@@ -167,7 +167,13 @@ const Meta = (props: Props) => {
     startLoadingExcel();
 
     const wb = XLSX.utils.book_new();
-    const nodes = elements.filter((e): e is Node => isNode(e));
+    const nodes = elements.filter((e): e is Node => {
+      if (isNode(e)) {
+        const checkIfNodeHasText = e.data.label && e.data.label.length > 0 && e.data.displayName && e.data.displayName.length > 0;
+        return checkIfNodeHasText;
+      }
+      return false;
+    });
 
 
     const names = nodes.map(n => getSheetName(n));

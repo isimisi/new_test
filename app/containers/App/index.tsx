@@ -10,25 +10,17 @@ import Application from "./Application";
 import ThemeWrapper from "./ThemeWrapper";
 import { useAuth0 } from "@auth0/auth0-react";
 import Loader from "@components/Loading/LongLoader";
+import ErrorView from "@components/Error/CrashScreen";
 
 // @ts-ignore
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
 const App = () => {
-  const {
-    user,
-    loginWithRedirect,
-    isAuthenticated,
-    isLoading,
-    error
-  } = useAuth0();
-  console.log({ user, loginWithRedirect, isAuthenticated, isLoading, error });
+  const { loginWithRedirect, isAuthenticated, isLoading, error } = useAuth0();
+
   if (error) {
     return (
-      <div>
-        Oops...
-        {error.message}
-      </div>
+      <ErrorView error={error} clearError={() => window.location.reload()} />
     );
   }
 
