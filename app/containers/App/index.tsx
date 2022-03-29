@@ -46,13 +46,7 @@ const App = () => {
   return (
     <ThemeWrapper>
       <Switch>
-        <Route
-          exact
-          path="/"
-          render={() =>
-            isAuthenticated ? <Redirect to="/app" /> : loginWithRedirect()
-          }
-        />
+        <Route exact path="/" render={() => <Redirect to="/app" />} />
         <PrivateRoute path="/app">
           <Application />
         </PrivateRoute>
