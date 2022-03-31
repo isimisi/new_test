@@ -195,7 +195,7 @@ const Workspace = (props) => {
     }
   };
 
-  const [edgePopperRef, setEdgePopperRef] = useState<EventTarget | null>(null);
+  const [edgePopperRef, setEdgePopperRef] = useState<SVGElement | null>(null);
   const [showEdgePopper, setShowEdgePopper] = useState(false);
   const handleShowEdgePopper = () => {
     setShowEdgePopper(true);
@@ -221,13 +221,6 @@ const Workspace = (props) => {
     if (stopReffrence) {
       setNodePopperRef(null);
     }
-  };
-
-
-  const hideContext = () => {
-    handleHideNodePopper();
-    handleHideEdgePopper();
-    setShowContextMenu(false);
   };
 
 
@@ -490,11 +483,9 @@ const Workspace = (props) => {
     }
   }, [showEdgePopper]);
 
-  const updateEdgeDisplayName = (name, edgeTextTarget, edgeTextActualTarget) => {
-    console.log(name);
-    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-
-    if (isUpdatingElement && elementToUpdate) {
+  const updateEdgeDisplayName = (name, edgeTextTarget, edgeTextActualTarget, edge) => {
+    const choosenRelationship = relationships.toJS().find(r => r.label === edge.data.label);
+    if (isUpdatingElement && elementToUpdate && choosenRelationship) {
       dispatch(putEdge(
         user,
         elementToUpdate.id,
@@ -562,8 +553,55 @@ const Workspace = (props) => {
     removeEdgeTextTarget
   } = useDoubbleClick(updateNodeDisplayName, updateEdgeDisplayName, relationships, handleHideEdgePopper, handleHideNodePopper);
 
+  const hideContext = (e?: any) => {
+    handleHideNodePopper();
+    handleHideEdgePopper();
 
-  const onConnect = (data) => {
+    removeNodeTextTarget();
+    removeEdgeTextTarget();
+
+    setShowContextMenu(false);
+  };
+
+  const handleRelationshipSave = (_currentConnectionData?: Connection) => {
+    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
+
+    if (isUpdatingElement && elementToUpdate) {
+      dispatch(putEdge(
+        user,
+        elementToUpdate.id,
+        choosenRelationship.id,
+        choosenRelationship.label,
+        relationshipValue,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        lineThrough,
+        closeDefineEdge,
+      ));
+    } else {
+      const actualConnectionData = _currentConnectionData || currentConnectionData;
+
+      const edge = {
+        relationship_id: null,
+        relationshipLabel: null,
+        relationshipValue,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        lineThrough,
+        ...actualConnectionData
+      };
+      dispatch(postEdge(user, id as string, edge, closeDefineEdge, handleAlerts));
+    }
+  };
+
+
+  const onConnect = (data: Edge<any> | Connection) => {
     removeNodeTextTarget();
     setNodePopperRef(null);
     setEdgePopperRef(null);
@@ -571,12 +609,19 @@ const Workspace = (props) => {
     handleHideNodePopper();
     handleHideEdgePopper();
     if (data.source !== data.target) {
-      setCurrentConnectionData(data);
-      setDefineEdgeOpen(true);
+      setCurrentConnectionData(data as Connection);
+      handleRelationshipSave(data as Connection);
     }
   };
 
   const onElementsRemove = (elementsToRemove: FlowElement[]): void => {
+    removeNodeTextTarget();
+    setNodePopperRef(null);
+    setEdgePopperRef(null);
+    setIsUpdatingElement(false);
+    handleHideNodePopper();
+    handleHideEdgePopper();
+
     const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
     const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
     const remainingElements = elements.filter((el: FlowElement) => {
@@ -605,6 +650,14 @@ const Workspace = (props) => {
 
 
   const onElementClick = (event: MouseEvent, element: FlowElement, showFull?: boolean) => {
+    const foreignObj = document.getElementById("doubleClickForeign");
+
+    if (foreignObj) {
+      if (foreignObj.contains(event.target as HTMLElement)) {
+        return;
+      }
+    }
+
     setActiveElement(element);
     dispatch(setShowCompanyData(false));
     setDefineEdgeOpen(false);
@@ -661,7 +714,7 @@ const Workspace = (props) => {
       if (showFull) {
         setDefineEdgeOpen(true);
       } else {
-        const target = event.target as HTMLElement;
+        const target = event.target as SVGElement;
         handleShowEdgePopper();
         setEdgePopperRef(target);
       }
@@ -728,41 +781,6 @@ const Workspace = (props) => {
   // RELATIONSHIP
 
 
-  const handleRelationshipSave = () => {
-    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
-
-    if (isUpdatingElement && elementToUpdate) {
-      dispatch(putEdge(
-        user,
-        elementToUpdate.id,
-        choosenRelationship.id,
-        choosenRelationship.label,
-        relationshipValue,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        closeDefineEdge,
-      ));
-    } else {
-      const edge = {
-        relationship_id: choosenRelationship.id,
-        relationshipLabel: choosenRelationship.label,
-        relationshipValue,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        ...currentConnectionData
-      };
-      dispatch(postEdge(user, id as string, edge, closeDefineEdge, handleAlerts));
-    }
-  };
-
   const handleChangeLabel = useCallback((_label) => {
     if (_label.__isNew__ && plan_id !== 1) {
       dispatch(addEdgeToList({
@@ -777,9 +795,16 @@ const Workspace = (props) => {
       dispatch(showNotifAction(t('workspaces.you_can_not_create_new_relationship_types')));
     } else {
       setRelationshipLabel(_label.value);
+      setRelationshipValue("");
     }
   }, []);
-  const handleChangeValue = useCallback((value) => setRelationshipValue(value ? value.value : value), []);
+  const handleChangeValue = useCallback((value) => {
+    if (value.value) {
+      setRelationshipValue(value.value);
+    } else {
+      setRelationshipValue(value.target.value);
+    }
+  }, []);
   const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
   const handleColorChange = useCallback((color) => setRelationshipColor(color.rgb), []);
   const handleShowArrowChange = useCallback(() => setShowArrow(val => !val), []);
@@ -1033,7 +1058,7 @@ const Workspace = (props) => {
           onPaneScroll={hideContext}
           onPaneClick={onPaneClick}
           onNodeDoubleClick={onNodeDoubleClick}
-          // onEdgeDoubleClick={onEdgeDoubleClick}
+          onEdgeDoubleClick={onEdgeDoubleClick}
           nodesDraggable={interactive}
           nodesConnectable={interactive}
           elementsSelectable={interactive}
@@ -1421,6 +1446,7 @@ const Workspace = (props) => {
             handleLineThroughChange={handleLineThroughChange}
             handleDeleteEdge={handleDeleteEdge}
             handleHideEdgePopper={handleHideEdgePopper}
+            rfInstance={rfInstance}
           />}
         </>
       )}

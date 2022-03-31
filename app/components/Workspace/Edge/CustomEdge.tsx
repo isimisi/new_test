@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 
+import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { memo } from "react";
 import {
   EdgeText,

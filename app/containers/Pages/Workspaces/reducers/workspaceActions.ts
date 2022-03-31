@@ -428,8 +428,6 @@ export const postEdge = (
     source_handle: edge.sourceHandle,
     target_handle: edge.targetHandle,
     relationship_id: edge.relationship_id,
-    relationshipLabel: edge.relationshipLabel,
-    relationship_value: edge.relationshipValue,
     color: JSON.stringify(edge.relationshipColor),
     type: edge.relationshipType,
     arrow: edge.showArrow,
@@ -489,28 +487,9 @@ export const putEdge = (
 
     dispatch({ type: types.PUT_EDGE_SUCCESS, edge: responseEdge });
     close();
-    edgeTextTarget && edgeTextTarget.remove();
+    edgeTextTarget && edgeTextTarget.parentElement?.remove();
     if (edgeTextActualTarget) {
-      // @ts-ignore
-      const d = edgeTextActualTarget?.parentElement?.previousSibling?.getAttribute("d");
-      const center = findPointOnEdge(d, 50);
-      const textBbox = edgeTextActualTarget.getBBox();
-      const rect = edgeTextActualTarget.previousSibling as SVGRectElement;
-
-      rect.setAttribute("height", `${textBbox.height}px`);
-      rect.setAttribute("width", `${textBbox.width}px`);
-
-
-      console.log(textBbox);
-      console.log(center);
-      console.log({ edgeTextActualTarget }, edgeTextActualTarget.style.width);
-      edgeTextActualTarget?.parentElement
-        ?.setAttribute(
-          'transform',
-          `translate(${center.x - textBbox.width / 2} ${center.y - textBbox.height / 2})`
-        );
-      console.log(`translate(${center.x - textBbox.width / 2} ${center.y - textBbox.height / 2})`);
-      edgeTextActualTarget.style.display = "block";
+      edgeTextActualTarget.style.visibility = 'visible';
     }
   } catch (error) {
     console.log({ error });

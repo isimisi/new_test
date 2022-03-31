@@ -20,7 +20,12 @@ const App = () => {
 
   if (error) {
     return (
-      <ErrorView error={error} clearError={() => window.location.reload()} />
+      <ErrorView
+        error={error}
+        clearError={() =>
+          window.location.replace("https://app.juristic.io/app")
+        }
+      />
     );
   }
 

@@ -344,11 +344,16 @@ const Workspace = props => {
           <Button onClick={handleCloseActions} color="primary">
             Nej tak
           </Button>
-          <Link to="/app" style={{ textDecoration: "none" }}>
-            <Button color="primary" variant="contained">
-              Opret GRATIS bruger
-            </Button>
-          </Link>
+
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() =>
+              window.open("https://app.juristic.io/app", "_blank")?.focus()
+            }
+          >
+            Opret GRATIS bruger
+          </Button>
         </DialogActions>
       </Dialog>
 

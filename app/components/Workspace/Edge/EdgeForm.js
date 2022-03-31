@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { withStyles, useTheme } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import css from "@styles/Form.scss";
 import "@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css";
@@ -109,38 +110,49 @@ const EdgeForm = (props) => {
             onChange={handleChangeLabel}
           />
         </div>
-        {!editable && (
-          <div className={classes.field} style={{ marginTop: 20 }}>
-            <CreatableSelect
-              isClearable
-              styles={selectStyles()}
-              menuPortalTarget={document.body}
-              menuPlacement="auto"
-              menuPosition="absolute"
-              inputId="react-select-single-edge-value"
-              TextFieldProps={{
-                label: "Værdi",
-                InputLabelProps: {
-                  htmlFor: "react-select-single-edge-value",
-                  shrink: true,
-                },
-                placeholder: "Værdi",
-              }}
+        {!editable ? (
+          choosenRelationship.use_suggestions === 0 ? (
+            <TextField
+              name="Værdi"
+              className={classes.field}
               placeholder="Værdi"
-              options={
-                choosenRelationship &&
-                choosenRelationship.values.map((r) => ({ value: r, label: r }))
-              }
-              value={
-                relationshipValue && {
-                  label: relationshipValue,
-                  value: relationshipValue,
-                }
-              }
+              label="Værdi"
+              value={relationshipValue}
               onChange={handleChangeValue}
             />
-          </div>
-        )}
+          ) : (
+            <div className={classes.field} style={{ marginTop: 20 }}>
+              <CreatableSelect
+                isClearable
+                styles={selectStyles()}
+                menuPortalTarget={document.body}
+                menuPlacement="auto"
+                menuPosition="absolute"
+                inputId="react-select-single-edge-value"
+                TextFieldProps={{
+                  label: "Værdi",
+                  InputLabelProps: {
+                    htmlFor: "react-select-single-edge-value",
+                    shrink: true,
+                  },
+                  placeholder: "Værdi",
+                }}
+                placeholder="Værdi"
+                options={
+                  choosenRelationship &&
+                  choosenRelationship.values.map((r) => ({ value: r, label: r }))
+                }
+                value={
+                  relationshipValue && {
+                    label: relationshipValue,
+                    value: relationshipValue,
+                  }
+                }
+                onChange={handleChangeValue}
+              />
+            </div>
+          )
+        ) : null}
         <div className={classes.field} style={{ marginTop: 20 }}>
           <Select
             classes={classes}

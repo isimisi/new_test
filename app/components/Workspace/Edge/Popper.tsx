@@ -15,7 +15,13 @@ import Tooltip from "@material-ui/core/Tooltip";
 import CreatableSelect from "react-select/creatable";
 
 import LabelIcon from "@material-ui/icons/Label";
-import { Edge, FlowElement, Node } from "react-flow-renderer";
+import {
+  Edge,
+  FlowElement,
+  Node,
+  OnLoadParams,
+  XYPosition
+} from "react-flow-renderer";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { selectStyles } from "@api/ui/helper";
 import IconButton from "@material-ui/core/IconButton";
@@ -27,10 +33,11 @@ import SmoothStep from "./smoothStep.svg";
 import { relationshipTypeOptions } from "./EdgeForm";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
+import { findPointOnEdge } from "./CustomEdge";
 
 interface Props {
   classes: any;
-  edgePopperRef: EventTarget | null;
+  edgePopperRef: SVGElement | null;
   showEdgePopper: boolean;
   currentZoom: number;
   editData: (
@@ -58,7 +65,11 @@ interface Props {
   handleLineThroughChange: () => void;
   handleDeleteEdge: () => void;
   handleHideEdgePopper: (stopReffrence?: boolean) => void;
+  rfInstance: OnLoadParams<any> | null;
 }
+
+const popperHeight = 45;
+const popperWidth = 382.22;
 
 const EdgePopper = (props: Props) => {
   const {
@@ -85,7 +96,8 @@ const EdgePopper = (props: Props) => {
     lineThrough,
     handleLineThroughChange,
     handleDeleteEdge,
-    handleHideEdgePopper
+    handleHideEdgePopper,
+    rfInstance
   } = props;
 
   // eslint-disable-next-line react/destructuring-assignment
@@ -183,15 +195,24 @@ const EdgePopper = (props: Props) => {
     }
   }, [displayColorPicker, edgeColor]);
 
+
+  const boundingRect = edgePopperRef?.getBoundingClientRect() as DOMRect;
+
+
   return (
     <>
       <Popper
         open={Boolean(edgePopperRef) && showEdgePopper}
         // @ts-ignore
-        anchorEl={edgePopperRef}
+
         role={undefined}
         transition
-        style={{ zIndex: 1000, marginBottom: 10 * currentZoom }}
+        style={{
+          zIndex: 1000,
+          position: "absolute",
+          top: boundingRect.top + boundingRect.height / 2 - popperHeight / 2,
+          left: boundingRect.left + boundingRect.width / 2 - popperWidth / 2,
+        }}
         placement="top"
       >
         {({ TransitionProps }) => (
