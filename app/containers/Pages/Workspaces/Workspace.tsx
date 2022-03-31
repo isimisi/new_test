@@ -545,13 +545,17 @@ const Workspace = (props) => {
     }
   };
 
+  const handleNoLabelDoubleClick = () => {
+    dispatch(showNotifAction(t('workspaces.no_label_double_click')));
+  };
+
   const {
     removeNodeTextTarget,
     onNodeDoubleClick,
     onEdgeDoubleClick,
     edgeTarget,
     removeEdgeTextTarget
-  } = useDoubbleClick(updateNodeDisplayName, updateEdgeDisplayName, relationships, handleHideEdgePopper, handleHideNodePopper);
+  } = useDoubbleClick(updateNodeDisplayName, updateEdgeDisplayName, relationships, handleHideEdgePopper, handleHideNodePopper, handleNoLabelDoubleClick);
 
   const hideContext = (e?: any) => {
     handleHideNodePopper();

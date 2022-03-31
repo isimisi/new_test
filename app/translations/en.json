@@ -446,7 +446,8 @@
       "show_label": "Show label",
       "animated": "Animated",
       "more": "More"
-    }
+    },
+    "no_label_double_click": "You must add a relationship type before you can edit the text"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",

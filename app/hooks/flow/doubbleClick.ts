@@ -16,6 +16,7 @@ const useDoubbleClick = (
   relationships: List<WorkspaceRelationship>,
   handleHideEdgePopper: (stopReffrence?: boolean) => void,
   handleHideNodePopper: (stopReffrence?: boolean) => void,
+  handleNoLabelDoubleClick: () => void
 ) => {
   const [nodeTextTarget, setNodeTextTarget] = useState<HTMLElement | null>(null);
   const [nodeTarget, setNodeTarget] = useState<Node | null>(null);
@@ -113,6 +114,11 @@ const useDoubbleClick = (
   const onEdgeDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge<any>) => {
     handleHideEdgePopper(true);
 
+    if (edge.data.label.length === 0) {
+      handleNoLabelDoubleClick();
+      return;
+    }
+
     const target = event.target as SVGElement;
     const actualTarget = target.nextElementSibling as SVGElement;
     // @ts-ignore
@@ -161,27 +167,31 @@ const useDoubbleClick = (
           options: relationship.values.map((r) => ({ value: r, label: r })),
           value: { value: actualTarget.textContent, label: actualTarget.textContent },
           isClearable: true,
+          escapeClearsValue: true,
           className: "nowheel",
-
-          onChange: (value: SelectOptions) => {
+          onChange: (value: SelectOptions | null) => {
             const valueOfSelect = divContainer.querySelectorAll("[class*=singleValue]")[0];
 
             if (valueOfSelect) {
-              valueOfSelect.innerHTML = value.value;
+              valueOfSelect.innerHTML = value?.value || "";
             }
 
-            const cont = document.createElement("div");
-            const loader = React.createElement(CircularProgress, { size: 15,
-              style: {
-                position: "absolute",
-                left: divContainer.offsetWidth / 2 - 7.5,
-                top: divContainer.offsetHeight / 2 - 7.5
-              } });
+            if (value) {
+              const cont = document.createElement("div");
+              const loader = React.createElement(CircularProgress, { size: 15,
+                style: {
+                  position: "absolute",
+                  left: divContainer.offsetWidth / 2 - 7.5,
+                  top: divContainer.offsetHeight / 2 - 7.5
+                } });
 
-            divContainer.parentElement?.appendChild(cont);
-            ReactDOM.render(loader, cont);
+              divContainer.parentElement?.appendChild(cont);
+              ReactDOM.render(loader, cont);
+            }
 
-            saveEdge(value.value, divContainer, actualTarget, edge);
+            if (value) {
+              saveEdge(value.value, divContainer, actualTarget, edge);
+            }
           },
           styles: { ...selectStyles(),
             singleValue: (provided) => ({
