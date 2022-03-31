@@ -563,15 +563,15 @@ const Workspace = (props) => {
     setShowContextMenu(false);
   };
 
-  const handleRelationshipSave = (_currentConnectionData?: Connection) => {
+  const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
 
     if (isUpdatingElement && elementToUpdate) {
       dispatch(putEdge(
         user,
         elementToUpdate.id,
-        choosenRelationship.id,
-        choosenRelationship.label,
+        choosenRelationship?.id,
+        choosenRelationship?.label,
         relationshipValue,
         relationshipColor,
         relationshipType,
@@ -581,46 +581,46 @@ const Workspace = (props) => {
         lineThrough,
         closeDefineEdge,
       ));
-    } else {
-      const actualConnectionData = _currentConnectionData || currentConnectionData;
-
-      const edge = {
-        relationship_id: null,
-        relationshipLabel: null,
-        relationshipValue,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        ...actualConnectionData
-      };
-      dispatch(postEdge(user, id as string, edge, closeDefineEdge, handleAlerts));
     }
+  };
+
+  const removeAllUpdatingRefference = () => {
+    console.log("removing");
+    removeNodeTextTarget();
+    setNodePopperRef(null);
+    setEdgePopperRef(null);
+    setIsUpdatingElement(false);
+    setElementToUpdate(null);
+    handleHideNodePopper();
+    handleHideEdgePopper();
   };
 
 
   const onConnect = (data: Edge<any> | Connection) => {
-    removeNodeTextTarget();
-    setNodePopperRef(null);
-    setEdgePopperRef(null);
-    setIsUpdatingElement(false);
-    handleHideNodePopper();
-    handleHideEdgePopper();
     if (data.source !== data.target) {
       setCurrentConnectionData(data as Connection);
-      handleRelationshipSave(data as Connection);
+      const color = {
+        r: 0, g: 0, b: 0, a: 1
+      };
+      const edge = {
+        relationship_id: null,
+        relationshipLabel: null,
+        relationshipValue: null,
+        relationshipColor: color,
+        relationshipType: "custom",
+        showArrow: false,
+        animatedLine: false,
+        showLabel: false,
+        lineThrough: false,
+        ...data as Connection
+      };
+
+      dispatch(postEdge(user, id as string, edge, closeDefineEdge, handleAlerts));
     }
   };
 
   const onElementsRemove = (elementsToRemove: FlowElement[]): void => {
-    removeNodeTextTarget();
-    setNodePopperRef(null);
-    setEdgePopperRef(null);
-    setIsUpdatingElement(false);
-    handleHideNodePopper();
-    handleHideEdgePopper();
+    removeAllUpdatingRefference();
 
     const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
     const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
@@ -631,8 +631,6 @@ const Workspace = (props) => {
       return !edgeIdsToRemove.includes(el.id);
     });
 
-    setIsUpdatingElement(false);
-    setElementToUpdate(null);
 
     if (elementsToRemove.length === 1) {
       if (isNode(elementsToRemove[0]) || elementsToRemove.length > 1) {
@@ -705,7 +703,7 @@ const Workspace = (props) => {
       event.persist();
       setRelationshipLabel(element.data.label);
       setRelationshipValue(element.data.value);
-      setRelationshipType(element.type || 'default');
+      setRelationshipType(element.type || 'custom');
       setRelationshipColor(element.data.color);
       setShowArrow(element.data.showArrow);
       setAnimatedLine(element.data.animated);
@@ -999,12 +997,8 @@ const Workspace = (props) => {
 
 
   const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
-    removeNodeTextTarget();
-    removeEdgeTextTarget();
-    handleHideNodePopper();
-    handleHideEdgePopper();
-    setNodePopperRef(null);
-    setEdgePopperRef(null);
+    removeAllUpdatingRefference();
+
     if (reactFlowContainer && rfInstance) {
       // @ts-ignore
       const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
@@ -1046,13 +1040,12 @@ const Workspace = (props) => {
           maxZoom={3}
           onNodeDragStart={hideContext}
           onNodeDragStop={showPopperAgain}
-          onConnectStop={showPopperAgain}
-          onConnectEnd={showPopperAgain}
           onMoveEnd={showPopperAgain}
           onSelectionDragStop={showPopperAgain}
-          onConnectStart={hideContext}
+          onConnectStart={removeAllUpdatingRefference}
           onDrop={onDrop}
           onDragOver={onDragOver}
+          onDragStart={hideContext}
           onMoveStart={hideContext}
           onSelectionDragStart={hideContext}
           onPaneScroll={hideContext}

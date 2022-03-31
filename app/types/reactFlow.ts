@@ -18,7 +18,7 @@ export enum ContextTypes {
 export interface EdgeData {
   relationship_id: string | null;
   relationshipLabel: string | null;
-  relationshipValue: string;
+  relationshipValue: string | null;
   relationshipColor: RGBA;
   relationshipType: string | null;
   showArrow: boolean;

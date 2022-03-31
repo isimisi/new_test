@@ -436,7 +436,7 @@ export const postEdge = (
     line_through: edge.lineThrough,
   };
   const header = authHeader(user);
-
+  console.log('asndkl');
   try {
     const response = await axios.post(url, body, header);
     const responseEdge = response.data;

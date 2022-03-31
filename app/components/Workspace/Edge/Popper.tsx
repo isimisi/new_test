@@ -20,7 +20,7 @@ import {
   FlowElement,
   Node,
   OnLoadParams,
-  XYPosition
+
 } from "react-flow-renderer";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { selectStyles } from "@api/ui/helper";
@@ -33,7 +33,7 @@ import SmoothStep from "./smoothStep.svg";
 import { relationshipTypeOptions } from "./EdgeForm";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
-import { findPointOnEdge } from "./CustomEdge";
+
 
 interface Props {
   classes: any;
@@ -204,14 +204,19 @@ const EdgePopper = (props: Props) => {
       <Popper
         open={Boolean(edgePopperRef) && showEdgePopper}
         // @ts-ignore
-
+        anchorEl={edgePopperRef?.tagName === "path" ? null : edgePopperRef}
         role={undefined}
         transition
         style={{
           zIndex: 1000,
-          position: "absolute",
-          top: boundingRect.top + boundingRect.height / 2 - popperHeight / 2,
-          left: boundingRect.left + boundingRect.width / 2 - popperWidth / 2,
+          ...(edgePopperRef?.tagName === "path" ?
+            { position: "absolute",
+
+              top: boundingRect.top + boundingRect.height / 2 - popperHeight / 2,
+              left: boundingRect.left + boundingRect.width / 2 - popperWidth / 2
+            } : {
+              marginBottom: 15
+            })
         }}
         placement="top"
       >
