@@ -26,6 +26,9 @@ import Paper from "@material-ui/core/Paper";
 import { SelectOptions } from "@customTypes/data";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import Collapse from "@material-ui/core/Collapse";
+import ReactHtmlParser, { convertNodeToElement } from 'react-html-parser';
+import Link from "@material-ui/core/Link";
+
 
 interface Props {
   companyData: CompanyData;
@@ -60,17 +63,17 @@ const useStyles = makeStyles(theme => ({
 
 const headerOptions = [
   "Andre ændringer eller registreringer",
+  "Offentliggørelse af omstrukturering",
+  "Omstrukturering gennemført",
+  "Personkredsen er ændret",
+  "Rettelse",
+  "Selskabet er omdannet",
+  "Selskabsstiftelse",
+  "Uoverensstemmelse vedrørende reelle ejere",
+  "Virksomhedens status er ændret",
   "Ændring af selskabskapitalen",
   "Ændring af adresse",
   "Ændring af revisionsforhold",
-  "Personkredsen er ændret",
-  "Virksomhedens status er ændret",
-  "Selskabet er omdannet",
-  "Selskabsstiftelse",
-  "Rettelse",
-  "Offentliggørelse af omstrukturering",
-  "Omstrukturering gennemført",
-  "Uoverensstemmelse vedrørende reelle ejere"
 ].map(x => ({ value: x, label: x }));
 
 const CompanyTimeline = (props: Props) => {
@@ -122,6 +125,56 @@ const CompanyTimeline = (props: Props) => {
 
     return filterCheck && startDateCheck && endDateCheck;
   };
+
+  // replace text inside string string with link
+
+
+  const getTextBetween = (text: string, start: string, end: string) => {
+    const regex = new RegExp(`${start}(.*?)${end}`, "g");
+    const matches = text.match(regex);
+    if (matches) {
+      return matches[0].replace(`${start}`, "").replace(`${end}`, "");
+    }
+    return "";
+  };
+
+  // eslint-disable-next-line consistent-return
+  const transformHtml = (node, index) => {
+    if (node.name === "h1") {
+      return <Typography style={{ fontSize: "1rem", fontWeight: "bold" }}>{node?.children?.find(x => x.type === "text")?.data}</Typography>;
+    }
+
+    if (node.name === "h2") {
+      return <Typography style={{ fontSize: "1rem", fontWeight: "bold", fontStyle: "italic" }}>{node?.children?.find(x => x.type === "text")?.data}</Typography>;
+    }
+
+    // remove "" from string
+
+
+    if (node.name === "p") {
+      const text = node?.children?.find(x => x.type === "text")?.data;
+      const startText = text.split("@pers").shift();
+      const endText = text.split("}").pop();
+      const personText = getTextBetween(text, "@pers{", "}");
+      if (personText.length > 0) {
+        return (
+          <div>
+            <Typography display="inline" style={{ fontSize: "0.875rem" }}>{startText}</Typography>
+            <Link target="_blank" display="inline" underline="hover" href={`https://datacvr.virk.dk/enhed/person/${personText.split(",").pop()?.replace(" ", '')}/deltager`}>{personText.split(",").shift()?.replace(/"/g, '')}</Link>
+            <Typography display="inline" style={{ fontSize: "0.875rem" }}>{endText}</Typography>
+          </div>
+        );
+      }
+      return <Typography style={{ fontSize: "0.875rem" }}>{text}</Typography>;
+    }
+
+    if (node.name === "html") {
+      // eslint-disable-next-line no-param-reassign
+      node.name = 'div';
+      return convertNodeToElement(node, index, transformHtml);
+    }
+  };
+
 
   return (
     <div>
@@ -204,7 +257,11 @@ const CompanyTimeline = (props: Props) => {
                     {item.header}
                   </Typography>
                   <Paper elevation={3} className={classes.paper}>
-                    <div dangerouslySetInnerHTML={{ __html: item.body }} />
+                    <div>
+                      {ReactHtmlParser(item.body, {
+                        transform: transformHtml
+                      })}
+                    </div>
                   </Paper>
                 </TimelineContent>
               </TimelineItem>
