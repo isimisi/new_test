@@ -16,6 +16,10 @@ path.react-flow__edge-path:hover {
   background: white;
 }
 
+.ql-tooltip {
+  width: 660px;
+}
+
 .pulse > path {
   animation-duration: 1s;
   animation-name: pulse;

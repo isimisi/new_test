@@ -17,6 +17,10 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useTranslation } from "react-i18next";
 import { deltaE } from "@api/ui/colors";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import InfoIcon from "@material-ui/icons/Info";
+import { useAuth0, User } from "@auth0/auth0-react";
+import { getCompanyData } from "../../../containers/Pages/Workspaces/reducers/workspaceActions";
 
 export const getSVG = figur => {
   switch (figur) {
@@ -40,7 +44,14 @@ const CustomNode = ({ data }) => {
   const handleVisability = useAppSelector(state =>
     state.workspace.get("handleVisability")
   );
+  const dispatch = useAppDispatch();
+
   const signed = useAppSelector(state => state.workspace.get("signed"));
+  const loading = useAppSelector(state => state.workspace.get("loading"));
+  const showHover = !history.location.pathname.includes("public");
+  const user = useAuth0().user as User;
+
+  const [showContext, setShowContext] = useState(false);
 
   const showHandles =
     !history.location.pathname.includes("analysis") &&
@@ -122,9 +133,11 @@ const CustomNode = ({ data }) => {
 
   const handelShowContext = useCallback(() => {
     setInnerShowHandles(true);
+    setShowContext(true);
   }, []);
   const handelHideContext = useCallback(() => {
     setInnerShowHandles(false);
+    setShowContext(false);
   }, []);
   return (
     <div
@@ -226,6 +239,31 @@ const CustomNode = ({ data }) => {
               {cv.value}
             </Typography>
           ))}
+      {data.unitNumber && showContext && showHover && (
+        <Tooltip title="Selskabsinformation">
+          <IconButton
+            aria-label="Info om selskabet"
+            size="small"
+            style={{
+              borderRadius: 5,
+              backgroundColor: theme.palette.primary.main,
+              padding: 0,
+              position: "absolute",
+              top: 3,
+              right: 3
+            }}
+            onClick={() => {
+              dispatch(getCompanyData(user, data.id));
+            }}
+          >
+            {loading ? (
+              <CircularProgress size={8} style={{ color: "white" }} />
+            ) : (
+              <InfoIcon style={{ fontSize: 8, color: "white" }} />
+            )}
+          </IconButton>
+        </Tooltip>
+      )}
       <div
         onMouseOver={handelShowContext}
         onFocus={handelShowContext}

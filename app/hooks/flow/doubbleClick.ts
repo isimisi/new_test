@@ -56,6 +56,8 @@ const useDoubbleClick = (
       edgeTextActualTarget.style.visibility = "visible";
       setEdgeTarget(null);
       setEdgeTextActualTarget(null);
+      const edgeUltimateParrent = document.getElementsByClassName("react-flow__edges")[0] as HTMLElement;
+      edgeUltimateParrent.style.zIndex = "2";
     }
   };
 
@@ -169,6 +171,7 @@ const useDoubbleClick = (
           isClearable: true,
           escapeClearsValue: true,
           className: "nowheel",
+          defaultMenuIsOpen: true,
           onChange: (value: SelectOptions | null) => {
             const valueOfSelect = divContainer.querySelectorAll("[class*=singleValue]")[0];
 
@@ -265,6 +268,9 @@ const useDoubbleClick = (
 
         targetParent.appendChild(foreignObject);
         actualTarget.style.visibility = "hidden";
+
+        const edgeUltimateParrent = document.getElementsByClassName("react-flow__edges")[0] as HTMLElement;
+        edgeUltimateParrent.style.zIndex = "4";
       }
     }
   };

@@ -140,7 +140,6 @@ const CompanyTimeline = (props: Props) => {
 
   // eslint-disable-next-line consistent-return
   const transformHtml = (node, index) => {
-    console.log(node);
     if (node.name === "h1") {
       return <Typography style={{ fontSize: "1rem", fontWeight: "bold" }}>{node?.children?.find(x => x.type === "text")?.data}</Typography>;
     }

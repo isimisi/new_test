@@ -1,32 +1,31 @@
-import { makeStyles } from '@material-ui/core/styles';
-import themePalette from '@api/palette/themePalette';
-import { MyTheme } from '../../types/styling';
+import { makeStyles } from "@material-ui/core/styles";
+import themePalette from "@api/palette/themePalette";
+import { MyTheme } from "../../types/styling";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
   tagCount: {
-    color: themePalette.info,
+    color: themePalette.info
   },
   tagContainer: {
-    width: '100%',
-    height: '100%',
-    maxHeight: '948px',
-    paddingTop: 0,
-
+    width: "100%",
+    height: "100%",
+    maxHeight: "948px",
+    paddingTop: 0
   },
   text: {
     marginRight: 25,
-    '& $span': {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
+    "& $span": {
+      overflow: "hidden",
+      textOverflow: "ellipsis"
+    }
   },
   listItem: {
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center"
   },
   button: {
     boxShadow: theme.shade.light,
-    marginTop: 10,
+    marginTop: 10
   },
   divider: {
     marginTop: 10,
@@ -40,21 +39,21 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   },
   activelistItem: {
     backgroundColor: theme.palette.secondary.main,
-    '& $span': {
-      color: theme.palette.primary.main,
-    },
+    "& $span": {
+      color: theme.palette.primary.main
+    }
   },
   field: {
-    width: '100%',
+    width: "100%",
     marginTop: 0,
-    '& svg': {
+    "& svg": {
       color: theme.palette.grey[400],
-      fontSize: 18,
-    },
+      fontSize: 18
+    }
   },
   fieldContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: "flex",
+    flexDirection: "row",
     marginBottom: 10
   },
   iconButton: {
@@ -63,7 +62,7 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   },
   listItemAvatar: {
     minWidth: 0,
-    marginRight: 8,
+    marginRight: 20
   },
   deleteIcon: {
     color: theme.palette.error.dark
