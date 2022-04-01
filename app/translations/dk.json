@@ -679,7 +679,20 @@
       "label_placeholder": "Tilføj elementtype"
     },
     "edit_node_data": "Rediger stamdata",
-    "edit_edge_delete": "Slet"
+    "edit_edge_delete": "Slet",
+    "company_data": {
+      "general": "Generalt",
+      "accounting": "Regnskab",
+      "timeline": "Tidslinje"
+    }
   },
-  "save": "Gem"
+  "save": "Gem",
+  "company": {
+    "timeline": {
+      "filter": "Filtrer tidslinje",
+      "headers_option_label": "Vælg et event at filtrere på",
+      "start_date": "Startdato",
+      "end_date": "Slutdato"
+    }
+  }
 }

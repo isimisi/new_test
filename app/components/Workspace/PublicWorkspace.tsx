@@ -27,7 +27,7 @@ import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
 import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
-import CompanyDataModel from '@components/Workspace/CompanyDataModel';
+import CompanyDataModel from '@components/Workspace/CompanyData/CompanyDataModel';
 import CvrDialog from '@components/DialogModal/CvrDialog';
 import Skeleton from '@material-ui/lab/Skeleton';
 import PropTypes from 'prop-types';

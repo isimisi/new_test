@@ -231,6 +231,7 @@ const useDoubbleClick = (
             menuList: (provided) => ({
               ...provided,
               maxHeight: 150,
+
               "::-webkit-scrollbar": {
                 width: "6px"
               },

@@ -24,6 +24,37 @@ export type WorkspaceTableOptions = [
   string
 ];
 
+export interface CompanyData {
+  navn: string;
+  Virksomhedsdata: Virksomhedsdata;
+  Tidslinje: Tidslinje[];
+  Regnskab: Regnskab;
+}
+
+interface Regnskab {
+  Balance: any;
+  Resultat: any;
+  Nøgletal: any;
+}
+
+interface Tidslinje {
+  body: string;
+  date: string;
+  header: string;
+}
+
+interface Virksomhedsdata {
+  "CVR-nummer": string;
+  Land: string;
+  Medarbejdere?: any;
+  Direktion: string;
+  Bestyrelse: string;
+  Selskabskapital: string;
+  Tegningsregel: string;
+  Regnskabsperiode: string;
+  "Fuldt ansvarlig deltager": string;
+}
+
 export interface WorkspaceState {
   loading: boolean;
   initialLoading: boolean;
@@ -50,7 +81,7 @@ export interface WorkspaceState {
   alertId: null;
   alertOpen: boolean;
   outputs: List<unknown>;
-  companyData: any;
+  companyData: CompanyData | Record<string, unknown>;
   publicAuthenticated: boolean;
   publicUserFirstName: string;
   publicUserLastName: string;

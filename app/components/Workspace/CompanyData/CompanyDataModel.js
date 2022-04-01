@@ -12,20 +12,17 @@ import MuiTableCell from "@material-ui/core/TableCell";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import InfoIcon from "@material-ui/icons/Info";
-import Select from "react-select";
-import { selectStyles } from "@api/ui/helper";
+
 import css from "@styles/Form.scss";
 import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Chip from "@material-ui/core/Chip";
 
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { useTranslation } from "react-i18next";
 import Typography from "@material-ui/core/Typography";
-import styles from "./workspace-jss";
-import FloatingPanel from "../Panel/FloatingPanel";
-import moment from "moment";
-import "moment/locale/da";
+import styles from "../workspace-jss";
+import FloatingPanel from "../../Panel/FloatingPanel";
+import AccountingTop from "./AccountingTop";
+import Timeline from "./Timeline";
 
 const TableCell = withStyles({
   root: {
@@ -34,7 +31,7 @@ const TableCell = withStyles({
   },
 })(MuiTableCell);
 
-const tabs = ["Virksomhedsdata", "Regnskab"];
+const tabs = ["Virksomhedsdata", "Regnskab", "Tidslinje"];
 
 function CompanyDataModel(props) {
   const { open, close, companyData } = props;
@@ -42,6 +39,7 @@ function CompanyDataModel(props) {
   const { t } = useTranslation();
   const branch = "";
   const [value, setValue] = React.useState(0);
+
   const years = companyData
     ? Object.keys(companyData?.Regnskab?.Resultat).map((x) => ({
         value: x,
@@ -76,6 +74,7 @@ function CompanyDataModel(props) {
         title={"Selskabsdata for " + companyData.navn}
         extraSize
         expanded
+        width={800}
       >
         <Tabs
           value={value}
@@ -84,111 +83,57 @@ function CompanyDataModel(props) {
           centered
           textColor="primary"
         >
-          <Tab icon={<InfoIcon />} label="Generelt" />
+          <Tab icon={<InfoIcon />} label={t("workspace.company_data.general")} />
           <Tab
             icon={<TrendingUpIcon />}
-            label="Regnskab"
+            label={t("workspace.company_data.accounting")}
             disabled={Object.keys(accountingData).length === 0}
           />
+          <Tab icon={<TrendingUpIcon />} label={t("workspace.company_data.timeline")} />
         </Tabs>
-        {value === 1 ? (
-          <Grid container spacing={3} style={{ margin: 10, marginBottom: 0 }}>
-            <Grid item xs={3}>
-              <Select
-                styles={selectStyles()}
-                inputId="react-select-single-workspace"
-                options={years}
-                value={year}
-                menuPortalTarget={document.body}
-                menuPlacement="auto"
-                menuPosition="absolute"
-                onChange={handleYear}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={5}
-              style={{
-                alignItems: "center",
-                justifyContent: "space-between",
-                display: "flex",
-              }}
-            >
-              <Chip
-                size="small"
-                label={t("workspace.companyData.result")}
-                clickable
-                color="primary"
-                variant={
-                  activeChip === t("workspace.companyData.result")
-                    ? "default"
-                    : "outlined"
-                }
-                onClick={() => {
-                  handleActiveChip(t("workspace.companyData.result"));
-                }}
-              />
-              <Chip
-                size="small"
-                label={t("workspace.companyData.balance")}
-                clickable
-                color="primary"
-                variant={
-                  activeChip === t("workspace.companyData.balance")
-                    ? "default"
-                    : "outlined"
-                }
-                onClick={() => {
-                  handleActiveChip(t("workspace.companyData.balance"));
-                }}
-              />
-              <Chip
-                size="small"
-                label={t("workspace.companyData.keyFigures")}
-                clickable
-                color="primary"
-                variant={
-                  activeChip === t("workspace.companyData.keyFigures")
-                    ? "default"
-                    : "outlined"
-                }
-                onClick={() => {
-                  handleActiveChip(t("workspace.companyData.keyFigures"));
-                }}
-              />
-            </Grid>
-          </Grid>
-        ) : null}
-        <div style={{ maxHeight: 400, overflow: "auto" }}>
-          <TableContainer component={Paper} style={{ padding: 14, paddingTop: 0 }}>
-            <Table>
-              <TableBody>
-                {data && Object.keys(data).length > 0 ? (
-                  Object.keys(data).map(
-                    (key) =>
-                      data[key] && (
-                        <TableRow key={key} hover>
-                          <TableCell
-                            component="th"
-                            scope="row"
-                            variant="head"
-                            width="25%"
-                          >
-                            {key}
-                          </TableCell>
-                          <TableCell align="right">{data[key]}</TableCell>
-                        </TableRow>
-                      )
-                  )
-                ) : (
-                  <Typography style={{ textAlign: "center" }}>
-                    Vi kunne ikke finde noget data vedrørende {activeChip} på{" "}
-                    {companyData.navn} i {year.value}
-                  </Typography>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        {value === 1 && (
+          <AccountingTop
+            years={years}
+            handleYear={handleYear}
+            year={year}
+            activeChip={activeChip}
+            handleActiveChip={handleActiveChip}
+          />
+        )}
+        <div style={{ maxHeight: "80vh", overflow: "auto" }}>
+          {[0, 1].includes(value) ? (
+            <TableContainer component={Paper} style={{ padding: 14, paddingTop: 0 }}>
+              <Table>
+                <TableBody>
+                  {data && Object.keys(data).length > 0 ? (
+                    Object.keys(data).map(
+                      (key) =>
+                        data[key] && (
+                          <TableRow key={key} hover>
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              variant="head"
+                              width="25%"
+                            >
+                              {key}
+                            </TableCell>
+                            <TableCell align="right">{data[key]}</TableCell>
+                          </TableRow>
+                        )
+                    )
+                  ) : (
+                    <Typography style={{ textAlign: "center" }}>
+                      Vi kunne ikke finde noget data vedrørende {activeChip} på{" "}
+                      {companyData.navn} i {year.value}
+                    </Typography>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          ) : (
+            <Timeline companyData={companyData} />
+          )}
         </div>
         <div className={css.buttonArea}>
           {companyData.Virksomhedsdata &&

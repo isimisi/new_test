@@ -61,7 +61,7 @@ import AlertLog from '@components/Alerts/AlertLog';
 import PaneContextMenu from '@components/Workspace/ContextMenu/PaneContextMenu';
 import CvrDialog from '@components/DialogModal/CvrDialog';
 import MapTypesForErst from '@components/Workspace/MapTypesForErst';
-import CompanyDataModel from '@components/Workspace/CompanyDataModel';
+import CompanyDataModel from '@components/Workspace/CompanyData/CompanyDataModel';
 import AddressInfoModel from '@components/Workspace/AddressInfoModel';
 import ShareModal from '@components/Workspace/Share/ShareModal';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';

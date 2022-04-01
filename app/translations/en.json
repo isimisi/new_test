@@ -679,7 +679,20 @@
       "label_placeholder": "Choose or create a label"
     },
     "edit_node_data": "Edit data",
-    "edit_edge_delete": "Delete"
+    "edit_edge_delete": "Delete",
+    "company_data": {
+      "general": "General",
+      "accounting": "Accounting",
+      "timeline": "Timeline"
+    }
   },
-  "save": "Save"
+  "save": "Save",
+  "company": {
+    "timeline": {
+      "filter": "Filter timeline",
+      "headers_option_label": "Choose an event to filter on",
+      "start_date": "Start date",
+      "end_date": "End date"
+    }
+  }
 }

@@ -1,7 +1,7 @@
 /* eslint-disable operator-linebreak */
 
 import { Tag } from "@customTypes/reducers/tags";
-import { WorkspaceTableOptions } from "@customTypes/reducers/workspace";
+import { CompanyData, WorkspaceTableOptions } from "@customTypes/reducers/workspace";
 import { NotifyActions } from "@redux/constants/notifConstants";
 import { FlowElement } from "react-flow-renderer";
 
@@ -246,7 +246,7 @@ export interface GetWorkspaceNodeCompanyDataLoading {
 
 export interface GetWorkspaceNodeCompanyDataSuccsess {
   type: typeof GET_WORKSPACE_NODE_COMPANY_DATA_SUCCESS;
-  companyData: any; // TODO:
+  companyData: CompanyData;
 }
 
 export interface GetWorkspaceNodeCompanyDataFailed {
