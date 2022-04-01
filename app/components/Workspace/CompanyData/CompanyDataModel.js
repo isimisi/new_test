@@ -89,7 +89,11 @@ function CompanyDataModel(props) {
             label={t("workspace.company_data.accounting")}
             disabled={Object.keys(accountingData).length === 0}
           />
-          <Tab icon={<TrendingUpIcon />} label={t("workspace.company_data.timeline")} />
+          <Tab
+            icon={<TrendingUpIcon />}
+            label={t("workspace.company_data.timeline")}
+            disabled={companyData.Tidslinje.length === 0}
+          />
         </Tabs>
         {value === 1 && (
           <AccountingTop

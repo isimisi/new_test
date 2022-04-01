@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
     margin: 0
   },
   filterHeader: {
-    marginLeft: 10,
+    marginLeft: 20,
     marginTop: 10
   }
 }));
