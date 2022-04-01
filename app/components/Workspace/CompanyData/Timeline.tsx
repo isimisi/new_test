@@ -140,6 +140,7 @@ const CompanyTimeline = (props: Props) => {
 
   // eslint-disable-next-line consistent-return
   const transformHtml = (node, index) => {
+    console.log(node);
     if (node.name === "h1") {
       return <Typography style={{ fontSize: "1rem", fontWeight: "bold" }}>{node?.children?.find(x => x.type === "text")?.data}</Typography>;
     }
@@ -148,7 +149,9 @@ const CompanyTimeline = (props: Props) => {
       return <Typography style={{ fontSize: "1rem", fontWeight: "bold", fontStyle: "italic" }}>{node?.children?.find(x => x.type === "text")?.data}</Typography>;
     }
 
-    // remove "" from string
+    if (node.type === "text") {
+      return <Typography style={{ fontSize: "0.875rem" }}>{node.data}</Typography>;
+    }
 
 
     if (node.name === "p") {
@@ -160,7 +163,7 @@ const CompanyTimeline = (props: Props) => {
         return (
           <div>
             <Typography display="inline" style={{ fontSize: "0.875rem" }}>{startText}</Typography>
-            <Link target="_blank" display="inline" underline="hover" href={`https://datacvr.virk.dk/enhed/person/${personText.split(",").pop()?.replace(" ", '')}/deltager`}>{personText.split(",").shift()?.replace(/"/g, '')}</Link>
+            <Typography display="inline" style={{ fontSize: "0.875rem" }}><Link target="_blank" display="inline" underline="hover" href={`https://datacvr.virk.dk/enhed/person/${personText.split(",").pop()?.replace(" ", '')}/deltager`}>{personText.split(",").shift()?.replace(/"/g, '')}</Link></Typography>
             <Typography display="inline" style={{ fontSize: "0.875rem" }}>{endText}</Typography>
           </div>
         );
@@ -172,6 +175,10 @@ const CompanyTimeline = (props: Props) => {
       // eslint-disable-next-line no-param-reassign
       node.name = 'div';
       return convertNodeToElement(node, index, transformHtml);
+    }
+
+    if (node.name === "br") {
+      return null;
     }
   };
 
