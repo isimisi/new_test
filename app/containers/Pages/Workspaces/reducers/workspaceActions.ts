@@ -415,7 +415,6 @@ export const postEdge = (
   workspace_id: string,
   edge: EdgeData,
   close: () => void,
-  setAlert: ((alerts: any, initial: boolean) => void) | null
 ) => async (
   dispatch
 ) => {
@@ -436,13 +435,12 @@ export const postEdge = (
     line_through: edge.lineThrough,
   };
   const header = authHeader(user);
-  console.log('asndkl');
+
   try {
     const response = await axios.post(url, body, header);
     const responseEdge = response.data;
     dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
     close();
-    setAlert && dispatch(analyseAlerts(user, workspace_id, setAlert));
   } catch (error) {
     console.log(error);
     dispatch({ type: types.POST_EDGE_FAILED, message });
@@ -462,9 +460,10 @@ export const putEdge = (
   showLabel: boolean,
   lineThrough: boolean,
   close: () => void,
+  setAlert?: (alerts: any, initial: any) => void,
+  workspace_id?: string,
   edgeTextTarget?: HTMLElement,
   edgeTextActualTarget?: SVGGraphicsElement,
-
 ) => async (dispatch) => {
   dispatch({ type: types.PUT_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
@@ -491,6 +490,7 @@ export const putEdge = (
     if (edgeTextActualTarget) {
       edgeTextActualTarget.style.visibility = 'visible';
     }
+    workspace_id && setAlert && dispatch(analyseAlerts(user, workspace_id, setAlert));
   } catch (error) {
     console.log({ error });
     dispatch({ type: types.PUT_EDGE_FAILED, message });
