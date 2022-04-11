@@ -54,15 +54,15 @@ import AlertModal from "./Alerts/AlertModal";
 import AlertLog from "./Alerts/AlertLog";
 
 // Workspace
-import WorkspaceForm from "./Workspace/WorkspaceForm";
-import WorkspaceMeta from "./Workspace/WorkspaceMeta";
-import WorkspaceFabs from "./Workspace/WorkspaceFabs";
-import MapTypesForErst from "./Workspace/MapTypesForErst";
+import WorkspaceForm from "./Workspace/Modals/WorkspaceForm";
+import WorkspaceMeta from "./Workspace/Modals/WorkspaceMeta";
+import WorkspaceFabs from "./Workspace/Public/WorkspaceFabs";
+import MapTypesForErst from "./Workspace/Modals/MapTypesForErst";
 import CustomNode from "./Workspace/Node/CustomNode";
 import StickyNoteNode from "./Workspace/Node/StickyNoteNode";
 import MiniFlow from "./Workspace/Analysis/MiniFlow";
-import ShareModal from "./Workspace/Share/ShareModal";
-import PublicWorkspace from "./Workspace/PublicWorkspace";
+import ShareModal from "./Flow/Share/ShareModal";
+import PublicWorkspace from "./Workspace/Public/PublicWorkspace";
 
 import CustomConnectionLine from "./Workspace/Edge/CustomConnectionLine";
 import CustomEdge from "./Workspace/Edge/CustomEdge";
@@ -70,7 +70,7 @@ import DefineEdge from "./Workspace/Edge/DefineEdge";
 
 import DefineNode from "./Workspace/Node/DefineNode";
 import CompanyDataModel from "./Workspace/CompanyData/CompanyDataModel";
-import AddressInfoModel from "./Workspace/AddressInfoModel";
+import AddressInfoModel from "./Workspace/Modals/AddressInfoModel";
 
 // Condition
 import ConditionForm from "./Condition/ConditionForm";

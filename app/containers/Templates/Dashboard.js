@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { PropTypes } from 'prop-types';
-import classNames from 'classnames';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { withStyles } from '@material-ui/core/styles';
-import { toggleAction, openAction, playTransitionAction } from '@redux/actions/uiActions';
-import { GuideSlider } from '@components';
-import LeftSidebarLayout from './layouts/LeftSidebarLayout';
-import styles from './appStyles-jss';
-
+import React, { useState, useEffect } from "react";
+import { PropTypes } from "prop-types";
+import classNames from "classnames";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
+import { toggleAction, openAction, playTransitionAction } from "@redux/actions/uiActions";
+import { GuideSlider } from "@components";
+import LeftSidebarLayout from "./layouts/LeftSidebarLayout";
+import styles from "./appStyles-jss";
 
 function Dashboard(props) {
   // Initial header style
@@ -62,21 +61,15 @@ function Dashboard(props) {
     gradient,
     deco,
     bgPosition,
-    changeMode
+    changeMode,
   } = props;
 
-  const parts = history.location.pathname.split('/');
-  const place = parts[parts.length - 1].replace('-', ' ');
+  const parts = history.location.pathname.split("/");
+  const place = parts[parts.length - 1].replace("-", " ");
   return (
     <div
-      style={{ minHeight: appHeight }}
-      className={
-        classNames(
-          classes.appFrameInner,
-          classes.sideNav,
-          'light-mode'
-        )
-      }
+      style={{ minHeight: "100vh" }}
+      className={classNames(classes.appFrameInner, classes.sideNav, "light-mode")}
     >
       <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
       <LeftSidebarLayout
@@ -93,7 +86,7 @@ function Dashboard(props) {
         place={place}
         handleOpenGuide={handleOpenGuide}
       >
-        { children }
+        {children}
       </LeftSidebarLayout>
     </div>
   );
@@ -115,19 +108,19 @@ Dashboard.propTypes = {
   bgPosition: PropTypes.string.isRequired,
 };
 
-const reducer = 'ui';
-const mapStateToProps = state => ({
-  sidebarOpen: state[reducer].get('sidebarOpen'),
-  pageLoaded: state[reducer].get('pageLoaded'),
-  mode: state[reducer].get('type'),
+const reducer = "ui";
+const mapStateToProps = (state) => ({
+  sidebarOpen: state[reducer].get("sidebarOpen"),
+  pageLoaded: state[reducer].get("pageLoaded"),
+  mode: state[reducer].get("type"),
   gradient: false,
-  deco: state[reducer].get('decoration'),
-  layout: state[reducer].get('layout'),
-  bgPosition: 'header',
+  deco: state[reducer].get("decoration"),
+  layout: state[reducer].get("layout"),
+  bgPosition: "header",
   ...state,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   toggleDrawer: () => dispatch(toggleAction),
   initialOpen: bindActionCreators(openAction, dispatch),
   loadTransition: bindActionCreators(playTransitionAction, dispatch),
@@ -138,4 +131,4 @@ const DashboardMaped = connect(
   mapDispatchToProps
 )(Dashboard);
 
-export default (withStyles(styles)(DashboardMaped));
+export default withStyles(styles)(DashboardMaped);

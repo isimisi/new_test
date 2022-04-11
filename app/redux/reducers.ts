@@ -18,8 +18,13 @@ import attribute from "../containers/Pages/Attributes/reducers/attributeReducer"
 import conditions from "../containers/Pages/Conditions/reducers/conditionReducer";
 import output from "../containers/Pages/Outputs/reducers/outputReducer";
 import alert from "../containers/Pages/Alerts/reducers/alertReducer";
+import timeline from "../containers/Pages/Timelines/reducers/timelineReducer";
+import person from "../containers/Pages/Persons/reducers/personReducer";
+import document from "../containers/Pages/Documents/reducers/documentReducer";
 import workspace from "../containers/Pages/Workspaces/reducers/workspaceReducer";
 import tags from "../components/Tags/reducers/tagsReducer";
+import lookup from "../containers/Pages/Lookup/reducers/lookupReducer";
+
 import { IImmutableTagState } from "@customTypes/reducers/tags";
 import { IImmutableAlertState } from "@customTypes/reducers/alert";
 import { IImmutableAttributState } from "@customTypes/reducers/attribute";
@@ -29,6 +34,9 @@ import { IImmutableGroupState } from "@customTypes/reducers/groups";
 import { IImmutableNodeState } from "@customTypes/reducers/node";
 import { IImmutableOutputState } from "@customTypes/reducers/output";
 import { IImmutableRelationshipState } from "@customTypes/reducers/relationship";
+import { IImmutableWorkspaceState } from "@customTypes/reducers/workspace";
+import { IImmutableTimelineState } from "@customTypes/reducers/timeline";
+import { IImmutableLookupState } from "@customTypes/reducers/lookup";
 
 // The top-level state object
 export interface ApplicationState {
@@ -36,10 +44,14 @@ export interface ApplicationState {
   attribute: IImmutableAttributState;
   node: IImmutableNodeState;
   relationship: IImmutableRelationshipState;
-  workspace: any;
+  workspace: IImmutableWorkspaceState;
   conditions: IImmutableConditionState;
   output: IImmutableOutputState;
   alert: IImmutableAlertState;
+  person: any;
+  timeline: IImmutableTimelineState;
+  document: any;
+  lookup: IImmutableLookupState;
   createOrganization: any;
   form: any;
   ui: any;
@@ -62,6 +74,10 @@ const rootReducer = combineReducers<ApplicationState>({
   conditions,
   output,
   alert,
+  lookup,
+  person,
+  timeline,
+  document,
   createOrganization,
   form,
   ui: uiReducer,

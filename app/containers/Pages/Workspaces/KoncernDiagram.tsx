@@ -22,7 +22,7 @@ import Notification from "@components/Notification/Notification";
 import CustomNode from "@components/Workspace/Node/CustomNode";
 import StickyNoteNode from "@components/Workspace/Node/StickyNoteNode";
 import CustomEdge from "@components/Workspace/Edge/CustomEdge";
-import WorkspaceFabs from "@components/Workspace/WorkspaceFabs";
+import WorkspaceFabs from "@components/Workspace/Public/WorkspaceFabs";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import Checkbox from "@material-ui/core/Checkbox";

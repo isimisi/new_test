@@ -7,7 +7,7 @@ import se from "@images/countries/se.svg";
 import fi from "@images/countries/fi.svg";
 import gb from "@images/countries/gb.svg";
 
-const getCountry = option => {
+export const getCountry = option => {
   const country = option.country || option.personCountry;
   switch (country) {
     case "DK":

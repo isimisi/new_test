@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import { countryDropDown, getCountryOptions } from "@helpers/countryOptions";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-import UncertainCompanies from "../Workspace/UncertainCompanies";
+import UncertainCompanies from "../Workspace/Modals/UncertainCompanies";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
 

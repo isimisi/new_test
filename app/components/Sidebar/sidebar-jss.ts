@@ -166,7 +166,7 @@ const styles = makeStyles((theme: MyTheme) => ({
     paddingLeft: theme.spacing(10),
     marginTop: theme.spacing(3),
     display: "block",
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.dark,
     lineHeight: "28px",
     fontWeight: "bold",
   },
@@ -180,15 +180,9 @@ const styles = makeStyles((theme: MyTheme) => ({
     },
   },
   active: {
-    backgroundColor:
-      theme.palette.type === "dark"
-        ? alpha(theme.palette.secondary.main, 0.24)
-        : theme.palette.secondary.light,
+    backgroundColor: theme.palette.secondary.main,
     "& $primary": {
-      color:
-        theme.palette.type === "dark"
-          ? theme.palette.common.white
-          : theme.palette.primary.dark,
+      color: theme.palette.primary.dark,
     },
     "& $icon svg": {
       fill: theme.palette.primary.dark,
@@ -222,9 +216,7 @@ const styles = makeStyles((theme: MyTheme) => ({
     },
   },
   headCapital: {
-    padding: `${theme.spacing(1)}px 0 ${theme.spacing(1)}px ${theme.spacing(
-      9
-    )}px`,
+    padding: `${theme.spacing(1)}px 0 ${theme.spacing(1)}px ${theme.spacing(9)}px`,
     left: theme.spacing(1) * -2,
     position: "relative",
     textTransform: "uppercase",

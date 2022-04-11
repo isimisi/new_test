@@ -37,6 +37,7 @@ import {
   WORKSPACE_POST_NODE_SUCCESS,
   WORKSPACE_POST_NODE_FAILED,
   SHOW_HANDLES_CHANGE,
+  POST_WORKSPACE_LOADING,
   POST_WORKSPACE_SUCCESS,
   POST_WORKSPACE_FAILED,
   DELETE_WORKSPACE_SUCCESS,
@@ -99,6 +100,7 @@ const initialState: WorkspaceState = {
   initialLoading: false,
   initialLoadingCvr: false,
   workspaces: List(),
+  workspaceId: null,
   label: "",
   description: "",
   group: "",
@@ -211,12 +213,18 @@ export default function reducer(
         const message = fromJS(action.message);
         mutableState.set("message", message);
       });
-    case POST_WORKSPACE_SUCCESS:
+    case POST_WORKSPACE_LOADING:
       return state.withMutations((mutableState) => {
         mutableState.set("label", "");
         mutableState.set("description", "");
         mutableState.set("group", "");
+        mutableState.set("workspaceId", null);
         mutableState.set("elements", List());
+      });
+    case POST_WORKSPACE_SUCCESS:
+      return state.withMutations((mutableState) => {
+        const id = fromJS(action.id);
+        mutableState.set("workspaceId", id);
       });
     case POST_WORKSPACE_FAILED:
       return state.withMutations((mutableState) => {

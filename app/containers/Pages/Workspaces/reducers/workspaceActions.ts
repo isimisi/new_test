@@ -91,7 +91,7 @@ export const analyseOutput = (user: User, workspaceId: string) => async (dispatc
 
 export const postWorkspace = (
   user: User,
-  history: History,
+  history?: History,
   label?: string,
   description?: string,
   group?: string,
@@ -99,6 +99,7 @@ export const postWorkspace = (
   shareOrg?: boolean,
   cvr?: string
 ) => async (dispatch) => {
+  dispatch({ type: types.POST_WORKSPACE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}`;
   const body = {
     label,
@@ -112,13 +113,13 @@ export const postWorkspace = (
   try {
     const response = await axios.post(url, body, header);
     const id = response.data;
-    dispatch({ type: types.POST_WORKSPACE_SUCCESS });
+    dispatch({ type: types.POST_WORKSPACE_SUCCESS, id });
     if (cvr) {
       dispatch(
         cvrWorkspace(user, getIdFromEncrypted(id), cvr, undefined, initErstTypes)
       );
     }
-    history.push(`/app/${WORKSPACES}/${id}`);
+    history && history.push(`/app/${WORKSPACES}/${id}`);
   } catch (error) {
     dispatch({ type: types.POST_WORKSPACE_FAILED, message });
   }

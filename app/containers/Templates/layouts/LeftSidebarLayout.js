@@ -27,9 +27,12 @@ function LeftSidebarLayout(props) {
     handleOpenGuide,
   } = props;
 
+  const isTimeline = history.location.pathname.includes("timelines/");
+
   const isWorkspace =
-    history.location.pathname.includes("workspaces/") &&
-    !history.location.pathname.includes("analysis");
+    (history.location.pathname.includes("workspaces/") &&
+      !history.location.pathname.includes("analysis")) ||
+    isTimeline;
 
   return (
     <Fragment>

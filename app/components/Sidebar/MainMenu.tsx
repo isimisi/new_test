@@ -38,6 +38,7 @@ interface Props {
   loadTransition: (bol: boolean) => void;
   dataMenu: any[];
   drawerPaper?: boolean;
+  sidebarOpen: boolean;
 }
 
 const MainMenu = (props: Props) => {
@@ -48,7 +49,8 @@ const MainMenu = (props: Props) => {
     drawerPaper,
     toggleDrawerOpen,
     loadTransition,
-    openDrawer
+    openDrawer,
+    sidebarOpen
   } = props;
 
   const handleClick = () => {
@@ -98,9 +100,10 @@ const MainMenu = (props: Props) => {
                   open.indexOf(item.key) > -1 ? classes.opened : ""
                 )}
                 onClick={() => {
-                  console.log("øsanljsa");
                   openDrawer();
-                  openSubMenu(item.key, item.keyParent);
+                  if (sidebarOpen) {
+                    openSubMenu(item.key, item.keyParent);
+                  }
                 }}
               >
                 {item.icon && (
@@ -153,6 +156,7 @@ const MainMenu = (props: Props) => {
         );
       }
       if (item.title) {
+        const { t } = useTranslation();
         return (
           <ListSubheader
             disableSticky
@@ -160,7 +164,7 @@ const MainMenu = (props: Props) => {
             component="div"
             className={classes.title}
           >
-            {item.name}
+            {t(item.name)}
           </ListSubheader>
         );
       }
@@ -208,7 +212,8 @@ const reducer = "ui";
 
 const mapStateToProps = state => ({
   ...state,
-  open: state[reducer].get("subMenuOpen")
+  open: state[reducer].get("subMenuOpen"),
+  sidebarOpen: state[reducer].get("sidebarOpen")
 });
 
 const mapDispatchToProps = dispatch => ({

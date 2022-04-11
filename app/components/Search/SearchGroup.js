@@ -1,36 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Hidden from '@material-ui/core/Hidden';
-import Typography from '@material-ui/core/Typography';
-import SearchIcon from '@material-ui/icons/Search';
-import ViewList from '@material-ui/icons/ViewList';
-import GridOn from '@material-ui/icons/GridOn';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import styles from './search-jss';
-import {useTranslation} from 'react-i18next';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Hidden from "@material-ui/core/Hidden";
+import Typography from "@material-ui/core/Typography";
+import SearchIcon from "@material-ui/icons/Search";
+import ViewList from "@material-ui/icons/ViewList";
+import GridOn from "@material-ui/icons/GridOn";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import styles from "./search-jss";
+import { useTranslation } from "react-i18next";
 
 function SearchProduct(props) {
-  const {
-    classes,
-    search,
-    keyword,
-    dataProduct,
-    handleSwitchView,
-    listView
-  } = props;
-  const {t} = useTranslation();
+  const { classes, search, keyword, dataProduct, handleSwitchView, listView } = props;
+  const { t } = useTranslation();
 
-  const getTotalResult = dataArray => {
+  const getTotalResult = (dataArray) => {
     let totalResult = 0;
     for (let i = 0; i < dataArray.size; i += 1) {
-      if (dataArray.getIn([i, 'name']) === undefined) {
+      if (dataArray.getIn([i, "name"]) === undefined) {
         return false;
       }
-      if (dataArray.getIn([i, 'name']).toLowerCase().indexOf(keyword) !== -1) {
+      if (
+        dataArray
+          .getIn([i, "name"])
+          .toLowerCase()
+          .indexOf(keyword) !== -1
+      ) {
         totalResult += 1;
       }
     }
@@ -46,12 +44,17 @@ function SearchProduct(props) {
               <div className={classes.search}>
                 <SearchIcon />
               </div>
-              <input className={classes.input} placeholder={t('groups.search-group.search_groups')}onChange={(event) => search(event)} />
+              <input
+                className={classes.input}
+                placeholder={t("groups.search-group.search_groups")}
+                onChange={(event) => search(event)}
+              />
             </div>
           </div>
           <Typography variant="caption" className={classes.result}>
             {getTotalResult(dataProduct)}
-            &nbsp;{t('groups.search-group.results')}
+            &nbsp;
+            {t("groups.search-group.results")}
           </Typography>
           <Hidden mdDown>
             <div className={classes.toggleContainer}>
@@ -65,7 +68,6 @@ function SearchProduct(props) {
               </ToggleButtonGroup>
             </div>
           </Hidden>
-
         </Toolbar>
       </AppBar>
     </div>

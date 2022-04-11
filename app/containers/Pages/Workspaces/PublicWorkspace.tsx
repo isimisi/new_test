@@ -4,7 +4,7 @@ import brand from "@api/dummy/brand";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Notification from "@components/Notification/Notification";
-import PublicWorkspace from "@components/Workspace/PublicWorkspace";
+import PublicWorkspace from "@components/Workspace/Public/PublicWorkspace";
 import LockForm from "@components/Forms/LockForm";
 import styles from "@components/Forms/user-jss";
 import { useSelector, useDispatch } from "react-redux";

@@ -1,25 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import CountUp from 'react-countup';
-import { withStyles, useTheme } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import ButtonBase from '@material-ui/core/ButtonBase';
+import React from "react";
+import PropTypes from "prop-types";
+import CountUp from "react-countup";
+import { withStyles, useTheme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import ButtonBase from "@material-ui/core/ButtonBase";
 
-const styles = theme => ({
+const styles = (theme) => ({
   title: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       fontSize: 14,
     },
-    fontWeight: 400
+    fontWeight: 400,
   },
   counter: {
     fontSize: 24,
     fontWeight: 500,
-    textAlign: 'left'
+    textAlign: "left",
   },
   customContent: {
-    textAlign: 'right'
-  }
+    textAlign: "right",
+  },
 });
 
 function CounterWidget(props) {
@@ -33,34 +33,61 @@ function CounterWidget(props) {
     children,
     unitBefore,
     unitAfter,
-    onClick
+    onClick,
+    formattingFn,
   } = props;
   const theme = useTheme();
 
   const rootStyle = {
     flexGrow: 1,
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     padding: 10,
-    width: '100%',
+    width: "100%",
     height: 100,
     marginBottom: 6,
-    display: 'flex',
+    display: "flex",
     borderRadius: 10,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       height: 65 * 2,
       marginBottom: -1,
-      alignItems: 'flex-end',
+      alignItems: "flex-end",
     },
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column",
     },
-    '& > *': {
-      padding: '0 5px'
+    "& > *": {
+      padding: "0 5px",
     },
     backgroundColor: color,
     boxShadow: theme.shade.light,
   };
+
+  if (!onClick) {
+    return (
+      <div style={rootStyle}>
+        <div>
+          <Typography className={classes.counter}>
+            {unitBefore}
+
+            <CountUp
+              start={start}
+              end={end}
+              duration={duration}
+              useEasing
+              formattingFn={formattingFn}
+            />
+
+            {unitAfter}
+          </Typography>
+          <Typography className={classes.title} variant="subtitle1">
+            {title}
+          </Typography>
+        </div>
+        <div className={classes.customContent}>{children}</div>
+      </div>
+    );
+  }
 
   return (
     <ButtonBase style={rootStyle} onClick={onClick}>
@@ -70,11 +97,11 @@ function CounterWidget(props) {
           <CountUp start={start} end={end} duration={duration} useEasing />
           {unitAfter}
         </Typography>
-        <Typography className={classes.title} variant="subtitle1">{title}</Typography>
+        <Typography className={classes.title} variant="subtitle1">
+          {title}
+        </Typography>
       </div>
-      <div className={classes.customContent}>
-        {children}
-      </div>
+      <div className={classes.customContent}>{children}</div>
     </ButtonBase>
   );
 }
@@ -89,13 +116,15 @@ CounterWidget.propTypes = {
   children: PropTypes.node.isRequired,
   unitBefore: PropTypes.string,
   unitAfter: PropTypes.string,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  formattingFn: PropTypes.func,
 };
 
 CounterWidget.defaultProps = {
-  unitBefore: '',
-  unitAfter: '',
-  onClick: () => {}
+  unitBefore: "",
+  unitAfter: "",
+  onClick: null,
+  formattingFn: (value) => value,
 };
 
 export default withStyles(styles)(CounterWidget);

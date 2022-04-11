@@ -9,6 +9,7 @@ import { FlowElement } from "react-flow-renderer";
 export const GET_WORKSPACES_LOADING = "GET_WORKSPACES_LOADING";
 export const GET_WORKSPACES_SUCCESS = "GET_WORKSPACES_SUCCESS";
 export const GET_WORKSPACES_FAILED = "GET_WORKSPACES_FAILED";
+export const POST_WORKSPACE_LOADING = "POST_WORKSPACE_LOADING";
 export const POST_WORKSPACE_SUCCESS = "POST_WORKSPACE_SUCCESS";
 export const POST_WORKSPACE_FAILED = "POST_WORKSPACE_FAILED";
 export const SHOW_WORKSPACE_LOADING = "SHOW_WORKSPACE_LOADING";
@@ -135,8 +136,13 @@ export interface GetWorkspacesFailed {
   message: string;
 }
 
+export interface PostWorkspaceLoading {
+  type: typeof POST_WORKSPACE_LOADING;
+}
+
 export interface PostWorkspacesSuccess {
   type: typeof POST_WORKSPACE_SUCCESS;
+  id: string;
 }
 
 export interface PostWorkspacesFailed {
@@ -451,7 +457,7 @@ export interface WorkspaceAnalysisRevisionFailed {
 
 export interface ShowHandlesChange {
   type: typeof SHOW_HANDLES_CHANGE;
-  bool: any; // TODO:
+  bool: boolean;
 }
 
 export interface AnalysisTextChange {
@@ -527,6 +533,7 @@ export type WorkspaceActions =
   | GetWorkspacesLoading
   | GetWorkspacesSuccess
   | GetWorkspacesFailed
+  | PostWorkspaceLoading
   | PostWorkspacesSuccess
   | PostWorkspacesFailed
   | ShowWorkspacesLoading

@@ -11,6 +11,12 @@ import {
   NotFound,
   Workspaces,
   Workspace,
+  Persons,
+  Person,
+  Documents,
+  Document,
+  Timelines,
+  Timeline,
   Conditions,
   Condition,
   Outputs,
@@ -25,7 +31,9 @@ import {
   Attributes,
   ChoosePlan,
   WorkspaceAnalysis,
-  ChangeAvatar
+  ChangeAvatar,
+  Lookup,
+  LookupDetails
 } from "../pageListAsync";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UserMeta } from "@helpers/userInfo";
@@ -50,6 +58,10 @@ function Application() {
         {/* Home */}
         <Route exact path="/app" component={PersonalDashboard} />
         <Route exact path="/app/avatar" component={ChangeAvatar} />
+
+        <Route exact path="/app/lookup" component={Lookup} />
+        <Route exact path="/app/lookup/:id" component={LookupDetails} />
+
         <Route exact path="/app/outputs" component={Outputs} />
         <Route exact path="/app/outputs/:id" component={Output} />
         <Route exact path="/app/red flags" component={Alerts} />
@@ -57,11 +69,24 @@ function Application() {
         <Route exact path="/app/attributes" component={Attributes} />
         <Route exact path="/app/relationships" component={Relationships} />
         <Route exact path="/app/relationships/:id" component={Relationship} />
+
+        <Route exact path="/app/documents" component={Documents} />
+        <Route exact path="/app/documents/:id" component={Document} />
+        <Route exact path="/app/persons" component={Persons} />
+        <Route exact path="/app/persons/:id" component={Person} />
+
         <Route exact path="/app/conditions" component={Conditions} />
 
         <Route exact path="/app/conditions/:id">
           <ReactFlowProvider>
             <Condition />
+          </ReactFlowProvider>
+        </Route>
+        <Route exact path="/app/timelines" component={Timelines} />
+
+        <Route exact path="/app/timelines/:id">
+          <ReactFlowProvider>
+            <Timeline />
           </ReactFlowProvider>
         </Route>
         <Route exact path="/app/groups" component={Groups} />

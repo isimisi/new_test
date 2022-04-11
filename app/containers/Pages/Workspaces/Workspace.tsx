@@ -50,8 +50,8 @@ import CustomNode from '@components/Workspace/Node/CustomNode';
 import ControlPoint from '@components/Workspace/Node/ControlPoint';
 
 import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
-import WorkspaceMeta from '@components/Workspace/WorkspaceMeta';
-import InternationalStructureAlert from '@components/Workspace/InternationalStructureAlert';
+import WorkspaceMeta from '@components/Workspace/Modals/WorkspaceMeta';
+import InternationalStructureAlert from '@components/Workspace/Modals/InternationalStructureAlert';
 import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
@@ -60,12 +60,12 @@ import EdgePopper from '@components/Workspace/Edge/Popper';
 import AlertLog from '@components/Alerts/AlertLog';
 import PaneContextMenu from '@components/Workspace/ContextMenu/PaneContextMenu';
 import CvrDialog from '@components/DialogModal/CvrDialog';
-import MapTypesForErst from '@components/Workspace/MapTypesForErst';
+import MapTypesForErst from '@components/Workspace/Modals/MapTypesForErst';
 import CompanyDataModel from '@components/Workspace/CompanyData/CompanyDataModel';
-import AddressInfoModel from '@components/Workspace/AddressInfoModel';
-import ShareModal from '@components/Workspace/Share/ShareModal';
+import AddressInfoModel from '@components/Workspace/Modals/AddressInfoModel';
+import ShareModal from '@components/Flow/Share/ShareModal';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import RelationshipModal from '@components/Workspace/RelationshipModal';
+import RelationshipModal from '@components/Workspace/Modals/RelationshipModal';
 import NodeContextMenu from '@components/Workspace/ContextMenu/NodeContextMenu';
 import { useTranslation } from 'react-i18next';
 import useContextMenu from '@hooks/useContextMenu';
@@ -95,10 +95,10 @@ import {
 } from './reducers/workspaceActions';
 import './workspace.css';
 
-import Controls from '@components/Workspace/Actions/Controls';
-import Items from '@components/Workspace/Actions/Items';
-import Meta from '@components/Workspace/Actions/Meta';
-import Collaboration from '@components/Workspace/Actions/Collaborations';
+import Controls from '@components/Flow/Actions/Controls';
+import Items from '@components/Flow/Actions/Items';
+import Meta from '@components/Flow/Actions/Meta';
+import Collaboration from '@components/Flow/Actions/Collaborations';
 import { RGBA, SelectChoice } from '@customTypes/data';
 
 import { handleExport } from '@helpers/export/handleExport';

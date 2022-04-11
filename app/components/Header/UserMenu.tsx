@@ -31,6 +31,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import NotificationDialog from "./NotificationDialog";
 import CreateNotificationDialog from "./CreateNotificationDialog";
 import { readNotification } from "../../containers/Pages/Dashboard/reducers/dashboardActions";
+
 const config = genConfig({
   isGradient: Boolean(Math.round(Math.random()))
 });
