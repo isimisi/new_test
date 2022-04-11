@@ -38,7 +38,7 @@
     "invalid_email": "Invalid email",
     "password_match": "Kodeordene er ikke ens",
     "and": "og",
-    "privacy": "Privatlivspolitik"
+    "privacy": "Pri8vatlivspolitik"
   },
   "reset-form": {
     "reset_password": "Reset kodeord",
@@ -568,6 +568,13 @@
   },
   "sidebar-menu": {
     "front_page": "Forside",
+    "structure": "Strukturering",
+    "whiteboard": "Whiteboard",
+    "timeline": "Tidslinje",
+    "content": "Indhold",
+    "documents": "Dokumenter",
+    "persons": "Personer",
+    "lookup": "Opslag",
     "your_workspace": "Arbejdsområder",
     "data_builder": "Byggeklodser",
     "child": {
@@ -694,5 +701,82 @@
       "start_date": "Startdato",
       "end_date": "Slutdato"
     }
+  },
+  "persons": {
+    "btn_new_persons": "Ny Person",
+    "your_persons": "Dine personer"
+  },
+  "timelines": {
+    "your_timelines": "Dine tidslinjer",
+    "btn_new_timelines": "Ny tidslinje"
+  },
+  "timeline": {
+    "horizontal": "Horisontal",
+    "vertical": "Vertikal",
+    "table": "Tabel"
+  },
+  "lookup": {
+    "search_placeholder": "Søg efter en virksomhed",
+    "bookmark": "Monitorer denne virksomhed",
+    "download": "Download",
+    "add_note": "Tilføj note",
+    "stamdata": "Stamdata",
+    "master_data": "Stamdata",
+    "start_a_workspace": "Lav et arbejdsområde",
+    "cvr": "CVR-nummer",
+    "capital": "Registreret kapital",
+    "names": "Binavne",
+    "drawing_rule": "Tegningsregel",
+    "purpose": "Selskabets formål",
+    "accounting": "Regnskab",
+    "diagram": "Koncerndiagram",
+    "timeline": "Tidslinje",
+    "directors": "Ledelse",
+    "owners": "Ejere",
+    "revision": "Revision",
+    "management": "Direktionen",
+    "board": "Bestyrelsen",
+    "AUDITOR": "Revisor",
+    "BOARD_CHAIR": "Bestyrelsesformand",
+    "BOARD_MEMBER": "Bestyrelsesmedlem",
+    "BOARD_SUBSTITUTE": "Bestyrelsessubstitut",
+    "BOARD_VICE_CHAIR": "Bestyrelsesviceformand",
+    "CEO": "CEO",
+    "DIRECTOR": "Direktør",
+    "earlier_managers": "Vis tidligere direktøre",
+    "earlier_board": "Vis tidligere bestyrelsesmedlemmer",
+    "earlier_managers_hide": "Vis ikke tidligere direktøre",
+    "earlier_board_hide": "Vis ikke tidligere bestyrelsesmedlemmer",
+    "accounting_period": "Regnskabsperiode",
+    "accontant": "Revisor",
+    "legal_owners": "Legale ejere",
+    "real_owners": "Reele ejere",
+    "figures": "Nøgletal",
+    "profit_and_loss": "Resultopgørelse",
+    "balance_sheet": "Balanceopgørelse",
+    "cash_flow": "Pengestrømsopgørelse"
+  },
+  "accounting": {
+    "ag": "Afkastningsgrad",
+    "sg": "Soliditetsgrad",
+    "lg": "Likviditetsgrad",
+    "revenue": "Omsætning",
+    "ebit": "EBIT",
+    "ebitda": "EBITDA",
+    "ebt": "EBT",
+    "grossProfit": "Bruttofortjeneste",
+    "result": "Resultat",
+    "assets": "Aktiver",
+    "currentAssets": "Omsætningsaktiver",
+    "noncurrentAssets": "Anlægsaktiver",
+    "currentLiabilities": "Kortfristet gæld",
+    "equity": "Egenkapital",
+    "equityAndLiabilities": "Passiver",
+    "liabilities": "Gæld",
+    "noncurrentLiabilities": "Langfristet gæld",
+    "financing": "Finansiering",
+    "investing": "Investering",
+    "operating": "Drift",
+    "total": "Totale pengestrømme"
   }
 }

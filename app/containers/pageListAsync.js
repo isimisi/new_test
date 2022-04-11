@@ -27,16 +27,45 @@ export const ChangeAvatar = loadable(() => import("./Pages/Avatar"), {
   fallback: <Loading />,
 });
 
+export const Lookup = loadable(() => import("./Pages/Lookup"), {
+  fallback: <Loading />,
+});
+
+export const LookupDetails = loadable(() => import("./Pages/Lookup/Details"), {
+  fallback: <Loading />,
+});
+
 export const Workspaces = loadable(() => import("./Pages/Workspaces"), {
   fallback: <Loading />,
 });
 
-export const Workspace = loadable(
-  () => import("./Pages/Workspaces/Workspace"),
-  {
-    fallback: <Loading />,
-  }
-);
+export const Workspace = loadable(() => import("./Pages/Workspaces/Workspace"), {
+  fallback: <Loading />,
+});
+
+export const Persons = loadable(() => import("./Pages/Persons"), {
+  fallback: <Loading />,
+});
+
+export const Person = loadable(() => import("./Pages/Persons/Person"), {
+  fallback: <Loading />,
+});
+
+export const Documents = loadable(() => import("./Pages/Documents"), {
+  fallback: <Loading />,
+});
+
+export const Document = loadable(() => import("./Pages/Documents/Document"), {
+  fallback: <Loading />,
+});
+
+export const Timelines = loadable(() => import("./Pages/Timelines"), {
+  fallback: <Loading />,
+});
+
+export const Timeline = loadable(() => import("./Pages/Timelines/Timeline"), {
+  fallback: <Loading />,
+});
 
 export const WorkspaceAnalysis = loadable(
   () => import("./Pages/Workspaces/WorkspaceAnalysis"),
@@ -49,12 +78,9 @@ export const Conditions = loadable(() => import("./Pages/Conditions"), {
   fallback: <Loading />,
 });
 
-export const Condition = loadable(
-  () => import("./Pages/Conditions/Condition"),
-  {
-    fallback: <Loading />,
-  }
-);
+export const Condition = loadable(() => import("./Pages/Conditions/Condition"), {
+  fallback: <Loading />,
+});
 
 export const Outputs = loadable(() => import("./Pages/Outputs"), {
   fallback: <Loading />,
@@ -88,12 +114,9 @@ export const Relationships = loadable(() => import("./Pages/Relationships"), {
   fallback: <Loading />,
 });
 
-export const Relationship = loadable(
-  () => import("./Pages/Relationships/Relationship"),
-  {
-    fallback: <Loading />,
-  }
-);
+export const Relationship = loadable(() => import("./Pages/Relationships/Relationship"), {
+  fallback: <Loading />,
+});
 
 export const Attributes = loadable(() => import("./Pages/Attributes"), {
   fallback: <Loading />,

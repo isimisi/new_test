@@ -37,7 +37,7 @@ interface Regnskab {
   Nøgletal: any;
 }
 
-interface Tidslinje {
+export interface Tidslinje {
   body: string;
   date: string;
   header: string;
@@ -60,6 +60,7 @@ export interface WorkspaceState {
   initialLoading: boolean;
   initialLoadingCvr: boolean;
   workspaces: List<WorkspaceTableOptions>;
+  workspaceId: null | string;
   label: string;
   description: string;
   group: string;
@@ -81,7 +82,7 @@ export interface WorkspaceState {
   alertId: null;
   alertOpen: boolean;
   outputs: List<unknown>;
-  companyData: CompanyData | Record<string, unknown>;
+  companyData: any;
   publicAuthenticated: boolean;
   publicUserFirstName: string;
   publicUserLastName: string;

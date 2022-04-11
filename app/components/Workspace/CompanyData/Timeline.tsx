@@ -21,7 +21,7 @@ import {
 import "date-fns";
 
 import DateFnsUtils from "@date-io/date-fns";
-import { CompanyData } from "@customTypes/reducers/workspace";
+import { CompanyData, Tidslinje } from "@customTypes/reducers/workspace";
 import Paper from "@material-ui/core/Paper";
 import { SelectOptions } from "@customTypes/data";
 import TransitionGroup from "react-transition-group/TransitionGroup";
@@ -31,7 +31,8 @@ import Link from "@material-ui/core/Link";
 
 
 interface Props {
-  companyData: CompanyData;
+  companyData?: CompanyData;
+  timeline?: Tidslinje[]
 }
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +44,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.secondary.main
   },
   topContainer: {
-    marginBottom: 10,
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
     width: "100%"
@@ -53,7 +54,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center"
   },
   datePicker: {
-    margin: 0
+    margin: 0,
+    marginLeft: 20,
+    minWidth: 50
   },
   filterHeader: {
     marginLeft: 20,
@@ -78,7 +81,7 @@ const headerOptions = [
 
 const CompanyTimeline = (props: Props) => {
   const classes = useStyles();
-  const { companyData } = props;
+  const { companyData, timeline } = props;
 
   const { t } = useTranslation();
 
@@ -181,14 +184,16 @@ const CompanyTimeline = (props: Props) => {
     }
   };
 
+  const actualTimeline = timeline || companyData?.Tidslinje;
+
 
   return (
     <div>
       <Typography variant="h6" className={classes.filterHeader}>
         {t("company.timeline.filter")}
       </Typography>
-      <Grid container spacing={3} className={classes.topContainer}>
-        <Grid item xs={5} className={classes.gridItem}>
+      <Grid container className={classes.topContainer}>
+        <Grid item xs={6} className={classes.gridItem}>
           <Select
             styles={{
               ...selectStyles(),
@@ -211,7 +216,7 @@ const CompanyTimeline = (props: Props) => {
             onChange={handleFilterHeader}
           />
         </Grid>
-        <Grid item xs={3} className={classes.gridItem}>
+        <Grid item xs={6} className={classes.gridItem} style={{ display: 'flex' }}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.datePicker}
@@ -226,11 +231,10 @@ const CompanyTimeline = (props: Props) => {
               }}
             />
           </MuiPickersUtilsProvider>
-        </Grid>
-        <Grid item xs={3} className={classes.gridItem}>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.datePicker}
+
               variant="inline"
               format="MM/dd/yyyy"
               margin="normal"
@@ -243,12 +247,13 @@ const CompanyTimeline = (props: Props) => {
             />
           </MuiPickersUtilsProvider>
         </Grid>
+
       </Grid>
 
       <Timeline>
         <TransitionGroup>
 
-          {companyData?.Tidslinje?.filter(filterTimeline).map((item) => (
+          {actualTimeline?.filter(filterTimeline).map((item) => (
             <Collapse key={`${item.header}${item.date}`}>
 
               <TimelineItem>

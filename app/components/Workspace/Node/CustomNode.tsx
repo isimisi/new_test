@@ -48,7 +48,7 @@ const CustomNode = ({ data }) => {
 
   const signed = useAppSelector(state => state.workspace.get("signed"));
   const loading = useAppSelector(state => state.workspace.get("loading"));
-  const showHover = !history.location.pathname.includes("public");
+  const showHover = history.location.pathname.includes("workspace");
   const user = useAuth0().user as User;
 
   const [showContext, setShowContext] = useState(false);
