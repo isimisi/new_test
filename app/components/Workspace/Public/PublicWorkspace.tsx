@@ -326,7 +326,6 @@ const Workspace = (props) => {
         showLabel,
         lineThrough,
         closeEdge,
-
       ));
     } else {
       const edge = {
@@ -341,7 +340,7 @@ const Workspace = (props) => {
         lineThrough,
         ...currentConnectionData
       };
-      dispatch(postEdge(user, id, edge, closeEdge, null));
+      dispatch(postEdge(user, id, edge, closeEdge));
     }
   };
 

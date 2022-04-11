@@ -173,7 +173,7 @@
       "enter_options": "Indtast valgmuligheder, fx en talværdi",
       "desc": "Beskrivelse",
       "select_group": "Vælg gruppe",
-      "useSuggestions": "Benyt foreslag"
+      "useSuggestions": "Vis forslag i tegnefladen"
     },
     "relationship-demo": {
       "your_relationship": "Din forbindelse"

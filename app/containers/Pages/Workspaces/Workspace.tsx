@@ -499,8 +499,10 @@ const Workspace = (props) => {
         showLabel,
         lineThrough,
         closeDefineEdge,
+        handleAlerts,
+        id,
         edgeTextTarget,
-        edgeTextActualTarget
+        edgeTextActualTarget,
       ));
     }
   };
@@ -584,6 +586,8 @@ const Workspace = (props) => {
         showLabel,
         lineThrough,
         closeDefineEdge,
+        handleAlerts,
+        id
       ));
     }
   };
@@ -619,7 +623,7 @@ const Workspace = (props) => {
         ...data as Connection
       };
 
-      dispatch(postEdge(user, id as string, edge, closeDefineEdge, handleAlerts));
+      dispatch(postEdge(user, id as string, edge, closeDefineEdge));
     }
   };
 
