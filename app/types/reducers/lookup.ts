@@ -4,6 +4,7 @@ import { List } from "immutable";
 export interface LookupState {
   lookups: List<unknown>;
   loading: boolean;
+  monitorLoading: boolean;
   message: string;
   company: any;
 }

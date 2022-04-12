@@ -1,5 +1,5 @@
 const currencyFormatter = (x, currency) => {
-  if (!x) {
+  if (!x && x !== 0) {
     return undefined;
   }
   const option = {

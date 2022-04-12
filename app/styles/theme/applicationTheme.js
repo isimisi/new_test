@@ -392,7 +392,7 @@ const applicationTheme = (color) => ({
         boxShadow: "none !important",
         "&$selected": {
           color: themePalette[color].palette.secondary.main,
-          backgroundColor: themePalette[color].palette.secondary.light,
+          backgroundColor: themePalette[color].palette.secondary.main,
         },
       },
     },

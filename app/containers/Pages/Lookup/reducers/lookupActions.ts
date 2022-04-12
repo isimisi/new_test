@@ -57,3 +57,17 @@ export const getCompany = (
     dispatch({ type: types.GET_COMPANY_FAILED, message });
   }
 };
+
+export const toggleMonitor = (user: User, cvr: string) => async (dispatch) => {
+  dispatch({ type: types.MONITOR_COMPANY_LOADING });
+  const url = `${baseUrl}/${LOOKUP}/company/monitor`;
+  const header = authHeader(user);
+  const body = { cvr };
+  try {
+    await axios.post(url, body, header);
+    dispatch({ type: types.MONITOR_COMPANY_SUCCESS });
+  } catch (error) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.MONITOR_COMPANY_FAILED, message });
+  }
+};

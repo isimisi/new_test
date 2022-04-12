@@ -117,7 +117,7 @@ const MasterData = ({ company, country }: Props) => {
           alignItems: "center"
         }}
       >
-        <Typography variant="h6">{t("lookup.drawing_rule")}</Typography>
+        <Typography variant="h6">{t("lookup.industry")}</Typography>
 
         <Typography style={{ marginTop: 5 }} color="textSecondary">
           {company.primaryIndustry.name}

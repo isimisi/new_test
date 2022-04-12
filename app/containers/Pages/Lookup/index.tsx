@@ -10,17 +10,18 @@ import {
   ButtonBase,
   Card,
   CardContent,
+  CircularProgress,
   Grid,
   Hidden,
   Toolbar,
   Typography
 } from "@material-ui/core";
-
+import computer from "@lotties/racoon/computer.json";
 import useStyles from "./lookup-jss";
 
 import PersonIcon from "@material-ui/icons/Person";
 import BusinessIcon from "@material-ui/icons/Business";
-import dk from "@images/countries/dk.svg";
+
 import { useAuth0, User } from "@auth0/auth0-react";
 
 import { metaTitle, reducer } from "./constants";
@@ -32,14 +33,15 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { getLookups } from "./reducers/lookupActions";
 import { getCountry } from "@helpers/countryOptions";
-import { useTheme } from "@material-ui/styles";
-import { useSpring, useTransition, animated } from "react-spring";
+import Loader from "@components/Loading/LongLoader";
+import NoContent from "@components/NoContent";
 
 const Lookup = () => {
   const classes = useStyles();
-  const theme = useTheme();
+
   const dispatch = useAppDispatch();
   const lookups = useAppSelector(state => state[reducer].get("lookups")).toJS();
+  const loading = useAppSelector(state => state[reducer].get("loading"));
 
   const history = useHistory();
   const user = useAuth0().user as User;
@@ -52,9 +54,15 @@ const Lookup = () => {
     setListView(val);
   };
 
+  const [search, setSearch] = useState("");
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
     dispatch(getLookups(user, e.target.value));
   };
+
+  const noSearchYet = null;
+  const noContent = null;
 
   return (
     <div className={classes.container}>
@@ -81,10 +89,15 @@ const Lookup = () => {
                 />
               </div>
             </div>
-            <Typography variant="caption">
-              2 &nbsp;
-              {t("groups.search-group.results")}
-            </Typography>
+            {loading ? (
+              <CircularProgress />
+            ) : search.length > 0 || lookups.length > 0 ? (
+              <Typography variant="caption">
+                {lookups.length}
+                {' '}
+                {t("groups.search-group.results")}
+              </Typography>
+            ) : null}
             <Hidden mdDown>
               <div className={classes.toggleContainer}>
                 <ToggleButtonGroup
@@ -104,58 +117,69 @@ const Lookup = () => {
           </Toolbar>
         </AppBar>
       </div>
-      <Grid
-        container
-        alignItems="flex-start"
-        justify="flex-start"
-        direction="row"
-        spacing={3}
-        style={{ gridAutoColumns: "1fr" }}
-      >
-        {lookups.map((item, index) => {
-          const country = getCountry(item);
-          return (
-            <Grid
-              item
-              md={listView === "list" ? 12 : 4}
-              sm={listView === "list" ? 12 : 6}
-              xs={12}
-              key={index.toString()}
-            >
-              <Card style={{ position: "relative" }}>
-                <ButtonBase
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    position: "absolute"
-                  }}
-                  onClick={() => {
-                    history.push("/app/lookup/" + item.value);
-                  }}
-                />
-                <CardContent>
-                  <div className={classes.itemIconContainer}>
-                    {item.country ? <BusinessIcon /> : <PersonIcon />}
-                    <img
-                      src={country.src}
-                      alt={country.alt}
-                      style={{
-                        height: 20,
-                        width: 25,
-                        marginRight: 10
-                      }}
-                    />
-                  </div>
-                  <Typography variant="h5" component="h2">
-                    {item.label}
-                  </Typography>
-                  <Typography color="textSecondary">{item.value}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          );
-        })}
-      </Grid>
+      {lookups.length === 0 && loading ? (
+        <Loader />
+      ) : search.length > 0 && lookups.length > 0 ? (
+        <Grid
+          container
+          alignItems="flex-start"
+          justify="flex-start"
+          direction="row"
+          spacing={3}
+          style={{ gridAutoColumns: "1fr" }}
+        >
+          {lookups.map((item, index) => {
+            const country = getCountry(item);
+            return (
+              <Grid
+                item
+                md={listView === "list" ? 12 : 4}
+                sm={listView === "list" ? 12 : 6}
+                xs={12}
+                key={index.toString()}
+              >
+                <Card style={{ position: "relative" }}>
+                  <ButtonBase
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      position: "absolute"
+                    }}
+                    onClick={() => {
+                      history.push("/app/lookup/" + item.value);
+                    }}
+                  />
+                  <CardContent>
+                    <div className={classes.itemIconContainer}>
+                      {item.country ? <BusinessIcon /> : <PersonIcon />}
+                      <img
+                        src={country.src}
+                        alt={country.alt}
+                        style={{
+                          height: 20,
+                          width: 25,
+                          marginRight: 10
+                        }}
+                      />
+                    </div>
+                    <Typography variant="h5" component="h2">
+                      {item.label}
+                    </Typography>
+                    <Typography color="textSecondary">{item.value}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      ) : lookups.length === 0 && search.length === 0 ? (
+        <NoContent
+          text={t("lookup.index_no_content_no_search")}
+          animationData={computer}
+        />
+      ) : (
+        <NoContent text={t("lookup.index_no_content", { search })} />
+      )}
     </div>
   );
 };

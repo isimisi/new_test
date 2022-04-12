@@ -754,7 +754,16 @@
     "figures": "Key figures",
     "profit_and_loss": "Profit and loss",
     "balance_sheet": "Balance sheet",
-    "cash_flow": "Cash flow"
+    "cash_flow": "Cash flow",
+    "index_no_content": "We could not find any companies that matches \"{{search}}\"",
+    "index_no_content_no_search": "Search for a company and displore all our informations on the instance",
+    "no_board": "There is no board of directors",
+    "no_revision": "We could not find any auditors",
+    "no_legal_owners": "No legal owners",
+    "no_real_owners": "No beneficial owners",
+    "industry": "Industry",
+    "no_revision_period": "We could not find any accounting period",
+    "index_no_financials": "{{name}} has no financials yet"
   },
   "accounting": {
     "ag": "ROI",

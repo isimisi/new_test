@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import useStyles from "./lookup.jss";
 import InfoPaper from "./InfoPaper";
 import Button from "@material-ui/core/Button";
+import NoContent from "@components/NoContent";
 
 interface Props {
   data: any;
@@ -70,21 +71,31 @@ const Directors = (props: Props) => {
         </Button>
       </div>
       <div className={classes.leadershipContainer}>
-        <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
-          {t("lookup.board")}
-        </Typography>
-        {board.sort(sortNonActive).map(m => (
-          <InfoPaper
-            header={t(`lookup.${m.role}`)}
-            body={m.participant.name}
-            active={m.to}
-          />
-        ))}
-        <Button onClick={toggleboard}>
-          {!showNonActiveBoard
-            ? t("lookup.earlier_board")
-            : t("lookup.earlier_board_hide")}
-        </Button>
+        {board.length > 0 ? (
+          <>
+            <Typography
+              variant="subtitle1"
+              className={classes.leadershipSubtitle}
+            >
+              {t("lookup.board")}
+            </Typography>
+            {board.sort(sortNonActive).map(m => (
+              <InfoPaper
+                header={t(`lookup.${m.role}`)}
+                body={m.participant.name}
+                active={m.to}
+              />
+            ))}
+            <Button onClick={toggleboard}>
+              {!showNonActiveBoard
+                ? t("lookup.earlier_board")
+                : t("lookup.earlier_board_hide")}
+            </Button>
+            {" "}
+          </>
+        ) : (
+          <NoContent text={t("lookup.no_board")} />
+        )}
       </div>
     </div>
   );

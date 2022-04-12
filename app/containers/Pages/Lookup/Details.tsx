@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/redux";
 
 import { useAuth0, User } from "@auth0/auth0-react";
 import { reducer } from "./constants";
-import { getCompany } from "./reducers/lookupActions";
+import { getCompany, toggleMonitor } from "./reducers/lookupActions";
 import { useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
@@ -34,6 +34,7 @@ import Revision from "@components/Lookup/Revision";
 import Timeline from "@components/Lookup/Timeline";
 import MasterData from "@components/Lookup/MasterData";
 import Hidden from "@material-ui/core/Hidden";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Person = () => {
   const dispatch = useAppDispatch();
@@ -44,8 +45,10 @@ const Person = () => {
   const cvr = history.location.pathname.split("/").pop();
 
   const company = useAppSelector(state => state[reducer].get("company")).toJS();
-  console.log(company);
   const loading = useAppSelector(state => state[reducer].get("loading"));
+  const monitorLoading = useAppSelector(state =>
+    state[reducer].get("monitorLoading")
+  );
 
   const [years, setYears] = useState<SelectOptions[]>([
     { value: "2022", label: "2022" }
@@ -54,13 +57,9 @@ const Person = () => {
   const [year, setYear] = useState({ value: "2022", label: "2022" });
   const handleYear = v => setYear(v);
 
-  const [bookMarked, setBookMarked] = useState(false);
-  const handleBookmark = () => setBookMarked(prevVal => !prevVal);
-
   const [activeTab, setActiveTab] = useState(0);
 
   const handleChangeTab = (e, v) => {
-    console.log(v);
     setActiveTab(v);
   };
 
@@ -69,6 +68,10 @@ const Person = () => {
       dispatch(getCompany(user, cvr, handleYears, handleYear));
     }
   }, []);
+
+  const handleBookmark = () => {
+    dispatch(toggleMonitor(user, company.id));
+  };
 
   if (loading) {
     return (
@@ -112,13 +115,17 @@ const Person = () => {
                 {" "}
               </Typography>
               <Tooltip arrow title={`${t("lookup.bookmark")}`} placement="top">
-                <IconButton style={{ bottom: 10 }} onClick={handleBookmark}>
-                  {bookMarked ? (
-                    <BookmarkIcon fontSize="large" color="primary" />
-                  ) : (
-                    <BookmarkBorderIcon fontSize="large" color="primary" />
-                  )}
-                </IconButton>
+                {monitorLoading ? (
+                  <CircularProgress />
+                ) : (
+                  <IconButton style={{ bottom: 10 }} onClick={handleBookmark}>
+                    {company.monitoring ? (
+                      <BookmarkIcon fontSize="large" color="primary" />
+                    ) : (
+                      <BookmarkBorderIcon fontSize="large" color="primary" />
+                    )}
+                  </IconButton>
+                )}
               </Tooltip>
             </div>
             <div
@@ -144,7 +151,11 @@ const Person = () => {
             >
               <Tab label={t("lookup.accounting")} value={0} />
               <Tab label={t("lookup.diagram")} value={1} />
-              <Tab label={t("lookup.timeline")} value={2} />
+              <Tab
+                label={t("lookup.timeline")}
+                value={2}
+                disabled={company.country !== "DK"}
+              />
               <Tab label={t("lookup.directors")} value={3} />
               <Tab label={t("lookup.owners")} value={4} />
               <Tab label={t("lookup.revision")} value={5} />

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
 import currencyFormatter from "@helpers/numbers/currencyFormatter";
 import Tooltip from "@material-ui/core/Tooltip";
+import NoContent from "@components/NoContent";
 
 interface Props {
   data: any;
@@ -137,24 +138,36 @@ const Accounting = (props: Props) => {
   };
 
   useEffect(() => {
-    const financials = data.primaryFinancials["year" + year.value];
-    setCurrFinancials(financials);
-    if (financials.income.ebit) {
-      setAG((financials.income.ebit / financials.assets.assets) * 100);
-    }
+    if (data.primaryFinancials) {
+      const financials = data.primaryFinancials["year" + year.value];
 
-    setSG(
-      (financials.equityAndLiabilities.equity / financials.assets.assets) * 100
-    );
-    setLG(
-      (financials.assets.currentAssets /
-        financials.equityAndLiabilities.currentLiabilities) *
-        100
-    );
+      setCurrFinancials(financials);
+      if (financials) {
+        if (financials.income.ebit) {
+          setAG((financials.income.ebit / financials.assets.assets) * 100);
+        }
+
+        setSG(
+          (financials.equityAndLiabilities.equity / financials.assets.assets) *
+            100
+        );
+        setLG(
+          (financials.assets.currentAssets /
+            financials.equityAndLiabilities.currentLiabilities) *
+            100
+        );
+      }
+    }
   }, [year]);
 
   if (!currFinancials) {
-    return null;
+    return (
+      <div style={{ width: "100%", height: "100%" }}>
+        <NoContent
+          text={t("lookup.index_no_financials", { name: data.name })}
+        />
+      </div>
+    );
   }
 
   return (
@@ -228,7 +241,7 @@ const Accounting = (props: Props) => {
         </Typography>
       </Grid>
       {Object.keys(currFinancials.income).map(key => {
-        if (key === "__typename") {
+        if (key === "__typename" || currFinancials.income[key] === null) {
           return null;
         }
         return (
@@ -285,7 +298,7 @@ const Accounting = (props: Props) => {
         </Typography>
       </Grid>
       {Object.keys(currFinancials.assets).map(key => {
-        if (key === "__typename") {
+        if (key === "__typename" || currFinancials.assets[key] === null) {
           return null;
         }
         return (
@@ -336,7 +349,10 @@ const Accounting = (props: Props) => {
         );
       })}
       {Object.keys(currFinancials.equityAndLiabilities).map(key => {
-        if (key === "__typename") {
+        if (
+          key === "__typename" ||
+          currFinancials.equityAndLiabilities[key] === null
+        ) {
           return null;
         }
         return (
@@ -391,7 +407,7 @@ const Accounting = (props: Props) => {
         </Typography>
       </Grid>
       {Object.keys(currFinancials.cashFlows).map(key => {
-        if (key === "__typename") {
+        if (key === "__typename" || currFinancials.cashFlows[key] === null) {
           return null;
         }
         return (

@@ -754,7 +754,16 @@
     "figures": "Nøgletal",
     "profit_and_loss": "Resultopgørelse",
     "balance_sheet": "Balanceopgørelse",
-    "cash_flow": "Pengestrømsopgørelse"
+    "cash_flow": "Pengestrømsopgørelse",
+    "index_no_content": "Vi kunne ikke finde nogle selskaber, som matcher \"{{search}}\"\"",
+    "index_no_content_no_search": "Søg på en virksomhed og udforsk alle de informationer vi har på enheden",
+    "no_board": "Der er ingen bestyrelse",
+    "no_revision": "Vi kunne ikke finde nogen revisor",
+    "no_legal_owners": "Ingen legale ejere",
+    "no_real_owners": "Ingen reele ejere",
+    "industry": "Branche",
+    "no_revision_period": "Vi kunne ikke finde nogen regnskabsperiode",
+    "index_no_financials": "{{name}} har ikke aflagt regnskab endnu"
   },
   "accounting": {
     "ag": "Afkastningsgrad",

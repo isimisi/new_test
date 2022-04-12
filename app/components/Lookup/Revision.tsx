@@ -1,3 +1,4 @@
+import NoContent from "@components/NoContent";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -19,22 +20,27 @@ const Revision = (props: Props) => {
         <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
           {t("lookup.accounting_period")}
         </Typography>
-
-        <InfoPaper
-          header={t("lookup.accounting_period")}
-          body={data.Regnskabsperiode}
-        />
+        {data.Regnskabsperiode.length > 0 ? (
+          <InfoPaper
+            header={t("lookup.accounting_period")}
+            body={data.Regnskabsperiode}
+          />
+        ) : (
+          <NoContent text={t("lookup.no_revision_period")} />
+        )}
       </div>
       <div className={classes.leadershipContainer}>
         <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
           {t("lookup.accontant")}
         </Typography>
 
-        {auditor && (
+        {auditor ? (
           <InfoPaper
             header={t("lookup.accontant")}
             body={auditor.participant.name}
           />
+        ) : (
+          <NoContent text={t("lookup.no_revision")} />
         )}
       </div>
     </div>

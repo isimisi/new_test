@@ -1,3 +1,4 @@
+import NoContent from "@components/NoContent";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -19,27 +20,31 @@ const Owners = (props: Props) => {
         <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
           {t("lookup.legal_owners")}
         </Typography>
-        {data.owners.length > 0 &&
+        {data.owners.length > 0 ? (
           data.owners.map(x => (
             <InfoPaper
               header={x.owner.name}
               body={
-                x.stakeFrom === 100
-                  ? `${x.stakeFrom}%`
-                  : `${x.stakeFrom}-${x.stakeTo}%`
+                !x.stakeTo ? `${x.stakeFrom}%` : `${x.stakeFrom}-${x.stakeTo}%`
               }
             />
-          ))}
+          ))
+        ) : (
+          <NoContent text={t("lookup.no_legal_owners")} />
+        )}
       </div>
       <div className={classes.leadershipContainer}>
         <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
           {t("lookup.real_owners")}
         </Typography>
 
-        {data.beneficialOwners.length > 0 &&
+        {data.beneficialOwners.length > 0 ? (
           data.beneficialOwners.map(x => (
             <InfoPaper header={x.name} body={x.ownership} />
-          ))}
+          ))
+        ) : (
+          <NoContent text={t("lookup.no_real_owners")} />
+        )}
       </div>
     </div>
   );
