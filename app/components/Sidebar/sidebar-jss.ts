@@ -151,9 +151,8 @@ const styles = makeStyles((theme: MyTheme) => ({
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
     margin: `${theme.spacing(0.5)}px 0`,
-    [theme.breakpoints.down("lg")]: {
-      paddingLeft: theme.spacing(3),
-    },
+
+    paddingLeft: theme.spacing(3),
   },
   child: {
     "& a": {

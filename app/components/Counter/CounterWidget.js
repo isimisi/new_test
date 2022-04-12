@@ -13,7 +13,7 @@ const styles = (theme) => ({
     fontWeight: 400,
   },
   counter: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 500,
     textAlign: "left",
   },

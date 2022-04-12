@@ -61,9 +61,6 @@ const Lookup = () => {
     dispatch(getLookups(user, e.target.value));
   };
 
-  const noSearchYet = null;
-  const noContent = null;
-
   return (
     <div className={classes.container}>
       <Helmet>

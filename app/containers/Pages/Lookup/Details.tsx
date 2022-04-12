@@ -30,11 +30,12 @@ import Acconting from "@components/Lookup/Acconting";
 import Diagram from "@components/Lookup/Diagram";
 import Directors from "@components/Lookup/Directors";
 import Owners from "@components/Lookup/Owners";
-import Revision from "@components/Lookup/Revision";
+
 import Timeline from "@components/Lookup/Timeline";
 import MasterData from "@components/Lookup/MasterData";
 import Hidden from "@material-ui/core/Hidden";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Helmet } from "react-helmet";
 
 const Person = () => {
   const dispatch = useAppDispatch();
@@ -45,6 +46,7 @@ const Person = () => {
   const cvr = history.location.pathname.split("/").pop();
 
   const company = useAppSelector(state => state[reducer].get("company")).toJS();
+
   const loading = useAppSelector(state => state[reducer].get("loading"));
   const monitorLoading = useAppSelector(state =>
     state[reducer].get("monitorLoading")
@@ -106,6 +108,14 @@ const Person = () => {
 
   return (
     <div style={{ display: "flex" }}>
+      <Helmet>
+        <title>{company.name}</title>
+        <meta name="description" content={company.name} />
+        <meta property="og:title" content={company.name} />
+        <meta property="og:description" content={company.name} />
+        <meta property="twitter:title" content={company.name} />
+        <meta property="twitter:description" content={company.name} />
+      </Helmet>
       <Grid container spacing={1} style={{ padding: 10 }}>
         <Grid item lg={8} md={12}>
           <div>
@@ -114,7 +124,7 @@ const Person = () => {
                 {company.name}
                 {" "}
               </Typography>
-              <Tooltip arrow title={`${t("lookup.bookmark")}`} placement="top">
+              {/* <Tooltip arrow title={`${t("lookup.bookmark")}`} placement="top">
                 {monitorLoading ? (
                   <CircularProgress />
                 ) : (
@@ -126,7 +136,7 @@ const Person = () => {
                     )}
                   </IconButton>
                 )}
-              </Tooltip>
+              </Tooltip> */}
             </div>
             <div
               style={{
@@ -135,7 +145,7 @@ const Person = () => {
               }}
             >
               <Typography variant="h6" color="textSecondary">
-                {company.id.slice(2)}
+                {company.id}
                 {" "}
               </Typography>
             </div>
@@ -158,7 +168,6 @@ const Person = () => {
               />
               <Tab label={t("lookup.directors")} value={3} />
               <Tab label={t("lookup.owners")} value={4} />
-              <Tab label={t("lookup.revision")} value={5} />
             </Tabs>
           </div>
           <TabPanel value={activeTab} index={0}>
@@ -180,9 +189,6 @@ const Person = () => {
           </TabPanel>
           <TabPanel value={activeTab} index={4}>
             <Owners data={company} />
-          </TabPanel>
-          <TabPanel value={activeTab} index={5}>
-            <Revision data={company} />
           </TabPanel>
         </Grid>
         <Hidden mdDown>

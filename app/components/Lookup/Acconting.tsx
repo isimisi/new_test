@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable react/jsx-indent-props */
 import Grid from "@material-ui/core/Grid";
 import React, { useEffect, useState } from "react";
 import CounterWidget from "@components/Counter/CounterWidget";
@@ -10,7 +12,10 @@ import { selectStyles } from "@api/ui/helper";
 import { SelectOptions } from "@customTypes/data";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
-import currencyFormatter from "@helpers/numbers/currencyFormatter";
+import {
+  currencyFormatter,
+  genericFormatter
+} from "@helpers/numbers/Formatters";
 import Tooltip from "@material-ui/core/Tooltip";
 import NoContent from "@components/NoContent";
 
@@ -70,7 +75,7 @@ const Accounting = (props: Props) => {
 
   const classes = useStyles();
   const { t } = useTranslation();
-
+  console.log(data);
   const [currFinancials, setCurrFinancials] = useState<any>(null);
   const [AG, setAG] = useState(0);
   const [SG, setSG] = useState(0);
@@ -128,8 +133,9 @@ const Accounting = (props: Props) => {
 
           setTooltTipValue(
             `${yearVal}: ${currencyFormatter(
-              Number(val.split(",").join("")),
-              currFinancials.currency
+              Number(val.split(",").join("")) * 1000,
+              currFinancials.currency,
+              t("numberformat")
             )}`
           );
         }
@@ -169,7 +175,12 @@ const Accounting = (props: Props) => {
       </div>
     );
   }
-
+  console.log(
+    "hehj",
+    Object.values(currFinancials.income).every(
+      value => !value || value === "FinancialIncome"
+    )
+  );
   return (
     <Grid container spacing={2} className={classes.accountingContainer}>
       <Grid item xs={12}>
@@ -191,29 +202,31 @@ const Accounting = (props: Props) => {
           {t("lookup.figures")}
         </Typography>
       </Grid>
-      {AG && (
+      {AG ? (
         <Grid item md={4} xs={6}>
           <CounterWidget
             color="white"
             start={0}
             end={AG}
+            formattingFn={val => genericFormatter(val, t("numberformat"))}
             duration={3}
             title={t("accounting.ag")}
-            unitAfter="%"
+            unitAfter={t("percent")}
           >
             <div style={{ width: 80, height: 80 }}>
               <Doughnut data={chartDataAG} options={options} />
             </div>
           </CounterWidget>
         </Grid>
-      )}
+      ) : null}
       <Grid item md={4} xs={6}>
         <CounterWidget
           color="white"
           start={0}
           end={SG}
+          formattingFn={val => genericFormatter(val, t("numberformat"))}
           duration={3}
-          unitAfter="%"
+          unitAfter={t("percent")}
           title={t("accounting.sg")}
         >
           <div style={{ width: 80, height: 80 }}>
@@ -226,8 +239,9 @@ const Accounting = (props: Props) => {
           color="white"
           start={0}
           end={LG}
+          formattingFn={val => genericFormatter(val, t("numberformat"))}
           duration={3}
-          unitAfter="%"
+          unitAfter={t("percent")}
           title={t("accounting.lg")}
         >
           <div style={{ width: 80, height: 80 }}>
@@ -240,57 +254,71 @@ const Accounting = (props: Props) => {
           {t("lookup.profit_and_loss")}
         </Typography>
       </Grid>
-      {Object.keys(currFinancials.income).map(key => {
-        if (key === "__typename" || currFinancials.income[key] === null) {
-          return null;
-        }
-        return (
-          <Grid item xl={4} xs={6} key={key}>
-            <CounterWidget
-              color="white"
-              start={0}
-              end={currFinancials.income[key]}
-              formattingFn={val =>
-                currencyFormatter(val, currFinancials.currency)
-              }
-              duration={1}
-              title={t(`accounting.${key}`)}
-            >
-              <Tooltip arrow title={tooltTipValue} placement="top">
-                <div
-                  style={{
-                    width: 120,
-                    height: 120
-                  }}
-                >
-                  <Bar
-                    data={{
-                      labels: years
-                        .sort((a, b) => Number(a.value) - Number(b.value))
-                        .map(v => v.value),
-                      datasets: [
-                        {
-                          data: years
-                            .sort((a, b) => Number(a.value) - Number(b.value))
-                            .map(
-                              v =>
-                                data.primaryFinancials["year" + v.value].income[
-                                  key
-                                ]
-                            ),
-                          hoverBackgroundColor: ["#73B1FF"],
-                          backgroundColor: ["#cee4ff"]
-                        }
-                      ]
+      {Object.values(currFinancials.income).every(
+        value => !value || value === "FinancialIncome"
+      ) ? (
+        <NoContent
+          noLottie
+          noMargin
+          text={t("lookup.no_financial_income")}
+          margin={8}
+        />
+      ) : (
+        Object.keys(currFinancials.income).map(key => {
+          if (key === "__typename" || currFinancials.income[key] === null) {
+            return null;
+          }
+          return (
+            <Grid item xl={4} xs={6} key={key}>
+              <CounterWidget
+                color="white"
+                start={0}
+                end={currFinancials.income[key]}
+                formattingFn={val =>
+                  currencyFormatter(
+                    val * 1000,
+                    currFinancials.currency,
+                    t("numberformat")
+                  )
+                }
+                duration={1}
+                title={t(`accounting.${key}`)}
+              >
+                <Tooltip arrow title={tooltTipValue} placement="top">
+                  <div
+                    style={{
+                      width: 120,
+                      height: 120
                     }}
-                    options={accountingOptions}
-                  />
-                </div>
-              </Tooltip>
-            </CounterWidget>
-          </Grid>
-        );
-      })}
+                  >
+                    <Bar
+                      data={{
+                        labels: years
+                          .sort((a, b) => Number(a.value) - Number(b.value))
+                          .map(v => v.value),
+                        datasets: [
+                          {
+                            data: years
+                              .sort((a, b) => Number(a.value) - Number(b.value))
+                              .map(
+                                v =>
+                                  data.primaryFinancials["year" + v.value]
+                                    .income[key]
+                              ),
+                            hoverBackgroundColor: ["#73B1FF"],
+                            backgroundColor: ["#cee4ff"]
+                          }
+                        ]
+                      }}
+                      options={accountingOptions}
+                    />
+                  </div>
+                </Tooltip>
+              </CounterWidget>
+            </Grid>
+          );
+        })
+      )}
 
       <Grid item xs={12}>
         <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
@@ -308,7 +336,11 @@ const Accounting = (props: Props) => {
               start={0}
               end={currFinancials.assets[key]}
               formattingFn={val =>
-                currencyFormatter(val, currFinancials.currency)
+                currencyFormatter(
+                  val * 1000,
+                  currFinancials.currency,
+                  t("numberformat")
+                )
               }
               duration={1}
               title={t(`accounting.${key}`)}
@@ -362,7 +394,11 @@ const Accounting = (props: Props) => {
               start={0}
               end={currFinancials.equityAndLiabilities[key]}
               formattingFn={val =>
-                currencyFormatter(val, currFinancials.currency)
+                currencyFormatter(
+                  val * 1000,
+                  currFinancials.currency,
+                  t("numberformat")
+                )
               }
               duration={1}
               title={t(`accounting.${key}`)}
@@ -406,56 +442,71 @@ const Accounting = (props: Props) => {
           {t("lookup.cash_flow")}
         </Typography>
       </Grid>
-      {Object.keys(currFinancials.cashFlows).map(key => {
-        if (key === "__typename" || currFinancials.cashFlows[key] === null) {
-          return null;
-        }
-        return (
-          <Grid item xl={4} xs={6} key={key}>
-            <CounterWidget
-              color="white"
-              start={0}
-              end={currFinancials.cashFlows[key]}
-              formattingFn={val =>
-                currencyFormatter(val, currFinancials.currency)
-              }
-              duration={1}
-              title={t(`accounting.${key}`)}
-            >
-              <Tooltip arrow title={tooltTipValue} placement="top">
-                <div
-                  style={{
-                    width: 120,
-                    height: 120
-                  }}
-                >
-                  <Bar
-                    data={{
-                      labels: years
-                        .sort((a, b) => Number(a.value) - Number(b.value))
-                        .map(v => v.value),
-                      datasets: [
-                        {
-                          data: years
-                            .sort((a, b) => Number(a.value) - Number(b.value))
-                            .map(
-                              v =>
-                                data.primaryFinancials["year" + v.value]
-                                  .cashFlows[key]
-                            ),
-                          hoverBackgroundColor: ["#73B1FF"],
-                          backgroundColor: ["#cee4ff"]
-                        }
-                      ]
+      {Object.values(currFinancials.income).every(
+        value => !value || value === "FinancialCashFlows"
+      ) ? (
+        <NoContent
+          noLottie
+          noMargin
+          margin={8}
+          text={t("lookup.no_financial_cash_flow")}
+        />
+      ) : (
+        Object.keys(currFinancials.cashFlows).map(key => {
+          if (key === "__typename" || currFinancials.cashFlows[key] === null) {
+            return null;
+          }
+          return (
+            <Grid item xl={4} xs={6} key={key}>
+              <CounterWidget
+                color="white"
+                start={0}
+                end={currFinancials.cashFlows[key]}
+                formattingFn={val =>
+                  currencyFormatter(
+                    val * 1000,
+                    currFinancials.currency,
+                    "da-DK"
+                  )
+                }
+                duration={1}
+                title={t(`accounting.${key}`)}
+              >
+                <Tooltip arrow title={tooltTipValue} placement="top">
+                  <div
+                    style={{
+                      width: 120,
+                      height: 120
                     }}
-                    options={accountingOptions}
-                  />
-                </div>
-              </Tooltip>
-            </CounterWidget>
-          </Grid>
-        );
-      })}
+                  >
+                    <Bar
+                      data={{
+                        labels: years
+                          .sort((a, b) => Number(a.value) - Number(b.value))
+                          .map(v => v.value),
+                        datasets: [
+                          {
+                            data: years
+                              .sort((a, b) => Number(a.value) - Number(b.value))
+                              .map(
+                                v =>
+                                  data.primaryFinancials["year" + v.value]
+                                    .cashFlows[key]
+                              ),
+                            hoverBackgroundColor: ["#73B1FF"],
+                            backgroundColor: ["#cee4ff"]
+                          }
+                        ]
+                      }}
+                      options={accountingOptions}
+                    />
+                  </div>
+                </Tooltip>
+              </CounterWidget>
+            </Grid>
+          );
+        })
+      )}
     </Grid>
   );
 };

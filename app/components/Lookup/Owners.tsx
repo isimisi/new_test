@@ -43,7 +43,7 @@ const Owners = (props: Props) => {
             <InfoPaper header={x.name} body={x.ownership} />
           ))
         ) : (
-          <NoContent text={t("lookup.no_real_owners")} />
+          <NoContent text={t("lookup.no_real_owners")} marginTop={15} />
         )}
       </div>
     </div>

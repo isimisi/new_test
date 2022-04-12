@@ -10,7 +10,7 @@ interface Props {
 
 const MasterData = ({ company, country }: Props) => {
   const theme = useTheme();
-
+  const auditor = company.participants.find(p => p.role === "AUDITOR" && !p.to);
   return (
     <Grid item lg={3}>
       <Typography
@@ -59,22 +59,24 @@ const MasterData = ({ company, country }: Props) => {
       >
         <Typography variant="h6">{t("lookup.cvr")}</Typography>
         <Typography style={{ marginTop: 5 }} color="textSecondary">
-          {company.id.slice(2)}
+          {company.id}
         </Typography>
       </Paper>
-      <Paper
-        style={{
-          marginTop: 15,
-          padding: 20,
+      {company.Selskabskapital && (
+        <Paper
+          style={{
+            marginTop: 15,
+            padding: 20,
 
-          alignItems: "center"
-        }}
-      >
-        <Typography variant="h6">{t("lookup.capital")}</Typography>
-        <Typography style={{ marginTop: 5 }} color="textSecondary">
-          {company.Selskabskapital}
-        </Typography>
-      </Paper>
+            alignItems: "center"
+          }}
+        >
+          <Typography variant="h6">{t("lookup.capital")}</Typography>
+          <Typography style={{ marginTop: 5 }} color="textSecondary">
+            {company.Selskabskapital}
+          </Typography>
+        </Paper>
+      )}
       {company.altNames && (
         <Paper
           style={{
@@ -95,48 +97,84 @@ const MasterData = ({ company, country }: Props) => {
           ))}
         </Paper>
       )}
-      <Paper
-        style={{
-          marginTop: 15,
-          padding: 20,
+      {company.Tegningsregel && (
+        <Paper
+          style={{
+            marginTop: 15,
+            padding: 20,
 
-          alignItems: "center"
-        }}
-      >
-        <Typography variant="h6">{t("lookup.drawing_rule")}</Typography>
+            alignItems: "center"
+          }}
+        >
+          <Typography variant="h6">{t("lookup.drawing_rule")}</Typography>
 
-        <Typography style={{ marginTop: 5 }} color="textSecondary">
-          {company.Tegningsregel}
-        </Typography>
-      </Paper>
-      <Paper
-        style={{
-          marginTop: 15,
-          padding: 20,
+          <Typography style={{ marginTop: 5 }} color="textSecondary">
+            {company.Tegningsregel}
+          </Typography>
+        </Paper>
+      )}
+      {company.primaryIndustry.id && (
+        <Paper
+          style={{
+            marginTop: 15,
+            padding: 20,
 
-          alignItems: "center"
-        }}
-      >
-        <Typography variant="h6">{t("lookup.industry")}</Typography>
+            alignItems: "center"
+          }}
+        >
+          <Typography variant="h6">{t("lookup.industry")}</Typography>
 
-        <Typography style={{ marginTop: 5 }} color="textSecondary">
-          {company.primaryIndustry.name}
-        </Typography>
-        <Typography style={{ marginTop: 1 }} color="textSecondary">
-          {company.primaryIndustry.id}
-        </Typography>
-      </Paper>
-      <Paper
-        style={{
-          marginTop: 15,
-          padding: 20,
+          <Typography style={{ marginTop: 5 }} color="textSecondary">
+            {company.primaryIndustry.name}
+          </Typography>
+          <Typography style={{ marginTop: 1 }} color="textSecondary">
+            {company.primaryIndustry.id}
+          </Typography>
+        </Paper>
+      )}
+      {company.description && (
+        <Paper
+          style={{
+            marginTop: 15,
+            padding: 20,
 
-          alignItems: "center"
-        }}
-      >
-        <Typography variant="h6">{t("lookup.purpose")}</Typography>
-        <Typography color="textSecondary">{company.description}</Typography>
-      </Paper>
+            alignItems: "center"
+          }}
+        >
+          <Typography variant="h6">{t("lookup.purpose")}</Typography>
+          <Typography color="textSecondary">{company.description}</Typography>
+        </Paper>
+      )}
+      {company.Regnskabsperiode && (
+        <Paper
+          style={{
+            marginTop: 15,
+            padding: 20,
+
+            alignItems: "center"
+          }}
+        >
+          <Typography variant="h6">{t("lookup.accounting_period")}</Typography>
+          <Typography color="textSecondary">
+            {company.Regnskabsperiode}
+          </Typography>
+        </Paper>
+      )}
+      {auditor && (
+        <Paper
+          style={{
+            marginTop: 15,
+            padding: 20,
+
+            alignItems: "center"
+          }}
+        >
+          <Typography variant="h6">{t("lookup.accontant")}</Typography>
+          <Typography color="textSecondary">
+            {auditor.participant.name}
+          </Typography>
+        </Paper>
+      )}
     </Grid>
   );
 };

@@ -763,7 +763,9 @@
     "no_real_owners": "No beneficial owners",
     "industry": "Industry",
     "no_revision_period": "We could not find any accounting period",
-    "index_no_financials": "{{name}} has no financials yet"
+    "index_no_financials": "{{name}} has no financials yet",
+    "no_financial_income": "We could not find any figures on the financial income",
+    "no_financial_cash_flow": "We could not find any figures on the cash flows"
   },
   "accounting": {
     "ag": "ROI",
@@ -787,5 +789,7 @@
     "investing": "Investing",
     "operating": "Operating",
     "total": "Total"
-  }
+  },
+  "percent": "%",
+  "numberformat": "en-GB"
 }

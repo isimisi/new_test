@@ -763,7 +763,9 @@
     "no_real_owners": "Ingen reele ejere",
     "industry": "Branche",
     "no_revision_period": "Vi kunne ikke finde nogen regnskabsperiode",
-    "index_no_financials": "{{name}} har ikke aflagt regnskab endnu"
+    "index_no_financials": "{{name}} har ikke aflagt regnskab endnu",
+    "no_financial_income": "Vi kunne ikke finde nogle tal vedrørende resultopgørelse",
+    "no_financial_cash_flow": "Vi kunne ikke finde nogle tal vedrørende pengestrømmende"
   },
   "accounting": {
     "ag": "Afkastningsgrad",
@@ -787,5 +789,7 @@
     "investing": "Investering",
     "operating": "Drift",
     "total": "Totale pengestrømme"
-  }
+  },
+  "percent": " %",
+  "numberformat": "da-DK"
 }

@@ -39,6 +39,7 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         const company = fromJS(action.company);
         mutableState.set("company", company);
+        mutableState.set("lookups", List());
         mutableState.set("loading", false);
       });
     case MONITOR_COMPANY_LOADING:

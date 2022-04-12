@@ -158,18 +158,21 @@ const CompanyTimeline = (props: Props) => {
 
     if (node.name === "p") {
       const text = node?.children?.find(x => x.type === "text")?.data;
-      const startText = text.split("@pers").shift();
-      const endText = text.split("}").pop();
-      const personText = getTextBetween(text, "@pers{", "}");
-      if (personText.length > 0) {
-        return (
-          <div>
-            <Typography display="inline" style={{ fontSize: "0.875rem" }}>{startText}</Typography>
-            <Typography display="inline" style={{ fontSize: "0.875rem" }}><Link target="_blank" display="inline" underline="hover" href={`https://datacvr.virk.dk/enhed/person/${personText.split(",").pop()?.replace(" ", '')}/deltager`}>{personText.split(",").shift()?.replace(/"/g, '')}</Link></Typography>
-            <Typography display="inline" style={{ fontSize: "0.875rem" }}>{endText}</Typography>
-          </div>
-        );
+      if (text) {
+        const startText = text.split("@pers").shift();
+        const endText = text.split("}").pop();
+        const personText = getTextBetween(text, "@pers{", "}");
+        if (personText.length > 0) {
+          return (
+            <div>
+              <Typography display="inline" style={{ fontSize: "0.875rem" }}>{startText}</Typography>
+              <Typography display="inline" style={{ fontSize: "0.875rem" }}><Link target="_blank" display="inline" underline="hover" href={`https://datacvr.virk.dk/enhed/person/${personText.split(",").pop()?.replace(" ", '')}/deltager`}>{personText.split(",").shift()?.replace(/"/g, '')}</Link></Typography>
+              <Typography display="inline" style={{ fontSize: "0.875rem" }}>{endText}</Typography>
+            </div>
+          );
+        }
       }
+
       return <Typography style={{ fontSize: "0.875rem" }}>{text}</Typography>;
     }
 
