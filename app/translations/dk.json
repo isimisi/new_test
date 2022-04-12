@@ -756,7 +756,7 @@
     "balance_sheet": "Balanceopgørelse",
     "cash_flow": "Pengestrømsopgørelse",
     "index_no_content": "Vi kunne ikke finde nogle selskaber, som matcher \"{{search}}\"\"",
-    "index_no_content_no_search": "Søg på en virksomhed og udforsk al tilgængelige information",
+    "index_no_content_no_search": "Søg på en virksomhed og udforsk al tilgængelig information",
     "no_board": "Der er ingen bestyrelse",
     "no_revision": "Vi kunne ikke finde nogen revisor",
     "no_legal_owners": "Ingen legale ejere",
