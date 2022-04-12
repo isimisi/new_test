@@ -605,7 +605,7 @@
   },
   "helpers": {
     "toolbar": {
-      "downloadCsv": "Download som CSV fil",
+      "downloadCsv": "Download som CSV-fil",
       "filterTable": "Filtrer tabel",
       "print": "Print",
       "search": "Søg",
@@ -711,8 +711,8 @@
     "btn_new_timelines": "Ny tidslinje"
   },
   "timeline": {
-    "horizontal": "Horisontal",
-    "vertical": "Vertikal",
+    "horizontal": "Vandret",
+    "vertical": "Lodret",
     "table": "Tabel"
   },
   "lookup": {
@@ -743,9 +743,9 @@
     "BOARD_VICE_CHAIR": "Bestyrelsesviceformand",
     "CEO": "CEO",
     "DIRECTOR": "Direktør",
-    "earlier_managers": "Vis tidligere direktøre",
+    "earlier_managers": "Vis tidligere direktører",
     "earlier_board": "Vis tidligere bestyrelsesmedlemmer",
-    "earlier_managers_hide": "Vis ikke tidligere direktøre",
+    "earlier_managers_hide": "Skjul tidligere direktører",
     "earlier_board_hide": "Vis ikke tidligere bestyrelsesmedlemmer",
     "accounting_period": "Regnskabsperiode",
     "accontant": "Revisor",
@@ -756,16 +756,16 @@
     "balance_sheet": "Balanceopgørelse",
     "cash_flow": "Pengestrømsopgørelse",
     "index_no_content": "Vi kunne ikke finde nogle selskaber, som matcher \"{{search}}\"\"",
-    "index_no_content_no_search": "Søg på en virksomhed og udforsk alle de informationer vi har på enheden",
+    "index_no_content_no_search": "Søg på en virksomhed og udforsk al tilgængelige information",
     "no_board": "Der er ingen bestyrelse",
     "no_revision": "Vi kunne ikke finde nogen revisor",
     "no_legal_owners": "Ingen legale ejere",
-    "no_real_owners": "Ingen reele ejere",
+    "no_real_owners": "Ingen reelle ejere",
     "industry": "Branche",
-    "no_revision_period": "Vi kunne ikke finde nogen regnskabsperiode",
+    "no_revision_period": "Der er ingen tilgængelige informationer",
     "index_no_financials": "{{name}} har ikke aflagt regnskab endnu",
-    "no_financial_income": "Vi kunne ikke finde nogle tal vedrørende resultopgørelse",
-    "no_financial_cash_flow": "Vi kunne ikke finde nogle tal vedrørende pengestrømmende"
+    "no_financial_income": "Der er ingen tilgængelige informationer",
+    "no_financial_cash_flow": "Der er ingen tilgængelige informationer"
   },
   "accounting": {
     "ag": "Afkastningsgrad",
