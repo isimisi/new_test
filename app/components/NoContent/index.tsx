@@ -15,6 +15,21 @@ interface Props {
   noMargin?: boolean;
   marginTop?: number;
   margin?: number;
+  textVariant?:
+    | "h1"
+    | "h2"
+    | "h3"
+    | "h4"
+    | "h5"
+    | "h6"
+    | "subtitle1"
+    | "subtitle2"
+    | "body1"
+    | "body2"
+    | "caption"
+    | "button"
+    | "overline"
+    | undefined;
 }
 
 const NoContent = ({
@@ -24,7 +39,8 @@ const NoContent = ({
   noLottie = false,
   noMargin = false,
   marginTop = 50,
-  margin = 0
+  margin = 0,
+  textVariant = "h5"
 }: Props) => (
   <Paper
     style={{
@@ -40,7 +56,7 @@ const NoContent = ({
     }}
   >
     <Typography
-      variant="h5"
+      variant={textVariant}
       style={{ textAlign: "center", marginBottom: noLottie ? 0 : 20 }}
     >
       {text}

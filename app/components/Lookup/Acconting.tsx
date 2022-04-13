@@ -262,6 +262,7 @@ const Accounting = (props: Props) => {
           noMargin
           text={t("lookup.no_financial_income")}
           margin={8}
+          textVariant="subtitle1"
         />
       ) : (
         Object.keys(currFinancials.income).map(key => {
@@ -442,7 +443,7 @@ const Accounting = (props: Props) => {
           {t("lookup.cash_flow")}
         </Typography>
       </Grid>
-      {Object.values(currFinancials.income).every(
+      {Object.values(currFinancials.cashFlows).every(
         value => !value || value === "FinancialCashFlows"
       ) ? (
         <NoContent
@@ -450,6 +451,7 @@ const Accounting = (props: Props) => {
           noMargin
           margin={8}
           text={t("lookup.no_financial_cash_flow")}
+          textVariant="subtitle1"
         />
       ) : (
         Object.keys(currFinancials.cashFlows).map(key => {

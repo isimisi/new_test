@@ -36,6 +36,8 @@ import MasterData from "@components/Lookup/MasterData";
 import Hidden from "@material-ui/core/Hidden";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Helmet } from "react-helmet";
+import Button from "@material-ui/core/Button";
+import { postWorkspace } from "../Workspaces/reducers/workspaceActions";
 
 const Person = () => {
   const dispatch = useAppDispatch();
@@ -73,6 +75,26 @@ const Person = () => {
 
   const handleBookmark = () => {
     dispatch(toggleMonitor(user, company.id));
+  };
+
+  const createWorkspace = () => {
+    if (cvr) {
+      const _cvr =
+        cvr.includes("DK") && cvr.length < 12 ? cvr.substring(2) : cvr;
+      dispatch(
+        postWorkspace(
+          user,
+          history,
+          company.name,
+          undefined,
+          "Corporate",
+          undefined,
+          undefined,
+          _cvr,
+          true
+        )
+      );
+    }
   };
 
   if (loading) {
@@ -150,7 +172,13 @@ const Person = () => {
               </Typography>
             </div>
           </div>
-          <div style={{ display: "flex", marginTop: 20 }}>
+          <div
+            style={{
+              display: "flex",
+              marginTop: 20,
+              justifyContent: "space-between"
+            }}
+          >
             <Tabs
               value={activeTab}
               onChange={handleChangeTab}
@@ -160,7 +188,7 @@ const Person = () => {
               scrollButtons="on"
             >
               <Tab label={t("lookup.accounting")} value={0} />
-              <Tab label={t("lookup.diagram")} value={1} />
+              {/* <Tab label={t("lookup.diagram")} value={1} /> */}
               <Tab
                 label={t("lookup.timeline")}
                 value={2}
@@ -169,6 +197,13 @@ const Person = () => {
               <Tab label={t("lookup.directors")} value={3} />
               <Tab label={t("lookup.owners")} value={4} />
             </Tabs>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={createWorkspace}
+            >
+              {t("lookup.start_a_workspace")}
+            </Button>
           </div>
           <TabPanel value={activeTab} index={0}>
             <Acconting
@@ -178,9 +213,9 @@ const Person = () => {
               handleYear={handleYear}
             />
           </TabPanel>
-          <TabPanel value={activeTab} index={1}>
+          {/* <TabPanel value={activeTab} index={1}>
             <Diagram data={company["CVR-nummer"]} user={user} />
-          </TabPanel>
+          </TabPanel> */}
           <TabPanel value={activeTab} index={2}>
             <Timeline data={company.timeline} />
           </TabPanel>
