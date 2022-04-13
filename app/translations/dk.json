@@ -765,7 +765,8 @@
     "no_revision_period": "Der er ingen tilgængelige informationer",
     "index_no_financials": "{{name}} har ikke aflagt regnskab endnu",
     "no_financial_income": "Der er ingen tilgængelige informationer",
-    "no_financial_cash_flow": "Der er ingen tilgængelige informationer"
+    "no_financial_cash_flow": "Der er ingen tilgængelige informationer",
+    "free_plan_notif_index": "Som gratisbruger kan du kun se danske selskaber"
   },
   "accounting": {
     "ag": "Afkastningsgrad",

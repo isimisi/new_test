@@ -1,4 +1,5 @@
 import { LookupState, IImmutableLookupState } from "@customTypes/reducers/lookup";
+import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
 import {
   GET_COMPANIES_FAILED,
@@ -66,6 +67,15 @@ export default function reducer(
     case GET_COMPANY_LOADING:
       return state.withMutations((mutableState) => {
         mutableState.set("loading", true);
+      });
+    case SHOW_NOTIF:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set("message", message);
+      });
+    case CLOSE_NOTIF:
+      return state.withMutations((mutableState) => {
+        mutableState.set("message", "");
       });
     default:
       return state;

@@ -765,7 +765,8 @@
     "no_revision_period": "We could not find any accounting period",
     "index_no_financials": "{{name}} has no financials yet",
     "no_financial_income": "We could not find any figures on the financial income",
-    "no_financial_cash_flow": "We could not find any figures on the cash flows"
+    "no_financial_cash_flow": "We could not find any figures on the cash flows",
+    "free_plan_notif_index": "As a freemium user you can only see danish companies"
   },
   "accounting": {
     "ag": "ROI",

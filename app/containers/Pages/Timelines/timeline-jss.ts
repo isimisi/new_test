@@ -1,7 +1,7 @@
 import { MyTheme } from "@customTypes/styling";
 import { makeStyles } from "@material-ui/core/styles";
 
-const drawerWidth = "40vw";
+const drawerWidth = "50vw";
 const flowHeight = "100vh";
 
 const useStyles = makeStyles((theme: MyTheme) => ({

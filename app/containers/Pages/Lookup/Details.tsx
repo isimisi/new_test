@@ -90,8 +90,7 @@ const Person = () => {
           "Corporate",
           undefined,
           undefined,
-          _cvr,
-          true
+          _cvr
         )
       );
     }
@@ -126,7 +125,7 @@ const Person = () => {
     return <div />;
   }
 
-  const country = getCountry(company.country);
+  const country = getCountry(company);
 
   return (
     <div style={{ display: "flex" }}>

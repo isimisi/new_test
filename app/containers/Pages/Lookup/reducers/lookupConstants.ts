@@ -1,3 +1,5 @@
+import { NotifyActions } from "@redux/constants/notifConstants";
+
 export const GET_COMPANIES_LOADING = "GET_COMPANIES_LOADING";
 export const GET_COMPANIES_SUCCESS = "GET_COMPANIES_SUCCESS";
 export const GET_COMPANIES_FAILED = "GET_COMPANIES_FAILED";
@@ -54,4 +56,5 @@ export type LookupActions =
   | GetCompanyFailed
   | MonitorCompanyLoading
   | MonitorCompanySuccess
-  | MonitorCompanyFailed;
+  | MonitorCompanyFailed
+  | NotifyActions;

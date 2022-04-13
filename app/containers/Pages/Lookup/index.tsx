@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import computer from "@lotties/racoon/computer.json";
 import useStyles from "./lookup-jss";
-
+import Notification from "@components/Notification/Notification";
 import PersonIcon from "@material-ui/icons/Person";
 import BusinessIcon from "@material-ui/icons/Business";
 
@@ -31,10 +31,15 @@ import ViewList from "@material-ui/icons/ViewList";
 import GridOn from "@material-ui/icons/GridOn";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import { getLookups } from "./reducers/lookupActions";
+import {
+  getLookups,
+  closeNotifAction,
+  showNotifAction
+} from "./reducers/lookupActions";
 import { getCountry } from "@helpers/countryOptions";
 import Loader from "@components/Loading/LongLoader";
 import NoContent from "@components/NoContent";
+import { getPlanId } from "@helpers/userInfo";
 
 const Lookup = () => {
   const classes = useStyles();
@@ -42,9 +47,11 @@ const Lookup = () => {
   const dispatch = useAppDispatch();
   const lookups = useAppSelector(state => state[reducer].get("lookups")).toJS();
   const loading = useAppSelector(state => state[reducer].get("loading"));
+  const messageNotif = useAppSelector(state => state[reducer].get("message"));
 
   const history = useHistory();
   const user = useAuth0().user as User;
+  const plan_id = getPlanId(user);
 
   const { t } = useTranslation();
 
@@ -71,6 +78,10 @@ const Lookup = () => {
         <meta property="twitter:title" content={metaTitle} />
         <meta property="twitter:description" content={metaTitle} />
       </Helmet>
+      <Notification
+        close={() => dispatch(closeNotifAction)}
+        message={messageNotif}
+      />
       <div className={classes.searchContainer}>
         <AppBar position="static" color="inherit">
           <Toolbar>
@@ -143,7 +154,13 @@ const Lookup = () => {
                       position: "absolute"
                     }}
                     onClick={() => {
-                      history.push("/app/lookup/" + item.value);
+                      if (plan_id === 1 && item.country !== "DK") {
+                        dispatch(
+                          showNotifAction(t("lookup.free_plan_notif_index"))
+                        );
+                      } else {
+                        history.push("/app/lookup/" + item.value);
+                      }
                     }}
                   />
                   <CardContent>

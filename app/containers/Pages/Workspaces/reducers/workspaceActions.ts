@@ -98,7 +98,6 @@ export const postWorkspace = (
   tags?: string,
   shareOrg?: boolean,
   cvr?: string,
-  blank?: boolean,
 ) => async (dispatch) => {
   dispatch({ type: types.POST_WORKSPACE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}`;
@@ -119,9 +118,6 @@ export const postWorkspace = (
       dispatch(
         cvrWorkspace(user, getIdFromEncrypted(id), cvr, undefined, initErstTypes)
       );
-    }
-    if (blank) {
-      window.open(window.location.href, '_blank');
     }
 
     history && history.push(`/app/${WORKSPACES}/${id}`);
