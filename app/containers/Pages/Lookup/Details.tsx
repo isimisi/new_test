@@ -60,7 +60,7 @@ const Person = () => {
   const handleYears = y => setYears(y);
   const [year, setYear] = useState({ value: "2022", label: "2022" });
   const handleYear = v => setYear(v);
-
+  console.log(years, year);
   const [activeTab, setActiveTab] = useState(0);
 
   const handleChangeTab = (e, v) => {

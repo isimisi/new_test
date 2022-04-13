@@ -30,7 +30,7 @@ const Owners = (props: Props) => {
             />
           ))
         ) : (
-          <NoContent text={t("lookup.no_legal_owners")} />
+          <NoContent text={t("lookup.no_legal_owners")} marginTop={15} />
         )}
       </div>
       <div className={classes.leadershipContainer}>

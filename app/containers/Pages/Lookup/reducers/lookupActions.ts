@@ -36,6 +36,7 @@ export const getCompany = (
     const response = await axios.get(url, header);
     const company = response.data;
     if (company.primaryFinancials) {
+      console.log(company.primaryFinancials);
       const keys = Object.entries(company.primaryFinancials);
       const filteredYears = keys.filter((key) => key[1]);
 
@@ -45,9 +46,10 @@ export const getCompany = (
           label: x[0].replace("year", ""),
         }))
         .sort((a, b) => Number(b.value) - Number(a.value));
-
-      setYears(financialYears);
-      handleYear(financialYears[0]);
+      if (financialYears.length > 0) {
+        setYears(financialYears);
+        handleYear(financialYears[0]);
+      }
     }
 
     dispatch({ type: types.GET_COMPANY_SUCCESS, company });

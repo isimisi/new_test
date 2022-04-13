@@ -145,6 +145,7 @@ const Accounting = (props: Props) => {
 
   useEffect(() => {
     if (data.primaryFinancials) {
+      console.log(year);
       const financials = data.primaryFinancials["year" + year.value];
 
       setCurrFinancials(financials);
@@ -175,12 +176,7 @@ const Accounting = (props: Props) => {
       </div>
     );
   }
-  console.log(
-    "hehj",
-    Object.values(currFinancials.income).every(
-      value => !value || value === "FinancialIncome"
-    )
-  );
+
   return (
     <Grid container spacing={2} className={classes.accountingContainer}>
       <Grid item xs={12}>

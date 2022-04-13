@@ -766,7 +766,8 @@
     "index_no_financials": "{{name}} har ikke aflagt regnskab endnu",
     "no_financial_income": "Der er ingen tilgængelige informationer",
     "no_financial_cash_flow": "Der er ingen tilgængelige informationer",
-    "free_plan_notif_index": "Som gratisbruger kan du kun se danske selskaber"
+    "free_plan_notif_index": "Som gratisbruger kan du kun se danske selskaber",
+    "no_directors": "Der er ingen direktion"
   },
   "accounting": {
     "ag": "Afkastningsgrad",

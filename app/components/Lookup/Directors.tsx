@@ -57,28 +57,31 @@ const Directors = (props: Props) => {
         <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
           {t("lookup.management")}
         </Typography>
-        {management.sort(sortNonActive).map(m => (
-          <InfoPaper
-            header={t(`lookup.${m.role}`)}
-            body={m.participant.name}
-            active={m.to}
-          />
-        ))}
-        <Button onClick={togglemanagement}>
-          {!showNonActiveManagement
-            ? t("lookup.earlier_managers")
-            : t("lookup.earlier_managers_hide")}
-        </Button>
+        {management.length > 0 ? (
+          <>
+            {management.sort(sortNonActive).map(m => (
+              <InfoPaper
+                header={t(`lookup.${m.role}`)}
+                body={m.participant.name}
+                active={m.to}
+              />
+            ))}
+            <Button onClick={togglemanagement}>
+              {!showNonActiveManagement
+                ? t("lookup.earlier_managers")
+                : t("lookup.earlier_managers_hide")}
+            </Button>
+          </>
+        ) : (
+          <NoContent text={t("lookup.no_directors")} marginTop={15} />
+        )}
       </div>
       <div className={classes.leadershipContainer}>
+        <Typography variant="subtitle1" className={classes.leadershipSubtitle}>
+          {t("lookup.board")}
+        </Typography>
         {board.length > 0 ? (
           <>
-            <Typography
-              variant="subtitle1"
-              className={classes.leadershipSubtitle}
-            >
-              {t("lookup.board")}
-            </Typography>
             {board.sort(sortNonActive).map(m => (
               <InfoPaper
                 header={t(`lookup.${m.role}`)}
@@ -94,7 +97,7 @@ const Directors = (props: Props) => {
             {" "}
           </>
         ) : (
-          <NoContent text={t("lookup.no_board")} />
+          <NoContent text={t("lookup.no_board")} marginTop={15} />
         )}
       </div>
     </div>
