@@ -62,8 +62,6 @@ import Document from "@components/Timeline/Modals/Document";
 import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
 import { TimelineNode } from "@customTypes/reducers/timeline";
 
-const BASE_BG_GAP = 32;
-const BASE_BG_STROKE = 1;
 
 const nodeTypes = {
   horizontal: HorizontalNode,
@@ -330,7 +328,7 @@ const Timeline = () => {
           elements={elements}
           minZoom={0.3}
           maxZoom={3}
-
+          style={{ backgroundColor: "#F3F5F8" }}
           translateExtent={[
             [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5 / 3],
             [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
@@ -364,14 +362,6 @@ const Timeline = () => {
             />
           </div>
 
-          {handleVisability && (
-            <Background
-              variant={BackgroundVariant.Lines}
-              gap={BASE_BG_GAP / currentZoom}
-              size={BASE_BG_STROKE / currentZoom / 2}
-              color="#dadcdf"
-            />
-          )}
         </ReactFlow>
 
       </div>
