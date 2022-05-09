@@ -9,13 +9,10 @@ import {
   getMarkerEnd
 } from "react-flow-renderer";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import { useAppDispatch } from "@hooks/redux";
+import { createElementChange } from "../../../containers/Pages/Timelines/reducers/timelineActions";
 
 const foreignObjectSize = 24;
-
-const onEdgeClick = (evt, id) => {
-  evt.stopPropagation();
-  alert(`remove ${id}`);
-};
 
 export default function CustomEdge({
   id,
@@ -30,6 +27,8 @@ export default function CustomEdge({
   arrowHeadType,
   markerEndId
 }: EdgeProps) {
+  const dispatch = useAppDispatch();
+  const handleOpenCreateElement = () => dispatch(createElementChange(true));
   const edgePath = getBezierPath({
     sourceX,
     sourceY,
@@ -80,7 +79,11 @@ export default function CustomEdge({
           }}
         >
           {showButton && (
-            <IconButton style={{ backgroundColor: "white" }} size="small">
+            <IconButton
+              style={{ backgroundColor: "white" }}
+              size="small"
+              onClick={handleOpenCreateElement}
+            >
               <AddBoxIcon />
             </IconButton>
           )}

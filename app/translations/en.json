@@ -112,7 +112,8 @@
       "condition": "condition"
     },
     "FileUpload": {
-      "upload_content": "Upload you content:"
+      "upload_content": "Upload you content:",
+      "uploaded_content": "Download your file"
     },
     "uploaded_content": "Uploaded content",
     "editor_content": "Editor content",
@@ -601,7 +602,8 @@
     "tags": "tags",
     "see_red_flag": "See Red Flag",
     "last_changed": "Last changed",
-    "btn_open": "Open"
+    "btn_open": "Open",
+    "see_document": "See document"
   },
   "helpers": {
     "toolbar": {
@@ -704,7 +706,8 @@
   },
   "persons": {
     "btn_new_persons": "New Person",
-    "your_persons": "Your persons"
+    "your_persons": "Your persons",
+    "add_person": "Add person"
   },
   "timelines": {
     "your_timelines": "Your timelines",
@@ -713,7 +716,9 @@
   "timeline": {
     "horizontal": "Horizontal",
     "vertical": "Vertical",
-    "table": "Table"
+    "table": "Table",
+    "create_element": "Create an event",
+    "date": "Date"
   },
   "lookup": {
     "search_placeholder": "Search for a company",
@@ -793,5 +798,32 @@
     "total": "Total"
   },
   "percent": "%",
-  "numberformat": "en-GB"
+  "numberformat": "en-GB",
+  "person": {
+    "form_header": "Information regarding your person",
+    "name": "Name",
+    "affiliation": "Affiliation",
+    "company": "Company"
+  },
+  "email": "Email",
+  "phone": "Phone",
+  "address": "Address",
+  "tags": {
+    "add_tag": "Add tags"
+  },
+  "documents": {
+    "your_documents": "Your documents",
+    "btn_new_document": "New document",
+    "add_document": "Add documents"
+  },
+  "document": {
+    "title": "Title",
+    "form_header": "Document information",
+    "delete_file": "Delete file",
+    "change_file": "Change file"
+  },
+  "generic": {
+    "more": "More",
+    "edit": "Edit"
+  }
 }

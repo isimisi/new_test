@@ -1,7 +1,10 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable default-case */
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { Chip } from "@material-ui/core";
+import { DocumentCleanOption } from "@customTypes/reducers/document";
 
 export const columns = t => [
   {
@@ -43,11 +46,11 @@ export const columns = t => [
     }
   },
   {
-    name: t("columns.see_red_flag"),
+    name: t("columns.see_document"),
     options: {
       filter: true,
       customBodyRender: value => (
-        <Link to={`/app/red flags/${value}`} style={{ textDecoration: "none" }}>
+        <Link to={`/app/documents/${value}`} style={{ textDecoration: "none" }}>
           <Button variant="contained" color="secondary">
             {t("columns.btn_open")}
           </Button>
@@ -62,5 +65,54 @@ export const columns = t => [
     }
   }
 ];
+
+export const hanldeOnDocumentChange = (
+  newValue,
+  meta,
+  changeDocuments,
+  documents
+) => {
+  switch (meta.action) {
+    case "select-option":
+      const document: DocumentCleanOption = {
+        id: meta.option.value,
+        title: meta.option.label
+      };
+
+      changeDocuments([...documents, document]);
+      break;
+    case "create-option":
+      const newDocument = newValue[newValue.length - 1];
+      changeDocuments([...documents, newDocument]);
+      break;
+    case "remove-value":
+    case "pop-value":
+    case "deselect-option":
+      if (meta.removedValue.__isNew__) {
+        changeDocuments(
+          documents.filter(t => {
+            if ("__isNew__" in t) {
+              return t.value !== meta.removedValue.value;
+            }
+            return true;
+          })
+        );
+      } else {
+        changeDocuments(
+          documents.filter(t => {
+            if ("id" in t) {
+              return t.id !== meta.removedValue.value;
+            }
+            return true;
+          })
+        );
+      }
+
+      break;
+    case "clear":
+      changeDocuments([]);
+      break;
+  }
+};
 
 export const reducer = "document";

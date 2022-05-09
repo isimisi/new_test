@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  margin-top: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.overflow {
+  overflow-x: auto;
+}
+
+.AvatarList {
+  width: 37rem;
+}
+.AvatarList .listWrapper {
+  transition: all 0.35s ease-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.AvatarList .AvatarItemWrapper {
+  flex: 0 0 3.7rem;
+  height: 3.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.AvatarList .AvatarItemWrapper:hover > .AvatarItem {
+  transform: scale(1.45);
+}
+.AvatarList .AvatarItemWrapper > .AvatarItem {
+  width: 2.5rem;
+  height: 2.5rem;
+  transition: all 0.25s ease-out;
+  cursor: pointer;
+}

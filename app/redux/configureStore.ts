@@ -35,7 +35,7 @@ const initialState = {};
 const store = createStore<ApplicationState, any, unknown, unknown>(
   resetEnhancer(persistedReducer),
   initialState,
-  compose(applyMiddleware(thunk, routerMiddleware(history)))
+  compose(applyMiddleware(thunk, routerMiddleware(history), _logger))
 );
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

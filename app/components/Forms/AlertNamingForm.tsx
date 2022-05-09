@@ -146,7 +146,7 @@ const AlertNamingForm = (props: Props) => {
                   hanldeOnChange(newValue, meta, changeTags, tags)
                 }
                 inputId="react-select-tags"
-                placeholder="Tilføj tags til dit arbejdsområde"
+                placeholder={t("tags.add_tag")}
                 options={tagOptions.map(tagMapping)}
               />
             </div>

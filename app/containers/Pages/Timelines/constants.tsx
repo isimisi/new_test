@@ -11,6 +11,12 @@ export const columns = t => [
     }
   },
   {
+    name: t("workspaces.table_desc"),
+    options: {
+      filter: true
+    }
+  },
+  {
     name: t("columns.tags"),
     options: {
       filter: false,
@@ -43,11 +49,11 @@ export const columns = t => [
     }
   },
   {
-    name: t("columns.see_red_flag"),
+    name: t("columns.see_timeline"),
     options: {
       filter: true,
       customBodyRender: value => (
-        <Link to={`/app/red flags/${value}`} style={{ textDecoration: "none" }}>
+        <Link to={`/app/timelines/${value}`} style={{ textDecoration: "none" }}>
           <Button variant="contained" color="secondary">
             {t("columns.btn_open")}
           </Button>
@@ -56,7 +62,13 @@ export const columns = t => [
     }
   },
   {
-    name: t("columns.last_changed"),
+    name: t("workspaces.table_created"),
+    options: {
+      filter: true
+    }
+  },
+  {
+    name: t("workspaces.last_changed"),
     options: {
       filter: true
     }

@@ -5,14 +5,18 @@ import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import { useAppDispatch } from "@hooks/redux";
+import { createElementChange } from "../../../containers/Pages/Timelines/reducers/timelineActions";
 
 export default memo(({ data, isConnectable }: NodeProps) => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
+  const handleOpenCreateElement = () => dispatch(createElementChange(true));
 
   return (
-    <Paper style={{ borderRadius: "100%" }}>
+    <Paper style={{ borderRadius: "100%" }} className="nodrag">
       <Tooltip arrow title="Add item" placement="top">
-        <IconButton>
+        <IconButton onClick={handleOpenCreateElement}>
           <AddIcon />
         </IconButton>
       </Tooltip>

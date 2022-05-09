@@ -1,34 +1,45 @@
+/* eslint-disable no-param-reassign */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-import Fab from "@material-ui/core/Fab";
-import Grid from "@material-ui/core/Grid";
+
 import { useHistory } from "react-router-dom";
-import { encryptId, getId } from "@api/constants";
+import { authHeader, baseUrl, encryptId, getId } from "@api/constants";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import Notification from "@components/Notification/Notification";
 import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
+import axios from "axios";
 import {
+  addGroup,
   changeHandleVisability,
-  closeNotifAction
+  changeTags,
+  closeNotifAction,
+  createElementChange,
+  descriptionChange,
+  labelChange,
+  putTimeline,
+  shareOrgChange,
+  showTimeline,
+  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements
 } from "./reducers/timelineActions";
 import ReactFlow, {
   Background,
   BackgroundVariant,
   OnLoadParams,
-  PanOnScrollMode
+
 } from "react-flow-renderer";
 import { getPlanId } from "@helpers/userInfo";
 import Collaboration from "@components/Flow/Actions/Collaborations";
 import Meta from "@components/Flow/Actions/Meta";
-import Items from "@components/Flow/Actions/Items";
+import { Person as TPerson } from "@customTypes/reducers/person";
+import { Document as TDocument } from "@customTypes/reducers/document";
 import Controls from "@components/Flow/Actions/Controls";
 import { useTheme } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import { handleExport } from "@helpers/export/handleExport";
-import { workspacePowerpoint } from "../Workspaces/reducers/workspaceActions";
+import { getGroupDropDown, workspacePowerpoint } from "../Workspaces/reducers/workspaceActions";
 import {
   openMenuAction,
   closeMenuAction,
@@ -43,6 +54,13 @@ import EdgeWithButton from "@components/Timeline/Edges/EdgeWithButton";
 import useWindowDimensions from "@hooks/useWindowDiemensions";
 import "./timeline.css";
 import Table from "@components/Timeline/Drawer/Table";
+import WorkspaceMeta from "@components/Workspace/Modals/WorkspaceMeta";
+import CreateElement from "@components/Timeline/Modals/CreateElement";
+import { changePerson, getPersonDropDown, showPerson } from "../Persons/reducers/personActions";
+import Person from "@components/Timeline/Modals/Person";
+import Document from "@components/Timeline/Modals/Document";
+import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
+import { TimelineNode } from "@customTypes/reducers/timeline";
 
 const BASE_BG_GAP = 32;
 const BASE_BG_STROKE = 1;
@@ -56,68 +74,18 @@ const edgeTypes = {
   custom: EdgeWithButton
 };
 
-const elements = [
-  {
-    id: "ewb-1",
-    type: "horizontal",
-    data: { label: "27/04/22" },
-    position: { x: 250, y: 0 }
-  },
-  {
-    id: "ewb-2",
-    data: { label: "27/05/22" },
-    position: { x: 550, y: 0 },
-    type: "horizontal"
-  },
-  {
-    id: "edge-1-2",
-    source: "ewb-1",
-    target: "ewb-2",
-    type: "custom"
-  },
-  {
-    id: "edge-2-3",
-    source: "ewb-2",
-    target: "ewb-3",
-    type: "custom"
-  },
-  {
-    id: "ewb-3",
-    type: "horizontal",
-    data: { label: "27/04/22" },
-    position: { x: 850, y: 0 }
-  },
-  {
-    id: "ewb-4",
-    data: { label: "27/05/22" },
-    position: { x: 1150, y: 0 },
-    type: "horizontal"
-  },
-  {
-    id: "edge-3-4",
-    source: "ewb-3",
-    target: "ewb-4",
-    type: "custom"
-  },
-  {
-    id: "ewb-5",
-    data: {},
-    position: { x: 1450, y: 0 },
-    type: "addItem"
-  },
-  {
-    id: "edge-4-5",
-    source: "ewb-4",
-    target: "ewb-5",
-    type: "custom"
-  }
-];
-
 const Timeline = () => {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useAppDispatch();
+  const elements = useAppSelector(state => state[reducer].get("elements")).toJS();
+
   const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const createElementOpen = useAppSelector(state => state[reducer].get("createElementOpen"));
+  const personOptions = useAppSelector(state => state.person.get("personOptions")).toJS();
+  const documentOptions = useAppSelector(state => state.document.get("documentOptions")).toJS();
+  const timelineNode = useAppSelector(state => state[reducer].get("timelineNode")).toJS();
+
   const history = useHistory();
   const id = getId(history) as string;
   const user = useAuth0().user as User;
@@ -132,7 +100,54 @@ const Timeline = () => {
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-  const [snapToGrid, setSnapToGrid] = useState(false);
+  const [elementPersons, setElementPersons] = useState<TPerson[]>([]);
+  const [elementDocuments, setElementDocuments] = useState<TDocument[]>([]);
+
+  const changeTimelineNode = (attr: keyof TimelineNode, val: TimelineNode[keyof TimelineNode]) => {
+    dispatch(changeTimelineNodeKey(val, attr));
+  };
+
+
+  const openPerson = () => {
+    dispatch(timelineElementPersonChange(true));
+  };
+  const handlePersonClose = () => dispatch(timelineElementPersonChange(false));
+
+  const handlePersonOpen = (_id: string, name?: string) => {
+    dispatch(changePerson("", "initial"));
+    if (_id) {
+      dispatch(showPerson(user, _id, openPerson));
+    } else {
+      openPerson();
+      if (name) {
+        dispatch(changePerson(name, "name"));
+      }
+    }
+  };
+
+  const openDocument = () => dispatch(timelineElementDocumentChange(true));
+  const handleDocumentClose = () => dispatch(timelineElementDocumentChange(false));
+
+  const handleDocumentOpen = (_id: string, title?: string) => {
+    dispatch(changeDocument("", "initial"));
+    if (_id) {
+      dispatch(showDocument(user, _id, openDocument));
+    } else {
+      openDocument();
+      if (title) {
+        dispatch(changeDocument(title, "title"));
+      }
+    }
+  };
+
+
+  const handleCloseCreateElement = () => {
+    dispatch(setTimelineNode(null));
+    setElementPersons([]);
+    setElementDocuments([]);
+    dispatch(createElementChange(false));
+  };
+
   const [openTableView, setOpenTableView] = useState(false);
 
   const { height: windowHeight } = useWindowDimensions();
@@ -141,17 +156,29 @@ const Timeline = () => {
     setOpenTableView(prevState => !prevState);
   };
 
-  // redux selector
-  // const elements = useAppSelector(state =>
-  //   state[reducer].get("elements")
-  // ).toJS();
+
   const handleVisability = useAppSelector(state =>
     state[reducer].get("handleVisability")
   );
-  const initialLoading = useAppSelector(state =>
-    state[reducer].get("initialLoading")
+  const personModalOpen = useAppSelector(state =>
+    state[reducer].get("personOpen")
   );
-  const label = useAppSelector(state => state[reducer].get("label"));
+  const documentModalOpen = useAppSelector(state =>
+    state[reducer].get("documentOpen")
+  );
+  const loadings = useAppSelector(state => state[reducer].get("loadings"));
+  const label = useAppSelector(state => state[reducer].get("title"));
+  const description = useAppSelector(state =>
+    state[reducer].get("description")
+  );
+  const group = useAppSelector(state => state[reducer].get("group"));
+  const shareOrg = useAppSelector(state => state[reducer].get("shareOrg"));
+  const tags = useAppSelector(state =>
+    state[reducer].get("specificTimelineTags")
+  )?.toJS();
+  const groupsDropDownOptions = useAppSelector(state => state.workspace.get('groupsDropDownOptions')).toJS();
+  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
+  const isUpdatingNode = useAppSelector(state => state[reducer].get('isUpdatingNode'));
 
   const handleVisabilityChange = () =>
     dispatch(changeHandleVisability(!handleVisability));
@@ -165,12 +192,13 @@ const Timeline = () => {
 
   const onLoad = _reactFlowInstance => {
     setRfInstance(_reactFlowInstance);
+    dispatch(showTimeline(user, id as string, setMetaOpen, _reactFlowInstance));
     _reactFlowInstance.fitView();
   };
 
   const onSave = useCallback(() => {
     if (rfInstance) {
-      console.log("sbdj");
+      // save
     }
   }, [rfInstance, user]);
 
@@ -180,11 +208,110 @@ const Timeline = () => {
 
   useEffect(() => {
     dispatch(closeMenuAction);
+    dispatch(getGroupDropDown(user));
+    dispatch(getPersonDropDown(user));
+    dispatch(getDocumentDropDown(user));
 
     return () => {
       dispatch(openMenuAction);
     };
   }, [user]);
+
+  const handleChangeTags = useCallback(
+    _tags => dispatch(changeTags(_tags)),
+    []
+  );
+  const handleLabelChange = useCallback(
+    e => dispatch(labelChange(e.target.value)),
+    []
+  );
+  const handleDescriptionChange = useCallback(
+    e => dispatch(descriptionChange(e.target.value)),
+    []
+  );
+  const handleAddGroup = useCallback(_group => dispatch(addGroup(_group.value)), []);
+  const handleShareOrg = useCallback(() => dispatch(shareOrgChange), []);
+
+  const updateMeta = useCallback(
+    () =>
+      dispatch(
+        putTimeline(
+          user,
+          id as string,
+          label,
+          description,
+          group,
+          JSON.stringify(tags),
+          shareOrg,
+          setMetaOpen
+        )
+      ),
+    [label, description, group, shareOrg, tags, id, user]
+  );
+
+  const onSaveElement = () => {
+    if (isUpdatingNode) {
+      dispatch(putElement(user, timelineNode.id, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
+    } else {
+      dispatch(saveElement(user, id, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
+    }
+  };
+
+  const onSavePerson = (person: TPerson) => {
+    setElementPersons(prevState => {
+      const newPersons = [...prevState];
+      const newPersonsFiltered = newPersons.filter(p => {
+        if (p.id) {
+          return p.id !== person.id;
+        }
+        return p.name !== person.name;
+      });
+
+      return [...newPersonsFiltered, person];
+    });
+
+    dispatch(timelineElementPersonChange(false));
+  };
+
+  const handleSetElementDocuments = (document: TDocument) => {
+    setElementDocuments(prevState => {
+      const newDocuments = [...prevState];
+      const newDocumentsFiltered = newDocuments.filter(p => {
+        if (p.id) {
+          return p.id !== document.id;
+        }
+        return p.title !== document.title;
+      });
+
+      return [...newDocumentsFiltered, document];
+    });
+    dispatch(timelineElementDocumentChange(false));
+  };
+
+
+  const onSaveDocument = async (document: TDocument, stopLoading: () => void) => {
+    if (document.file) {
+      const url = `${baseUrl}/timelinedocuments/savefile`;
+      const header = authHeader(user);
+      const body = new FormData();
+      body.append("file_content", document.file);
+      try {
+        const response = await axios.post(url, body, header);
+        document.link = response.data.link;
+        handleSetElementDocuments(document);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      handleSetElementDocuments(document);
+    }
+    stopLoading();
+  };
+
+  const handleDelete = () => {
+    dispatch(deleteElements(user, id, [timelineNode.id]));
+  };
+  console.log(createElementOpen);
 
   return (
     <div style={{ display: "flex" }}>
@@ -203,12 +330,12 @@ const Timeline = () => {
           elements={elements}
           minZoom={0.3}
           maxZoom={3}
-          panOnScroll
+
           translateExtent={[
-            [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5],
-            [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5]
+            [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5 / 3],
+            [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
           ]}
-          panOnScrollMode={PanOnScrollMode.Horizontal}
+
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           onMove={flowTransform => {
@@ -246,24 +373,7 @@ const Timeline = () => {
             />
           )}
         </ReactFlow>
-        {initialLoading && (
-          <>
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                backgroundColor: theme.palette.background.default,
-                position: "absolute",
-                zIndex: 10,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <Loader bigFont />
-            </div>
-          </>
-        )}
+
       </div>
       <Drawer
         className={classes.drawer}
@@ -276,6 +386,57 @@ const Timeline = () => {
       >
         <Table />
       </Drawer>
+      <WorkspaceMeta
+        open={metaOpen}
+        label={label}
+        description={description}
+        group={group}
+        tagOptions={tagOptions}
+        tags={tags}
+        changeTags={handleChangeTags}
+        labelChange={handleLabelChange}
+        descriptionChange={handleDescriptionChange}
+        addGroup={handleAddGroup}
+        groupsDropDownOptions={groupsDropDownOptions}
+        shareOrg={shareOrg}
+        handleShareOrg={handleShareOrg}
+        onSave={updateMeta}
+        closeForm={() => setMetaOpen(false)}
+      />
+      <CreateElement
+        open={createElementOpen}
+        close={handleCloseCreateElement}
+        onSave={onSaveElement}
+        personOptions={personOptions}
+        documentOptions={documentOptions}
+        openPerson={handlePersonOpen}
+        openDocument={handleDocumentOpen}
+        timelineNode={timelineNode}
+        changeTimelineNode={changeTimelineNode}
+        handleDelete={handleDelete}
+        isUpdatingNode={isUpdatingNode}
+      />
+
+      {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} />}
+      {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
+      {loadings.get("main") && (
+        <>
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              backgroundColor: theme.palette.background.default,
+              position: "absolute",
+              zIndex: 10,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <Loader bigFont />
+          </div>
+        </>
+      )}
     </div>
   );
 };

@@ -4,11 +4,17 @@ import { MyTheme } from "../../types/styling";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
   horizontalNodeOffTimeLine: {
-    height: 200,
     width: 150,
     bottom: 100,
     position: "absolute",
     cursor: "auto",
+    padding: 5,
+  },
+  itemButton: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    borderRadius: 8,
   },
   horizontalNodeOnTimeLine: {
     display: "flex",
@@ -30,6 +36,23 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   horizontalDate: {
     fontSize: 10,
     color: "#000",
+  },
+  createElementContainer: {
+    padding: 16,
+    width: "100%",
+    maxHeight: "60vh",
+    overflowY: "auto",
+  },
+  eventField: {
+    width: "100%",
+  },
+  eventSelectField: {
+    width: "100%",
+    marginTop: 16,
+  },
+  field: {
+    width: "100%",
+    marginBottom: 10,
   },
 }));
 

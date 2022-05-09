@@ -8,6 +8,9 @@ export enum WhereInApp {
   node = "node",
   relationship = "relationship",
   group = "group",
+  timeline = "timeline",
+  timelinePerson = "timelinePerson",
+  timelineDocument = "timelineDocument",
 }
 
 export interface SelectOptions {

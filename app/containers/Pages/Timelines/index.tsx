@@ -20,19 +20,25 @@ import {
 } from "@components/Tags/reducers/tagsActions";
 import useStyles from "./timeline-jss";
 import { columns, reducer } from "./constants";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { useAuth0, User } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
 import { Tag } from "@customTypes/reducers/tags";
-import { postTimeline } from "./reducers/timelineActions";
+import {
+  closeNotifAction,
+  deleteTimelines,
+  getTimelines,
+  postTimeline
+} from "./reducers/timelineActions";
 
 const Timelines = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const timelines = useAppSelector(state =>
-    state[reducer].get("timelines")
-  ).toJS();
-  // const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const timelines = useAppSelector(state => state[reducer].get("timelines"));
+  const loadings = useAppSelector(state => state[reducer].get("loadings"));
+
+  const messageNotif = useAppSelector(state => state[reducer].get("message"));
   const tags = useAppSelector(state => state.tags.get("tags")).toJS();
   const history = useHistory();
   const user = useAuth0().user as User;
@@ -40,8 +46,8 @@ const Timelines = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // dispatch(getAlerts(user));
-    dispatch(getTags(user, WhereInApp.alert));
+    dispatch(getTimelines(user));
+    dispatch(getTags(user, WhereInApp.timeline));
 
     if (plan_id === 1) {
       history.push("/app/plan");
@@ -50,15 +56,14 @@ const Timelines = () => {
 
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({
-      id: timelines[v.dataIndex][3],
-      title: timelines[v.dataIndex][0]
+      id: timelines.get(v.dataIndex).get(4)
     }));
     deletedNodes.forEach(e => {
       const id = CryptoJS.AES.decrypt(
         decodeURIComponent(e.id),
         "path"
       ).toString(CryptoJS.enc.Utf8);
-      // dispatch(deleteAlert(user, id, e.title));
+      dispatch(deleteTimelines(user, id));
     });
   };
 
@@ -87,12 +92,12 @@ const Timelines = () => {
 
   return (
     <div className={classes.table}>
-      {/* <Notification
+      <Notification
         close={() => {
-          // dispatch(closeNotifAction)
+          dispatch(closeNotifAction);
         }}
         message={messageNotif}
-      /> */}
+      />
       <Grid container spacing={2} direction="row">
         <Grid item md={3} lg={2}>
           <TagList
@@ -102,26 +107,31 @@ const Timelines = () => {
             handleShowAll={handleShowAll}
             handleUpdateTag={handleUpdateTag}
             makeActive={handleMakeActiveTag}
-            allNumber={timelines.length}
-            findCountString="alertTags"
+            allNumber={timelines.size}
+            findCountString="timelineTags"
           />
         </Grid>
         <Grid item md={9} lg={10}>
           <MUIDataTable
             title={t("timelines.your_timelines")}
-            data={timelines}
+            data={timelines.toJS()}
             columns={columns(t)}
-            options={tableOptions(onDelete, false)}
+            options={tableOptions(onDelete, loadings.get("main"))}
           />
         </Grid>
       </Grid>
       <Fab
         variant="extended"
         color="primary"
+        disabled={loadings.get("post")}
         className={classes.addBtn}
         onClick={() => dispatch(postTimeline(user, history))}
       >
-        {`${t("timelines.btn_new_timelines")}`}
+        {loadings.get("post") ? (
+          <CircularProgress />
+        ) : (
+          `${t("timelines.btn_new_timelines")}`
+        )}
       </Fab>
     </div>
   );

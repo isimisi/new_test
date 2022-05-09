@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-bind */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/prop-types */
@@ -7,8 +8,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
 
-import ReactNiceAvatar, { genConfig } from "react-nice-avatar";
-
+import Avatar, { genConfig } from "react-nice-avatar";
+import "./index.css";
+import IconButton from "@material-ui/core/IconButton";
+import UpdateIcon from "@material-ui/icons/Update";
 export default class AvatarList extends Component {
   static propTypes = {
     selectConfig: PropTypes.func.isRequired
@@ -51,24 +54,24 @@ export default class AvatarList extends Component {
     }
     // @ts-ignore
     this.listWidth = listElem.offsetWidth;
+    return listElem.offsetWidth;
   }
 
   changeCurrent(deg: 1 | -1) {
+    const newState = { current: 0 };
+
     // @ts-ignore
-    const { current, avatarConfigList } = this.state;
-    const newCurrent = Math.max(current + deg, 0);
-    const newState = { current: newCurrent };
+    const newConfigList = this.genConfigList(this.displayCount);
+
     // @ts-ignore
-    if (newCurrent * this.displayCount > avatarConfigList.length - 1) {
-      // @ts-ignore
-      const newConfigList = this.genConfigList(this.displayCount);
-      // @ts-ignore
-      newState.avatarConfigList = avatarConfigList.concat(newConfigList);
-    }
+    newState.avatarConfigList = newConfigList;
+
     this.setState(newState);
   }
 
   render() {
+    // @ts-ignore
+
     // @ts-ignore
     const { selectConfig } = this.props;
     // @ts-ignore
@@ -78,24 +81,10 @@ export default class AvatarList extends Component {
     // @ts-ignore
     const displayMin = (current - 1) * this.displayCount;
     return (
-      <div className="flex items-center justify-center">
-        {/* Arrow left */}
-        {current !== 0 && (
-          <i
-            className="iconfont icon-arrow-right-filling-center transform rotate-180 mr-1 text-xl text-gray-500 transition hover:text-white cursor-pointer"
-            onClick={this.changeCurrent.bind(this, -1)}
-          />
-        )}
-
+      <div className="container">
         {/* @ts-ignore */}
-        <div id={this.listId} className="AvatarList overflow-x-auto">
-          <div
-            className="listWrapper flex items-center py-3"
-            style={{
-              // @ts-ignore
-              transform: `translateX(-${current * this.listWidth}px)`
-            }}
-          >
+        <div id={this.listId} className="AvatarList overflow">
+          <div className="listWrapper">
             {avatarConfigList.map((item, idx) => (
               <div
                 key={item.id}
@@ -103,7 +92,7 @@ export default class AvatarList extends Component {
                 onClick={selectConfig.bind(this, item)}
               >
                 {idx >= displayMin && idx < displayMax && (
-                  <ReactNiceAvatar className="AvatarItem" {...item} />
+                  <Avatar className="AvatarItem" {...item} />
                 )}
               </div>
             ))}
@@ -111,10 +100,9 @@ export default class AvatarList extends Component {
         </div>
 
         {/* Arrow right */}
-        <i
-          className="iconfont icon-arrow-right-filling-center ml-1 text-xl text-gray-500 transition hover:text-white cursor-pointer"
-          onClick={this.changeCurrent.bind(this, 1)}
-        />
+        <IconButton color="primary" onClick={this.changeCurrent.bind(this, 1)}>
+          <UpdateIcon />
+        </IconButton>
       </div>
     );
   }

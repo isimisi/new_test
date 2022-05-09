@@ -1,14 +1,12 @@
-import CustomSwitch from "@components/Switch/CustomSwitch";
 import CustomSwitchFlow from "@components/Switch/CustomSwitchFlow";
-import { MyTheme } from "@customTypes/styling";
+
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import Typography from "@material-ui/core/Typography";
-import FileViewer from "react-file-viewer";
 
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { Handle, NodeProps, Position } from "react-flow-renderer";
 import useStyles from "../timeline.jss";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
@@ -18,7 +16,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import classnames from "classnames";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
+
 import Filter1Icon from "@material-ui/icons/Filter1";
 import Filter2Icon from "@material-ui/icons/Filter2";
 import Filter3Icon from "@material-ui/icons/Filter3";
@@ -29,6 +27,15 @@ import Filter7Icon from "@material-ui/icons/Filter7";
 import Filter8Icon from "@material-ui/icons/Filter8";
 import Filter9Icon from "@material-ui/icons/Filter9";
 import Filter9PlusIcon from "@material-ui/icons/Filter9Plus";
+import moment from "moment";
+import { useAppDispatch } from "@hooks/redux";
+import {
+  createElementChange,
+  setTimelineNode
+} from "../../../containers/Pages/Timelines/reducers/timelineActions";
+import { useTranslation } from "react-i18next";
+import EditIcon from "@material-ui/icons/Edit";
+import ButtonBase from "@material-ui/core/ButtonBase";
 
 const moreDocsMapping = [
   Filter1Icon,
@@ -43,36 +50,27 @@ const moreDocsMapping = [
   Filter9PlusIcon
 ];
 
-const config = genConfig({
-  isGradient: Boolean(Math.round(Math.random()))
-});
-
-const config2 = genConfig({
-  isGradient: Boolean(Math.round(Math.random()))
-});
-
-const config3 = genConfig({
-  isGradient: Boolean(Math.round(Math.random()))
-});
-
-export default memo(({ data, isConnectable }: NodeProps) => {
+export default memo(({ data }: NodeProps) => {
   const classes = useStyles();
-
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const [extract, setExtract] = useState(true);
   const handleExtract = () => {
     setExtract(prevVal => !prevVal);
   };
 
-  const people = ["test", "test2", "test3", "test4", "test5", "test6", "test"];
-  const documents = [
-    "test",
-    "test2",
-    "test3",
-    "test4",
-    "test5",
-    "test6",
-    "test"
-  ];
+  const onEditClick = () => {
+    dispatch(setTimelineNode(data.id));
+    dispatch(createElementChange(true));
+  };
+
+  const [showEdit, setShowEdit] = useState(false);
+  const handelShowEdit = useCallback(() => {
+    setShowEdit(true);
+  }, []);
+  const handelHideEdit = useCallback(() => {
+    setShowEdit(false);
+  }, []);
 
   return (
     <div
@@ -82,6 +80,10 @@ export default memo(({ data, isConnectable }: NodeProps) => {
         display: "flex",
         justifyContent: "center"
       }}
+      onMouseOver={handelShowEdit}
+      onFocus={handelShowEdit}
+      onMouseLeave={handelHideEdit}
+      onBlur={handelHideEdit}
     >
       <Paper
         className={classnames("nodrag", classes.horizontalNodeOffTimeLine)}
@@ -101,14 +103,21 @@ export default memo(({ data, isConnectable }: NodeProps) => {
               justifyContent: "center"
             }}
           >
-            <CustomSwitchFlow
+            {showEdit && (
+              <Tooltip arrow title={`${t("generic.edit")}`} placement="top">
+                <IconButton size="small" onClick={onEditClick}>
+                  <EditIcon style={{ fontSize: 12 }} />
+                </IconButton>
+              </Tooltip>
+            )}
+            {/* <CustomSwitchFlow
               checked={extract}
               name="includeInExtract"
               onChange={handleExtract}
             />
             <Typography style={{ fontSize: 6, color: "gray", marginLeft: 3 }}>
               Ekstrakt
-            </Typography>
+            </Typography> */}
           </div>
           <div
             style={{
@@ -118,9 +127,9 @@ export default memo(({ data, isConnectable }: NodeProps) => {
             }}
           >
             <Typography style={{ fontSize: 6, color: "gray", marginRight: 3 }}>
-              {data.label}
+              {moment(data.date).format("DD.MM.YYYY")}
             </Typography>
-            <Tooltip arrow title="Mere" placement="top">
+            <Tooltip arrow title={`${t("generic.more")}`} placement="top">
               <IconButton size="small">
                 <MoreHorizIcon />
               </IconButton>
@@ -129,109 +138,120 @@ export default memo(({ data, isConnectable }: NodeProps) => {
         </div>
 
         <Divider />
-        <Typography variant="subtitle1" style={{ marginLeft: 10 }}>
-          Titel
-        </Typography>
-        <Typography style={{ marginLeft: 10, fontSize: 6 }}>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Itaque sequi
-          sit doloremque corrupti explicabo perferendis iste, omnis facilis,
-          tenetur molestias culpa ratione sunt doloribus aut? Consequuntur dicta
-          illum dolore eveniet!
-        </Typography>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            margin: 10,
-            justifyContent: "space-between"
-          }}
+        <Typography
+          variant="subtitle1"
+          style={{ marginLeft: 10, marginRight: 10 }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            {people.map((person, index) => {
-              if (index === 3) {
+          {data.label}
+        </Typography>
+        <Typography style={{ marginLeft: 10, fontSize: 6, marginRight: 10 }}>
+          {data.description}
+        </Typography>
+        {data.persons.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              margin: 10,
+              justifyContent: "space-between"
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {data.persons.map((person, index) => {
+                if (index === 3) {
+                  return (
+                    <Tooltip
+                      arrow
+                      title={data.persons
+                        .map(p => p.name)
+                        .slice(3)
+                        .join(", ")}
+                      placement="top"
+                    >
+                      <div style={{ cursor: "pointer", margin: "0 2px" }}>
+                        <MaterialAvatar
+                          style={{ width: 20, height: 20, fontSize: 8 }}
+                        >
+                          {`${data.persons.length - 3}+`}
+                        </MaterialAvatar>
+                      </div>
+                    </Tooltip>
+                  );
+                }
+
+                if (index > 3) {
+                  return null;
+                }
+
                 return (
-                  <Tooltip
-                    arrow
-                    title={people.slice(3).join(", ")}
-                    placement="top"
-                  >
+                  <Tooltip arrow title={person.name} placement="top">
                     <div style={{ cursor: "pointer", margin: "0 2px" }}>
-                      <MaterialAvatar
-                        style={{ width: 20, height: 20, fontSize: 8 }}
-                      >
-                        {`${people.length - 3}+`}
-                      </MaterialAvatar>
+                      <Avatar
+                        style={{ width: 20, height: 20 }}
+                        {...JSON.parse(person.person_icon)}
+                      />
                     </div>
                   </Tooltip>
                 );
-              }
+              })}
+            </div>
 
-              if (index > 3) {
-                return null;
-              }
-
-              return (
-                <Tooltip arrow title={person} placement="top">
-                  <div style={{ cursor: "pointer", margin: "0 2px" }}>
-                    <Avatar style={{ width: 20, height: 20 }} {...config} />
-                  </div>
-                </Tooltip>
-              );
-            })}
-          </div>
-
-          <div>
-            <IconButton size="small">
+            {/* <div>
+            <IconButton size="small" onClick={onPersonClick}>
               <PersonAddIcon style={{ color: "gray" }} />
             </IconButton>
+          </div> */}
           </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            margin: 10,
-            justifyContent: "space-between"
-          }}
-        >
-          <div>
-            {documents.map((document, index) => {
-              if (index === 3) {
-                const MoreDocs = moreDocsMapping[documents.length - 4];
+        )}
+        {data.documents.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              margin: 10,
+              justifyContent: "space-between"
+            }}
+          >
+            <div>
+              {data.documents.map((document, index) => {
+                if (index === 3) {
+                  const MoreDocs = moreDocsMapping[data.documents.length - 4];
+
+                  return (
+                    <Tooltip
+                      arrow
+                      title={data.documents.slice(3).join(", ")}
+                      placement="top"
+                    >
+                      <IconButton size="small">
+                        <MoreDocs />
+                      </IconButton>
+                    </Tooltip>
+                  );
+                }
+
+                if (index > 3) {
+                  return null;
+                }
 
                 return (
-                  <Tooltip
-                    arrow
-                    title={documents.slice(3).join(", ")}
-                    placement="top"
-                  >
+                  <Tooltip arrow title={document.title} placement="top">
                     <IconButton size="small">
-                      <MoreDocs />
+                      <DescriptionIcon />
                     </IconButton>
                   </Tooltip>
                 );
-              }
+              })}
+            </div>
 
-              if (index > 3) {
-                return null;
-              }
-
-              return (
-                <Tooltip arrow title={document} placement="top">
-                  <IconButton size="small">
-                    <DescriptionIcon />
-                  </IconButton>
-                </Tooltip>
-              );
-            })}
-          </div>
-          <div>
-            <IconButton size="small">
+            {/* <div>
+            <IconButton size="small" onClick={onDocumentClick}>
               <NoteAddIcon style={{ color: "gray" }} />
             </IconButton>
+          </div> */}
           </div>
-        </div>
-        <div
+        )}
+        {/* <div
           style={{
             position: "absolute",
             bottom: 5,
@@ -251,52 +271,20 @@ export default memo(({ data, isConnectable }: NodeProps) => {
               }}
             />
           </Tooltip>
-          <Tooltip arrow title="Mere" placement="top">
-            <div
-              style={{
-                backgroundColor: "red",
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                margin: 1
-              }}
-            />
-          </Tooltip>
-          <Tooltip arrow title="Mere" placement="top">
-            <div
-              style={{
-                backgroundColor: "blue",
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                margin: 1
-              }}
-            />
-          </Tooltip>
-          <Tooltip arrow title="Mere" placement="top">
-            <div
-              style={{
-                backgroundColor: "yellow",
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                margin: 1
-              }}
-            />
-          </Tooltip>
           <IconButton size="small">
             <AddCircleIcon style={{ fontSize: 10, color: "gray" }} />
           </IconButton>
-        </div>
+        </div> */}
       </Paper>
 
       <Paper className={classes.horizontalNodeOnTimeLine}>
+        <ButtonBase className={classes.itemButton} onClick={onEditClick} />
         <Typography
           variant="subtitle1"
           className={classes.horizontalDate}
           id="nodeLabel"
         >
-          {data.label}
+          {moment(data.date).format("DD.MM.YYYY")}
         </Typography>
         <Handle
           type="target"
@@ -307,7 +295,6 @@ export default memo(({ data, isConnectable }: NodeProps) => {
         <Handle
           type="source"
           position={Position.Right}
-          id="a"
           style={{ right: 1 }}
           className={classes.horizontalHandle}
         />

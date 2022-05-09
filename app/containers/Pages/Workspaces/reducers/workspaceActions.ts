@@ -20,13 +20,13 @@ import { RGBA } from "@customTypes/data";
 import { History } from 'history';
 import { EdgeData } from "@customTypes/reactFlow";
 import { saveToLocalStorage } from "@api/localStorage/localStorage";
-import { findPointOnEdge } from "@components/Workspace/Edge/CustomEdge";
 
 
 const WORKSPACES = "workspaces";
 
 export const getWorkspaces = (user: User) => async (dispatch) => {
   dispatch({ type: types.GET_WORKSPACES_LOADING });
+
   const url = `${baseUrl}/${WORKSPACES}`;
   const header = authHeader(user);
   try {

@@ -112,7 +112,8 @@
       "condition": "betingelse"
     },
     "FileUpload": {
-      "upload_content": "Upload dit indhold:"
+      "upload_content": "Upload dit indhold:",
+      "uploaded_content": "Download din fil"
     },
     "uploaded_content": "Uploaded indhold",
     "editor_content": "editor indhold",
@@ -597,11 +598,14 @@
   "columns": {
     "title": "Titel",
     "desc": "Beskrivelse",
-    "tags": "tags",
+    "tags": "Tags",
     "groups": "Gruppe",
     "see_red_flag": "Se Red Flag",
     "last_changed": "Sidst ændret",
-    "btn_open": "Åben"
+    "btn_open": "Åben",
+    "see_timeline": "Se tidslinje",
+    "see_person": "Se Person",
+    "see_document": "Se dokument"
   },
   "helpers": {
     "toolbar": {
@@ -704,7 +708,8 @@
   },
   "persons": {
     "btn_new_persons": "Ny Person",
-    "your_persons": "Dine personer"
+    "your_persons": "Dine personer",
+    "add_person": "Tilføj personer"
   },
   "timelines": {
     "your_timelines": "Dine tidslinjer",
@@ -713,7 +718,9 @@
   "timeline": {
     "horizontal": "Vandret",
     "vertical": "Lodret",
-    "table": "Tabel"
+    "table": "Tabel",
+    "create_element": "Lav et event",
+    "date": "Dato"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -793,5 +800,38 @@
     "total": "Totale pengestrømme"
   },
   "percent": " %",
-  "numberformat": "da-DK"
+  "numberformat": "da-DK",
+  "person": {
+    "change_avatar": "Rediger person",
+    "description": "Beskrivelse",
+    "affiliation_placeholder": "Skriv en tilknytning",
+    "name_placeholder": "Skriv et navn",
+    "name": "Navn",
+    "avatar": "Avatar",
+    "company": "Virksomhed",
+    "affiliation": "Tilhørsforhold",
+    "form_header": "Oplysninger om din person"
+  },
+  "Description": "Skriv en beskrivelse",
+  "email": "E-mail",
+  "phone": "Telefon",
+  "address": "Addresse",
+  "tags": {
+    "add_tag": "Tilføj tags"
+  },
+  "documents": {
+    "your_documents": "Dine dokumenter",
+    "btn_new_document": "Nyt dokument",
+    "add_document": "Tilføj dokumenter"
+  },
+  "document": {
+    "title": "Titel",
+    "form_header": "Dokument information",
+    "delete_file": "Slet fil",
+    "change_file": "Ændre fil"
+  },
+  "generic": {
+    "edit": "Rediger",
+    "more": "Mere"
+  }
 }

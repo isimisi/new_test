@@ -72,7 +72,7 @@ module.exports = [
     key: "timeline",
     name: "sidebar-menu.timeline",
     icon: "ios-clock-outline",
-    disabled: true,
+
     child: [
       {
         key: "timelineInner",

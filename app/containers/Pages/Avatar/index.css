@@ -1,0 +1,15 @@
+.paper {
+  padding: 16px;
+}
+.avatar {
+  width: 200px;
+  height: 200px;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

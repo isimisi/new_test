@@ -32,7 +32,7 @@ interface Props {
   makeActive: (tag: Tag) => void;
   handleShowAll: () => void;
   allNumber: number;
-  findCountString: 'workspaceTags' | 'actionTags' | 'alertTags' | 'conditionTags'
+  findCountString: 'workspaceTags' | 'actionTags' | 'alertTags' | 'conditionTags' | "timelineTags" | "timelinePersonTags" | "timelineDocumentTags";
 }
 
 const TagList = (props: Props) => {

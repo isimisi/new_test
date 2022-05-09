@@ -2,13 +2,13 @@
 import React, { useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import Fab from "@material-ui/core/Fab";
-// import Notification from "@components/Notification/Notification";
+import Notification from "@components/Notification/Notification";
 import { useHistory } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import tableOptions from "@helpers/tableOptions";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { useTranslation } from "react-i18next";
-import { Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import TagList from "@components/Tags/TagList";
 import { WhereInApp } from "@customTypes/data";
 import {
@@ -24,14 +24,19 @@ import { columns, reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
 import { Tag } from "@customTypes/reducers/tags";
+import {
+  closeNotifAction,
+  deleteDocument,
+  getDocuments,
+  postDocument
+} from "./reducers/documentActions";
 
 const Documents = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const documents = useAppSelector(state =>
-    state[reducer].get("documents")
-  ).toJS();
-  // const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const documents = useAppSelector(state => state[reducer].get("documents"));
+  const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const loadings = useAppSelector(state => state[reducer].get("loadings"));
   const tags = useAppSelector(state => state.tags.get("tags")).toJS();
   const history = useHistory();
   const user = useAuth0().user as User;
@@ -39,8 +44,8 @@ const Documents = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // dispatch(getAlerts(user));
-    dispatch(getTags(user, WhereInApp.alert));
+    dispatch(getDocuments(user));
+    dispatch(getTags(user, WhereInApp.timelineDocument));
 
     if (plan_id === 1) {
       history.push("/app/plan");
@@ -49,15 +54,14 @@ const Documents = () => {
 
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({
-      id: documents[v.dataIndex][3],
-      title: documents[v.dataIndex][0]
+      id: documents.get(v.dataIndex).get(3)
     }));
     deletedNodes.forEach(e => {
-      // const id = CryptoJS.AES.decrypt(
-      //   decodeURIComponent(e.id),
-      //   "path"
-      // ).toString(CryptoJS.enc.Utf8);
-      // dispatch(deleteAlert(user, id, e.title));
+      const id = CryptoJS.AES.decrypt(
+        decodeURIComponent(e.id),
+        "path"
+      ).toString(CryptoJS.enc.Utf8);
+      dispatch(deleteDocument(user, id));
     });
   };
 
@@ -86,12 +90,12 @@ const Documents = () => {
 
   return (
     <div className={classes.table}>
-      {/* <Notification
+      <Notification
         close={() => {
-          // dispatch(closeNotifAction)
+          dispatch(closeNotifAction);
         }}
         message={messageNotif}
-      /> */}
+      />
       <Grid container spacing={2} direction="row">
         <Grid item md={3} lg={2}>
           <TagList
@@ -101,26 +105,31 @@ const Documents = () => {
             handleShowAll={handleShowAll}
             handleUpdateTag={handleUpdateTag}
             makeActive={handleMakeActiveTag}
-            allNumber={documents.length}
-            findCountString="alertTags"
+            allNumber={documents.size}
+            findCountString="timelineDocumentTags"
           />
         </Grid>
         <Grid item md={9} lg={10}>
           <MUIDataTable
-            title={t("persons.your_persons")}
-            data={documents}
+            title={t("documents.your_documents")}
+            data={documents.toJS()}
             columns={columns(t)}
-            options={tableOptions(onDelete, false)}
+            options={tableOptions(onDelete, loadings.get("main"))}
           />
         </Grid>
       </Grid>
       <Fab
         variant="extended"
         color="primary"
+        disabled={loadings.get("post")}
         className={classes.addBtn}
-        // onClick={() => dispatch(postAlert(user, history))}
+        onClick={() => dispatch(postDocument(user, history))}
       >
-        {`${t("persons.btn_new_persons")}`}
+        {loadings.get("post") ? (
+          <CircularProgress />
+        ) : (
+          `${t("documents.btn_new_document")}`
+        )}
       </Fab>
     </div>
   );

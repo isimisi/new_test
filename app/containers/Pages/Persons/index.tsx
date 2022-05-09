@@ -8,7 +8,7 @@ import CryptoJS from "crypto-js";
 import tableOptions from "@helpers/tableOptions";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { useTranslation } from "react-i18next";
-import { Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import TagList from "@components/Tags/TagList";
 import { WhereInApp } from "@customTypes/data";
 import {
@@ -24,12 +24,19 @@ import { columns, reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
 import { Tag } from "@customTypes/reducers/tags";
+import {
+  closeNotifAction,
+  deletePerson,
+  getPersons,
+  postPerson
+} from "./reducers/personActions";
 
 const Persons = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const persons = useAppSelector(state => state[reducer].get("persons")).toJS();
-  // const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const persons = useAppSelector(state => state[reducer].get("persons"));
+  const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const loadings = useAppSelector(state => state[reducer].get("loadings"));
   const tags = useAppSelector(state => state.tags.get("tags")).toJS();
   const history = useHistory();
   const user = useAuth0().user as User;
@@ -37,8 +44,8 @@ const Persons = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // dispatch(getAlerts(user));
-    dispatch(getTags(user, WhereInApp.alert));
+    dispatch(getPersons(user));
+    dispatch(getTags(user, WhereInApp.timelinePerson));
 
     if (plan_id === 1) {
       history.push("/app/plan");
@@ -47,15 +54,14 @@ const Persons = () => {
 
   const onDelete = ({ data }) => {
     const deletedNodes = data.map(v => ({
-      id: persons[v.dataIndex][3],
-      title: persons[v.dataIndex][0]
+      id: persons.get(v.dataIndex).get(4)
     }));
     deletedNodes.forEach(e => {
       const id = CryptoJS.AES.decrypt(
         decodeURIComponent(e.id),
         "path"
       ).toString(CryptoJS.enc.Utf8);
-      // dispatch(deleteAlert(user, id, e.title));
+      dispatch(deletePerson(user, id));
     });
   };
 
@@ -84,12 +90,12 @@ const Persons = () => {
 
   return (
     <div className={classes.table}>
-      {/* <Notification
+      <Notification
         close={() => {
-          // dispatch(closeNotifAction)
+          dispatch(closeNotifAction);
         }}
         message={messageNotif}
-      /> */}
+      />
       <Grid container spacing={2} direction="row">
         <Grid item md={3} lg={2}>
           <TagList
@@ -99,26 +105,31 @@ const Persons = () => {
             handleShowAll={handleShowAll}
             handleUpdateTag={handleUpdateTag}
             makeActive={handleMakeActiveTag}
-            allNumber={persons.length}
-            findCountString="alertTags"
+            allNumber={persons.size}
+            findCountString="timelinePersonTags"
           />
         </Grid>
         <Grid item md={9} lg={10}>
           <MUIDataTable
             title={t("persons.your_persons")}
-            data={persons}
+            data={persons.toJS()}
             columns={columns(t)}
-            options={tableOptions(onDelete, false)}
+            options={tableOptions(onDelete, loadings.get("main"))}
           />
         </Grid>
       </Grid>
       <Fab
         variant="extended"
         color="primary"
+        disabled={loadings.get("post")}
         className={classes.addBtn}
-        // onClick={() => dispatch(postAlert(user, history))}
+        onClick={() => dispatch(postPerson(user, history))}
       >
-        {`${t("persons.btn_new_persons")}`}
+        {loadings.get("post") ? (
+          <CircularProgress />
+        ) : (
+          `${t("persons.btn_new_persons")}`
+        )}
       </Fab>
     </div>
   );
