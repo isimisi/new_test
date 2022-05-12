@@ -55,6 +55,8 @@ export const CHANGE_TIMELINE_NODE_KEY = "CHANGE_TIMELINE_NODE_KEY";
 // CONTROL
 export const SHOW_HANDLES_CHANGE = "SHOW_HANDLES_CHANGE";
 
+export const OPEN_EMAIL_CHANGE = "OPEN_EMAIL_CHANGE";
+
 type FailedTypes =
   | typeof GET_TIMELINES_FAILED
   | typeof POST_TIMELINE_FAILED
@@ -181,6 +183,11 @@ export interface DeleteTimelineElementsSuccess {
   elements: string[];
 }
 
+export interface OpenEmailChange {
+  type: typeof OPEN_EMAIL_CHANGE;
+  bool: boolean;
+}
+
 export type TimelineActions =
   | NotifyActions
   | ChangeTags
@@ -203,4 +210,5 @@ export type TimelineActions =
   | TimelineElementDocumentChange
   | PutTimelineElementSuccess
   | DeleteTimelineElementsSuccess
+  | OpenEmailChange
   | DeleteTimelineSuccess;

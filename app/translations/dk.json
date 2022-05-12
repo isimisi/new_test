@@ -354,7 +354,7 @@
     "workspace-form": {
       "your_workspace": "Dine arbejdsområder",
       "name": "Navn",
-      "desc": "Indtast beskrivelse",
+      "desc": "Beskrivelse",
       "select_group": "Select group",
       "checkbox": "Del dit arbejdsområde med det resterende af din organisation",
       "btn_cnx": "Annuller",
@@ -720,7 +720,9 @@
     "vertical": "Lodret",
     "table": "Tabel",
     "create_element": "Lav et event",
-    "date": "Dato"
+    "date": "Dato",
+    "upload_mail": "Upload email",
+    "see_email": "Åben email"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -832,6 +834,16 @@
   },
   "generic": {
     "edit": "Rediger",
-    "more": "Mere"
+    "more": "Mere",
+    "close": "Luk"
+  },
+  "emails": {
+    "body": "E-mailindhold",
+    "header": "E-mailinformation",
+    "from": "Fra:",
+    "to": "Til:",
+    "subject": "Emne:",
+    "attachments": "Vedhæftede filer",
+    "send": "Sendt"
   }
 }

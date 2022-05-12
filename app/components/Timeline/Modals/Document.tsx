@@ -52,7 +52,7 @@ const Document = (props: Props) => {
       <FloatingPanel
         openForm={open}
         branch=""
-        title={t("person.form_header")}
+        title={t("document.form_header")}
         expanded
         closeForm={close}
       >

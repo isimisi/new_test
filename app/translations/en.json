@@ -824,6 +824,16 @@
   },
   "generic": {
     "more": "More",
-    "edit": "Edit"
+    "edit": "Edit",
+    "close": "Close"
+  },
+  "emails": {
+    "header": "Email information",
+    "from": "From:",
+    "to": "To:",
+    "subject": "Subject:",
+    "body": "Email content",
+    "attachments": "Attachments",
+    "send": "Send"
   }
 }

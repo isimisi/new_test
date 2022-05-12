@@ -7,16 +7,16 @@ import css from "@styles/Form.scss";
 import FloatingPanel from "../../Panel/FloatingPanel";
 import useStyles from "../timeline.jss";
 import Button from "@material-ui/core/Button";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import TextField from "@material-ui/core/TextField";
 import CreatableSelect from "react-select/creatable";
 import EditIcon from "@material-ui/icons/Edit";
 import { selectStyles } from "@api/ui/helper";
-
+import { Editor } from "react-draft-wysiwyg";
+import EmailIcon from "@material-ui/icons/Email";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useDropzone } from "react-dropzone";
 import {
   hanldeOnPersonChange,
   personMapping
@@ -31,8 +31,14 @@ import { useAppSelector } from "@hooks/redux";
 import IconButton from "@material-ui/core/IconButton";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { TimelineNode } from "@customTypes/reducers/timeline";
+import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import { useTheme } from "@material-ui/core/styles";
+
+import daLocale from "date-fns/locale/da";
+import enLocale from "date-fns/locale/en-US";
+import axios from "axios";
+import { baseUrl } from "@api/constants";
+import Fab from "@material-ui/core/Fab";
 
 interface Props {
   open: boolean;
@@ -42,14 +48,20 @@ interface Props {
   documentOptions: DocumentCleanOption[];
   openPerson: (id: string, name?: string) => void;
   openDocument: (id: string, name?: string) => void;
-  timelineNode: TimelineNode;
+  timelineNode: ITimelineNode;
   changeTimelineNode: (
     attr: keyof TimelineNode,
     val: TimelineNode[keyof TimelineNode]
   ) => void;
   handleDelete: () => void;
   isUpdatingNode: boolean;
+  handleOpenEmail: () => void;
 }
+
+const localeMap = {
+  en: enLocale,
+  da: daLocale
+};
 
 const CreateElement = (props: Props) => {
   const {
@@ -63,13 +75,22 @@ const CreateElement = (props: Props) => {
     timelineNode,
     changeTimelineNode,
     handleDelete,
-    isUpdatingNode
+    isUpdatingNode,
+    handleOpenEmail
   } = props;
   const classes = useStyles();
 
   const branch = "";
-  const { t } = useTranslation();
-  const { date, title, description, persons, documents } = timelineNode;
+  const { t, i18n } = useTranslation();
+
+  const date = timelineNode.get("date");
+  const title = timelineNode.get("title");
+  const description = timelineNode.get("description");
+  const content = timelineNode.get("content");
+  const email = timelineNode.get("email").get("mail");
+  const persons = timelineNode.get("persons").toJS();
+  const documents = timelineNode.get("documents").toJS();
+
   const theme = useTheme();
   const handleSetDate = d => changeTimelineNode("date", d);
   const labelChange = e => changeTimelineNode("title", e.target.value);
@@ -82,6 +103,10 @@ const CreateElement = (props: Props) => {
 
   const handleChangeDocuments = (p: MixedDocumentOptions[]) =>
     changeTimelineNode("documents", p);
+
+  const onEditorStateChange = v => {
+    changeTimelineNode("content", v);
+  };
 
   const loadingsP = useAppSelector(state => state.person.get("loadings"));
   const loadingsD = useAppSelector(state => state.document.get("loadings"));
@@ -118,6 +143,40 @@ const CreateElement = (props: Props) => {
     setopenMenuOnClick(true);
   };
 
+  const [loadingEmail, setLoadingEmail] = useState(false);
+
+  const readEmlFile = (file: File) => {
+    setLoadingEmail(true);
+    const url = `${baseUrl}/emailparser`;
+    const body = new FormData();
+    body.append("file_content", file);
+
+    axios.post(url, body).then(res => {
+      const { data } = res;
+      changeTimelineNode("email", data);
+      setLoadingEmail(false);
+    });
+  };
+
+  const options = {
+    onDrop: acceptedFiles => {
+      const file = acceptedFiles[0];
+      readEmlFile(file);
+    },
+    accept: ".eml",
+    noClick: true,
+    noKeyboard: true,
+    maxFiles: 1
+  };
+
+  const { getRootProps, getInputProps, open: handleAddEmail } = useDropzone(
+    options
+  );
+
+  const handleRemoveEmail = () => {
+    changeTimelineNode("email", { mail: null, uri: null });
+  };
+
   return (
     <div>
       <FloatingPanel
@@ -129,18 +188,18 @@ const CreateElement = (props: Props) => {
       >
         <div>
           <div className={classes.createElementContainer}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                variant="inline"
-                format="MM/dd/yyyy"
+            <MuiPickersUtilsProvider
+              utils={DateFnsUtils}
+              locale={localeMap[i18n.language]}
+            >
+              <DateTimePicker
                 label={t("timeline.date")}
                 placeholder={t("timeline.date")}
                 value={date}
+                ampm={false}
+                variant="inline"
                 className={classes.eventField}
                 onChange={handleSetDate}
-                KeyboardButtonProps={{
-                  "aria-label": "change date"
-                }}
               />
             </MuiPickersUtilsProvider>
             <div>
@@ -163,7 +222,47 @@ const CreateElement = (props: Props) => {
               value={description}
               onChange={descriptionChange}
             />
-
+            <div className={classes.eventSelectField}>
+              {email ? (
+                <>
+                  <Button type="button" onClick={handleOpenEmail}>
+                    {t("timeline.see_email")}
+                  </Button>
+                  <IconButton color="primary" onClick={handleRemoveEmail}>
+                    <DeleteIcon />
+                  </IconButton>
+                </>
+              ) : (
+                <>
+                  {" "}
+                  <Editor
+                    editorState={content}
+                    editorClassName={classes.textEditor}
+                    toolbarClassName={classes.toolbarEditor}
+                    onEditorStateChange={onEditorStateChange}
+                    disabled
+                  />
+                  <Fab
+                    variant="extended"
+                    size="small"
+                    color="primary"
+                    aria-label="add"
+                    className={classes.mailFab}
+                    onClick={handleAddEmail}
+                    disabled={loadingEmail}
+                  >
+                    {loadingEmail ? (
+                      <CircularProgress size="30" />
+                    ) : (
+                      <EmailIcon style={{ color: "white", marginRight: 5 }} />
+                    )}
+                    {t("timeline.upload_mail")}
+                    <div {...getRootProps({ className: "dropzone" })} />
+                    <input {...getInputProps()} />
+                  </Fab>
+                </>
+              )}
+            </div>
             <CreatableSelect
               styles={selectStyles()}
               className={classes.eventSelectField}

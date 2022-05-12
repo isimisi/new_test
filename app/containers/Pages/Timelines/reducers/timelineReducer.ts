@@ -6,7 +6,8 @@ import {
 import { Node } from "react-flow-renderer";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
-
+import { EditorState, ContentState } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
 import {
   SHOW_HANDLES_CHANGE,
   TimelineActions,
@@ -39,11 +40,13 @@ import {
   DELETE_TIMELINE_ELEMENTS_LOADING,
   DELETE_TIMELINE_ELEMENTS_SUCCESS,
   DELETE_TIMELINE_ELEMENTS_FAILED,
+  OPEN_EMAIL_CHANGE,
 } from "./timelineConstants";
 
 const initialLoadings = Map({
   main: false,
   post: false,
+
   modal: false,
 });
 
@@ -51,10 +54,11 @@ const initialNode: TimelineNode = {
   id: "",
   title: "",
   description: "",
-
+  content: EditorState.createEmpty(),
+  email: Map({ mail: null, uri: null }),
   date: null,
-  persons: [],
-  documents: [],
+  persons: List(),
+  documents: List(),
   tags: [],
 };
 
@@ -74,6 +78,7 @@ const initialState: TimelineState = {
   documentOpen: false,
   timelineNode: Map(initialNode),
   isUpdatingNode: false,
+  emailOpen: false,
 };
 
 const initialImmutableState: IImmutableTimelineState = fromJS(initialState);
@@ -187,6 +192,10 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         mutableState.set("documentOpen", action.bool);
       });
+    case OPEN_EMAIL_CHANGE:
+      return state.withMutations((mutableState) => {
+        mutableState.set("emailOpen", action.bool);
+      });
     case POST_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set("elements", fromJS(action.elements));
@@ -200,20 +209,34 @@ export default function reducer(
           const elements = mutableState.get("elements").toJS();
           const element = elements.find((el) => el.id === id);
 
+          const blocksFromHtml = htmlToDraft(element.data.content);
+          const { contentBlocks, entityMap } = blocksFromHtml;
+          const contentState = ContentState.createFromBlockArray(
+            contentBlocks,
+            entityMap
+          );
+          const editorState = EditorState.createWithContent(contentState);
+
           const node = {
             id: element.id,
             title: element.data.label,
+            content: editorState,
+            email: element.data.email,
             description: element.data.description,
             date: element.data.date,
-            persons: element.data.persons.map((p) => ({
-              icon: p.person_icon,
-              id: p.id,
-              name: p.name,
-            })),
-            documents: element.data.documents.map((d) => ({
-              id: d.id,
-              title: d.title,
-            })),
+            persons: fromJS(
+              element.data.persons.map((p) => ({
+                icon: p.person_icon,
+                id: p.id,
+                name: p.name,
+              }))
+            ),
+            documents: fromJS(
+              element.data.documents.map((d) => ({
+                id: d.id,
+                title: d.title,
+              }))
+            ),
             tags: [],
           };
           mutableState.set("timelineNode", fromJS(node));
@@ -225,8 +248,12 @@ export default function reducer(
       });
     case CHANGE_TIMELINE_NODE_KEY:
       return state.withMutations((mutableState) => {
-        console.log(action.val);
-        mutableState.setIn(["timelineNode", action.attr], action.val);
+        let val = action.val;
+        if (["persons", "documents", "email"].includes(action.attr)) {
+          val = fromJS(action.val);
+        }
+
+        mutableState.setIn(["timelineNode", action.attr], val);
       });
     case SHOW_NOTIF:
       return state.withMutations((mutableState) => {

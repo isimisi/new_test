@@ -10,6 +10,7 @@ import { TagDeconstructedOnOtherElements } from "./tags";
 export interface Loadings {
   main: boolean;
   post: boolean;
+
   modal: boolean;
 }
 
@@ -22,14 +23,15 @@ export interface TimelineNode {
   id: string;
   title: string;
   description: string;
-
+  content: any;
+  email: any;
   date: MaterialUiPickersDate | null;
-  persons: MixedPersonOptions[];
-  documents: MixedDocumentOptions[];
+  persons: List<MixedPersonOptions>;
+  documents: List<MixedDocumentOptions>;
   tags: any[];
 }
 
-interface ITimelineNode extends Map<string, any> {
+export interface ITimelineNode extends Map<string, any> {
   toJS(): TimelineNode;
   get<K extends keyof TimelineNode>(key: K): TimelineNode[K];
 }
@@ -54,6 +56,7 @@ export interface TimelineState {
   documentOpen: boolean;
   timelineNode: ITimelineNode;
   isUpdatingNode: boolean;
+  emailOpen: boolean;
 }
 
 export type IImmutableTimelineState = IImmutableStateMap<TimelineState>;

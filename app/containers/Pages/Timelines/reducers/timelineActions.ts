@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/prefer-default-export */
 import axios from "axios";
 import * as notification from "@redux/constants/notifConstants";
@@ -6,6 +7,9 @@ import { User } from "@auth0/auth0-react";
 import { History } from "history";
 import * as types from "./timelineConstants";
 import { TimelineNode } from "@customTypes/reducers/timeline";
+import draftToHtml from 'draftjs-to-html';
+import { convertToRaw } from "draft-js";
+
 const TIMELINES = "timelines";
 
 export const getTimelines = (user: User) => async (dispatch) => {
@@ -61,7 +65,7 @@ export const showTimeline = (user: User, id: string, openMeta, rfInstance) => as
     }
 
     dispatch({ type: types.SHOW_TIMELINE_SUCCESS, title, description, group, tags, shareOrg, elements });
-  } catch (error) {
+  } catch (error: any) {
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_TIMELINE_FAILED, message });
   }
@@ -113,7 +117,11 @@ export const saveElement = (user: User, timeline_id, element, changedPersons, ch
   dispatch({ type: types.POST_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/timelinenodes`;
-  const body = { element, changedPersons, changedDocuments, timeline_id };
+  const rawContentState = convertToRaw(element.get("content").getCurrentContent());
+  const markup = draftToHtml(rawContentState);
+  const _element = element.toJS();
+  _element.content = markup;
+  const body = { element: _element, changedPersons, changedDocuments, timeline_id };
   const header = authHeader(user);
 
   try {
@@ -127,11 +135,17 @@ export const saveElement = (user: User, timeline_id, element, changedPersons, ch
   }
 };
 
-export const putElement = (user: User, id, element, changedPersons, changedDocuments, handleCloseCreateElement) => async (dispatch) => {
+export const putElement = (user: User, element, changedPersons, changedDocuments, handleCloseCreateElement) => async (dispatch) => {
   dispatch({ type: types.PUT_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
 
-  const url = `${baseUrl}/timelinenodes/${id}`;
-  const body = { element, changedPersons, changedDocuments };
+  const url = `${baseUrl}/timelinenodes/${element.get("id")}`;
+
+  const rawContentState = convertToRaw(element.get("content").getCurrentContent());
+  const markup = draftToHtml(rawContentState);
+  const _element = element.toJS();
+  _element.content = markup;
+
+  const body = { element: _element, changedPersons, changedDocuments };
   const header = authHeader(user);
 
   try {
@@ -161,6 +175,7 @@ export const deleteElements = (user: User, timeline_id: string, elements: string
     dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_FAILED, message });
   }
 };
+
 
 export const labelChange = (title) => ({
   type: types.TITLE_CHANGE,
@@ -214,6 +229,11 @@ export const changeTimelineNodeKey = (val: TimelineNode[keyof TimelineNode], att
   type: types.CHANGE_TIMELINE_NODE_KEY,
   val,
   attr,
+});
+
+export const openEmailChange = (bool: boolean) => ({
+  type: types.OPEN_EMAIL_CHANGE,
+  bool,
 });
 
 

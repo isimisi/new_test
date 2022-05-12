@@ -22,7 +22,7 @@ import {
   putTimeline,
   shareOrgChange,
   showTimeline,
-  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements
+  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange
 } from "./reducers/timelineActions";
 import ReactFlow, {
   Background,
@@ -61,6 +61,7 @@ import Person from "@components/Timeline/Modals/Person";
 import Document from "@components/Timeline/Modals/Document";
 import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
 import { TimelineNode } from "@customTypes/reducers/timeline";
+import Email from "@components/Timeline/Modals/Email";
 
 
 const nodeTypes = {
@@ -82,7 +83,7 @@ const Timeline = () => {
   const createElementOpen = useAppSelector(state => state[reducer].get("createElementOpen"));
   const personOptions = useAppSelector(state => state.person.get("personOptions")).toJS();
   const documentOptions = useAppSelector(state => state.document.get("documentOptions")).toJS();
-  const timelineNode = useAppSelector(state => state[reducer].get("timelineNode")).toJS();
+  const timelineNode = useAppSelector(state => state[reducer].get("timelineNode"));
 
   const history = useHistory();
   const id = getId(history) as string;
@@ -138,6 +139,12 @@ const Timeline = () => {
     }
   };
 
+  const handleOpenEmail = () => {
+    dispatch(openEmailChange(true));
+  };
+
+  const handleEmailClose = () => dispatch(openEmailChange(false));
+
 
   const handleCloseCreateElement = () => {
     dispatch(setTimelineNode(null));
@@ -163,6 +170,9 @@ const Timeline = () => {
   );
   const documentModalOpen = useAppSelector(state =>
     state[reducer].get("documentOpen")
+  );
+  const emailModalOpen = useAppSelector(state =>
+    state[reducer].get("emailOpen")
   );
   const loadings = useAppSelector(state => state[reducer].get("loadings"));
   const label = useAppSelector(state => state[reducer].get("title"));
@@ -249,7 +259,7 @@ const Timeline = () => {
 
   const onSaveElement = () => {
     if (isUpdatingNode) {
-      dispatch(putElement(user, timelineNode.id, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
+      dispatch(putElement(user, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
     } else {
       dispatch(saveElement(user, id, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
     }
@@ -307,9 +317,9 @@ const Timeline = () => {
   };
 
   const handleDelete = () => {
-    dispatch(deleteElements(user, id, [timelineNode.id]));
+    dispatch(deleteElements(user, id, [timelineNode.get("id")]));
   };
-  console.log(createElementOpen);
+
 
   return (
     <div style={{ display: "flex" }}>
@@ -405,10 +415,13 @@ const Timeline = () => {
         changeTimelineNode={changeTimelineNode}
         handleDelete={handleDelete}
         isUpdatingNode={isUpdatingNode}
+        handleOpenEmail={handleOpenEmail}
+
       />
 
       {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} />}
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
+      {emailModalOpen && <Email open={emailModalOpen} close={handleEmailClose} timelineNode={timelineNode} />}
       {loadings.get("main") && (
         <>
           <div

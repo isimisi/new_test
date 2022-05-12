@@ -80,7 +80,7 @@ export default function CustomEdge({
         >
           {showButton && (
             <IconButton
-              style={{ backgroundColor: "white" }}
+              style={{ backgroundColor: "#F3F5F8" }}
               size="small"
               onClick={handleOpenCreateElement}
             >
