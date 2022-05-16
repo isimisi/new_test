@@ -10,7 +10,7 @@ import React, { memo, useCallback, useState } from "react";
 import { Handle, NodeProps, Position } from "react-flow-renderer";
 import useStyles from "../timeline.jss";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Avatar, { genConfig } from "react-nice-avatar";
+import Avatar from "react-nice-avatar";
 import MaterialAvatar from "@material-ui/core/Avatar";
 import DescriptionIcon from "@material-ui/icons/Description";
 import classnames from "classnames";

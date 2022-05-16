@@ -57,6 +57,7 @@ export interface TimelineState {
   timelineNode: ITimelineNode;
   isUpdatingNode: boolean;
   emailOpen: boolean;
+  view: "horizontal" | "vertical";
 }
 
 export type IImmutableTimelineState = IImmutableStateMap<TimelineState>;

@@ -24,13 +24,29 @@ export default memo(({ data, isConnectable }: NodeProps) => {
         type="target"
         style={{ left: 1 }}
         position={Position.Left}
+        id="left"
         className={classes.horizontalHandle}
       />
       <Handle
         type="source"
         position={Position.Right}
-        id="a"
+        id="right"
         style={{ right: 1 }}
+        className={classes.horizontalHandle}
+      />
+
+      <Handle
+        type="target"
+        style={{ top: 1 }}
+        id="top"
+        position={Position.Top}
+        className={classes.horizontalHandle}
+      />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="bottom"
+        style={{ bottom: 1 }}
         className={classes.horizontalHandle}
       />
     </Paper>

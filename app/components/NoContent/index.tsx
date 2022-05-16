@@ -30,6 +30,7 @@ interface Props {
     | "button"
     | "overline"
     | undefined;
+  elevation?: number;
 }
 
 const NoContent = ({
@@ -40,9 +41,11 @@ const NoContent = ({
   noMargin = false,
   marginTop = 50,
   margin = 0,
-  textVariant = "h5"
+  textVariant = "h5",
+  elevation = 1
 }: Props) => (
   <Paper
+    elevation={elevation}
     style={{
       width: "100%",
       margin,

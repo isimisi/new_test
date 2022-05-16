@@ -53,10 +53,27 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     fontSize: 10,
     color: "#000",
   },
+  personDiv: {
+    display: "flex",
+  },
+  peopleAndDocumentsContainer: {
+    padding: 10,
+    backgroundColor: theme.palette.background.default,
+  },
+  personAndDocsDivider: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  verticalTitleNode: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
+  },
   createElementContainer: {
     padding: 16,
     width: "100%",
-    maxHeight: "60vh",
+
     overflowY: "auto",
   },
   eventField: {
@@ -105,6 +122,48 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     width: "100%",
     height: "100%",
   },
+
+  contentContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    width: "100%",
+    height: "100%",
+  },
+  contentInnerContainer: {
+    width: "100%",
+    height: "100%",
+    padding: 20,
+  },
+  noContent: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex",
+  },
+  contentDivider: {
+    margin: 10,
+  },
+  buttonGroup: {
+    position: "fixed",
+    bottom: 10,
+    right: 0,
+    marginTop: 10,
+    padding: 10,
+  },
+  verticalDate: {
+    fontSize: 10,
+    color: "white",
+  },
+  verticalTitle: {
+    fontSize: 30,
+    fontWeight: 600,
+  },
+  verticalDescription: {
+    marginTop: 10,
+  },
+  verticalContent: {},
 }));
 
 export default useStyles;

@@ -187,7 +187,10 @@ const CreateElement = (props: Props) => {
         closeForm={close}
       >
         <div>
-          <div className={classes.createElementContainer}>
+          <div
+            className={classes.createElementContainer}
+            style={{ maxHeight: "60vh" }}
+          >
             <MuiPickersUtilsProvider
               utils={DateFnsUtils}
               locale={localeMap[i18n.language]}

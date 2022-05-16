@@ -9,7 +9,7 @@ import {
   getMarkerEnd
 } from "react-flow-renderer";
 import AddBoxIcon from "@material-ui/icons/AddBox";
-import { useAppDispatch } from "@hooks/redux";
+import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { createElementChange } from "../../../containers/Pages/Timelines/reducers/timelineActions";
 
 const foreignObjectSize = 24;
@@ -28,6 +28,7 @@ export default function CustomEdge({
   markerEndId
 }: EdgeProps) {
   const dispatch = useAppDispatch();
+  const view = useAppSelector(state => state.timeline.get("view"));
   const handleOpenCreateElement = () => dispatch(createElementChange(true));
   const edgePath = getBezierPath({
     sourceX,
@@ -55,6 +56,8 @@ export default function CustomEdge({
     setShowButton(false);
   }, []);
 
+  const isHorizontal = view === "horizontal";
+
   return (
     <g onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <path
@@ -64,10 +67,10 @@ export default function CustomEdge({
         markerEnd={markerEnd}
       />
       <foreignObject
-        width={235}
-        height={foreignObjectSize}
-        x={sourceX}
-        y={edgeCenterY - foreignObjectSize / 2}
+        width={isHorizontal ? 235 : foreignObjectSize}
+        height={!isHorizontal ? 100 : foreignObjectSize}
+        x={isHorizontal ? sourceX : edgeCenterX - foreignObjectSize / 2}
+        y={isHorizontal ? edgeCenterY - foreignObjectSize / 2 : sourceY}
         className="edgebutton-foreignobject"
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >

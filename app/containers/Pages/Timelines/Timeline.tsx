@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-param-reassign */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
@@ -22,7 +23,7 @@ import {
   putTimeline,
   shareOrgChange,
   showTimeline,
-  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange
+  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating
 } from "./reducers/timelineActions";
 import ReactFlow, {
   Background,
@@ -30,6 +31,7 @@ import ReactFlow, {
   OnLoadParams,
 
 } from "react-flow-renderer";
+import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import { getPlanId } from "@helpers/userInfo";
 import Collaboration from "@components/Flow/Actions/Collaborations";
 import Meta from "@components/Flow/Actions/Meta";
@@ -62,10 +64,14 @@ import Document from "@components/Timeline/Modals/Document";
 import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
 import { TimelineNode } from "@customTypes/reducers/timeline";
 import Email from "@components/Timeline/Modals/Email";
+import VerticalNode from "@components/Timeline/Nodes/VerticalNode";
+import Content from "@components/Timeline/Drawer/Content";
+import getDrawerWidth from "@hooks/timeline/drawerWidth";
 
 
 const nodeTypes = {
   horizontal: HorizontalNode,
+  vertical: VerticalNode,
   addItem: AddItemNode
 };
 
@@ -84,6 +90,7 @@ const Timeline = () => {
   const personOptions = useAppSelector(state => state.person.get("personOptions")).toJS();
   const documentOptions = useAppSelector(state => state.document.get("documentOptions")).toJS();
   const timelineNode = useAppSelector(state => state[reducer].get("timelineNode"));
+  const view = useAppSelector(state => state[reducer].get("view"));
 
   const history = useHistory();
   const id = getId(history) as string;
@@ -155,10 +162,9 @@ const Timeline = () => {
 
   const [openTableView, setOpenTableView] = useState(false);
 
-  const { height: windowHeight } = useWindowDimensions();
 
-  const handleOpenTableView = () => {
-    setOpenTableView(prevState => !prevState);
+  const handleOpenTableView = (bool) => {
+    setOpenTableView(bool);
   };
 
 
@@ -320,6 +326,20 @@ const Timeline = () => {
     dispatch(deleteElements(user, id, [timelineNode.get("id")]));
   };
 
+  const handleChangeView = (direction: "horizontal" | "vertical") => {
+    dispatch(changeView(direction, elements));
+    setTimeout(() => {
+      rfInstance?.fitView();
+    }, 200);
+  };
+
+  const { width } = useWindowDimensions();
+
+  const { handleMouseDown, drawerWidth } = getDrawerWidth(width);
+
+  const handleSetEdit = (bool: boolean) => {
+    dispatch(setIsUpdating(bool));
+  };
 
   return (
     <div style={{ display: "flex" }}>
@@ -331,6 +351,7 @@ const Timeline = () => {
         className={classnames(classes.root, {
           [classes.contentShift]: openTableView
         })}
+
         ref={reactFlowContainer}
         onMouseLeave={onMouseLeave}
       >
@@ -339,10 +360,10 @@ const Timeline = () => {
           minZoom={0.3}
           maxZoom={3}
           style={{ backgroundColor: "#F3F5F8" }}
-          translateExtent={[
-            [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5 / 3],
-            [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
-          ]}
+          // translateExtent={[
+          //   [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5 / 3],
+          //   [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
+          // ]}
 
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
@@ -365,7 +386,7 @@ const Timeline = () => {
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
             />
-            <Views openTableView={handleOpenTableView} />
+            <Views openTableView={handleOpenTableView} view={view} changeView={handleChangeView} />
             <Controls
               currentZoom={currentZoom}
               reactFlowInstance={rfInstance}
@@ -380,11 +401,26 @@ const Timeline = () => {
         variant="persistent"
         anchor="right"
         open={openTableView}
-        classes={{
-          paper: classes.drawerPaper
-        }}
+        PaperProps={{ style: { width: drawerWidth } }}
+
       >
-        <Table />
+        <div onMouseDown={e => handleMouseDown(e)} className={classes.dragger}>
+          <DragIndicatorIcon />
+        </div>
+        <Content
+          handleEdit={handleSetEdit}
+          onSave={onSaveElement}
+          personOptions={personOptions}
+          documentOptions={documentOptions}
+          openPerson={handlePersonOpen}
+          openDocument={handleDocumentOpen}
+          timelineNode={timelineNode}
+          changeTimelineNode={changeTimelineNode}
+          handleDelete={handleDelete}
+          isUpdatingNode={isUpdatingNode}
+          handleOpenEmail={handleOpenEmail}
+        />
+        {/* <Table /> */}
       </Drawer>
       <WorkspaceMeta
         open={metaOpen}

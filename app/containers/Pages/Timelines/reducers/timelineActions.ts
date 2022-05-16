@@ -9,7 +9,8 @@ import * as types from "./timelineConstants";
 import { TimelineNode } from "@customTypes/reducers/timeline";
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from "draft-js";
-
+import { isEdge, isNode, Position } from "react-flow-renderer";
+import dagre from "dagre";
 const TIMELINES = "timelines";
 
 export const getTimelines = (user: User) => async (dispatch) => {
@@ -220,9 +221,10 @@ export const timelineElementDocumentChange = (bool: boolean) => ({
   bool,
 });
 
-export const setTimelineNode = (id: string | null) => ({
+export const setTimelineNode = (id: string | null, isVertical = false) => ({
   type: types.SET_TIMELINE_NODE,
   id,
+  isVertical
 });
 
 export const changeTimelineNodeKey = (val: TimelineNode[keyof TimelineNode], attr: keyof TimelineNode) => ({
@@ -236,6 +238,60 @@ export const openEmailChange = (bool: boolean) => ({
   bool,
 });
 
+export const changeView = (direction: "vertical" | "horizontal", elements) => async (dispatch) => {
+  const nodeWidth = 150;
+  const nodeHeight = 41;
+
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+  const isVertical = direction === "vertical";
+  dagreGraph.setGraph({ rankdir: isVertical ? "TB" : "LR" });
+
+  elements.forEach(el => {
+    if (isNode(el)) {
+      dagreGraph.setNode(el.id, { width: nodeWidth, height: nodeHeight });
+    } else {
+      dagreGraph.setEdge(el.source, el.target);
+    }
+  });
+
+  dagre.layout(dagreGraph);
+
+  elements.map((element, index) => {
+    if (isNode(element)) {
+      const nodeWithPosition = dagreGraph.node(element.id);
+
+      if (element.type !== "addItem") {
+        element.position = {
+          x: (nodeWithPosition.x - nodeWidth / 2 + Math.random() / 1000) - nodeWidth + (isVertical ? 0 : 200 * index),
+          y: (nodeWithPosition.y - nodeHeight / 2) - nodeHeight + (isVertical ? 50 * index : 0)
+        };
+
+        element.type = direction;
+      } else {
+        element.position = {
+          x: nodeWithPosition.x - nodeHeight / 2 + Math.random() / 1000 - nodeWidth + (isVertical ? 0 : 200 * index),
+          y: nodeWithPosition.y - nodeHeight / 2 - nodeHeight + (isVertical ? 50 * index : 0)
+        };
+      }
+    }
+
+    if (isEdge(element) && element.target === "static-button") {
+      element.targetHandle = isVertical ? "top" : "left";
+      element.sourceHandle = isVertical ? "bottom" : "right";
+    }
+
+    return element;
+  });
+
+  dispatch({ type: types.CHANGE_VIEW, direction, elements });
+};
+
+
+export const setIsUpdating = (bool) => ({
+  type: types.SET_IS_UPDATING,
+  bool
+});
 
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF,

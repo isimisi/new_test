@@ -45,6 +45,8 @@ export const ADD_GROUP = "ADD_GROUP";
 export const CHANGE_TAGS = "CHANGE_TAGS";
 export const SHARE_ORG_CHANGE = "SHARE_ORG_CHANGE";
 
+export const CHANGE_VIEW = "CHANGE_VIEW";
+
 export const CREATE_ELEMENT_CHANGE = "CREATE_ELEMENT_CHANGE";
 export const TIMELINE_ELEMENT_PERSON_CHANGE = "TIMELINE_ELEMENT_PERSON_CHANGE";
 export const TIMELINE_ELEMENT_DOCUMENT_CHANGE = "TIMELINE_ELEMENT_DOCUMENT_CHANGE";
@@ -56,6 +58,8 @@ export const CHANGE_TIMELINE_NODE_KEY = "CHANGE_TIMELINE_NODE_KEY";
 export const SHOW_HANDLES_CHANGE = "SHOW_HANDLES_CHANGE";
 
 export const OPEN_EMAIL_CHANGE = "OPEN_EMAIL_CHANGE";
+
+export const SET_IS_UPDATING = "SET_IS_UPDATING";
 
 type FailedTypes =
   | typeof GET_TIMELINES_FAILED
@@ -165,6 +169,7 @@ export interface PostTimelineElementSuccess {
 export interface SetTimelineNode {
   type: typeof SET_TIMELINE_NODE;
   id: string;
+  isVertical: boolean;
 }
 
 export interface ChangeTimelineNodeKey {
@@ -188,8 +193,20 @@ export interface OpenEmailChange {
   bool: boolean;
 }
 
+export interface ChangeView {
+  type: typeof CHANGE_VIEW;
+  direction: "vertical" | "horizontal";
+  elements: FlowElement[];
+}
+
+export interface SetIsUpdating {
+  type: typeof SET_IS_UPDATING;
+  bool: boolean;
+}
+
 export type TimelineActions =
   | NotifyActions
+  | SetIsUpdating
   | ChangeTags
   | TitleChange
   | ShareOrgChange
@@ -209,6 +226,7 @@ export type TimelineActions =
   | PostTimelineElementSuccess
   | TimelineElementDocumentChange
   | PutTimelineElementSuccess
+  | ChangeView
   | DeleteTimelineElementsSuccess
   | OpenEmailChange
   | DeleteTimelineSuccess;

@@ -722,7 +722,8 @@
     "create_element": "Lav et event",
     "date": "Dato",
     "upload_mail": "Upload email",
-    "see_email": "Åben email"
+    "see_email": "Åben email",
+    "no_choosen_node": "Do har endnu ikke valgt et element"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -835,7 +836,10 @@
   "generic": {
     "edit": "Rediger",
     "more": "Mere",
-    "close": "Luk"
+    "close": "Luk",
+    "delete": "Slet",
+    "stop_edit": "Stop redigering",
+    "save": "Gem"
   },
   "emails": {
     "body": "E-mailindhold",

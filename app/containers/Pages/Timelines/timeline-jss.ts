@@ -1,7 +1,7 @@
 import { MyTheme } from "@customTypes/styling";
 import { makeStyles } from "@material-ui/core/styles";
 
-const drawerWidth = "50vw";
+const drawerWidth = "40vw";
 const flowHeight = "100vh";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
@@ -52,6 +52,20 @@ const useStyles = makeStyles((theme: MyTheme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginRight: 0,
+  },
+  dragger: {
+    width: "10px",
+    cursor: "ew-resize",
+    padding: 1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    zIndex: 100,
+    backgroundColor: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
 

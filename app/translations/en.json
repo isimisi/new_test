@@ -718,7 +718,10 @@
     "vertical": "Vertical",
     "table": "Table",
     "create_element": "Create an event",
-    "date": "Date"
+    "date": "Date",
+    "no_choosen_node": "You have not choosen an element yet",
+    "upload_mail": "Upload Email",
+    "see_email": "Open Email"
   },
   "lookup": {
     "search_placeholder": "Search for a company",
@@ -825,7 +828,10 @@
   "generic": {
     "more": "More",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "delete": "Delete",
+    "stop_edit": "Stop editing",
+    "save": "Save"
   },
   "emails": {
     "header": "Email information",

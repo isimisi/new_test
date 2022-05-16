@@ -20,6 +20,7 @@ import {
   TITLE_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
+  CHANGE_VIEW,
   CHANGE_TAGS,
   SHARE_ORG_CHANGE,
   PUT_TIMELINE_SUCCESS,
@@ -41,6 +42,7 @@ import {
   DELETE_TIMELINE_ELEMENTS_SUCCESS,
   DELETE_TIMELINE_ELEMENTS_FAILED,
   OPEN_EMAIL_CHANGE,
+  SET_IS_UPDATING,
 } from "./timelineConstants";
 
 const initialLoadings = Map({
@@ -79,6 +81,7 @@ const initialState: TimelineState = {
   timelineNode: Map(initialNode),
   isUpdatingNode: false,
   emailOpen: false,
+  view: "horizontal",
 };
 
 const initialImmutableState: IImmutableTimelineState = fromJS(initialState);
@@ -119,6 +122,8 @@ export default function reducer(
         const elements = mutableState.get("elements").toJS();
         const index = elements.findIndex((e) => e.id === action.element.id);
         newEl.position = elements[index].position;
+        // @ts-ignore
+        newEl.type = mutableState.get("view");
         elements[index] = newEl;
         mutableState.set("elements", fromJS(elements));
         mutableState.setIn(["loadings", "post"], false);
@@ -203,6 +208,7 @@ export default function reducer(
     case SET_TIMELINE_NODE:
       return state.withMutations((mutableState) => {
         const id = action.id;
+        const isVertical = action.isVertical;
 
         if (id) {
           // @ts-ignore
@@ -240,7 +246,9 @@ export default function reducer(
             tags: [],
           };
           mutableState.set("timelineNode", fromJS(node));
-          mutableState.set("isUpdatingNode", true);
+          if (!isVertical) {
+            mutableState.set("isUpdatingNode", true);
+          }
         } else {
           mutableState.set("timelineNode", Map(initialNode));
           mutableState.set("isUpdatingNode", false);
@@ -254,6 +262,15 @@ export default function reducer(
         }
 
         mutableState.setIn(["timelineNode", action.attr], val);
+      });
+    case SET_IS_UPDATING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("isUpdatingNode", action.bool);
+      });
+    case CHANGE_VIEW:
+      return state.withMutations((mutableState) => {
+        mutableState.set("view", action.direction);
+        mutableState.set("elements", fromJS(action.elements));
       });
     case SHOW_NOTIF:
       return state.withMutations((mutableState) => {
