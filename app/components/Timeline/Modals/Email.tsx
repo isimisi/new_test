@@ -33,7 +33,10 @@ const Email = (props: Props) => {
         width={632}
         closeForm={close}
       >
-        <div className={classes.createElementContainer}>
+        <div
+          className={classes.createElementContainer}
+          style={{ maxHeight: "60vh" }}
+        >
           <EmailContent timelineNode={timelineNode} />
         </div>
         <div className={css.buttonArea}>

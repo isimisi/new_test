@@ -10,7 +10,7 @@ import {
   MixedDocumentOptions
 } from "@customTypes/reducers/document";
 import { hanldeOnDocumentChange } from "../../../containers/Pages/Documents/constants";
-import { useAppSelector } from "@hooks/redux";
+import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import { MixedPersonOptions } from "@customTypes/reducers/person";
 import useStyles from "../timeline.jss";
@@ -46,6 +46,14 @@ import EmailIcon from "@material-ui/icons/Email";
 import CreatableSelect from "react-select/creatable";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { selectStyles } from "@api/ui/helper";
+import {
+  timelineElementDocumentChange,
+  timelineElementPersonChange
+} from "../../../containers/Pages/Timelines/reducers/timelineActions";
+
+import { showPerson } from "../../../containers/Pages/Persons/reducers/personActions";
+import { useAuth0, User } from "@auth0/auth0-react";
+import { showDocument } from "../../../containers/Pages/Documents/reducers/documentActions";
 
 const localeMap = {
   en: enLocale,
@@ -67,6 +75,7 @@ interface Props {
   isUpdatingNode: boolean;
   handleEdit: (bool: boolean) => void;
   handleOpenEmail: () => void;
+  handleDocumentOpen: (id: string, name?: string) => void;
 }
 
 const Content = (props: Props) => {
@@ -81,7 +90,8 @@ const Content = (props: Props) => {
     handleDelete,
     isUpdatingNode,
     handleEdit,
-    handleOpenEmail
+    handleOpenEmail,
+    handleDocumentOpen
   } = props;
 
   const { t, i18n } = useTranslation();
@@ -181,6 +191,23 @@ const Content = (props: Props) => {
 
   const rawContentState = convertToRaw(content.getCurrentContent());
   const markup = draftToHtml(rawContentState);
+
+  const user = useAuth0().user as User;
+  const dispatch = useAppDispatch();
+
+  const handleOpenPersonNonEdit = id => {
+    dispatch(
+      showPerson(user, id, () => dispatch(timelineElementPersonChange(true)))
+    );
+  };
+
+  const handleOpenDocumentNonEdit = id => {
+    dispatch(
+      showDocument(user, id, () =>
+        dispatch(timelineElementDocumentChange(true))
+      )
+    );
+  };
 
   return (
     <div className={classes.contentContainer}>
@@ -398,7 +425,10 @@ const Content = (props: Props) => {
                       <div className={classes.personDiv}>
                         {persons.map(person => (
                           <Tooltip arrow title={person.name} placement="top">
-                            <div style={{ cursor: "pointer", margin: "0 2px" }}>
+                            <div
+                              style={{ cursor: "pointer", margin: "0 2px" }}
+                              onClick={() => handleOpenPersonNonEdit(person.id)}
+                            >
                               <Avatar
                                 style={{ width: 30, height: 30 }}
                                 {...JSON.parse(person.icon)}
@@ -410,7 +440,12 @@ const Content = (props: Props) => {
                       <div className={classes.personAndDocsDivider} />
                       {documents.map(document => (
                         <Tooltip arrow title={document.title} placement="top">
-                          <IconButton size="small">
+                          <IconButton
+                            size="small"
+                            onClick={() =>
+                              handleOpenDocumentNonEdit(document.id)
+                            }
+                          >
                             <DescriptionIcon style={{ fontSize: 25 }} />
                           </IconButton>
                         </Tooltip>

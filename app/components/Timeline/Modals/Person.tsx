@@ -26,6 +26,9 @@ const Person = (props: Props) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const person = useAppSelector(state => state.person.get("person"));
+  const isUpdatingNode = useAppSelector(state =>
+    state.timeline.get("isUpdatingNode")
+  );
 
   const { t } = useTranslation();
 
@@ -47,8 +50,11 @@ const Person = (props: Props) => {
         expanded
         closeForm={close}
       >
-        <div className={classes.createElementContainer}>
-          <PersonForm />
+        <div
+          className={classes.createElementContainer}
+          style={{ maxHeight: "60vh" }}
+        >
+          <PersonForm isUpdatingNode={isUpdatingNode} />
           <div style={{ margin: 16 }} />
           <EditAvatar
             /* @ts-ignore */
@@ -61,14 +67,16 @@ const Person = (props: Props) => {
             {t("workspaces.workspace-form.btn_cnx")}
           </Button>
 
-          <Button
-            variant="contained"
-            color="secondary"
-            type="button"
-            onClick={handleSave}
-          >
-            {t("workspaces.workspace-form.btn_save")}
-          </Button>
+          {isUpdatingNode && (
+            <Button
+              variant="contained"
+              color="secondary"
+              type="button"
+              onClick={handleSave}
+            >
+              {t("workspaces.workspace-form.btn_save")}
+            </Button>
+          )}
         </div>
       </FloatingPanel>
     </div>

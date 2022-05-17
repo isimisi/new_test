@@ -24,6 +24,9 @@ const Document = (props: Props) => {
   const classes = useStyles();
 
   const document = useAppSelector(state => state.document.get("document"));
+  const isUpdatingNode = useAppSelector(state =>
+    state.timeline.get("isUpdatingNode")
+  );
 
   const { t } = useTranslation();
 
@@ -56,8 +59,11 @@ const Document = (props: Props) => {
         expanded
         closeForm={close}
       >
-        <div className={classes.createElementContainer}>
-          <DocumentForm />
+        <div
+          className={classes.createElementContainer}
+          style={{ maxHeight: "60vh" }}
+        >
+          <DocumentForm isUpdatingNode={isUpdatingNode} />
           <UploadForm file={file} handleFileChange={handleFileChange} />
         </div>
         <div className={css.buttonArea}>

@@ -26,10 +26,7 @@ import {
   timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating
 } from "./reducers/timelineActions";
 import ReactFlow, {
-  Background,
-  BackgroundVariant,
   OnLoadParams,
-
 } from "react-flow-renderer";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 import { getPlanId } from "@helpers/userInfo";
@@ -150,7 +147,10 @@ const Timeline = () => {
     dispatch(openEmailChange(true));
   };
 
-  const handleEmailClose = () => dispatch(openEmailChange(false));
+  const handleEmailClose = () => {
+    changeTimelineNode("email", { mail: null, uri: null });
+    dispatch(openEmailChange(false));
+  };
 
 
   const handleCloseCreateElement = () => {
@@ -419,6 +419,7 @@ const Timeline = () => {
           handleDelete={handleDelete}
           isUpdatingNode={isUpdatingNode}
           handleOpenEmail={handleOpenEmail}
+          handleDocumentOpen={handleDocumentOpen}
         />
         {/* <Table /> */}
       </Drawer>

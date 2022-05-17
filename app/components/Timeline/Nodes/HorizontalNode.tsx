@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import CustomSwitchFlow from "@components/Switch/CustomSwitchFlow";
 
 import Divider from "@material-ui/core/Divider";
@@ -14,9 +16,8 @@ import Avatar from "react-nice-avatar";
 import MaterialAvatar from "@material-ui/core/Avatar";
 import DescriptionIcon from "@material-ui/icons/Description";
 import classnames from "classnames";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
-
+import MailIcon from "@material-ui/icons/Mail";
+import NoteIcon from "@material-ui/icons/Note";
 import Filter1Icon from "@material-ui/icons/Filter1";
 import Filter2Icon from "@material-ui/icons/Filter2";
 import Filter3Icon from "@material-ui/icons/Filter3";
@@ -30,12 +31,17 @@ import Filter9PlusIcon from "@material-ui/icons/Filter9Plus";
 import moment from "moment";
 import { useAppDispatch } from "@hooks/redux";
 import {
+  changeTimelineNodeKey,
   createElementChange,
-  setTimelineNode
+  openEmailChange,
+  setTimelineNode,
+  timelineElementPersonChange
 } from "../../../containers/Pages/Timelines/reducers/timelineActions";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@material-ui/icons/Edit";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import { showPerson } from "../../../containers/Pages/Persons/reducers/personActions";
+import { useAuth0, User } from "@auth0/auth0-react";
 
 const moreDocsMapping = [
   Filter1Icon,
@@ -54,6 +60,7 @@ export default memo(({ data }: NodeProps) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const user = useAuth0().user as User;
   const [extract, setExtract] = useState(true);
   const handleExtract = () => {
     setExtract(prevVal => !prevVal);
@@ -71,6 +78,32 @@ export default memo(({ data }: NodeProps) => {
   const handelHideEdit = useCallback(() => {
     setShowEdit(false);
   }, []);
+
+  const download = (url: string, title: string) => {
+    const link = document.createElement("a");
+    link.download = title;
+    link.href = url;
+    link.target = "_blank";
+    link.click();
+  };
+
+  const openEmail = () => {
+    dispatch(changeTimelineNodeKey(data.email, "email"));
+    dispatch(openEmailChange(true));
+  };
+
+  const handleContentCLick = () => {
+    if (data.email.mail) {
+      openEmail();
+    } else {
+      console.log("document");
+    }
+  };
+
+  const openPerson = () => dispatch(timelineElementPersonChange(true));
+  const handleOpenPerson = id => {
+    dispatch(showPerson(user, id, openPerson));
+  };
 
   return (
     <div
@@ -147,6 +180,18 @@ export default memo(({ data }: NodeProps) => {
         <Typography style={{ marginLeft: 10, fontSize: 6, marginRight: 10 }}>
           {data.description}
         </Typography>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: 10,
+            justifyContent: "space-between"
+          }}
+        >
+          <IconButton size="small" onClick={handleContentCLick}>
+            {data.email.mail ? <MailIcon /> : <NoteIcon />}
+          </IconButton>
+        </div>
         {data.persons.length > 0 && (
           <div
             style={{
@@ -185,7 +230,10 @@ export default memo(({ data }: NodeProps) => {
 
                 return (
                   <Tooltip arrow title={person.name} placement="top">
-                    <div style={{ cursor: "pointer", margin: "0 2px" }}>
+                    <div
+                      style={{ cursor: "pointer", margin: "0 2px" }}
+                      onClick={() => handleOpenPerson(person.id)}
+                    >
                       <Avatar
                         style={{ width: 20, height: 20 }}
                         {...JSON.parse(person.person_icon)}
@@ -236,7 +284,10 @@ export default memo(({ data }: NodeProps) => {
 
                 return (
                   <Tooltip arrow title={document.title} placement="top">
-                    <IconButton size="small">
+                    <IconButton
+                      size="small"
+                      onClick={() => download(document.link, document.title)}
+                    >
                       <DescriptionIcon />
                     </IconButton>
                   </Tooltip>
