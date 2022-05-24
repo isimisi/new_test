@@ -177,6 +177,26 @@ export const deleteElements = (user: User, timeline_id: string, elements: string
   }
 };
 
+export const importEmails = (user: User, timeline_id: string, files, close) => async (dispatch) => {
+  dispatch({ type: types.IMPORT_EMAILS_LOADING, loadingType: "modal" });
+
+  const url = `${baseUrl}/timelines/mail/${timeline_id}?files=${files.length}`;
+  const body = new FormData();
+  files.forEach((file, index) => {
+    body.append("file_" + index, file);
+  });
+  const header = authHeader(user);
+
+  try {
+    const response = await axios.post(url, body, header);
+    dispatch({ type: types.IMPORT_EMAILS_SUCCESS, elements: response.data });
+    close();
+  } catch (error: any) {
+    console.log(error);
+    const message = genericErrorMessage;
+    dispatch({ type: types.IMPORT_EMAILS_FAILED, message });
+  }
+};
 
 export const labelChange = (title) => ({
   type: types.TITLE_CHANGE,

@@ -335,7 +335,7 @@ export default memo(({ data }: NodeProps) => {
           className={classes.horizontalDate}
           id="nodeLabel"
         >
-          {moment(data.date).format("DD.MM.YYYY")}
+          {moment(data.date).format("DD.MM.YYYY hh:mm")}
         </Typography>
         <Handle
           type="target"

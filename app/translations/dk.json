@@ -723,7 +723,9 @@
     "date": "Dato",
     "upload_mail": "Upload email",
     "see_email": "Åben email",
-    "no_choosen_node": "Do har endnu ikke valgt et element"
+    "no_choosen_node": "Do har endnu ikke valgt et element",
+    "import_mails": "Importer e-mails",
+    "choose_emails": "Vælg de e-mail du vil uploade"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",

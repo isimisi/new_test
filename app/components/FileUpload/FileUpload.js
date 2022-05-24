@@ -71,6 +71,7 @@ const FileUpload = (props) => {
     minimal,
     uploaded,
     download,
+    acceptedTypes,
   } = props;
   const [useSpringProps, set] = useSpring(() => ({
     xys: [0, 0, 1],
@@ -92,7 +93,7 @@ const FileUpload = (props) => {
     },
   };
 
-  callback.accept = onlyImage ? "image/*" : ".docx, .pdf";
+  callback.accept = acceptedTypes || (onlyImage ? "image/*" : ".docx, .pdf");
 
   const { getRootProps, getInputProps } = useDropzone(callback);
   const { t } = useTranslation();
@@ -169,6 +170,7 @@ FileUpload.propTypes = {
   minimal: PropTypes.bool.isRequired,
   uploaded: PropTypes.bool,
   download: PropTypes.func,
+  acceptedTypes: PropTypes.string,
 };
 
 FileUpload.defaultProps = {
@@ -176,6 +178,7 @@ FileUpload.defaultProps = {
   onlyImage: false,
   files: [],
   uploaded: false,
+  acceptedTypes: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   download: () => {},
 };

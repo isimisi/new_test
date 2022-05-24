@@ -14,6 +14,8 @@ interface Props {
 const Email = ({ timelineNode }: Props) => {
   const classes = useStyles();
   const email = timelineNode.get("email").get("mail");
+  const index = timelineNode.get("email").get("index");
+
   const downloadAttachment = file => {
     save(file.content.data, file.filename);
   };
@@ -21,44 +23,52 @@ const Email = ({ timelineNode }: Props) => {
   return (
     <>
       <div>
-        <Typography variant="subtitle1" className={classes.emailTitle}>
-          {t("emails.header")}
-        </Typography>
-        <div>
-          <div className={classes.flex}>
-            <Typography className={classes.type}>{t("emails.from")}</Typography>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: email.get("from").get("html")
-              }}
-            />
-          </div>
-          <div className={classes.flex}>
-            <Typography className={classes.type}>{t("emails.to")}</Typography>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: email.get("to").get("html")
-              }}
-            />
-          </div>
+        {!index && (
+          <Typography variant="subtitle1" className={classes.emailTitle}>
+            {t("emails.header")}
+          </Typography>
+        )}
+        {!index && (
+          <div>
+            <div className={classes.flex}>
+              <Typography className={classes.type}>
+                {t("emails.from")}
+              </Typography>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: email.get("from").get("html")
+                }}
+              />
+            </div>
+            <div className={classes.flex}>
+              <Typography className={classes.type}>{t("emails.to")}</Typography>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: email.get("to").get("html")
+                }}
+              />
+            </div>
 
-          <div className={classes.flex}>
-            <Typography className={classes.type}>
-              {t("emails.subject")}
-            </Typography>
-            <Typography className={classes.content}>
-              {email.get("subject")}
-            </Typography>
+            <div className={classes.flex}>
+              <Typography className={classes.type}>
+                {t("emails.subject")}
+              </Typography>
+              <Typography className={classes.content}>
+                {email.get("subject")}
+              </Typography>
+            </div>
+            <div className={classes.flex}>
+              <Typography className={classes.type}>
+                {t("emails.send")}
+              </Typography>
+              <Typography className={classes.content}>
+                {moment(email.get("date")).format("DD/MM/YYYY")}
+              </Typography>
+            </div>
           </div>
-          <div className={classes.flex}>
-            <Typography className={classes.type}>{t("emails.send")}</Typography>
-            <Typography className={classes.content}>
-              {moment(email.get("date")).format("DD/MM/YYYY")}
-            </Typography>
-          </div>
-        </div>
+        )}
       </div>
-      {email.get("attachments").length > 0 && (
+      {!index && email.get("attachments").length > 0 && (
         <div>
           <Typography variant="subtitle1" className={classes.emailTitle}>
             {t("emails.attachments")}

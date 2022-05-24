@@ -1,0 +1,161 @@
+/* eslint-disable no-param-reassign */
+import React, { useState } from "react";
+
+import { useTranslation } from "react-i18next";
+import css from "@styles/Form.scss";
+import FloatingPanel from "../../Panel/FloatingPanel";
+import useStyles from "../timeline.jss";
+import Button from "@material-ui/core/Button";
+import { useDropzone } from "react-dropzone";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import { CircularProgress, IconButton, Typography } from "@material-ui/core";
+import { useSpring, animated } from "react-spring";
+
+import { useTheme } from "@material-ui/core/styles";
+import DeleteIcon from "@material-ui/icons/Delete";
+interface Props {
+  open: boolean;
+  close: () => void;
+  loading: boolean;
+  handleImportEmails: (files: any[]) => void;
+}
+
+const calc = (x, y) => [
+  -(y - window.innerHeight / 2) / 20,
+  (x - window.innerWidth / 2) / 20,
+  1.1
+];
+const trans = (x, y, s) =>
+  `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
+
+const Email = (props: Props) => {
+  const { open, close, handleImportEmails, loading } = props;
+
+  const classes = useStyles();
+  const theme = useTheme();
+  const { t } = useTranslation();
+
+  const [files, setFiles] = useState<any[]>([]);
+
+  const handleFileChange = _files => {
+    setFiles(prevFiles => [..._files, ...prevFiles]);
+  };
+
+  const callback = {
+    onDrop: acceptedFiles => {
+      handleFileChange(
+        acceptedFiles.map(_file =>
+          Object.assign(_file, {
+            preview: URL.createObjectURL(_file)
+          })
+        )
+      );
+    },
+    accept: ".eml"
+  };
+
+  const { getRootProps, getInputProps } = useDropzone(callback);
+
+  const removeFile = (index: number) => {
+    setFiles(prevFiles => {
+      prevFiles.splice(index, 1);
+      return [...prevFiles];
+    });
+  };
+
+  const thumbs = files.map((_file, index) => (
+    <div className={classes.thumb} key={_file.name}>
+      <div className={classes.thumbInner}>
+        <MailOutlineIcon />
+        <Typography style={{ fontSize: 8, textAlign: "center" }}>
+          {_file.path}
+        </Typography>
+        <IconButton
+          style={{ position: "absolute", top: 2, right: 2 }}
+          size="small"
+          onClick={() => removeFile(index)}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </div>
+    </div>
+  ));
+
+  const [useSpringProps, set] = useSpring(() => ({
+    xys: [0, 0, 1],
+    config: { mass: 5, tension: 350, friction: 40 }
+  }));
+  const [hover, setHover] = useState(false);
+
+  const AnimatedNoteAdd = animated(MailOutlineIcon);
+
+  const handleSave = () => {
+    handleImportEmails(files);
+  };
+
+  return (
+    <div>
+      <FloatingPanel
+        openForm={open}
+        branch=""
+        title={t("timeline.import_mails")}
+        expanded
+        closeForm={close}
+      >
+        <div className={classes.createElementContainer}>
+          <div
+            {...getRootProps({ className: classes.dropzone2 })}
+            style={{ height: 200, width: "100%", position: "relative" }}
+            onMouseMove={({ clientX: x, clientY: y }) => {
+              // @ts-ignore
+              set({ xys: calc(x, y) });
+              setHover(true);
+            }}
+            onMouseLeave={() => {
+              // @ts-ignore
+              set({ xys: [0, 0, 1] });
+              setHover(false);
+            }}
+          >
+            <input {...getInputProps()} />
+
+            <AnimatedNoteAdd
+              className={classes.addCircle}
+              style={{
+                opacity: hover ? 1 : 0.5,
+                color: hover ? theme.palette.primary.main : "black",
+                // @ts-ignore
+                transform: useSpringProps.xys.interpolate(trans)
+              }}
+            />
+
+            <Typography variant="h5">{t("timeline.choose_emails")}</Typography>
+          </div>
+          <aside className={classes.thumbsContainer} style={{ marginTop: 16 }}>
+            {thumbs}
+          </aside>
+        </div>
+        <div className={css.buttonArea}>
+          <Button type="button" onClick={close}>
+            {t("generic.close")}
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            type="button"
+            onClick={handleSave}
+            disabled={files.length === 0 || loading}
+          >
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              t("workspaces.workspace-form.btn_save")
+            )}
+          </Button>
+        </div>
+      </FloatingPanel>
+    </div>
+  );
+};
+
+export default Email;

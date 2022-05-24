@@ -19,12 +19,23 @@ interface ILoadings extends Map<string, any> {
   get<K extends keyof Loadings>(key: K): Loadings[K];
 }
 
+export interface Mail {
+  mail: any;
+  uri: string | null;
+  index: number | null;
+}
+
+interface IMail extends Map<string, any> {
+  toJS(): Mail;
+  get<K extends keyof Mail>(key: K): Mail[K];
+}
+
 export interface TimelineNode {
   id: string;
   title: string;
   description: string;
   content: any;
-  email: any;
+  email: IMail;
   date: MaterialUiPickersDate | null;
   persons: List<MixedPersonOptions>;
   documents: List<MixedDocumentOptions>;

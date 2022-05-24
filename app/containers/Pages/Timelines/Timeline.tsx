@@ -23,6 +23,7 @@ import {
   putTimeline,
   shareOrgChange,
   showTimeline,
+  importEmails,
   timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating
 } from "./reducers/timelineActions";
 import ReactFlow, {
@@ -64,6 +65,7 @@ import Email from "@components/Timeline/Modals/Email";
 import VerticalNode from "@components/Timeline/Nodes/VerticalNode";
 import Content from "@components/Timeline/Drawer/Content";
 import getDrawerWidth from "@hooks/timeline/drawerWidth";
+import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 
 
 const nodeTypes = {
@@ -167,6 +169,13 @@ const Timeline = () => {
     setOpenTableView(bool);
   };
 
+  const [importEmailsOpen, setImportEmailsOpen] = useState(false);
+  const handleOpenImportEmails = () => {
+    setImportEmailsOpen(true);
+  };
+  const handleCloseImportEmails = () => {
+    setImportEmailsOpen(false);
+  };
 
   const handleVisability = useAppSelector(state =>
     state[reducer].get("handleVisability")
@@ -341,6 +350,10 @@ const Timeline = () => {
     dispatch(setIsUpdating(bool));
   };
 
+  const handleImportEmails = (files) => {
+    dispatch(importEmails(user, id, files, handleCloseImportEmails));
+  };
+
   return (
     <div style={{ display: "flex" }}>
       <Notification
@@ -386,7 +399,7 @@ const Timeline = () => {
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
             />
-            <Views openTableView={handleOpenTableView} view={view} changeView={handleChangeView} />
+            <Views openTableView={handleOpenTableView} view={view} changeView={handleChangeView} handleOpenImportEmails={handleOpenImportEmails} />
             <Controls
               currentZoom={currentZoom}
               reactFlowInstance={rfInstance}
@@ -459,6 +472,7 @@ const Timeline = () => {
       {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} />}
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
       {emailModalOpen && <Email open={emailModalOpen} close={handleEmailClose} timelineNode={timelineNode} />}
+      {importEmailsOpen && <ImportEmails open={importEmailsOpen} close={handleCloseImportEmails} handleImportEmails={handleImportEmails} loading={loadings.get("modal")} />}
       {loadings.get("main") && (
         <>
           <div

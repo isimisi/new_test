@@ -13,15 +13,17 @@ import useStyles from "./actions.jss";
 import BorderHorizontalIcon from "@material-ui/icons/BorderHorizontal";
 import BorderVerticalIcon from "@material-ui/icons/BorderVertical";
 import TocIcon from "@material-ui/icons/Toc";
-
+import Divider from "@material-ui/core/Divider";
+import AllInboxIcon from "@material-ui/icons/AllInbox";
 interface Props {
   openTableView: (bool: boolean) => void;
   view: "horizontal" | "vertical";
   changeView: (direction: "horizontal" | "vertical") => void;
+  handleOpenImportEmails: () => void;
 }
 
 const Items = (props: Props) => {
-  const { openTableView, view, changeView } = props;
+  const { openTableView, view, changeView, handleOpenImportEmails } = props;
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -66,6 +68,21 @@ const Items = (props: Props) => {
             onClick={() => openTableView(true)}
           >
             <TocIcon
+              className={classNames(classes.buttons, classes.biggerIcon)}
+            />
+          </IconButton>
+        </Tooltip>
+        <Divider flexItem className={classes.horDivider} />
+        <Tooltip
+          arrow
+          title={`${t("timeline.import_mails")}`}
+          placement="right"
+        >
+          <IconButton
+            className={classes.buttons}
+            onClick={handleOpenImportEmails}
+          >
+            <AllInboxIcon
               className={classNames(classes.buttons, classes.biggerIcon)}
             />
           </IconButton>

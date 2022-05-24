@@ -43,6 +43,9 @@ import {
   DELETE_TIMELINE_ELEMENTS_FAILED,
   OPEN_EMAIL_CHANGE,
   SET_IS_UPDATING,
+  IMPORT_EMAILS_LOADING,
+  IMPORT_EMAILS_SUCCESS,
+  IMPORT_EMAILS_FAILED,
 } from "./timelineConstants";
 
 const initialLoadings = Map({
@@ -57,7 +60,7 @@ const initialNode: TimelineNode = {
   title: "",
   description: "",
   content: EditorState.createEmpty(),
-  email: Map({ mail: null, uri: null }),
+  email: Map({ mail: null, uri: null, index: null }),
   date: null,
   persons: List(),
   documents: List(),
@@ -115,6 +118,11 @@ export default function reducer(
         mutableState.setIn(["loadings", "main"], false);
         mutableState.set("elements", fromJS(action.elements));
       });
+    case IMPORT_EMAILS_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.setIn(["loadings", "modal"], false);
+        mutableState.set("elements", fromJS(action.elements));
+      });
     case PUT_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
         const newEl = action.element as Node;
@@ -140,6 +148,7 @@ export default function reducer(
     case PUT_TIMELINE_LOADING:
     case PUT_TIMELINE_ELEMENT_LOADING:
     case SHOW_TIMELINE_LOADING:
+    case IMPORT_EMAILS_LOADING:
     case DELETE_TIMELINE_ELEMENTS_LOADING:
       return state.withMutations((mutableState) => {
         const loadingType = action.loadingType;
@@ -149,6 +158,7 @@ export default function reducer(
     case POST_TIMELINE_FAILED:
     case PUT_TIMELINE_FAILED:
     case SHOW_TIMELINE_FAILED:
+    case IMPORT_EMAILS_FAILED:
     case PUT_TIMELINE_ELEMENT_FAILED:
     case DELETE_TIMELINE_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
@@ -215,13 +225,16 @@ export default function reducer(
           const elements = mutableState.get("elements").toJS();
           const element = elements.find((el) => el.id === id);
 
-          const blocksFromHtml = htmlToDraft(element.data.content);
-          const { contentBlocks, entityMap } = blocksFromHtml;
-          const contentState = ContentState.createFromBlockArray(
-            contentBlocks,
-            entityMap
-          );
-          const editorState = EditorState.createWithContent(contentState);
+          let editorState = EditorState.createEmpty();
+          if (element.data.content) {
+            const blocksFromHtml = htmlToDraft(element.data.content);
+            const { contentBlocks, entityMap } = blocksFromHtml;
+            const contentState = ContentState.createFromBlockArray(
+              contentBlocks,
+              entityMap
+            );
+            editorState = EditorState.createWithContent(contentState);
+          }
 
           const node = {
             id: element.id,

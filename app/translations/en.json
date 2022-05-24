@@ -721,7 +721,9 @@
     "date": "Date",
     "no_choosen_node": "You have not choosen an element yet",
     "upload_mail": "Upload Email",
-    "see_email": "Open Email"
+    "see_email": "Open Email",
+    "import_mails": "Import mails",
+    "choose_emails": "Choose emails to upload"
   },
   "lookup": {
     "search_placeholder": "Search for a company",

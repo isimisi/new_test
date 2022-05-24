@@ -39,6 +39,10 @@ export const DELETE_TIMELINE_ELEMENTS_LOADING = "DELETE_TIMELINE_ELEMENTS_LOADIN
 export const DELETE_TIMELINE_ELEMENTS_SUCCESS = "DELETE_TIMELINE_ELEMENTS_SUCCESS";
 export const DELETE_TIMELINE_ELEMENTS_FAILED = "DELETE_TIMELINE_ELEMENTS_FAILED";
 
+export const IMPORT_EMAILS_LOADING = "IMPORT_EMAILS_LOADING";
+export const IMPORT_EMAILS_SUCCESS = "IMPORT_EMAILS_SUCCESS";
+export const IMPORT_EMAILS_FAILED = "IMPORT_EMAILS_FAILED";
+
 export const TITLE_CHANGE = "TITLE_CHANGE";
 export const DESCRIPTION_CHANGE = "DESCRIPTION_CHANGE";
 export const ADD_GROUP = "ADD_GROUP";
@@ -68,6 +72,7 @@ type FailedTypes =
   | typeof PUT_TIMELINE_FAILED
   | typeof POST_TIMELINE_ELEMENT_FAILED
   | typeof PUT_TIMELINE_ELEMENT_FAILED
+  | typeof IMPORT_EMAILS_FAILED
   | typeof DELETE_TIMELINE_ELEMENTS_FAILED
   | typeof DELETE_TIMELINE_FAILED;
 
@@ -76,6 +81,7 @@ type LoadingTypes =
   | typeof POST_TIMELINE_LOADING
   | typeof SHOW_TIMELINE_LOADING
   | typeof PUT_TIMELINE_LOADING
+  | typeof IMPORT_EMAILS_LOADING
   | typeof PUT_TIMELINE_ELEMENT_LOADING
   | typeof DELETE_TIMELINE_ELEMENTS_LOADING
   | typeof POST_TIMELINE_ELEMENT_LOADING
@@ -199,6 +205,11 @@ export interface ChangeView {
   elements: FlowElement[];
 }
 
+export interface ImportEmailsSuccess {
+  type: typeof IMPORT_EMAILS_SUCCESS;
+  elements: FlowElement[];
+}
+
 export interface SetIsUpdating {
   type: typeof SET_IS_UPDATING;
   bool: boolean;
@@ -210,6 +221,7 @@ export type TimelineActions =
   | ChangeTags
   | TitleChange
   | ShareOrgChange
+  | ImportEmailsSuccess
   | DescriptionChange
   | AddGroup
   | ShowHandlesChange

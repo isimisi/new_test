@@ -164,6 +164,51 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     marginTop: 10,
   },
   verticalContent: {},
+  dropzone2: {
+    display: "flex",
+    width: "100%",
+    backgroundColor: "#F7F8FA",
+    borderRadius: theme.rounded.small,
+    border: "1px solid #F1F1F1",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  addCircle: {
+    width: "30%",
+    height: "30%",
+  },
+  thumbsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  thumb: {
+    display: "inline-flex",
+
+    border: "1px solid #eaeaea",
+    marginBottom: 8,
+    marginRight: 8,
+    width: 100,
+    height: 100,
+    padding: 4,
+    borderRadius: theme.rounded.small,
+    boxSizing: "border-box",
+  },
+  thumbInner: {
+    minWidth: 0,
+    overflow: "hidden",
+    display: "flex",
+    position: "relative",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  img: {
+    display: "block",
+    width: "auto",
+    height: "100%",
+  },
 }));
 
 export default useStyles;
