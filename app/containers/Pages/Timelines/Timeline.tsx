@@ -27,6 +27,7 @@ import {
   timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating
 } from "./reducers/timelineActions";
 import ReactFlow, {
+  isNode,
   OnLoadParams,
 } from "react-flow-renderer";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
@@ -335,6 +336,11 @@ const Timeline = () => {
     dispatch(deleteElements(user, id, [timelineNode.get("id")]));
   };
 
+  const onElementsRemove = (el) => {
+    const nodes = el.filter(e => isNode(e)).map(n => n.id);
+    dispatch(deleteElements(user, id, nodes));
+  };
+
   const handleChangeView = (direction: "horizontal" | "vertical") => {
     dispatch(changeView(direction, elements));
     setTimeout(() => {
@@ -377,7 +383,7 @@ const Timeline = () => {
           //   [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5 / 3],
           //   [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
           // ]}
-
+          onElementsRemove={onElementsRemove}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           onMove={flowTransform => {

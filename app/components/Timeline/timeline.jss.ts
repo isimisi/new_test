@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   },
   personDiv: {
     display: "flex",
+    flexWrap: "wrap",
   },
   peopleAndDocumentsContainer: {
     padding: 10,

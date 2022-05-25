@@ -426,7 +426,7 @@ const Content = (props: Props) => {
                         {persons.map(person => (
                           <Tooltip arrow title={person.name} placement="top">
                             <div
-                              style={{ cursor: "pointer", margin: "0 2px" }}
+                              style={{ cursor: "pointer", margin: 2 }}
                               onClick={() => handleOpenPersonNonEdit(person.id)}
                             >
                               <Avatar
