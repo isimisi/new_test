@@ -67,10 +67,18 @@ export default function CustomEdge({
         markerEnd={markerEnd}
       />
       <foreignObject
-        width={isHorizontal ? 235 : foreignObjectSize}
+        width={isHorizontal ? 220 : foreignObjectSize}
         height={!isHorizontal ? 100 : foreignObjectSize}
-        x={isHorizontal ? sourceX : edgeCenterX - foreignObjectSize / 2}
-        y={isHorizontal ? edgeCenterY - foreignObjectSize / 2 : sourceY}
+        x={
+          isHorizontal
+            ? sourceX - foreignObjectSize / 2
+            : edgeCenterX - foreignObjectSize / 2
+        }
+        y={
+          isHorizontal
+            ? edgeCenterY - foreignObjectSize / 2
+            : sourceY - foreignObjectSize / 2
+        }
         className="edgebutton-foreignobject"
         requiredExtensions="http://www.w3.org/1999/xhtml"
       >

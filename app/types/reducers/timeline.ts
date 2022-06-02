@@ -37,6 +37,7 @@ export interface TimelineNode {
   content: any;
   email: IMail;
   date: MaterialUiPickersDate | null;
+
   persons: List<MixedPersonOptions>;
   documents: List<MixedDocumentOptions>;
   tags: any[];

@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 
 import { useHistory } from "react-router-dom";
-import { authHeader, baseUrl, encryptId, getId } from "@api/constants";
+import { authHeader, baseUrl, getId } from "@api/constants";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import Notification from "@components/Notification/Notification";
@@ -12,6 +12,8 @@ import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
+
+import ShareModal from '@components/Flow/Share/ShareModal';
 import {
   addGroup,
   changeHandleVisability,
@@ -164,10 +166,22 @@ const Timeline = () => {
   };
 
   const [openTableView, setOpenTableView] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
+  const toggleDrawer = (bool?: boolean) => {
+    if (bool !== undefined) {
+      setOpenDrawer(bool);
+    } else {
+      setOpenDrawer(prevVal => !prevVal);
+    }
+  };
 
   const handleOpenTableView = (bool) => {
-    setOpenTableView(bool);
+    if (bool !== undefined) {
+      setOpenTableView(bool);
+    } else {
+      setOpenTableView(prevVal => !prevVal);
+    }
   };
 
   const [importEmailsOpen, setImportEmailsOpen] = useState(false);
@@ -217,7 +231,6 @@ const Timeline = () => {
   const onLoad = _reactFlowInstance => {
     setRfInstance(_reactFlowInstance);
     dispatch(showTimeline(user, id as string, setMetaOpen, _reactFlowInstance));
-    _reactFlowInstance.fitView();
   };
 
   const onSave = useCallback(() => {
@@ -228,7 +241,7 @@ const Timeline = () => {
 
   const onMouseLeave = useCallback(() => {
     onSave();
-  }, [rfInstance, elements]);
+  }, [rfInstance]);
 
   useEffect(() => {
     dispatch(closeMenuAction);
@@ -240,6 +253,7 @@ const Timeline = () => {
       dispatch(openMenuAction);
     };
   }, [user]);
+
 
   const handleChangeTags = useCallback(
     _tags => dispatch(changeTags(_tags)),
@@ -280,6 +294,7 @@ const Timeline = () => {
       dispatch(saveElement(user, id, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
     }
   };
+
 
   const onSavePerson = (person: TPerson) => {
     setElementPersons(prevState => {
@@ -360,6 +375,35 @@ const Timeline = () => {
     dispatch(importEmails(user, id, files, handleCloseImportEmails));
   };
 
+  // const [panToNextIndex, setPanToNextIndex] = useState<number | null>(null);
+
+  // const handleTransform = useCallback(
+  //   (transform) => {
+  //     if (rfInstance) {
+  //       const {
+  //         position: [x, y],
+  //         zoom,
+  //       } = rfInstance.toObject();
+  //       if (panToNextIndex !== null) {
+  //         // @ts-ignore
+  //         setPanToNextIndex((prevVal) => prevVal + 1);
+  //       } else {
+  //         setPanToNextIndex(0);
+  //       }
+  //       rfInstance.setTransform(transform);
+  //       // animate({
+  //       //   from: { x, y, zoom },
+  //       //   to: transform,
+  //       //   onUpdate: ({ _x, _y, _zoom }) => {
+  //       //     console.log('ashbo');
+  //       //     rfInstance.setTransform({ x: _x, y: _y, zoom: _zoom });
+  //       //   },
+  //       // });
+  //     }
+  //   },
+  //   [rfInstance, panToNextIndex]
+  // );
+
   return (
     <div style={{ display: "flex" }}>
       <Notification
@@ -368,7 +412,7 @@ const Timeline = () => {
       />
       <div
         className={classnames(classes.root, {
-          [classes.contentShift]: openTableView
+          [classes.contentShift]: openDrawer
         })}
 
         ref={reactFlowContainer}
@@ -404,9 +448,19 @@ const Timeline = () => {
               elements={elements}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
+              timeline
             />
-            <Views openTableView={handleOpenTableView} view={view} changeView={handleChangeView} handleOpenImportEmails={handleOpenImportEmails} />
+            <Views
+              openTableView={handleOpenTableView}
+              view={view}
+              changeView={handleChangeView}
+              handleOpenImportEmails={handleOpenImportEmails}
+              openTable={openTableView}
+              toggleDrawer={toggleDrawer}
+            />
             <Controls
+              // handleTransform={handleTransform}
+              // panToNextIndex={panToNextIndex}
               currentZoom={currentZoom}
               reactFlowInstance={rfInstance}
             />
@@ -419,7 +473,7 @@ const Timeline = () => {
         className={classes.drawer}
         variant="persistent"
         anchor="right"
-        open={openTableView}
+        open={openDrawer}
         PaperProps={{ style: { width: drawerWidth } }}
 
       >
@@ -440,7 +494,6 @@ const Timeline = () => {
           handleOpenEmail={handleOpenEmail}
           handleDocumentOpen={handleDocumentOpen}
         />
-        {/* <Table /> */}
       </Drawer>
       <WorkspaceMeta
         open={metaOpen}
@@ -479,6 +532,7 @@ const Timeline = () => {
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
       {emailModalOpen && <Email open={emailModalOpen} close={handleEmailClose} timelineNode={timelineNode} />}
       {importEmailsOpen && <ImportEmails open={importEmailsOpen} close={handleCloseImportEmails} handleImportEmails={handleImportEmails} loading={loadings.get("modal")} />}
+      {/* {openTableView && <Table open={openTableView} close={handleOpenTableView} elements={elements} personOptions={personOptions} />} */}
       {loadings.get("main") && (
         <>
           <div
@@ -497,6 +551,12 @@ const Timeline = () => {
           </div>
         </>
       )}
+      <ShareModal
+        open={shareModalOpen}
+        loading={loadings.get("modal")}
+        close={() => setShareModalOpen(false)}
+
+      />
     </div>
   );
 };

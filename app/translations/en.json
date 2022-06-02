@@ -721,9 +721,13 @@
     "date": "Date",
     "no_choosen_node": "You have not choosen an element yet",
     "upload_mail": "Upload Email",
-    "see_email": "Open Email",
+    "see_email": "Open email",
     "import_mails": "Import mails",
-    "choose_emails": "Choose emails to upload"
+    "choose_emails": "Upload e-mails – or drag them in",
+    "table_header": "Edit timeline elements",
+    "time": "Time",
+    "see_content": "See content",
+    "cancel": "Cancel"
   },
   "lookup": {
     "search_placeholder": "Search for a company",
@@ -805,7 +809,7 @@
   "percent": "%",
   "numberformat": "en-GB",
   "person": {
-    "form_header": "Information regarding your person",
+    "form_header": "Person data",
     "name": "Name",
     "affiliation": "Affiliation",
     "company": "Company"
@@ -833,7 +837,10 @@
     "close": "Close",
     "delete": "Delete",
     "stop_edit": "Stop editing",
-    "save": "Save"
+    "save": "Save",
+    "next": "Next",
+    "title": "Title",
+    "upload": "Upload"
   },
   "emails": {
     "header": "Email information",
@@ -843,5 +850,8 @@
     "body": "Email content",
     "attachments": "Attachments",
     "send": "Send"
+  },
+  "genereic": {
+    "back": "Back"
   }
 }

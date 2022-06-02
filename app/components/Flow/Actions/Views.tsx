@@ -16,25 +16,38 @@ import TocIcon from "@material-ui/icons/Toc";
 import Divider from "@material-ui/core/Divider";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
 interface Props {
-  openTableView: (bool: boolean) => void;
+  openTableView: (bool?: boolean) => void;
   view: "horizontal" | "vertical";
   changeView: (direction: "horizontal" | "vertical") => void;
   handleOpenImportEmails: () => void;
+  openTable: boolean;
+  toggleDrawer: (bool?: boolean) => void;
 }
 
 const Items = (props: Props) => {
-  const { openTableView, view, changeView, handleOpenImportEmails } = props;
+  const {
+    openTableView,
+    view,
+    changeView,
+    handleOpenImportEmails,
+    openTable,
+    toggleDrawer
+  } = props;
   const classes = useStyles();
   const { t } = useTranslation();
 
   const handleVertical = () => {
     changeView("vertical");
-    openTableView(true);
+    toggleDrawer(true);
   };
 
   const handleHorizontal = () => {
     changeView("horizontal");
-    openTableView(false);
+    toggleDrawer(false);
+  };
+
+  const handleTable = () => {
+    openTableView();
   };
 
   return (
@@ -62,16 +75,17 @@ const Items = (props: Props) => {
             />
           </IconButton>
         </Tooltip>
-        <Tooltip arrow title={`${t("timeline.table")}`} placement="right">
-          <IconButton
-            className={classes.buttons}
-            onClick={() => openTableView(true)}
-          >
+        {/* <Tooltip arrow title={`${t("timeline.table")}`} placement="right">
+          <IconButton className={classes.buttons} onClick={handleTable}>
             <TocIcon
-              className={classNames(classes.buttons, classes.biggerIcon)}
+              className={classNames(
+                classes.buttons,
+                classes.biggerIcon,
+                openTable ? classes.activeButton : ""
+              )}
             />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
         <Divider flexItem className={classes.horDivider} />
         <Tooltip
           arrow

@@ -55,6 +55,8 @@ export const showPerson = (user: User, id: string, openModal?: () => void) => as
       openModal();
     }
   } catch (error) {
+    // @ts-ignore
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_PERSON_FAILED, message });
   }

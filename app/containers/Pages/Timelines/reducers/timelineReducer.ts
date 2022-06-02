@@ -62,6 +62,7 @@ const initialNode: TimelineNode = {
   content: EditorState.createEmpty(),
   email: Map({ mail: null, uri: null, index: null }),
   date: null,
+
   persons: List(),
   documents: List(),
   tags: [],
@@ -243,6 +244,7 @@ export default function reducer(
             email: element.data.email,
             description: element.data.description,
             date: element.data.date,
+
             persons: fromJS(
               element.data.persons.map((p) => ({
                 icon: p.person_icon,

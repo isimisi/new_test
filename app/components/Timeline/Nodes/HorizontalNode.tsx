@@ -159,9 +159,59 @@ export default memo(({ data }: NodeProps) => {
               justifyContent: "center"
             }}
           >
-            <Typography style={{ fontSize: 6, color: "gray", marginRight: 3 }}>
-              {moment(data.date).format("DD.MM.YYYY")}
-            </Typography>
+            {data.persons.length > 0 && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  margin: 10,
+                  justifyContent: "space-between"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {data.persons.map((person, index) => {
+                    if (index === 3) {
+                      return (
+                        <Tooltip
+                          arrow
+                          title={data.persons
+                            .map(p => p.name)
+                            .slice(3)
+                            .join(", ")}
+                          placement="top"
+                        >
+                          <div style={{ cursor: "pointer", margin: "0 2px" }}>
+                            <MaterialAvatar
+                              style={{ width: 20, height: 20, fontSize: 8 }}
+                            >
+                              {`${data.persons.length - 3}+`}
+                            </MaterialAvatar>
+                          </div>
+                        </Tooltip>
+                      );
+                    }
+
+                    if (index > 3) {
+                      return null;
+                    }
+
+                    return (
+                      <Tooltip arrow title={person.name} placement="top">
+                        <div
+                          style={{ cursor: "pointer", margin: "0 2px" }}
+                          onClick={() => handleOpenPerson(person.id)}
+                        >
+                          <Avatar
+                            style={{ width: 20, height: 20 }}
+                            {...JSON.parse(person.person_icon)}
+                          />
+                        </div>
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
             <Tooltip arrow title={`${t("generic.more")}`} placement="top">
               <IconButton size="small">
                 <MoreHorizIcon />
@@ -173,93 +223,50 @@ export default memo(({ data }: NodeProps) => {
         <Divider />
         <Typography
           variant="subtitle1"
-          style={{ marginLeft: 10, marginRight: 10 }}
+          style={{ marginLeft: 10, marginRight: 10, fontWeight: "bold" }}
         >
           {data.label}
         </Typography>
-        <Typography style={{ marginLeft: 10, fontSize: 6, marginRight: 10 }}>
+        <Typography
+          style={{ marginLeft: 10, fontSize: "0.8rem", marginRight: 10 }}
+        >
           {data.description}
         </Typography>
+
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            margin: 10,
-            justifyContent: "space-between"
+            margin: 10
           }}
         >
-          <IconButton size="small" onClick={handleContentCLick}>
-            {data.email.mail ? <MailIcon /> : <NoteIcon />}
-          </IconButton>
-        </div>
-        {data.persons.length > 0 && (
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              margin: 10,
+
               justifyContent: "space-between"
             }}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {data.persons.map((person, index) => {
-                if (index === 3) {
-                  return (
-                    <Tooltip
-                      arrow
-                      title={data.persons
-                        .map(p => p.name)
-                        .slice(3)
-                        .join(", ")}
-                      placement="top"
-                    >
-                      <div style={{ cursor: "pointer", margin: "0 2px" }}>
-                        <MaterialAvatar
-                          style={{ width: 20, height: 20, fontSize: 8 }}
-                        >
-                          {`${data.persons.length - 3}+`}
-                        </MaterialAvatar>
-                      </div>
-                    </Tooltip>
-                  );
-                }
-
-                if (index > 3) {
-                  return null;
-                }
-
-                return (
-                  <Tooltip arrow title={person.name} placement="top">
-                    <div
-                      style={{ cursor: "pointer", margin: "0 2px" }}
-                      onClick={() => handleOpenPerson(person.id)}
-                    >
-                      <Avatar
-                        style={{ width: 20, height: 20 }}
-                        {...JSON.parse(person.person_icon)}
-                      />
-                    </div>
-                  </Tooltip>
-                );
-              })}
-            </div>
-
-            {/* <div>
-            <IconButton size="small" onClick={onPersonClick}>
-              <PersonAddIcon style={{ color: "gray" }} />
-            </IconButton>
-          </div> */}
+            <Tooltip
+              arrow
+              title={`${
+                data.email.mail
+                  ? t("timeline.see_email")
+                  : t("timeline.see_content")
+              }`}
+              placement="top"
+            >
+              <IconButton
+                size="small"
+                onClick={handleContentCLick}
+                style={{ right: 3 }}
+              >
+                {data.email.mail ? <MailIcon /> : <NoteIcon />}
+              </IconButton>
+            </Tooltip>
           </div>
-        )}
-        {data.documents.length > 0 && (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              margin: 10,
-              justifyContent: "space-between"
-            }}
-          >
+          {data.documents.length > 0 && (
             <div>
               {data.documents.map((document, index) => {
                 if (index === 3) {
@@ -294,14 +301,9 @@ export default memo(({ data }: NodeProps) => {
                 );
               })}
             </div>
+          )}
+        </div>
 
-            {/* <div>
-            <IconButton size="small" onClick={onDocumentClick}>
-              <NoteAddIcon style={{ color: "gray" }} />
-            </IconButton>
-          </div> */}
-          </div>
-        )}
         {/* <div
           style={{
             position: "absolute",
@@ -335,7 +337,9 @@ export default memo(({ data }: NodeProps) => {
           className={classes.horizontalDate}
           id="nodeLabel"
         >
-          {moment(data.date).format("DD.MM.YYYY hh:mm")}
+          {`${moment(data.date).format("DD/MM-YYYY")}, kl. ${moment(
+            data.date
+          ).format("HH:mm")}`}
         </Typography>
         <Handle
           type="target"

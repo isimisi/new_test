@@ -7,7 +7,13 @@ import css from "@styles/Form.scss";
 import FloatingPanel from "../../Panel/FloatingPanel";
 import useStyles from "../timeline.jss";
 import Button from "@material-ui/core/Button";
-import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import {
+  MuiPickersUtilsProvider,
+  DateTimePicker,
+  DatePicker,
+  TimePicker,
+  KeyboardTimePicker
+} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import TextField from "@material-ui/core/TextField";
 import CreatableSelect from "react-select/creatable";
@@ -39,6 +45,7 @@ import enLocale from "date-fns/locale/en-US";
 import axios from "axios";
 import { baseUrl } from "@api/constants";
 import Fab from "@material-ui/core/Fab";
+import moment from "moment";
 
 interface Props {
   open: boolean;
@@ -84,6 +91,7 @@ const CreateElement = (props: Props) => {
   const { t, i18n } = useTranslation();
 
   const date = timelineNode.get("date");
+
   const title = timelineNode.get("title");
   const description = timelineNode.get("description");
   const content = timelineNode.get("content");
@@ -92,7 +100,10 @@ const CreateElement = (props: Props) => {
   const documents = timelineNode.get("documents").toJS();
 
   const theme = useTheme();
-  const handleSetDate = d => changeTimelineNode("date", d);
+  const handleSetDate = d => {
+    changeTimelineNode("date", d);
+  };
+
   const labelChange = e => changeTimelineNode("title", e.target.value);
   const descriptionChange = e =>
     changeTimelineNode("description", e.target.value);
@@ -195,12 +206,31 @@ const CreateElement = (props: Props) => {
               utils={DateFnsUtils}
               locale={localeMap[i18n.language]}
             >
-              <DateTimePicker
+              <DatePicker
                 label={t("timeline.date")}
                 placeholder={t("timeline.date")}
+                views={["year", "month", "date"]}
+                disableToolbar
+                openTo="year"
                 value={date}
+                format="DD/MM-YYYY"
+                labelFunc={_date =>
+                  _date ? moment(_date).format("DD/MM-YYYY") : ""
+                }
+                className={classes.eventField}
+                cancelLabel={t("timeline.cancel")}
+                onChange={handleSetDate}
+              />
+              <KeyboardTimePicker
+                label={t("timeline.time")}
+                placeholder={t("timeline.time")}
+                disableToolbar
+                value={date}
+                cancelLabel={t("timeline.cancel")}
+                labelFunc={_date =>
+                  _date ? moment(_date).format("HH:mm") : ""
+                }
                 ampm={false}
-                variant="inline"
                 className={classes.eventField}
                 onChange={handleSetDate}
               />
@@ -208,8 +238,8 @@ const CreateElement = (props: Props) => {
             <div>
               <TextField
                 name="label"
-                placeholder={t("workspaces.workspace-form.name")}
-                label={t("workspaces.workspace-form.name")}
+                placeholder={t("generic.title")}
+                label={t("generic.title")}
                 value={title}
                 className={classes.eventField}
                 onChange={labelChange}

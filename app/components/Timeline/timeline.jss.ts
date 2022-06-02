@@ -4,7 +4,7 @@ import { MyTheme } from "../../types/styling";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
   horizontalNodeOffTimeLine: {
-    width: 150,
+    width: 250,
     bottom: 100,
     position: "absolute",
     cursor: "auto",
@@ -38,6 +38,13 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   content: {
     fontSize: 14,
   },
+  appBar: {
+    position: "relative",
+  },
+  tableTitle: {
+    marginLeft: theme.spacing(2),
+    flex: 1,
+  },
   emailTitle: {
     color: theme.palette.primary.main,
     fontWeight: "bold",
@@ -56,10 +63,10 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   personDiv: {
     display: "flex",
     flexWrap: "wrap",
+    justifyContent: "flex-end",
   },
   peopleAndDocumentsContainer: {
     padding: 10,
-    backgroundColor: theme.palette.background.default,
   },
   personAndDocsDivider: {
     marginTop: 10,
@@ -158,8 +165,8 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     color: "white",
   },
   verticalTitle: {
-    fontSize: 30,
-    fontWeight: 600,
+    fontSize: 22,
+    fontWeight: "bold",
   },
   verticalDescription: {
     marginTop: 10,

@@ -36,7 +36,12 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
 import Divider from "@material-ui/core/Divider";
-import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import {
+  MuiPickersUtilsProvider,
+  DateTimePicker,
+  TimePicker,
+  DatePicker
+} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import TextField from "@material-ui/core/TextField";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -220,12 +225,24 @@ const Content = (props: Props) => {
             utils={DateFnsUtils}
             locale={localeMap[i18n.language]}
           >
-            <DateTimePicker
+            <DatePicker
               label={t("timeline.date")}
               placeholder={t("timeline.date")}
               value={date}
+              labelFunc={_date =>
+                _date ? moment(_date).format("DD/MM-YYYY") : ""
+              }
+              className={classes.eventField}
+              cancelLabel={t("timeline.cancel")}
+              onChange={handleSetDate}
+            />
+            <TimePicker
+              label={t("timeline.time")}
+              placeholder={t("timeline.time")}
+              value={date}
+              cancelLabel={t("timeline.cancel")}
+              labelFunc={_date => (_date ? moment(_date).format("HH:mm") : "")}
               ampm={false}
-              variant="inline"
               className={classes.eventField}
               onChange={handleSetDate}
             />
@@ -403,12 +420,15 @@ const Content = (props: Props) => {
                     style={{
                       display: "inline-block",
                       padding: 3,
-                      marginBottom: 4,
-                      backgroundColor: theme.palette.primary.main
+                      marginBottom: 10,
+                      backgroundColor: theme.palette.primary.main,
+                      boxShadow: "none"
                     }}
                   >
                     <Typography className={classes.verticalDate}>
-                      {moment(date).format("DD.MM.YYYY")}
+                      {`${moment(date).format("DD/MM-YYYY")}, kl. ${moment(
+                        date
+                      ).format("HH:mm")}`}
                     </Typography>
                   </Paper>
                   <Typography variant="h6" className={classes.verticalTitle}>
@@ -421,7 +441,7 @@ const Content = (props: Props) => {
                 </Grid>
                 <Grid item xs={12} md={3}>
                   {(persons.length !== 0 || documents.length !== 0) && (
-                    <Paper className={classes.peopleAndDocumentsContainer}>
+                    <div className={classes.peopleAndDocumentsContainer}>
                       <div className={classes.personDiv}>
                         {persons.map(person => (
                           <Tooltip arrow title={person.name} placement="top">
@@ -437,20 +457,24 @@ const Content = (props: Props) => {
                           </Tooltip>
                         ))}
                       </div>
-                      <div className={classes.personAndDocsDivider} />
-                      {documents.map(document => (
-                        <Tooltip arrow title={document.title} placement="top">
-                          <IconButton
-                            size="small"
-                            onClick={() =>
-                              handleOpenDocumentNonEdit(document.id)
-                            }
-                          >
-                            <DescriptionIcon style={{ fontSize: 25 }} />
-                          </IconButton>
-                        </Tooltip>
-                      ))}
-                    </Paper>
+                      {persons.length > 0 && documents.length > 0 && (
+                        <div className={classes.personAndDocsDivider} />
+                      )}
+                      <div className={classes.personDiv}>
+                        {documents.map(document => (
+                          <Tooltip arrow title={document.title} placement="top">
+                            <IconButton
+                              size="small"
+                              onClick={() =>
+                                handleOpenDocumentNonEdit(document.id)
+                              }
+                            >
+                              <DescriptionIcon style={{ fontSize: 25 }} />
+                            </IconButton>
+                          </Tooltip>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </Grid>
               </Grid>

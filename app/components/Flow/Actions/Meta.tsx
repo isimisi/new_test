@@ -50,6 +50,7 @@ interface Props {
   handleImage: (type: "image" | "pdf", stopLoading: () => void) => void;
   elements: any;
   handlePowerpoint: (stopLoading: () => void) => void;
+  timeline?: boolean;
 }
 
 const Meta = (props: Props) => {
@@ -64,6 +65,7 @@ const Meta = (props: Props) => {
     handleAutoLayout,
     handleOpenMenu,
     handleImage,
+    timeline,
     handlePowerpoint: generatePp
   } = props;
   const classes = useStyles();
@@ -274,7 +276,7 @@ const Meta = (props: Props) => {
             <MenuIcon className={classes.buttons} />
           </IconButton>
         </Tooltip>
-        <Tooltip arrow title={`${t("workspaces.settings")}`} placement="bottom">
+        {!timeline && <Tooltip arrow title={`${t("workspaces.settings")}`} placement="bottom">
           <IconButton
             ref={anchorRefSettings}
             className={classes.buttons}
@@ -282,7 +284,7 @@ const Meta = (props: Props) => {
           >
             <SettingsIcon className={classes.buttons} />
           </IconButton>
-        </Tooltip>
+        </Tooltip>}
         <Tooltip arrow title={`${t("workspaces.export")}`} placement="bottom">
           <IconButton
             ref={anchorRefexport}
@@ -398,7 +400,7 @@ const Meta = (props: Props) => {
                     <ListItemText>{t("workspaces.pdf")}</ListItemText>
                   </MenuItem>
 
-                  <MenuItem className={classes.menuItem} onClick={handleExcel} disabled={loadingExcel}>
+                  {!timeline && <MenuItem className={classes.menuItem} onClick={handleExcel} disabled={loadingExcel}>
                     <ListItemIcon>
                       {loadingExcel ? <CircularProgress size={25} /> : <img
                         src={excel}
@@ -407,9 +409,9 @@ const Meta = (props: Props) => {
                       />}
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.excel")}</ListItemText>
-                  </MenuItem>
+                  </MenuItem>}
 
-                  <MenuItem className={classes.menuItem} onClick={handlePowerpoint}>
+                  {!timeline && <MenuItem className={classes.menuItem} onClick={handlePowerpoint}>
                     <ListItemIcon>
                       {loadingPp ? <CircularProgress size={25} /> : <img
                         src={powerpoint}
@@ -418,7 +420,7 @@ const Meta = (props: Props) => {
                       />}
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.power_point")}</ListItemText>
-                  </MenuItem>
+                  </MenuItem>}
                 </MenuList>
               </ClickAwayListener>
             </Paper>

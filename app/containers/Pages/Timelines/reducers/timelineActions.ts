@@ -11,6 +11,8 @@ import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from "draft-js";
 import { isEdge, isNode, Position } from "react-flow-renderer";
 import dagre from "dagre";
+import { getDocumentDropDown } from "../../Documents/reducers/documentActions";
+import { getPersonDropDown } from "../../Persons/reducers/personActions";
 const TIMELINES = "timelines";
 
 export const getTimelines = (user: User) => async (dispatch) => {
@@ -62,11 +64,14 @@ export const showTimeline = (user: User, id: string, openMeta, rfInstance) => as
     }
 
     if (rfInstance) {
-      rfInstance.fitView();
+      setTimeout(() => {
+        rfInstance.fitView();
+      }, 200);
     }
 
     dispatch({ type: types.SHOW_TIMELINE_SUCCESS, title, description, group, tags, shareOrg, elements });
   } catch (error: any) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_TIMELINE_FAILED, message });
   }
@@ -129,6 +134,8 @@ export const saveElement = (user: User, timeline_id, element, changedPersons, ch
     const response = await axios.post(url, body, header);
     dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, elements: response.data });
     handleCloseCreateElement();
+    dispatch(getPersonDropDown(user));
+    dispatch(getDocumentDropDown(user));
   } catch (error: any) {
     console.log(error.response);
     const message = genericErrorMessage;
@@ -148,11 +155,13 @@ export const putElement = (user: User, element, changedPersons, changedDocuments
 
   const body = { element: _element, changedPersons, changedDocuments };
   const header = authHeader(user);
-
+  console.log(_element);
   try {
     const response = await axios.put(url, body, header);
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_SUCCESS, element: response.data });
     handleCloseCreateElement();
+    dispatch(getPersonDropDown(user));
+    dispatch(getDocumentDropDown(user));
   } catch (error: any) {
     console.log(error);
     const message = genericErrorMessage;
@@ -191,6 +200,8 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
     const response = await axios.post(url, body, header);
     dispatch({ type: types.IMPORT_EMAILS_SUCCESS, elements: response.data });
     close();
+    dispatch(getPersonDropDown(user));
+    dispatch(getDocumentDropDown(user));
   } catch (error: any) {
     console.log(error);
     const message = genericErrorMessage;

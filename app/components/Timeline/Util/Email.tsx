@@ -19,15 +19,10 @@ const Email = ({ timelineNode }: Props) => {
   const downloadAttachment = file => {
     save(file.content.data, file.filename);
   };
-  console.log(index);
+
   return (
     <>
       <div>
-        {index === null && (
-          <Typography variant="subtitle1" className={classes.emailTitle}>
-            {t("emails.header")}
-          </Typography>
-        )}
         {index === null && (
           <div>
             <div className={classes.flex}>
@@ -70,9 +65,6 @@ const Email = ({ timelineNode }: Props) => {
       </div>
       {index === null && email.get("attachments").length > 0 && (
         <div>
-          <Typography variant="subtitle1" className={classes.emailTitle}>
-            {t("emails.attachments")}
-          </Typography>
           {email.get("attachments").map(attachment => (
             <Button
               key={attachment.cid}
@@ -85,9 +77,6 @@ const Email = ({ timelineNode }: Props) => {
         </div>
       )}
       <div>
-        <Typography variant="subtitle1" className={classes.emailTitle}>
-          {t("emails.body")}
-        </Typography>
         <div dangerouslySetInnerHTML={{ __html: email.get("html") }} />
       </div>
     </>

@@ -722,10 +722,14 @@
     "create_element": "Lav et event",
     "date": "Dato",
     "upload_mail": "Upload email",
-    "see_email": "Åben email",
+    "see_email": "Åben e-mail",
     "no_choosen_node": "Do har endnu ikke valgt et element",
     "import_mails": "Importer e-mails",
-    "choose_emails": "Vælg de e-mail du vil uploade"
+    "choose_emails": "Upload e-mails – eller træk dem ind i feltet her",
+    "table_header": "Rediger tidslinjeelementer",
+    "time": "Tid",
+    "see_content": "Se indhold",
+    "cancel": "Annuller"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -815,7 +819,7 @@
     "avatar": "Avatar",
     "company": "Virksomhed",
     "affiliation": "Tilhørsforhold",
-    "form_header": "Oplysninger om din person"
+    "form_header": "Persondata"
   },
   "Description": "Skriv en beskrivelse",
   "email": "E-mail",
@@ -841,7 +845,10 @@
     "close": "Luk",
     "delete": "Slet",
     "stop_edit": "Stop redigering",
-    "save": "Gem"
+    "save": "Gem",
+    "next": "Næste",
+    "title": "Titel",
+    "upload": "Upload"
   },
   "emails": {
     "body": "E-mailindhold",
@@ -851,5 +858,8 @@
     "subject": "Emne:",
     "attachments": "Vedhæftede filer",
     "send": "Sendt"
+  },
+  "genereic": {
+    "back": "Forrige"
   }
 }

@@ -99,7 +99,6 @@ const Email = (props: Props) => {
         openForm={open}
         branch=""
         title={t("timeline.import_mails")}
-        expanded
         closeForm={close}
       >
         <div className={classes.createElementContainer}>
@@ -146,11 +145,7 @@ const Email = (props: Props) => {
             onClick={handleSave}
             disabled={files.length === 0 || loading}
           >
-            {loading ? (
-              <CircularProgress />
-            ) : (
-              t("workspaces.workspace-form.btn_save")
-            )}
+            {loading ? <CircularProgress /> : t("generic.upload")}
           </Button>
         </div>
       </FloatingPanel>

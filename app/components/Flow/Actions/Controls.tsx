@@ -13,18 +13,21 @@ import HelpIcon from "@material-ui/icons/Help";
 import Button from "@material-ui/core/Button";
 import useStyles from "./actions.jss";
 import Expand from "react-expand-animated";
-import { MiniMap, OnLoadParams } from "react-flow-renderer";
+import { isNode, MiniMap, OnLoadParams, Node } from "react-flow-renderer";
 import { useTheme } from "@material-ui/core/styles";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
-
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 
 interface Props {
   currentZoom: number;
   reactFlowInstance: OnLoadParams | null;
+  handleTransform?: (transform: { x: number, y: number, zoom: number }) => void;
+  panToNextIndex?: number | null;
 }
 
 const Controls = (props: Props) => {
-  const { currentZoom, reactFlowInstance } = props;
+  const { currentZoom, reactFlowInstance, handleTransform, panToNextIndex } = props;
   const classes = useStyles();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -46,10 +49,70 @@ const Controls = (props: Props) => {
   const handleCloseFitTooltip = () => setFitViewOpen(false);
   const handleOpenFitTooltip = () => setFitViewOpen(true);
 
+  const nodes = reactFlowInstance?.getElements().filter((e): e is Node => isNode(e));
+
+  // const handleNext = () => {
+  //   if (nodes) {
+  //     const nextPosition = nodes[panToNextIndex || 0];
+  //     console.log(nextPosition, panToNextIndex);
+  //     if (handleTransform && nextPosition) {
+  //       console.log(nextPosition);
+  //       handleTransform({ ...nextPosition.position, zoom: 2 });
+  //     }
+  //   }
+  // };
+
+  // const handleBack = () => {
+  //   handleTransform;
+  // };
+
 
   return (
     <>
       <Paper elevation={4} className={classes.controlsPaper}>
+        {/* {handleTransform && <>
+          <Tooltip
+            arrow
+            title={`${
+              t("genereic.back")
+            }`}
+            placement="top"
+          >
+            <IconButton
+              className={classes.buttons}
+              onClick={handleBack}
+            >
+              <NavigateBeforeIcon
+                className={classNames(
+                  classes.buttons,
+                  fullScreen ? classes.activeButton : ""
+                )}
+              />
+            </IconButton>
+          </Tooltip>
+          <Tooltip
+            arrow
+            title={`${
+
+              t("generic.next")
+            }`}
+            placement="top"
+          >
+            <IconButton
+              className={classes.buttons}
+              onClick={handleNext}
+              disabled={nodes && panToNextIndex === nodes.length - 2}
+            >
+              <NavigateNextIcon
+                className={classNames(
+                  classes.buttons,
+                  fullScreen ? classes.activeButton : ""
+                )}
+              />
+            </IconButton>
+          </Tooltip>
+          {' '}
+        </>} */}
         <Tooltip
           arrow
           title={`${

@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.4.17",
+  "version": "1.4.18",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -144,6 +144,7 @@
     "mui-datatables": "^2.13.1",
     "nanoid": "^3.1.32",
     "patch-package": "^6.4.7",
+    "popmotion": "^11.0.3",
     "pptxgenjs": "^3.9.0",
     "prop-types": "15.7.2",
     "re-resizable": "^6.9.0",
