@@ -403,7 +403,7 @@ const Timeline = () => {
   //   },
   //   [rfInstance, panToNextIndex]
   // );
-
+  console.log(elements);
   return (
     <div style={{ display: "flex" }}>
       <Notification
@@ -438,7 +438,7 @@ const Timeline = () => {
           onLoad={onLoad}
         >
           <div data-html2canvas-ignore="true">
-            <Collaboration setShareModalOpen={setShareModalOpen} />
+            <Collaboration setShareModalOpen={setShareModalOpen} timeline />
             <Meta
               label={label}
               setMetaOpen={setMetaOpen}

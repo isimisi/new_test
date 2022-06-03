@@ -10,7 +10,7 @@ export const baseUrl = window.location.hostname === 'juristic-web-app-staging.he
   ? 'https://juristic-api-gateway-staging.herokuapp.com'
   : process.env.NODE_ENV === 'production'
     ? 'https://juristic-api-gateway.herokuapp.com'
-    : 'http://127.0.0.1:3333';
+    : 'https://6075ac158035.eu.ngrok.io';
 
 export interface HttpHeader {
   headers: {

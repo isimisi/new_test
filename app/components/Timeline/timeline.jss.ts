@@ -52,8 +52,8 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   },
   horizontalHandle: {
     border: 0,
-    width: 0.1,
-    height: 0.1,
+    width: 1,
+    height: 1,
     visibility: "hidden",
   },
   horizontalDate: {

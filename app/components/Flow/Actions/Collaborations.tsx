@@ -21,10 +21,11 @@ const config = genConfig({
 
 interface Props {
   setShareModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  timeline?: boolean;
 }
 
 const Collaboration = (props: Props) => {
-  const { setShareModalOpen } = props;
+  const { setShareModalOpen, timeline } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const { user } = useAuth0();
@@ -85,6 +86,7 @@ const Collaboration = (props: Props) => {
       <Button
         variant="contained"
         color="primary"
+        disabled={timeline}
         className={classes.shareButton}
         onClick={toggleShare}
       >

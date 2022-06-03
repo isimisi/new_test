@@ -223,7 +223,7 @@ export default memo(({ data }: NodeProps) => {
         <Divider />
         <Typography
           variant="subtitle1"
-          style={{ marginLeft: 10, marginRight: 10, fontWeight: "bold" }}
+          style={{ margin: 10, fontWeight: "bold" }}
         >
           {data.label}
         </Typography>
