@@ -24,6 +24,8 @@ export const getTimelines = (user: User) => async (dispatch) => {
     const timelines = response.data;
     dispatch({ type: types.GET_TIMELINES_SUCCESS, timelines });
   } catch (error) {
+    // @ts-ignore
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.GET_TIMELINES_FAILED, message });
   }
@@ -203,8 +205,12 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
     dispatch(getPersonDropDown(user));
     dispatch(getDocumentDropDown(user));
   } catch (error: any) {
-    console.log(error);
-    const message = genericErrorMessage;
+    let message = genericErrorMessage;
+
+    if (error.response.data.status === 403) {
+      message = "Vi kan desværre ikke håndtere den ønskede e-mail";
+    }
+
     dispatch({ type: types.IMPORT_EMAILS_FAILED, message });
   }
 };

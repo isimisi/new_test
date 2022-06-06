@@ -176,7 +176,7 @@ const Content = (props: Props) => {
       const file = acceptedFiles[0];
       readEmlFile(file);
     },
-    accept: ".eml",
+    accept: ".eml, .msg",
     noClick: true,
     noKeyboard: true,
     maxFiles: 1

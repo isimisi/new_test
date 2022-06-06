@@ -15,7 +15,7 @@ const Email = ({ timelineNode }: Props) => {
   const classes = useStyles();
   const email = timelineNode.get("email").get("mail");
   const index = timelineNode.get("email").get("index");
-
+  console.log(email.toJS());
   const downloadAttachment = file => {
     save(file.content.data, file.filename);
   };

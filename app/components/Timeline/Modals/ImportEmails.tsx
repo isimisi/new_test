@@ -51,7 +51,7 @@ const Email = (props: Props) => {
         )
       );
     },
-    accept: ".eml"
+    accept: ".eml, .msg"
   };
 
   const { getRootProps, getInputProps } = useDropzone(callback);

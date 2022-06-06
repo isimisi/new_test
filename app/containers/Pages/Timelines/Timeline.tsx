@@ -153,7 +153,7 @@ const Timeline = () => {
   };
 
   const handleEmailClose = () => {
-    changeTimelineNode("email", { mail: null, uri: null });
+    // changeTimelineNode("email", { mail: null, uri: null });
     dispatch(openEmailChange(false));
   };
 
