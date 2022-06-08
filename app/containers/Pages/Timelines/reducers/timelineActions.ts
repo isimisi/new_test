@@ -9,7 +9,7 @@ import * as types from "./timelineConstants";
 import { TimelineNode } from "@customTypes/reducers/timeline";
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from "draft-js";
-import { isEdge, isNode, Position } from "react-flow-renderer";
+import { isEdge, isNode } from "react-flow-renderer";
 import dagre from "dagre";
 import { getDocumentDropDown } from "../../Documents/reducers/documentActions";
 import { getPersonDropDown } from "../../Persons/reducers/personActions";
@@ -25,7 +25,7 @@ export const getTimelines = (user: User) => async (dispatch) => {
     dispatch({ type: types.GET_TIMELINES_SUCCESS, timelines });
   } catch (error) {
     // @ts-ignore
-    console.log(error.response);
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.GET_TIMELINES_FAILED, message });
   }

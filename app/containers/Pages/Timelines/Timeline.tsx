@@ -403,7 +403,7 @@ const Timeline = () => {
   //   },
   //   [rfInstance, panToNextIndex]
   // );
-  console.log(elements);
+
   return (
     <div style={{ display: "flex" }}>
       <Notification

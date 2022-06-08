@@ -24,6 +24,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
 import { openMenuAction } from "@redux/actions/uiActions";
+import useWindowDimensions from "@hooks/useWindowDiemensions";
 
 const LinkBtn = React.forwardRef((props, ref) => (
   // @ts-ignore
@@ -63,6 +64,7 @@ const MainMenu = (props: Props) => {
 
   const notIncludedPlans = plan_id ? plans.slice(plan_id, plans.length) : plans;
   const classes = useStyle();
+  const { width } = useWindowDimensions();
 
   const getMenus = menuArray =>
     menuArray.map((item: any, index) => {
@@ -100,8 +102,12 @@ const MainMenu = (props: Props) => {
                   open.indexOf(item.key) > -1 ? classes.opened : ""
                 )}
                 onClick={() => {
-                  openDrawer();
-                  if (sidebarOpen) {
+                  if (!sidebarOpen && (width && width > 1279)) {
+                    openDrawer();
+                  }
+
+                  // @ts-ignore
+                  if (!(open.indexOf(item.key) > -1)) {
                     openSubMenu(item.key, item.keyParent);
                   }
                 }}
