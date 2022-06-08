@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.4.29",
+  "version": "1.4.30",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -169,7 +169,7 @@
     "save-file": "^2.3.1",
     "serve-favicon": "^2.4.5",
     "styled-components": "^5.3.0",
-    "ts-loader": "^9.3.0",
+    "ts-loader": "8.2.0",
     "use-react-screenshot": "^1.0.2",
     "webpack-bugsnag-plugins": "^1.7.0",
     "xlsx": "^0.18.2"
