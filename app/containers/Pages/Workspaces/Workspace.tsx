@@ -1024,6 +1024,20 @@ const Workspace = (props) => {
     }
   };
 
+  const paneContextNodeClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
+    if (reactFlowContainer && rfInstance) {
+    // @ts-ignore
+      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+      const position = rfInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+      closeNode();
+      handleNodeSave(position.x, position.y, true);
+      setShowContextMenu(false);
+    }
+  };
+
   const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
 
   const showPopperAgain = () => {
@@ -1382,10 +1396,7 @@ const Workspace = (props) => {
             contextType={contextType}
             show={showContextMenu}
             paste={paste}
-            nodeClick={() => {
-              setDefineNodeOpen(true);
-              setShowContextMenu(false);
-            }}
+            nodeClick={paneContextNodeClick}
             stickyClick={handlePostSticky}
             handleShowGrid={handleVisabilityChange}
             handleVisability={handleVisability}

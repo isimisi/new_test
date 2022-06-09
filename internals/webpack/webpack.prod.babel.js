@@ -8,7 +8,6 @@ const { HashedModuleIdsPlugin } = require("webpack");
 const TerserPlugin = require("terser-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const { BugsnagSourceMapUploaderPlugin } = require("webpack-bugsnag-plugins");
-const pkg = require(path.resolve(process.cwd(), "package.json")); // eslint-disable-line
 
 module.exports = require("./webpack.base.babel")({
   mode: "production",
@@ -96,7 +95,7 @@ module.exports = require("./webpack.base.babel")({
     // that will be released, rather than for every development build
     new BugsnagSourceMapUploaderPlugin({
       apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
-      appVersion: pkg.version,
+      appVersion: "1.4.33",
       publicPath: "*/",
     }),
     // Put it in the end to capture all the HtmlWebpackPlugin's

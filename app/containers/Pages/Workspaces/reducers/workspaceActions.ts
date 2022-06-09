@@ -699,7 +699,7 @@ export const accessPublicWorkspace = (
 
   try {
     const response = await axios.post(url, body);
-    const { workspace, user, accessToken } = response.data;
+    const { workspace, user, accessToken, organization } = response.data;
     const {
       elements,
       label,
@@ -726,7 +726,7 @@ export const accessPublicWorkspace = (
     });
 
     saveToLocalStorage({
-      ...accessToken, ...user
+      ...accessToken, ...user, ...organization
     });
 
     LogRocket.identify(user.id, {

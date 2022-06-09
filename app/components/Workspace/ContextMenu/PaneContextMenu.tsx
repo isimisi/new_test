@@ -24,7 +24,7 @@ interface Props {
   contextType: ContextTypes;
   show: boolean;
   paste: (event: MouseEvent) => void;
-  nodeClick: () => void;
+  nodeClick: (event: React.MouseEvent<Element, globalThis.MouseEvent>) => void;
   stickyClick: () => void;
   handleShowGrid: () => void;
   handleVisability: boolean;

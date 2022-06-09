@@ -19,6 +19,8 @@ import ReactFlow, {
   Node,
   Connection
 } from 'react-flow-renderer';
+import { loadFromLocalStorage } from "@api/localStorage/localStorage";
+
 import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/dummy/brand';
 import WorkspaceFabs from '@components/Workspace/Public/WorkspaceFabs';
@@ -91,6 +93,8 @@ const Workspace = (props) => {
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
   const user = useAuth0().user as User;
+
+  const { logo } = loadFromLocalStorage();
 
   // REDUX
   const relationships = useSelector(state => state[reducer].get('relationships'));
@@ -468,7 +472,7 @@ const Workspace = (props) => {
           href="https://www.juristic.io/"
           className={signed ? classes.signedLogo : classes.logo}
         >
-          <img className={classes.img} src={logoBeta} alt={brand.name} />
+          <img className={classes.img} src={logo || logoBeta} alt={brand.name} />
         </a>
         {loading && (
           <>

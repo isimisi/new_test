@@ -97,6 +97,7 @@ const PersonalDashboard = () => {
   const meta: UserMeta = user && user["https://juristic.io/meta"];
   const { first_name } = meta.dbUser;
   const theme = useTheme();
+  console.log(user && user["https://juristic.io/meta"].organization);
 
   // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();

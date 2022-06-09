@@ -1,25 +1,25 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import { NavLink } from 'react-router-dom';
-import Toolbar from '@material-ui/core/Toolbar';
-import SearchIcon from '@material-ui/icons/Search';
-import classNames from 'classnames';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import logo from '@images/logo.svg';
-import brand from '@api/dummy/brand';
-import Hidden from '@material-ui/core/Hidden';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import MenuIcon from '@material-ui/icons/Menu';
-import SidebarContent from '../Sidebar/SidebarContent';
-import DropListMenu from './DropListMenu';
-import MegaMenu from './MegaMenu';
-import UserMenu from './UserMenu';
-import styles from './header-jss';
-import SearchUi from '../Search/SearchUi';
-
+import React, { useState, useEffect, Fragment } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import { NavLink } from "react-router-dom";
+import Toolbar from "@material-ui/core/Toolbar";
+import SearchIcon from "@material-ui/icons/Search";
+import classNames from "classnames";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import logo from "@images/logo.svg";
+import brand from "@api/dummy/brand";
+import Hidden from "@material-ui/core/Hidden";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import MenuIcon from "@material-ui/icons/Menu";
+import SidebarContent from "../Sidebar/SidebarContent";
+import DropListMenu from "./DropListMenu";
+import MegaMenu from "./MegaMenu";
+import UserMenu from "./UserMenu";
+import styles from "./header-jss";
+import SearchUi from "../Search/SearchUi";
+import { useAuth0 } from "@auth0/auth0-react";
 const elem = document.documentElement;
 
 function HeaderMenu(props) {
@@ -27,13 +27,16 @@ function HeaderMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [fixed, setFixed] = useState(false);
 
+  const user = useAuth0().user;
+  const { logo: customLogo } = user["https://juristic.io/meta"].organization;
+
   // Initial menu ui
   let flagFixedMenu = false;
 
   const handleScroll = () => {
     const doc = document.documentElement;
     const scroll = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    const newFlagFixedMenu = (scroll > 64);
+    const newFlagFixedMenu = scroll > 64;
     if (flagFixedMenu !== newFlagFixedMenu) {
       setFixed(newFlagFixedMenu);
       flagFixedMenu = newFlagFixedMenu;
@@ -41,9 +44,9 @@ function HeaderMenu(props) {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -51,11 +54,14 @@ function HeaderMenu(props) {
     setFullScreen(true);
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
+    } else if (elem.mozRequestFullScreen) {
+      /* Firefox */
       elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    } else if (elem.webkitRequestFullscreen) {
+      /* Chrome, Safari & Opera */
       elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    } else if (elem.msRequestFullscreen) {
+      /* IE/Edge */
       elem.msRequestFullscreen();
     }
   };
@@ -73,15 +79,15 @@ function HeaderMenu(props) {
     }
   };
 
-  const turnMode = mode => {
-    if (mode === 'light') {
-      props.changeMode('dark');
+  const turnMode = (mode) => {
+    if (mode === "light") {
+      props.changeMode("dark");
     } else {
-      props.changeMode('light');
+      props.changeMode("light");
     }
   };
 
-  const handleOpen = event => {
+  const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -100,17 +106,16 @@ function HeaderMenu(props) {
     openMobileNav,
     loadTransition,
     isLogin,
-    logoLink
+    logoLink,
   } = props;
+
   return (
     <AppBar
-      className={
-        classNames(
-          classes.appBar,
-          classes.attachedbar,
-          fixed ? classes.fixed : ''
-        )
-      }
+      className={classNames(
+        classes.appBar,
+        classes.attachedbar,
+        fixed ? classes.fixed : ""
+      )}
     >
       <div className={classes.appMenu}>
         <Hidden lgUp>
@@ -151,7 +156,7 @@ function HeaderMenu(props) {
             </div>
           </div>
           <NavLink to={logoLink} className={classes.brand}>
-            <img src={logo} alt={brand.name} />
+            <img src={customLogo || logo} alt={brand.name} />
           </NavLink>
         </Hidden>
         <div className={classes.searchHeaderMenu}>
@@ -168,7 +173,11 @@ function HeaderMenu(props) {
       </div>
       <Hidden mdDown>
         <Fragment>
-          { type === 'mega-menu' ? <MegaMenu dataMenu={dataMenu} /> : <DropListMenu dataMenu={dataMenu} />}
+          {type === "mega-menu" ? (
+            <MegaMenu dataMenu={dataMenu} />
+          ) : (
+            <DropListMenu dataMenu={dataMenu} />
+          )}
         </Fragment>
       </Hidden>
       <Hidden lgUp>
@@ -209,12 +218,12 @@ HeaderMenu.propTypes = {
   loadTransition: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   logoLink: PropTypes.string,
-  isLogin: PropTypes.bool
+  isLogin: PropTypes.bool,
 };
 
 HeaderMenu.defaultProps = {
   isLogin: true,
-  logoLink: '/',
+  logoLink: "/",
 };
 
 export default withStyles(styles)(HeaderMenu);

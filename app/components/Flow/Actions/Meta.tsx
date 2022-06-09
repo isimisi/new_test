@@ -37,6 +37,7 @@ import * as XLSX from "xlsx";
 import { Edge, getIncomers, getOutgoers, isEdge, isNode, Node } from "react-flow-renderer";
 import { saveAs } from "file-saver";
 import { s2ab } from '@helpers/export/handleExport';
+import { useAuth0, User } from "@auth0/auth0-react";
 
 interface Props {
   label: string;
@@ -71,6 +72,8 @@ const Meta = (props: Props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const handleOpenMeta = () => setMetaOpen(prevVal => !prevVal);
+  const user = useAuth0().user as User;
+  const { logo: customLogo } = user["https://juristic.io/meta"].organization;
 
   const [loadingImg, setLoadingImg] = React.useState(false);
   const stopLoadingImg = () => setLoadingImg(false);
@@ -189,7 +192,7 @@ const Meta = (props: Props) => {
       t("workspace.meta.excel.headers.value"),
       t("workspace.meta.excel.headers.type")
     ];
-    console.log(header);
+
 
     for (let index = 0; index < nodes.length; index++) {
       const node = nodes[index];
@@ -249,7 +252,7 @@ const Meta = (props: Props) => {
       <Paper elevation={4} className={classes.metaPaper}>
         <Tooltip arrow title={`${t("workspaces.goBack")}`} placement="bottom">
           <NavLink to="/app/workspaces">
-            <img src={logo} alt="juristic" className={classes.logo} />
+            <img src={customLogo || logo} alt="juristic" className={classes.logo} />
           </NavLink>
         </Tooltip>
         <Divider

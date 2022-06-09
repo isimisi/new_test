@@ -45,7 +45,7 @@ function SidebarContent(props: Props) {
   const { user } = useAuth0();
   const meta: UserMeta = user && user["https://juristic.io/meta"];
   const { status } = meta.dbUser;
-  const organization_id = meta.organization.id;
+  const { logo } = meta.organization;
   const classes = useStyle();
 
   const {
@@ -74,11 +74,7 @@ function SidebarContent(props: Props) {
             turnDarker && classes.darker
           )}
         >
-          <img
-            src={organization_id === 50 ? pwc : logoBeta}
-            alt={brand.name}
-            style={{ width: organization_id === 50 ? 80 : 120 }}
-          />
+          <img src={logo || logoBeta} alt={brand.name} style={{ width: 120 }} />
         </NavLink>
       </div>
       <div

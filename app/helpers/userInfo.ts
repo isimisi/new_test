@@ -40,6 +40,7 @@ export interface Organization {
   industry_code: number;
   industry_desc: string;
   plan_id: number;
+  logo: string;
   created_at: string;
   updated_at: string;
 }

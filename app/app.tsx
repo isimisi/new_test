@@ -6,8 +6,7 @@ import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router/immutable";
 import FontFaceObserver from "fontfaceobserver";
 import "sanitize.css/sanitize.css";
-const path = require("path");
-const pkg = require(path.resolve(process.cwd(), "package.json")); // eslint-disable-line
+
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
@@ -40,7 +39,7 @@ if (process.env.NODE_ENV === "production") {
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()],
-    appVersion: pkg.version,
+    appVersion: "1.4.33"
   });
 }
 
@@ -104,7 +103,6 @@ if (process.env.NODE_ENV === "production") {
       <ErrorBoundary FallbackComponent={ErrorView}>
         {/* @ts-ignore */}
         <Provider store={store}>
-          {/* @ts-ignore */}
           <ConnectedRouter history={history}>
             <Auth0ProviderWithHistory>
               <App />
