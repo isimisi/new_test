@@ -723,7 +723,7 @@
     "date": "Dato",
     "upload_mail": "Upload email",
     "see_email": "Åben e-mail",
-    "no_choosen_node": "Do har endnu ikke valgt et element",
+    "no_choosen_node": "Du har endnu ikke valgt et element",
     "import_mails": "Importer e-mails",
     "choose_emails": "Upload e-mails – eller træk dem ind i feltet her",
     "table_header": "Rediger tidslinjeelementer",
@@ -755,7 +755,7 @@
     "AUDITOR": "Revisor",
     "BOARD_CHAIR": "Bestyrelsesformand",
     "BOARD_MEMBER": "Bestyrelsesmedlem",
-    "BOARD_SUBSTITUTE": "Bestyrelsessubstitut",
+    "BOARD_SUBSTITUTE": "Bestyrelsessuppleant",
     "BOARD_VICE_CHAIR": "Bestyrelsesviceformand",
     "CEO": "CEO",
     "DIRECTOR": "Direktør",
@@ -835,7 +835,7 @@
   },
   "document": {
     "title": "Titel",
-    "form_header": "Dokument information",
+    "form_header": "Dokumentinformation",
     "delete_file": "Slet fil",
     "change_file": "Ændre fil"
   },
