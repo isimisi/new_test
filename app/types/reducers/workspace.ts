@@ -98,6 +98,7 @@ export interface WorkspaceState {
   specificWorkspaceTags: List<unknown>;
   connectedUsers: List<unknown>;
   showInternationalDisclaimer: boolean;
+  mouseLoading: boolean;
 }
 
 export type IImmutableWorkspaceState = IImmutableStateMap<WorkspaceState>;

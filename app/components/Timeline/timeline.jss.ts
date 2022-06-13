@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     height: "100%",
     borderRadius: 8,
   },
+  attachmentContainer: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
   horizontalNodeOnTimeLine: {
     display: "flex",
     padding: 12,

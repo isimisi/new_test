@@ -356,20 +356,18 @@ export const postNode = (
 };
 
 export const addElements = (user: User, id: string, elements: FlowElement[]) => async (dispatch) => {
-  dispatch({ type: types.WORKSPACE_ADD_ELEMENTS, elements });
+  dispatch({ type: types.WORKSPACE_ADD_ELEMENTS_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/addElements/${id}`;
   const body = { elements: JSON.stringify(elements) };
   const header = authHeader(user);
   try {
     const response = await axios.post(url, body, header);
-    const { nodesWithOrgId, edgesWithOrgId } = response.data;
     dispatch({
-      type: types.WORKSPACE_UPDATE_ELEMENTS,
-      nodesWithOrgId,
-      edgesWithOrgId,
+      type: types.WORKSPACE_ADD_ELEMENTS_SUCCESS,
+      elements: response.data
     });
   } catch (error) {
-    dispatch({ type: types.WORKSPACE_POST_NODE_FAILED, message });
+    dispatch({ type: types.WORKSPACE_ADD_ELEMENTS_FAILED, message });
   }
 };
 

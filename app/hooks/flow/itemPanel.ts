@@ -46,6 +46,7 @@ const useItemSidePanel = () => {
 
   return {
     cursor,
+    handleCursor,
     mouseActive,
     stickyActive,
     toggleMouse,

@@ -49,6 +49,7 @@ const CustomNode = ({ data }) => {
   const signed = useAppSelector(state => state.workspace.get("signed"));
   const loading = useAppSelector(state => state.workspace.get("loading"));
   const showHover = history.location.pathname.includes("workspace");
+  const _public = history.location.pathname.includes("public");
   const user = useAuth0().user as User;
 
   const [showContext, setShowContext] = useState(false);
@@ -239,7 +240,7 @@ const CustomNode = ({ data }) => {
               {cv.value}
             </Typography>
           ))}
-      {data.unitNumber && showContext && showHover && (
+      {data.unitNumber && showContext && showHover && !_public && (
         <Tooltip title="Selskabsinformation">
           <IconButton
             aria-label="Info om selskabet"

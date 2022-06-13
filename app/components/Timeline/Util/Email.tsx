@@ -4,7 +4,7 @@ import { t } from "i18next";
 import moment from "moment";
 import React from "react";
 import useStyles from "../timeline.jss";
-
+import EmailIcon from "@material-ui/icons/Email";
 import save from "save-file";
 
 interface Props {
@@ -15,9 +15,9 @@ const Email = ({ timelineNode }: Props) => {
   const classes = useStyles();
   const email = timelineNode.get("email").get("mail");
   const index = timelineNode.get("email").get("index");
-  console.log(email.toJS());
+
   const downloadAttachment = file => {
-    save(file.content.data, file.filename);
+    save(file.get("content").get("data"), file.get("filename"));
   };
 
   return (
@@ -63,14 +63,16 @@ const Email = ({ timelineNode }: Props) => {
           </div>
         )}
       </div>
-      {index === null && email.get("attachments").length > 0 && (
-        <div>
+      {index === null && email.get("attachments").size > 0 && (
+        <div className={classes.attachmentContainer}>
           {email.get("attachments").map(attachment => (
             <Button
               key={attachment.cid}
               type="button"
+              variant="outlined"
               onClick={() => downloadAttachment(attachment)}
             >
+              <EmailIcon style={{ marginRight: 10 }} />
               {attachment.get("filename")}
             </Button>
           ))}

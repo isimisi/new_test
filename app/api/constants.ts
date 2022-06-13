@@ -39,6 +39,7 @@ export const plans = ['Base', 'Draw', 'Pro'];
 
 export const getId = (history: History) => {
   const id = history.location.pathname.split('/').pop();
+  console.log(history.location.pathname);
   if (typeof id === 'string') {
     return CryptoJS.AES
       .decrypt(decodeURIComponent(id), 'path')

@@ -82,8 +82,9 @@ import {
   RUN_INTRO_WORKSPACE,
   CHANGE_STEP_INDEX_WORKSPACE,
   HANDLE_UNCERTAIN_COMPANIES,
-  WORKSPACE_ADD_ELEMENTS,
-  WORKSPACE_UPDATE_ELEMENTS,
+  WORKSPACE_ADD_ELEMENTS_LOADING,
+  WORKSPACE_ADD_ELEMENTS_SUCCESS,
+  WORKSPACE_ADD_ELEMENTS_FAILED,
   LAYOUT_ELEMENTS,
   SET_CONNECTED_USERS,
   REMOVE_CONNECTED_USERS,
@@ -138,6 +139,7 @@ const initialState: WorkspaceState = {
   specificWorkspaceTags: List(),
   connectedUsers: List(),
   showInternationalDisclaimer: true,
+  mouseLoading: false,
 };
 
 const initialImmutableState: IImmutableWorkspaceState = fromJS(initialState);
@@ -172,36 +174,20 @@ export default function reducer(
         const message = fromJS(action.message);
         mutableState.set("message", message);
       });
-    case WORKSPACE_ADD_ELEMENTS:
+    case WORKSPACE_ADD_ELEMENTS_LOADING:
       return state.withMutations((mutableState) => {
-        const newElements = action.elements;
-
-        const orgElements = mutableState.get("elements").toJS();
-        const elements = fromJS([...orgElements, ...newElements]);
+        mutableState.set("mouseLoading", true);
+      });
+    case WORKSPACE_ADD_ELEMENTS_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", false);
+        const elements = fromJS(action.elements);
         mutableState.set("elements", elements);
       });
-    case WORKSPACE_UPDATE_ELEMENTS:
+    case WORKSPACE_ADD_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
-        const { nodesWithOrgId, edgesWithOrgId } = action;
-        const elements = mutableState.get("elements").toJS();
-        const elementsToEdit = elements.filter((el) => el.id.includes("edit"));
-        const remainingElements = elements.filter((el) => !el.id.includes("edit"));
-        const nodesToEdit = elementsToEdit.filter((el) => isNode(el));
-        const edgesToEdit = elementsToEdit.filter((el) => isEdge(el));
-        nodesToEdit.map((node) => {
-          node.id = nodesWithOrgId[node.id];
-          return node;
-        });
-        edgesToEdit.map((edge) => {
-          edge.id = edgesWithOrgId[edge.id];
-          edge.source = nodesWithOrgId[edge.source];
-          edge.target = nodesWithOrgId[edge.target];
-          return edge;
-        });
-
-        const newElements = [...remainingElements, ...nodesToEdit, ...edgesToEdit];
-
-        mutableState.set("elements", fromJS(newElements));
+        mutableState.set("message", action.message);
+        mutableState.set("mouseLoading", false);
       });
     case DELETE_WORKSPACE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {

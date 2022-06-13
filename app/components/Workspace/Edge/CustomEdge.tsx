@@ -117,7 +117,9 @@ const drawCurve = (
   targetX: number,
   targetY: number,
   targetPosition: Position,
-  controlPoints: string
+  controlPoints: string,
+  source: string,
+  target: string
 ): string => {
   const [_centerX, _centerY] = getEdgeCenter({
     sourceX,
@@ -209,10 +211,17 @@ const drawCurve = (
     sourcePosition === Position.Bottom &&
     targetPosition === Position.Top
   ) {
-    cp1x = sourceX;
-    cp1y = cY + offset;
-    cp2x = targetX;
-    cp2y = cY - offset;
+    if (source === target) {
+      cp1x = sourceX;
+      cp1y = cY + offset;
+      cp2x = targetX;
+      cp2y = cY - offset;
+    } else {
+      cp1x = sourceX;
+      cp1y = cY + offset;
+      cp2x = targetX;
+      cp2y = cY - offset;
+    }
   } else if (
     sourcePosition === Position.Bottom &&
     targetPosition.includes("left")
@@ -335,6 +344,8 @@ export const findPointOnEdge = (
 
 const CustomEdge = ({
   id,
+  source,
+  target,
   sourceX,
   sourceY,
   targetX,
@@ -361,7 +372,9 @@ const CustomEdge = ({
     targetX,
     targetY,
     targetPosition,
-    data.controlPoints
+    data.controlPoints,
+    source,
+    target
   );
 
   const center = findPointOnEdge(path, 50);

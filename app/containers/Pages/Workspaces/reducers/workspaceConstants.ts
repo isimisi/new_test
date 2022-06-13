@@ -28,8 +28,9 @@ export const GET_RELATIONSHIP_VALUES_FAILED = "GET_RELATIONSHIP_VALUES_FAILED";
 export const GET_NODE_VALUES_SUCCESS = "GET_NODE_VALUES_SUCCESS";
 export const GET_NODE_VALUES_FAILED = "GET_NODE_VALUES_FAILED";
 
-export const WORKSPACE_ADD_ELEMENTS = "WORKSPACE_ADD_ELEMENTS";
-export const WORKSPACE_UPDATE_ELEMENTS = "WORKSPACE_UPDATE_ELEMENTS";
+export const WORKSPACE_ADD_ELEMENTS_LOADING = "WORKSPACE_ADD_ELEMENTS_LOADING";
+export const WORKSPACE_ADD_ELEMENTS_SUCCESS = "WORKSPACE_ADD_ELEMENTS_SUCCESS";
+export const WORKSPACE_ADD_ELEMENTS_FAILED = "WORKSPACE_ADD_ELEMENTS_FAILED";
 
 export const GET_CVR_NODES_LOADING = "GET_CVR_NODES_LOADING";
 export const GET_CVR_NODES_SUCCESS = "GET_CVR_NODES_SUCCESS";
@@ -495,15 +496,18 @@ export interface HandleUncertainCompanies {
   companies: any; // TODO:
 }
 
-export interface WorkspaceAddElements {
-  type: typeof WORKSPACE_ADD_ELEMENTS;
+export interface WorkspaceAddElementsLoading {
+  type: typeof WORKSPACE_ADD_ELEMENTS_LOADING;
+}
+
+export interface WorkspaceAddElementsSuccess {
+  type: typeof WORKSPACE_ADD_ELEMENTS_SUCCESS;
   elements: FlowElement[];
 }
 
-export interface WorkspaceUpdateElements {
-  type: typeof WORKSPACE_UPDATE_ELEMENTS;
-  nodesWithOrgId: any;
-  edgesWithOrgId: any;
+export interface WorkspaceAddElementsFailed {
+  type: typeof WORKSPACE_ADD_ELEMENTS_FAILED;
+  message: string;
 }
 
 export interface LayoutElements {
@@ -606,9 +610,10 @@ export type WorkspaceActions =
   | RunInroWorkspace
   | ChangeStepIndexWorkspace
   | HandleUncertainCompanies
-  | WorkspaceAddElements
+  | WorkspaceAddElementsLoading
+  | WorkspaceAddElementsSuccess
+  | WorkspaceAddElementsFailed
   | NotifyActions
-  | WorkspaceUpdateElements
   | LayoutElements
   | SetConnectedUsers
   | RemoveConnectedUsers

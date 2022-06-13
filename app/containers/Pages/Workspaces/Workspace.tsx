@@ -165,6 +165,7 @@ const Workspace = (props) => {
   const loading = useAppSelector(state => state[reducer].get('loading'));
   const initialLoading = useAppSelector(state => state[reducer].get('initialLoading'));
   const initialLoadingCvr = useAppSelector(state => state[reducer].get('initialLoadingCvr'));
+  const mouseLoading = useAppSelector(state => state[reducer].get('mouseLoading'));
 
   const companyData = useAppSelector(state => state[reducer].get('companyData'))?.toJS();
   const addressInfo = useAppSelector(state => state[reducer].get('addressInfo'));
@@ -1001,7 +1002,15 @@ const Workspace = (props) => {
     }
   };
 
-  const { cursor, mouseActive, stickyActive, toggleMouse, toggleSticky, toggleNode, nodeActive } = useItemSidePanel();
+  const { cursor, handleCursor, mouseActive, stickyActive, toggleMouse, toggleSticky, toggleNode, nodeActive } = useItemSidePanel();
+
+  useEffect(() => {
+    if (mouseLoading) {
+      handleCursor("progress");
+    } else {
+      handleCursor("auto");
+    }
+  }, [mouseLoading]);
 
 
   const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
