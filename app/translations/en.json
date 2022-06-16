@@ -553,35 +553,101 @@
     }
   },
   "faq": {
-    "what_is_a_red_flag": {
-      "header": "What is a red flag?",
-      "body": "A red flag is a special feature that can help you analyze and identify certain legal issues. Red flags automatically appear in your workspace as you draw - and users with a Enterprise subscription can even design and create their own red flags.",
-      "link": "https://github.com/"
+    "structure": {
+      "what_is_a_red_flag": {
+        "header": "What is a red flag?",
+        "body": "A red flag is a special feature that can help you analyze and identify certain legal issues. Red flags automatically appear in your workspace as you draw - and users with a Enterprise subscription can even design and create their own red flags.",
+        "link": "https://github.com/"
+      },
+      "is_it_really_free": {
+        "header": "Is it really free?",
+        "body": "Depending on the subscription you have selected, you will have access to different features or editions of Juristic.  Of course, you can always continue as a free user. ",
+        "link": "https://github.com/"
+      },
+      "how_can_i_get_further_help": {
+        "header": "How can I get further help?",
+        "body": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website. We will respond as soon as possible. Enterprise and Enterprise users have access to special support features depending on the agreement.",
+        "link": "https://github.com/"
+      },
+      "how_to_program_law": {
+        "header": "How to program law?",
+        "body": "With Juristic Pro and Juristic Enterprise, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms. The special thing is that you do not need other programs or to be able to code. Drag and drop items - just like you are used to.",
+        "link": "https://github.com/"
+      },
+      "is_it_safe_to_use": {
+        "header": "Is it safe to use?",
+        "body": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Enterprise and Enterprise versions include additional security features that are targeted at businesses. You can read more about how we process data in our business terms and personal data policy. You can find both on our website.",
+        "link": "https://github.com/"
+      },
+      "why_are_not_all_features_available": {
+        "header": "Why are not all features available yet?",
+        "body": "Juristic is still in 'beta'. This means that the platform is still under development - and there are therefore many more features on the way. However, it also means that you will experience certain errors that we are still working hard to resolve.",
+        "link": "https://github.com/"
+      }
     },
-    "is_it_really_free": {
-      "header": "Is it really free?",
-      "body": "Depending on the subscription you have selected, you will have access to different features or editions of Juristic.  Of course, you can always continue as a free user. ",
-      "link": "https://github.com/"
+    "timeline": {
+      "what_is_a_red_flag": {
+        "header": "What is a red flag?",
+        "body": "A red flag is a special feature that can help you analyze and identify certain legal issues. Red flags automatically appear in your workspace as you draw - and users with a Enterprise subscription can even design and create their own red flags.",
+        "link": "https://github.com/"
+      },
+      "is_it_really_free": {
+        "header": "Is it really free?",
+        "body": "Depending on the subscription you have selected, you will have access to different features or editions of Juristic.  Of course, you can always continue as a free user. ",
+        "link": "https://github.com/"
+      },
+      "how_can_i_get_further_help": {
+        "header": "How can I get further help?",
+        "body": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website. We will respond as soon as possible. Enterprise and Enterprise users have access to special support features depending on the agreement.",
+        "link": "https://github.com/"
+      },
+      "how_to_program_law": {
+        "header": "How to program law?",
+        "body": "With Juristic Pro and Juristic Enterprise, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms. The special thing is that you do not need other programs or to be able to code. Drag and drop items - just like you are used to.",
+        "link": "https://github.com/"
+      },
+      "is_it_safe_to_use": {
+        "header": "Is it safe to use?",
+        "body": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Enterprise and Enterprise versions include additional security features that are targeted at businesses. You can read more about how we process data in our business terms and personal data policy. You can find both on our website.",
+        "link": "https://github.com/"
+      },
+      "why_are_not_all_features_available": {
+        "header": "Why are not all features available yet?",
+        "body": "Juristic is still in 'beta'. This means that the platform is still under development - and there are therefore many more features on the way. However, it also means that you will experience certain errors that we are still working hard to resolve.",
+        "link": "https://github.com/"
+      }
     },
-    "how_can_i_get_further_help": {
-      "header": "How can I get further help?",
-      "body": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website. We will respond as soon as possible. Enterprise and Enterprise users have access to special support features depending on the agreement.",
-      "link": "https://github.com/"
-    },
-    "how_to_program_law": {
-      "header": "How to program law?",
-      "body": "With Juristic Pro and Juristic Enterprise, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms. The special thing is that you do not need other programs or to be able to code. Drag and drop items - just like you are used to.",
-      "link": "https://github.com/"
-    },
-    "is_it_safe_to_use": {
-      "header": "Is it safe to use?",
-      "body": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Enterprise and Enterprise versions include additional security features that are targeted at businesses. You can read more about how we process data in our business terms and personal data policy. You can find both on our website.",
-      "link": "https://github.com/"
-    },
-    "why_are_not_all_features_available": {
-      "header": "Why are not all features available yet?",
-      "body": "Juristic is still in 'beta'. This means that the platform is still under development - and there are therefore many more features on the way. However, it also means that you will experience certain errors that we are still working hard to resolve.",
-      "link": "https://github.com/"
+    "intro": {
+      "what_is_a_red_flag": {
+        "header": "What is a red flag?",
+        "body": "A red flag is a special feature that can help you analyze and identify certain legal issues. Red flags automatically appear in your workspace as you draw - and users with a Enterprise subscription can even design and create their own red flags.",
+        "link": "https://github.com/"
+      },
+      "is_it_really_free": {
+        "header": "Is it really free?",
+        "body": "Depending on the subscription you have selected, you will have access to different features or editions of Juristic.  Of course, you can always continue as a free user. ",
+        "link": "https://github.com/"
+      },
+      "how_can_i_get_further_help": {
+        "header": "How can I get further help?",
+        "body": "You are always welcome to contact us for help with functions or your user. You do this on the right or via the contact information on our website. We will respond as soon as possible. Enterprise and Enterprise users have access to special support features depending on the agreement.",
+        "link": "https://github.com/"
+      },
+      "how_to_program_law": {
+        "header": "How to program law?",
+        "body": "With Juristic Pro and Juristic Enterprise, you get access to a specially developed function, which makes it possible to 'program' legal content, such as red flags or paradigms. The special thing is that you do not need other programs or to be able to code. Drag and drop items - just like you are used to.",
+        "link": "https://github.com/"
+      },
+      "is_it_safe_to_use": {
+        "header": "Is it safe to use?",
+        "body": "All versions of Juristic are developed according to usual best practice. Thus, your work areas, elements, etc. always encrypted on servers in Europe. The Enterprise and Enterprise versions include additional security features that are targeted at businesses. You can read more about how we process data in our business terms and personal data policy. You can find both on our website.",
+        "link": "https://github.com/"
+      },
+      "why_are_not_all_features_available": {
+        "header": "Why are not all features available yet?",
+        "body": "Juristic is still in 'beta'. This means that the platform is still under development - and there are therefore many more features on the way. However, it also means that you will experience certain errors that we are still working hard to resolve.",
+        "link": "https://github.com/"
+      }
     }
   },
   "user-menu": {

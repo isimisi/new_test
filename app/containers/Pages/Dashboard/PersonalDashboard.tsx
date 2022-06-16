@@ -217,11 +217,12 @@ const PersonalDashboard = () => {
 
   const dashboard = useAppSelector(state => state.dashboard.get("type"));
 
-  const faqs = translation.getI18n().getResourceBundle("en", "").faq;
 
   const [rememberToNotSeeIntro, setRememberToNotSeeIntro] = useState(false);
   const toggleRememberToNotSee = () => setRememberToNotSeeIntro(prevVal => !prevVal);
   const [removedIntro, setRemovedIntro] = useState(false);
+
+  const faqs = translation.getI18n().getResourceBundle("en", "").faq[!intro && !removedIntro ? "intro" : dashboard];
 
   const clickOnIntroChoice = (type) => {
     setRemovedIntro(true);
@@ -313,7 +314,7 @@ const PersonalDashboard = () => {
           }
         </Grid>
         <Grid item md={!intro && !removedIntro ? 8 : 6} xs={12}>
-          {intro && removedIntro ? dashboard === "structure" && <Paper className={classes.papperBlock} elevation={0}>
+          {intro || removedIntro ? dashboard === "structure" && <Paper className={classes.papperBlock} elevation={0}>
             <div className={classes.descBlock}>
               <div className={classes.titleText}>
                 <Typography variant="h6" component="h2" className={classes.title}>
@@ -460,13 +461,13 @@ const PersonalDashboard = () => {
           </PapperBlock>}
           <PapperBlock title={t('personal-dashboard.faq')} whiteBg noMargin>
             {Object.keys(faqs).map((key) => (
-              <Accordion key={key} onClick={() => window.open(t(`faq.${key}.link`), '_blank')?.focus()}>
+              <Accordion key={key} onClick={() => window.open(t(`faq.${!intro && !removedIntro ? "intro" : dashboard}.${key}.link`), '_blank')?.focus()}>
                 <AccordionSummary
                   expandIcon={<ChevronRightIcon />}
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.titleText}>{t(`faq.${key}.header`)}</Typography>
+                  <Typography className={classes.titleText}>{t(`faq.${!intro && !removedIntro ? "intro" : dashboard}.${key}.header`)}</Typography>
                 </AccordionSummary>
 
               </Accordion>
