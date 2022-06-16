@@ -8,6 +8,7 @@ import { countryDropDown, getCountryOptions } from '@helpers/countryOptions';
 import Typography from '@material-ui/core/Typography';
 import { Helmet } from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
+import Iframe from "react-iframe";
 
 import type { RootState } from '@redux/configureStore';
 import { useTheme } from '@material-ui/core/styles';
@@ -372,6 +373,15 @@ const PersonalDashboard = () => {
                 {t('generic.see_video')}
               </Button>
             </div>
+            <Iframe
+              url="https://juristic.storylane.io/demo/hyupzxzra3ys?embed=true%22"
+              width="100%"
+              height="400"
+              className={classes.iframe}
+
+              id={title}
+              position="relative"
+            />
           </Paper>
 
         </Grid>

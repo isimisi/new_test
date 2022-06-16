@@ -22,6 +22,10 @@ const styles = makeStyles((theme: MyTheme) => ({
     alignItems: "flex-end",
     justifyContent: "space-between",
   },
+  iframe: {
+    border: "none !important",
+    borderRadius: "10px",
+  },
   title: {
     position: "relative",
     fontSize: 16,
