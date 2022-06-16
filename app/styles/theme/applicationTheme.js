@@ -92,7 +92,7 @@ const applicationTheme = (color) => ({
         boxShadow: "none",
       },
       root: {
-        borderRadius: 20,
+        borderRadius: 10,
         fontWeight: 600,
       },
       sizeSmall: {

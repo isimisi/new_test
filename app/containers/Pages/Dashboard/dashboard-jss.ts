@@ -20,21 +20,27 @@ const styles = makeStyles((theme: MyTheme) => ({
       marginBottom: theme.spacing(3),
     },
     alignItems: "flex-end",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
   title: {
     position: "relative",
-    fontSize: 18,
-    fontWeight: 400,
-    color:
-      theme.palette.type === "dark"
-        ? theme.palette.primary.main
-        : theme.palette.primary.dark,
+    fontSize: 16,
+    fontWeight: "bold",
     [theme.breakpoints.down("xs")]: {
       textAlign: "center",
       fontWeight: 600,
       marginBottom: theme.spacing(1),
     },
+  },
+  introContainer: {
+    backgroundColor: theme.palette.primary.dark,
+    alignItems: "center",
+    width: "100%",
+    height: 290,
+    boxShadow: theme.shade.light,
+    padding: theme.spacing(3),
+    display: "flex",
+    justifyContent: "space-between",
   },
   textEditor: {
     background: theme.palette.background.paper,
@@ -43,6 +49,16 @@ const styles = makeStyles((theme: MyTheme) => ({
     padding: "0 10px",
     color: theme.palette.text.primary,
     borderRadius: theme.rounded.small,
+  },
+  videoContainer: {
+    width: "40%",
+    height: "100%",
+  },
+  introCheck: {
+    "& svg": {
+      backgroundColor: "white",
+      color: theme.palette.primary.main,
+    },
   },
   toolbarEditor: {
     borderRadius: theme.rounded.small,
@@ -142,9 +158,16 @@ const styles = makeStyles((theme: MyTheme) => ({
     },
   },
   lottie: {
-    borderRadius: "50%",
-    height: 253.12,
+    height: 100,
   },
+  racoonAndText: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginLeft: 25,
+    marginBottom: 10,
+  },
+
   removeMargin: {
     marginTop: -16,
   },

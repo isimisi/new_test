@@ -13,8 +13,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { useTranslation } from "react-i18next";
 import UserMenu from "./UserMenu";
 import LanguageSelector from "../LanguageSelector";
+import DashboardSelector from "./DashboardSelector";
 import styles from "./header-jss";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
+import { useAuth0 } from "@auth0/auth0-react";
+import { UserMeta } from "@helpers/userInfo";
 
 function Header(props) {
   const [open] = useState(false);
@@ -22,6 +25,9 @@ function Header(props) {
   const [turnDarker, setTurnDarker] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
   const { t } = useTranslation();
+  const { user } = useAuth0();
+  const meta: UserMeta = user && user["https://juristic.io/meta"];
+  const { intro } = meta.dbUser;
 
   // Initial header style
   let flagDarker = false;
@@ -50,9 +56,16 @@ function Header(props) {
     };
   }, []);
 
-  const { classes, toggleDrawerOpen, margin, position, openGuide, history } = props;
+  const {
+    classes,
+    toggleDrawerOpen,
+    margin,
+    position,
+    openGuide,
+    history
+  } = props;
 
-  const setMargin = (sidebarPosition) => {
+  const setMargin = sidebarPosition => {
     if (sidebarPosition === "right-sidebar") {
       return classes.right;
     }
@@ -90,7 +103,10 @@ function Header(props) {
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction)}>
               {fullScreen ? (
-                <Tooltip title={t("header.exit_full_screen")} placement="bottom">
+                <Tooltip
+                  title={`${t("header.exit_full_screen")}`}
+                  placement="bottom"
+                >
                   <IconButton
                     className={classes.button}
                     onClick={() => closeFullScreen(setFullScreen)}
@@ -99,7 +115,10 @@ function Header(props) {
                   </IconButton>
                 </Tooltip>
               ) : (
-                <Tooltip title={t("header.full_screen")} placement="bottom">
+                <Tooltip
+                  title={`${t("header.full_screen")}`}
+                  placement="bottom"
+                >
                   <IconButton
                     className={classes.button}
                     onClick={() => openFullScreen(setFullScreen)}
@@ -114,15 +133,21 @@ function Header(props) {
                 </IconButton>
               </Tooltip> */}
 
-              <Tooltip title={t("header.update")} placement="bottom">
+              <Tooltip title={`${t("header.update")}`} placement="bottom">
                 <IconButton className={classes.button} onClick={deleteCache}>
-                  <i className="ion-ios-refresh-outline" style={{ color: "#333" }} />
+                  <i
+                    className="ion-ios-refresh-outline"
+                    style={{ color: "#333" }}
+                  />
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title={t("header.guide")} placement="bottom">
+              <Tooltip title={`${t("header.guide")}`} placement="bottom">
                 <IconButton className={classes.button} onClick={openGuide}>
-                  <i className="ion-ios-help-outline" style={{ color: "#333" }} />
+                  <i
+                    className="ion-ios-help-outline"
+                    style={{ color: "#333" }}
+                  />
                 </IconButton>
               </Tooltip>
             </div>
@@ -136,6 +161,7 @@ function Header(props) {
             <SearchUi history={history} />
           </div>
         </div> */}
+        {intro ? <DashboardSelector /> : null}
         <LanguageSelector />
         <Hidden xsDown>
           <span className={classes.separatorV} />
@@ -152,7 +178,7 @@ Header.propTypes = {
   margin: PropTypes.bool.isRequired,
   position: PropTypes.string.isRequired,
   openGuide: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Header);

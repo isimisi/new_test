@@ -31,11 +31,21 @@ export const getTimelines = (user: User) => async (dispatch) => {
   }
 };
 
-export const postTimeline = (user: User, history: History) => async (dispatch) => {
+export const postTimeline = (user: User, history: History, label?: string,
+  description?: string,
+  group?: string,
+  tags?: string,
+  shareOrg?: boolean,) => async (dispatch) => {
   dispatch({ type: types.POST_TIMELINE_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/${TIMELINES}`;
-  const body = {};
+  const body = {
+    label,
+    description,
+    group,
+    tags,
+    shareOrg,
+  };
   const header = authHeader(user);
 
   try {

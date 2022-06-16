@@ -15,6 +15,7 @@ import {
   POST_NOTIFICATIONS_FAILED,
   READ_NOTIFICATIONS_SUCCESS,
   DashboardActions,
+  CHANGE_TYPE,
 } from "./dashboardConstants";
 import { DashboardState, IImmutableDashboardState } from "@customTypes/reducers/dashbord";
 
@@ -36,6 +37,7 @@ const initialState: DashboardState = {
   runIntro: false,
   introStepIndex: 0,
   notifications: {},
+  type: "structure",
 };
 
 const initialImmutableState: IImmutableDashboardState = fromJS(initialState);
@@ -89,6 +91,10 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set("message", message);
+      });
+    case CHANGE_TYPE:
+      return state.withMutations((mutableState) => {
+        mutableState.set("type", action.dashboardType);
       });
     case CLOSE_NOTIF:
       return state.withMutations((mutableState) => {

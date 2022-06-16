@@ -34,6 +34,16 @@ export const getNotifications = (user: User) => async (dispatch) => {
   }
 };
 
+export const noIntro = (user: User) => async () => {
+  const url = `${baseUrl}/user/noIntro`;
+  const header = authHeader(user);
+  try {
+    await axios.post(url, {}, header);
+
+    // eslint-disable-next-line no-empty
+  } catch (error) {}
+};
+
 export const postNotifications = (
   user: User,
   header: string,
@@ -122,6 +132,11 @@ export const handleRunIntro = (run: boolean) => ({
 export const changeStepIndex = (index: number) => ({
   type: types.CHANGE_STEP_INDEX,
   index,
+});
+
+export const changeDashboardType = (dashboardType: string) => ({
+  type: types.CHANGE_TYPE,
+  dashboardType,
 });
 
 export const closeNotifAction = {

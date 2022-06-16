@@ -8,15 +8,13 @@ import { countryDropDown, getCountryOptions } from '@helpers/countryOptions';
 import Typography from '@material-ui/core/Typography';
 import { Helmet } from 'react-helmet';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
+
 import type { RootState } from '@redux/configureStore';
 import { useTheme } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import {
   GuideSlider,
-  CounterIconsWidget,
-  TimelineWidget,
-  NewsListWidget,
+
   PapperBlock,
   Notification
   // @ts-ignore
@@ -24,10 +22,9 @@ import {
 import Paper from '@material-ui/core/Paper';
 
 import Select from 'react-select';
-import FormControl from '@material-ui/core/FormControl';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-
-import Send from '@material-ui/icons/Send';
 import axios from 'axios';
 import { baseUrl } from '@api/constants';
 // import Joyride, {
@@ -48,7 +45,7 @@ import { isMobile } from 'react-device-detect';
 import Button from '@material-ui/core/Button';
 import { bindActionCreators } from 'redux';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import { useTranslation } from 'react-i18next';
+import * as translation from 'react-i18next';
 import CreatableSelect from 'react-select/creatable';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -65,7 +62,9 @@ import {
   getElementCounts,
   getTimeline,
   postFeatureRequest,
-  getNotifications
+  getNotifications,
+  noIntro,
+  changeDashboardType
 } from './reducers/dashboardActions';
 import UpgradeModal from './UpgradeModal';
 import MobileDisclaimer from './MobileDisclaimer';
@@ -75,6 +74,10 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { getPlanId, UserMeta } from '@helpers/userInfo';
 import { MixedTagOptions } from '@customTypes/reducers/tags';
+import { postTimeline } from '../Timelines/reducers/timelineActions';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const corporateChart = require('@lotties/racoon/corporateChart.json');
@@ -90,14 +93,16 @@ const PersonalDashboard = () => {
   const elementCounts = useAppSelector(state => state[reducer].get('elementCounts'));
   const timeline = useAppSelector(state => state[reducer].get('timeline'));
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
+
+
   // const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
-  const { t } = useTranslation();
+  const { t } = translation.useTranslation();
   const { user } = useAuth0();
   const plan_id = getPlanId(user);
   const meta: UserMeta = user && user["https://juristic.io/meta"];
-  const { first_name } = meta.dbUser;
+  const { first_name, intro } = meta.dbUser;
   const theme = useTheme();
-  console.log(user && user["https://juristic.io/meta"].organization);
+
 
   // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
   const workspaces = useAppSelector(state => state.workspace.get('workspaces')).toJS();
@@ -190,6 +195,10 @@ const PersonalDashboard = () => {
     }
   };
 
+  const createEmptyTimeline = () => {
+    user && dispatch(postTimeline(user, history, label, workspacDescription, group, JSON.stringify(tags), shareOrg));
+  };
+
 
   const confirm = () => {
     if (cvrSearch && user) {
@@ -206,6 +215,24 @@ const PersonalDashboard = () => {
 
   const countryOptions = countryDropDown(plan_id);
 
+  const dashboard = useAppSelector(state => state.dashboard.get("type"));
+
+  const faqs = translation.getI18n().getResourceBundle("en", "").faq;
+
+  const [rememberToNotSeeIntro, setRememberToNotSeeIntro] = useState(false);
+  const toggleRememberToNotSee = () => setRememberToNotSeeIntro(prevVal => !prevVal);
+  const [removedIntro, setRemovedIntro] = useState(false);
+
+  const clickOnIntroChoice = (type) => {
+    setRemovedIntro(true);
+    if (rememberToNotSeeIntro) {
+      user && dispatch(noIntro(user));
+    } else {
+      dispatch(changeDashboardType(type));
+    }
+  };
+
+
   return (
     <div>
       <Helmet>
@@ -220,15 +247,73 @@ const PersonalDashboard = () => {
       <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
       <Grid container className={classes.root} spacing={3}>
         <Grid item xs={12}>
-          <Typography align="center" variant="h5">
-            {t('personal-dashboard.intro_greeting', { name: first_name })}
-          </Typography>
-          <Typography align="center" variant="h4" style={{ fontWeight: 'bold', marginBottom: 30 }}>
-            {t('personal-dashboard.intro_text')}
-          </Typography>
+          {intro || removedIntro ? <div className={classes.racoonAndText}>
+            <div style={{ maxWidth: 500 }}>
+
+              <Typography variant="h4" style={{ fontWeight: 'bold', marginBottom: 10 }}>
+                {t('personal-dashboard.intro_greeting', { name: first_name })}
+              </Typography>
+              <Typography style={{ fontSize: 14, }}>
+                {dashboard === "structure" ? t("personal-dashboard.type_description_structure") : t("personal-dashboard.type_description_timeline")}
+              </Typography>
+            </div>
+            <div style={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center'
+            }}
+            >
+              <Lottie animationData={corporateChart} className={classes.lottie} loop />
+            </div>
+          </div> :
+            (
+              <Paper className={classes.introContainer} elevation={0}>
+
+                <div>
+                  <Typography variant="h4" component="h2" className={classes.title} style={{ color: "white", marginBottom: 20, fontSize: 22, marginLeft: 2 }}>
+                    {t('personal-dashboard.welcome')}
+                  </Typography>
+                  <Typography component="p" className={classes.description} style={{ color: "white", marginBottom: 10, maxWidth: 400, marginLeft: 2 }}>
+                    {t('personal-dashboard.welcome_body')}
+                  </Typography>
+                  <Typography component="p" className={classes.description} style={{ color: "white", marginBottom: 30, marginLeft: 2 }}>
+                    {t('person-dashboard.tell_us')}
+                  </Typography>
+                  <div style={{ display: "flex" }}>
+                    <Button color="primary" variant="contained" onClick={() => clickOnIntroChoice("structure")} style={{ marginRight: 7, backgroundColor: "white", color: "black" }}>
+                      {t('personal-dashboard.structure_button')}
+                    </Button>
+                    <Button color="primary" variant="contained" onClick={() => clickOnIntroChoice("timeline")} style={{ marginRight: 7, backgroundColor: "white", color: "black" }}>
+                      {t('personal-dashboard.timeline_button')}
+                    </Button>
+                    <Button color="primary" variant="contained" style={{ marginRight: 7 }}>
+                      {t('generic.read_more')}
+                    </Button>
+                  </div>
+                  <ButtonBase
+                    className={classes.row}
+                    style={{ marginTop: 10, right: 10 }}
+                    onClick={toggleRememberToNotSee}
+                  >
+                    <Checkbox
+
+                      name="Remember"
+                      className={classes.introCheck}
+                      checked={rememberToNotSeeIntro}
+                    />
+                    <Typography variant="subtitle2" style={{ color: "white", }}>
+                      {t('generic.remember_my_choice')}
+                    </Typography>
+                  </ButtonBase>
+                </div>
+
+                <Paper className={classes.videoContainer} />
+
+              </Paper>
+
+            )
+          }
         </Grid>
-        <Grid item md={6} xs={12}>
-          <Paper className={classes.papperBlock} elevation={0}>
+        <Grid item md={!intro && !removedIntro ? 8 : 6} xs={12}>
+          {intro && removedIntro ? dashboard === "structure" && <Paper className={classes.papperBlock} elevation={0}>
             <div className={classes.descBlock}>
               <div className={classes.titleText}>
                 <Typography variant="h6" component="h2" className={classes.title}>
@@ -238,12 +323,7 @@ const PersonalDashboard = () => {
                   {t('workspaces.search_for_a_company_or_CVR_number')}
                 </Typography>
               </div>
-              <div style={{
-                marginTop: theme.spacing(2), display: 'flex', justifyContent: 'center', alignItems: 'center'
-              }}
-              >
-                <Lottie animationData={corporateChart} className={classes.lottie} />
-              </div>
+
             </div>
             <section className={classNames(classes.content, classes.whiteBg)}>
               <AsyncSelect
@@ -278,11 +358,24 @@ const PersonalDashboard = () => {
                 </Button>
               </div>
             </section>
+          </Paper> : null}
+          <Paper className={classes.papperBlock} elevation={0}>
+            <div className={classes.descBlock}>
+              <div className={classes.titleText}>
+                <Typography variant="h6" component="h2" className={classes.title}>
+                  {t('personal-dashboard.how_it_works')}
+                </Typography>
+
+              </div>
+              <Button color="primary" variant="contained" onClick={confirm}>
+                {t('generic.see_video')}
+              </Button>
+            </div>
           </Paper>
 
         </Grid>
-        <Grid item md={6} xs={12}>
-          <PapperBlock title={t('personal-dashboard.start_empty')} whiteBg noMargin desc={t('personal-dashboard.create_empty_workspace')}>
+        <Grid item md={!intro && !removedIntro ? 4 : 6} xs={12}>
+          {!intro && !removedIntro ? <PapperBlock title={t('personal-dashboard.how_to_start')} whiteBg /> : <PapperBlock title={dashboard === "structure" ? t('personal-dashboard.start_empty') : t('personal-dashboard.start_empty_timeline')} whiteBg desc={dashboard === "structure" ? t('personal-dashboard.create_empty_workspace') : t('personal-dashboard.create_empty_timeline')}>
             <div className={classes.removeMargin}>
               <TextField
                 name="label"
@@ -360,43 +453,29 @@ const PersonalDashboard = () => {
               </ButtonBase>
             )}
             <div style={{ marginTop: theme.spacing(2) }}>
-              <Button color="primary" variant="contained" onClick={createEmptyWorkspace}>
-                {t('personal-dashboard.create_a_new_workspace')}
+              <Button color="primary" variant="contained" onClick={dashboard === "structure" ? createEmptyWorkspace : createEmptyTimeline}>
+                {dashboard === "structure" ? t('personal-dashboard.create_a_new_workspace') : t('personal-dashboard.create_a_new_timeline')}
               </Button>
             </div>
+          </PapperBlock>}
+          <PapperBlock title={t('personal-dashboard.faq')} whiteBg noMargin>
+            {Object.keys(faqs).map((key) => (
+              <Accordion key={key} onClick={() => window.open(t(`faq.${key}.link`), '_blank')?.focus()}>
+                <AccordionSummary
+                  expandIcon={<ChevronRightIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.titleText}>{t(`faq.${key}.header`)}</Typography>
+                </AccordionSummary>
+
+              </Accordion>
+            ))}
           </PapperBlock>
         </Grid>
+
       </Grid>
 
-      <Grid container spacing={3} className={classes.root}>
-        <Grid item md={6} xs={12}>
-          <CounterIconsWidget elementCounts={elementCounts} history={history} />
-          <Divider className={classes.divider} />
-          <NewsListWidget handleOpenGuide={handleOpenGuide} />
-          <Divider className={classes.divider} />
-          <PapperBlock title={t('personal-dashboard.send_us_a_request')} icon="ion-ios-redo-outline" whiteBg noMargin desc={t('personal-dashboard.we_love_ideas')}>
-            <div className={classes.subscribeForm}>
-              <FormControl>
-                <TextField
-                  label={t('personal-dashboard.write_your_wish_here')}
-                  margin="normal"
-                  onChange={handleFeatureChange}
-                  value={featureValue}
-                  multiline
-                />
-              </FormControl>
-              <Fab size="medium" color="primary" type="submit" onClick={handleSubmitFeature}>
-                <Send style={{ color: 'white' }} />
-              </Fab>
-            </div>
-          </PapperBlock>
-
-
-        </Grid>
-        <Grid item md={6} sm={12} xs={12}>
-          <TimelineWidget timeline={timeline} history={history} />
-        </Grid>
-      </Grid>
       <UpgradeModal
         open={showUpgrade}
         close={() => {
@@ -447,129 +526,3 @@ const Dash = connect(
 )(PersonalDashboard);
 
 export default Dash;
-
-
-// const handleJoyrideCallback = (data: CallBackProps) => {
-//   const {
-//     action, index, type, status
-//   } = data;
-
-//   if ([STATUS.FINISHED, STATUS.SKIPPED].some(x => x === status)) {
-//     // Need to set our running state to false, so we can restart if we click start again.
-//     dispatch(handleRunIntro(false));
-//     dispatch(changeStepIndex(0));
-//   } else if ([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND].some(x => x === type)) {
-//     const newStepIndex = index + (action === ACTIONS.PREV ? -1 : 1);
-
-//     if (index === 2) {
-//       openSubMenu('dataBuilder', undefined);
-//       setTimeout(() => {
-//         dispatch(changeStepIndex(newStepIndex));
-//       }, 400);
-//     } else if (index === 7) {
-//       openSubMenu('dataBuilder', undefined);
-//       setTimeout(() => {
-//         dispatch(changeStepIndex(newStepIndex));
-//       }, 400);
-//     } else {
-//       dispatch(changeStepIndex(newStepIndex));
-//     }
-//   }
-// };
-
-// const localeSteps = {
-//   skip: <Button size="small" style={{ color: '#bbb' }}>{t('personal-dashboard.skip')}</Button>,
-//   back: <div>{t('personal-dashboard.previous')}</div>,
-//   next: <div>{t('personal-dashboard.next')}</div>,
-// };
-
-// const steps = [
-//   {
-//     content: <div style={{
-//       justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column'
-//     }}
-//     >
-//       <h2>{t('personal-dashboard.welcome')}</h2>
-//       <Lottie
-//         animationData={raccoon}
-//         style={{
-//           width: '50%',
-//         }}
-//       />
-//     </div>,
-//     locale: localeSteps,
-//     placement: 'center',
-//     target: 'body',
-//   },
-//   {
-//     target: '.for_intro_0',
-//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_frontpage')}</div>,
-//     locale: localeSteps,
-//   },
-//   {
-//     target: '.for_intro_1',
-//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_workspace')}</div>,
-//     locale: localeSteps,
-//   },
-//   {
-//     target: '.for_intro_2',
-//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_data_builder')}</div>,
-//     locale: localeSteps,
-//   },
-//   // {
-//   //   target: '.for_intro_Betingelser',
-//   //   content: <div style={{ textAlign: 'left' }}>Betingelser er den måde, hvorpå du kan programmere Juristic. Tænk på det som logikken bag det juridiske indhold.</div>,
-//   //   locale: localeSteps,
-//   //   disableBeacon: true,
-//   // },
-//   // {
-//   //   target: '.for_intro_Elementer',
-//   //   content: <div style={{ textAlign: 'left' }}>Elementer er en anden grundsten. Det kan for eksempelvis være selskaber, personer eller andre interessenter i analysen!</div>,
-//   //   locale: localeSteps,
-//   //   disableBeacon: true,
-//   // },
-//   // {
-//   //   target: '.for_intro_Kendetegn',
-//   //   content: <div style={{ textAlign: 'left' }}>Ved at tilføje kendetegn, som fx land eller lignende, kan du gøre logikken i betingelserne eller dine tegninger mere detaljerede!</div>,
-//   //   locale: localeSteps,
-//   //   disableBeacon: true,
-//   // },
-//   // {
-//   //   target: '.for_intro_Forbindelser',
-//   //   content: <div style={{ textAlign: 'left' }}>Forbindelser er de streger, du tegner mellem elementerne, fx ejerskab mellem to selskaber!</div>,
-//   //   locale: localeSteps,
-//   //   disableBeacon: true,
-//   // },
-//   {
-//     target: '.for_intro_3',
-//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_output')}</div>,
-//     locale: localeSteps,
-//   },
-//   {
-//     target: '.for_intro_4',
-//     content: <div style={{ textAlign: 'left' }}>{t('personal-dashboard.localsteps_red_flags')}</div>,
-//     locale: localeSteps,
-//   },
-//   // {
-//   //   target: '.for_intro_5',
-//   //   content: <div style={{ textAlign: 'left' }}>Alt indhold, fx arbejdsområder og byggeklodser, kan opdeles i grupper, så du kun ser det, der er vigtigt for dig.</div>,
-//   //   locale: localeSteps,
-//   // },
-//   // {
-//   //   target: '.for_intro_7',
-//   //   content: <div style={{ textAlign: 'left' }}>Hvis du har brug for mere hjælp, kan du altid trykke her og se svar på ofte stillede spørgsmål. Alternativt kan du altid skrive på vores chat.</div>,
-//   //   locale: localeSteps,
-//   // },
-
-
-//   {
-//     target: '.personal_dashboard_workspace_button',
-//     content: t('personal-dashboard.try_creating_a_new_workspace'),
-//     locale: localeSteps,
-//     disableBeacon: true,
-//     disableOverlayClose: true,
-//     hideCloseButton: true,
-//     hideFooter: true,
-//     spotlightClicks: true,
-//   },
-// ];

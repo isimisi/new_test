@@ -20,6 +20,8 @@ export const POST_NOTIFICATIONS_FAILED = "POST_NOTIFICATIONS_FAILED";
 
 export const READ_NOTIFICATIONS_SUCCESS = "READ_NOTIFICATIONS_SUCCESS";
 
+export const CHANGE_TYPE = "CHANGE_TYPE";
+
 export interface GetElementCountsSuccess {
   type: typeof GET_ELEMET_COUNTS_SUCCESS;
   elementCounts: elementCount[];
@@ -79,6 +81,11 @@ export interface ReadNotificationsSuccess {
   id: number;
 }
 
+export interface ChangeType {
+  type: typeof CHANGE_TYPE;
+  dashboardType: "structure" | "timeline" | "intro";
+}
+
 export type DashboardActions =
   | GetElementCountsSuccess
   | GetElementCountsFailed
@@ -87,6 +94,7 @@ export type DashboardActions =
   | PostFeatureSuccess
   | PostFeatureFailed
   | RunIntro
+  | ChangeType
   | ChangeStepIndex
   | GetNotificationsSuccess
   | GetNotificationsFailed

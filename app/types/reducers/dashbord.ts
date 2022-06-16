@@ -26,6 +26,7 @@ export interface DashboardState {
   runIntro: boolean;
   introStepIndex: number;
   notifications: any;
+  type: "structure" | "timeline" | "intro";
 }
 
 export type IImmutableDashboardState = IImmutableStateMap<DashboardState>;

@@ -16,6 +16,7 @@ export interface DbUser {
   plan_id: number | null;
   stripe_customer_id: string | null;
   marketing: number;
+  intro: 0 | 1;
 }
 
 export interface AccessToken {

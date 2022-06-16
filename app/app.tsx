@@ -30,6 +30,8 @@ import store from "./redux/configureStore";
 import "./i18n";
 import Auth0ProviderWithHistory from "./containers/App/auth0-provider-with-history";
 import ErrorView from "@components/Error/CrashScreen";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 
 //  logrocket
 
@@ -82,6 +84,7 @@ let render = () => {
     <>
       {/* @ts-ignore */}
       <Provider store={store}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
         <ConnectedRouter history={history}>
           <Auth0ProviderWithHistory>
             <App />
@@ -89,6 +92,7 @@ let render = () => {
             <CookieBot domainGroupId={domainGroupId} />
           </Auth0ProviderWithHistory>
         </ConnectedRouter>
+        {/* </PersistGate> */}
       </Provider>
     </>,
     MOUNT_NODE
@@ -103,6 +107,7 @@ if (process.env.NODE_ENV === "production") {
       <ErrorBoundary FallbackComponent={ErrorView}>
         {/* @ts-ignore */}
         <Provider store={store}>
+          {/* <PersistGate loading={null} persistor={persistor}> */}
           <ConnectedRouter history={history}>
             <Auth0ProviderWithHistory>
               <App />
@@ -110,6 +115,7 @@ if (process.env.NODE_ENV === "production") {
               <CookieBot domainGroupId={domainGroupId} />
             </Auth0ProviderWithHistory>
           </ConnectedRouter>
+          {/* </PersistGate> */}
         </Provider>
       </ErrorBoundary>,
       MOUNT_NODE
