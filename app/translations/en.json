@@ -838,7 +838,9 @@
     "table_header": "Edit timeline elements",
     "time": "Time",
     "see_content": "See content",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "import_mails_with_error": "Some imported emails require your input ",
+    "delete_email": "Delete email"
   },
   "lookup": {
     "search_placeholder": "Search for a company",
@@ -976,5 +978,8 @@
   },
   "person-dashboard": {
     "tell_us": "Tell us what you work with:"
+  },
+  "node": {
+    "no_date": "No date chosen"
   }
 }

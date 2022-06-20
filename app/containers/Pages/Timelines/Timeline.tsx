@@ -56,7 +56,7 @@ import AddItemNode from "@components/Timeline/Nodes/AddItemNode";
 import EdgeWithButton from "@components/Timeline/Edges/EdgeWithButton";
 import useWindowDimensions from "@hooks/useWindowDiemensions";
 import "./timeline.css";
-import Table from "@components/Timeline/Drawer/Table";
+
 import WorkspaceMeta from "@components/Workspace/Modals/WorkspaceMeta";
 import CreateElement from "@components/Timeline/Modals/CreateElement";
 import { changePerson, getPersonDropDown, showPerson } from "../Persons/reducers/personActions";
@@ -192,6 +192,27 @@ const Timeline = () => {
     setImportEmailsOpen(false);
   };
 
+  const [correctEmailsOpen, setCorrectEmailsOpen] = useState(false);
+
+  const handleCloseCorectEmails = () => {
+    setCorrectEmailsOpen(false);
+  };
+
+
+  const handleToggleCorectEmails = () => {
+    if (correctEmailsOpen) {
+      handleCloseCorectEmails();
+    } else {
+      setCorrectEmailsOpen(true);
+      const badges = elements.filter(
+        e => !e.data.date && isNode(e) && e.id !== "static-button"
+      );
+
+      dispatch(setTimelineNode(badges[0].data.id));
+      dispatch(createElementChange(true));
+    }
+  };
+
   const handleVisability = useAppSelector(state =>
     state[reducer].get("handleVisability")
   );
@@ -287,11 +308,28 @@ const Timeline = () => {
     [label, description, group, shareOrg, tags, id, user]
   );
 
-  const onSaveElement = () => {
-    if (isUpdatingNode) {
-      dispatch(putElement(user, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
+  const nextElWithoutDate = () => {
+    const badges = elements.filter(
+      e => !e.data.date && isNode(e) && e.id !== "static-button" && e.id !== timelineNode.get("id")
+    );
+    if (badges.length > 0) {
+      dispatch(setTimelineNode(badges[0].data.id));
     } else {
-      dispatch(saveElement(user, id, timelineNode, elementPersons, elementDocuments, handleCloseCreateElement));
+      handleCloseCreateElement();
+    }
+  };
+
+  const onSaveElement = () => {
+    let closeFunc = handleCloseCreateElement;
+    if (correctEmailsOpen) {
+      closeFunc = nextElWithoutDate;
+    }
+
+
+    if (isUpdatingNode) {
+      dispatch(putElement(user, timelineNode, elementPersons, elementDocuments, closeFunc));
+    } else {
+      dispatch(saveElement(user, id, timelineNode, elementPersons, elementDocuments, closeFunc));
     }
   };
 
@@ -404,8 +442,22 @@ const Timeline = () => {
   //   [rfInstance, panToNextIndex]
   // );
 
+  const [cursor, setCursor] = useState("auto");
+  const handleCursor = (_type) => setCursor(_type);
+
+  const mouseLoading = loadings.get("mouse");
+
+  useEffect(() => {
+    if (mouseLoading) {
+      handleCursor("progress");
+    } else {
+      handleCursor("auto");
+    }
+  }, [mouseLoading]);
+
+
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", cursor }}>
       <Notification
         close={() => dispatch(closeNotifAction)}
         message={messageNotif}
@@ -455,8 +507,11 @@ const Timeline = () => {
               view={view}
               changeView={handleChangeView}
               handleOpenImportEmails={handleOpenImportEmails}
+              handleToggleCorectEmails={handleToggleCorectEmails}
+
               openTable={openTableView}
               toggleDrawer={toggleDrawer}
+              elements={elements}
             />
             <Controls
               // handleTransform={handleTransform}
@@ -532,6 +587,7 @@ const Timeline = () => {
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
       {emailModalOpen && <Email open={emailModalOpen} close={handleEmailClose} timelineNode={timelineNode} />}
       {importEmailsOpen && <ImportEmails open={importEmailsOpen} close={handleCloseImportEmails} handleImportEmails={handleImportEmails} loading={loadings.get("modal")} />}
+
       {/* {openTableView && <Table open={openTableView} close={handleOpenTableView} elements={elements} personOptions={personOptions} />} */}
       {loadings.get("main") && (
         <>

@@ -15,13 +15,19 @@ import BorderVerticalIcon from "@material-ui/icons/BorderVertical";
 import TocIcon from "@material-ui/icons/Toc";
 import Divider from "@material-ui/core/Divider";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
+import { FlowElement, isNode } from "react-flow-renderer";
+import ErrorIcon from "@material-ui/icons/Error";
+import Badge from "@material-ui/core/Badge";
+
 interface Props {
   openTableView: (bool?: boolean) => void;
   view: "horizontal" | "vertical";
   changeView: (direction: "horizontal" | "vertical") => void;
   handleOpenImportEmails: () => void;
+  handleToggleCorectEmails: () => void;
   openTable: boolean;
   toggleDrawer: (bool?: boolean) => void;
+  elements: FlowElement[];
 }
 
 const Items = (props: Props) => {
@@ -30,7 +36,10 @@ const Items = (props: Props) => {
     view,
     changeView,
     handleOpenImportEmails,
+    handleToggleCorectEmails,
     openTable,
+    elements,
+
     toggleDrawer
   } = props;
   const classes = useStyles();
@@ -49,6 +58,10 @@ const Items = (props: Props) => {
   const handleTable = () => {
     openTableView();
   };
+
+  const badges = elements.filter(
+    e => !e.data.date && isNode(e) && e.id !== "static-button"
+  );
 
   return (
     <>
@@ -101,6 +114,29 @@ const Items = (props: Props) => {
             />
           </IconButton>
         </Tooltip>
+        {badges.length > 0 && (
+          <Tooltip
+            arrow
+            title={`${t("timeline.import_mails_with_error")}`}
+            placement="right"
+          >
+            <IconButton
+              className={classes.buttons}
+              onClick={handleToggleCorectEmails}
+            >
+              <Badge
+                color="error"
+                badgeContent={badges.length}
+                style={{ color: "white" }}
+                overlap="circular"
+              >
+                <ErrorIcon
+                  className={classNames(classes.buttons, classes.biggerIcon)}
+                />
+              </Badge>
+            </IconButton>
+          </Tooltip>
+        )}
       </Paper>
     </>
   );

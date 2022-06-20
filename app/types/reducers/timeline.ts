@@ -10,7 +10,7 @@ import { TagDeconstructedOnOtherElements } from "./tags";
 export interface Loadings {
   main: boolean;
   post: boolean;
-
+  mouse: boolean;
   modal: boolean;
 }
 
@@ -37,7 +37,7 @@ export interface TimelineNode {
   content: any;
   email: IMail;
   date: MaterialUiPickersDate | null;
-
+  time: MaterialUiPickersDate | null;
   persons: List<MixedPersonOptions>;
   documents: List<MixedDocumentOptions>;
   tags: any[];

@@ -25,6 +25,8 @@ const styles = makeStyles((theme: MyTheme) => ({
   iframe: {
     border: "none !important",
     borderRadius: "10px",
+
+    paddingRight: 48,
   },
   title: {
     position: "relative",

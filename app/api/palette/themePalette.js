@@ -17,7 +17,7 @@ module.exports = {
         light: "#fff",
         main: "#FF8DA0",
         dark: "#FF8DA0",
-        contrastText: "#FF8DA0",
+        contrastText: "#fff",
       },
       warning: {},
       info: "#6F7F96",

@@ -35,6 +35,7 @@ import {
   POST_TIMELINE_ELEMENT_SUCCESS,
   SET_TIMELINE_NODE,
   CHANGE_TIMELINE_NODE_KEY,
+  POST_TIMELINE_ELEMENT_LOADING,
   PUT_TIMELINE_ELEMENT_LOADING,
   PUT_TIMELINE_ELEMENT_SUCCESS,
   PUT_TIMELINE_ELEMENT_FAILED,
@@ -47,11 +48,12 @@ import {
   IMPORT_EMAILS_SUCCESS,
   IMPORT_EMAILS_FAILED,
 } from "./timelineConstants";
+import moment from "moment";
 
 const initialLoadings = Map({
   main: false,
   post: false,
-
+  mouse: false,
   modal: false,
 });
 
@@ -62,7 +64,7 @@ const initialNode: TimelineNode = {
   content: EditorState.createEmpty(),
   email: Map({ mail: null, uri: null, index: null }),
   date: null,
-
+  time: null,
   persons: List(),
   documents: List(),
   tags: [],
@@ -147,6 +149,7 @@ export default function reducer(
     case GET_TIMELINES_LOADING:
     case POST_TIMELINE_LOADING:
     case PUT_TIMELINE_LOADING:
+    case POST_TIMELINE_ELEMENT_LOADING:
     case PUT_TIMELINE_ELEMENT_LOADING:
     case SHOW_TIMELINE_LOADING:
     case IMPORT_EMAILS_LOADING:
@@ -243,8 +246,8 @@ export default function reducer(
             content: editorState,
             email: element.data.email,
             description: element.data.description,
-            date: element.data.date,
-
+            date: moment(element.data.date),
+            time: moment(element.data.date),
             persons: fromJS(
               element.data.persons.map((p) => ({
                 icon: p.person_icon,

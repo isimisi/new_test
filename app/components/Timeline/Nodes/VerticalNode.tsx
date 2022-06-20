@@ -13,11 +13,12 @@ import {
 } from "../../../containers/Pages/Timelines/reducers/timelineActions";
 
 import ButtonBase from "@material-ui/core/ButtonBase";
+import { useTranslation } from "react-i18next";
 
 export default memo(({ data }: NodeProps) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-
+  const { t } = useTranslation();
   const onEditClick = () => {
     dispatch(setTimelineNode(data.id, true));
   };
@@ -48,9 +49,11 @@ export default memo(({ data }: NodeProps) => {
           className={classes.horizontalDate}
           id="nodeLabel"
         >
-          {`${moment(data.date).format("DD/MM-YYYY")}, kl. ${moment(
-            data.date
-          ).format("HH:mm")}`}
+          {moment(data.date).isValid()
+            ? `${moment(data.date).format("DD/MM-YYYY")}, kl. ${moment(
+              data.date
+            ).format("HH:mm")}`
+            : t("node.no_date")}
         </Typography>
         <Handle
           type="target"

@@ -835,12 +835,14 @@
     "upload_mail": "Upload email",
     "see_email": "Åben e-mail",
     "no_choosen_node": "Du har endnu ikke valgt et element",
-    "import_mails": "Importer e-mails",
+    "import_mails": "Importer email",
     "choose_emails": "Upload e-mails – eller træk dem ind i feltet her",
     "table_header": "Rediger tidslinjeelementer",
     "time": "Tid",
     "see_content": "Se indhold",
-    "cancel": "Annuller"
+    "cancel": "Annuller",
+    "import_mails_with_error": "Der er importerede e-mails, der mangler en handling ",
+    "delete_email": "Slet e-mail"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -984,5 +986,8 @@
   },
   "person-dashboard": {
     "tell_us": "Fortæl os, hvad du arbejder mest med:"
+  },
+  "node": {
+    "no_date": "Ingen dato valgt"
   }
 }

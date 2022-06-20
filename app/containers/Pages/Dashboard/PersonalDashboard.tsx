@@ -361,7 +361,7 @@ const PersonalDashboard = () => {
               </div>
             </section>
           </Paper> : null}
-          <Paper className={classes.papperBlock} elevation={0}>
+          <Paper className={classes.papperBlock} elevation={0} style={{ position: "relative", paddingBottom: "59%" }}>
             <div className={classes.descBlock}>
               <div className={classes.titleText}>
                 <Typography variant="h6" component="h2" className={classes.title}>
@@ -376,11 +376,11 @@ const PersonalDashboard = () => {
             <Iframe
               url="https://juristic.storylane.io/demo/hyupzxzra3ys?embed=true%22"
               width="100%"
-              height="400"
+              height="80%"
               className={classes.iframe}
 
               id={title}
-              position="relative"
+              position="absolute"
             />
           </Paper>
 

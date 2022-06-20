@@ -167,7 +167,7 @@ export const putElement = (user: User, element, changedPersons, changedDocuments
 
   const body = { element: _element, changedPersons, changedDocuments };
   const header = authHeader(user);
-  console.log(_element);
+
   try {
     const response = await axios.put(url, body, header);
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_SUCCESS, element: response.data });
@@ -182,7 +182,7 @@ export const putElement = (user: User, element, changedPersons, changedDocuments
 };
 
 export const deleteElements = (user: User, timeline_id: string, elements: string[]) => async (dispatch) => {
-  dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_LOADING, loadingType: "post" });
+  dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_LOADING, loadingType: "mouse" });
 
   const url = `${baseUrl}/timelinenodes/delete`;
   const body = { elements, timeline_id };
