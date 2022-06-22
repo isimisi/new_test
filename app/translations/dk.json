@@ -555,98 +555,98 @@
   "faq": {
     "structure": {
       "what_is_a_red_flag": {
-        "header": "Hvad er et red flag?",
-        "body": "Et red flag er en særlig funktion, som kan hjælpe dig med at analysere og identificere visse juridiske problemstillinger. Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Pro-abonnement kan endda designe og skabe deres egne red flags.",
-        "link": "https://github.com/"
+        "header": "hvordan virker platformen?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvordan-virker-platformen-15pzwyq/"
       },
       "is_it_really_free": {
-        "header": "Er det virkelig gratis?",
-        "body": "Afhængigt af det abonnement, du har valgt, vil du have adgang til forskellige funktioner eller udgaver af Juristic. Du kan selvfølgelig altid fortsætte som gratis-bruger.",
-        "link": "https://github.com/"
+        "header": "Hvordan deler jeg sikkert arbejdsområder med andre?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvordan-deler-jeg-med-tredjeparter-og-er-det-sikkert-ws3law/"
       },
       "how_can_i_get_further_help": {
-        "header": "Hvordan kan jeg få yderligere hjælp?",
-        "body": "Du er altid velkommen til at kontakte os for at få hjælp med funktioner eller din bruger. Dette gør du til højre eller via kontaktoplysningerne på vores hjemmeside. Vi svarer hurtigst muligt. Pro- og Enterprise-brugere har adgang til særlige supportfunktioner afhængigt af aftalen.",
-        "link": "https://github.com/"
+        "header": "Hvad er Timeline?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvad-er-timeline-6vapzb/"
       },
       "how_to_program_law": {
-        "header": "Hvordan programmerer man jura?",
-        "body": "Med Juristic Pro og Juristic Enterprise får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer. Det særlige er, at du hverken behøver andre programmer eller at kunne kode. Træk og slip elementer - ligesom du er vant til.",
-        "link": "https://github.com/"
+        "header": "Hvad er Whiteboard?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvad-er-whiteboard-11owrxh/"
       },
       "is_it_safe_to_use": {
-        "header": "Er det sikkert at bruge?",
-        "body": "Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Pro- og Enterprise-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder. Du kan læse mere om, hvordan vi behandler data i vores forrretningsbetingelser og persondatapolitik. Du kan finde begge på vores hjemmeside.",
-        "link": "https://github.com/"
+        "header": "Har du problemer?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/har-du-problemer-yls6lm/"
       },
       "why_are_not_all_features_available": {
-        "header": "Hvorfor er ikke alle funktioner tilgængelige endnu?",
-        "body": "Juristic er stadig i 'beta'. Det betyder, at platformen stadig er under udvikling - og der er derfor mange flere funktioner på vej. Det betyder dog også, at du vil opleve visse fejl, som vi stadig arbejder på højtryk for at løse.",
-        "link": "https://github.com/"
+        "header": "Læs mere på vores supportside",
+        "body": ".",
+        "link": "https://support.juristic.io/"
       }
     },
     "timeline": {
       "what_is_a_red_flag": {
-        "header": "Hvad er et red flag?",
-        "body": "Et red flag er en særlig funktion, som kan hjælpe dig med at analysere og identificere visse juridiske problemstillinger. Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Pro-abonnement kan endda designe og skabe deres egne red flags.",
-        "link": "https://github.com/"
+        "header": "hvordan virker platformen?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvordan-virker-platformen-15pzwyq/"
       },
       "is_it_really_free": {
-        "header": "Er det virkelig gratis?",
-        "body": "Afhængigt af det abonnement, du har valgt, vil du have adgang til forskellige funktioner eller udgaver af Juristic. Du kan selvfølgelig altid fortsætte som gratis-bruger.",
-        "link": "https://github.com/"
+        "header": "Hvordan deler jeg sikkert arbejdsområder med andre?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvordan-deler-jeg-med-tredjeparter-og-er-det-sikkert-ws3law/"
       },
       "how_can_i_get_further_help": {
-        "header": "Hvordan kan jeg få yderligere hjælp?",
-        "body": "Du er altid velkommen til at kontakte os for at få hjælp med funktioner eller din bruger. Dette gør du til højre eller via kontaktoplysningerne på vores hjemmeside. Vi svarer hurtigst muligt. Pro- og Enterprise-brugere har adgang til særlige supportfunktioner afhængigt af aftalen.",
-        "link": "https://github.com/"
+        "header": "Hvad er Timeline?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvad-er-timeline-6vapzb/"
       },
       "how_to_program_law": {
-        "header": "Hvordan programmerer man jura?",
-        "body": "Med Juristic Pro og Juristic Enterprise får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer. Det særlige er, at du hverken behøver andre programmer eller at kunne kode. Træk og slip elementer - ligesom du er vant til.",
-        "link": "https://github.com/"
+        "header": "Hvad er Whiteboard?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvad-er-whiteboard-11owrxh/"
       },
       "is_it_safe_to_use": {
-        "header": "Er det sikkert at bruge?",
-        "body": "Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Pro- og Enterprise-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder. Du kan læse mere om, hvordan vi behandler data i vores forrretningsbetingelser og persondatapolitik. Du kan finde begge på vores hjemmeside.",
-        "link": "https://github.com/"
+        "header": "Har du problemer?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/har-du-problemer-yls6lm/"
       },
       "why_are_not_all_features_available": {
-        "header": "Hvorfor er ikke alle funktioner tilgængelige endnu?",
-        "body": "Juristic er stadig i 'beta'. Det betyder, at platformen stadig er under udvikling - og der er derfor mange flere funktioner på vej. Det betyder dog også, at du vil opleve visse fejl, som vi stadig arbejder på højtryk for at løse.",
-        "link": "https://github.com/"
+        "header": "Læs mere på vores supportside",
+        "body": ".",
+        "link": "https://support.juristic.io/"
       }
     },
     "intro": {
       "what_is_a_red_flag": {
-        "header": "Hvad er et red flag?",
-        "body": "Et red flag er en særlig funktion, som kan hjælpe dig med at analysere og identificere visse juridiske problemstillinger. Red flags dukker automatisk op i dit arbejdsområde, mens du tegner - og brugere med et Pro-abonnement kan endda designe og skabe deres egne red flags.",
-        "link": "https://github.com/"
+        "header": "hvordan virker platformen?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvordan-virker-platformen-15pzwyq/"
       },
       "is_it_really_free": {
-        "header": "Er det virkelig gratis?",
-        "body": "Afhængigt af det abonnement, du har valgt, vil du have adgang til forskellige funktioner eller udgaver af Juristic. Du kan selvfølgelig altid fortsætte som gratis-bruger.",
-        "link": "https://github.com/"
+        "header": "Hvordan deler jeg sikkert arbejdsområder med andre?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvordan-deler-jeg-med-tredjeparter-og-er-det-sikkert-ws3law/"
       },
       "how_can_i_get_further_help": {
-        "header": "Hvordan kan jeg få yderligere hjælp?",
-        "body": "Du er altid velkommen til at kontakte os for at få hjælp med funktioner eller din bruger. Dette gør du til højre eller via kontaktoplysningerne på vores hjemmeside. Vi svarer hurtigst muligt. Pro- og Enterprise-brugere har adgang til særlige supportfunktioner afhængigt af aftalen.",
-        "link": "https://github.com/"
+        "header": "Hvad er Timeline?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvad-er-timeline-6vapzb/"
       },
       "how_to_program_law": {
-        "header": "Hvordan programmerer man jura?",
-        "body": "Med Juristic Pro og Juristic Enterprise får du adgang til en særligt udviklet funktion, som gør det muligt at 'programmere' juridisk indhold, fx red flags eller paradigmer. Det særlige er, at du hverken behøver andre programmer eller at kunne kode. Træk og slip elementer - ligesom du er vant til.",
-        "link": "https://github.com/"
+        "header": "Hvad er Whiteboard?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/hvad-er-whiteboard-11owrxh/"
       },
       "is_it_safe_to_use": {
-        "header": "Er det sikkert at bruge?",
-        "body": "Alle versioner af Juristic er udviklet efter sædvanlig best practice. Dermed er dine arbejdsområder, elementer m.v. altid krypteret på servere i Europa. Pro- og Enterprise-versionerne indeholder yderligere sikkerhedsfunktioner, som er målrettet virksomheder. Du kan læse mere om, hvordan vi behandler data i vores forrretningsbetingelser og persondatapolitik. Du kan finde begge på vores hjemmeside.",
-        "link": "https://github.com/"
+        "header": "Har du problemer?",
+        "body": ".",
+        "link": "https://support.juristic.io/da/article/har-du-problemer-yls6lm/"
       },
       "why_are_not_all_features_available": {
-        "header": "Hvorfor er ikke alle funktioner tilgængelige endnu?",
-        "body": "Juristic er stadig i 'beta'. Det betyder, at platformen stadig er under udvikling - og der er derfor mange flere funktioner på vej. Det betyder dog også, at du vil opleve visse fejl, som vi stadig arbejder på højtryk for at løse.",
-        "link": "https://github.com/"
+        "header": "Læs mere på vores supportside",
+        "body": ".",
+        "link": "https://support.juristic.io/"
       }
     }
   },
