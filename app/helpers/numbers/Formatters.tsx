@@ -7,7 +7,7 @@ export const currencyFormatter = (x, currency, format) => {
     currency,
     minimumFractionDigits: 0
   };
-  // console.log(option);
+
   const formatter = new Intl.NumberFormat(format, option);
 
   return formatter.format(x);

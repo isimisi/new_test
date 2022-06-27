@@ -1,6 +1,9 @@
+/* eslint-disable indent */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-restricted-syntax */
 import { createStore, applyMiddleware, compose, Action, AnyAction } from "redux";
 import thunk, { ThunkDispatch } from "redux-thunk";
-import logger from "redux-logger";
+import { createLogger } from "redux-logger";
 import { routerMiddleware } from "connected-react-router";
 import LogRocket from "logrocket";
 import { persistReducer } from "redux-persist";
@@ -11,7 +14,20 @@ import autoMergeLevel2Immutable from "@redux/autoMergeLevel2Immutable";
 import reducer, { ApplicationState } from "./reducers";
 
 const _logger =
-  process.env.NODE_ENV === "production" ? LogRocket.reduxMiddleware() : logger;
+  process.env.NODE_ENV === "production"
+    ? LogRocket.reduxMiddleware()
+    : createLogger({
+        stateTransformer: (state) => {
+          const result = {};
+
+          for (const key in state) {
+            if (state.hasOwnProperty(key)) {
+              result[key] = state[key].toJS();
+            }
+          }
+          return result;
+        },
+      });
 
 const persistConfig = {
   transforms: [immutableTransform()],

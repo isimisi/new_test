@@ -3,22 +3,22 @@
  * COMMON WEBPACK CONFIGURATION
  */
 
-const path = require('path');
-const webpack = require('webpack');
+const path = require("path");
+const webpack = require("webpack");
 
-const HappyPack = require('happypack');
+const HappyPack = require("happypack");
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 
-module.exports = options => ({
+module.exports = (options) => ({
   mode: options.mode,
   entry: options.entry,
   output: Object.assign(
     {
       // Compile into js/build.js
-      path: path.resolve(process.cwd(), 'build'),
-      publicPath: '/',
+      path: path.resolve(process.cwd(), "build"),
+      publicPath: "/",
     },
-    options.output,
+    options.output
   ), // Merge with env dependent settings
   optimization: options.optimization,
   module: {
@@ -41,14 +41,14 @@ module.exports = options => ({
         test: /\.jsx?$/, // Transform all .js and .jsx files required somewhere with Babel
         exclude: /node_modules/,
         use: {
-          loader: 'happypack/loader?id=js',
+          loader: "happypack/loader?id=js",
           options: options.babelQuery,
         },
       },
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/
+        loader: "ts-loader",
+        exclude: /node_modules/,
       },
       {
         // Preprocess our own .css files
@@ -56,56 +56,57 @@ module.exports = options => ({
         // for a list of loaders, see https://webpack.js.org/loaders/#styling
         test: /\.css$/,
         exclude: /node_modules/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
       },
       {
         // Preprocess 3rd party .css files located in node_modules
         test: /\.css$/,
         include: /node_modules/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
-        use: 'file-loader',
+        use: "file-loader",
       },
       {
         test: /\.(scss)$/,
-        use: [{
-          loader: 'style-loader'
-        },
-        {
-          loader: 'css-loader',
-          options:
+        use: [
           {
-            sourceMap: false,
-            importLoaders: 2,
-            modules: true,
-            localIdentName: '[local]__[hash:base64:5]'
-          }
-        },
-        {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: false
-          }
-        },
-        {
-          loader: 'sass-loader',
-          options: {
-            outputStyle: 'expanded',
-            sourceMap: false
-          }
-        }],
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: false,
+              importLoaders: 2,
+              modules: true,
+              localIdentName: "[local]__[hash:base64:5]",
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              sourceMap: false,
+            },
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              outputStyle: "expanded",
+              sourceMap: false,
+            },
+          },
+        ],
       },
       {
         test: /\.md$/,
-        use: 'raw-loader'
+        use: "raw-loader",
       },
       {
         test: /\.(jpg|png|gif|svg)$/,
         use: [
           {
-            loader: 'url-loader',
+            loader: "url-loader",
             options: {
               // Inline files smaller than 10 kB
               limit: 10 * 1024,
@@ -144,12 +145,12 @@ module.exports = options => ({
       },
       {
         test: /\.html$/,
-        use: 'html-loader',
+        use: "html-loader",
       },
       {
         test: /\.(mp4|webm)$/,
         use: {
-          loader: 'url-loader',
+          loader: "url-loader",
           options: {
             limit: 10000,
           },
@@ -158,51 +159,53 @@ module.exports = options => ({
     ],
   },
   node: {
-    fs: 'empty'
+    fs: "empty",
   },
   plugins: options.plugins.concat([
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
     // inside your code for any environment checks; Terser will automatically
     // drop any unreachable code.
     new HappyPack({
-      id: 'js',
+      id: "js",
       threadPool: happyThreadPool,
-      loaders: ['babel-loader?cacheDirectory=true']
+      loaders: ["babel-loader?cacheDirectory=true"],
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development',
+      NODE_ENV: "development",
     }),
-    new webpack.ContextReplacementPlugin(/^\.\/locale$/, context => {
-      if (!/\/moment\//.test(context.context)) { return; }
+    new webpack.ContextReplacementPlugin(/^\.\/locale$/, (context) => {
+      if (!/\/moment\//.test(context.context)) {
+        return;
+      }
       // context needs to be modified in place
       Object.assign(context, {
         // include only CJK
         regExp: /^\.\/(ja|ko|zh)/,
         // point to the locale data folder relative to moment's src/lib/locale
-        request: '../../locale'
+        request: "../../locale",
       });
-    })
+    }),
   ]),
   resolve: {
-    modules: ['node_modules', 'app'],
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.react.js'],
-    mainFields: ['browser', 'jsnext:main', 'main'],
+    modules: ["node_modules", "app"],
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".react.js"],
+    mainFields: ["browser", "jsnext:main", "main"],
     alias: {
-      '@components': path.resolve(__dirname, '../../app/components/'),
-      '@actions': path.resolve(__dirname, '../../app/actions/'),
-      '@redux': path.resolve(__dirname, '../../app/redux/'),
-      '@styles': path.resolve(__dirname, '../../app/styles/components/'),
-      '@api': path.resolve(__dirname, '../../app/api/'),
-      '@helpers': path.resolve(__dirname, '../../app/helpers/'),
-      '@utils': path.resolve(__dirname, '../../app/utils/'),
-      '@customTypes': path.resolve(__dirname, '../../app/types/'),
-      '@hooks': path.resolve(__dirname, '../../app/hooks/'),
-      '@images': path.resolve(__dirname, '../../public/images/'),
-      '@lotties': path.resolve(__dirname, '../../public/lotties/'),
-      '@vendor': path.resolve(__dirname, '../../node_modules/'),
-    }
+      "@pages": path.resolve(__dirname, "../../app/containers/Pages"),
+      "@components": path.resolve(__dirname, "../../app/components/"),
+      "@redux": path.resolve(__dirname, "../../app/redux/"),
+      "@styles": path.resolve(__dirname, "../../app/styles/components/"),
+      "@api": path.resolve(__dirname, "../../app/api/"),
+      "@helpers": path.resolve(__dirname, "../../app/helpers/"),
+      "@utils": path.resolve(__dirname, "../../app/utils/"),
+      "@customTypes": path.resolve(__dirname, "../../app/types/"),
+      "@hooks": path.resolve(__dirname, "../../app/hooks/"),
+      "@images": path.resolve(__dirname, "../../public/images/"),
+      "@lotties": path.resolve(__dirname, "../../public/lotties/"),
+      "@vendor": path.resolve(__dirname, "../../node_modules/"),
+    },
   },
   devtool: options.devtool,
-  target: 'web', // Make web variables accessible to webpack, e.g. window
+  target: "web", // Make web variables accessible to webpack, e.g. window
   performance: options.performance || {},
 });

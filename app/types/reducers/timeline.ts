@@ -23,6 +23,7 @@ export interface Mail {
   mail: any;
   uri: string | null;
   index: number | null;
+  customSplit: string | null;
 }
 
 interface IMail extends Map<string, any> {
@@ -58,6 +59,7 @@ export interface TimelineState {
   elements: List<FlowElement>;
   handleVisability: boolean;
   createElementOpen: boolean;
+  goThroughSplitOpen: boolean;
   title: string;
   description: string;
   group: string;
@@ -70,6 +72,9 @@ export interface TimelineState {
   isUpdatingNode: boolean;
   emailOpen: boolean;
   view: "horizontal" | "vertical";
+  currSplittingEmail: string | null;
+  currSplittingNodeRefference: string | null;
+  splitElements: List<string>;
 }
 
 export type IImmutableTimelineState = IImmutableStateMap<TimelineState>;

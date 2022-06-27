@@ -23,17 +23,15 @@ import {
 import Paper from '@material-ui/core/Paper';
 
 import Select from 'react-select';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import axios from 'axios';
 import { baseUrl } from '@api/constants';
-// import Joyride, {
-//   ACTIONS, EVENTS, STATUS, CallBackProps
-// } from 'react-joyride';
+
 import Lottie from 'lottie-react';
 import AsyncSelect from 'react-select/async';
-import Fab from '@material-ui/core/Fab';
+
 import TextField from '@material-ui/core/TextField';
 import { connect } from 'react-redux';
 import { mapSelectOptions, selectStyles } from '@api/ui/helper';
@@ -177,16 +175,6 @@ const PersonalDashboard = () => {
     }
   }, [user]);
 
-  const handleFeatureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFeatureValue(e.target.value);
-  };
-
-  const handleSubmitFeature = () => {
-    if (user) {
-      dispatch(postFeatureRequest(user, featureValue, setFeatureValue));
-    }
-  };
-
 
   const createEmptyWorkspace = () => {
     if (plan_id === 1 && workspaces.length === 50) {
@@ -209,6 +197,7 @@ const PersonalDashboard = () => {
       dispatch(postWorkspace(user, history, name, undefined, 'Corporate', undefined, undefined, cvr));
     }
   };
+
 
   const getAsyncOptions = inputValue => axios
     .get(`${baseUrl}/workspaces/cvr/dropdown?q=${inputValue}&countries=${plan_id === 1 ? JSON.stringify(["DK"]) : countries.length > 0 ? JSON.stringify(countries.map(x => x.value)) : JSON.stringify(['DK', 'SE', 'NO', 'FI', 'GB'])}`)

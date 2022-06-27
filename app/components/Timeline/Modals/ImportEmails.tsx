@@ -103,7 +103,8 @@ const Email = (props: Props) => {
       >
         <div className={classes.createElementContainer}>
           <div
-            {...getRootProps({ className: classes.dropzone2 })}
+            {...getRootProps()}
+            className={classes.dropzone2}
             style={{ height: 200, width: "100%", position: "relative" }}
             onMouseMove={({ clientX: x, clientY: y }) => {
               // @ts-ignore
@@ -116,8 +117,6 @@ const Email = (props: Props) => {
               setHover(false);
             }}
           >
-            <input {...getInputProps()} />
-
             <AnimatedNoteAdd
               className={classes.addCircle}
               style={{
@@ -129,6 +128,7 @@ const Email = (props: Props) => {
             />
 
             <Typography variant="h5">{t("timeline.choose_emails")}</Typography>
+            <input {...getInputProps()} />
           </div>
           <aside className={classes.thumbsContainer} style={{ marginTop: 16 }}>
             {thumbs}

@@ -10,7 +10,7 @@ import {
 } from "react-flow-renderer";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
-import { createElementChange } from "../../../containers/Pages/Timelines/reducers/timelineActions";
+import { createElementChange } from "@pages/Timelines/reducers/timelineActions";
 
 const foreignObjectSize = 24;
 

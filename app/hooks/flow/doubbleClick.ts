@@ -16,7 +16,7 @@ const useDoubbleClick = (
   relationships: List<WorkspaceRelationship>,
   handleHideEdgePopper: (stopReffrence?: boolean) => void,
   handleHideNodePopper: (stopReffrence?: boolean) => void,
-  handleNoLabelDoubleClick: () => void
+  handleNoLabelDoubleClick: (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge) => void
 ) => {
   const [nodeTextTarget, setNodeTextTarget] = useState<HTMLElement | null>(null);
   const [nodeTarget, setNodeTarget] = useState<Node | null>(null);
@@ -117,7 +117,7 @@ const useDoubbleClick = (
     handleHideEdgePopper(true);
 
     if (edge.data.label.length === 0) {
-      handleNoLabelDoubleClick();
+      handleNoLabelDoubleClick(event, edge);
       return;
     }
 

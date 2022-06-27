@@ -16,7 +16,7 @@ import {
   titleChange,
   descriptionChange,
   addGroup
-} from "../../containers/Pages/Alerts/reducers/alertActions";
+} from "@pages/Alerts/reducers/alertActions";
 import { MixedTagOptions } from "@customTypes/reducers/tags";
 
 const useStyles = makeStyles(theme => ({

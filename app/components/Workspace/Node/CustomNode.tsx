@@ -20,7 +20,7 @@ import { deltaE } from "@api/ui/colors";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import InfoIcon from "@material-ui/icons/Info";
 import { useAuth0, User } from "@auth0/auth0-react";
-import { getCompanyData } from "../../../containers/Pages/Workspaces/reducers/workspaceActions";
+import { getCompanyData } from "@pages/Workspaces/reducers/workspaceActions";
 
 export const getSVG = figur => {
   switch (figur) {

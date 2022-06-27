@@ -35,7 +35,7 @@ export const postDocument = (user: User, history: any) => async (dispatch) => {
     history.push(`/app/documents/${id}`);
   } catch (error) {
     // @ts-ignore
-    console.log(error.response);
+
     const message = genericErrorMessage;
     dispatch({ type: types.POST_DOCUMENT_FAILED, message });
   }
@@ -89,7 +89,7 @@ export const putDocument = (
     history.push(`/app/documents`);
   } catch (error) {
     // @ts-ignore
-    console.log(error.response);
+
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_DOCUMENT_FAILED, message });
   }

@@ -6,13 +6,15 @@ import { baseUrl, authHeader, genericErrorMessage } from "@api/constants";
 import { User } from "@auth0/auth0-react";
 import { History } from "history";
 import * as types from "./timelineConstants";
-import { TimelineNode } from "@customTypes/reducers/timeline";
+import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from "draft-js";
 import { isEdge, isNode } from "react-flow-renderer";
 import dagre from "dagre";
 import { getDocumentDropDown } from "../../Documents/reducers/documentActions";
 import { getPersonDropDown } from "../../Persons/reducers/personActions";
+import { Person as TPerson } from "@customTypes/reducers/person";
+import { Document as TDocument } from "@customTypes/reducers/document";
 const TIMELINES = "timelines";
 
 export const getTimelines = (user: User) => async (dispatch) => {
@@ -25,7 +27,7 @@ export const getTimelines = (user: User) => async (dispatch) => {
     dispatch({ type: types.GET_TIMELINES_SUCCESS, timelines });
   } catch (error) {
     // @ts-ignore
-    console.log(error);
+
     const message = genericErrorMessage;
     dispatch({ type: types.GET_TIMELINES_FAILED, message });
   }
@@ -83,7 +85,6 @@ export const showTimeline = (user: User, id: string, openMeta, rfInstance) => as
 
     dispatch({ type: types.SHOW_TIMELINE_SUCCESS, title, description, group, tags, shareOrg, elements });
   } catch (error: any) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_TIMELINE_FAILED, message });
   }
@@ -131,7 +132,16 @@ export const deleteTimelines = (user: User, id: string) => async dispatch => {
   }
 };
 
-export const saveElement = (user: User, timeline_id, element, changedPersons, changedDocuments, handleCloseCreateElement) => async (dispatch) => {
+export const saveElement = (
+  user: User,
+  timeline_id: string,
+  element: ITimelineNode,
+  timeline_node_refference_id: string | null,
+  customSplit: string | undefined,
+  changedPersons: TPerson[],
+  changedDocuments: TDocument[],
+  handleCloseCreateElement: () => void
+) => async (dispatch) => {
   dispatch({ type: types.POST_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/timelinenodes`;
@@ -139,7 +149,9 @@ export const saveElement = (user: User, timeline_id, element, changedPersons, ch
   const markup = draftToHtml(rawContentState);
   const _element = element.toJS();
   _element.content = markup;
-  const body = { element: _element, changedPersons, changedDocuments, timeline_id };
+  // @ts-ignore this one is okay because i want to save it in the backend as "...rest", so it needs to match it's format
+  _element.email_custom_split = customSplit || null;
+  const body = { element: _element, changedPersons, changedDocuments, timeline_id, timeline_node_refference_id };
   const header = authHeader(user);
 
   try {
@@ -175,7 +187,6 @@ export const putElement = (user: User, element, changedPersons, changedDocuments
     dispatch(getPersonDropDown(user));
     dispatch(getDocumentDropDown(user));
   } catch (error: any) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_FAILED, message });
   }
@@ -192,7 +203,6 @@ export const deleteElements = (user: User, timeline_id: string, elements: string
     const response = await axios.post(url, body, header);
     dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_SUCCESS, elements: response.data });
   } catch (error: any) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_FAILED, message });
   }
@@ -257,6 +267,12 @@ export const createElementChange = (bool: boolean) => ({
   type: types.CREATE_ELEMENT_CHANGE,
   bool,
 });
+
+export const goThroughSplitChange = (bool: boolean) => ({
+  type: types.GO_THROUGH_SPLIT_CHANGE,
+  bool,
+});
+
 
 export const timelineElementPersonChange = (bool: boolean) => ({
   type: types.TIMELINE_ELEMENT_PERSON_CHANGE,
@@ -339,6 +355,25 @@ export const setIsUpdating = (bool) => ({
   type: types.SET_IS_UPDATING,
   bool
 });
+
+export const addCurrSplittingEmail = (email) => ({
+  type: types.ADD_CURR_SPLITTING_EMAIL,
+  email
+});
+
+export const addEmailSplit = (splitElement) => ({
+  type: types.ADD_EMAIL_SPLIT,
+  splitElement
+});
+
+export const removeEmailSplit = (splitElement) => ({
+  type: types.REMOVE_EMAIL_SPLIT,
+  splitElement
+});
+
+export const clearSplitting = {
+  type: types.CLEAR_SPLITTING,
+};
 
 export const closeNotifAction = {
   type: notification.CLOSE_NOTIF,

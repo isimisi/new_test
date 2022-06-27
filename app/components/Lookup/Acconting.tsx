@@ -75,7 +75,7 @@ const Accounting = (props: Props) => {
 
   const classes = useStyles();
   const { t } = useTranslation();
-  console.log(data);
+
   const [currFinancials, setCurrFinancials] = useState<any>(null);
   const [AG, setAG] = useState(0);
   const [SG, setSG] = useState(0);
@@ -145,7 +145,6 @@ const Accounting = (props: Props) => {
 
   useEffect(() => {
     if (data.primaryFinancials) {
-      console.log(year);
       const financials = data.primaryFinancials["year" + year.value];
 
       setCurrFinancials(financials);

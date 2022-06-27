@@ -46,8 +46,6 @@ export default function reducer(
       });
     case POST_GROUP_SUCCESS:
       return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
         mutableState.set("title", "");
         mutableState.set("description", "");
         mutableState.set("image", List());
@@ -73,10 +71,8 @@ export default function reducer(
         mutableState.set("message", message);
       });
     case DELETE_GROUP_SUCCESS:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
-      });
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return state.withMutations((mutableState) => {});
     case DELETE_GROUP_FAILED:
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);

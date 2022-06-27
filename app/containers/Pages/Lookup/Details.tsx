@@ -38,9 +38,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Helmet } from "react-helmet";
 import Button from "@material-ui/core/Button";
 import { postWorkspace } from "../Workspaces/reducers/workspaceActions";
+import brand from "@api/dummy/brand";
 
 const Person = () => {
   const dispatch = useAppDispatch();
+
   const { t } = useTranslation();
   const user = useAuth0().user as User;
   const history = useHistory();
@@ -48,6 +50,8 @@ const Person = () => {
   const cvr = history.location.pathname.split("/").pop();
 
   const company = useAppSelector(state => state[reducer].get("company")).toJS();
+
+  const title = brand.name + " - " + company.name;
 
   const loading = useAppSelector(state => state[reducer].get("loading"));
   const monitorLoading = useAppSelector(state =>
@@ -60,7 +64,7 @@ const Person = () => {
   const handleYears = y => setYears(y);
   const [year, setYear] = useState({ value: "2022", label: "2022" });
   const handleYear = v => setYear(v);
-  console.log(years, year);
+
   const [activeTab, setActiveTab] = useState(0);
 
   const handleChangeTab = (e, v) => {
@@ -130,12 +134,12 @@ const Person = () => {
   return (
     <div style={{ display: "flex" }}>
       <Helmet>
-        <title>{company.name}</title>
-        <meta name="description" content={company.name} />
-        <meta property="og:title" content={company.name} />
-        <meta property="og:description" content={company.name} />
-        <meta property="twitter:title" content={company.name} />
-        <meta property="twitter:description" content={company.name} />
+        <title>{title}</title>
+        <meta name="description" content={title} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={title} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={title} />
       </Helmet>
       <Grid container spacing={1} style={{ padding: 10 }}>
         <Grid item lg={8} md={12}>

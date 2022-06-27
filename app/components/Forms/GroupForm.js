@@ -1,39 +1,32 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import { useDispatch } from 'react-redux';
-import FileUpload from '../FileUpload/FileUpload';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import { useDispatch } from "react-redux";
+import FileUpload from "../FileUpload/FileUpload";
 import {
   titleChange,
   descriptionChange,
-  imageChange
-} from '../../containers/Pages/Groups/reducers/groupActions';
+  imageChange,
+} from "@pages/Groups/reducers/groupActions";
 
 const styles = () => ({
   root: {
     flexGrow: 1,
-    padding: 30
+    padding: 30,
   },
   field: {
-    width: '100%',
-    marginBottom: 10
+    width: "100%",
+    marginBottom: 10,
   },
 });
 
-
 function GroupForm(props) {
-  const {
-    classes,
-    title,
-    description,
-    image,
-    handleSubmit
-  } = props;
+  const { classes, title, description, image, handleSubmit } = props;
   const dispatch = useDispatch();
 
   const handleTitleChange = (e) => {
@@ -50,7 +43,13 @@ function GroupForm(props) {
 
   return (
     <div style={{ marginBottom: 20 }}>
-      <Grid container spacing={3} alignItems="flex-start" direction="row" justify="center">
+      <Grid
+        container
+        spacing={3}
+        alignItems="flex-start"
+        direction="row"
+        justify="center"
+      >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
@@ -78,9 +77,19 @@ function GroupForm(props) {
                 value={description}
               />
             </div>
-            <FileUpload height={200} onlyImage files={image} handleChangeFile={(files) => handleChangeImage(files)} />
-            <Button variant="contained" color="secondary" type="submit" onClick={handleSubmit}>
-                Create
+            <FileUpload
+              height={200}
+              onlyImage
+              files={image}
+              handleChangeFile={(files) => handleChangeImage(files)}
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Create
             </Button>
           </Paper>
         </Grid>
@@ -94,8 +103,7 @@ GroupForm.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
 };
-
 
 export default withStyles(styles)(GroupForm);

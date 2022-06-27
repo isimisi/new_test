@@ -4,7 +4,7 @@ import { hanldeOnChange, tagMapping } from "@components/Tags/constants";
 import { fromJS } from "immutable";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { Typography, TextField } from "@material-ui/core";
-import { changePerson } from "../../containers/Pages/Persons/reducers/personActions";
+import { changePerson } from "@pages/Persons/reducers/personActions";
 import { useTranslation } from "react-i18next";
 import useStyles from "./person-jss";
 import { mapSelectOptions, selectStyles } from "@api/ui/helper";

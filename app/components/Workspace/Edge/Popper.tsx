@@ -66,6 +66,7 @@ interface Props {
   handleDeleteEdge: () => void;
   handleHideEdgePopper: (stopReffrence?: boolean) => void;
   rfInstance: OnLoadParams<any> | null;
+  popperComponentRef: React.MutableRefObject<any>
 }
 
 const popperHeight = 45;
@@ -97,7 +98,8 @@ const EdgePopper = (props: Props) => {
     handleLineThroughChange,
     handleDeleteEdge,
     handleHideEdgePopper,
-    rfInstance
+    rfInstance,
+    popperComponentRef
   } = props;
 
   // eslint-disable-next-line react/destructuring-assignment
@@ -121,6 +123,7 @@ const EdgePopper = (props: Props) => {
   const handleEditData = e => {
     editData(e, activeElement, true);
   };
+
 
   const toggleLabelMenu = e => {
     setMoreRef(null);
@@ -152,6 +155,10 @@ const EdgePopper = (props: Props) => {
     handleEdgeSave();
   };
 
+  React.useImperativeHandle(popperComponentRef, () => ({
+    toggleLabelMenu
+  }));
+
   const typeIcon = React.useMemo(() => {
     switch (type) {
       case "straight":
@@ -164,6 +171,7 @@ const EdgePopper = (props: Props) => {
         return BeizerCurve;
     }
   }, [type]);
+
 
   React.useEffect(() => {
     const picker = document.getElementsByClassName("sketch-picker");

@@ -9,9 +9,9 @@ import Button from "@material-ui/core/Button";
 
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import PersonForm from "@components/Person/PersonForm";
-import EditAvatar from "../../../containers/Pages/Avatar";
+import EditAvatar from "@pages/Avatar";
 
-import { changePerson } from "../../../containers/Pages/Persons/reducers/personActions";
+import { changePerson } from "@pages/Persons/reducers/personActions";
 import { Person } from "@customTypes/reducers/person";
 
 interface Props {

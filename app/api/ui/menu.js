@@ -113,17 +113,17 @@ module.exports = [
     icon: "ios-folder-outline",
     linkParent: "/app/groups",
   },
-  {
-    key: "settings",
-    name: "sidebar-menu.settings",
-    icon: "ios-settings-outline",
-    linkParent: "/app/settings",
-    disabled: true,
-  },
-  {
-    key: "help",
-    name: "sidebar-menu.help",
-    icon: "ios-help-circle-outline",
-    linkParent: "/app/help-support",
-  },
+  // {
+  //   key: "settings",
+  //   name: "sidebar-menu.settings",
+  //   icon: "ios-settings-outline",
+  //   linkParent: "/app/settings",
+  //   disabled: true,
+  // },
+  // {
+  //   key: "help",
+  //   name: "sidebar-menu.help",
+  //   icon: "ios-help-circle-outline",
+  //   linkParent: "/app/help-support",
+  // },
 ];

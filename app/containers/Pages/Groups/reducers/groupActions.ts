@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as notification from "@redux/constants/notifConstants";
 import { baseUrl, authHeader, genericErrorMessage } from "@api/constants";
-import { useTranslation } from "react-i18next";
+
 import * as types from "./groupConstants";
 import { User } from "@auth0/auth0-react";
 const GROUPS = "groups";
@@ -28,18 +28,17 @@ export const postGroup = (
 ) => async (dispatch) => {
   const url = `${baseUrl}/${GROUPS}?title=${title}&description=${description}`;
   const body = new FormData();
-  const { t } = useTranslation();
+
   body.append("file_content", image);
 
   const header = authHeader(user);
   try {
     await axios.post(url, body, header);
-    const message = t("groups.group-actions.created_group");
-    dispatch({ type: types.POST_GROUP_SUCCESS, message });
+    dispatch({ type: types.POST_GROUP_SUCCESS });
     dispatch(getGroups(user));
     closeModal(false);
   } catch (error) {
-    const message = t("groups.group-actions.image_not_supported");
+    const message = genericErrorMessage;
     dispatch({ type: types.POST_GROUP_FAILED, message });
   }
 };
@@ -77,12 +76,11 @@ export const putGroup = (
 export const deleteGroup = (user: User, id: string) => async (dispatch) => {
   const url = `${baseUrl}/${GROUPS}/${id}`;
   const header = authHeader(user);
-  const { t } = useTranslation();
 
   try {
     await axios.delete(url, header);
-    const message = t("groups.group-actions.group_deleted");
-    dispatch({ type: types.DELETE_GROUP_SUCCESS, message });
+
+    dispatch({ type: types.DELETE_GROUP_SUCCESS });
     dispatch(getGroups(user));
   } catch (error) {
     const message = genericErrorMessage;

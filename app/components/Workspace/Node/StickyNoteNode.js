@@ -9,7 +9,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import {
   putSticky,
   deleteWorkspaceElement,
-} from "../../../containers/Pages/Workspaces/reducers/workspaceActions";
+} from "@pages/Workspaces/reducers/workspaceActions";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const StickyNote = ({ data }) => {

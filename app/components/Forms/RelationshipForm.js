@@ -16,7 +16,7 @@ import {
   descriptionChange,
   addGroup,
   valuesChange,
-} from "../../containers/Pages/Relationships/reducers/relationshipActions";
+} from "@pages/Relationships/reducers/relationshipActions";
 import { useTranslation } from "react-i18next";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Checkbox from "@material-ui/core/Checkbox";

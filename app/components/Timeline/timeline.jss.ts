@@ -125,6 +125,11 @@ const useStyles = makeStyles((theme: MyTheme) => ({
       },
     },
   },
+  emailContent: {
+    "* > hover": {
+      backgroundColor: "pink",
+    },
+  },
   mailFab: {
     position: "absolute",
     bottom: 10,
@@ -185,6 +190,7 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    zIndex: 1000,
   },
   addCircle: {
     width: "30%",

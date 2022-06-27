@@ -56,7 +56,7 @@ export const showPerson = (user: User, id: string, openModal?: () => void) => as
     }
   } catch (error) {
     // @ts-ignore
-    console.log(error.response);
+
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_PERSON_FAILED, message });
   }
@@ -75,7 +75,7 @@ export const putPerson = (user: User, id: string, person: Person, history) => as
     history.push("/app/persons");
   } catch (error) {
     // @ts-ignore
-    console.log(error.response);
+
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_PERSON_FAILED, message });
   }

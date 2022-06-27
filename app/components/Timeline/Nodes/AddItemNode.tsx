@@ -6,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useAppDispatch } from "@hooks/redux";
-import { createElementChange } from "../../../containers/Pages/Timelines/reducers/timelineActions";
+import { createElementChange } from "@pages/Timelines/reducers/timelineActions";
 
 export default memo(({ data, isConnectable }: NodeProps) => {
   const classes = useStyles();

@@ -10,7 +10,7 @@ import { useAppDispatch } from "@hooks/redux";
 import {
   createElementChange,
   setTimelineNode
-} from "../../../containers/Pages/Timelines/reducers/timelineActions";
+} from "@pages/Timelines/reducers/timelineActions";
 
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { useTranslation } from "react-i18next";

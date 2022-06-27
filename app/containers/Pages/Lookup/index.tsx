@@ -40,6 +40,10 @@ import { getCountry } from "@helpers/countryOptions";
 import Loader from "@components/Loading/LongLoader";
 import NoContent from "@components/NoContent";
 import { getPlanId } from "@helpers/userInfo";
+import brand from "@api/dummy/brand";
+
+const title = brand.name + " - Lookup";
+const description = brand.desc;
 
 const Lookup = () => {
   const classes = useStyles();
@@ -72,11 +76,11 @@ const Lookup = () => {
     <div className={classes.container}>
       <Helmet>
         <title>{metaTitle}</title>
-        <meta name="description" content={metaTitle} />
-        <meta property="og:title" content={metaTitle} />
-        <meta property="og:description" content={metaTitle} />
-        <meta property="twitter:title" content={metaTitle} />
-        <meta property="twitter:description" content={metaTitle} />
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
       </Helmet>
       <Notification
         close={() => dispatch(closeNotifAction)}

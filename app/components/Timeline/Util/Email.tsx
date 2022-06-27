@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 import { ITimelineNode } from "@customTypes/reducers/timeline";
 import { Typography, Button } from "@material-ui/core";
 import { t } from "i18next";
@@ -12,14 +13,17 @@ import axios from "axios";
 import { authHeader, baseUrl } from "@api/constants";
 import Loader from "@components/Loading/LongLoader";
 
+
 interface Props {
   timelineNode: ITimelineNode;
+
 }
 
 const Email = ({ timelineNode }: Props) => {
   const classes = useStyles();
 
   const index = timelineNode.get("email").get("index");
+  const customSplit = timelineNode.get("email").get("customSplit");
   const id = timelineNode.get("id");
 
   const downloadAttachment = file => {
@@ -29,6 +33,7 @@ const Email = ({ timelineNode }: Props) => {
   const [email, setEmail] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const user = useAuth0().user as User;
+
 
   useEffect(() => {
     if (typeof timelineNode.get("email").get("mail") === "boolean") {
@@ -65,7 +70,7 @@ const Email = ({ timelineNode }: Props) => {
   return (
     <>
       <div>
-        {index === null && (
+        {index === null && customSplit === null && (
           <div>
             <div className={classes.flex}>
               <Typography className={classes.type}>
@@ -122,7 +127,11 @@ const Email = ({ timelineNode }: Props) => {
         </div>
       )}
       <div>
-        <div dangerouslySetInnerHTML={{ __html: email.html }} />
+        <div
+          id="elementPickerContainer"
+          dangerouslySetInnerHTML={{ __html: email.html }}
+          className={classes.emailContent}
+        />
       </div>
     </>
   );

@@ -1,67 +1,63 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, useTheme } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import NoSsr from '@material-ui/core/NoSsr';
-import Select from 'react-select';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
-import { useDispatch } from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles, useTheme } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import NoSsr from "@material-ui/core/NoSsr";
+import Select from "react-select";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import { useDispatch } from "react-redux";
 import {
-  titleChange, descriptionChange, addGroup
-} from '../../containers/Pages/Conditions/reducers/conditionActions';
+  titleChange,
+  descriptionChange,
+  addGroup,
+} from "@pages/Conditions/reducers/conditionActions";
 
-const mapSelectOptions = (options) => options.map(suggestion => ({
-  value: suggestion.value,
-  label: (
-    <>
-      <Tooltip title={suggestion.label}>
-        <div style={{ width: '100%', height: '100%' }}>
-          <span style={{ paddingRight: '5px' }}>{suggestion.value}</span>
-        </div>
-      </Tooltip>
-    </>
-  ),
-}));
+const mapSelectOptions = (options) =>
+  options.map((suggestion) => ({
+    value: suggestion.value,
+    label: (
+      <>
+        <Tooltip title={suggestion.label}>
+          <div style={{ width: "100%", height: "100%" }}>
+            <span style={{ paddingRight: "5px" }}>{suggestion.value}</span>
+          </div>
+        </Tooltip>
+      </>
+    ),
+  }));
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     flexGrow: 1,
-    padding: 30
+    padding: 30,
   },
   field: {
-    width: '100%',
-    marginBottom: 10
+    width: "100%",
+    marginBottom: 10,
   },
   fieldBasic: {
-    width: '100%',
+    width: "100%",
     marginBottom: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   inlineWrap: {
-    display: 'flex',
-    flexDirection: 'row'
+    display: "flex",
+    flexDirection: "row",
   },
   buttonInit: {
     margin: theme.spacing(4),
-    textAlign: 'center'
+    textAlign: "center",
   },
 });
-
 
 function ConditionNamingForm(props) {
   const dispatch = useDispatch();
   const theme = useTheme();
 
-  const {
-    classes,
-    title,
-    description,
-    group,
-    groupsDropDownOptions
-  } = props;
+  const { classes, title, description, group, groupsDropDownOptions } = props;
 
   const handleTitleChange = (e) => {
     dispatch(titleChange(e.target.value));
@@ -76,19 +72,24 @@ function ConditionNamingForm(props) {
   };
 
   const selectStyles = {
-    input: base => ({
+    input: (base) => ({
       ...base,
       color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
+      "& input": {
+        font: "inherit",
       },
     }),
   };
 
-
   return (
     <div style={{ marginBottom: 20 }}>
-      <Grid container spacing={3} alignItems="flex-start" direction="row" justify="center">
+      <Grid
+        container
+        spacing={3}
+        alignItems="flex-start"
+        direction="row"
+        justify="center"
+      >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
             <Typography variant="h5" component="h3">
@@ -123,12 +124,12 @@ function ConditionNamingForm(props) {
                   styles={selectStyles}
                   inputId="react-select-single-condition-naming"
                   TextFieldProps={{
-                    label: 'groups',
+                    label: "groups",
                     InputLabelProps: {
-                      htmlFor: 'react-select-single-condition-naming',
+                      htmlFor: "react-select-single-condition-naming",
                       shrink: true,
                     },
-                    placeholder: 'groups',
+                    placeholder: "groups",
                   }}
                   placeholder="groups"
                   options={mapSelectOptions(groupsDropDownOptions)}
@@ -151,6 +152,5 @@ ConditionNamingForm.propTypes = {
   group: PropTypes.string.isRequired,
   groupsDropDownOptions: PropTypes.any.isRequired,
 };
-
 
 export default withStyles(styles)(ConditionNamingForm);

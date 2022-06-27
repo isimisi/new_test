@@ -36,11 +36,11 @@ import {
   openEmailChange,
   setTimelineNode,
   timelineElementPersonChange
-} from "../../../containers/Pages/Timelines/reducers/timelineActions";
+} from "@pages/Timelines/reducers/timelineActions";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@material-ui/icons/Edit";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import { showPerson } from "../../../containers/Pages/Persons/reducers/personActions";
+import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 
 const moreDocsMapping = [

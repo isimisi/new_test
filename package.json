@@ -144,7 +144,7 @@
     "mui-datatables": "^2.13.1",
     "nanoid": "^3.1.32",
     "ngrok": "^4.3.1",
-    "patch-package": "^6.4.7",
+    "pick-dom-element": "^0.2.0",
     "popmotion": "^11.0.3",
     "pptxgenjs": "^3.9.0",
     "prop-types": "15.7.2",

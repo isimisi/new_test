@@ -36,7 +36,6 @@ export const getCompany = (
     const response = await axios.get(url, header);
     const company = response.data;
     if (company.primaryFinancials) {
-      console.log(company.primaryFinancials);
       const keys = Object.entries(company.primaryFinancials);
       const filteredYears = keys.filter((key) => key[1]);
 
@@ -54,7 +53,6 @@ export const getCompany = (
 
     dispatch({ type: types.GET_COMPANY_SUCCESS, company });
   } catch (error) {
-    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.GET_COMPANY_FAILED, message });
   }

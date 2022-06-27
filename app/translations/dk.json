@@ -830,7 +830,7 @@
     "horizontal": "Vandret",
     "vertical": "Lodret",
     "table": "Tabel",
-    "create_element": "Lav et event",
+    "create_element": "Event detaljer",
     "date": "Dato",
     "upload_mail": "Upload email",
     "see_email": "Åben e-mail",
@@ -964,7 +964,10 @@
     "upload": "Upload",
     "see_video": "Se video",
     "read_more": "Læs mere",
-    "remember_my_choice": "Husk mit valg"
+    "remember_my_choice": "Husk mit valg",
+    "email": "E-mail",
+    "save_and_next": "Gem og næste",
+    "back": "Tilbage"
   },
   "emails": {
     "body": "E-mailindhold",
@@ -973,7 +976,12 @@
     "to": "Til:",
     "subject": "Emne:",
     "attachments": "Vedhæftede filer",
-    "send": "Sendt"
+    "send": "Sendt",
+    "split_explainer": "Ved at trykke på denne knap kan du vælge, hvor e-mailen skal splittes up, hvis der mangler. Således kan du, hvis vi ikke var i standt til at lokalisere enkelte mails, selv splitte dem ud på tidslinjen.",
+    "split": "split e-mail",
+    "stop_split": "Stop med at splitte e-mailen",
+    "walk_through": "Gennemgå opdeling",
+    "split_text": "Her opdeles e-mailen"
   },
   "genereic": {
     "back": "Forrige"

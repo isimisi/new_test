@@ -26,7 +26,7 @@ import {
   shareOrgChange,
   showTimeline,
   importEmails,
-  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating
+  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting
 } from "./reducers/timelineActions";
 import ReactFlow, {
   isNode,
@@ -63,12 +63,13 @@ import { changePerson, getPersonDropDown, showPerson } from "../Persons/reducers
 import Person from "@components/Timeline/Modals/Person";
 import Document from "@components/Timeline/Modals/Document";
 import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
-import { TimelineNode } from "@customTypes/reducers/timeline";
+import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import Email from "@components/Timeline/Modals/Email";
 import VerticalNode from "@components/Timeline/Nodes/VerticalNode";
 import Content from "@components/Timeline/Drawer/Content";
 import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
+import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 
 
 const nodeTypes = {
@@ -89,10 +90,15 @@ const Timeline = () => {
 
   const messageNotif = useAppSelector(state => state[reducer].get("message"));
   const createElementOpen = useAppSelector(state => state[reducer].get("createElementOpen"));
+  const goThroughSplitOpen = useAppSelector(state => state[reducer].get("goThroughSplitOpen"));
+
+
   const personOptions = useAppSelector(state => state.person.get("personOptions")).toJS();
   const documentOptions = useAppSelector(state => state.document.get("documentOptions")).toJS();
   const timelineNode = useAppSelector(state => state[reducer].get("timelineNode"));
   const view = useAppSelector(state => state[reducer].get("view"));
+  const currSplittingNodeRefference = useAppSelector(state => state[reducer].get("currSplittingNodeRefference"));
+
 
   const history = useHistory();
   const id = getId(history) as string;
@@ -163,6 +169,14 @@ const Timeline = () => {
     setElementPersons([]);
     setElementDocuments([]);
     dispatch(createElementChange(false));
+  };
+
+  const handleCloseGoThorughSplit = () => {
+    dispatch(clearSplitting);
+    dispatch(setTimelineNode(null));
+    setElementPersons([]);
+    setElementDocuments([]);
+    dispatch(goThroughSplitChange(false));
   };
 
   const [openTableView, setOpenTableView] = useState(false);
@@ -238,6 +252,9 @@ const Timeline = () => {
   const groupsDropDownOptions = useAppSelector(state => state.workspace.get('groupsDropDownOptions')).toJS();
   const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
   const isUpdatingNode = useAppSelector(state => state[reducer].get('isUpdatingNode'));
+  const currSplittingEmail = useAppSelector(state => state[reducer].get('currSplittingEmail'));
+  const splitElements = useAppSelector(state => state[reducer].get('splitElements'));
+
 
   const handleVisabilityChange = () =>
     dispatch(changeHandleVisability(!handleVisability));
@@ -319,17 +336,21 @@ const Timeline = () => {
     }
   };
 
-  const onSaveElement = () => {
+  const onSaveElement = (alternativeCloseFunc?: () => void, customSplit?: string) => {
     let closeFunc = handleCloseCreateElement;
     if (correctEmailsOpen) {
       closeFunc = nextElWithoutDate;
+    }
+
+    if (alternativeCloseFunc) {
+      closeFunc = alternativeCloseFunc;
     }
 
 
     if (isUpdatingNode) {
       dispatch(putElement(user, timelineNode, elementPersons, elementDocuments, closeFunc));
     } else {
-      dispatch(saveElement(user, id, timelineNode, elementPersons, elementDocuments, closeFunc));
+      dispatch(saveElement(user, id, timelineNode, currSplittingNodeRefference, customSplit, elementPersons, elementDocuments, closeFunc));
     }
   };
 
@@ -456,6 +477,14 @@ const Timeline = () => {
   }, [mouseLoading]);
 
 
+  const handleSplit = (_timelineNode: ITimelineNode) => {
+    dispatch(changeTimelineNodeKey(_timelineNode.get("email"), "email"));
+    dispatch(createElementChange(false));
+
+    dispatch(openEmailChange(true));
+  };
+
+
   return (
     <div style={{ display: "flex", cursor }}>
       <Notification
@@ -579,13 +608,33 @@ const Timeline = () => {
         changeTimelineNode={changeTimelineNode}
         handleDelete={handleDelete}
         isUpdatingNode={isUpdatingNode}
-        handleOpenEmail={handleOpenEmail}
+        handleSplit={handleSplit}
+      />
 
+      <GoThroughSplit
+        open={goThroughSplitOpen}
+        close={handleCloseGoThorughSplit}
+        onSave={onSaveElement}
+        personOptions={personOptions}
+        documentOptions={documentOptions}
+        openPerson={handlePersonOpen}
+        openDocument={handleDocumentOpen}
+        timelineNode={timelineNode}
+        changeTimelineNode={changeTimelineNode}
+        handleDelete={handleDelete}
+        isUpdatingNode={isUpdatingNode}
+        splitElements={splitElements}
+        currSplittingEmail={currSplittingEmail}
       />
 
       {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} />}
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
-      {emailModalOpen && <Email open={emailModalOpen} close={handleEmailClose} timelineNode={timelineNode} />}
+      {emailModalOpen && <Email
+        open={emailModalOpen}
+        close={handleEmailClose}
+        timelineNode={timelineNode}
+
+      />}
       {importEmailsOpen && <ImportEmails open={importEmailsOpen} close={handleCloseImportEmails} handleImportEmails={handleImportEmails} loading={loadings.get("modal")} />}
 
       {/* {openTableView && <Table open={openTableView} close={handleOpenTableView} elements={elements} personOptions={personOptions} />} */}

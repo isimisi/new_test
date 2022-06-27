@@ -21,7 +21,7 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import { useAppDispatch } from '@hooks/redux';
 import {
   postNotifications,
-} from '../../containers/Pages/Dashboard/reducers/dashboardActions';
+} from '@pages/Dashboard/reducers/dashboardActions';
 
 interface Props {
   handleClose: () => void;

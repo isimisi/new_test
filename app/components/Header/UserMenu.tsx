@@ -17,7 +17,7 @@ import Badge from "@material-ui/core/Badge";
 import link from "@api/ui/link";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import store from "@redux/configureStore";
-import { customerPortal } from "../../containers/Pages/CreateOrganization/reducers/createOrganizationActions";
+import { customerPortal } from "@pages/CreateOrganization/reducers/createOrganizationActions";
 import { useTranslation } from "react-i18next";
 import ListItemText from "@material-ui/core/ListItemText";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -30,7 +30,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 
 import NotificationDialog from "./NotificationDialog";
 import CreateNotificationDialog from "./CreateNotificationDialog";
-import { readNotification } from "../../containers/Pages/Dashboard/reducers/dashboardActions";
+import { readNotification } from "@pages/Dashboard/reducers/dashboardActions";
 
 const config = genConfig({
   isGradient: Boolean(Math.round(Math.random()))

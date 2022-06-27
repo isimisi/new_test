@@ -9,7 +9,7 @@ import {
   DocumentCleanOption,
   MixedDocumentOptions
 } from "@customTypes/reducers/document";
-import { hanldeOnDocumentChange } from "../../../containers/Pages/Documents/constants";
+import { hanldeOnDocumentChange } from "@pages/Documents/constants";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import { MixedPersonOptions } from "@customTypes/reducers/person";
@@ -26,10 +26,7 @@ import Email from "../Util/Email";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
-import {
-  hanldeOnPersonChange,
-  personMapping
-} from "../../../containers/Pages/Persons/constants";
+import { hanldeOnPersonChange, personMapping } from "@pages/Persons/constants";
 import Avatar from "react-nice-avatar";
 import IconButton from "@material-ui/core/IconButton";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -54,11 +51,11 @@ import { selectStyles } from "@api/ui/helper";
 import {
   timelineElementDocumentChange,
   timelineElementPersonChange
-} from "../../../containers/Pages/Timelines/reducers/timelineActions";
+} from "@pages/Timelines/reducers/timelineActions";
 
-import { showPerson } from "../../../containers/Pages/Persons/reducers/personActions";
+import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
-import { showDocument } from "../../../containers/Pages/Documents/reducers/documentActions";
+import { showDocument } from "@pages/Documents/reducers/documentActions";
 
 const localeMap = {
   en: enLocale,

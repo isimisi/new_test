@@ -828,7 +828,7 @@
     "horizontal": "Horizontal",
     "vertical": "Vertical",
     "table": "Table",
-    "create_element": "Create an event",
+    "create_element": "Event details",
     "date": "Date",
     "no_choosen_node": "You have not choosen an element yet",
     "upload_mail": "Upload Email",
@@ -956,7 +956,10 @@
     "upload": "Upload",
     "see_video": "Watch video",
     "read_more": "Read more",
-    "remember_my_choice": "Remember my choice"
+    "remember_my_choice": "Remember my choice",
+    "email": "Email",
+    "save_and_next": "Save and next",
+    "back": "Back"
   },
   "emails": {
     "header": "Email information",
@@ -965,7 +968,12 @@
     "subject": "Subject:",
     "body": "Email content",
     "attachments": "Attachments",
-    "send": "Send"
+    "send": "Send",
+    "split": "Split email",
+    "stop_split": "Stop splitting email",
+    "split_explainer": "By pressing this button u can customize, where to split the email. Thus if we were unable to locate specific submails, you can pick them out yourself.",
+    "walk_through": "Review the breakdown",
+    "split_text": "The email is divided here"
   },
   "genereic": {
     "back": "Back"

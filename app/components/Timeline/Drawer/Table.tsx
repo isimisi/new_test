@@ -22,10 +22,7 @@ import useStyles from "../timeline.jss";
 import { useTranslation } from "react-i18next";
 import CreatableSelect from "react-select/creatable";
 import { selectStyles } from "@api/ui/helper";
-import {
-  hanldeOnPersonChange,
-  personMapping
-} from "../../../containers/Pages/Persons/constants";
+import { hanldeOnPersonChange, personMapping } from "@pages/Persons/constants";
 import { MixedPersonOptions } from "@customTypes/reducers/person";
 import { MixedDocumentOptions } from "@customTypes/reducers/document";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -227,65 +224,62 @@ const Table = (props: Props) => {
             ))}
         </div>
       ),
-      renderEditCell: params => {
-        console.log(params);
-        return (
-          <div>
-            <CreatableSelect
-              isMulti
-              styles={{
-                ...selectStyles(),
-                container: (provided, state) => ({
-                  ...provided,
-                  width: `${params.colDef.computedWidth - 2}px`,
-                  lineHeight: "37px"
-                }),
-                control: (provided, state) => ({
-                  ...provided,
-                  borderWidth: 0
-                }),
-                valueContainer: (provided, state) => ({
-                  ...provided,
-                  flexWrap: "nowrap"
-                }),
-                multiValue: (provided, state) => ({
-                  ...provided,
-                  minWidth: "30%"
-                })
-              }}
-              value={[
-                { value: "purple", label: "Purple", color: "#5243AA" },
-                { value: "red", label: "Red", color: "#FF5630", isFixed: true },
-                { value: "yellow", label: "Yellow", color: "#FFC400" },
-                { value: "green", label: "Green", color: "#36B37E" },
-                { value: "forest", label: "Forest", color: "#00875A" }
-              ]}
-              options={[
-                {
-                  value: "ocean",
-                  label: "Ocean",
-                  color: "#00B8D9",
-                  isFixed: true
-                },
-                {
-                  value: "blue",
-                  label: "Blue",
-                  color: "#0052CC",
-                  isDisabled: true
-                },
-                { value: "purple", label: "Purple", color: "#5243AA" },
-                { value: "red", label: "Red", color: "#FF5630", isFixed: true },
-                { value: "orange", label: "Orange", color: "#FF8B00" },
-                { value: "yellow", label: "Yellow", color: "#FFC400" },
-                { value: "green", label: "Green", color: "#36B37E" },
-                { value: "forest", label: "Forest", color: "#00875A" },
-                { value: "slate", label: "Slate", color: "#253858" },
-                { value: "silver", label: "Silver", color: "#666666" }
-              ]}
-            />
-          </div>
-        );
-      },
+      renderEditCell: params => (
+        <div>
+          <CreatableSelect
+            isMulti
+            styles={{
+              ...selectStyles(),
+              container: (provided, state) => ({
+                ...provided,
+                width: `${params.colDef.computedWidth - 2}px`,
+                lineHeight: "37px"
+              }),
+              control: (provided, state) => ({
+                ...provided,
+                borderWidth: 0
+              }),
+              valueContainer: (provided, state) => ({
+                ...provided,
+                flexWrap: "nowrap"
+              }),
+              multiValue: (provided, state) => ({
+                ...provided,
+                minWidth: "30%"
+              })
+            }}
+            value={[
+              { value: "purple", label: "Purple", color: "#5243AA" },
+              { value: "red", label: "Red", color: "#FF5630", isFixed: true },
+              { value: "yellow", label: "Yellow", color: "#FFC400" },
+              { value: "green", label: "Green", color: "#36B37E" },
+              { value: "forest", label: "Forest", color: "#00875A" }
+            ]}
+            options={[
+              {
+                value: "ocean",
+                label: "Ocean",
+                color: "#00B8D9",
+                isFixed: true
+              },
+              {
+                value: "blue",
+                label: "Blue",
+                color: "#0052CC",
+                isDisabled: true
+              },
+              { value: "purple", label: "Purple", color: "#5243AA" },
+              { value: "red", label: "Red", color: "#FF5630", isFixed: true },
+              { value: "orange", label: "Orange", color: "#FF8B00" },
+              { value: "yellow", label: "Yellow", color: "#FFC400" },
+              { value: "green", label: "Green", color: "#36B37E" },
+              { value: "forest", label: "Forest", color: "#00875A" },
+              { value: "slate", label: "Slate", color: "#253858" },
+              { value: "silver", label: "Silver", color: "#666666" }
+            ]}
+          />
+        </div>
+      ),
       editable: true,
       flex: 1
     },
@@ -293,13 +287,7 @@ const Table = (props: Props) => {
       field: "documents",
       headerName: "Documents",
       renderCell: cellValues => (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={event => {
-            console.log(event, cellValues);
-          }}
-        >
+        <Button variant="contained" color="primary">
           Print
         </Button>
       ),

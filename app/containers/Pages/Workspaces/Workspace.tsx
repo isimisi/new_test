@@ -548,8 +548,25 @@ const Workspace = (props) => {
     }
   };
 
-  const handleNoLabelDoubleClick = () => {
-    dispatch(showNotifAction(t('workspaces.no_label_double_click')));
+  const edgePopperComponentRef = useRef<any>(null);
+
+  const handleNoLabelDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge) => {
+    event.persist();
+    setRelationshipLabel(edge.data.label);
+    setRelationshipValue(edge.data.value);
+    setRelationshipType(edge.type || 'custom');
+    setRelationshipColor(edge.data.color);
+    setShowArrow(edge.data.showArrow);
+    setAnimatedLine(edge.data.animated);
+    setShowlabel(edge.data.showLabel);
+    setLineThrough(edge.data.lineThrough);
+    const target = event.target as SVGElement;
+    handleShowEdgePopper();
+    setEdgePopperRef(target);
+
+    if (edgePopperComponentRef.current) {
+      edgePopperComponentRef.current.toggleLabelMenu(event);
+    }
   };
 
   const {
@@ -594,7 +611,6 @@ const Workspace = (props) => {
   };
 
   const removeAllUpdatingRefference = () => {
-    console.log("removing");
     removeNodeTextTarget();
     setNodePopperRef(null);
     setEdgePopperRef(null);
@@ -1468,6 +1484,7 @@ const Workspace = (props) => {
             handleDeleteEdge={handleDeleteEdge}
             handleHideEdgePopper={handleHideEdgePopper}
             rfInstance={rfInstance}
+            popperComponentRef={edgePopperComponentRef}
           />}
         </>
       )}

@@ -52,6 +52,7 @@ export const SHARE_ORG_CHANGE = "SHARE_ORG_CHANGE";
 export const CHANGE_VIEW = "CHANGE_VIEW";
 
 export const CREATE_ELEMENT_CHANGE = "CREATE_ELEMENT_CHANGE";
+export const GO_THROUGH_SPLIT_CHANGE = "GO_THROUGH_SPLIT_CHANGE";
 export const TIMELINE_ELEMENT_PERSON_CHANGE = "TIMELINE_ELEMENT_PERSON_CHANGE";
 export const TIMELINE_ELEMENT_DOCUMENT_CHANGE = "TIMELINE_ELEMENT_DOCUMENT_CHANGE";
 
@@ -64,6 +65,11 @@ export const SHOW_HANDLES_CHANGE = "SHOW_HANDLES_CHANGE";
 export const OPEN_EMAIL_CHANGE = "OPEN_EMAIL_CHANGE";
 
 export const SET_IS_UPDATING = "SET_IS_UPDATING";
+
+export const ADD_CURR_SPLITTING_EMAIL = "ADD_CURR_SPLITTING_EMAIL";
+export const ADD_EMAIL_SPLIT = "ADD_EMAIL_SPLIT";
+export const REMOVE_EMAIL_SPLIT = "REMOVE_EMAIL_SPLIT";
+export const CLEAR_SPLITTING = "CLEAR_SPLITTING";
 
 type FailedTypes =
   | typeof GET_TIMELINES_FAILED
@@ -157,6 +163,11 @@ export interface CreateElementChange {
   bool: boolean;
 }
 
+export interface GoThroughSplitChange {
+  type: typeof GO_THROUGH_SPLIT_CHANGE;
+  bool: boolean;
+}
+
 export interface TimelineElementPersonChange {
   type: typeof TIMELINE_ELEMENT_PERSON_CHANGE;
   bool: boolean;
@@ -215,6 +226,25 @@ export interface SetIsUpdating {
   bool: boolean;
 }
 
+export interface AddCurrSplittingEmail {
+  type: typeof ADD_CURR_SPLITTING_EMAIL;
+  email: string;
+}
+
+export interface AddEmailSplit {
+  type: typeof ADD_EMAIL_SPLIT;
+  splitElement: string;
+}
+
+export interface RemoveEmailSplit {
+  type: typeof REMOVE_EMAIL_SPLIT;
+  splitElement: string;
+}
+
+export interface ClearSplitting {
+  type: typeof CLEAR_SPLITTING;
+}
+
 export type TimelineActions =
   | NotifyActions
   | SetIsUpdating
@@ -241,4 +271,9 @@ export type TimelineActions =
   | ChangeView
   | DeleteTimelineElementsSuccess
   | OpenEmailChange
-  | DeleteTimelineSuccess;
+  | DeleteTimelineSuccess
+  | AddCurrSplittingEmail
+  | AddEmailSplit
+  | RemoveEmailSplit
+  | GoThroughSplitChange
+  | ClearSplitting;

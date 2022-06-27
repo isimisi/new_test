@@ -2,6 +2,7 @@ import {
   TimelineState,
   IImmutableTimelineState,
   TimelineNode,
+  ITimelineNode,
 } from "@customTypes/reducers/timeline";
 import { Node } from "react-flow-renderer";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
@@ -33,6 +34,7 @@ import {
   TIMELINE_ELEMENT_PERSON_CHANGE,
   TIMELINE_ELEMENT_DOCUMENT_CHANGE,
   POST_TIMELINE_ELEMENT_SUCCESS,
+  POST_TIMELINE_ELEMENT_FAILED,
   SET_TIMELINE_NODE,
   CHANGE_TIMELINE_NODE_KEY,
   POST_TIMELINE_ELEMENT_LOADING,
@@ -47,6 +49,11 @@ import {
   IMPORT_EMAILS_LOADING,
   IMPORT_EMAILS_SUCCESS,
   IMPORT_EMAILS_FAILED,
+  ADD_CURR_SPLITTING_EMAIL,
+  ADD_EMAIL_SPLIT,
+  REMOVE_EMAIL_SPLIT,
+  CLEAR_SPLITTING,
+  GO_THROUGH_SPLIT_CHANGE,
 } from "./timelineConstants";
 import moment from "moment";
 
@@ -62,7 +69,7 @@ const initialNode: TimelineNode = {
   title: "",
   description: "",
   content: EditorState.createEmpty(),
-  email: Map({ mail: null, uri: null, index: null }),
+  email: Map({ mail: null, uri: null, index: null, customSplit: null }),
   date: null,
   time: null,
   persons: List(),
@@ -82,12 +89,16 @@ const initialState: TimelineState = {
   specificTimelineTags: List(),
   loadings: initialLoadings,
   createElementOpen: false,
+  goThroughSplitOpen: false,
   personOpen: false,
   documentOpen: false,
   timelineNode: Map(initialNode),
   isUpdatingNode: false,
   emailOpen: false,
   view: "horizontal",
+  currSplittingEmail: null,
+  currSplittingNodeRefference: null,
+  splitElements: List(),
 };
 
 const initialImmutableState: IImmutableTimelineState = fromJS(initialState);
@@ -142,7 +153,7 @@ export default function reducer(
     case DELETE_TIMELINE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set("elements", fromJS(action.elements));
-        mutableState.setIn(["loadings", "post"], false);
+        mutableState.setIn(["loadings", "mouse"], false);
         mutableState.set("createElementOpen", false);
       });
 
@@ -160,6 +171,7 @@ export default function reducer(
       });
     case GET_TIMELINES_FAILED:
     case POST_TIMELINE_FAILED:
+    case POST_TIMELINE_ELEMENT_FAILED:
     case PUT_TIMELINE_FAILED:
     case SHOW_TIMELINE_FAILED:
     case IMPORT_EMAILS_FAILED:
@@ -203,6 +215,10 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         mutableState.set("createElementOpen", action.bool);
       });
+    case GO_THROUGH_SPLIT_CHANGE:
+      return state.withMutations((mutableState) => {
+        mutableState.set("goThroughSplitOpen", action.bool);
+      });
     case TIMELINE_ELEMENT_PERSON_CHANGE:
       return state.withMutations((mutableState) => {
         mutableState.set("personOpen", action.bool);
@@ -218,6 +234,8 @@ export default function reducer(
     case POST_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set("elements", fromJS(action.elements));
+        mutableState.set("timelineNode", Map(initialNode));
+        mutableState.setIn(["loadings", "post"], false);
       });
     case SET_TIMELINE_NODE:
       return state.withMutations((mutableState) => {
@@ -289,6 +307,35 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         mutableState.set("view", action.direction);
         mutableState.set("elements", fromJS(action.elements));
+      });
+    case ADD_CURR_SPLITTING_EMAIL:
+      return state.withMutations((mutableState) => {
+        const currSplit = mutableState.get("currSplittingEmail");
+        if (!currSplit) {
+          const timelineNode = (mutableState.get(
+            "timelineNode"
+          ) as unknown) as ITimelineNode;
+          mutableState.set("currSplittingEmail", action.email);
+          mutableState.set("currSplittingNodeRefference", timelineNode.get("id"));
+        }
+      });
+    case ADD_EMAIL_SPLIT:
+      return state.withMutations((mutableState) => {
+        mutableState.update("splitElements", (myList: any) =>
+          myList.push(action.splitElement)
+        );
+      });
+    case REMOVE_EMAIL_SPLIT:
+      return state.withMutations((mutableState) => {
+        mutableState.update("splitElements", (myList: any) =>
+          myList.filter((x: string) => action.splitElement !== x)
+        );
+      });
+    case CLEAR_SPLITTING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("currSplittingEmail", null);
+        mutableState.set("currSplittingNodeRefference", null);
+        mutableState.set("splitElements", List());
       });
     case SHOW_NOTIF:
       return state.withMutations((mutableState) => {

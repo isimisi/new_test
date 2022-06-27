@@ -22,9 +22,6 @@ const GredCellExpandedWYS = React.memo((props: GridCellExpandProps) => {
   const [showFullCell, setShowFullCell] = React.useState(false);
   const [showPopper, setShowPopper] = React.useState(false);
 
-  if (wrapper && wrapper.current) {
-    console.log({ h: wrapper.current!.offsetHeight });
-  }
 
   const handleMouseEnter = () => {
     const isCurrentlyOverflown = isOverflown(cellValue.current!);

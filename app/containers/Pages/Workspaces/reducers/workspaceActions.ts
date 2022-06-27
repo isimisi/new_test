@@ -181,7 +181,7 @@ export const showWorkspace = (
     }
   } catch (error) {
     // @ts-ignore
-    console.log(error.response);
+
     // @ts-ignore
     if (error?.response?.status === 403) {
       _history.replace("/app/not-found");
@@ -385,7 +385,6 @@ export const putNode = (
   deletedAttributes: string,
   close: () => void
 ) => async (dispatch) => {
-  console.log(nodeLabel);
   dispatch({ type: types.WORKSPACE_PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
@@ -442,7 +441,6 @@ export const postEdge = (
     dispatch({ type: types.POST_EDGE_SUCCESS, edge: responseEdge });
     close();
   } catch (error) {
-    console.log(error);
     dispatch({ type: types.POST_EDGE_FAILED, message });
   }
 };
@@ -492,7 +490,6 @@ export const putEdge = (
     }
     workspace_id && setAlert && dispatch(analyseAlerts(user, workspace_id, setAlert));
   } catch (error) {
-    console.log({ error });
     dispatch({ type: types.PUT_EDGE_FAILED, message });
   }
 };
@@ -820,10 +817,8 @@ export const connectNewUser = (user: User, id: string) => async (dispatch) => {
   const header = authHeader(user);
   try {
     await axios.get(url, header);
-  } catch (error) {
-    // @ts-ignore
-    console.log(error.response);
-  }
+  // eslint-disable-next-line no-empty
+  } catch (error) { }
 };
 
 export const workspacePowerpoint = (
@@ -855,7 +850,7 @@ export const workspacePowerpoint = (
     stopLoading();
   } catch (error) {
     // @ts-ignore
-    console.log(error.response);
+
     stopLoading();
   }
 };
@@ -878,7 +873,7 @@ export const analysisPowerpoint = (user: User, params) => async (dispatch) => {
 
     // stopLoading();
   } catch (error) {
-    console.log(error);
+
     // stopLoading();
   }
 };

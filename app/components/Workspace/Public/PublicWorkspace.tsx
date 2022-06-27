@@ -46,7 +46,7 @@ import BorderColorIcon from '@material-ui/icons/BorderColor';
 import { useTranslation } from 'react-i18next';
 import { NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from '../workspace-jss';
-import { reducer, initErstTypes as erstTypes } from '../../../containers/Pages/Workspaces/constants';
+import { reducer, initErstTypes as erstTypes } from '@pages/Workspaces/constants';
 import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability,
@@ -55,8 +55,8 @@ import {
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
   signWorkspace, showWorkspace
-} from '../../../containers/Pages/Workspaces/reducers/workspaceActions';
-import '../../../containers/Pages/Workspaces/workspace.css';
+} from '@pages/Workspaces/reducers/workspaceActions';
+import '@pages/Workspaces/workspace.css';
 import SignWorkspace from '../Modals/SignWorkspace';
 import { useAuth0, User } from "@auth0/auth0-react";
 import { handleExport } from '@helpers/export/handleExport';

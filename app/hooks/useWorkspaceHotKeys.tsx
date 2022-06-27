@@ -61,7 +61,6 @@ export default function useWorkspaceHotKeys(
 
   // zoom in
   useHotkeys("alt+*", (e) => {
-    console.log(e.key);
     if (e.key === "±") {
       rfInstance?.zoomIn();
     }

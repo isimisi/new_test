@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { MenuItem, Select } from "@material-ui/core";
 
-import { changeDashboardType } from "../../containers/Pages/Dashboard/reducers/dashboardActions";
+import { changeDashboardType } from "@pages/Dashboard/reducers/dashboardActions";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { makeStyles } from "@material-ui/core/styles";

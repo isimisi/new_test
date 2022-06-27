@@ -7,7 +7,7 @@ import {
   showWorkspace,
   stopLoading,
   uncertainCompaniesChange
-} from "../../containers/Pages/Workspaces/reducers/workspaceActions";
+} from "@pages/Workspaces/reducers/workspaceActions";
 import React, { useEffect, useState } from "react";
 import ReactFlow, {
   Background,
@@ -18,7 +18,7 @@ import ReactFlow, {
 import { useTranslation } from "react-i18next";
 import useStyles from "./lookup.jss";
 import connection from "@api/socket/SocketConnection";
-import { getLayoutedElements } from "../../containers/Pages/Workspaces/constants";
+import { getLayoutedElements } from "@pages/Workspaces/constants";
 import { getIdFromEncrypted } from "@api/constants";
 import CustomNode from "@components/Workspace/Node/CustomNode";
 import Loader from "@components/Loading/LongLoader";

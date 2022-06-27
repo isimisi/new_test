@@ -19,7 +19,7 @@ import {
   addAtrribut,
   addGroup,
   removeAtrribut,
-} from "../../containers/Pages/Nodes/reducers/nodeActions";
+} from "@pages/Nodes/reducers/nodeActions";
 import { useTranslation } from "react-i18next";
 
 const styles = (theme) => ({

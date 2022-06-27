@@ -7,7 +7,7 @@ import Select from "react-select";
 import TextField from "@material-ui/core/TextField";
 import useStyles from "./document-jss";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
-import { changeDocument } from "../../containers/Pages/Documents/reducers/documentActions";
+import { changeDocument } from "@pages/Documents/reducers/documentActions";
 import { fromJS } from "immutable";
 
 interface Props {
