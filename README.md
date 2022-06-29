@@ -2,45 +2,702 @@
 
 # Files and Folder Structure
 
-├── .vscode # vs code editor prefferences
-├── app # main application source code
-│ ├── api  
-│ ├── app.tsx
-│ ├── components # UI Components
-│ ├── containers # application wrapper and root template
-│ ├── index.html # main HTML
-│ ├── redux # redux settings
-│ ├── styles # style declaration witc scss and css
-│ └── utils # utilization functions
-│ └── hooks # React hooks
-│ └── i18n.js # language provider
-│ └── translations # translations files
-│ └── types  
-├── auth0 # auth0 files
-├── internals # webpack and app configuration
-│ ├── config.js
-│ ├── generators
-│ ├── mocks
-│ ├── scripts
-│ ├── testing
-│ └── webpack
-├── package-lock.json
-├── package.json # npm package manager file
-├── postcss.config.js # css config
-├── public # all public assets directory
-│ ├── favicons
-│ └── images  
-│ └── lotties  
-├── server # backend configuration
-│ ├── argv.js
-│ ├── index.js
-│ ├── logger.js
-│ ├── middlewares
-│ ├── port.js
-│ ├── rawdocs.js
-│ └── rawicons.js
-└── yarn.lock
-└── tsconfig
+📦.vscode
+ ┣ 📜i18n-ally-reviews.yml
+ ┣ 📜launch.json
+ ┗ 📜settings.json
+📦app
+ ┣ 📂api
+ ┃ ┣ 📂dummy
+ ┃ ┃ ┣ 📜brand.ts
+ ┃ ┃ ┣ 📜guideData.js
+ ┃ ┃ ┗ 📜newsData.js
+ ┃ ┣ 📂icons
+ ┃ ┃ ┣ 📜ion-icon-js.js
+ ┃ ┃ ┣ 📜ion-icon.txt
+ ┃ ┃ ┗ 📜material-icon.txt
+ ┃ ┣ 📂localStorage
+ ┃ ┃ ┗ 📜localStorage.ts
+ ┃ ┣ 📂palette
+ ┃ ┃ ┣ 📜colorfull.js
+ ┃ ┃ ┗ 📜themePalette.js
+ ┃ ┣ 📂socket
+ ┃ ┃ ┣ 📜SocketConnection.ts
+ ┃ ┃ ┗ 📜protocol.js
+ ┃ ┣ 📂ui
+ ┃ ┃ ┣ 📜colors.ts
+ ┃ ┃ ┣ 📜helper.js
+ ┃ ┃ ┣ 📜link.js
+ ┃ ┃ ┣ 📜menu.js
+ ┃ ┃ ┗ 📜notifMessage.js
+ ┃ ┣ 📜.DS_Store
+ ┃ ┗ 📜constants.ts
+ ┣ 📂components
+ ┃ ┣ 📂Alerts
+ ┃ ┃ ┣ 📜AlertLog.js
+ ┃ ┃ ┗ 📜AlertModal.js
+ ┃ ┣ 📂BreadCrumb
+ ┃ ┃ ┣ 📜BreadCrumb.js
+ ┃ ┃ ┗ 📜breadCrumb-jss.js
+ ┃ ┣ 📂CardPaper
+ ┃ ┃ ┣ 📜GroupCard.js
+ ┃ ┃ ┣ 📜HorizontalNewsCard.js
+ ┃ ┃ ┣ 📜PricingCard.js
+ ┃ ┃ ┗ 📜cardStyle-jss.js
+ ┃ ┣ 📂Condition
+ ┃ ┃ ┣ 📂Edge
+ ┃ ┃ ┃ ┣ 📜DefineEdge.js
+ ┃ ┃ ┃ ┗ 📜EdgeForm.js
+ ┃ ┃ ┣ 📂Node
+ ┃ ┃ ┃ ┣ 📜DefineNode.js
+ ┃ ┃ ┃ ┗ 📜NodeForm.js
+ ┃ ┃ ┣ 📜ChooseConditions.js
+ ┃ ┃ ┣ 📜ConditionFabs.js
+ ┃ ┃ ┣ 📜ConditionForm.js
+ ┃ ┃ ┣ 📜ConditionMeta.js
+ ┃ ┃ ┗ 📜condition-jss.js
+ ┃ ┣ 📂Counter
+ ┃ ┃ ┗ 📜CounterWidget.js
+ ┃ ┣ 📂DataGrid
+ ┃ ┃ ┣ 📜GridCellExpanded.tsx
+ ┃ ┃ ┗ 📜GridCellExpandedWYS.tsx
+ ┃ ┣ 📂DialogModal
+ ┃ ┃ ┗ 📜CvrDialog.js
+ ┃ ┣ 📂Divider
+ ┃ ┃ ┣ 📜divider-jss.js
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂Document
+ ┃ ┃ ┣ 📜DocumentForm.tsx
+ ┃ ┃ ┣ 📜UploadForm.tsx
+ ┃ ┃ ┗ 📜document-jss.ts
+ ┃ ┣ 📂Error
+ ┃ ┃ ┣ 📜CrashScreen.tsx
+ ┃ ┃ ┣ 📜ErrorWrap.tsx
+ ┃ ┃ ┗ 📜error.jss.ts
+ ┃ ┣ 📂FileUpload
+ ┃ ┃ ┗ 📜FileUpload.js
+ ┃ ┣ 📂Flow
+ ┃ ┃ ┣ 📂Actions
+ ┃ ┃ ┃ ┣ 📜Collaborations.tsx
+ ┃ ┃ ┃ ┣ 📜Controls.tsx
+ ┃ ┃ ┃ ┣ 📜Items.tsx
+ ┃ ┃ ┃ ┣ 📜Meta.tsx
+ ┃ ┃ ┃ ┣ 📜Shortcuts.tsx
+ ┃ ┃ ┃ ┣ 📜Views.tsx
+ ┃ ┃ ┃ ┗ 📜actions.jss.tsx
+ ┃ ┃ ┗ 📂Share
+ ┃ ┃ ┃ ┣ 📜ShareForm.js
+ ┃ ┃ ┃ ┗ 📜ShareModal.js
+ ┃ ┣ 📂Forms
+ ┃ ┃ ┣ 📂helpers
+ ┃ ┃ ┃ ┗ 📜helpers.js
+ ┃ ┃ ┣ 📜AlertNamingForm.tsx
+ ┃ ┃ ┣ 📜ConditionNamingForm.js
+ ┃ ┃ ┣ 📜GroupForm.js
+ ┃ ┃ ┣ 📜LockForm.tsx
+ ┃ ┃ ┣ 📜LoginForm.tsx
+ ┃ ┃ ┣ 📜NewPasswordForm.js
+ ┃ ┃ ┣ 📜NodeForm.js
+ ┃ ┃ ┣ 📜OutputForm.js
+ ┃ ┃ ┣ 📜OutputNamingForm.tsx
+ ┃ ┃ ┣ 📜ReduxFormMUI.js
+ ┃ ┃ ┣ 📜RegisterForm.js
+ ┃ ┃ ┣ 📜RelationshipForm.js
+ ┃ ┃ ┣ 📜ResetForm.js
+ ┃ ┃ ┣ 📜lock.json
+ ┃ ┃ ┣ 📜user-jss.js
+ ┃ ┃ ┗ 📜word.json
+ ┃ ┣ 📂Group
+ ┃ ┃ ┣ 📜GroupDetail.js
+ ┃ ┃ ┣ 📜GroupGallery.js
+ ┃ ┃ ┣ 📜GroupModal.js
+ ┃ ┃ ┗ 📜group-jss.js
+ ┃ ┣ 📂GuideSlider
+ ┃ ┃ ┣ 📜guide-jss.js
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂Header
+ ┃ ┃ ┣ 📜CreateNotificationDialog.tsx
+ ┃ ┃ ┣ 📜DashboardSelector.tsx
+ ┃ ┃ ┣ 📜DropListMenu.js
+ ┃ ┃ ┣ 📜Header.tsx
+ ┃ ┃ ┣ 📜HeaderMenu.js
+ ┃ ┃ ┣ 📜MegaMenu.js
+ ┃ ┃ ┣ 📜NotificationDialog.tsx
+ ┃ ┃ ┣ 📜UserMenu.tsx
+ ┃ ┃ ┗ 📜header-jss.js
+ ┃ ┣ 📂LanguageSelector
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂Loading
+ ┃ ┃ ┣ 📜LongLoader.tsx
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂Lookup
+ ┃ ┃ ┣ 📜Acconting.tsx
+ ┃ ┃ ┣ 📜Diagram.tsx
+ ┃ ┃ ┣ 📜Directors.tsx
+ ┃ ┃ ┣ 📜InfoPaper.tsx
+ ┃ ┃ ┣ 📜MasterData.tsx
+ ┃ ┃ ┣ 📜Owners.tsx
+ ┃ ┃ ┣ 📜Timeline.tsx
+ ┃ ┃ ┗ 📜lookup.jss.ts
+ ┃ ┣ 📂NoContent
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂Nodes
+ ┃ ┃ ┣ 📜NodeDemo.js
+ ┃ ┃ ┗ 📜NodeStyling.js
+ ┃ ┣ 📂Notification
+ ┃ ┃ ┗ 📜Notification.tsx
+ ┃ ┣ 📂Panel
+ ┃ ┃ ┣ 📜FloatingPanel.js
+ ┃ ┃ ┗ 📜panel-jss.js
+ ┃ ┣ 📂PapperBlock
+ ┃ ┃ ┣ 📜PapperBlock.js
+ ┃ ┃ ┗ 📜papperStyle-jss.js
+ ┃ ┣ 📂Person
+ ┃ ┃ ┣ 📜PersonForm.tsx
+ ┃ ┃ ┗ 📜person-jss.ts
+ ┃ ┣ 📂Plans
+ ┃ ┃ ┣ 📜PaymentForm.js
+ ┃ ┃ ┣ 📜PaymentPanel.js
+ ┃ ┃ ┣ 📜plan-jss.js
+ ┃ ┃ ┗ 📜styles.css
+ ┃ ┣ 📂Relationships
+ ┃ ┃ ┣ 📜RelationshipDemo.js
+ ┃ ┃ ┗ 📜RelationshipStylling.js
+ ┃ ┣ 📂Search
+ ┃ ┃ ┣ 📜.DS_Store
+ ┃ ┃ ┣ 📜SearchGroup.js
+ ┃ ┃ ┣ 📜SearchUi.js
+ ┃ ┃ ┗ 📜search-jss.js
+ ┃ ┣ 📂Sidebar
+ ┃ ┃ ┣ 📜MainMenu.tsx
+ ┃ ┃ ┣ 📜SidebarContent.tsx
+ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┗ 📜sidebar-jss.ts
+ ┃ ┣ 📂Switch
+ ┃ ┃ ┣ 📜CustomSwitch.tsx
+ ┃ ┃ ┗ 📜CustomSwitchFlow.tsx
+ ┃ ┣ 📂Tabs
+ ┃ ┃ ┗ 📜TabPanel.tsx
+ ┃ ┣ 📂Tags
+ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┣ 📜tagsActions.ts
+ ┃ ┃ ┃ ┣ 📜tagsConstants.ts
+ ┃ ┃ ┃ ┗ 📜tagsReducer.ts
+ ┃ ┃ ┣ 📜CreateTag.tsx
+ ┃ ┃ ┣ 📜TagList.tsx
+ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┗ 📜tag.jss.tsx
+ ┃ ┣ 📂Timeline
+ ┃ ┃ ┣ 📂Drawer
+ ┃ ┃ ┃ ┣ 📜Content.tsx
+ ┃ ┃ ┃ ┗ 📜Table.tsx
+ ┃ ┃ ┣ 📂Edges
+ ┃ ┃ ┃ ┗ 📜EdgeWithButton.tsx
+ ┃ ┃ ┣ 📂Modals
+ ┃ ┃ ┃ ┣ 📜CreateElement.tsx
+ ┃ ┃ ┃ ┣ 📜Document.tsx
+ ┃ ┃ ┃ ┣ 📜Email.tsx
+ ┃ ┃ ┃ ┣ 📜GoThroughSplit.tsx
+ ┃ ┃ ┃ ┣ 📜ImportEmails.tsx
+ ┃ ┃ ┃ ┣ 📜Person.tsx
+ ┃ ┃ ┃ ┗ 📜ValidateEmails.tsx
+ ┃ ┃ ┣ 📂Nodes
+ ┃ ┃ ┃ ┣ 📜AddItemNode.tsx
+ ┃ ┃ ┃ ┣ 📜HorizontalNode.tsx
+ ┃ ┃ ┃ ┗ 📜VerticalNode.tsx
+ ┃ ┃ ┣ 📂Util
+ ┃ ┃ ┃ ┣ 📂ElementPicker
+ ┃ ┃ ┃ ┃ ┣ 📜element-overlay.ts
+ ┃ ┃ ┃ ┃ ┣ 📜element-picker.ts
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜utils.ts
+ ┃ ┃ ┃ ┣ 📜CreateForm.tsx
+ ┃ ┃ ┃ ┗ 📜Email.tsx
+ ┃ ┃ ┗ 📜timeline.jss.ts
+ ┃ ┣ 📂User
+ ┃ ┃ ┣ 📜SendResetPassword.js
+ ┃ ┃ ┗ 📜lock.json
+ ┃ ┣ 📂Widget
+ ┃ ┃ ┣ 📜CounterIconsWidget.js
+ ┃ ┃ ┣ 📜NewsListWidget.js
+ ┃ ┃ ┣ 📜TimelineWidget.js
+ ┃ ┃ ┗ 📜widget-jss.js
+ ┃ ┣ 📂Workspace
+ ┃ ┃ ┣ 📂Analysis
+ ┃ ┃ ┃ ┣ 📜MiniFlow.js
+ ┃ ┃ ┃ ┣ 📜SidePanel.tsx
+ ┃ ┃ ┃ ┗ 📜analysis.jss.tsx
+ ┃ ┃ ┣ 📂CompanyData
+ ┃ ┃ ┃ ┣ 📜AccountingTop.tsx
+ ┃ ┃ ┃ ┣ 📜CompanyDataModel.js
+ ┃ ┃ ┃ ┗ 📜Timeline.tsx
+ ┃ ┃ ┣ 📂ContextMenu
+ ┃ ┃ ┃ ┣ 📜EdgeContextMenu.tsx
+ ┃ ┃ ┃ ┣ 📜NodeContextMenu.tsx
+ ┃ ┃ ┃ ┣ 📜PaneContextMenu.tsx
+ ┃ ┃ ┃ ┣ 📜SelectionContextMenu.tsx
+ ┃ ┃ ┃ ┗ 📜menu.jss.tsx
+ ┃ ┃ ┣ 📂Edge
+ ┃ ┃ ┃ ┣ 📜CustomConnectionLine.tsx
+ ┃ ┃ ┃ ┣ 📜CustomEdge.tsx
+ ┃ ┃ ┃ ┣ 📜DefineEdge.js
+ ┃ ┃ ┃ ┣ 📜EdgeForm.js
+ ┃ ┃ ┃ ┣ 📜Popper.tsx
+ ┃ ┃ ┃ ┣ 📜beizerCurve.svg
+ ┃ ┃ ┃ ┣ 📜smoothStep.svg
+ ┃ ┃ ┃ ┗ 📜straightLine.svg
+ ┃ ┃ ┣ 📂Modals
+ ┃ ┃ ┃ ┣ 📜AddressInfoModel.js
+ ┃ ┃ ┃ ┣ 📜InternationalStructureAlert.tsx
+ ┃ ┃ ┃ ┣ 📜MapTypesForErst.js
+ ┃ ┃ ┃ ┣ 📜RelationshipModal.tsx
+ ┃ ┃ ┃ ┣ 📜SignWorkspace.js
+ ┃ ┃ ┃ ┣ 📜UncertainCompanies.js
+ ┃ ┃ ┃ ┣ 📜WorkspaceForm.tsx
+ ┃ ┃ ┃ ┗ 📜WorkspaceMeta.js
+ ┃ ┃ ┣ 📂Node
+ ┃ ┃ ┃ ┣ 📜ContentEditable.js
+ ┃ ┃ ┃ ┣ 📜ControlPoint.tsx
+ ┃ ┃ ┃ ┣ 📜CustomNode.tsx
+ ┃ ┃ ┃ ┣ 📜DefineNode.tsx
+ ┃ ┃ ┃ ┣ 📜Popper.tsx
+ ┃ ┃ ┃ ┣ 📜StepNode.tsx
+ ┃ ┃ ┃ ┣ 📜StickyNoteNode.js
+ ┃ ┃ ┃ ┣ 📜WorkspaceNodeForm.js
+ ┃ ┃ ┃ ┣ 📜circle.svg
+ ┃ ┃ ┃ ┣ 📜person.svg
+ ┃ ┃ ┃ ┣ 📜square.svg
+ ┃ ┃ ┃ ┗ 📜triangle.svg
+ ┃ ┃ ┣ 📂Public
+ ┃ ┃ ┃ ┣ 📜PublicWorkspace.tsx
+ ┃ ┃ ┃ ┗ 📜WorkspaceFabs.js
+ ┃ ┃ ┗ 📜workspace-jss.js
+ ┃ ┣ 📜.DS_Store
+ ┃ ┗ 📜index.ts
+ ┣ 📂containers
+ ┃ ┣ 📂App
+ ┃ ┃ ┣ 📜Application.tsx
+ ┃ ┃ ┣ 📜PrivateRoute.tsx
+ ┃ ┃ ┣ 📜PublicRoute.js
+ ┃ ┃ ┣ 📜PublicRoutes.js
+ ┃ ┃ ┣ 📜ThemeWrapper.js
+ ┃ ┃ ┣ 📜auth0-provider-with-history.tsx
+ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┣ 📂Pages
+ ┃ ┃ ┣ 📂Alerts
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜alertActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜alertConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜alertReducer.ts
+ ┃ ┃ ┃ ┣ 📜Alert.tsx
+ ┃ ┃ ┃ ┣ 📜alert-jss.ts
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Attributes
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜attributeActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜attributeConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜attributeReducer.ts
+ ┃ ┃ ┃ ┣ 📜Attribute.js
+ ┃ ┃ ┃ ┣ 📜attribute-jss.js
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Avatar
+ ┃ ┃ ┃ ┣ 📂AvatarEditor
+ ┃ ┃ ┃ ┃ ┣ 📂SectionWrapper
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜index.css
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜index.css
+ ┃ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┃ ┣ 📂AvatarList
+ ┃ ┃ ┃ ┃ ┣ 📜index.css
+ ┃ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┃ ┣ 📂ear
+ ┃ ┃ ┃ ┃ ┣ 📜big.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜small.tsx
+ ┃ ┃ ┃ ┣ 📂eyebrow
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜up.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜upWoman.tsx
+ ┃ ┃ ┃ ┣ 📂eyes
+ ┃ ┃ ┃ ┃ ┣ 📜circle.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜oval.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜smile.tsx
+ ┃ ┃ ┃ ┣ 📂face
+ ┃ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┃ ┣ 📂glasses
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜round.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜square.tsx
+ ┃ ┃ ┃ ┣ 📂hair
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜mohawk.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜normal.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜thick.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜womanLong.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜womanShort.tsx
+ ┃ ┃ ┃ ┣ 📂hat
+ ┃ ┃ ┃ ┃ ┣ 📜beanie.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜turban.tsx
+ ┃ ┃ ┃ ┣ 📂mouth
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜laugh.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜peace.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜smile.tsx
+ ┃ ┃ ┃ ┣ 📂nose
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜long.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜round.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜short.tsx
+ ┃ ┃ ┃ ┣ 📂shirt
+ ┃ ┃ ┃ ┃ ┣ 📜hoody.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┃ ┣ 📜polo.tsx
+ ┃ ┃ ┃ ┃ ┗ 📜short.tsx
+ ┃ ┃ ┃ ┣ 📜index.css
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂ComingSoon
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Conditions
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜conditionActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜conditionConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜conditionReducer.ts
+ ┃ ┃ ┃ ┣ 📜Condition.tsx
+ ┃ ┃ ┃ ┣ 📜conditions-jss.js
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂CreateOrganization
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜createOrganizationActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜createOrganizationConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜createOrganizationReducer.ts
+ ┃ ┃ ┃ ┣ 📜ChoosePlan.tsx
+ ┃ ┃ ┃ ┗ 📜createOrganization-jss.js
+ ┃ ┃ ┣ 📂Dashboard
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜dashboardConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜dashboardReducer.ts
+ ┃ ┃ ┃ ┣ 📜MobileDisclaimer.tsx
+ ┃ ┃ ┃ ┣ 📜PersonalDashboard.tsx
+ ┃ ┃ ┃ ┣ 📜UpgradeModal.tsx
+ ┃ ┃ ┃ ┣ 📜dashboard-jss.ts
+ ┃ ┃ ┃ ┗ 📜printer.json
+ ┃ ┃ ┣ 📂Documents
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜documentActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜documentConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜documentReducer.ts
+ ┃ ┃ ┃ ┣ 📜Document.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜document-jss.ts
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Error
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Groups
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜groupActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜groupConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜groupReducer.ts
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂HelpSupport
+ ┃ ┃ ┃ ┣ 📜ContactForm.js
+ ┃ ┃ ┃ ┣ 📜Qna.js
+ ┃ ┃ ┃ ┣ 📜helpSupport-jss.js
+ ┃ ┃ ┃ ┗ 📜index.tsx
+ ┃ ┃ ┣ 📂Lookup
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜lookupActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜lookupConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜lookupReducer.ts
+ ┃ ┃ ┃ ┣ 📜Details.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜lookup-jss.ts
+ ┃ ┃ ┣ 📂Nodes
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜nodeActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜nodeConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜nodeReducer.ts
+ ┃ ┃ ┃ ┣ 📜Node.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜node-jss.ts
+ ┃ ┃ ┣ 📂NotFound
+ ┃ ┃ ┃ ┗ 📜NotFound.js
+ ┃ ┃ ┣ 📂Outputs
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜outputActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜outputConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜outputReducer.ts
+ ┃ ┃ ┃ ┣ 📜Output.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜output-jss.tsx
+ ┃ ┃ ┣ 📂Persons
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜personActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜personConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜personReducer.ts
+ ┃ ┃ ┃ ┣ 📜Person.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜person-jss.ts
+ ┃ ┃ ┣ 📂Relationships
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜relationshipActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜relationshipConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜relationshipReducer.ts
+ ┃ ┃ ┃ ┣ 📜Relationship.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┗ 📜relationship-jss.ts
+ ┃ ┃ ┣ 📂Settings
+ ┃ ┃ ┃ ┣ 📜DetailSettings.js
+ ┃ ┃ ┃ ┣ 📜index.js
+ ┃ ┃ ┃ ┗ 📜settings-jss.js
+ ┃ ┃ ┣ 📂Timelines
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜timelineActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜timelineConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜timelineReducer.ts
+ ┃ ┃ ┃ ┣ 📜Timeline.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┣ 📜timeline-jss.ts
+ ┃ ┃ ┃ ┗ 📜timeline.css
+ ┃ ┃ ┣ 📂Workspaces
+ ┃ ┃ ┃ ┣ 📂reducers
+ ┃ ┃ ┃ ┃ ┣ 📜workspaceActions.ts
+ ┃ ┃ ┃ ┃ ┣ 📜workspaceConstants.ts
+ ┃ ┃ ┃ ┃ ┗ 📜workspaceReducer.ts
+ ┃ ┃ ┃ ┣ 📜KoncernDiagram.tsx
+ ┃ ┃ ┃ ┣ 📜PublicWorkspace.tsx
+ ┃ ┃ ┃ ┣ 📜Workspace.tsx
+ ┃ ┃ ┃ ┣ 📜WorkspaceAnalysis.tsx
+ ┃ ┃ ┃ ┣ 📜constants.tsx
+ ┃ ┃ ┃ ┣ 📜index.tsx
+ ┃ ┃ ┃ ┣ 📜workspace-jss.js
+ ┃ ┃ ┃ ┗ 📜workspace.css
+ ┃ ┃ ┗ 📜.DS_Store
+ ┃ ┣ 📂Parent
+ ┃ ┃ ┗ 📜index.js
+ ┃ ┣ 📂Templates
+ ┃ ┃ ┣ 📂layouts
+ ┃ ┃ ┃ ┣ 📜DropMenuLayout.js
+ ┃ ┃ ┃ ┣ 📜LeftSidebarBigLayout.js
+ ┃ ┃ ┃ ┣ 📜LeftSidebarLayout.js
+ ┃ ┃ ┃ ┣ 📜MegaMenuLayout.js
+ ┃ ┃ ┃ ┗ 📜RightSidebarLayout.js
+ ┃ ┃ ┣ 📜.DS_Store
+ ┃ ┃ ┣ 📜Corporate.js
+ ┃ ┃ ┣ 📜Creative.js
+ ┃ ┃ ┣ 📜Dashboard.js
+ ┃ ┃ ┣ 📜Decoration.js
+ ┃ ┃ ┣ 📜Outer.js
+ ┃ ┃ ┗ 📜appStyles-jss.js
+ ┃ ┣ 📜.DS_Store
+ ┃ ┗ 📜pageListAsync.js
+ ┣ 📂helpers
+ ┃ ┣ 📂export
+ ┃ ┃ ┗ 📜handleExport.tsx
+ ┃ ┣ 📂flow
+ ┃ ┃ ┣ 📂language
+ ┃ ┃ ┃ ┗ 📜index.ts
+ ┃ ┃ ┗ 📜dragHelper.ts
+ ┃ ┣ 📂numbers
+ ┃ ┃ ┗ 📜Formatters.tsx
+ ┃ ┣ 📜countryOptions.tsx
+ ┃ ┣ 📜fullScreen.js
+ ┃ ┣ 📜tableOptions.tsx
+ ┃ ┗ 📜userInfo.ts
+ ┣ 📂hooks
+ ┃ ┣ 📂flow
+ ┃ ┃ ┣ 📜doubbleClick.ts
+ ┃ ┃ ┣ 📜flowContexts.ts
+ ┃ ┃ ┗ 📜itemPanel.ts
+ ┃ ┣ 📂timeline
+ ┃ ┃ ┗ 📜drawerWidth.tsx
+ ┃ ┣ 📜redux.ts
+ ┃ ┣ 📜useContextMenu.tsx
+ ┃ ┣ 📜useCutCopyPaste.js
+ ┃ ┣ 📜useWindowDiemensions.tsx
+ ┃ ┗ 📜useWorkspaceHotKeys.tsx
+ ┣ 📂redux
+ ┃ ┣ 📂actions
+ ┃ ┃ ┣ 📜reduxFormActions.js
+ ┃ ┃ ┗ 📜uiActions.js
+ ┃ ┣ 📂constants
+ ┃ ┃ ┣ 📜notifConstants.ts
+ ┃ ┃ ┣ 📜reduxFormConstants.js
+ ┃ ┃ ┗ 📜uiConstants.js
+ ┃ ┣ 📂modules
+ ┃ ┃ ┣ 📜initForm.ts
+ ┃ ┃ ┗ 📜ui.ts
+ ┃ ┣ 📜.DS_Store
+ ┃ ┣ 📜autoMergeLevel2Immutable.js
+ ┃ ┣ 📜configureStore.ts
+ ┃ ┗ 📜reducers.ts
+ ┣ 📂styles
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂vendors
+ ┃ ┃ ┃ ┣ 📂image-lightbox
+ ┃ ┃ ┃ ┃ ┗ 📜image-lightbox.css
+ ┃ ┃ ┃ ┣ 📂invoice
+ ┃ ┃ ┃ ┃ ┗ 📜style.css
+ ┃ ┃ ┃ ┣ 📂react-animated-slider
+ ┃ ┃ ┃ ┃ ┗ 📜react-animated-slider.css
+ ┃ ┃ ┃ ┣ 📂react-big-calendar
+ ┃ ┃ ┃ ┃ ┗ 📜react-big-calendar.css
+ ┃ ┃ ┃ ┣ 📂react-calculator
+ ┃ ┃ ┃ ┃ ┣ 📜flex.css
+ ┃ ┃ ┃ ┃ ┗ 📜styles.css
+ ┃ ┃ ┃ ┣ 📂react-clock
+ ┃ ┃ ┃ ┃ ┗ 📜react-clock.css
+ ┃ ┃ ┃ ┣ 📂react-draft-wysiwyg
+ ┃ ┃ ┃ ┃ ┗ 📜react-draft-wysiwyg.css
+ ┃ ┃ ┃ ┣ 📂react-dropzone
+ ┃ ┃ ┃ ┃ ┗ 📜react-dropzone.css
+ ┃ ┃ ┃ ┣ 📂react-input-range
+ ┃ ┃ ┃ ┃ ┗ 📜react-input-range.css
+ ┃ ┃ ┃ ┣ 📂react-weather
+ ┃ ┃ ┃ ┃ ┗ 📜GenericWeather.css
+ ┃ ┃ ┃ ┣ 📂rechart
+ ┃ ┃ ┃ ┃ ┗ 📜styles.css
+ ┃ ┃ ┃ ┣ 📂select
+ ┃ ┃ ┃ ┃ ┗ 📜select.css
+ ┃ ┃ ┃ ┣ 📂slick-carousel
+ ┃ ┃ ┃ ┃ ┣ 📂fonts
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜slick.eot
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜slick.svg
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜slick.ttf
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜slick.woff
+ ┃ ┃ ┃ ┃ ┣ 📜ajax-loader.gif
+ ┃ ┃ ┃ ┃ ┣ 📜slick-carousel.css
+ ┃ ┃ ┃ ┃ ┣ 📜slick-theme.css
+ ┃ ┃ ┃ ┃ ┗ 📜slick.css
+ ┃ ┃ ┃ ┗ 📜.DS_Store
+ ┃ ┃ ┣ 📜.DS_Store
+ ┃ ┃ ┗ 📜Form.scss
+ ┃ ┣ 📂layout
+ ┃ ┃ ┣ 📜_buttons.scss
+ ┃ ┃ ┣ 📜_forms.scss
+ ┃ ┃ ┣ 📜_layout.scss
+ ┃ ┃ ┣ 📜_lists.scss
+ ┃ ┃ ┣ 📜_media.scss
+ ┃ ┃ ┣ 📜_tables.scss
+ ┃ ┃ ┣ 📜_typography.scss
+ ┃ ┃ ┣ 📜_variables.scss
+ ┃ ┃ ┗ 📜base.scss
+ ┃ ┣ 📂mixins
+ ┃ ┃ ┣ 📜bourbon.scss
+ ┃ ┃ ┣ 📜neat.scss
+ ┃ ┃ ┗ 📜pallete.scss
+ ┃ ┣ 📂theme
+ ┃ ┃ ┗ 📜applicationTheme.js
+ ┃ ┣ 📂variables
+ ┃ ┃ ┣ 📜bitters.scss
+ ┃ ┃ ┣ 📜custom_pallete.scss
+ ┃ ┃ ┗ 📜neat.scss
+ ┃ ┣ 📜.DS_Store
+ ┃ ┣ 📜mixins.scss
+ ┃ ┗ 📜variables.scss
+ ┣ 📂translations
+ ┃ ┣ 📜dk.json
+ ┃ ┗ 📜en.json
+ ┣ 📂types
+ ┃ ┣ 📂reducers
+ ┃ ┃ ┣ 📜alert.ts
+ ┃ ┃ ┣ 📜attribute.ts
+ ┃ ┃ ┣ 📜conditions.ts
+ ┃ ┃ ┣ 📜dashbord.ts
+ ┃ ┃ ┣ 📜document.ts
+ ┃ ┃ ┣ 📜groups.ts
+ ┃ ┃ ┣ 📜lookup.ts
+ ┃ ┃ ┣ 📜node.ts
+ ┃ ┃ ┣ 📜output.ts
+ ┃ ┃ ┣ 📜person.ts
+ ┃ ┃ ┣ 📜relationship.ts
+ ┃ ┃ ┣ 📜tags.ts
+ ┃ ┃ ┣ 📜timeline.ts
+ ┃ ┃ ┗ 📜workspace.ts
+ ┃ ┣ 📜data.ts
+ ┃ ┣ 📜global.d.ts
+ ┃ ┣ 📜immutable.ts
+ ┃ ┣ 📜reactFlow.ts
+ ┃ ┗ 📜styling.ts
+ ┣ 📂utils
+ ┃ ┣ 📜history.js
+ ┃ ┣ 📜loadable.js
+ ┃ ┗ 📜request.js
+ ┣ 📜.DS_Store
+ ┣ 📜.htaccess
+ ┣ 📜.nginx.conf
+ ┣ 📜app.tsx
+ ┣ 📜i18n.js
+ ┗ 📜index.html
+ 📦auth0
+ ┣ 📂db
+ ┃ ┣ 📜change_password.js
+ ┃ ┣ 📜create.js
+ ┃ ┣ 📜delete.js
+ ┃ ┣ 📜get_user.js
+ ┃ ┣ 📜login.js
+ ┃ ┗ 📜verify.js
+ ┣ 📂rules
+ ┃ ┗ 📜add_meta_data.js
+ ┣ 📜login.html
+ ┗ 📜password_reset.html
+ 📦internals
+ ┣ 📂scripts
+ ┃ ┣ 📂helpers
+ ┃ ┃ ┣ 📜checkmark.js
+ ┃ ┃ ┣ 📜progress.js
+ ┃ ┃ ┗ 📜xmark.js
+ ┃ ┣ 📜analyze.js
+ ┃ ┣ 📜clean.js
+ ┃ ┣ 📜dependencies.js
+ ┃ ┣ 📜deploy.js
+ ┃ ┣ 📜generate-templates-for-linting.js
+ ┃ ┗ 📜npmcheckversion.js
+ ┣ 📂webpack
+ ┃ ┣ 📜webpack.base.babel.js
+ ┃ ┣ 📜webpack.dev.babel.js
+ ┃ ┣ 📜webpack.dll.babel.js
+ ┃ ┗ 📜webpack.prod.babel.js
+ ┗ 📜config.js
+ 📦internals
+ ┣ 📂scripts
+ ┃ ┣ 📂helpers
+ ┣ 📂webpack
+ ┗ 📜config.js
+ 📦public
+ ┣ 📂favicons
+ ┣ 📂images
+ ┃ ┣ 📂avatars
+ ┃ ┣ 📂countries
+ ┃ ┣ 📂cursors
+ ┃ ┣ 📂decoration
+ ┃ ┣ 📂guide
+ ┃ ┣ 📂icons
+ ┃ ┣ 📂logo
+ ┣ 📂lotties
+ ┃ ┣ 📂racoon
+ 📦server
+ ┣ 📂middlewares
+ ┃ ┣ 📜addDevMiddlewares.js
+ ┃ ┣ 📜addProdMiddlewares.js
+ ┃ ┗ 📜frontendMiddleware.js
+ ┣ 📜argv.js
+ ┣ 📜index.js
+ ┣ 📜logger.js
+ ┣ 📜port.js
+ ┣ 📜rawdocs.js
+ ┗ 📜rawicons.js
 
 # Installation and Running App
 
