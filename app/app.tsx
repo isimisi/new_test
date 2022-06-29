@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === "production") {
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()],
-    appVersion: "1.4.47"
+    appVersion: "1.4.48"
   });
 }
 
