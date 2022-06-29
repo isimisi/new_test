@@ -182,6 +182,7 @@ const CreateForm = (props: Props) => {
           placeholder={t("timeline.date")}
           value={date}
           variant="inline"
+          autoOk
           className={classes.eventField}
           format="dd/MM-yyyy"
           cancelLabel={t("timeline.cancel")}
@@ -191,6 +192,7 @@ const CreateForm = (props: Props) => {
           label={t("timeline.time")}
           placeholder={t("timeline.time")}
           value={time}
+          autoOk
           variant="inline"
           cancelLabel={t("timeline.cancel")}
           keyboardIcon={<QueryBuilderIcon />}

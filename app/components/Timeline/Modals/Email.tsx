@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 
 import { ITimelineNode } from "@customTypes/reducers/timeline";
 import EmailContent from "../Util/Email";
-import { ElementPicker } from "../Util/ElementPicker";
+import { elementFilter, ElementPicker, getSplitElement, traverseParentsUntilUniqueSplit } from "../Util/ElementPicker";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import {
@@ -75,45 +75,13 @@ const Email = (props: Props) => {
       } else {
         picker.start({
           onClick: el => {
-            const splitElContainer = document.createElement("div");
-            splitElContainer.style.height = "8px";
-            splitElContainer.style.width = "82%";
-            splitElContainer.style.display = "flex";
-            splitElContainer.style.position = "relative";
-            splitElContainer.style.alignItems = "center";
-            splitElContainer.id = "splitting_element";
-            splitElContainer.style.borderTop = "4px dashed #73B1FF";
-
-            const splitTextContainer = document.createElement("div");
-            splitTextContainer.style.position = "absolute";
-            splitTextContainer.style.right = "1px";
-            splitTextContainer.style.top = "1px";
-            splitTextContainer.style.padding = "5px";
-            splitTextContainer.style.position = "absolute";
-            splitTextContainer.style.right = "-120px";
-            splitTextContainer.style.top = "-14px";
-            splitTextContainer.style.backgroundColor = "#73B1FF";
-            splitTextContainer.style.borderRadius = "6px";
-            splitTextContainer.id = "splitting_element_innerDiv";
-
-
-            const splitText = document.createElement("p");
-            splitText.innerText = t("emails.split_text");
-            splitText.style.width = "100%";
-            splitText.style.color = "white";
-            splitText.style.margin = "auto";
-            splitText.style.fontSize = "10px";
-            splitText.id = "splitting_element_innerText";
-
-            splitTextContainer.appendChild(splitText);
-
-            splitElContainer.appendChild(splitTextContainer);
-
-            if (el.id.includes("splitting_element")) {
-              if (el.id === "splitting_element") {
+            const splitElContainer = getSplitElement(t("emails.split_text"));
+            console.log(el);
+            if (el.className.includes("splitting_element")) {
+              if (el.className === "splitting_element") {
                 dispatch(removeEmailSplit(el.nextElementSibling?.outerHTML));
                 el.remove();
-              } else if (el.id === "splitting_element_innerDiv") {
+              } else if (el.className === "splitting_element_innerDiv") {
                 dispatch(removeEmailSplit(el.parentElement?.nextElementSibling?.outerHTML));
                 el.parentElement?.remove();
               } else {
@@ -121,22 +89,18 @@ const Email = (props: Props) => {
                 el.parentElement?.parentElement?.remove();
               }
             } else {
-              el.parentNode?.insertBefore(splitElContainer, el);
+              const currEmail = document.getElementById("elementPickerContainer")?.outerHTML;
 
-              dispatch(addCurrSplittingEmail(document.getElementById("elementPickerContainer")?.outerHTML));
-              dispatch(addEmailSplit(el.outerHTML));
+              dispatch(addCurrSplittingEmail(currEmail));
+
+              const getSplitVal = traverseParentsUntilUniqueSplit(el, currEmail);
+
+              dispatch(addEmailSplit(getSplitVal));
+
+              el.parentNode?.insertBefore(splitElContainer, el);
             }
           },
-          elementFilter: el => {
-            let childOfHtmlDiv = false;
-            for (let p = el && el.parentElement; p; p = p.parentElement) {
-              if (p.id === "elementPickerContainer") {
-                childOfHtmlDiv = true;
-              }
-            }
-
-            return childOfHtmlDiv;
-          }
+          elementFilter
         });
       }
     }

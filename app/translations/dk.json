@@ -981,7 +981,9 @@
     "split": "split e-mail",
     "stop_split": "Stop med at splitte e-mailen",
     "walk_through": "Gennemgå opdeling",
-    "split_text": "Her opdeles e-mailen"
+    "split_text": "Her opdeles e-mailen",
+    "init_split": "Vores splitning",
+    "init_split_description": "Vi har forsøgt at splitte e-mailen op efter bedste evne. Det er dog ikke en nem opgave og vi giver dig derfor muligheden for at supplere os i vores arbejde. Hvis du kan spotte nogle steder der mangler at blive splittet, så tryk på “split e-mail” og tryk i mailen, hvor du ønsker den skal splittes yderligere."
   },
   "genereic": {
     "back": "Forrige"

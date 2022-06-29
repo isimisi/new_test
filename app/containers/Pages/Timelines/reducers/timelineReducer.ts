@@ -23,6 +23,7 @@ import {
   ADD_GROUP,
   CHANGE_VIEW,
   CHANGE_TAGS,
+  VALIDATE_EMAILS_CLOSE,
   SHARE_ORG_CHANGE,
   PUT_TIMELINE_SUCCESS,
   PUT_TIMELINE_FAILED,
@@ -52,6 +53,9 @@ import {
   ADD_CURR_SPLITTING_EMAIL,
   ADD_EMAIL_SPLIT,
   REMOVE_EMAIL_SPLIT,
+  CUSTOM_SPLIT_LOADING,
+  CUSTOM_SPLIT_SUCCESS,
+  CUSTOM_SPLIT_FAILED,
   CLEAR_SPLITTING,
   GO_THROUGH_SPLIT_CHANGE,
 } from "./timelineConstants";
@@ -80,6 +84,7 @@ const initialNode: TimelineNode = {
 const initialState: TimelineState = {
   timelines: List(),
   elements: List(),
+  emailsToValidate: List(),
   message: "",
   handleVisability: true,
   title: "",
@@ -136,6 +141,7 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "modal"], false);
         mutableState.set("elements", fromJS(action.elements));
+        mutableState.set("emailsToValidate", fromJS(action.emails));
       });
     case PUT_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
@@ -163,6 +169,7 @@ export default function reducer(
     case POST_TIMELINE_ELEMENT_LOADING:
     case PUT_TIMELINE_ELEMENT_LOADING:
     case SHOW_TIMELINE_LOADING:
+    case CUSTOM_SPLIT_LOADING:
     case IMPORT_EMAILS_LOADING:
     case DELETE_TIMELINE_ELEMENTS_LOADING:
       return state.withMutations((mutableState) => {
@@ -173,6 +180,7 @@ export default function reducer(
     case POST_TIMELINE_FAILED:
     case POST_TIMELINE_ELEMENT_FAILED:
     case PUT_TIMELINE_FAILED:
+    case CUSTOM_SPLIT_FAILED:
     case SHOW_TIMELINE_FAILED:
     case IMPORT_EMAILS_FAILED:
     case PUT_TIMELINE_ELEMENT_FAILED:
@@ -181,6 +189,11 @@ export default function reducer(
         const message = fromJS(action.message);
         mutableState.set("message", message);
         mutableState.set("loadings", initialLoadings);
+      });
+    case CUSTOM_SPLIT_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.setIn(["loadings", "post"], false);
+        mutableState.set("elements", fromJS(action.elements));
       });
     case TITLE_CHANGE:
       return state.withMutations((mutableState) => {
@@ -302,6 +315,10 @@ export default function reducer(
     case SET_IS_UPDATING:
       return state.withMutations((mutableState) => {
         mutableState.set("isUpdatingNode", action.bool);
+      });
+    case VALIDATE_EMAILS_CLOSE:
+      return state.withMutations((mutableState) => {
+        mutableState.set("emailsToValidate", List());
       });
     case CHANGE_VIEW:
       return state.withMutations((mutableState) => {

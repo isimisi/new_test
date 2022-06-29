@@ -220,7 +220,8 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
 
   try {
     const response = await axios.post(url, body, header);
-    dispatch({ type: types.IMPORT_EMAILS_SUCCESS, elements: response.data });
+    const { elements, emails } = response.data;
+    dispatch({ type: types.IMPORT_EMAILS_SUCCESS, elements, emails });
     close();
     dispatch(getPersonDropDown(user));
     dispatch(getDocumentDropDown(user));
@@ -234,6 +235,25 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
     dispatch({ type: types.IMPORT_EMAILS_FAILED, message });
   }
 };
+
+export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn) => async (dispatch) => {
+  dispatch({ type: types.CUSTOM_SPLIT_LOADING, loadingType: "post" });
+
+  const url = `${baseUrl}/customSplitUpload`;
+  const body = { timeline_id, mails };
+  const header = authHeader(user);
+
+  try {
+    const response = await axios.post(url, body, header);
+    dispatch({ type: types.CUSTOM_SPLIT_SUCCESS, elements: response.data });
+    moveOn();
+  } catch (error: any) {
+    const message = genericErrorMessage;
+
+    dispatch({ type: types.CUSTOM_SPLIT_FAILED, message });
+  }
+};
+
 
 export const labelChange = (title) => ({
   type: types.TITLE_CHANGE,
@@ -370,6 +390,11 @@ export const removeEmailSplit = (splitElement) => ({
   type: types.REMOVE_EMAIL_SPLIT,
   splitElement
 });
+
+export const validateEmailsClose = {
+  type: types.VALIDATE_EMAILS_CLOSE,
+};
+
 
 export const clearSplitting = {
   type: types.CLEAR_SPLITTING,

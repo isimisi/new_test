@@ -225,6 +225,7 @@ const CompanyTimeline = (props: Props) => {
               className={classes.datePicker}
               variant="inline"
               format="MM/dd/yyyy"
+              autoOk
               margin="normal"
               label={t("company.timeline.start_date")}
               value={selectedDateStart}
@@ -237,7 +238,7 @@ const CompanyTimeline = (props: Props) => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.datePicker}
-
+              autoOk
               variant="inline"
               format="MM/dd/yyyy"
               margin="normal"

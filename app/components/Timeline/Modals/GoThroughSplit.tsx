@@ -97,7 +97,7 @@ const GoThroughSplit = (props: Props) => {
 
   useEffect(() => {
     if (currSplittingEmail) {
-      setCurrSplittingHtmlContent(getHtmlIfCurrSplitting());
+      setCurrSplittingHtmlContent(getHtmlIfCurrSplitting()); 8;
     }
   }, [activeStep, currSplittingEmail, splitElements]);
 

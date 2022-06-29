@@ -53,10 +53,21 @@ export type TimelineTableOptions = List<
   [string, string, TagDeconstructedOnOtherElements, string, string, string, string]
 >;
 
+export interface EmailsFromImport {
+  refference: string;
+  html: string;
+}
+
+export interface IEmailsFromImport extends Map<string, any> {
+  toJS(): EmailsFromImport;
+  get<K extends keyof EmailsFromImport>(key: K): EmailsFromImport[K];
+}
+
 export interface TimelineState {
   timelines: List<TimelineTableOptions>;
   message: string;
   elements: List<FlowElement>;
+  emailsToValidate: List<IEmailsFromImport>;
   handleVisability: boolean;
   createElementOpen: boolean;
   goThroughSplitOpen: boolean;

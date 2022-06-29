@@ -973,7 +973,9 @@
     "stop_split": "Stop splitting email",
     "split_explainer": "By pressing this button u can customize, where to split the email. Thus if we were unable to locate specific submails, you can pick them out yourself.",
     "walk_through": "Review the breakdown",
-    "split_text": "The email is divided here"
+    "split_text": "The email is divided here",
+    "init_split": "Our split",
+    "init_split_description": "We have tried to split up the email as best we can. However, this is not an easy task and we therefore give you the opportunity to complement us in our work. If you can spot some places that need to be split, please press \"split email\" and tap in the email where you want it to be split further."
   },
   "genereic": {
     "back": "Back"

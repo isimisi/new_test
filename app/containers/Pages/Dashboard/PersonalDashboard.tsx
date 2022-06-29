@@ -296,7 +296,16 @@ const PersonalDashboard = () => {
                   </ButtonBase>
                 </div>
 
-                <Paper className={classes.videoContainer} />
+                <Paper className={classes.videoContainer}>
+                  <Iframe
+                    allowFullScreen
+                    width="100%"
+                    height="100%"
+                    className={classes.iframe2}
+                    url="https://www.loom.com/embed/780e94a98ec84903b30036e466db2974"
+                  />
+
+                </Paper>
 
               </Paper>
 
@@ -375,7 +384,7 @@ const PersonalDashboard = () => {
 
         </Grid>
         <Grid item md={!intro && !removedIntro ? 4 : 6} xs={12}>
-          {!intro && !removedIntro ? <PapperBlock title={t('personal-dashboard.how_to_start')} whiteBg /> : <PapperBlock title={dashboard === "structure" ? t('personal-dashboard.start_empty') : t('personal-dashboard.start_empty_timeline')} whiteBg desc={dashboard === "structure" ? t('personal-dashboard.create_empty_workspace') : t('personal-dashboard.create_empty_timeline')}>
+          {!intro && !removedIntro ? /** <PapperBlock title={t('personal-dashboard.how_to_start')} whiteBg /> */ null : <PapperBlock title={dashboard === "structure" ? t('personal-dashboard.start_empty') : t('personal-dashboard.start_empty_timeline')} whiteBg desc={dashboard === "structure" ? t('personal-dashboard.create_empty_workspace') : t('personal-dashboard.create_empty_timeline')}>
             <div className={classes.removeMargin}>
               <TextField
                 name="label"

@@ -26,7 +26,7 @@ import {
   shareOrgChange,
   showTimeline,
   importEmails,
-  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting
+  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting, validateEmailsClose
 } from "./reducers/timelineActions";
 import ReactFlow, {
   isNode,
@@ -70,6 +70,7 @@ import Content from "@components/Timeline/Drawer/Content";
 import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
+import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
 
 
 const nodeTypes = {
@@ -239,6 +240,10 @@ const Timeline = () => {
   const emailModalOpen = useAppSelector(state =>
     state[reducer].get("emailOpen")
   );
+
+  const emailsToValidate = useAppSelector(state => state.timeline.get("emailsToValidate"));
+
+
   const loadings = useAppSelector(state => state[reducer].get("loadings"));
   const label = useAppSelector(state => state[reducer].get("title"));
   const description = useAppSelector(state =>
@@ -484,6 +489,10 @@ const Timeline = () => {
     dispatch(openEmailChange(true));
   };
 
+  const handleValidateEmailsClose = () => {
+    dispatch(validateEmailsClose);
+  };
+
 
   return (
     <div style={{ display: "flex", cursor }}>
@@ -633,7 +642,11 @@ const Timeline = () => {
         open={emailModalOpen}
         close={handleEmailClose}
         timelineNode={timelineNode}
-
+      />}
+      {emailsToValidate.size > 0 && <ValidateEmails
+        open={emailsToValidate.size > 0}
+        close={handleValidateEmailsClose}
+        timeline_id={id}
       />}
       {importEmailsOpen && <ImportEmails open={importEmailsOpen} close={handleCloseImportEmails} handleImportEmails={handleImportEmails} loading={loadings.get("modal")} />}
 

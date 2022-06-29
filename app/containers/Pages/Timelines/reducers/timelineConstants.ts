@@ -3,6 +3,7 @@ import {
   Loadings,
   TimelineTableOptions,
   TimelineNode,
+  EmailsFromImport,
 } from "@customTypes/reducers/timeline";
 import { NotifyActions } from "@redux/constants/notifConstants";
 import { FlowElement } from "react-flow-renderer";
@@ -43,6 +44,10 @@ export const IMPORT_EMAILS_LOADING = "IMPORT_EMAILS_LOADING";
 export const IMPORT_EMAILS_SUCCESS = "IMPORT_EMAILS_SUCCESS";
 export const IMPORT_EMAILS_FAILED = "IMPORT_EMAILS_FAILED";
 
+export const CUSTOM_SPLIT_LOADING = "CUSTOM_SPLIT_LOADING";
+export const CUSTOM_SPLIT_SUCCESS = "CUSTOM_SPLIT_SUCCESS";
+export const CUSTOM_SPLIT_FAILED = "CUSTOM_SPLIT_FAILED";
+
 export const TITLE_CHANGE = "TITLE_CHANGE";
 export const DESCRIPTION_CHANGE = "DESCRIPTION_CHANGE";
 export const ADD_GROUP = "ADD_GROUP";
@@ -70,6 +75,7 @@ export const ADD_CURR_SPLITTING_EMAIL = "ADD_CURR_SPLITTING_EMAIL";
 export const ADD_EMAIL_SPLIT = "ADD_EMAIL_SPLIT";
 export const REMOVE_EMAIL_SPLIT = "REMOVE_EMAIL_SPLIT";
 export const CLEAR_SPLITTING = "CLEAR_SPLITTING";
+export const VALIDATE_EMAILS_CLOSE = "VALIDATE_EMAILS_CLOSE";
 
 type FailedTypes =
   | typeof GET_TIMELINES_FAILED
@@ -80,11 +86,13 @@ type FailedTypes =
   | typeof PUT_TIMELINE_ELEMENT_FAILED
   | typeof IMPORT_EMAILS_FAILED
   | typeof DELETE_TIMELINE_ELEMENTS_FAILED
+  | typeof CUSTOM_SPLIT_FAILED
   | typeof DELETE_TIMELINE_FAILED;
 
 type LoadingTypes =
   | typeof GET_TIMELINES_LOADING
   | typeof POST_TIMELINE_LOADING
+  | typeof CUSTOM_SPLIT_LOADING
   | typeof SHOW_TIMELINE_LOADING
   | typeof PUT_TIMELINE_LOADING
   | typeof IMPORT_EMAILS_LOADING
@@ -219,6 +227,7 @@ export interface ChangeView {
 export interface ImportEmailsSuccess {
   type: typeof IMPORT_EMAILS_SUCCESS;
   elements: FlowElement[];
+  emails: EmailsFromImport[];
 }
 
 export interface SetIsUpdating {
@@ -243,6 +252,15 @@ export interface RemoveEmailSplit {
 
 export interface ClearSplitting {
   type: typeof CLEAR_SPLITTING;
+}
+
+export interface ValidateEmailsClose {
+  type: typeof VALIDATE_EMAILS_CLOSE;
+}
+
+export interface CustomSplitSuccess {
+  type: typeof CUSTOM_SPLIT_SUCCESS;
+  elements: FlowElement[];
 }
 
 export type TimelineActions =
@@ -271,9 +289,11 @@ export type TimelineActions =
   | ChangeView
   | DeleteTimelineElementsSuccess
   | OpenEmailChange
+  | CustomSplitSuccess
   | DeleteTimelineSuccess
   | AddCurrSplittingEmail
   | AddEmailSplit
   | RemoveEmailSplit
   | GoThroughSplitChange
+  | ValidateEmailsClose
   | ClearSplitting;
