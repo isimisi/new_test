@@ -1141,6 +1141,7 @@ const Workspace = (props) => {
               handleAutoLayout={handleAutoLayout}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
+              backLink="/app/workspace"
             />
             <Items
               toggleNode={toggleNode}

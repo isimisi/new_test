@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import DateFnsUtils from "@date-io/date-fns";
@@ -19,9 +20,10 @@ import EditIcon from "@material-ui/icons/Edit";
 import EmailIcon from "@material-ui/icons/Email";
 import { selectStyles } from "@api/ui/helper";
 import { Editor } from "react-draft-wysiwyg";
-import React, { useState } from "react";
+import React, { KeyboardEventHandler, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { SketchPicker, ColorResult } from "react-color";
 import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import { MixedPersonOptions } from "@customTypes/reducers/person";
 import {
@@ -83,6 +85,7 @@ const CreateForm = (props: Props) => {
   const content = timelineNode.get("content");
   const persons = timelineNode.get("persons").toJS();
   const documents = timelineNode.get("documents").toJS();
+  const tags = timelineNode.get("tags").toJS();
 
   const loadingsP = useAppSelector(state => state.person.get("loadings"));
   const loadingsD = useAppSelector(state => state.document.get("loadings"));
@@ -108,6 +111,11 @@ const CreateForm = (props: Props) => {
 
   const onEditorStateChange = v => {
     changeTimelineNode("content", v);
+  };
+
+  const handleChangeTags = (value) => {
+    console.log({ value });
+    changeTimelineNode("tags", value);
   };
 
   const handleOpenPerson = e => {
@@ -171,6 +179,52 @@ const CreateForm = (props: Props) => {
     changeTimelineNode("email", { mail: null, uri: null });
   };
 
+  const [displayColorPickerColor, setDisplayColorPickerColor] = useState(false);
+  const [color, setColor] = useState("#ffffff");
+  const handleChangeColor = (col: ColorResult) => setColor(col.hex);
+
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInput = (val: string, { action }) => {
+    if (!displayColorPickerColor) {
+      setInputValue(val);
+    }
+  };
+
+  const chooseColor = () => {
+    setDisplayColorPickerColor(true);
+  };
+
+  const handleCloseColor = () => {
+    setDisplayColorPickerColor(false);
+    const newTag = { name: inputValue, color };
+    tags.push(newTag);
+
+    handleChangeTags(tags);
+    setInputValue("");
+  };
+
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = event => {
+    if (!inputValue) return;
+    switch (event.key) {
+      case "Enter":
+      case "Tab":
+        chooseColor();
+        event.preventDefault();
+    }
+  };
+
+  const mappedTags = tags.map(tag => ({
+    value: tag.name,
+    label: (
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
+        <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
+      </div>
+    )
+  }));
+
+
   return (
     <div className={classes.createElementContainer}>
       <MuiPickersUtilsProvider
@@ -184,6 +238,9 @@ const CreateForm = (props: Props) => {
           variant="inline"
           autoOk
           className={classes.eventField}
+          invalidDateMessage={t("dates.invalid")}
+          maxDateMessage={t("dates.max")}
+          minDateMessage={t("dates.min")}
           format="dd/MM-yyyy"
           cancelLabel={t("timeline.cancel")}
           onChange={handleSetDate}
@@ -193,6 +250,9 @@ const CreateForm = (props: Props) => {
           placeholder={t("timeline.time")}
           value={time}
           autoOk
+          invalidDateMessage={t("dates.invalid")}
+          maxDateMessage={t("dates.max")}
+          minDateMessage={t("dates.min")}
           variant="inline"
           cancelLabel={t("timeline.cancel")}
           keyboardIcon={<QueryBuilderIcon />}
@@ -357,13 +417,37 @@ const CreateForm = (props: Props) => {
             documents
           )
         }
-        inputId="react-select-persons"
+        inputId="react-select-documents"
         placeholder={t("documents.add_document")}
         options={documentOptions.map(d => ({
           value: d.id,
           label: d.title
         }))}
       />
+      <CreatableSelect
+        components={{
+          DropdownIndicator: null
+        }}
+        inputValue={inputValue}
+        isClearable
+        className={classes.eventSelectField}
+        isMulti
+        menuIsOpen={false}
+        onChange={chooseColor}
+        onInputChange={handleInput}
+        onKeyDown={handleKeyDown}
+        placeholder={t("generic.createable_placeholder")}
+        value={mappedTags}
+      />
+      {displayColorPickerColor ? (
+        <div className={classes.popover}>
+          <div
+            className={classes.cover}
+            onClick={handleCloseColor}
+          />
+          <SketchPicker color={color} onChange={handleChangeColor} />
+        </div>
+      ) : null}
     </div>
   );
 };

@@ -33,6 +33,7 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
 import Divider from "@material-ui/core/Divider";
+import Linkify from "react-linkify";
 import {
   MuiPickersUtilsProvider,
   DateTimePicker,
@@ -431,10 +432,17 @@ const Content = (props: Props) => {
                   <Typography variant="h6" className={classes.verticalTitle}>
                     {title}
                   </Typography>
-
-                  <Typography className={classes.verticalDescription}>
-                    {description}
-                  </Typography>
+                  <Linkify
+                    componentDecorator={(decoratedHref, decoratedText, key) => (
+                      <a target="blank" href={decoratedHref} key={key}>
+                        {decoratedText}
+                      </a>
+                    )}
+                  >
+                    <Typography className={classes.verticalDescription}>
+                      {description}
+                    </Typography>
+                  </Linkify>
                 </Grid>
                 <Grid item xs={12} md={3}>
                   {(persons.length !== 0 || documents.length !== 0) && (

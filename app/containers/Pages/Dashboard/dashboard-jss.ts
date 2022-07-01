@@ -30,6 +30,7 @@ const styles = makeStyles((theme: MyTheme) => ({
   },
   iframe2: {
     border: "none !important",
+    backgroundColor: "transparent",
     borderRadius: "8px",
   },
   title: {
@@ -62,6 +63,8 @@ const styles = makeStyles((theme: MyTheme) => ({
   },
   videoContainer: {
     width: "40%",
+    maxWidth: "500px",
+    maxHeight: "400px",
     height: "100%",
   },
   introCheck: {

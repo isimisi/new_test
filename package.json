@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.4.49",
+  "version": "1.4.50",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -119,7 +119,9 @@
     "fs-browsers": "^1.1.6",
     "history": "4.9.0",
     "html-docx-js": "^0.3.1",
+    "html-loader": "0.5.5",
     "html-to-draftjs": "^1.5.0",
+    "html-webpack-plugin": "3.2.0",
     "html2canvas": "1.3.0",
     "htmldiff-js": "^1.0.5",
     "htmlparser2": "^7.2.0",
@@ -176,6 +178,7 @@
     "react-ionicons": "^2.1.6",
     "react-joyride": "^2.3.1",
     "react-katex": "^2.0.2",
+    "react-linkify": "^1.0.0-alpha",
     "react-loading-skeleton": "^3.0.1",
     "react-modal": "^3.4.4",
     "react-nice-avatar": "^1.2.4",
@@ -219,8 +222,6 @@
     "video-react": "^0.14.1",
     "visual-dom-diff": "^0.7.2",
     "webpack-bugsnag-plugins": "^1.7.0",
-    "html-loader": "0.5.5",
-    "html-webpack-plugin": "3.2.0",
     "xlsx": "^0.18.2"
   },
   "devDependencies": {

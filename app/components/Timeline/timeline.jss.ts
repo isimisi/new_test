@@ -20,6 +20,27 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     marginTop: 10,
     marginBottom: 10,
   },
+  popover: {
+    position: "fixed",
+    bottom: 30,
+    right: 10,
+    zIndex: 2,
+  },
+  cover: {
+    position: "fixed",
+    top: "0px",
+    right: "0px",
+    bottom: "0px",
+    left: "0px",
+  },
+  attributSaveButtonContainer: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 5,
+    marginBottom: 5,
+  },
   horizontalNodeOnTimeLine: {
     display: "flex",
     padding: 12,

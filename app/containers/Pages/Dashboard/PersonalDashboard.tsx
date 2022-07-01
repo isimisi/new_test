@@ -76,7 +76,6 @@ import { MixedTagOptions } from '@customTypes/reducers/tags';
 import { postTimeline } from '../Timelines/reducers/timelineActions';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const corporateChart = require('@lotties/racoon/corporateChart.json');
@@ -88,9 +87,8 @@ const PersonalDashboard = () => {
   const description = brand.desc;
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const reducer = 'dashboard';
-  const elementCounts = useAppSelector(state => state[reducer].get('elementCounts'));
-  const timeline = useAppSelector(state => state[reducer].get('timeline'));
+
+
   const messageNotif = useAppSelector(state => state.workspace.get('message'));
 
 
@@ -108,7 +106,7 @@ const PersonalDashboard = () => {
   const groupsDropDownOptions = useAppSelector(state => state.workspace.get('groupsDropDownOptions')).toJS();
   const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
 
-  const [featureValue, setFeatureValue] = useState('');
+
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [openGuide, setOpenGuide] = useState(false);
   const [showMobileDisclaimer, setShowMobileDisclaimer] = useState(false);

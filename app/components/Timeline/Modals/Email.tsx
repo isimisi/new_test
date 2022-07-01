@@ -76,7 +76,7 @@ const Email = (props: Props) => {
         picker.start({
           onClick: el => {
             const splitElContainer = getSplitElement(t("emails.split_text"));
-            console.log(el);
+
             if (el.className.includes("splitting_element")) {
               if (el.className === "splitting_element") {
                 dispatch(removeEmailSplit(el.nextElementSibling?.outerHTML));

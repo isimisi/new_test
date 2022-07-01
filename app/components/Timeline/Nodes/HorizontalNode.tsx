@@ -35,6 +35,7 @@ import {
   createElementChange,
   openEmailChange,
   setTimelineNode,
+  timelineElementDocumentChange,
   timelineElementPersonChange
 } from "@pages/Timelines/reducers/timelineActions";
 import { useTranslation } from "react-i18next";
@@ -42,6 +43,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
+import Linkify from "react-linkify";
+import { showDocument } from "@pages/Documents/reducers/documentActions";
 
 const moreDocsMapping = [
   Filter1Icon,
@@ -79,12 +82,21 @@ export default memo(({ data }: NodeProps) => {
     setShowEdit(false);
   }, []);
 
-  const download = (url: string, title: string) => {
-    const link = document.createElement("a");
-    link.download = title;
-    link.href = url;
-    link.target = "_blank";
-    link.click();
+  const openDocument = () => dispatch(timelineElementDocumentChange(true));
+  const handleOpenDocument = id => {
+    dispatch(showDocument(user, id, openDocument));
+  };
+
+  const download = (url: null | string, title: string, id) => {
+    if (!url) {
+      handleOpenDocument(id);
+    } else {
+      const link = document.createElement("a");
+      link.download = title;
+      link.href = url;
+      link.target = "_blank";
+      link.click();
+    }
   };
 
   const openEmail = () => {
@@ -228,12 +240,19 @@ export default memo(({ data }: NodeProps) => {
         >
           {data.label}
         </Typography>
-        <Typography
-          style={{ marginLeft: 10, fontSize: "0.8rem", marginRight: 10 }}
+        <Linkify
+          componentDecorator={(decoratedHref, decoratedText, key) => (
+            <a target="blank" href={decoratedHref} key={key}>
+              {decoratedText}
+            </a>
+          )}
         >
-          {data.description}
-        </Typography>
-
+          <Typography
+            style={{ marginLeft: 10, fontSize: "0.8rem", marginRight: 10 }}
+          >
+            {data.description}
+          </Typography>
+        </Linkify>
         <div
           style={{
             display: "flex",
@@ -294,7 +313,9 @@ export default memo(({ data }: NodeProps) => {
                   <Tooltip arrow title={document.title} placement="top">
                     <IconButton
                       size="small"
-                      onClick={() => download(document.link, document.title)}
+                      onClick={() =>
+                        download(document.link, document.title, document.id)
+                      }
                     >
                       <DescriptionIcon />
                     </IconButton>
@@ -305,7 +326,7 @@ export default memo(({ data }: NodeProps) => {
           )}
         </div>
 
-        {/* <div
+        <div
           style={{
             position: "absolute",
             bottom: 5,
@@ -314,21 +335,20 @@ export default memo(({ data }: NodeProps) => {
             alignItems: "center"
           }}
         >
-          <Tooltip arrow title="Mere" placement="top">
-            <div
-              style={{
-                backgroundColor: "pink",
-                width: 8,
-                height: 8,
-                borderRadius: 4,
-                margin: 1
-              }}
-            />
-          </Tooltip>
-          <IconButton size="small">
-            <AddCircleIcon style={{ fontSize: 10, color: "gray" }} />
-          </IconButton>
-        </div> */}
+          {data.tags.map(tag => (
+            <Tooltip arrow title={tag.name} placement="top" key={tag.id}>
+              <div
+                style={{
+                  backgroundColor: tag.color,
+                  width: 8,
+                  height: 8,
+                  borderRadius: 4,
+                  margin: 1
+                }}
+              />
+            </Tooltip>
+          ))}
+        </div>
       </Paper>
 
       <Paper className={classes.horizontalNodeOnTimeLine}>

@@ -25,11 +25,79 @@ import Stepper from "@material-ui/core/Stepper";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useAuth0, User } from "@auth0/auth0-react";
+import Paper from "@material-ui/core/Paper";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import StepConnector from "@material-ui/core/StepConnector";
+import { StepIconProps } from "@material-ui/core/StepIcon";
+import classnames from "classnames";
+import CheckIcon from '@material-ui/icons/Check';
 
 interface Props {
   open: boolean;
   close: () => void;
   timeline_id: string;
+}
+
+const QontoConnector = withStyles({
+  alternativeLabel: {
+    top: 10,
+    left: 'calc(-50% + 16px)',
+    right: 'calc(50% + 16px)',
+  },
+  active: {
+    '& $line': {
+      borderColor: '#73B1FF',
+    },
+  },
+  completed: {
+    '& $line': {
+      borderColor: '#73B1FF',
+    },
+  },
+  line: {
+    borderColor: '#E7F2FF',
+    borderTopWidth: 3,
+    borderRadius: 1,
+  },
+})(StepConnector);
+
+const useQontoStepIconStyles = makeStyles({
+  root: {
+    color: '#E7F2FF',
+    display: 'flex',
+    height: 22,
+    alignItems: 'center',
+  },
+  active: {
+    color: '#73B1FF',
+  },
+  circle: {
+    width: 8,
+    height: 8,
+    borderRadius: '50%',
+    backgroundColor: 'currentColor',
+  },
+  completed: {
+    color: '#73B1FF',
+    zIndex: 1,
+    fontSize: 18,
+  },
+});
+
+
+function QontoStepIcon(props: StepIconProps) {
+  const classes = useQontoStepIconStyles();
+  const { active, completed } = props;
+
+  return (
+    <div
+      className={classnames(classes.root, {
+        [classes.active]: active,
+      })}
+    >
+      {completed ? <CheckIcon className={classes.completed} /> : <div className={classes.circle} />}
+    </div>
+  );
 }
 
 const seperators = [
@@ -107,11 +175,11 @@ const ValidateEmails = (props: Props) => {
                 el.parentElement?.parentElement?.remove();
               }
             } else {
-              const currEmail = document.getElementById("elementPickerContainer")?.outerHTML;
+              const currEmail = document.getElementById("elementPickerContainer");
+              Array.from(document.querySelectorAll('.auto_splitting_element')).map(x => x.remove);
+              dispatch(addCurrSplittingEmail(currEmail?.outerHTML));
 
-              dispatch(addCurrSplittingEmail(currEmail));
-
-              const getSplitVal = traverseParentsUntilUniqueSplit(el, currEmail);
+              const getSplitVal = traverseParentsUntilUniqueSplit(el, currEmail?.outerHTML);
 
               dispatch(addEmailSplit(getSplitVal));
 
@@ -151,7 +219,7 @@ const ValidateEmails = (props: Props) => {
     }
   };
 
-  const splitElement = useMemo(() => getSplitElement(t("emails.init_split"), "#6F7F96").outerHTML, []);
+  const splitElement = useMemo(() => getSplitElement(t("emails.split_text"), "#73B1FF", true).outerHTML, []);
 
   useEffect(() => {
     const initSplittings = emailsToValidate.get(activeStep).get("html").split(regExForBody).join(splitElement);
@@ -170,29 +238,26 @@ const ValidateEmails = (props: Props) => {
         closeForm={handleClose}
       >
         <div className={classes.createElementContainer}>
-          <Typography style={{ fontWeight: "bold", fontSize: 14 }}>
-            {t("emails.init_split_description")}
-          </Typography>
+          <Paper style={{ backgroundColor: "#E7F2FF", padding: 10 }}>
+            <Typography style={{ fontWeight: "bold", fontSize: 14 }}>
+              {t("emails.init_split_description")}
+            </Typography>
+          </Paper>
         </div>
-        <Stepper activeStep={activeStep}>
-          {emailsToValidate.map((label, index) => {
-            const stepProps: { completed?: boolean } = {};
-            const labelProps: { optional?: React.ReactNode } = {};
-
-            return (
-              <Step key={label?.get("refference")} {...stepProps}>
-                <StepLabel {...labelProps}>
-                  {`${t("generic.email")} - ${
-                    index !== undefined ? index + 1 : ""
-                  }`}
-                </StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
+        {emailsToValidate.size > 1 && <Stepper activeStep={activeStep} alternativeLabel connector={<QontoConnector />}>
+          {emailsToValidate.map((label, index) => (
+            <Step key={label?.get("refference")}>
+              <StepLabel StepIconComponent={QontoStepIcon}>
+                {`${t("generic.email")} - ${
+                  index !== undefined ? index + 1 : ""
+                }`}
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>}
         <div
           className={classes.createElementContainer}
-          style={{ maxHeight: "60vh", cursor: splitting ? "crosshair" : "auto" }}
+          style={{ maxHeight: "50vh", cursor: splitting ? "crosshair" : "auto" }}
         >
 
           <div
@@ -224,7 +289,7 @@ const ValidateEmails = (props: Props) => {
               {loadingsT.get("post") ? (
                 <CircularProgress />
               ) : (
-                t("generic.save_and_next")
+                activeStep === emailsToValidate.size - 1 ? t("generic.save") : t("generic.save_and_next")
               )}
 
             </Button>

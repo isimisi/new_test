@@ -342,6 +342,9 @@ const Timeline = () => {
   };
 
   const onSaveElement = (alternativeCloseFunc?: () => void, customSplit?: string) => {
+    dispatch(setTimelineNode(null));
+    setElementPersons([]);
+    setElementDocuments([]);
     let closeFunc = handleCloseCreateElement;
     if (correctEmailsOpen) {
       closeFunc = nextElWithoutDate;
@@ -538,6 +541,7 @@ const Timeline = () => {
               elements={elements}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
+              backLink="/app/timeline"
               timeline
             />
             <Views

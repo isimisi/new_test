@@ -52,6 +52,7 @@ interface Props {
   elements: any;
   handlePowerpoint: (stopLoading: () => void) => void;
   timeline?: boolean;
+  backLink: string
 }
 
 const Meta = (props: Props) => {
@@ -67,7 +68,8 @@ const Meta = (props: Props) => {
     handleOpenMenu,
     handleImage,
     timeline,
-    handlePowerpoint: generatePp
+    handlePowerpoint: generatePp,
+    backLink
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -251,7 +253,7 @@ const Meta = (props: Props) => {
     <>
       <Paper elevation={4} className={classes.metaPaper}>
         <Tooltip arrow title={`${t("workspaces.goBack")}`} placement="bottom">
-          <NavLink to="/app/workspaces">
+          <NavLink to={backLink}>
             <img src={customLogo || logo} alt="juristic" className={classes.logo} />
           </NavLink>
         </Tooltip>

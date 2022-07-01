@@ -836,13 +836,14 @@
     "see_email": "Åben e-mail",
     "no_choosen_node": "Du har endnu ikke valgt et element",
     "import_mails": "Importer email",
-    "choose_emails": "Upload e-mails – eller træk dem ind i feltet her",
+    "choose_emails": "Upload e-mails",
     "table_header": "Rediger tidslinjeelementer",
     "time": "Tid",
     "see_content": "Se indhold",
     "cancel": "Annuller",
     "import_mails_with_error": "Der er importerede e-mails, der mangler en handling ",
-    "delete_email": "Slet e-mail"
+    "delete_email": "Slet e-mail",
+    "choose_emails_or_drag": "eller træk dem ind i feltet her"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -967,7 +968,8 @@
     "remember_my_choice": "Husk mit valg",
     "email": "E-mail",
     "save_and_next": "Gem og næste",
-    "back": "Tilbage"
+    "back": "Tilbage",
+    "createable_placeholder": "Skriv noget og tryk enter..."
   },
   "emails": {
     "body": "E-mailindhold",
@@ -983,7 +985,7 @@
     "walk_through": "Gennemgå opdeling",
     "split_text": "Her opdeles e-mailen",
     "init_split": "Vores splitning",
-    "init_split_description": "Vi har forsøgt at splitte e-mailen op efter bedste evne. Det er dog ikke en nem opgave og vi giver dig derfor muligheden for at supplere os i vores arbejde. Hvis du kan spotte nogle steder der mangler at blive splittet, så tryk på “split e-mail” og tryk i mailen, hvor du ønsker den skal splittes yderligere."
+    "init_split_description": "Vi har forsøgt at opdele e-mailtråden, men det ser ud til, at vi har brug for lidt assistance. Du kan bare markere i tråden, hvor en ny e-mail starter, så fordeler vi dem herefter på tidslinjen for dig – helt automatisk."
   },
   "genereic": {
     "back": "Forrige"
@@ -999,5 +1001,10 @@
   },
   "node": {
     "no_date": "Ingen dato valgt"
+  },
+  "dates": {
+    "invalid": "Datoen er ikke korrekt",
+    "max": "Datoen skal være før 2100",
+    "min": "Datoen skal være efter 1900"
   }
 }

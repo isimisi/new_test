@@ -15,14 +15,14 @@ export const getElementBounds = (el: HTMLElement): BoundingBox => {
   };
 };
 
-export const getSplitElement = (text: any, otherColor = "#73B1FF") => {
+export const getSplitElement = (text: any, otherColor = "#73B1FF", auto = false) => {
   const splitElContainer = document.createElement("div");
   splitElContainer.style.height = "8px";
   splitElContainer.style.width = "82%";
   splitElContainer.style.display = "flex";
   splitElContainer.style.position = "relative";
   splitElContainer.style.alignItems = "center";
-  splitElContainer.className = "splitting_element";
+  splitElContainer.className = auto ? "auto_splitting_element" : "splitting_element";
   splitElContainer.style.borderTop = "4px dashed " + otherColor;
 
   const splitTextContainer = document.createElement("div");

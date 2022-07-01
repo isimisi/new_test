@@ -10,7 +10,10 @@ import {
 } from "react-flow-renderer";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
-import { createElementChange } from "@pages/Timelines/reducers/timelineActions";
+import {
+  createElementChange,
+  setTimelineNode
+} from "@pages/Timelines/reducers/timelineActions";
 
 const foreignObjectSize = 24;
 
@@ -29,7 +32,10 @@ export default function CustomEdge({
 }: EdgeProps) {
   const dispatch = useAppDispatch();
   const view = useAppSelector(state => state.timeline.get("view"));
-  const handleOpenCreateElement = () => dispatch(createElementChange(true));
+  const handleOpenCreateElement = () => {
+    dispatch(setTimelineNode(null));
+    dispatch(createElementChange(true));
+  };
   const edgePath = getBezierPath({
     sourceX,
     sourceY,

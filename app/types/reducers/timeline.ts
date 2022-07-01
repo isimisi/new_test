@@ -31,6 +31,16 @@ interface IMail extends Map<string, any> {
   get<K extends keyof Mail>(key: K): Mail[K];
 }
 
+interface Tag {
+  color: string;
+  name: string;
+}
+
+interface ITag extends Map<string, any> {
+  toJS(): Tag;
+  get<K extends keyof Tag>(key: K): Tag[K];
+}
+
 export interface TimelineNode {
   id: string;
   title: string;
@@ -41,7 +51,7 @@ export interface TimelineNode {
   time: MaterialUiPickersDate | null;
   persons: List<MixedPersonOptions>;
   documents: List<MixedDocumentOptions>;
-  tags: any[];
+  tags: List<ITag>;
 }
 
 export interface ITimelineNode extends Map<string, any> {

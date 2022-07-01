@@ -834,13 +834,14 @@
     "upload_mail": "Upload Email",
     "see_email": "Open email",
     "import_mails": "Import mails",
-    "choose_emails": "Upload e-mails – or drag them in",
+    "choose_emails": "Upload e-mails",
     "table_header": "Edit timeline elements",
     "time": "Time",
     "see_content": "See content",
     "cancel": "Cancel",
     "import_mails_with_error": "Some imported emails require your input ",
-    "delete_email": "Delete email"
+    "delete_email": "Delete email",
+    "choose_emails_or_drag": "or drag them in"
   },
   "lookup": {
     "search_placeholder": "Search for a company",
@@ -959,7 +960,8 @@
     "remember_my_choice": "Remember my choice",
     "email": "Email",
     "save_and_next": "Save and next",
-    "back": "Back"
+    "back": "Back",
+    "createable_placeholder": "Type something and press enter..."
   },
   "emails": {
     "header": "Email information",
@@ -975,7 +977,7 @@
     "walk_through": "Review the breakdown",
     "split_text": "The email is divided here",
     "init_split": "Our split",
-    "init_split_description": "We have tried to split up the email as best we can. However, this is not an easy task and we therefore give you the opportunity to complement us in our work. If you can spot some places that need to be split, please press \"split email\" and tap in the email where you want it to be split further."
+    "init_split_description": "We've tried to split the email thread, but it looks like we need some assistance. Just mark in the thread where a new email starts, and we'll distribute them on the timeline for you - automatically."
   },
   "genereic": {
     "back": "Back"
@@ -991,5 +993,10 @@
   },
   "node": {
     "no_date": "No date chosen"
+  },
+  "dates": {
+    "invalid": "The date is not correct",
+    "max": "The date must be before 2100",
+    "min": "The date must be after 1900"
   }
 }

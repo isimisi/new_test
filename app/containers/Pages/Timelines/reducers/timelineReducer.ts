@@ -78,7 +78,7 @@ const initialNode: TimelineNode = {
   time: null,
   persons: List(),
   documents: List(),
-  tags: [],
+  tags: List(),
 };
 
 const initialState: TimelineState = {
@@ -292,7 +292,7 @@ export default function reducer(
                 title: d.title,
               }))
             ),
-            tags: [],
+            tags: fromJS(element.data.tags),
           };
           mutableState.set("timelineNode", fromJS(node));
           if (!isVertical) {
@@ -306,7 +306,7 @@ export default function reducer(
     case CHANGE_TIMELINE_NODE_KEY:
       return state.withMutations((mutableState) => {
         let val = action.val;
-        if (["persons", "documents", "email"].includes(action.attr)) {
+        if (["persons", "documents", "email", "tags"].includes(action.attr)) {
           val = fromJS(action.val);
         }
 

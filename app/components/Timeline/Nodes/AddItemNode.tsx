@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import { Handle, NodeProps, Position } from "react-flow-renderer";
 import useStyles from "../timeline.jss";
 import AddIcon from "@material-ui/icons/Add";
