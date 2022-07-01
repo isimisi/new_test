@@ -33,15 +33,13 @@ import ErrorView from "@components/Error/CrashScreen";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
-//  logrocket
-
 // bugsnag
 if (process.env.NODE_ENV === "production") {
   LogRocket.init("pm66tw/juristic-web-app");
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()],
-    appVersion: "1.4.52"
+    appVersion: "1.4.53"
   });
 }
 
