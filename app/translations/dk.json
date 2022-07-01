@@ -130,7 +130,7 @@
     },
     "uploaded_content": "Uploaded indhold",
     "editor_content": "editor indhold",
-    "both_upload_and_editor": "Det ser ud til, at du både har uploadet et dokument og lavet noget indhold selv i vores editor. Hvilken ønsker du at gemme?",
+    "both_upload_and_editor": "Det ser ud til, at du både har uploadet et dokument og lavet indhold selv i vores editor. Hvilken ønsker du at gemme?",
     "upload_or_write_header": "Hov, du skal enten uploade eller skrive noget indhold"
   },
   "alerts": {
@@ -160,7 +160,7 @@
     "you_have_updated_your_element": "Du har opdateret dit element",
     "create_new_feature": {
       "dialog_title": "Skab nyt kendetegn",
-      "dialog_content_text": "Her kan du skabe en nyt kendetegn. Du skal først vælge, om der skal kunne indtastes en specifik værdi ('Værdi'), eller om brugeren skal kunne vælge mellem nogle specifikke ting ('Valgmugligheder').",
+      "dialog_content_text": "Her kan du skabe et nyt kendetegn. Du skal først vælge, om der skal kunne indtastes en specifik værdi ('Værdi'), eller om brugeren skal kunne vælge mellem nogle specifikke ting ('Valgmuligheder').",
       "select_group": "Vælg gruppe",
       "dialog_name": "Navn (fx 'Antal medarbejdere' eller 'Land')",
       "dialog_desc": "Beskrivelse",
@@ -830,12 +830,12 @@
     "horizontal": "Vandret",
     "vertical": "Lodret",
     "table": "Tabel",
-    "create_element": "Event detaljer",
+    "create_element": "Detaljer om hændelse",
     "date": "Dato",
-    "upload_mail": "Upload email",
+    "upload_mail": "Upload e-mail",
     "see_email": "Åben e-mail",
     "no_choosen_node": "Du har endnu ikke valgt et element",
-    "import_mails": "Importer email",
+    "import_mails": "Importer e-mail",
     "choose_emails": "Upload e-mails – eller træk dem ind i feltet her",
     "table_header": "Rediger tidslinjeelementer",
     "time": "Tid",
@@ -977,13 +977,13 @@
     "subject": "Emne:",
     "attachments": "Vedhæftede filer",
     "send": "Sendt",
-    "split_explainer": "Ved at trykke på denne knap kan du vælge, hvor e-mailen skal splittes up, hvis der mangler. Således kan du, hvis vi ikke var i standt til at lokalisere enkelte mails, selv splitte dem ud på tidslinjen.",
-    "split": "split e-mail",
-    "stop_split": "Stop med at splitte e-mailen",
+    "split_explainer": "Ved at trykke på denne knap kan du vælge, hvor e-mailen skal opdeles, hvis den ikke er fordelt korrekt.",
+    "split": "Opdel e-mailtråd",
+    "stop_split": "Stop opdeling af e-mailtråden",
     "walk_through": "Gennemgå opdeling",
     "split_text": "Her opdeles e-mailen",
-    "init_split": "Vores splitning",
-    "init_split_description": "Vi har forsøgt at splitte e-mailen op efter bedste evne. Det er dog ikke en nem opgave og vi giver dig derfor muligheden for at supplere os i vores arbejde. Hvis du kan spotte nogle steder der mangler at blive splittet, så tryk på “split e-mail” og tryk i mailen, hvor du ønsker den skal splittes yderligere."
+    "init_split": "Vores opdeling",
+    "init_split_description": "Vi har forsøgt at opdele e-mailtråden, men det ser ud til, at vi har brug for lidt assistance. Du kan bare markere i tråden, hvor en ny e-mail starter, så fordeler vi dem herefter på tidslinjen for dig – helt automatisk."
   },
   "genereic": {
     "back": "Forrige"
