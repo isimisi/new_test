@@ -1,4 +1,4 @@
-import { Theme } from '@mui/material/styles';
+import { Theme } from '@material-ui/core/styles';
 
 
 interface Shade {

@@ -1,8 +1,10 @@
-import { alpha } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
+import { alpha } from "@material-ui/core/styles/colorManipulator";
+import lightGreen from "@material-ui/core/colors/lightGreen";
+import red from "@material-ui/core/colors/red";
+import amber from "@material-ui/core/colors/amber";
+import grey from "@material-ui/core/colors/grey";
+import { makeStyles } from "@material-ui/core/styles";
 import { MyTheme } from "../../types/styling";
-
-import { lightGreen, red, amber, grey } from '@mui/material/colors';
 
 const drawerWidth = 240;
 const styles = makeStyles((theme: MyTheme) => ({
@@ -102,7 +104,7 @@ const styles = makeStyles((theme: MyTheme) => ({
     height: "100%",
     position: "fixed",
     backgroundColor:
-      theme.palette.mode === "dark"
+      theme.palette.type === "dark"
         ? alpha(theme.palette.background.paper, 0.75)
         : alpha(theme.palette.background.paper, 0.9),
     boxShadow: theme.shade.light,
@@ -112,7 +114,7 @@ const styles = makeStyles((theme: MyTheme) => ({
     // Make the items inside not wrap when transitioning:
     height: "100%",
     backgroundColor:
-      theme.palette.mode === "dark"
+      theme.palette.type === "dark"
         ? alpha(theme.palette.background.paper, 0.75)
         : alpha(theme.palette.background.paper, 0.95),
   },
@@ -148,7 +150,7 @@ const styles = makeStyles((theme: MyTheme) => ({
   nested: {
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
-    margin: `${theme.spacing(0.5)} 0`,
+    margin: `${theme.spacing(0.5)}px 0`,
 
     paddingLeft: theme.spacing(3),
   },
@@ -194,15 +196,15 @@ const styles = makeStyles((theme: MyTheme) => ({
   icon: {
     minWidth: theme.spacing(5),
     fill:
-      theme.palette.mode === "dark"
+      theme.palette.type === "dark"
         ? theme.palette.primary.light
         : theme.palette.primary.dark,
   },
   iconed: {},
   head: {
-    padding: `${theme.spacing(1)} 0`,
-    margin: `${theme.spacing(1)} 0`,
-    borderRadius: `0 ${theme.spacing(3)} ${theme.spacing(3)} 0`,
+    padding: `${theme.spacing(1)}px 0`,
+    margin: `${theme.spacing(1)}px 0`,
+    borderRadius: `0 ${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
     paddingLeft: theme.spacing(3),
     "&$iconed": {
       paddingLeft: theme.spacing(3),
@@ -213,12 +215,12 @@ const styles = makeStyles((theme: MyTheme) => ({
     },
   },
   headCapital: {
-    padding: `${theme.spacing(1)} 0 ${theme.spacing(1)} ${theme.spacing(9)}`,
+    padding: `${theme.spacing(1)}px 0 ${theme.spacing(1)}px ${theme.spacing(9)}px`,
     left: theme.spacing(1) * -2,
     position: "relative",
     textTransform: "uppercase",
-    borderRadius: `0 ${theme.spacing(3)} ${theme.spacing(3)} 0`,
-    margin: theme.spacing(1),
+    borderRadius: `0 ${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
+    margin: `${theme.spacing(1)}px`,
     "& span": {
       fontSize: 14,
     },
@@ -276,7 +278,7 @@ const styles = makeStyles((theme: MyTheme) => ({
     textAlign: "center",
     alignItems: "center",
     position: "absolute",
-    margin: `${theme.spacing(2)} 0`,
+    margin: `${theme.spacing(2)}px 0`,
     zIndex: 0,
     "& h4": {
       fontSize: 18,
@@ -332,7 +334,7 @@ const styles = makeStyles((theme: MyTheme) => ({
     width: drawerWidth,
     position: "relative",
     display: "block",
-    padding: `${theme.spacing(5)} 0`,
+    padding: `${theme.spacing(5)}px 0`,
     "&$withProfile": {
       paddingTop: 0,
     },
@@ -340,7 +342,7 @@ const styles = makeStyles((theme: MyTheme) => ({
       [theme.breakpoints.up("lg")]: {
         paddingTop: theme.spacing(5),
       },
-      [theme.breakpoints.down('xl')]: {
+      [theme.breakpoints.down("lg")]: {
         height: "calc(100% - 164px)",
         paddingTop: theme.spacing(5),
       },
@@ -348,7 +350,7 @@ const styles = makeStyles((theme: MyTheme) => ({
     "&$rounded": {
       paddingRight: theme.spacing(1.5),
       "& a": {
-        borderRadius: `0 ${theme.spacing(3)} ${theme.spacing(3)} 0`,
+        borderRadius: `0 ${theme.spacing(3)}px ${theme.spacing(3)}px 0`,
       },
       "& $opened": {
         "&:before": {

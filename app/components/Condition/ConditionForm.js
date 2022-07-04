@@ -1,12 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useTheme } from "@mui/material/styles";
-import withStyles from '@mui/styles/withStyles';
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { withStyles, useTheme } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 import css from "@styles/Form.scss";
 import "@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css";
-import NoSsr from "@mui/material/NoSsr";
+import NoSsr from "@material-ui/core/NoSsr";
 import Select from "react-select";
 import { mapSelectOptions, selectStyles } from "@api/ui/helper";
 import { useTranslation } from "react-i18next";

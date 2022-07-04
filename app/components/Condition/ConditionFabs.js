@@ -1,11 +1,11 @@
 import React from 'react';
 import { Fab } from 'react-tiny-fab';
 import 'react-tiny-fab/dist/styles.css';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import SaveIcon from '@mui/icons-material/Save';
-import TextFieldsIcon from '@mui/icons-material/TextFields';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import SaveIcon from '@material-ui/icons/Save';
+import TextFieldsIcon from '@material-ui/icons/TextFields';
 import PropTypes from 'prop-types';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import colorfull from '@api/palette/colorfull';
 
 const ConditionFabs = (props) => {

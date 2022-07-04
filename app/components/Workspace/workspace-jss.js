@@ -1,5 +1,8 @@
-import { lighten, darken, alpha } from '@mui/material/styles';
-import { red, orange, indigo as blue, cyan } from '@mui/material/colors';
+import red from "@material-ui/core/colors/red";
+import orange from "@material-ui/core/colors/orange";
+import blue from "@material-ui/core/colors/indigo";
+import cyan from "@material-ui/core/colors/cyan";
+import { lighten, darken, alpha } from "@material-ui/core/styles/colorManipulator";
 const drawerWidth = 240;
 
 const styles = (theme) => ({
@@ -9,7 +12,7 @@ const styles = (theme) => ({
     zIndex: 1,
     position: "relative",
     backgroundColor:
-      theme.palette.mode === "dark"
+      theme.palette.type === "dark"
         ? alpha(theme.palette.grey[800], 0.75)
         : alpha(theme.palette.background.paper, 0.9),
     backdropFilter: "saturate(180%) blur(20px)",
@@ -129,7 +132,7 @@ const styles = (theme) => ({
     boxShadow: theme.shadows[2],
     background: theme.palette.background.paper,
     border: `1px solid ${theme.palette.primary.main}`,
-    margin: `${theme.spacing(2)} 0`,
+    margin: `${theme.spacing(2)}px 0`,
   },
   addBtn: {
     position: "fixed",
@@ -151,9 +154,9 @@ const styles = (theme) => ({
   },
   input: {
     font: "inherit",
-    padding: `${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(
+    padding: `${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(
       1
-    )} ${theme.spacing(9)}`,
+    )}px ${theme.spacing(9)}px`,
     border: 0,
     display: "block",
     verticalAlign: "middle",
@@ -172,7 +175,7 @@ const styles = (theme) => ({
     },
     width: drawerWidth,
     background:
-      theme.palette.mode === "dark"
+      theme.palette.type === "dark"
         ? darken(theme.palette.primary.light, 0.6)
         : lighten(theme.palette.primary.light, 0.5),
     border: "none",
@@ -186,7 +189,7 @@ const styles = (theme) => ({
   },
   selected: {
     background:
-      theme.palette.mode === "dark"
+      theme.palette.type === "dark"
         ? darken(theme.palette.primary.light, 0.5)
         : darken(theme.palette.primary.light, 0.05),
     borderLeft: `4px solid ${theme.palette.secondary.main}`,
@@ -209,7 +212,7 @@ const styles = (theme) => ({
     minWidth: 0, // So the Typography noWrap works
   },
   toolbar: {
-    padding: `${theme.spacing(2)} ${theme.spacing(4)}`,
+    padding: `${theme.spacing(2)}px ${theme.spacing(4)}px`,
   },
   title: {
     width: 205,
@@ -228,7 +231,7 @@ const styles = (theme) => ({
   secondaryHeading: {
     fontSize: 14,
     color: theme.palette.text.secondary,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("xs")]: {
       whiteSpace: "normal",
       paddingBottom: 10,
     },
@@ -240,8 +243,8 @@ const styles = (theme) => ({
   },
   details: {
     alignItems: "center",
-    [theme.breakpoints.down('lg')]: {
-      padding: `${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(3)}`,
+    [theme.breakpoints.down("sm")]: {
+      padding: `${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(3)}px`,
     },
     "& section": {
       width: "100%",
@@ -269,7 +272,7 @@ const styles = (theme) => ({
   topAction: {
     display: "flex",
     background:
-      theme.palette.mode === "dark" ? theme.palette.grey[700] : theme.palette.grey[100],
+      theme.palette.type === "dark" ? theme.palette.grey[700] : theme.palette.grey[100],
     marginBottom: 20,
     alignItems: "center",
     padding: "0 20px",
@@ -319,7 +322,7 @@ const styles = (theme) => ({
   emailSummary: {
     padding: 0,
     "& > div": {
-      [theme.breakpoints.down('lg')]: {
+      [theme.breakpoints.down("sm")]: {
         flexDirection: "column",
       },
     },
@@ -327,8 +330,8 @@ const styles = (theme) => ({
   emailContent: {
     color: theme.palette.text.primary,
     padding: theme.spacing(2),
-    [theme.breakpoints.down('lg')]: {
-      padding: `${theme.spacing(2)} ${theme.spacing(2)}`,
+    [theme.breakpoints.down("sm")]: {
+      padding: `${theme.spacing(2)}px ${theme.spacing(2)}px`,
     },
   },
   starBtn: {
@@ -352,7 +355,7 @@ const styles = (theme) => ({
     "& > div": {
       background: theme.palette.background.paper,
       "& img": {
-        filter: theme.palette.mode === "dark" ? "invert(100%)" : "invert(0%)",
+        filter: theme.palette.type === "dark" ? "invert(100%)" : "invert(0%)",
       },
       "& a": {
         color: theme.palette.text.primary,

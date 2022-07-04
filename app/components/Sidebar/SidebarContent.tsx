@@ -1,16 +1,16 @@
 /* eslint-disable camelcase */
 import React from "react";
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import { NavLink } from "react-router-dom";
 import brand from "@api/dummy/brand";
 import logoBeta from "@images/logoBeta.svg";
 import pwc from "@images/logo/pwc.svg";
-import Typography from "@mui/material/Typography";
-import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@material-ui/core/Typography";
+import LinearProgress from "@material-ui/core/LinearProgress";
 import { lightGreen } from "@api/palette/colorfull";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import RadioButtonUncheckedOutlinedIcon from "@mui/icons-material/RadioButtonUncheckedOutlined";
+import CheckCircleOutlineOutlinedIcon from "@material-ui/icons/CheckCircleOutlineOutlined";
+import RadioButtonUncheckedOutlinedIcon from "@material-ui/icons/RadioButtonUncheckedOutlined";
 import MainMenu from "./MainMenu";
 import useStyle from "./sidebar-jss";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -24,7 +24,7 @@ const BorderLinearProgress = withStyles(theme => ({
   },
   colorPrimary: {
     backgroundColor:
-      theme.palette.grey[theme.palette.mode === "light" ? 200 : 700]
+      theme.palette.grey[theme.palette.type === "light" ? 200 : 700]
   },
   bar: {
     borderRadius: 5,

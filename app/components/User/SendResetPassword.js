@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Lottie from 'lottie-react';
-import Typography from '@mui/material/Typography';
-import withStyles from '@mui/styles/withStyles';
-import Paper from '@mui/material/Paper';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 import classNames from 'classnames';
-import Button from '@mui/material/Button';
-import ArrowForward from '@mui/icons-material/ArrowForward';
+import Button from '@material-ui/core/Button';
+import ArrowForward from '@material-ui/icons/ArrowForward';
 import brand from '@api/dummy/brand';
 import logo from '@images/logo.svg';
 import { NavLink } from 'react-router-dom';

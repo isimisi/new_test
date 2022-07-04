@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import withStyles from '@mui/styles/withStyles';
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import NoSsr from "@mui/material/NoSsr";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import NoSsr from "@material-ui/core/NoSsr";
 import Select from "react-select";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 import { useDispatch } from "react-redux";
 import { mapSelectOptions, selectStyles } from "@api/ui/helper";
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 import { red } from "@api/palette/colorfull";
 import CreatableSelect from "react-select/creatable";
 import {
@@ -101,7 +101,7 @@ function NodeForm(props) {
         spacing={3}
         alignItems="flex-start"
         direction="row"
-        justifyContent="center"
+        justify="center"
       >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
@@ -173,7 +173,7 @@ function NodeForm(props) {
                     <IconButton
                       style={{ color: `${red}55`, bottom: 5 }}
                       onClick={() => handleDeleteAttribute(attribut, index)}
-                      size="large">
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </>

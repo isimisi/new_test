@@ -1,19 +1,12 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useState, useEffect } from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import Loading from "@mui/material/LinearProgress";
+import Loading from "@material-ui/core/LinearProgress";
 import { create } from "jss";
 import rtl from "jss-rtl";
-import { StylesProvider, jssPreset } from "@mui/styles";
+import { StylesProvider, jssPreset } from "@material-ui/styles";
 import { bindActionCreators } from "redux";
-import {
-  createTheme,
-  ThemeProvider,
-  StyledEngineProvider,
-  adaptV4Theme,
-} from "@mui/material/styles";
-import withStyles from "@mui/styles/withStyles";
+import { withStyles, createTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {
   changeThemeAction,
   changeModeAction,
@@ -61,7 +54,7 @@ function ThemeWrapper(props) {
   const [progress, setProgress] = useState(0);
   const [theme, setTheme] = useState(
     // eslint-disable-next-line
-    createTheme(adaptV4Theme(applicationTheme(props.color, props.mode, props.direction)))
+    createTheme(applicationTheme(props.color, props.mode, props.direction))
   );
 
   const { classes, children, color, direction } = props;
@@ -84,31 +77,29 @@ function ThemeWrapper(props) {
 
   const handleChangeMode = (modeParam) => {
     const { changeMode } = props;
-    setTheme(createTheme(adaptV4Theme(applicationTheme(color, modeParam, direction))));
+    setTheme(createTheme(applicationTheme(color, modeParam, direction)));
     changeMode(modeParam);
   };
 
   return (
     <StylesProvider jss={jss}>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <div className={classes.root}>
-            <Loading
-              variant="determinate"
-              value={progress}
-              className={progress >= 100 ? classes.hide : ""}
-              classes={{
-                root: classes.loading,
-                colorPrimary: classes.loadingWrap,
-                barColorPrimary: classes.bar,
-              }}
-            />
-            <ThemeContext.Provider value={handleChangeMode}>
-              {children}
-            </ThemeContext.Provider>
-          </div>
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.root}>
+          <Loading
+            variant="determinate"
+            value={progress}
+            className={progress >= 100 ? classes.hide : ""}
+            classes={{
+              root: classes.loading,
+              colorPrimary: classes.loadingWrap,
+              barColorPrimary: classes.bar,
+            }}
+          />
+          <ThemeContext.Provider value={handleChangeMode}>
+            {children}
+          </ThemeContext.Provider>
+        </div>
+      </MuiThemeProvider>
     </StylesProvider>
   );
 }
@@ -145,6 +136,9 @@ const dispatchToProps = (dispatch) => ({
   changeDirection: bindActionCreators(changeDirectionAction, dispatch),
 });
 
-const ThemeWrapperMapped = connect(mapStateToProps, dispatchToProps)(ThemeWrapper);
+const ThemeWrapperMapped = connect(
+  mapStateToProps,
+  dispatchToProps
+)(ThemeWrapper);
 
 export default withStyles(styles)(ThemeWrapperMapped);

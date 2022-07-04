@@ -1,5 +1,5 @@
 import Timeline from "@components/Workspace/CompanyData/Timeline";
-import Paper from "@mui/material/Paper";
+import Paper from "@material-ui/core/Paper";
 import React from "react";
 import useStyles from "./lookup.jss";
 
@@ -7,7 +7,7 @@ interface Props {
   data: any;
 }
 
-function DataTimeline(props: Props) {
+const DataTimeline = (props: Props) => {
   const { data } = props;
   const classes = useStyles();
   return (
@@ -15,6 +15,6 @@ function DataTimeline(props: Props) {
       <Timeline timeline={data} />
     </Paper>
   );
-}
+};
 
 export default DataTimeline;

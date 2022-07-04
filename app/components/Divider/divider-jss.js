@@ -52,9 +52,9 @@ const styles = theme => ({
     extend: space,
     padding: 0,
     border: 'none',
-    borderTop: theme.palette.mode === 'dark' ? `1px solid ${theme.palette.grey[700]}` : `1px solid ${theme.palette.grey[300]}`,
+    borderTop: theme.palette.type === 'dark' ? `1px solid ${theme.palette.grey[700]}` : `1px solid ${theme.palette.grey[300]}`,
     color: theme.palette.text.secondary,
-    margin: `${theme.spacing(4)} ${theme.spacing(0.5)} ${theme.spacing(2)}`,
+    margin: `${theme.spacing(4)}px ${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
     textAlign: 'center',
     '&:after': {
       content: 'attr(data-content)',

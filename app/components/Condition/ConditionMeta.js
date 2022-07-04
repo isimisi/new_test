@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'react-i18next';
 import ConditionForm from './ConditionForm';
 import FloatingPanel from '../Panel/FloatingPanel';

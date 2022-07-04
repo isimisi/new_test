@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@material-ui/core";
 
 import { changeDashboardType } from "@pages/Dashboard/reducers/dashboardActions";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({
   formControl: {

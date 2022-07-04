@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
-import Hidden from "@mui/material/Hidden";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Fab from "@mui/material/Fab";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import Hidden from "@material-ui/core/Hidden";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Fab from "@material-ui/core/Fab";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
 import { useTranslation } from "react-i18next";
 import UserMenu from "./UserMenu";
@@ -99,7 +99,7 @@ function Header(props) {
         >
           <MenuIcon className={classes.menuIcon} />
         </Fab>
-        <Hidden mdDown>
+        <Hidden smDown>
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction)}>
               {fullScreen ? (
@@ -110,7 +110,7 @@ function Header(props) {
                   <IconButton
                     className={classes.button}
                     onClick={() => closeFullScreen(setFullScreen)}
-                    size="large">
+                  >
                     <i className="ion-ios-crop" />
                   </IconButton>
                 </Tooltip>
@@ -122,7 +122,7 @@ function Header(props) {
                   <IconButton
                     className={classes.button}
                     onClick={() => openFullScreen(setFullScreen)}
-                    size="large">
+                  >
                     <i className="ion-ios-crop" style={{ color: "#333" }} />
                   </IconButton>
                 </Tooltip>
@@ -134,7 +134,7 @@ function Header(props) {
               </Tooltip> */}
 
               <Tooltip title={`${t("header.update")}`} placement="bottom">
-                <IconButton className={classes.button} onClick={deleteCache} size="large">
+                <IconButton className={classes.button} onClick={deleteCache}>
                   <i
                     className="ion-ios-refresh-outline"
                     style={{ color: "#333" }}
@@ -143,7 +143,7 @@ function Header(props) {
               </Tooltip>
 
               <Tooltip title={`${t("header.guide")}`} placement="bottom">
-                <IconButton className={classes.button} onClick={openGuide} size="large">
+                <IconButton className={classes.button} onClick={openGuide}>
                   <i
                     className="ion-ios-help-outline"
                     style={{ color: "#333" }}
@@ -163,7 +163,7 @@ function Header(props) {
         </div> */}
         {intro ? <DashboardSelector /> : null}
         <LanguageSelector />
-        <Hidden smDown>
+        <Hidden xsDown>
           <span className={classes.separatorV} />
         </Hidden>
         <UserMenu />

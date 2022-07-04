@@ -1,20 +1,17 @@
-import { darken } from '@mui/material/styles';
-
-import {
-  blueGrey as dark,
-  deepOrange,
-  deepPurple,
-  pink,
-  green,
-  red,
-  blue,
-  cyan,
-  teal,
-  lime,
-  amber,
-  brown,
-  purple,
-} from '@mui/material/colors';
+import dark from '@material-ui/core/colors/blueGrey';
+import { darken } from '@material-ui/core/styles/colorManipulator';
+import deepOrange from '@material-ui/core/colors/deepOrange';
+import deepPurple from '@material-ui/core/colors/deepPurple';
+import pink from '@material-ui/core/colors/pink';
+import green from '@material-ui/core/colors/green';
+import red from '@material-ui/core/colors/red';
+import blue from '@material-ui/core/colors/blue';
+import cyan from '@material-ui/core/colors/cyan';
+import teal from '@material-ui/core/colors/teal';
+import lime from '@material-ui/core/colors/lime';
+import amber from '@material-ui/core/colors/amber';
+import brown from '@material-ui/core/colors/brown';
+import purple from '@material-ui/core/colors/purple';
 
 const gradientBgLight = (theme) => `linear-gradient(-45deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.main} 33%, ${theme.palette.secondary.main} 100%);`;
 const gradientBgDark = (theme) => `linear-gradient(-45deg, ${darken(theme.palette.primary.main, 0.4)} 0%, ${darken(theme.palette.primary.main, 0.4)} 33%, ${darken(theme.palette.secondary.main, 0.4)} 100%);`;
@@ -43,7 +40,7 @@ const styles = theme => ({
   },
   appBar: {
     position: 'relative',
-    backgroundImage: theme.palette.mode === 'dark' ? gradientBgDark(theme) : gradientBgLight(theme),
+    backgroundImage: theme.palette.type === 'dark' ? gradientBgDark(theme) : gradientBgLight(theme),
     backgroundAttachment: 'fixed',
     textAlign: 'center'
   },
@@ -62,7 +59,7 @@ const styles = theme => ({
       paddingTop: 40,
       marginTop: 0
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       overflowX: 'hidden',
     }
   },
@@ -84,11 +81,11 @@ const styles = theme => ({
     marginBottom: 30
   },
   subtitle: {
-    margin: `${theme.spacing(6)} ${theme.spacing(2)} ${theme.spacing(2)}`
+    margin: `${theme.spacing(6)}px ${theme.spacing(2)}px ${theme.spacing(2)}px`
   },
   price: {
     display: 'flex',
-    padding: `${theme.spacing(3)} ${theme.spacing(1.5)}`,
+    padding: `${theme.spacing(3)}px ${theme.spacing(1.5)}px`,
     '& > *': {
       marginRight: 10
     }
@@ -122,17 +119,17 @@ const styles = theme => ({
   imgGallery: {
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(8),
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       marginRight: theme.spacing(8),
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginRight: theme.spacing(2),
       marginLeft: theme.spacing(2),
     }
   },
   divider: {
     background: 'none',
-    margin: `${theme.spacing(1)} 0`
+    margin: `${theme.spacing(1)}px 0`
   },
   avatar: {
     margin: 10,

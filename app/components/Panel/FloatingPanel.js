@@ -1,16 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from "@material-ui/core/styles";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import classNames from "classnames";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import ExpandIcon from "@mui/icons-material/CallMade";
-import MinimizeIcon from "@mui/icons-material/CallReceived";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import ExpandIcon from "@material-ui/icons/CallMade";
+import MinimizeIcon from "@material-ui/icons/CallReceived";
 import styles from "./panel-jss";
-
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function FloatingPanel(props) {
   const {
@@ -60,7 +58,7 @@ function FloatingPanel(props) {
                   className={classes.expandButton}
                   onClick={() => toggleExpand()}
                   aria-label="Expand"
-                  size="large">
+                >
                   {expanded ? <MinimizeIcon /> : <ExpandIcon />}
                 </IconButton>
               </Tooltip>
@@ -71,7 +69,7 @@ function FloatingPanel(props) {
                   className={classes.closeButton}
                   onClick={() => closeForm()}
                   aria-label="Close"
-                  size="large">
+                >
                   <CloseIcon />
                 </IconButton>
               </Tooltip>

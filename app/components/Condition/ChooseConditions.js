@@ -1,18 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import withStyles from '@mui/styles/withStyles';
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import NoSsr from "@mui/material/NoSsr";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import NoSsr from "@material-ui/core/NoSsr";
 import { red } from "@api/palette/colorfull";
 import Select from "react-select";
-import Typography from "@mui/material/Typography";
+import Typography from "@material-ui/core/Typography";
 import { mapSelectOptions } from "@api/ui/helper";
-import DeleteIcon from "@mui/icons-material/Delete";
-import QueueIcon from "@mui/icons-material/Queue";
-import IconButton from "@mui/material/IconButton";
-import CreateIcon from "@mui/icons-material/Create";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import DeleteIcon from "@material-ui/icons/Delete";
+import QueueIcon from "@material-ui/icons/Queue";
+import IconButton from "@material-ui/core/IconButton";
+import CreateIcon from "@material-ui/icons/Create";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import { generateRandomString } from "@api/constants";
 import { useTranslation } from "react-i18next";
 
@@ -70,7 +70,7 @@ const ChooseConditions = (props) => {
         spacing={3}
         alignItems="flex-start"
         direction="row"
-        justifyContent="center"
+        justify="center"
       >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
@@ -123,7 +123,7 @@ const ChooseConditions = (props) => {
                   <IconButton
                     style={{ color: `${red}55`, marginLeft: 5 }}
                     onClick={() => deleteCondition(condition, index)}
-                    size="large">
+                  >
                     <DeleteIcon />
                   </IconButton>
                   <IconButton
@@ -132,14 +132,14 @@ const ChooseConditions = (props) => {
                     onClick={() =>
                       createOrSeeCondition(condition, Boolean(condition.label))
                     }
-                    size="large">
+                  >
                     {condition.label ? <VisibilityIcon /> : <CreateIcon />}
                   </IconButton>
                 </div>
               </div>
             ))}
             <div className={classes.inlineWrap}>
-              <IconButton color="primary" onClick={addCondition} size="large">
+              <IconButton color="primary" onClick={addCondition}>
                 <QueueIcon />
               </IconButton>
             </div>

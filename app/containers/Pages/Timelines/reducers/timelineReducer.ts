@@ -1,4 +1,3 @@
-/* eslint-disable default-param-last */
 import {
   TimelineState,
   IImmutableTimelineState,

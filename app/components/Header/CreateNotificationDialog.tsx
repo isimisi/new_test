@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import CancelIcon from '@mui/icons-material/Cancel';
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState,
   convertToRaw,
 } from 'draft-js';
-import IconButton from '@mui/material/IconButton/IconButton';
+import IconButton from '@material-ui/core/IconButton/IconButton';
 import Picker, { SKIN_TONE_MEDIUM_DARK, IEmojiData } from 'emoji-picker-react';
-import TextField from "@mui/material/TextField/TextField";
-import ButtonBase from '@mui/material/ButtonBase';
-import Checkbox from '@mui/material/Checkbox';
+import TextField from "@material-ui/core/TextField/TextField";
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Checkbox from '@material-ui/core/Checkbox';
 import draftToHtml from 'draftjs-to-html';
-import Typography from '@mui/material/Typography';
+import Typography from '@material-ui/core/Typography';
 import { useAuth0, User } from "@auth0/auth0-react";
 import { useAppDispatch } from '@hooks/redux';
 import {
@@ -68,7 +68,7 @@ export default function NotificationDialog({ handleClose, open }: Props) {
       </DialogTitle>
       <DialogContent>
         <div>
-          <IconButton color="primary" onClick={handleShowEmoji} size="large">
+          <IconButton color="primary" onClick={handleShowEmoji}>
             {showEmoji
               ? <CancelIcon />
               : emoji || chosenEmoji

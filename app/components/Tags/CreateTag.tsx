@@ -3,12 +3,12 @@ import React, {
   useState, useEffect, Dispatch, SetStateAction
 } from 'react';
 import Picker, { SKIN_TONE_MEDIUM_DARK, IEmojiData } from 'emoji-picker-react';
-import Button from '@mui/material/Button';
+import Button from '@material-ui/core/Button';
 import css from '@styles/Form.scss';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import CancelIcon from '@mui/icons-material/Cancel';
+import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { useTranslation } from 'react-i18next';
 import FloatingPanel from '../Panel/FloatingPanel';
 import useStyles from './tag.jss';
@@ -107,11 +107,7 @@ const CreateTag = (props: Props) => {
       >
         <section className={css.bodyForm}>
           <div className={classes.fieldContainer}>
-            <IconButton
-              color="primary"
-              onClick={handleShowEmoji}
-              className={classes.iconButton}
-              size="large">
+            <IconButton color="primary" onClick={handleShowEmoji} className={classes.iconButton}>
               {showEmoji
                 ? <CancelIcon />
                 : emoji || chosenEmoji

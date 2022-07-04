@@ -18,12 +18,9 @@
     "@typescript-eslint/no-use-before-define": ["error"],
     "@typescript-eslint/no-explicit-any": "off",
     "no-nested-ternary": 0,
-    "react/jsx-props-no-spreading": 0,
     "import/no-unresolved": 0,
     "import/no-named-as-default": 0,
     "no-unused-expressions": 0,
-    "react/jsx-indent-props": 0,
-    "react/jsx-indent": 0,
     "comma-dangle": 0, // not sure why airbnb turned this on. gross!
     "indent": [2, 2, { "SwitchCase": 1 }],
     "no-console": 0,

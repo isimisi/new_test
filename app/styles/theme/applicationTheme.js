@@ -1,6 +1,8 @@
 import themePalette from "@api/palette/themePalette";
 // import colorfull from '@api/palette/colorfull';
 
+const height = window.innerHeight;
+
 const applicationTheme = (color) => ({
   palette: {
     primary: themePalette[color].palette.primary,

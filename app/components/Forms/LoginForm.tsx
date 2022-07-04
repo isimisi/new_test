@@ -3,22 +3,22 @@
 
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import { Field, reduxForm } from "redux-form/immutable";
-import Button from "@mui/material/Button";
+import Button from "@material-ui/core/Button";
 import { NavLink } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import InputAdornment from "@mui/material/InputAdornment";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import ArrowForward from "@mui/icons-material/ArrowForward";
-import Paper from "@mui/material/Paper";
-import Icon from "@mui/material/Icon";
-import Hidden from "@mui/material/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Typography from "@material-ui/core/Typography";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ArrowForward from "@material-ui/icons/ArrowForward";
+import Paper from "@material-ui/core/Paper";
+import Icon from "@material-ui/core/Icon";
+import Hidden from "@material-ui/core/Hidden";
 import brand from "@api/dummy/brand";
 import logo from "@images/logo.svg";
 import { useAppSelector } from "@hooks/redux";
@@ -65,7 +65,7 @@ const LoginForm = props => {
         </NavLink>
       </Hidden>
       <Paper className={classNames(classes.paperWrap, deco && classes.petal)}>
-        <Hidden mdDown>
+        <Hidden smDown>
           <div className={classes.topBar}>
             <NavLink to="/" className={classes.brand}>
               <img src={logo} alt={brand.name} />
@@ -114,7 +114,7 @@ const LoginForm = props => {
                           aria-label="Toggle password visibility"
                           onClick={handleClickShowPassword}
                           onMouseDown={handleMouseDownPassword}
-                          size="large">
+                        >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>

@@ -1,13 +1,14 @@
-import { alpha } from '@mui/material/styles';
+import pink from '@material-ui/core/colors/pink';
+import lightGreen from '@material-ui/core/colors/lightGreen';
+import dark from '@material-ui/core/colors/blueGrey';
+import { alpha } from '@material-ui/core/styles/colorManipulator';
 import roundedThumbLight from '@images/decoration/roundedThumbLight.png';
 import roundedThumbDark from '@images/decoration/roundedThumbDark.png';
 import colorfull from '@api/palette/colorfull';
 
-import { pink, lightGreen, blueGrey as dark } from '@mui/material/colors';
-
 const styles = theme => ({
   divider: {
-    margin: `${theme.spacing(3)} 0`
+    margin: `${theme.spacing(3)}px 0`
   },
   card: {
     minWidth: 275,
@@ -110,8 +111,8 @@ const styles = theme => ({
     position: 'relative',
     fontSize: 18,
     fontWeight: 400,
-    color: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,
-    [theme.breakpoints.down('sm')]: {
+    color: theme.palette.type === 'dark' ? theme.palette.primary.main : theme.palette.primary.dark,
+    [theme.breakpoints.down('xs')]: {
       textAlign: 'center',
       fontWeight: 600,
       marginBottom: theme.spacing(1)
@@ -184,7 +185,7 @@ const styles = theme => ({
     width: '100%',
   },
   price: {
-    padding: `${theme.spacing(1)} ${theme.spacing(2)} ${theme.spacing(3)}`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px ${theme.spacing(3)}px`,
   },
   verified: {
     fontSize: 16,
@@ -238,7 +239,7 @@ const styles = theme => ({
   newsList: {
     display: 'flex',
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       flexDirection: 'column-reverse'
     }
   },
@@ -293,7 +294,7 @@ const styles = theme => ({
         width: 40,
         backgroundRepeat: 'no-repeat',
         backgroundColor: 'transparent',
-        backgroundImage: theme.palette.mode === 'dark' ? `url(${roundedThumbDark})` : `url(${roundedThumbLight})`
+        backgroundImage: theme.palette.type === 'dark' ? `url(${roundedThumbDark})` : `url(${roundedThumbLight})`
       }
     },
   },
@@ -346,13 +347,13 @@ const styles = theme => ({
     overflow: 'hidden'
   },
   mainFeaturedPostContent: {
-    padding: theme.spacing(2),
+    padding: `${theme.spacing(2)}px`,
     minHeight: 200,
     [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(6),
+      padding: `${theme.spacing(6)}px`,
       paddingRight: 0,
     },
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       alignItems: 'center',
       display: 'flex',
     },
@@ -375,7 +376,7 @@ const styles = theme => ({
     color: theme.palette.common.white,
     whiteSpace: 'normal',
     textAlign: 'left',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       '& h1': {
         fontSize: 32,
         lineHeight: '42px',

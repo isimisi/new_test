@@ -1,18 +1,18 @@
 import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
-import withStyles from '@mui/styles/withStyles';
-import AppBar from "@mui/material/AppBar";
+import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
 import { NavLink } from "react-router-dom";
-import Toolbar from "@mui/material/Toolbar";
-import SearchIcon from "@mui/icons-material/Search";
+import Toolbar from "@material-ui/core/Toolbar";
+import SearchIcon from "@material-ui/icons/Search";
 import classNames from "classnames";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 import logo from "@images/logo.svg";
 import brand from "@api/dummy/brand";
-import Hidden from "@mui/material/Hidden";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import MenuIcon from "@mui/icons-material/Menu";
+import Hidden from "@material-ui/core/Hidden";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import MenuIcon from "@material-ui/icons/Menu";
 import SidebarContent from "../Sidebar/SidebarContent";
 import DropListMenu from "./DropListMenu";
 import MegaMenu from "./MegaMenu";
@@ -123,33 +123,33 @@ function HeaderMenu(props) {
             className={classes.menuButton}
             aria-label="Menu"
             onClick={toggleDrawerOpen}
-            size="large">
+          >
             <MenuIcon />
           </IconButton>
         </Hidden>
-        <Hidden mdDown>
+        <Hidden smDown>
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction, classes.invert)}>
               {fullScreen ? (
                 <Tooltip title="Exit Full Screen" placement="bottom">
-                  <IconButton className={classes.button} onClick={closeFullScreen} size="large">
+                  <IconButton className={classes.button} onClick={closeFullScreen}>
                     <i className="ion-ios-crop" />
                   </IconButton>
                 </Tooltip>
               ) : (
                 <Tooltip title="Fuldskærmsvisning" placement="bottom">
-                  <IconButton className={classes.button} onClick={openFullScreen} size="large">
+                  <IconButton className={classes.button} onClick={openFullScreen}>
                     <i className="ion-ios-crop" />
                   </IconButton>
                 </Tooltip>
               )}
               <Tooltip title="Turn Dark/Light" placement="bottom">
-                <IconButton className={classes.button} onClick={() => turnMode(mode)} size="large">
+                <IconButton className={classes.button} onClick={() => turnMode(mode)}>
                   <i className="ion-ios-lightbulb-outline" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Hjælp" placement="bottom">
-                <IconButton className={classes.button} onClick={openGuide} size="large">
+                <IconButton className={classes.button} onClick={openGuide}>
                   <i className="ion-ios-help-outline" />
                 </IconButton>
               </Tooltip>
@@ -171,7 +171,7 @@ function HeaderMenu(props) {
           <UserMenu dark />
         </Toolbar>
       </div>
-      <Hidden lgDown>
+      <Hidden mdDown>
         <Fragment>
           {type === "mega-menu" ? (
             <MegaMenu dataMenu={dataMenu} />

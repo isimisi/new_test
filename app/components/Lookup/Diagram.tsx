@@ -22,7 +22,7 @@ import { getLayoutedElements } from "@pages/Workspaces/constants";
 import { getIdFromEncrypted } from "@api/constants";
 import CustomNode from "@components/Workspace/Node/CustomNode";
 import Loader from "@components/Loading/LongLoader";
-import Button from "@mui/material/Button";
+import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 
 interface Props {

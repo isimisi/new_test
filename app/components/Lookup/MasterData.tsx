@@ -1,5 +1,5 @@
-import { Grid, Typography, Paper } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { Grid, Typography, Paper } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import { t } from "i18next";
 import React from "react";
 

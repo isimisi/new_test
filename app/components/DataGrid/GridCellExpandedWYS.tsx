@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Popper, Paper, Typography } from "@mui/material";
+import { Box, Popper, Paper, Typography } from "@material-ui/core";
 
 interface GridCellExpandProps {
   value: string;

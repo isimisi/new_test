@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import withStyles from '@mui/styles/withStyles';
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import { SketchPicker } from "react-color";
 import { useDispatch } from "react-redux";
-import Button from "@mui/material/Button";
+import Button from "@material-ui/core/Button";
 import { useTranslation } from "react-i18next";
 import {
   colorChange,

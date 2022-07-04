@@ -1,9 +1,9 @@
 import React from 'react';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import withStyles from '@mui/styles/withStyles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
 import { useTranslation } from 'react-i18next';
 
 const styles = theme => ({

@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import withStyles from '@mui/styles/withStyles';
-import Paper from "@mui/material/Paper";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 import { Map } from "immutable";
-import Tooltip from "@mui/material/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip";
 import { Editor } from "react-draft-wysiwyg";
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import EditIcon from "@mui/icons-material/Edit";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
+import EditIcon from "@material-ui/icons/Edit";
 import Iframe from "react-iframe";
 import Lottie from "lottie-react";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 import FileUpload from "../FileUpload/FileUpload";
 import Word from "./word.json";
 
@@ -32,9 +32,9 @@ const styles = (theme) => ({
     display: "flex",
     width: "100%",
     height: 400,
-    backgroundColor: theme.palette.mode === "dark" ? "#303030" : "#F7F8FA",
+    backgroundColor: theme.palette.type === "dark" ? "#303030" : "#F7F8FA",
     borderRadius: theme.rounded.small,
-    border: theme.palette.mode === "dark" ? "1px solid #606060" : "1px solid #F1F1F1",
+    border: theme.palette.type === "dark" ? "1px solid #606060" : "1px solid #F1F1F1",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
@@ -70,7 +70,7 @@ const styles = (theme) => ({
     "& > div": {
       background: theme.palette.background.paper,
       "& img": {
-        filter: theme.palette.mode === "dark" ? "invert(100%)" : "invert(0%)",
+        filter: theme.palette.type === "dark" ? "invert(100%)" : "invert(0%)",
       },
       "& a": {
         color: theme.palette.text.primary,
@@ -83,7 +83,7 @@ const styles = (theme) => ({
   lottie: {
     width: 700 / 1.5,
     height: 700 / 1.5,
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("sm")]: {
       width: 400 / 1.5,
       height: 400 / 1.5,
     },
@@ -134,7 +134,7 @@ const OutputForm = (props) => {
         spacing={3}
         alignItems="flex-start"
         direction="row"
-        justifyContent="center"
+        justify="center"
       >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>
@@ -152,7 +152,7 @@ const OutputForm = (props) => {
                           onFileTypeChange("");
                           onOutputChange(Map(), "");
                         }}
-                        size="large">
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>

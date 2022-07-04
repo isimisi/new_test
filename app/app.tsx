@@ -28,9 +28,10 @@ import App from "./containers/App";
 import history from "./utils/history";
 import store from "./redux/configureStore";
 import "./i18n";
-
 import Auth0ProviderWithHistory from "./containers/App/auth0-provider-with-history";
 import ErrorView from "@components/Error/CrashScreen";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 
 // bugsnag
 if (process.env.NODE_ENV === "production") {

@@ -1,15 +1,14 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 import React from "react";
-import { useTheme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
+import { useTheme, makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 import { selectStyles, mapSelectOptions } from "@api/ui/helper";
-import NoSsr from "@mui/material/NoSsr";
+import NoSsr from "@material-ui/core/NoSsr";
 import Select from "react-select";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import CreatableSelect from "react-select/creatable";
 import { hanldeOnChange, tagMapping } from "@components/Tags/constants";
@@ -77,7 +76,7 @@ const OutputNamingForm = (props: Props) => {
         spacing={3}
         alignItems="flex-start"
         direction="row"
-        justifyContent="center"
+        justify="center"
       >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>

@@ -8,14 +8,9 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  MouseEvent,
-  useMemo
-} from "react";
-import { withStyles, useTheme } from "@material-ui/core/styles";
+  useState, useEffect, useCallback, useRef, MouseEvent, useMemo
+} from 'react';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
   Background,
   isNode,
@@ -26,114 +21,92 @@ import ReactFlow, {
   OnLoadParams,
   isEdge,
   Edge,
-  Connection
-} from "react-flow-renderer";
+  Connection,
+} from 'react-flow-renderer';
 
-import useMouse from "@react-hook/mouse-position";
+
+import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
-import Typography from "@material-ui/core/Typography";
-import logoBeta from "@images/logoBeta.svg";
+import Typography from '@material-ui/core/Typography';
+import logoBeta from '@images/logoBeta.svg';
 
-import brand from "@api/dummy/brand";
-import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import brand from '@api/dummy/brand';
+import PropTypes from 'prop-types';
+import {
+  useHistory
+} from 'react-router-dom';
 import { useAuth0, User } from "@auth0/auth0-react";
 
-import { useCutCopyPaste } from "@hooks/useCutCopyPaste";
-import { toast } from "react-toastify";
+
+import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
+import { toast } from 'react-toastify';
 import { getPlanId } from "@helpers/userInfo";
-import Notification from "@components/Notification/Notification";
+import Notification from '@components/Notification/Notification';
 
-import { getId, encryptId } from "@api/constants";
-import connection from "@api/socket/SocketConnection";
-import AlertModal from "@components/Alerts/AlertModal";
-import CustomNode from "@components/Workspace/Node/CustomNode";
-import ControlPoint from "@components/Workspace/Node/ControlPoint";
+import { getId, encryptId } from '@api/constants';
+import connection from '@api/socket/SocketConnection';
+import AlertModal from '@components/Alerts/AlertModal';
+import CustomNode from '@components/Workspace/Node/CustomNode';
+import ControlPoint from '@components/Workspace/Node/ControlPoint';
 
-import StickyNoteNode from "@components/Workspace/Node/StickyNoteNode";
-import WorkspaceMeta from "@components/Workspace/Modals/WorkspaceMeta";
-import InternationalStructureAlert from "@components/Workspace/Modals/InternationalStructureAlert";
-import CustomEdge from "@components/Workspace/Edge/CustomEdge";
-import DefineEdge from "@components/Workspace/Edge/DefineEdge";
-import DefineNode from "@components/Workspace/Node/DefineNode";
-import NodePopper from "@components/Workspace/Node/Popper";
-import EdgePopper from "@components/Workspace/Edge/Popper";
-import AlertLog from "@components/Alerts/AlertLog";
-import PaneContextMenu from "@components/Workspace/ContextMenu/PaneContextMenu";
-import CvrDialog from "@components/DialogModal/CvrDialog";
-import MapTypesForErst from "@components/Workspace/Modals/MapTypesForErst";
-import CompanyDataModel from "@components/Workspace/CompanyData/CompanyDataModel";
-import AddressInfoModel from "@components/Workspace/Modals/AddressInfoModel";
-import ShareModal from "@components/Flow/Share/ShareModal";
-import { useAppDispatch, useAppSelector } from "@hooks/redux";
-import RelationshipModal from "@components/Workspace/Modals/RelationshipModal";
-import NodeContextMenu from "@components/Workspace/ContextMenu/NodeContextMenu";
-import { useTranslation } from "react-i18next";
-import useContextMenu from "@hooks/useContextMenu";
-import useWorkspaceHotKeys from "@hooks/useWorkspaceHotKeys";
-import SelectionContextMenu from "@components/Workspace/ContextMenu/SelectionContextMenu";
+import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
+import WorkspaceMeta from '@components/Workspace/Modals/WorkspaceMeta';
+import InternationalStructureAlert from '@components/Workspace/Modals/InternationalStructureAlert';
+import CustomEdge from '@components/Workspace/Edge/CustomEdge';
+import DefineEdge from '@components/Workspace/Edge/DefineEdge';
+import DefineNode from '@components/Workspace/Node/DefineNode';
+import NodePopper from '@components/Workspace/Node/Popper';
+import EdgePopper from '@components/Workspace/Edge/Popper';
+import AlertLog from '@components/Alerts/AlertLog';
+import PaneContextMenu from '@components/Workspace/ContextMenu/PaneContextMenu';
+import CvrDialog from '@components/DialogModal/CvrDialog';
+import MapTypesForErst from '@components/Workspace/Modals/MapTypesForErst';
+import CompanyDataModel from '@components/Workspace/CompanyData/CompanyDataModel';
+import AddressInfoModel from '@components/Workspace/Modals/AddressInfoModel';
+import ShareModal from '@components/Flow/Share/ShareModal';
+import { useAppDispatch, useAppSelector } from '@hooks/redux';
+import RelationshipModal from '@components/Workspace/Modals/RelationshipModal';
+import NodeContextMenu from '@components/Workspace/ContextMenu/NodeContextMenu';
+import { useTranslation } from 'react-i18next';
+import useContextMenu from '@hooks/useContextMenu';
+import useWorkspaceHotKeys from '@hooks/useWorkspaceHotKeys';
+import SelectionContextMenu from '@components/Workspace/ContextMenu/SelectionContextMenu';
+import { openMenuAction, closeMenuAction, toggleAction } from '@redux/actions/uiActions';
+import { NodeDropdownInstance } from '../../../types/reactFlow';
+import styles from './workspace-jss';
 import {
-  openMenuAction,
-  closeMenuAction,
-  toggleAction
-} from "@redux/actions/uiActions";
-import { NodeDropdownInstance } from "../../../types/reactFlow";
-import styles from "./workspace-jss";
-import { reducer, initErstTypes, getLayoutedElements } from "./constants";
+  reducer, initErstTypes, getLayoutedElements
+} from './constants';
 import {
-  getRelationships,
-  getNodes,
-  postEdge,
-  postNode,
-  changeHandleVisability,
-  labelChange,
-  descriptionChange,
-  addGroup,
-  getGroupDropDown,
-  putWorkspace,
-  closeNotifAction,
-  showWorkspace,
-  saveWorkspace,
-  deleteWorkspaceElement,
-  putNode,
-  putEdge,
-  getAttributeDropDown,
-  addWorkspaceNodeToList,
-  addEdgeToList,
-  addWorkspaceNodeAttributToList,
-  cvrWorkspace,
-  postSticky,
-  showNotifAction,
-  shareWorkspace,
-  cvrSuccess,
-  shareOrgChange,
-  setShowCompanyData,
-  setShowAddressInfo,
-  handleRunIntro,
-  uncertainCompaniesChange,
-  mapUncertainCompanies,
-  changeTags,
-  addElements,
-  getCompanyData,
-  getAddressInfo,
-  layoutElements,
-  stopLoading,
-  workspacePowerpoint,
+  getRelationships, getNodes, postEdge, postNode,
+  changeHandleVisability, labelChange, descriptionChange,
+  addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
+  showWorkspace, saveWorkspace, deleteWorkspaceElement,
+  putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
+  addEdgeToList, addWorkspaceNodeAttributToList,
+  cvrWorkspace, postSticky, showNotifAction,
+  shareWorkspace, cvrSuccess, shareOrgChange,
+  setShowCompanyData, setShowAddressInfo,
+  handleRunIntro, uncertainCompaniesChange,
+  mapUncertainCompanies, changeTags, addElements,
+  getCompanyData, getAddressInfo, layoutElements,
+  stopLoading, workspacePowerpoint,
   doNotShowInternationalDisclaimerAgain
-} from "./reducers/workspaceActions";
-import "./workspace.css";
+} from './reducers/workspaceActions';
+import './workspace.css';
 
-import Controls from "@components/Flow/Actions/Controls";
-import Items from "@components/Flow/Actions/Items";
-import Meta from "@components/Flow/Actions/Meta";
-import Collaboration from "@components/Flow/Actions/Collaborations";
-import { RGBA, SelectChoice } from "@customTypes/data";
+import Controls from '@components/Flow/Actions/Controls';
+import Items from '@components/Flow/Actions/Items';
+import Meta from '@components/Flow/Actions/Meta';
+import Collaboration from '@components/Flow/Actions/Collaborations';
+import { RGBA, SelectChoice } from '@customTypes/data';
 
-import { handleExport } from "@helpers/export/handleExport";
-import useFlowContextMenus from "@hooks/flow/flowContexts";
-import useItemSidePanel from "@hooks/flow/itemPanel";
-import useDoubbleClick from "@hooks/flow/doubbleClick";
-import Loader from "@components/Loading/LongLoader";
+import { handleExport } from '@helpers/export/handleExport';
+import useFlowContextMenus from '@hooks/flow/flowContexts';
+import useItemSidePanel from '@hooks/flow/itemPanel';
+import useDoubbleClick from '@hooks/flow/doubbleClick';
+import Loader from '@components/Loading/LongLoader';
+
 
 const nodeTypes = {
   custom: CustomNode,
@@ -143,7 +116,7 @@ const nodeTypes = {
 
 const initialAttribut = {
   label: null,
-  value: ""
+  value: ''
 };
 
 const BASE_BG_GAP = 32;
@@ -154,7 +127,7 @@ interface Dimensions {
   width: number;
 }
 
-function Workspace(props) {
+const Workspace = (props) => {
   const { classes } = props;
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -162,100 +135,62 @@ function Workspace(props) {
   const id = getId(history);
   const reactFlowContainer = useRef(null);
 
-  const [reactFlowDimensions, setReactFlowDimensions] =
-    useState<Dimensions | null>(null);
+  const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
-  const mouse = useMouse(reactFlowContainer, {
-    fps: 10,
-    enterDelay: 100,
-    leaveDelay: 100
-  });
+  const mouse = useMouse(reactFlowContainer, { fps: 10, enterDelay: 100, leaveDelay: 100 });
 
-  const { show: showContextMenu, setShow: setShowContextMenu } =
-    useContextMenu();
+  const { show: showContextMenu, setShow: setShowContextMenu } = useContextMenu();
 
   const user = useAuth0().user as User;
   const plan_id = getPlanId(user);
 
+
   // REDUX
-  const relationships = useAppSelector((state) =>
-    state[reducer].get("relationships")
-  );
-  const nodes = useAppSelector((state) => state[reducer].get("nodes")).toJS();
+  const relationships = useAppSelector(state => state[reducer].get('relationships'));
+  const nodes = useAppSelector(state => state[reducer].get('nodes')).toJS();
 
-  const handleVisability = useAppSelector((state) =>
-    state[reducer].get("handleVisability")
-  );
+  const handleVisability = useAppSelector(state => state[reducer].get('handleVisability'));
 
-  const elements = useAppSelector((state) =>
-    state[reducer].get("elements")
-  ).toJS();
+  const elements = useAppSelector(state => state[reducer].get('elements')).toJS();
   // const connectedUsers = useAppSelector(state => state[reducer].get('connectedUsers')).toJS();
-  const label = useAppSelector((state) => state[reducer].get("label"));
-  const description = useAppSelector((state) =>
-    state[reducer].get("description")
-  );
-  const group = useAppSelector((state) => state[reducer].get("group"));
-  const shareOrg = useAppSelector((state) => state[reducer].get("shareOrg"));
+  const label = useAppSelector(state => state[reducer].get('label'));
+  const description = useAppSelector(state => state[reducer].get('description'));
+  const group = useAppSelector(state => state[reducer].get('group'));
+  const shareOrg = useAppSelector(state => state[reducer].get('shareOrg'));
 
-  const groupsDropDownOptions = useAppSelector((state) =>
-    state[reducer].get("groupsDropDownOptions")
-  ).toJS();
-  const attributesDropDownOptions = useAppSelector((state) =>
-    state[reducer].get("attributesDropDownOptions")
-  ).toJS();
-  const messageNotif = useAppSelector((state) => state[reducer].get("message"));
-  const loading = useAppSelector((state) => state[reducer].get("loading"));
-  const initialLoading = useAppSelector((state) =>
-    state[reducer].get("initialLoading")
-  );
-  const initialLoadingCvr = useAppSelector((state) =>
-    state[reducer].get("initialLoadingCvr")
-  );
-  const mouseLoading = useAppSelector((state) =>
-    state[reducer].get("mouseLoading")
-  );
+  const groupsDropDownOptions = useAppSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
+  const attributesDropDownOptions = useAppSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
+  const messageNotif = useAppSelector(state => state[reducer].get('message'));
+  const loading = useAppSelector(state => state[reducer].get('loading'));
+  const initialLoading = useAppSelector(state => state[reducer].get('initialLoading'));
+  const initialLoadingCvr = useAppSelector(state => state[reducer].get('initialLoadingCvr'));
+  const mouseLoading = useAppSelector(state => state[reducer].get('mouseLoading'));
 
-  const companyData = useAppSelector((state) =>
-    state[reducer].get("companyData")
-  )?.toJS();
-  const addressInfo = useAppSelector((state) =>
-    state[reducer].get("addressInfo")
-  );
-  const signed = useAppSelector((state) => state[reducer].get("signed"));
-  const signedBy = useAppSelector((state) => state[reducer].get("signedBy"));
-  const showCompanyData = useAppSelector((state) =>
-    state[reducer].get("showCompanyData")
-  );
-  const showAddressInfo = useAppSelector((state) =>
-    state[reducer].get("showAddressInfo")
-  );
+  const companyData = useAppSelector(state => state[reducer].get('companyData'))?.toJS();
+  const addressInfo = useAppSelector(state => state[reducer].get('addressInfo'));
+  const signed = useAppSelector(state => state[reducer].get('signed'));
+  const signedBy = useAppSelector(state => state[reducer].get('signedBy'));
+  const showCompanyData = useAppSelector(state => state[reducer].get('showCompanyData'));
+  const showAddressInfo = useAppSelector(state => state[reducer].get('showAddressInfo'));
 
   // const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
   // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
 
-  const uncertainCompanies = useAppSelector((state) =>
-    state[reducer].get("uncertainCompanies")
-  )?.toJS();
-  const tagOptions = useAppSelector((state) => state.tags.get("tags")).toJS();
-  const tags = useAppSelector((state) =>
-    state[reducer].get("specificWorkspaceTags")
-  )?.toJS();
+  const uncertainCompanies = useAppSelector(state => state[reducer].get('uncertainCompanies'))?.toJS();
+  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
+  const tags = useAppSelector(state => state[reducer].get('specificWorkspaceTags'))?.toJS();
 
-  const internationalDisclaimer = useAppSelector((state) =>
-    state[reducer].get("showInternationalDisclaimer")
-  );
+  const internationalDisclaimer = useAppSelector(state => state[reducer].get('showInternationalDisclaimer'));
+
 
   const [metaOpen, setMetaOpen] = useState(false);
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
 
   const [showNodeRelations, setShowNodeRelations] = useState(false);
-  const [activeNodeRelations, setActiveNodeRelations] = useState<Node | null>(
-    null
-  );
+  const [activeNodeRelations, setActiveNodeRelations] = useState<Node | null>(null);
   const handleShowNodeRelations = (contextNode?: Node) => {
-    setShowNodeRelations((prevVal) => !prevVal);
+    setShowNodeRelations(prevVal => !prevVal);
     if (contextNode) {
       setActiveNodeRelations(contextNode);
     }
@@ -266,6 +201,7 @@ function Workspace(props) {
   const handleShowEdgePopper = () => {
     setShowEdgePopper(true);
   };
+
 
   const handleHideEdgePopper = (stopReffrence = false) => {
     setShowEdgePopper(false);
@@ -288,10 +224,12 @@ function Workspace(props) {
     }
   };
 
+
   const [showCvrModal, setShowCvrModal] = useState(false);
   const [showMapErst, setShowMapErst] = useState(false);
   const [erstTypes, setErstTypes] = useState(initErstTypes);
   const [shareModalOpen, setShareModalOpen] = useState(false);
+
 
   const [showAlertLog, setShowAlertLog] = useState(false);
   const [alerts, setAlerts] = useState<any[]>([]);
@@ -299,27 +237,21 @@ function Workspace(props) {
   const [alertId, setAlertId] = useState<number | null>(null);
 
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
-  const [elementToUpdate, setElementToUpdate] = useState<FlowElement | null>(
-    null
-  );
+  const [elementToUpdate, setElementToUpdate] = useState<FlowElement | null>(null);
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
-  const [currentConnectionData, setCurrentConnectionData] =
-    useState<Connection>({
-      source: "",
-      target: "",
-      sourceHandle: "",
-      targetHandle: ""
-    });
-  const [relationshipLabel, setRelationshipLabel] = useState("");
-  const [relationshipValue, setRelationshipValue] = useState("");
-  const [relationshipType, setRelationshipType] = useState("custom");
+  const [currentConnectionData, setCurrentConnectionData] = useState<Connection>({
+    source: "",
+    target: "",
+    sourceHandle: "",
+    targetHandle: "",
+  });
+  const [relationshipLabel, setRelationshipLabel] = useState('');
+  const [relationshipValue, setRelationshipValue] = useState('');
+  const [relationshipType, setRelationshipType] = useState('custom');
   const [relationshipColor, setRelationshipColor] = useState<RGBA>({
-    r: 0,
-    g: 0,
-    b: 0,
-    a: 1
+    r: 0, g: 0, b: 0, a: 1
   });
   const [showArrow, setShowArrow] = useState(false);
   const [animatedLine, setAnimatedLine] = useState(false);
@@ -328,33 +260,27 @@ function Workspace(props) {
 
   // NODE
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
-  const [nodeLabel, setNodeLabel] = useState("");
+  const [nodeLabel, setNodeLabel] = useState('');
   const handleChangeLabelNode = (_label: SelectChoice) => {
     if (_label.__isNew__ && plan_id !== 1) {
-      dispatch(
-        addWorkspaceNodeToList({
-          attributes: [],
-          description: null,
-          id: null,
-          label: _label.value,
-          style:
-            '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
-        })
-      );
+      dispatch(addWorkspaceNodeToList({
+        attributes: [],
+        description: null,
+        id: null,
+        label: _label.value,
+        style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
+      }));
     }
     if (_label.__isNew__ && plan_id === 1) {
-      dispatch(
-        showNotifAction(t("workspaces.you_can_not_create_new_item_types"))
-      );
+      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_item_types')));
     } else {
       setNodeLabel(_label.value);
     }
   };
 
-  const [nodeDisplayName, setNodeDisplayName] = useState("");
+  const [nodeDisplayName, setNodeDisplayName] = useState('');
   const [nodeFigur, setNodeFigur] = useState(null);
-  const handleNodeFigur = (_figur) =>
-    setNodeFigur(_figur ? _figur.value : null);
+  const handleNodeFigur = (_figur) => setNodeFigur(_figur ? _figur.value : null);
   const [attributes, setAttributes] = useState([initialAttribut]);
 
   const handleChangeAttributes = (_attributes, newRow, isNew) => {
@@ -364,48 +290,35 @@ function Workspace(props) {
     }
 
     if (isNew && plan_id === 1) {
-      dispatch(
-        showNotifAction(t("workspaces.you_can_not_create_new_attribute_types"))
-      );
+      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_attribute_types')));
     } else {
       setAttributes(_attributes);
     }
   };
 
-  const [choosenNode, setChoosenNode] = useState<NodeDropdownInstance | null>(
-    null
-  );
+  const [choosenNode, setChoosenNode] = useState<NodeDropdownInstance | null>(null);
 
   const [deletedAttributes, setDeletedAttributes] = useState([]);
 
   const handelRemoveAttributes = (_id, index) => {
-    setAttributes((att) => att.filter((v, i) => i !== index));
+    setAttributes(att => att.filter((v, i) => i !== index));
     if (_id) {
-      // @ts-ignore
-      setDeletedAttributes((attr) => [...attr, _id]);
+    // @ts-ignore
+      setDeletedAttributes(attr => [...attr, _id]);
     }
   };
 
   const [nodeColor, setNodeColor] = useState({
-    r: 255,
-    g: 255,
-    b: 255,
-    a: 1
+    r: 255, g: 255, b: 255, a: 1
   });
   const handleNodeColorChange = (color) => setNodeColor(color.rgb);
   const [nodeBorderColor, setNodeBorderColor] = useState({
-    r: 0,
-    g: 0,
-    b: 0,
-    a: 1
+    r: 0, g: 0, b: 0, a: 1
   });
   const handleBorderColorChange = (color) => setNodeBorderColor(color.rgb);
 
   const [nodeLabelColor, setNodeLabelColor] = useState({
-    r: 0,
-    g: 0,
-    b: 0,
-    a: 1
+    r: 0, g: 0, b: 0, a: 1
   });
   const handleLabelColorChange = (color) => setNodeLabelColor(color.rgb);
 
@@ -413,11 +326,11 @@ function Workspace(props) {
   const [subscription, setSubscription] = useState(null);
   // const [colabSubscription, setColabSubscription] = useState(null);
 
-  const handleVisabilityChange = () =>
-    dispatch(changeHandleVisability(!handleVisability));
 
-  const [showInternationalDisclaimer, setShowInternationalDisclaimer] =
-    useState(false);
+  const handleVisabilityChange = () => dispatch(changeHandleVisability(!handleVisability));
+
+
+  const [showInternationalDisclaimer, setShowInternationalDisclaimer] = useState(false);
 
   const closeInternationalDisclaimer = (doNotShowAgain) => {
     setShowInternationalDisclaimer(false);
@@ -425,6 +338,7 @@ function Workspace(props) {
       dispatch(doNotShowInternationalDisclaimerAgain);
     }
   };
+
 
   const handleCvrSuccess = (el) => {
     setShowCvrModal(false);
@@ -438,9 +352,10 @@ function Workspace(props) {
     // dispatch(handleRunIntro(true));
   };
 
+
   const handleCvrError = () => {
     setShowCvrModal(false);
-    dispatch(showNotifAction(t("workspaces.drawing_error")));
+    dispatch(showNotifAction(t('workspaces.drawing_error')));
     dispatch(stopLoading);
   };
 
@@ -459,12 +374,7 @@ function Workspace(props) {
     // storing the subscription in the global variable
     // passing the incoming data handler fn as a second argument
 
-    const sub = connection.subscribeToCvr(
-      "cvr:" + id,
-      handleCvrSuccess,
-      handleCvrError,
-      handleUncertainCompanies
-    );
+    const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
     setSubscription(sub);
 
     // const sub2 = connection.subscribeToWorkspace(`collaboration:${id}`, handleNewConnection);
@@ -473,6 +383,7 @@ function Workspace(props) {
     // if (id) {
     //   dispatch(connectNewUser(user, id));
     // }
+
 
     // Specify how to clean up after this effect:
     return function cleanup() {
@@ -488,11 +399,12 @@ function Workspace(props) {
     };
   }, []);
 
+
   const closeNode = useCallback(() => {
     if (!showNodePopper) {
       setDefineNodeOpen(false);
-      setNodeLabel("");
-      setNodeDisplayName("");
+      setNodeLabel('');
+      setNodeDisplayName('');
       setNodeFigur(null);
       setAttributes([initialAttribut]);
       setChoosenNode(null);
@@ -508,35 +420,27 @@ function Workspace(props) {
       } else {
         htmlNode = document.querySelector(`.id_${element.id}`);
       }
-      htmlNode.classList.add(constant ? "pulseConstant" : "pulse");
+      htmlNode.classList.add(constant ? 'pulseConstant' : 'pulse');
     });
   };
 
   const removeHighlightAlert = () => {
-    Array.from(document.querySelectorAll(".pulse")).map((x) =>
-      x.classList.remove("pulse")
-    );
-    Array.from(document.querySelectorAll(".pulseConstant")).map((x) =>
-      x.classList.remove("pulseConstant")
-    );
+    Array.from(document.querySelectorAll('.pulse')).map(x => x.classList.remove('pulse'));
+    Array.from(document.querySelectorAll('.pulseConstant')).map(x => x.classList.remove('pulseConstant'));
   };
 
   const handleAlerts = (_alerts, initial) => {
     if (initial) {
       setAlerts([..._alerts]);
     } else {
-      const cleanAlertsString = alerts.map((alert) =>
-        alert.elements.map((x) => x.id).join("")
-      );
-      const newAlerts = _alerts.filter(
-        (x) => !cleanAlertsString.includes(x.elements.map((y) => y.id).join(""))
-      );
+      const cleanAlertsString = alerts.map(alert => alert.elements.map(x => x.id).join(''));
+      const newAlerts = _alerts.filter(x => !cleanAlertsString.includes(x.elements.map(y => y.id).join('')));
 
       removeHighlightAlert();
 
       newAlerts.forEach((alert, index) => {
         highlightAlertItems(alert);
-        setAlerts((list) => [...list, alert]);
+        setAlerts(list => [...list, alert]);
 
         toast(alert.alert.label, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -544,7 +448,7 @@ function Workspace(props) {
           toastId: alerts.length + index,
           style: {
             backgroundColor: theme.palette.primary.main,
-            color: "white"
+            color: 'white'
           },
           onClick: (e) => {
             setAlertId(Number(e.currentTarget.id));
@@ -555,26 +459,11 @@ function Workspace(props) {
   };
 
   const updateNodeDisplayName = (name) => {
-    const _attributes = JSON.stringify(attributes.filter((a) => a.label));
+    const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const nodeId = choosenNode ? choosenNode.id : null;
     const _nodeLabel = choosenNode ? choosenNode.label : null;
     if (isUpdatingElement && elementToUpdate) {
-      dispatch(
-        putNode(
-          user,
-          elementToUpdate.id,
-          nodeId,
-          _nodeLabel,
-          name,
-          nodeFigur,
-          JSON.stringify(nodeColor),
-          JSON.stringify(nodeBorderColor),
-          JSON.stringify(nodeLabelColor),
-          _attributes,
-          JSON.stringify(deletedAttributes),
-          closeNode
-        )
-      );
+      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, name, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
     }
   };
 
@@ -582,14 +471,11 @@ function Workspace(props) {
     if (!showEdgePopper) {
       setDefineEdgeOpen(false);
       setIsUpdatingElement(false);
-      setRelationshipLabel("");
-      setRelationshipValue("");
-      setRelationshipType("custom");
+      setRelationshipLabel('');
+      setRelationshipValue('');
+      setRelationshipType('custom');
       setRelationshipColor({
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 1
+        r: 0, g: 0, b: 0, a: 1
       });
       setShowArrow(false);
       setAnimatedLine(false);
@@ -598,132 +484,77 @@ function Workspace(props) {
     }
   }, [showEdgePopper]);
 
-  const updateEdgeDisplayName = (
-    name,
-    edgeTextTarget,
-    edgeTextActualTarget,
-    edge
-  ) => {
-    const choosenRelationship = relationships
-      .toJS()
-      .find((r) => r.label === edge.data.label);
+  const updateEdgeDisplayName = (name, edgeTextTarget, edgeTextActualTarget, edge) => {
+    const choosenRelationship = relationships.toJS().find(r => r.label === edge.data.label);
     if (isUpdatingElement && elementToUpdate && choosenRelationship) {
-      dispatch(
-        putEdge(
-          user,
-          elementToUpdate.id,
-          choosenRelationship.id,
-          choosenRelationship.label,
-          name,
-          relationshipColor,
-          relationshipType,
-          showArrow,
-          animatedLine,
-          showLabel,
-          lineThrough,
-          closeDefineEdge,
-          handleAlerts,
-          id,
-          edgeTextTarget,
-          edgeTextActualTarget
-        )
-      );
+      dispatch(putEdge(
+        user,
+        elementToUpdate.id,
+        choosenRelationship.id,
+        choosenRelationship.label,
+        name,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        lineThrough,
+        closeDefineEdge,
+        handleAlerts,
+        id,
+        edgeTextTarget,
+        edgeTextActualTarget,
+      ));
     }
   };
 
   const handleNodeSave = (x?: number, y?: number, drag?: boolean) => {
-    const _attributes = JSON.stringify(attributes.filter((a) => a.label));
+    const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const rf = rfInstance?.toObject();
     if (!x && !y) {
-      x =
-        rf && reactFlowDimensions
-          ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250
-          : undefined;
-      y =
-        rf && reactFlowDimensions
-          ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150
-          : undefined;
+      x = rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250 : undefined;
+      y = rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150 : undefined;
     }
 
     const nodeId = choosenNode ? choosenNode.id : null;
     const _nodeLabel = choosenNode ? choosenNode.label : null;
 
     if (isUpdatingElement && elementToUpdate && !drag) {
-      dispatch(
-        putNode(
-          user,
-          elementToUpdate.id,
-          nodeId,
-          _nodeLabel,
-          nodeDisplayName,
-          nodeFigur,
-          JSON.stringify(nodeColor),
-          JSON.stringify(nodeBorderColor),
-          JSON.stringify(nodeLabelColor),
-          _attributes,
-          JSON.stringify(deletedAttributes),
-          closeNode
-        )
-      );
+      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
     } else if (drag) {
-      dispatch(
-        postNode(
-          user,
-          id as string,
-          null,
-          null,
-          "",
-          null,
-          JSON.stringify({
-            r: 255,
-            g: 255,
-            b: 255,
-            a: 1
-          }),
-          JSON.stringify({
-            r: 0,
-            g: 0,
-            b: 0,
-            a: 1
-          }),
-          JSON.stringify([initialAttribut].filter((a) => a.label)),
-          closeNode,
-          handleAlerts,
-          x,
-          y
-        )
-      );
+      dispatch(postNode(
+        user,
+            id as string,
+            null, null,
+            "", null,
+            JSON.stringify({
+              r: 255, g: 255, b: 255, a: 1
+            }), JSON.stringify({
+              r: 0, g: 0, b: 0, a: 1
+            }),
+            JSON.stringify([initialAttribut].filter(a => a.label)), closeNode, handleAlerts,
+            x, y
+      ));
     } else {
-      dispatch(
-        postNode(
-          user,
-          id as string,
-          nodeId,
-          _nodeLabel,
-          nodeDisplayName,
-          nodeFigur,
-          JSON.stringify(nodeColor),
-          JSON.stringify(nodeBorderColor),
-          _attributes,
-          closeNode,
-          handleAlerts,
-          x,
-          y
-        )
-      );
+      dispatch(postNode(
+        user,
+            id as string,
+            nodeId, _nodeLabel,
+            nodeDisplayName, nodeFigur,
+            JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
+            _attributes, closeNode, handleAlerts,
+            x, y
+      ));
     }
   };
 
   const edgePopperComponentRef = useRef<any>(null);
 
-  const handleNoLabelDoubleClick = (
-    event: React.MouseEvent<Element, globalThis.MouseEvent>,
-    edge: Edge
-  ) => {
+  const handleNoLabelDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge) => {
     event.persist();
     setRelationshipLabel(edge.data.label);
     setRelationshipValue(edge.data.value);
-    setRelationshipType(edge.type || "custom");
+    setRelationshipType(edge.type || 'custom');
     setRelationshipColor(edge.data.color);
     setShowArrow(edge.data.showArrow);
     setAnimatedLine(edge.data.animated);
@@ -744,16 +575,9 @@ function Workspace(props) {
     onEdgeDoubleClick,
     edgeTarget,
     removeEdgeTextTarget
-  } = useDoubbleClick(
-    updateNodeDisplayName,
-    updateEdgeDisplayName,
-    relationships,
-    handleHideEdgePopper,
-    handleHideNodePopper,
-    handleNoLabelDoubleClick
-  );
+  } = useDoubbleClick(updateNodeDisplayName, updateEdgeDisplayName, relationships, handleHideEdgePopper, handleHideNodePopper, handleNoLabelDoubleClick);
 
-  const hideContext = () => {
+  const hideContext = (e?: any) => {
     handleHideNodePopper();
     handleHideEdgePopper();
 
@@ -764,29 +588,25 @@ function Workspace(props) {
   };
 
   const handleRelationshipSave = () => {
-    const choosenRelationship = relationships
-      .toJS()
-      .find((r) => r.label === relationshipLabel);
+    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
 
     if (isUpdatingElement && elementToUpdate) {
-      dispatch(
-        putEdge(
-          user,
-          elementToUpdate.id,
-          choosenRelationship?.id,
-          choosenRelationship?.label,
-          relationshipValue,
-          relationshipColor,
-          relationshipType,
-          showArrow,
-          animatedLine,
-          showLabel,
-          lineThrough,
-          closeDefineEdge,
-          handleAlerts,
-          id
-        )
-      );
+      dispatch(putEdge(
+        user,
+        elementToUpdate.id,
+        choosenRelationship?.id,
+        choosenRelationship?.label,
+        relationshipValue,
+        relationshipColor,
+        relationshipType,
+        showArrow,
+        animatedLine,
+        showLabel,
+        lineThrough,
+        closeDefineEdge,
+        handleAlerts,
+        id
+      ));
     }
   };
 
@@ -800,14 +620,12 @@ function Workspace(props) {
     handleHideEdgePopper();
   };
 
+
   const onConnect = (data: Edge<any> | Connection) => {
     if (data.source !== data.target) {
       setCurrentConnectionData(data as Connection);
       const color = {
-        r: 0,
-        g: 0,
-        b: 0,
-        a: 1
+        r: 0, g: 0, b: 0, a: 1
       };
       const edge = {
         relationship_id: null,
@@ -819,7 +637,7 @@ function Workspace(props) {
         animatedLine: false,
         showLabel: false,
         lineThrough: false,
-        ...(data as Connection)
+        ...data as Connection
       };
 
       dispatch(postEdge(user, id as string, edge, closeDefineEdge));
@@ -829,18 +647,15 @@ function Workspace(props) {
   const onElementsRemove = (elementsToRemove: FlowElement[]): void => {
     removeAllUpdatingRefference();
 
-    const nodeIdsToRemove = elementsToRemove
-      .filter((n) => isNode(n))
-      .map((n) => n.id);
-    const edgeIdsToRemove = elementsToRemove
-      .filter((r) => !isNode(r))
-      .map((r) => r.id);
+    const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
+    const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
     const remainingElements = elements.filter((el: FlowElement) => {
       if (isNode(el)) {
         return !nodeIdsToRemove.includes(el.id);
       }
       return !edgeIdsToRemove.includes(el.id);
     });
+
 
     if (elementsToRemove.length === 1) {
       if (isNode(elementsToRemove[0]) || elementsToRemove.length > 1) {
@@ -856,11 +671,8 @@ function Workspace(props) {
 
   const [activeElement, setActiveElement] = useState<Node | Edge | null>(null);
 
-  const onElementClick = (
-    event: MouseEvent,
-    element: FlowElement,
-    showFull?: boolean
-  ) => {
+
+  const onElementClick = (event: MouseEvent, element: FlowElement, showFull?: boolean) => {
     const foreignObj = document.getElementById("doubleClickForeign");
 
     if (foreignObj) {
@@ -883,41 +695,22 @@ function Workspace(props) {
     setEdgePopperRef(null);
     handleHideNodePopper();
     handleHideEdgePopper();
-    const backgroundColor = element.data.backgroundColor
-      ? element.data.backgroundColor.replace(/[^\d,]/g, "").split(",")
-      : ["255", "255", "255", "1"];
-    const borderColor =
-      element.data.borderColor &&
-      !element.data.borderColor.includes("undefined")
-        ? element.data.borderColor.replace(/[^\d,]/g, "").split(",")
-        : ["0", "0", "0", "1"];
-    const labelColor = element.data.labelColor
-      ? element.data.labelColor.replace(/[^\d,]/g, "").split(",")
-      : ["0", "0", "0", "1"];
+    const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
+    const borderColor = element.data.borderColor && !element.data.borderColor.includes("undefined") ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+    const labelColor = element.data.labelColor ? element.data.labelColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
     if (isNode(element)) {
       setNodeLabel(element.data.label);
-      setNodeDisplayName(element.data.displayName || "");
+      setNodeDisplayName(element.data.displayName || '');
       setNodeFigur(element.data.figur);
       setAttributes([...element.data.attributes, initialAttribut]);
       setNodeColor({
-        r: backgroundColor[0],
-        g: backgroundColor[1],
-        b: backgroundColor[2],
-        a: backgroundColor[3]
+        r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
       });
 
       setNodeBorderColor({
-        r: borderColor[0],
-        g: borderColor[1],
-        b: borderColor[2],
-        a: borderColor[3]
+        r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
       });
-      setNodeLabelColor({
-        r: labelColor[0],
-        g: labelColor[1],
-        b: labelColor[2],
-        a: labelColor[3]
-      });
+      setNodeLabelColor({ r: labelColor[0], g: labelColor[1], b: labelColor[2], a: labelColor[3] });
       if (showFull) {
         setDefineNodeOpen(true);
       } else if (element.type === "custom") {
@@ -935,7 +728,7 @@ function Workspace(props) {
       event.persist();
       setRelationshipLabel(element.data.label);
       setRelationshipValue(element.data.value);
-      setRelationshipType(element.type || "custom");
+      setRelationshipType(element.type || 'custom');
       setRelationshipColor(element.data.color);
       setShowArrow(element.data.showArrow);
       setAnimatedLine(element.data.animated);
@@ -951,6 +744,7 @@ function Workspace(props) {
     }
   };
 
+
   // WORKSPACE GENERAL
 
   const onWorkspaceSave = useCallback(() => {
@@ -958,37 +752,15 @@ function Workspace(props) {
       const flow = rfInstance.toObject();
       const _nodes = flow.elements.filter((n): n is Node => isNode(n));
 
-      const mappedNodes = _nodes.map((n) => ({
-        id: n.id,
-        x: n.position.x,
-        y: n.position.y
-      }));
-      user &&
-        id &&
-        dispatch(
-          saveWorkspace(
-            user,
-            id,
-            flow.zoom,
-            flow.position[0],
-            flow.position[1],
-            JSON.stringify(mappedNodes)
-          )
-        );
+      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
+      user && id && dispatch(saveWorkspace(user, id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes)));
     }
   }, [rfInstance, user]);
 
+
   const onLoad = (_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
-    dispatch(
-      showWorkspace(
-        user,
-        id as string,
-        setMetaOpen,
-        handleAlerts,
-        _reactFlowInstance
-      )
-    );
+    dispatch(showWorkspace(user, id as string, setMetaOpen, handleAlerts, _reactFlowInstance));
     _reactFlowInstance.fitView();
   };
 
@@ -1017,8 +789,9 @@ function Workspace(props) {
     }
   }, [alertId]);
 
+
   useEffect(() => {
-    const _node = nodes.find((r) => r.label === nodeLabel);
+    const _node = nodes.find(r => r.label === nodeLabel);
     if (_node) {
       setChoosenNode(_node);
       setNodeColor(JSON.parse(_node.style).backgroundColor);
@@ -1027,26 +800,22 @@ function Workspace(props) {
     }
   }, [nodeLabel]);
 
+
   // RELATIONSHIP
+
 
   const handleChangeLabel = useCallback((_label) => {
     if (_label.__isNew__ && plan_id !== 1) {
-      dispatch(
-        addEdgeToList({
-          id: null,
-          label: _label.value,
-          description: null,
-          values: [],
-          style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
-        })
-      );
+      dispatch(addEdgeToList({
+        id: null,
+        label: _label.value,
+        description: null,
+        values: [],
+        style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
+      }));
     }
     if (_label.__isNew__ && plan_id === 1) {
-      dispatch(
-        showNotifAction(
-          t("workspaces.you_can_not_create_new_relationship_types")
-        )
-      );
+      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_relationship_types')));
     } else {
       setRelationshipLabel(_label.value);
       setRelationshipValue("");
@@ -1059,42 +828,16 @@ function Workspace(props) {
       setRelationshipValue(value.target.value);
     }
   }, []);
-  const handleTypeChange = useCallback(
-    (type) => setRelationshipType(type.value),
-    []
-  );
-  const handleColorChange = useCallback(
-    (color) => setRelationshipColor(color.rgb),
-    []
-  );
-  const handleShowArrowChange = useCallback(
-    () => setShowArrow((val) => !val),
-    []
-  );
-  const handleAnimatedLineChange = useCallback(
-    () => setAnimatedLine((val) => !val),
-    []
-  );
-  const handleShowLabelChange = useCallback(
-    () => setShowlabel((val) => !val),
-    []
-  );
-  const handleLineThroughChange = useCallback(
-    () => setLineThrough((val) => !val),
-    []
-  );
-  const handleDeleteEdge = useCallback(
-    () => elementToUpdate && onElementsRemove([elementToUpdate]),
-    [elementToUpdate]
-  );
+  const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
+  const handleColorChange = useCallback((color) => setRelationshipColor(color.rgb), []);
+  const handleShowArrowChange = useCallback(() => setShowArrow(val => !val), []);
+  const handleAnimatedLineChange = useCallback(() => setAnimatedLine(val => !val), []);
+  const handleShowLabelChange = useCallback(() => setShowlabel(val => !val), []);
+  const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
+  const handleDeleteEdge = useCallback(() => elementToUpdate && onElementsRemove([elementToUpdate]), [elementToUpdate]);
 
-  const handlePostSticky = (
-    e?: any,
-    // eslint-disable-next-line default-param-last
-    shortcut = false,
-    x?: number,
-    y?: number
-  ) => {
+
+  const handlePostSticky = (e?: any, shortcut = false, x?: number, y?: number) => {
     const rf = rfInstance?.toObject();
     // @ts-ignore
     const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
@@ -1103,21 +846,15 @@ function Workspace(props) {
       // @ts-ignore
       x: mouse.clientX - reactFlowBounds.left,
       // @ts-ignore
-      y: mouse.clientY - reactFlowBounds.top
+      y: mouse.clientY - reactFlowBounds.top,
     });
 
+
     if (!x && !y) {
-      x = shortcut
-        ? position?.x
-        : rf && reactFlowDimensions
-          ? (rf.position[0] * -1 + reactFlowDimensions.width / 3) / rf.zoom - 250
-          : 0;
-      y = shortcut
-        ? position?.y
-        : rf && reactFlowDimensions
-          ? (rf.position[1] * -1 + reactFlowDimensions.height / 2) / rf.zoom - 150
-          : 0;
+      x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width / 3) / rf.zoom - 250 : 0;
+      y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height / 2) / rf.zoom - 150 : 0;
     }
+
 
     if (x && y) {
       dispatch(postSticky(user, id as string, x, y));
@@ -1140,6 +877,7 @@ function Workspace(props) {
     }
   }, []);
 
+
   const onMouseLeave = useCallback(() => {
     onWorkspaceSave();
   }, [rfInstance, elements]);
@@ -1149,18 +887,10 @@ function Workspace(props) {
     const erstEdgeArray = Object.values(erstTypes.edges);
     const nodeLabels = nodes.map((node) => node.label);
     const relationshipLabels = relationships.toJS().map((r) => r.label);
-    if (
-      erstNodeArray.every((n) => nodeLabels.includes(n)) &&
-      erstEdgeArray.every((e) => relationshipLabels.includes(e))
-    ) {
+    if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
       if (!subscription) {
         connection.connect();
-        const sub = connection.subscribeToCvr(
-          "cvr:" + id,
-          handleCvrSuccess,
-          handleCvrError,
-          handleUncertainCompanies
-        );
+        const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
         setSubscription(sub);
       }
       dispatch(cvrWorkspace(user, id as string, value, close, erstTypes));
@@ -1168,6 +898,7 @@ function Workspace(props) {
       setShowMapErst(true);
     }
   };
+
 
   const handlePaste = (elementsToAdd) => {
     // @ts-ignore
@@ -1177,22 +908,19 @@ function Workspace(props) {
       // @ts-ignore
       x: mouse.clientX - reactFlowBounds.left,
       // @ts-ignore
-      y: mouse.clientY - reactFlowBounds.top
+      y: mouse.clientY - reactFlowBounds.top,
     });
 
     if (!mouse.clientY) {
       const rf = rfInstance?.toObject();
       if (rf && reactFlowDimensions) {
-        position.x =
-          (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
-        position.y =
-          (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+        position.x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
+        position.y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
       }
     }
 
-    const sortedByY = elementsToAdd
-      .filter((e) => isNode(e))
-      .sort((a, b) => b.position.y - a.position.y);
+
+    const sortedByY = elementsToAdd.filter(e => isNode(e)).sort((a, b) => b.position.y - a.position.y);
     const topNode = sortedByY[sortedByY.length - 1];
 
     const now = Date.now();
@@ -1215,38 +943,26 @@ function Workspace(props) {
     dispatch(addElements(user, id as string, elementsToAdd));
   };
 
-  const { cut, copy, paste } = useCutCopyPaste(
-    elements,
-    onElementsRemove,
-    handlePaste
-  );
-  const {
-    handleNodeContextMenu,
+  const { cut, copy, paste } = useCutCopyPaste(elements, onElementsRemove, handlePaste);
+  const { handleNodeContextMenu,
     handlePaneContextMenu,
     handleSelctionContextMenu,
     handleEdgeContextMenu,
     contextAnchor,
     contextNode,
     contextSelection,
-    contextType
-  } = useFlowContextMenus();
+    contextType } = useFlowContextMenus();
+
 
   const [snapToGrid, setSnapToGrid] = useState(false);
+
 
   const handleOpenCvr = () => {
     dispatch(handleRunIntro(false));
     setShowCvrModal(true);
   };
   const handleGetCompanyData = (_id) => {
-    dispatch(
-      getCompanyData(
-        user,
-        _id,
-        setShowContextMenu,
-        handleHideNodePopper,
-        handleHideEdgePopper
-      )
-    );
+    dispatch(getCompanyData(user, _id, setShowContextMenu, handleHideNodePopper, handleHideEdgePopper));
   };
   useWorkspaceHotKeys(
     setDefineNodeOpen,
@@ -1265,32 +981,31 @@ function Workspace(props) {
     id
   );
 
-  const handleAutoLayout = () =>
-    dispatch(layoutElements(getLayoutedElements(elements)));
 
-  const handleImage = (type, _stopLoading) =>
-    handleExport(type, reactFlowContainer, label, _stopLoading);
+  const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
+
+  const handleImage = (type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading);
   const handlePowerpoint = (_stopLoading) => {
-    id &&
-      dispatch(workspacePowerpoint(user, id, label, elements, _stopLoading));
+    id && dispatch(workspacePowerpoint(user, id, label, elements, _stopLoading));
   };
+
 
   const onDragOver = (event) => {
     event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
+    event.dataTransfer.dropEffect = 'move';
   };
 
   const onDrop = (event) => {
     event.preventDefault();
     if (reactFlowContainer && rfInstance) {
-      const reactFlowBounds =
-        // @ts-ignore
-        reactFlowContainer.current.getBoundingClientRect();
-      const type = event.dataTransfer.getData("application/reactflow");
+      // @ts-ignore
+      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
       const position = rfInstance.project({
         x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top
+        y: event.clientY - reactFlowBounds.top,
       });
+
 
       if (type === "sticky") {
         handlePostSticky(event, false, position.x, position.y);
@@ -1303,16 +1018,7 @@ function Workspace(props) {
     }
   };
 
-  const {
-    cursor,
-    handleCursor,
-    mouseActive,
-    stickyActive,
-    toggleMouse,
-    toggleSticky,
-    toggleNode,
-    nodeActive
-  } = useItemSidePanel();
+  const { cursor, handleCursor, mouseActive, stickyActive, toggleMouse, toggleSticky, toggleNode, nodeActive } = useItemSidePanel();
 
   useEffect(() => {
     if (mouseLoading) {
@@ -1322,18 +1028,16 @@ function Workspace(props) {
     }
   }, [mouseLoading]);
 
-  const onPaneClick = (
-    event: React.MouseEvent<Element, globalThis.MouseEvent>
-  ) => {
+
+  const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     removeAllUpdatingRefference();
 
     if (reactFlowContainer && rfInstance) {
-      const reactFlowBounds =
-        // @ts-ignore
-        reactFlowContainer.current.getBoundingClientRect();
+      // @ts-ignore
+      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
       const position = rfInstance.project({
         x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top
+        y: event.clientY - reactFlowBounds.top,
       });
       if (stickyActive) {
         handlePostSticky(event, false, position.x, position.y);
@@ -1345,31 +1049,21 @@ function Workspace(props) {
     }
   };
 
-  const paneContextNodeClick = (
-    event: React.MouseEvent<Element, globalThis.MouseEvent>
-  ) => {
+  const paneContextNodeClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     if (reactFlowContainer && rfInstance) {
-      // @ts-ignore-start
-
-      const reactFlowBounds =
-        reactFlowContainer.current.getBoundingClientRect();
-
+    // @ts-ignore
+      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
       const position = rfInstance.project({
         x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top
+        y: event.clientY - reactFlowBounds.top,
       });
-      // @ts-ignore-end
-
       closeNode();
       handleNodeSave(position.x, position.y, true);
       setShowContextMenu(false);
     }
   };
 
-  const interactive = useMemo(
-    () => !signed && mouseActive,
-    [signed, mouseActive]
-  );
+  const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
 
   const showPopperAgain = () => {
     if (edgePopperRef) {
@@ -1382,15 +1076,9 @@ function Workspace(props) {
 
   return (
     <div style={{ cursor }}>
-      <Notification
-        close={() => dispatch(closeNotifAction)}
-        message={messageNotif}
-      />
-      <div
-        className={classes.root}
-        ref={reactFlowContainer}
-        onMouseLeave={onMouseLeave}
-      >
+      <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
+      <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
+
         <ReactFlow
           elements={elements}
           onElementsRemove={onElementsRemove}
@@ -1425,85 +1113,79 @@ function Workspace(props) {
           onEdgeContextMenu={handleEdgeContextMenu}
           snapToGrid={snapToGrid}
           snapGrid={[BASE_BG_GAP / currentZoom, BASE_BG_GAP / currentZoom]}
-          // @ts-ignore
+
           nodeTypes={nodeTypes}
           onMove={(flowTransform) => {
             if (flowTransform) {
               setCurrentZoom(flowTransform.zoom);
             }
           }}
-          // @ts-ignore
           edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
           onElementClick={!signed ? onElementClick : undefined}
         >
-          {!signed && (
-            <div data-html2canvas-ignore="true">
-              <Collaboration setShareModalOpen={setShareModalOpen} />
-              <Meta
-                label={label}
-                setMetaOpen={setMetaOpen}
-                handleVisabilityChange={handleVisabilityChange}
-                handlePowerpoint={handlePowerpoint}
-                handleVisability={handleVisability}
-                elements={elements}
-                setSnapToGrid={setSnapToGrid}
-                snapToGrid={snapToGrid}
-                handleAutoLayout={handleAutoLayout}
-                handleOpenMenu={toggleSubMenu}
-                handleImage={handleImage}
-                backLink="/app/workspace"
-              />
-              <Items
-                toggleNode={toggleNode}
-                defineNodeOpen={defineNodeOpen}
-                handleOpenCvr={handleOpenCvr}
-                setShowAlertLog={setShowAlertLog}
-                showAlertLog={showAlertLog}
-                history={history}
-                id={id}
-                mouseActive={mouseActive}
-                stickyActive={stickyActive}
-                nodeActive={nodeActive}
-                toggleMouse={toggleMouse}
-                toggleSticky={toggleSticky}
-                zoom={currentZoom}
-              />
-              <Controls
-                currentZoom={currentZoom}
-                reactFlowInstance={rfInstance}
-              />
-            </div>
-          )}
-          {handleVisability && !signed && (
-            <Background
-              variant={BackgroundVariant.Lines}
-              gap={BASE_BG_GAP / currentZoom}
-              size={BASE_BG_STROKE / currentZoom / 2}
-              color="#dadcdf"
+          {!signed && <div data-html2canvas-ignore="true">
+            <Collaboration
+              setShareModalOpen={setShareModalOpen}
             />
-          )}
+            <Meta
+              label={label}
+              setMetaOpen={setMetaOpen}
+              handleVisabilityChange={handleVisabilityChange}
+              handlePowerpoint={handlePowerpoint}
+              handleVisability={handleVisability}
+              elements={elements}
+              setSnapToGrid={setSnapToGrid}
+              snapToGrid={snapToGrid}
+              handleAutoLayout={handleAutoLayout}
+              handleOpenMenu={toggleSubMenu}
+              handleImage={handleImage}
+              backLink="/app/workspace"
+            />
+            <Items
+              toggleNode={toggleNode}
+              defineNodeOpen={defineNodeOpen}
+              handleOpenCvr={handleOpenCvr}
+              setShowAlertLog={setShowAlertLog}
+              showAlertLog={showAlertLog}
+              history={history}
+              id={id}
+              mouseActive={mouseActive}
+              stickyActive={stickyActive}
+              nodeActive={nodeActive}
+              toggleMouse={toggleMouse}
+              toggleSticky={toggleSticky}
+              zoom={currentZoom}
+            />
+            <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
+          </div>}
+          {handleVisability && !signed
+               && (
+                 <Background
+                   variant={BackgroundVariant.Lines}
+                   gap={BASE_BG_GAP / currentZoom}
+                   size={BASE_BG_STROKE / currentZoom / 2}
+                   color="#dadcdf"
+                 />
+               )}
         </ReactFlow>
         {(initialLoading || initialLoadingCvr) && (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: theme.palette.background.default,
-              position: "absolute",
-              zIndex: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
+          <>
+            <div style={{
+              width: '100%', height: '100%', backgroundColor: theme.palette.background.default, position: 'absolute', zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center"
             }}
-          >
-            <Loader bigFont />
-          </div>
+            >
+              <Loader bigFont />
+            </div>
+          </>
         )}
         {signed ? (
           <>
-            <a href="https://www.juristic.io/" className={classes.signedLogo}>
+            <a
+              href="https://www.juristic.io/"
+              className={classes.signedLogo}
+            >
               <img className={classes.img} src={logoBeta} alt={brand.name} />
             </a>
 
@@ -1511,14 +1193,15 @@ function Workspace(props) {
               <div className={classes.signedRow}>
                 <div className={classes.signedCircle} />
                 <Typography className={classes.signedText}>
-                  {t("workspaces.approved_and_locked_off")}
+                  {t('workspaces.approved_and_locked_off')}
+                  {' '}
                   {' '}
                   {signedBy}
                 </Typography>
               </div>
               <div className={classes.signedRow}>
                 <Typography className={classes.signedId}>
-                  {t("workspaces.id")}
+                  {t('workspaces.id')}
                   {' '}
                   {window.btoa(signedBy + id)}
                 </Typography>
@@ -1535,26 +1218,22 @@ function Workspace(props) {
         group={group}
         tagOptions={tagOptions}
         tags={tags}
-        changeTags={(_tags) => dispatch(changeTags(_tags))}
+        changeTags={_tags => dispatch(changeTags(_tags))}
         labelChange={(e) => dispatch(labelChange(e.target.value))}
         descriptionChange={(e) => dispatch(descriptionChange(e.target.value))}
         addGroup={(_group) => dispatch(addGroup(_group.value))}
         groupsDropDownOptions={groupsDropDownOptions}
         shareOrg={shareOrg}
         handleShareOrg={() => dispatch(shareOrgChange)}
-        onSave={() =>
-          dispatch(
-            putWorkspace(
-              user,
-              id as string,
-              label,
-              description,
-              group,
-              JSON.stringify(tags),
-              shareOrg,
-              setMetaOpen
-            )
-          )}
+        onSave={() => dispatch(putWorkspace(
+          user,
+          id as string,
+          label,
+          description,
+          group,
+          JSON.stringify(tags),
+          shareOrg,
+          setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
       />
       <DefineEdge
@@ -1604,8 +1283,7 @@ function Workspace(props) {
           isUpdatingElement={isUpdatingElement}
           elementToUpdate={elementToUpdate}
           handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
-          handleDeleteNode={() =>
-            elementToUpdate && onElementsRemove([elementToUpdate])}
+          handleDeleteNode={() => elementToUpdate && onElementsRemove([elementToUpdate])}
           loading={loading}
           attributesDropDownOptions={attributesDropDownOptions}
           handleRemoveAttributes={handelRemoveAttributes}
@@ -1621,9 +1299,10 @@ function Workspace(props) {
               history.location.pathname,
               `/app/red%20flags/${encryptId(alerts[0]?.alert?.id)}`
             );
-            const win = window.open(location, "_blank");
+            const win = window.open(location, '_blank');
             win && win.focus();
-          }}
+          }
+          }
           open={alertOpen}
           handleClose={() => {
             setAlertOpen(false);
@@ -1636,7 +1315,8 @@ function Workspace(props) {
         close={() => setShowAlertLog(false)}
         alerts={alerts}
         history={history}
-        seeAlert={(index) => setAlertId(index)}
+        seeAlert={(index) => setAlertId(index)
+        }
         highlightAlertItems={highlightAlertItems}
         removeHighlightAlert={removeHighlightAlert}
       />
@@ -1648,20 +1328,12 @@ function Workspace(props) {
           handleUncertainCompanies();
           dispatch(stopLoading);
         }}
-        title={t("workspaces.load_from_CVR")}
-        description={t("workspaces.search_for_a_company_or_CVR_number")}
-        textFielLabel={t("workspaces.cvr_nr")}
+        title={t('workspaces.load_from_CVR')}
+        description={t('workspaces.search_for_a_company_or_CVR_number')}
+        textFielLabel={t('workspaces.cvr_nr')}
         changeUncertainCompanies={handleUncertainCompanies}
         uncertainCompanies={uncertainCompanies}
-        mapUncertainCompanies={(uncertainMapping) =>
-          dispatch(
-            mapUncertainCompanies(
-              user,
-              id as string,
-              uncertainMapping,
-              erstTypes
-            )
-          )}
+        mapUncertainCompanies={(uncertainMapping) => dispatch(mapUncertainCompanies(user, id as string, uncertainMapping, erstTypes))}
         onConfirm={onConfirm}
       />
       <MapTypesForErst
@@ -1673,42 +1345,35 @@ function Workspace(props) {
         }}
         handleNodeChange={(_label) => {
           if (_label.__isNew__) {
-            dispatch(
-              addWorkspaceNodeToList({
-                attributes: [],
-                description: null,
-                id: null,
-                label: _label.value,
-                style:
-                  '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
-              })
-            );
+            dispatch(addWorkspaceNodeToList({
+              attributes: [],
+              description: null,
+              id: null,
+              label: _label.value,
+              style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
+            }));
           }
         }}
         handleRelationshipChange={(_label) => {
           if (_label.__isNew__) {
-            dispatch(
-              addEdgeToList({
-                id: null,
-                label: _label.value,
-                description: null,
-                values: [],
-                style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
-              })
-            );
+            dispatch(addEdgeToList({
+              id: null,
+              label: _label.value,
+              description: null,
+              values: [],
+              style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
+            }));
           }
         }}
         initErstTypes={erstTypes}
         nodes={nodes}
         relationships={relationships}
       />
-      {companyData && Object.keys(companyData).length > 0 && (
-        <CompanyDataModel
-          open={showCompanyData}
-          close={() => dispatch(setShowCompanyData(false))}
-          companyData={companyData}
-        />
-      )}
+      {companyData && Object.keys(companyData).length > 0 && <CompanyDataModel
+        open={showCompanyData}
+        close={() => dispatch(setShowCompanyData(false))}
+        companyData={companyData}
+      />}
       <AddressInfoModel
         open={showAddressInfo}
         close={() => dispatch(setShowAddressInfo(false))}
@@ -1718,19 +1383,7 @@ function Workspace(props) {
         open={shareModalOpen}
         loading={loading}
         close={() => setShareModalOpen(false)}
-        onShare={(firstName, lastName, email, phone, editable) =>
-          dispatch(
-            shareWorkspace(
-              user,
-              id as string,
-              firstName,
-              lastName,
-              email,
-              phone,
-              editable,
-              setShareModalOpen
-            )
-          )}
+        onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(user, id as string, firstName, lastName, email, phone, editable, setShareModalOpen))}
       />
       <RelationshipModal
         open={showNodeRelations}
@@ -1749,8 +1402,7 @@ function Workspace(props) {
             handleEdit={onElementClick}
             handleShowNodeRelations={handleShowNodeRelations}
             showCompanyInfo={handleGetCompanyData}
-            getAddressInfo={(_id) =>
-              dispatch(getAddressInfo(user, _id, setShowContextMenu))}
+            getAddressInfo={(_id) => dispatch(getAddressInfo(user, _id, setShowContextMenu))}
             loading={loading}
             cut={cut}
             copy={copy}
@@ -1774,82 +1426,75 @@ function Workspace(props) {
             stickyClick={handlePostSticky}
             handleShowGrid={handleVisabilityChange}
             handleVisability={handleVisability}
-            handleSnapToGrid={() => setSnapToGrid((prevVal) => !prevVal)}
+            handleSnapToGrid={() => setSnapToGrid(prevVal => !prevVal)}
             snapToGrid={snapToGrid}
             fitView={() => rfInstance?.fitView()}
           />
-          <InternationalStructureAlert
-            open={showInternationalDisclaimer}
-            close={closeInternationalDisclaimer}
-          />
-          {showNodePopper && nodePopperRef && (
-            <NodePopper
-              nodePopperRef={nodePopperRef}
-              showNodePopper={showNodePopper}
-              currentZoom={currentZoom}
-              close={handleHideNodePopper}
-              nodeBorderColor={nodeBorderColor}
-              handleBorderColorChange={handleBorderColorChange}
-              nodeLabelColor={nodeLabelColor}
-              handleLabelColorChange={handleLabelColorChange}
-              nodeColor={nodeColor}
-              handleColorChange={handleNodeColorChange}
-              nodes={nodes}
-              nodeLabel={nodeLabel}
-              handleChangeLabel={handleChangeLabelNode}
-              handleNodeSave={handleNodeSave}
-              editData={onElementClick}
-              loading={loading}
-              activeElement={activeElement}
-              getCompanyData={handleGetCompanyData}
-              attributesDropDownOptions={attributesDropDownOptions}
-              attributes={attributes}
-              handleChangeAttributes={handleChangeAttributes}
-              handelRemoveAttributes={handelRemoveAttributes}
-              handleNodeFigur={handleNodeFigur}
-              nodeFigur={nodeFigur}
-              removeNodeTextTarget={removeNodeTextTarget}
-            />
-          )}
+          <InternationalStructureAlert open={showInternationalDisclaimer} close={closeInternationalDisclaimer} />
+          {showNodePopper && nodePopperRef && <NodePopper
+            nodePopperRef={nodePopperRef}
+            showNodePopper={showNodePopper}
+            currentZoom={currentZoom}
+            close={handleHideNodePopper}
+            nodeBorderColor={nodeBorderColor}
+            handleBorderColorChange={handleBorderColorChange}
+            nodeLabelColor={nodeLabelColor}
+            handleLabelColorChange={handleLabelColorChange}
+            nodeColor={nodeColor}
+            handleColorChange={handleNodeColorChange}
+            nodes={nodes}
+            nodeLabel={nodeLabel}
+            handleChangeLabel={handleChangeLabelNode}
+            handleNodeSave={handleNodeSave}
+            editData={onElementClick}
+            loading={loading}
+            activeElement={activeElement}
+            getCompanyData={handleGetCompanyData}
+            attributesDropDownOptions={attributesDropDownOptions}
+            attributes={attributes}
+            handleChangeAttributes={handleChangeAttributes}
+            handelRemoveAttributes={handelRemoveAttributes}
+            handleNodeFigur={handleNodeFigur}
+            nodeFigur={nodeFigur}
+            removeNodeTextTarget={removeNodeTextTarget}
+          />}
 
-          {showEdgePopper && edgePopperRef && (
-            <EdgePopper
-              edgePopperRef={edgePopperRef}
-              showEdgePopper={showEdgePopper}
-              currentZoom={currentZoom}
-              editData={onElementClick}
-              activeElement={activeElement}
-              edgeLabel={relationshipLabel}
-              relationships={relationships}
-              relationshipLabel={relationshipLabel}
-              handleChangeLabel={handleChangeLabel}
-              handleEdgeSave={handleRelationshipSave}
-              type={relationshipType}
-              handleTypeChange={handleTypeChange}
-              edgeColor={relationshipColor}
-              handleColorChange={handleColorChange}
-              showArrow={showArrow}
-              handleShowArrowChange={handleShowArrowChange}
-              animatedLine={animatedLine}
-              handleAnimatedLineChange={handleAnimatedLineChange}
-              showLabel={showLabel}
-              handleShowLabelChange={handleShowLabelChange}
-              lineThrough={lineThrough}
-              handleLineThroughChange={handleLineThroughChange}
-              handleDeleteEdge={handleDeleteEdge}
-              handleHideEdgePopper={handleHideEdgePopper}
-              rfInstance={rfInstance}
-              popperComponentRef={edgePopperComponentRef}
-            />
-          )}
+          {showEdgePopper && edgePopperRef && <EdgePopper
+            edgePopperRef={edgePopperRef}
+            showEdgePopper={showEdgePopper}
+            currentZoom={currentZoom}
+            editData={onElementClick}
+            activeElement={activeElement}
+            edgeLabel={relationshipLabel}
+            relationships={relationships}
+            relationshipLabel={relationshipLabel}
+            handleChangeLabel={handleChangeLabel}
+            handleEdgeSave={handleRelationshipSave}
+            type={relationshipType}
+            handleTypeChange={handleTypeChange}
+            edgeColor={relationshipColor}
+            handleColorChange={handleColorChange}
+            showArrow={showArrow}
+            handleShowArrowChange={handleShowArrowChange}
+            animatedLine={animatedLine}
+            handleAnimatedLineChange={handleAnimatedLineChange}
+            showLabel={showLabel}
+            handleShowLabelChange={handleShowLabelChange}
+            lineThrough={lineThrough}
+            handleLineThroughChange={handleLineThroughChange}
+            handleDeleteEdge={handleDeleteEdge}
+            handleHideEdgePopper={handleHideEdgePopper}
+            rfInstance={rfInstance}
+            popperComponentRef={edgePopperComponentRef}
+          />}
         </>
       )}
     </div>
   );
-}
+};
 
 Workspace.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Workspace);

@@ -1,14 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useTheme } from "@mui/material/styles";
-import withStyles from '@mui/styles/withStyles';
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import NoSsr from "@mui/material/NoSsr";
+import { withStyles, useTheme } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import NoSsr from "@material-ui/core/NoSsr";
 import Select from "react-select";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
 import { useDispatch } from "react-redux";
 import {
   titleChange,
@@ -89,7 +88,7 @@ function ConditionNamingForm(props) {
         spacing={3}
         alignItems="flex-start"
         direction="row"
-        justifyContent="center"
+        justify="center"
       >
         <Grid item xs={12} md={12}>
           <Paper className={classes.root}>

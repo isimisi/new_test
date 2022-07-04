@@ -3,7 +3,7 @@ import { PropTypes } from "prop-types";
 import classNames from "classnames";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from "@material-ui/core/styles";
 import { toggleAction, openAction, playTransitionAction } from "@redux/actions/uiActions";
 import { GuideSlider } from "@components";
 import LeftSidebarLayout from "./layouts/LeftSidebarLayout";

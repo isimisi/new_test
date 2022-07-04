@@ -2,9 +2,9 @@
 import React, { useState, useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import Hidden from "@mui/material/Hidden";
-import Drawer from "@mui/material/Drawer";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Hidden from "@material-ui/core/Hidden";
+import Drawer from "@material-ui/core/Drawer";
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import useStyle from "./sidebar-jss";
 import SidebarContent from "./SidebarContent";
 
@@ -59,7 +59,7 @@ function Sidebar(props) {
           </div>
         </SwipeableDrawer>
       </Hidden>
-      <Hidden lgDown>
+      <Hidden mdDown>
         <Drawer
           variant="permanent"
           onClose={toggleDrawerOpen}

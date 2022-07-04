@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import React, { useState, useCallback } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Field, reduxForm } from 'redux-form/immutable';
-import Fab from '@mui/material/Fab';
-import Paper from '@mui/material/Paper';
-import Popover from '@mui/material/Popover';
-import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton';
-import ArrowForward from '@mui/icons-material/ArrowForward';
-import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
-import Help from '@mui/icons-material/Help';
+import Fab from '@material-ui/core/Fab';
+import Paper from '@material-ui/core/Paper';
+import Popover from '@material-ui/core/Popover';
+import FormControl from '@material-ui/core/FormControl';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowForward from '@material-ui/icons/ArrowForward';
+import Typography from '@material-ui/core/Typography';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Help from '@material-ui/icons/Help';
 import Lottie from 'lottie-react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -82,7 +82,10 @@ function LockForm(props: Props) {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton aria-label="Helper Hint" onClick={handleShowHint} size="large">
+                          <IconButton
+                            aria-label="Helper Hint"
+                            onClick={handleShowHint}
+                          >
                             <Help />
                           </IconButton>
                         </InputAdornment>

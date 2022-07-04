@@ -3,7 +3,7 @@
 
 // @ts-nocheck
 import React from "react";
-import Paper from "@mui/material/Paper";
+import Paper from "@material-ui/core/Paper";
 import "./index.css";
 
 export default function sectionWrapper(props: {

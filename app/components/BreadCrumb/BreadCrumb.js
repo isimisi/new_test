@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@mui/styles/withStyles';
+import { withStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import { Link, Route } from 'react-router-dom';
 import styles from './breadCrumb-jss';

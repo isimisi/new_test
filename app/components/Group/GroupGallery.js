@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Grid from '@mui/material/Grid';
+import Grid from '@material-ui/core/Grid';
 import GroupCard from '../CardPaper/GroupCard';
 import GroupDetail from './GroupDetail';
 
@@ -44,7 +44,7 @@ function GroupGallery(props) {
       <Grid
         container
         alignItems="flex-start"
-        justifyContent="flex-start"
+        justify="flex-start"
         direction="row"
         spacing={3}
       >

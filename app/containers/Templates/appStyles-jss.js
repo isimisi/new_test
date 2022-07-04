@@ -58,7 +58,7 @@ const styles = (theme) => ({
     padding: theme.spacing(2),
     minHeight: "100%",
     overflow: "hidden",
-    [theme.breakpoints.down('xl')]: {
+    [theme.breakpoints.down("md")]: {
       paddingLeft: theme.spacing(1),
       paddingRight: theme.spacing(1),
     },
@@ -125,7 +125,7 @@ const styles = (theme) => ({
     bottom: -32,
     transform: "scale(1.1,0.8)",
     transformOrigin: "bottom",
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down("xs")]: {
       display: "none",
     },
   },
@@ -223,14 +223,14 @@ const styles = (theme) => ({
     "& h4": {
       fontWeight: 700,
       textTransform: "capitalize",
-      [theme.breakpoints.down('xl')]: {
+      [theme.breakpoints.down("md")]: {
         marginBottom: theme.spacing(3),
       },
     },
   },
   darkTitle: {
     color:
-      theme.palette.mode === "dark"
+      theme.palette.type === "dark"
         ? theme.palette.primary.main
         : theme.palette.primary.dark,
   },

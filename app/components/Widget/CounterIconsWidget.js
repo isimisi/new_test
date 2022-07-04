@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@mui/styles/withStyles';
-import Grid from '@mui/material/Grid';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Ionicon from 'react-ionicons';
 import CounterWidget from '../Counter/CounterWidget';
 import styles from './widget-jss';
