@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import themePalette from "@api/palette/themePalette";
 import { MyTheme } from "../../types/styling";
 

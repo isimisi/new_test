@@ -2,24 +2,24 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import withStyles from '@mui/styles/withStyles';
 import classNames from "classnames";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Field, reduxForm } from "redux-form/immutable";
-import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import ArrowForward from "@material-ui/icons/ArrowForward";
-import AllInclusive from "@material-ui/icons/AllInclusive";
-import Brightness5 from "@material-ui/icons/Brightness5";
-import People from "@material-ui/icons/People";
-import Icon from "@material-ui/core/Icon";
-import Hidden from "@material-ui/core/Hidden";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import AllInclusive from "@mui/icons-material/AllInclusive";
+import Brightness5 from "@mui/icons-material/Brightness5";
+import People from "@mui/icons-material/People";
+import Icon from "@mui/material/Icon";
+import Hidden from "@mui/material/Hidden";
 import brand from "@api/dummy/brand";
 import logo from "@images/logo.svg";
 import { useTranslation } from "react-i18next";
@@ -51,7 +51,7 @@ function RegisterForm(props) {
         </NavLink>
       </Hidden>
       <Paper className={classNames(classes.paperWrap, deco && classes.petal)}>
-        <Hidden smDown>
+        <Hidden mdDown>
           <div className={classes.topBar}>
             <NavLink to="/" className={classes.brand}>
               <img src={logo} alt={brand.name} />

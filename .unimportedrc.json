@@ -1,0 +1,19 @@
+{
+  "entry": ["app/app.tsx", "server/*.{js,ts}", "internals/*"],
+  "extensions": [".tsx", ".js", ".ts"],
+  "ignorePatterns": ["**/node_modules/**", "private/**"],
+  "ignoreUnresolved": [
+    "!file-loader?name=[name].[ext]!../public/favicons/favicon.ico",
+    "file-loader?name=.htaccess!./.htaccess"
+  ],
+  "ignoreUnused": [
+    "cross-env",
+    "dotenv",
+    "eslint-config-airbnb-base",
+    "sass",
+    "style-loader",
+    "styled-components",
+    "ts-loader",
+    "webpack-bugsnag-plugins"
+  ]
+}

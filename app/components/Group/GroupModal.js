@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import withStyles from '@mui/styles/withStyles';
+import Modal from '@mui/material/Modal';
 import GroupForm from '../Forms/GroupForm';
 
 function getModalStyle() {

@@ -1,146 +1,146 @@
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-import { gradientBgLight, gradientBgDark } from 'containers/Templates/appStyles-jss';
+import { alpha } from '@mui/material/styles';
+import { gradientBgLight } from "../../containers/Templates/appStyles-jss";
 const drawerWidth = 240;
 const drawerBigWidth = 280;
 
-const styles = theme => ({
+const styles = (theme) => ({
   appBar: {
-    background: 'rgba(0,0,0,0)',
+    background: "rgba(0,0,0,0)",
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin', 'background'], {
+    transition: theme.transitions.create(["width", "margin", "background"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    '& $menuButton': {
-      backgroundColor: 'transparent',
-      boxShadow: 'none',
+    "& $menuButton": {
+      backgroundColor: "transparent",
+      boxShadow: "none",
       zIndex: 10,
     },
-    '&$left': {
-      '& $menuButton': {
+    "&$left": {
+      "& $menuButton": {
         marginLeft: 13,
       },
-      '& $headerTitle': {
+      "& $headerTitle": {
         left: theme.spacing(2),
-      }
+      },
     },
-    '&$leftBig': {
-      '& $menuButton': {
+    "&$leftBig": {
+      "& $menuButton": {
         marginLeft: 30,
         marginRight: theme.spacing(2),
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
           marginLeft: 13,
         },
       },
-      '& $headerTitle': {
+      "& $headerTitle": {
         left: 0,
-      }
+      },
     },
-    '&$right': {
-      '& $menuButton': {
+    "&$right": {
+      "& $menuButton": {
         marginRight: 13,
       },
-      '& $headerTitle': {
+      "& $headerTitle": {
         right: theme.spacing(2),
       },
-      '& > div': {
-        flexDirection: 'row-reverse'
+      "& > div": {
+        flexDirection: "row-reverse",
       },
-      '& $flex': {
-        textAlign: 'left'
-      }
+      "& $flex": {
+        textAlign: "left",
+      },
     },
   },
   attachedbar: {
-    position: 'relative',
-    '& $menuButton': {
-      margin: `0 ${theme.spacing(2)}px`
+    position: "relative",
+    "& $menuButton": {
+      margin: `0 ${theme.spacing(2)}`,
     },
-    '& $wrapper': {
-      [theme.breakpoints.down('lg')]: {
-        border: `1px solid ${theme.palette.divider}`
+    "& $wrapper": {
+      [theme.breakpoints.down('xl')]: {
+        border: `1px solid ${theme.palette.divider}`,
       },
-    }
+    },
   },
   floatingBar: {
-    position: 'fixed'
+    position: "fixed",
   },
   appMenu: {
-    justifyContent: 'space-between',
-    display: 'flex',
-    flexDirection: 'row',
+    justifyContent: "space-between",
+    display: "flex",
+    flexDirection: "row",
     background: theme.palette.background.paper,
     boxShadow: theme.shadows[3],
-    [theme.breakpoints.down('md')]: {
-      padding: `${theme.spacing(0.5)}px 0`,
+    [theme.breakpoints.down('lg')]: {
+      padding: `${theme.spacing(0.5)} 0`,
     },
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up("lg")]: {
       background: alpha(theme.palette.background.paper, 0.8),
     },
-    color: theme.palette.text.primary
+    color: theme.palette.text.primary,
   },
   flex: {
     flex: 1,
-    textAlign: 'right'
+    textAlign: "right",
   },
   flexDefault: {
     flex: 1,
-    textAlign: 'right'
+    textAlign: "right",
   },
   left: {},
   leftBig: {},
   right: {},
   appBarShift: {
-    transition: theme.transitions.create(['width', 'margin', 'background'], {
+    transition: theme.transitions.create(["width", "margin", "background"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    '&$left': {
-      '& $menuButton': {
-        [theme.breakpoints.up('lg')]: {
-          marginLeft: -20
-        }
+    "&$left": {
+      "& $menuButton": {
+        [theme.breakpoints.up("lg")]: {
+          marginLeft: -20,
+        },
       },
-      [theme.breakpoints.up('lg')]: {
+      [theme.breakpoints.up("lg")]: {
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
       },
     },
-    '&$leftBig': {
-      '& $menuButton': {
-        [theme.breakpoints.up('lg')]: {
-          marginLeft: -20
-        }
+    "&$leftBig": {
+      "& $menuButton": {
+        [theme.breakpoints.up("lg")]: {
+          marginLeft: -20,
+        },
       },
-      [theme.breakpoints.up('lg')]: {
+      [theme.breakpoints.up("lg")]: {
         marginLeft: drawerBigWidth,
         width: `calc(100% - ${drawerBigWidth}px)`,
       },
     },
-    '&$right': {
-      '& $menuButton': {
-        [theme.breakpoints.up('lg')]: {
-          marginRight: -20
-        }
+    "&$right": {
+      "& $menuButton": {
+        [theme.breakpoints.up("lg")]: {
+          marginRight: -20,
+        },
       },
-      [theme.breakpoints.up('lg')]: {
+      [theme.breakpoints.up("lg")]: {
         marginRight: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
       },
     },
-    '& $menuButton': {
+    "& $menuButton": {
       backgroundColor: theme.palette.primary.main,
     },
-    '& $headerAction': {
-      marginLeft: theme.spacing(1)
+    "& $headerAction": {
+      marginLeft: theme.spacing(1),
     },
   },
   menuButton: {},
   menuIcon: {
-    color: 'black'
+    color: "black",
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -148,316 +148,330 @@ const styles = theme => ({
     width: 200,
   },
   container: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
   },
   dark: {},
   light: {},
   wrapper: {
     fontFamily: theme.typography.fontFamily,
-    position: 'relative',
+    position: "relative",
     marginRight: theme.spacing(2),
     marginLeft: theme.spacing(1),
     borderRadius: 22,
     boxShadow: `0 0 1px ${theme.palette.primary.main}`,
-    display: 'inline-block',
-    '&:hover': {
+    display: "inline-block",
+    "&:hover": {
       background: alpha(theme.palette.common.white, 0.25),
     },
-    '&$light': {
+    "&$light": {
       background: theme.palette.common.white,
     },
-    '& $miniInput': {
-      width: 70
+    "& $miniInput": {
+      width: 70,
     },
   },
   searchWrapper: {
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('lg')]: {
       flex: 1,
-      textAlign: 'right'
-    }
+      textAlign: "right",
+    },
   },
   search: {
     width: theme.spacing(9),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    [theme.breakpoints.down('sm')]: {
+      display: "none",
     },
   },
   miniInput: {
     paddingLeft: 0,
-    textIndent: '999999px'
+    textIndent: "999999px",
   },
   gradientBg: {},
   solidBg: {},
   darker: {
-    backgroundAttachment: 'fixed',
-    boxShadow: '0px 2px 2px -2px rgba(80,80,80, 0.2)',
-    '&$gradientBg': {
-      backgroundImage: theme.palette.type === 'dark' ? gradientBgDark(theme) : gradientBgLight(theme),
+    backgroundAttachment: "fixed",
+    boxShadow: "0px 2px 2px -2px rgba(80,80,80, 0.2)",
+    "&$gradientBg": {
+      backgroundImage: gradientBgLight(theme),
     },
-    '&$solidBg': {
-      backgroundColor: theme.palette.background.default
+    "&$solidBg": {
+      backgroundColor: theme.palette.background.default,
     },
-    '& $menuButton': {
-      color: theme.palette.common.white
-    }
+    "& $menuButton": {
+      color: theme.palette.common.white,
+    },
   },
   fixed: {
-    position: 'fixed',
+    position: "fixed",
     left: 0,
     top: 0,
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up("lg")]: {
       top: theme.spacing(1) * -8,
-    }
+    },
   },
   separatorV: {
     borderLeft: `1px solid ${theme.palette.grey[300]}`,
     height: 20,
-    margin: '0 10px',
-    opacity: 0.4
+    margin: "0 10px",
+    opacity: 0.4,
   },
   notifMenu: {
-    '& li': {
-      height: 'auto',
-      '& h3': {
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-        textOverflow: 'ellipsis'
-      }
-    }
+    "& li": {
+      height: "auto",
+      "& h3": {
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+      },
+    },
   },
   badgeMenu: {
-    '& span': {
+    "& span": {
       top: 0,
-      right: -30
-    }
+      right: -30,
+    },
   },
   textNotif: {
-    '& span': {
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-      display: 'block'
-    }
+    "& span": {
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+      display: "block",
+    },
   },
   notifIcon: {
-    '& i': {
+    "& i": {
       width: 28,
       height: 28,
-      fontSize: 28
+      fontSize: 28,
     },
-    '&$dark': {
-      '& i': {
+    "&$dark": {
+      "& i": {
         color: theme.palette.text.primary,
-      }
+      },
     },
-    '&$light': {
-      '& i': {
+    "&$light": {
+      "& i": {
         color: theme.palette.common.white,
-      }
+      },
     },
   },
   brand: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '10px 20px 5px',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "10px 20px 5px",
     height: 64,
-    position: 'absolute',
-    width: '100%',
+    position: "absolute",
+    width: "100%",
     fontSize: 16,
     margin: 0,
     fontWeight: 500,
-    textDecoration: 'none',
+    textDecoration: "none",
     color: theme.palette.text.primary,
-    '& img': {
+    "& img": {
       marginRight: 10,
-      width: 30
+      width: 30,
     },
   },
   mainMenu: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(2, 0),
     boxShadow: theme.shadows[3],
-    position: 'relative',
-    transition: 'padding 0.3s ease',
-    '& > div': {
-      display: 'flex',
-      justifyContent: 'center'
-    }
+    position: "relative",
+    transition: "padding 0.3s ease",
+    "& > div": {
+      display: "flex",
+      justifyContent: "center",
+    },
   },
   headMenu: {
     fontSize: 12,
-    padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px ${theme.spacing(0.5)}px ${theme.spacing(2)}px`,
-    minHeight: 'auto',
-    margin: `0 ${theme.spacing(0.5)}px`,
-    lineHeight: '2em'
+    padding: `${theme.spacing(0.5)} ${theme.spacing(1)} ${theme.spacing(
+      0.5
+    )} ${theme.spacing(2)}`,
+    minHeight: "auto",
+    margin: `0 ${theme.spacing(0.5)}`,
+    lineHeight: "2em",
   },
   opened: {
     color: theme.palette.primary.main,
     boxShadow: `inset 0 0 0 1px ${theme.palette.primary.main}`,
-    '& svg': {
+    "& svg": {
       fill: theme.palette.primary.main,
-    }
+    },
   },
   rightIcon: {
     marginLeft: theme.spacing(0.5),
-    opacity: 0.3
+    opacity: 0.3,
   },
   selected: {
     background: theme.palette.primary.main,
     color: theme.palette.primary.light,
-    '&:hover': {
+    "&:hover": {
       background: theme.palette.primary.main,
     },
-    '& svg': {
+    "& svg": {
       fill: theme.palette.primary.light,
     },
-    '& $rightIcon': {
-      opacity: 0.7
-    }
+    "& $rightIcon": {
+      opacity: 0.7,
+    },
   },
   paperMenu: {
-    overflow: 'auto',
-    maxHeight: 500
+    overflow: "auto",
+    maxHeight: 500,
   },
   popperClose: {
-    pointerEvents: 'none',
-    zIndex: 2
+    pointerEvents: "none",
+    zIndex: 2,
   },
   title: {
     fontSize: 10,
-    textTransform: 'uppercase',
-    display: 'block',
+    textTransform: "uppercase",
+    display: "block",
     color: theme.palette.secondary.main,
-    lineHeight: '28px',
-    fontWeight: 'bold',
+    lineHeight: "28px",
+    fontWeight: "bold",
     background: theme.palette.background.paper,
-    borderRadius: theme.rounded.medium
+    borderRadius: theme.rounded.medium,
   },
   dropDownMenu: {
     minWidth: 300,
     marginTop: theme.spacing(1.5),
-    position: 'relative'
+    position: "relative",
   },
   active: {},
   menuItem: {
-    '& span': {
+    "& span": {
       fontSize: 14,
     },
-    '&$active': {
+    "&$active": {
       borderLeft: `5px solid ${theme.palette.primary.main}`,
-      backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
-      '& span': {
+      backgroundColor:
+        theme.palette.mode === "dark"
+          ? alpha(theme.palette.secondary.main, 0.24)
+          : theme.palette.secondary.light,
+      "& span": {
         color: theme.palette.primary.main,
       },
-      '&:hover': {
-        backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
-      }
-    }
+      "&:hover": {
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? alpha(theme.palette.secondary.main, 0.24)
+            : theme.palette.secondary.light,
+      },
+    },
   },
   megaMenu: {
-    '& $title': {
-      paddingLeft: theme.spacing(2)
-    }
+    "& $title": {
+      paddingLeft: theme.spacing(2),
+    },
   },
   megaItem: {
-    display: 'inline-block',
-    width: 'auto',
+    display: "inline-block",
+    width: "auto",
     margin: theme.spacing(1),
     borderRadius: theme.rounded.big,
-    padding: `${theme.spacing(0.25)}px ${theme.spacing(1)}px`,
-    '& span': {
+    padding: `${theme.spacing(0.25)} ${theme.spacing(1)}`,
+    "& span": {
       fontSize: 14,
     },
-    '& div': {
-      padding: 0
+    "& div": {
+      padding: 0,
     },
-    '&$active': {
+    "&$active": {
       border: `1px solid ${theme.palette.primary.main}`,
-      backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
-      '& span': {
+      backgroundColor:
+        theme.palette.mode === "dark"
+          ? alpha(theme.palette.secondary.main, 0.24)
+          : theme.palette.secondary.light,
+      "& span": {
         color: theme.palette.primary.main,
       },
-      '&:hover': {
-        backgroundColor: theme.palette.type === 'dark' ? alpha(theme.palette.secondary.main, 0.24) : theme.palette.secondary.light,
-      }
-    }
+      "&:hover": {
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? alpha(theme.palette.secondary.main, 0.24)
+            : theme.palette.secondary.light,
+      },
+    },
   },
   bigIcon: {
-    display: 'block',
+    display: "block",
     marginTop: 40,
-    '& i': {
+    "& i": {
       fontSize: 100,
       color: theme.palette.primary.main,
-      margin: '0 auto',
-      display: 'inherit'
-    }
+      margin: "0 auto",
+      display: "inherit",
+    },
   },
   button: {},
   headerProperties: {
-    overflow: 'hidden',
-    position: 'relative',
-    display: 'flex',
+    overflow: "hidden",
+    position: "relative",
+    display: "flex",
     flex: 1,
-    alignItems: 'center',
-    zIndex: 1
+    alignItems: "center",
+    zIndex: 1,
   },
   fadeOut: {},
   invert: {},
   headerAction: {
-    margin: `0 ${theme.spacing(3)}px`,
-    transition: 'opacity 0.5s ease',
-    '& $button': {
-      margin: `0 ${theme.spacing(1)}px / 2`,
-      '& i': {
+    margin: `0 ${theme.spacing(3)}`,
+    transition: "opacity 0.5s ease",
+    "& $button": {
+      margin: `0 ${theme.spacing(1)} / 2`,
+      "& i": {
         color: alpha(theme.palette.common.white, 0.87),
         width: 28,
         height: 28,
         fontSize: 28,
-      }
+      },
     },
-    '&$fadeOut': {
+    "&$fadeOut": {
       opacity: 0,
     },
-    '&$invert': {
-      '& $button': {
-        '& i': {
+    "&$invert": {
+      "& $button": {
+        "& i": {
           color: alpha(theme.palette.text.primary, 0.5),
-        }
-      }
-    }
+        },
+      },
+    },
   },
   show: {},
   headerTitle: {
-    transition: 'all 0.3s ease',
+    transition: "all 0.3s ease",
     fontSize: theme.spacing(3),
-    position: 'absolute',
-    textTransform: 'capitalize',
+    position: "absolute",
+    textTransform: "capitalize",
     fontWeight: 700,
     top: 60,
     color: theme.palette.common.white,
     opacity: 0,
-    '&$show': {
+    "&$show": {
       top: theme.spacing(1),
-      opacity: 0.87
-    }
+      opacity: 0.87,
+    },
   },
   swipeDrawerPaper: {
     width: drawerWidth,
   },
   searchHeaderMenu: {
     flex: 1,
-    flexDirection: 'row-reverse',
-    display: 'flex',
-    alignItems: 'center'
-  }
+    flexDirection: "row-reverse",
+    display: "flex",
+    alignItems: "center",
+  },
 });
 
 export default styles;

@@ -4,7 +4,7 @@ import CreatableSelect from "react-select/creatable";
 import { selectStyles, mapSelectOptions } from "@api/ui/helper";
 import { hanldeOnChange, tagMapping } from "@components/Tags/constants";
 import Select from "react-select";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import useStyles from "./document-jss";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { changeDocument } from "@pages/Documents/reducers/documentActions";

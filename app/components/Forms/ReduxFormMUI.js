@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
-import Switch from '@material-ui/core/Switch';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
+import Switch from '@mui/material/Switch';
 
 /* Textfield */
 export const TextFieldRedux = ({ meta: { touched, error }, input, ...rest }) => (

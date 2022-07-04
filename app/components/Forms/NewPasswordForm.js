@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import classNames from 'classnames';
 import { Field, reduxForm } from 'redux-form/immutable';
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import ArrowForward from '@material-ui/icons/ArrowForward';
+import Button from '@mui/material/Button';
+import FormControl from '@mui/material/FormControl';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import { useTranslation } from 'react-i18next';
 import { TextFieldRedux } from './ReduxFormMUI';
 import styles from './user-jss';

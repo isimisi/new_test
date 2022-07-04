@@ -19,7 +19,7 @@ const styles = theme => ({
   },
   btnOpt: {},
   expandButton: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       display: 'none'
     }
   },
@@ -32,12 +32,12 @@ const styles = theme => ({
     border: `1px solid ${theme.palette.primary.main}`,
     borderRadius: theme.rounded.medium,
     overflow: 'hidden',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '95% !important',
       ...expand
     },
     '& header': {
-      color: theme.palette.type === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
+      color: theme.palette.mode === 'dark' ? theme.palette.primary.light : theme.palette.primary.dark,
       fontSize: 22,
       padding: '16px 20px',
       position: 'relative',
@@ -117,7 +117,7 @@ const styles = theme => ({
     position: 'relative',
     background: theme.palette.background.paper,
     padding: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       padding: '15px 10px'
     },
     maxHeight: 450,

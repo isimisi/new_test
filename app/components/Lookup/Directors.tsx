@@ -1,9 +1,9 @@
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import useStyles from "./lookup.jss";
 import InfoPaper from "./InfoPaper";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import NoContent from "@components/NoContent";
 
 interface Props {

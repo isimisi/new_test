@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import useStyles from "./document-jss";
 
 import FileUpload from "@components/FileUpload/FileUpload";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Props {
   file: any;
@@ -31,37 +31,35 @@ const UploadForm = (props: Props) => {
     link.click();
   };
 
-  return (
-    <>
-      {(doc.get("link") || file) && (
-        <div className={classes.flexRow}>
-          {file && (
-            <Tooltip title={`${t("document.delete_file")}`}>
-              <IconButton
-                color="primary"
-                aria-label="Download fil"
-                component="span"
-                style={{ marginRight: 20 }}
-                onClick={() => handleFileChange(null)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          <Tooltip title={`${t("document.change_file")}`}>
-            <FileUpload minimal handleChangeFile={handleFileChange} />
+  return <>
+    {(doc.get("link") || file) && (
+      <div className={classes.flexRow}>
+        {file && (
+          <Tooltip title={`${t("document.delete_file")}`}>
+            <IconButton
+              color="primary"
+              aria-label="Download fil"
+              component="span"
+              style={{ marginRight: 20 }}
+              onClick={() => handleFileChange(null)}
+              size="large">
+              <DeleteIcon />
+            </IconButton>
           </Tooltip>
-        </div>
-      )}
+        )}
+        <Tooltip title={`${t("document.change_file")}`}>
+          <FileUpload minimal handleChangeFile={handleFileChange} />
+        </Tooltip>
+      </div>
+    )}
 
-      <FileUpload
-        height={doc.get("link") || file ? 240 : 280}
-        handleChangeFile={handleFileChange}
-        uploaded={Boolean(doc.get("link")) || Boolean(file)}
-        download={download}
-      />
-    </>
-  );
+    <FileUpload
+      height={doc.get("link") || file ? 240 : 280}
+      handleChangeFile={handleFileChange}
+      uploaded={Boolean(doc.get("link")) || Boolean(file)}
+      download={download}
+    />
+  </>;
 };
 
 export default UploadForm;

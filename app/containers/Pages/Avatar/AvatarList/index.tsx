@@ -10,8 +10,8 @@ import { nanoid } from "nanoid";
 
 import Avatar, { genConfig } from "react-nice-avatar";
 import "./index.css";
-import IconButton from "@material-ui/core/IconButton";
-import UpdateIcon from "@material-ui/icons/Update";
+import IconButton from "@mui/material/IconButton";
+import UpdateIcon from "@mui/icons-material/Update";
 export default class AvatarList extends Component {
   static propTypes = {
     selectConfig: PropTypes.func.isRequired
@@ -100,7 +100,7 @@ export default class AvatarList extends Component {
         </div>
 
         {/* Arrow right */}
-        <IconButton color="primary" onClick={this.changeCurrent.bind(this, 1)}>
+        <IconButton color="primary" onClick={this.changeCurrent.bind(this, 1)} size="large">
           <UpdateIcon />
         </IconButton>
       </div>

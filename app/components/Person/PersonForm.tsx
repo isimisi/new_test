@@ -3,7 +3,7 @@ import React from "react";
 import { hanldeOnChange, tagMapping } from "@components/Tags/constants";
 import { fromJS } from "immutable";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
-import { Typography, TextField } from "@material-ui/core";
+import { Typography, TextField } from "@mui/material";
 import { changePerson } from "@pages/Persons/reducers/personActions";
 import { useTranslation } from "react-i18next";
 import useStyles from "./person-jss";

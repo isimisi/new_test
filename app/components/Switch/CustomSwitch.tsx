@@ -1,5 +1,7 @@
-import { withStyles, Theme, createStyles } from "@material-ui/core";
-import Switch from "@material-ui/core/Switch";
+import { Theme } from "@mui/material";
+import withStyles from '@mui/styles/withStyles';
+import createStyles from '@mui/styles/createStyles';
+import Switch from "@mui/material/Switch";
 
 const AntSwitch = withStyles((theme: Theme) =>
   createStyles({

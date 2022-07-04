@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import css from "@styles/Form.scss";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import Tooltip from "@mui/material/Tooltip";
 import { encryptId } from "@api/constants";
-import FlashOnIcon from "@material-ui/icons/FlashOn";
-import FlashOffIcon from "@material-ui/icons/FlashOff";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
+import FlashOffIcon from "@mui/icons-material/FlashOff";
 import FloatingPanel from "../Panel/FloatingPanel";
 import notFound from "@lotties/racoon/noContent.json";
 import Lottie from "lottie-react";
@@ -87,12 +87,12 @@ function AlertLog(props) {
 
                         setFlashOn((prevVal) => !prevVal);
                       }}
-                    >
+                      size="large">
                       {flashOn ? <FlashOffIcon /> : <FlashOnIcon />}
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Vis red flag">
-                    <IconButton color="primary" onClick={() => seeAlert(index)}>
+                    <IconButton color="primary" onClick={() => seeAlert(index)} size="large">
                       <VisibilityIcon />
                     </IconButton>
                   </Tooltip>
@@ -101,7 +101,7 @@ function AlertLog(props) {
                       color="primary"
                       onClick={leave}
                       disabled={alert?.alert?.organization_id === 11}
-                    >
+                      size="large">
                       <ExitToAppIcon />
                     </IconButton>
                   </Tooltip>

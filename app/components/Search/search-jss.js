@@ -41,7 +41,7 @@ const styles = theme => ({
   },
   input: {
     font: 'inherit',
-    padding: `${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(4)}px`,
+    padding: `${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(4)}`,
     border: 0,
     display: 'block',
     verticalAlign: 'middle',
@@ -56,22 +56,22 @@ const styles = theme => ({
   },
   toggleContainer: {
     height: 56,
-    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+    padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    margin: `${theme.spacing(1)}px 0`,
+    margin: `${theme.spacing(1)} 0`,
   },
   inputHeader: {
     font: 'inherit',
-    padding: `${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(1)}px ${theme.spacing(9)}px`,
+    padding: `${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(1)} ${theme.spacing(9)}`,
     display: 'block',
     verticalAlign: 'middle',
     whiteSpace: 'normal',
     background: 'none',
     margin: 0, // Reset for Safari
     color: 'inherit',
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       display: 'none'
     },
     '& > div': {

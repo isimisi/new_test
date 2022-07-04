@@ -1,22 +1,22 @@
 /* eslint-disable indent */
 /* eslint-disable react/jsx-indent-props */
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 import React, { useEffect, useState } from "react";
 import CounterWidget from "@components/Counter/CounterWidget";
 import { Doughnut, Bar } from "react-chartjs-2";
 
 import useStyles from "./lookup.jss";
-import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
 import Select from "react-select";
 import { selectStyles } from "@api/ui/helper";
 import { SelectOptions } from "@customTypes/data";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import {
   currencyFormatter,
   genericFormatter
 } from "@helpers/numbers/Formatters";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 import NoContent from "@components/NoContent";
 
 interface Props {

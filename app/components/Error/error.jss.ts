@@ -1,4 +1,6 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material/styles';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme: Theme) => ({
   errorWrap: {
@@ -7,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '50%',
     width: 700,
     height: 700,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 400,
       height: 400,
     },
@@ -16,9 +18,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     position: 'relative',
-    margin: `${theme.spacing(3)}px auto`,
+    margin: `${theme.spacing(3)} auto`,
     '& h5': {
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('md')]: {
         fontSize: '1.2rem',
       },
     },
@@ -26,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   title: {
     color: theme.palette.primary.main,
     textShadow: `10px 6px 50px ${theme.palette.primary.main}`,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       fontSize: '4rem',
       marginBottom: theme.spacing(2)
     },
@@ -43,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '50%',
     width: 700 / 1.5,
     height: 700 / 1.5,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: 400 / 1.5,
       height: 400 / 1.5,
     },

@@ -1,15 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Hidden from "@material-ui/core/Hidden";
-import Typography from "@material-ui/core/Typography";
-import SearchIcon from "@material-ui/icons/Search";
-import ViewList from "@material-ui/icons/ViewList";
-import GridOn from "@material-ui/icons/GridOn";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import withStyles from '@mui/styles/withStyles';
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Hidden from "@mui/material/Hidden";
+import Typography from "@mui/material/Typography";
+import SearchIcon from "@mui/icons-material/Search";
+import ViewList from "@mui/icons-material/ViewList";
+import GridOn from "@mui/icons-material/GridOn";
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import styles from "./search-jss";
 import { useTranslation } from "react-i18next";
 
@@ -56,7 +56,7 @@ function SearchProduct(props) {
             &nbsp;
             {t("groups.search-group.results")}
           </Typography>
-          <Hidden mdDown>
+          <Hidden lgDown>
             <div className={classes.toggleContainer}>
               <ToggleButtonGroup value={listView} exclusive onChange={handleSwitchView}>
                 <ToggleButton value="grid">

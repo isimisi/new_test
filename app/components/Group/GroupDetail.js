@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Dialog from '@material-ui/core/Dialog';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import Grid from '@material-ui/core/Grid';
+import withStyles from '@mui/styles/withStyles';
+import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Slide from '@mui/material/Slide';
+import Grid from '@mui/material/Grid';
 import colorfull from '@api/palette/colorfull';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import CounterWidget from '../Counter/CounterWidget';
 import styles from './group-jss';
 import { useTranslation } from 'react-i18next';
@@ -79,7 +79,7 @@ function GroupDetail(props) { // eslint-disable-line
               }}
             />
           )}
-          <IconButton color="inherit" onClick={() => close()} aria-label="Close">
+          <IconButton color="inherit" onClick={() => close()} aria-label="Close" size="large">
             <CloseIcon />
           </IconButton>
         </Toolbar>
@@ -100,7 +100,7 @@ function GroupDetail(props) { // eslint-disable-line
         <Grid
           container
           alignItems="flex-start"
-          justify="flex-start"
+          justifyContent="flex-start"
           direction="row"
           spacing={3}
         >

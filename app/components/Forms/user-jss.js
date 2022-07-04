@@ -1,52 +1,50 @@
-import { alpha } from '@material-ui/core/styles/colorManipulator';
-import cyan from '@material-ui/core/colors/cyan';
-import indigo from '@material-ui/core/colors/indigo';
-import red from '@material-ui/core/colors/red';
-import bg from '@images/petal_grey_bg.svg';
-import bgLight from '@images/petal_bg.svg';
-import { gradientBgLight } from 'containers/Templates/appStyles-jss';
+import { alpha } from '@mui/material/styles';
+import bg from "@images/petal_grey_bg.svg";
+import bgLight from "@images/petal_bg.svg";
+import { gradientBgLight } from "../../containers/Templates/appStyles-jss";
+import { cyan, indigo, red } from '@mui/material/colors';
 const rootWraper = {
-  display: 'flex',
-  width: '100%',
+  display: "flex",
+  width: "100%",
   zIndex: 1,
-  position: 'relative'
+  position: "relative",
 };
 
 const wrapper = (theme, opacity) => ({
   padding: theme.spacing(3),
-  textAlign: 'center',
+  textAlign: "center",
   backgroundColor: alpha(theme.palette.background.paper, opacity),
-  backgroundRepeat: 'no-repeat',
+  backgroundRepeat: "no-repeat",
   color: theme.palette.text.primary,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundAttachment: 'fixed'
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundAttachment: "fixed",
 });
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    ...rootWraper
+    ...rootWraper,
   },
   rootFull: {
     ...rootWraper,
-    height: '100%',
+    height: "100%",
   },
   container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    [theme.breakpoints.down('md')]: {
-      overflow: 'hidden'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    [theme.breakpoints.down('lg')]: {
+      overflow: "hidden",
     },
   },
   containerSide: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    width: '100%',
-    [theme.breakpoints.down('md')]: {
-      overflow: 'hidden'
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    width: "100%",
+    [theme.breakpoints.down('lg')]: {
+      overflow: "hidden",
     },
   },
   paperWrap: {
@@ -54,382 +52,382 @@ const styles = theme => ({
   },
   sideWrap: {
     ...wrapper(theme, 1),
-    height: '100%',
+    height: "100%",
     borderRadius: 0,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up("md")]: {
       width: 480,
     },
-    '& $topBar': {
-      marginBottom: theme.spacing(4)
-    }
+    "& $topBar": {
+      marginBottom: theme.spacing(4),
+    },
   },
   fullWrap: {
     ...wrapper(theme, 0.9),
-    height: '100%',
+    height: "100%",
     borderRadius: 0,
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    '& $topBar': {
-      width: '100%'
-    }
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    "& $topBar": {
+      width: "100%",
+    },
   },
   petal: {
-    backgroundImage: theme.palette.type === 'dark' ? `url(${bgLight})` : `url(${bg})`,
+    backgroundImage: theme.palette.mode === "dark" ? `url(${bgLight})` : `url(${bg})`,
   },
   icon: {},
   topBar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    '& $icon': {
-      marginRight: theme.spacing(1)
+    display: "flex",
+    justifyContent: "space-between",
+    "& $icon": {
+      marginRight: theme.spacing(1),
     },
-    [theme.breakpoints.down('sm')]: {
-      justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: "center",
       marginBottom: theme.spacing(3),
-      '& a': {
-        display: 'none'
-      }
-    }
+      "& a": {
+        display: "none",
+      },
+    },
   },
   outer: {},
   brand: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '5px 10px',
-    position: 'relative',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "5px 10px",
+    position: "relative",
     fontSize: 16,
     fontWeight: 500,
     color: theme.palette.text.primary,
-    textDecoration: 'none',
-    '&$outer': {
+    textDecoration: "none",
+    "&$outer": {
       color: theme.palette.common.white,
     },
-    [theme.breakpoints.down('md')]: {
-      margin: theme.spacing(2)
+    [theme.breakpoints.down('lg')]: {
+      margin: theme.spacing(2),
     },
-    '& img': {
+    "& img": {
       width: 100,
       marginRight: 10,
     },
   },
   formWrap: {
-    [theme.breakpoints.up('sm')]: {
-      padding: '0 77px'
+    [theme.breakpoints.up("sm")]: {
+      padding: "0 77px",
     },
-    [theme.breakpoints.up('md')]: {
-      padding: '0 100px'
+    [theme.breakpoints.up("md")]: {
+      padding: "0 100px",
     },
   },
   pageFormWrap: {
-    width: '100%',
-    margin: `${theme.spacing(2)}px auto`,
-    [theme.breakpoints.up('sm')]: {
+    width: "100%",
+    margin: `${theme.spacing(2)} auto`,
+    [theme.breakpoints.up("sm")]: {
       width: 480,
     },
   },
   pageFormSideWrap: {
-    margin: '0 auto',
-    [theme.breakpoints.only('sm')]: {
+    margin: "0 auto",
+    [theme.breakpoints.only("sm")]: {
       width: 480,
     },
   },
   formControl: {
-    width: '100%',
-    marginBottom: theme.spacing(1)
+    width: "100%",
+    marginBottom: theme.spacing(1),
   },
   socmedLogin: {
-    [theme.breakpoints.up('sm')]: {
-      padding: '24px 100px 1px',
+    [theme.breakpoints.up("sm")]: {
+      padding: "24px 100px 1px",
     },
-    '& button': {
-      padding: '4px 24px'
-    }
+    "& button": {
+      padding: "4px 24px",
+    },
   },
   socmedSideLogin: {
-    padding: '24px 24px 1px',
-    margin: '0 auto',
-    '& button': {
-      padding: '4px 16px',
-      margin: `0 ${theme.spacing(1)}px`
+    padding: "24px 24px 1px",
+    margin: "0 auto",
+    "& button": {
+      padding: "4px 16px",
+      margin: `0 ${theme.spacing(1)}`,
     },
-    [theme.breakpoints.only('sm')]: {
+    [theme.breakpoints.only("sm")]: {
       width: 480,
     },
   },
   userFormWrap: {
-    width: '94%',
-    [theme.breakpoints.up('md')]: {
-      width: 720
+    width: "94%",
+    [theme.breakpoints.up("md")]: {
+      width: 720,
     },
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: theme.spacing(3)
+    [theme.breakpoints.down('md')]: {
+      marginBottom: theme.spacing(3),
     },
   },
   sideFormWrap: {
-    height: '100%',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%'
-    }
+    height: "100%",
+    [theme.breakpoints.down('md')]: {
+      width: "100%",
+    },
   },
   fullFormWrap: {
-    height: '100%',
-    width: '100%'
+    height: "100%",
+    width: "100%",
   },
   title: {
     color: theme.palette.primary.main,
   },
   subtitle: {
-    fontSize: 14
+    fontSize: 14,
   },
   titleGradient: {
     background: gradientBgLight(theme),
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.palette.primary.main,
     paddingBottom: theme.spacing(3),
-    '-webkit-background-clip': 'text',
-    '-webkit-text-fill-color': 'transparent',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '2.55em'
-    }
+    "-webkit-background-clip": "text",
+    "-webkit-text-fill-color": "transparent",
+    [theme.breakpoints.down('md')]: {
+      fontSize: "2.55em",
+    },
   },
   opening: {
     color: theme.palette.common.white,
-    width: '100%',
-    textAlign: 'center',
-    '& h1': {
-      display: 'block',
-      [theme.breakpoints.down('md')]: {
+    width: "100%",
+    textAlign: "center",
+    "& h1": {
+      display: "block",
+      [theme.breakpoints.down('lg')]: {
         fontSize: 32,
-        lineHeight: '48px'
-      }
+        lineHeight: "48px",
+      },
     },
-    '& p': {
+    "& p": {
       color: theme.palette.common.white,
       fontSize: 18,
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('lg')]: {
         fontSize: 14,
-      }
-    }
+      },
+    },
   },
   label: {},
   btnArea: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    margin: `${theme.spacing(2)}px 0`,
+    display: "flex",
+    justifyContent: "space-around",
+    margin: `${theme.spacing(2)} 0`,
     fontSize: 12,
-    '& $label': {
+    "& $label": {
       fontSize: 12,
-      '& span': {
-        fontSize: 12
-      }
+      "& span": {
+        fontSize: 12,
+      },
     },
-    '& button': {
-      margin: `0 ${theme.spacing(1)}px`
+    "& button": {
+      margin: `0 ${theme.spacing(1)}`,
     },
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column',
-      '& button': {
-        width: '100%',
-        margin: 5
-      }
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column",
+      "& button": {
+        width: "100%",
+        margin: 5,
+      },
     },
   },
   noMargin: {
-    margin: 0
+    margin: 0,
   },
   redBtn: {
     color: red[500],
     borderColor: red[500],
-    '&:hover': {
+    "&:hover": {
       borderColor: red[700],
     },
   },
   blueBtn: {
     color: indigo[300],
     borderColor: indigo[300],
-    '&:hover': {
+    "&:hover": {
       borderColor: indigo[500],
     },
   },
   cyanBtn: {
     color: cyan[500],
     borderColor: cyan[500],
-    '&:hover': {
+    "&:hover": {
       borderColor: cyan[700],
     },
   },
   buttonLink: {
-    background: 'none',
+    background: "none",
     padding: 0,
-    textTransform: 'none',
-    transition: 'color ease 0.3s',
+    textTransform: "none",
+    transition: "color ease 0.3s",
     fontWeight: theme.typography.fontWeightRegular,
-    fontSize: '0.875rem',
-    '&:hover': {
-      background: 'none',
-      color: theme.palette.primary.main
-    }
+    fontSize: "0.875rem",
+    "&:hover": {
+      background: "none",
+      color: theme.palette.primary.main,
+    },
   },
   leftIcon: {
     marginRight: theme.spacing(1),
   },
   rightIcon: {
     marginLeft: theme.spacing(1),
-    color: 'white'
+    color: "white",
   },
   iconSmall: {
     fontSize: 20,
   },
   footer: {
-    textAlign: 'center',
+    textAlign: "center",
     padding: 5,
     background: theme.palette.grey[100],
     fontSize: 14,
-    position: 'relative'
+    position: "relative",
   },
   welcomeWrap: {
-    position: 'relative'
+    position: "relative",
   },
   tab: {
-    margin: `${theme.spacing(3)}px 0 ${theme.spacing(1)}px`,
+    margin: `${theme.spacing(3)} 0 ${theme.spacing(1)}`,
   },
   link: {
-    fontSize: '0.775rem',
+    fontSize: "0.775rem",
     color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline'
-    }
+    textDecoration: "none",
+    "&:hover": {
+      textDecoration: "underline",
+    },
   },
   socmedFull: {
-    textAlign: 'center',
-    width: '100%',
-    margin: `${theme.spacing(3)}px ${theme.spacing(1)}px`,
-    '& button': {
-      width: '100%',
-      display: 'block',
-      margin: `0 auto ${theme.spacing(2)}px`
+    textAlign: "center",
+    width: "100%",
+    margin: `${theme.spacing(3)} ${theme.spacing(1)}`,
+    "& button": {
+      width: "100%",
+      display: "block",
+      margin: `0 auto ${theme.spacing(2)}`,
     },
-    [theme.breakpoints.up('sm')]: {
-      '& button': {
+    [theme.breakpoints.up("sm")]: {
+      "& button": {
         width: 400,
-      }
-    }
+      },
+    },
   },
   lockWrap: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    [theme.breakpoints.down('xs')]: {
-      flexDirection: 'column'
-    }
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: "column",
+    },
   },
   lockForm: {
-    display: 'flex',
-    alignItems: 'baseline',
-    marginLeft: theme.spacing(3)
+    display: "flex",
+    alignItems: "baseline",
+    marginLeft: theme.spacing(3),
   },
   unlockBtn: {
     top: -4,
   },
   notifyForm: {
-    alignItems: 'baseline',
-    [theme.breakpoints.down('xs')]: {
-      '& button': {
+    alignItems: "baseline",
+    [theme.breakpoints.down('sm')]: {
+      "& button": {
         marginTop: theme.spacing(3),
-        width: '100%'
+        width: "100%",
       },
     },
-    [theme.breakpoints.up('sm')]: {
-      display: 'flex',
-      '& button': {
-        width: 'auto'
-      }
-    }
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      "& button": {
+        width: "auto",
+      },
+    },
   },
   overlay: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#000000bb',
-    zIndex: 1
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#000000bb",
+    zIndex: 1,
   },
   lockField: {
     marginRight: theme.spacing(3),
-    '& label + div': {
-      '& svg': {
-        fill: alpha(theme.palette.common.white, 0.7)
-      }
-    }
+    "& label + div": {
+      "& svg": {
+        fill: alpha(theme.palette.common.white, 0.7),
+      },
+    },
   },
   avatar: {
     width: 150,
     height: 150,
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up("lg")]: {
       marginRight: theme.spacing(3),
     },
-    boxShadow: theme.glow.medium
+    boxShadow: theme.glow.medium,
   },
   userName: {
     color: theme.palette.secondary.contrastText,
     marginLeft: theme.spacing(3),
     marginBottom: 20,
     fontWeight: theme.typography.fontWeightMedium,
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down('sm')]: {
       marginTop: theme.spacing(3),
-      textAlign: 'center'
-    }
+      textAlign: "center",
+    },
   },
   hint: {
-    padding: theme.spacing(1)
+    padding: theme.spacing(1),
   },
   brandCenter: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     marginBottom: theme.spacing(3),
   },
   centerAdornment: {
-    justifyContent: 'center',
-    '& > div': {
-      width: '100%'
+    justifyContent: "center",
+    "& > div": {
+      width: "100%",
     },
-    '& aside': {
+    "& aside": {
       top: -10,
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         left: 10,
       },
-      position: 'relative'
+      position: "relative",
     },
-    '& a i': {
+    "& a i": {
       width: 32,
-      height: 32
-    }
+      height: 32,
+    },
   },
   centerV: {
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   optArea: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: `0 ${theme.spacing(0.5)}px`
+    display: "flex",
+    justifyContent: "space-between",
+    padding: `0 ${theme.spacing(0.5)}`,
   },
   paper: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
   },
   header: {
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 20,
     marginBottom: 20,
   },
   formLabel: {
-    fontSize: '0.775rem',
-  }
+    fontSize: "0.775rem",
+  },
 });
 
 export default styles;

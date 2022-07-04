@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import CountUp from "react-countup";
-import { withStyles, useTheme } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import { useTheme } from "@mui/material/styles";
+import withStyles from '@mui/styles/withStyles';
+import Typography from "@mui/material/Typography";
+import ButtonBase from "@mui/material/ButtonBase";
 
 const styles = (theme) => ({
   title: {
@@ -53,7 +54,7 @@ function CounterWidget(props) {
       marginBottom: -1,
       alignItems: "flex-end",
     },
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('md')]: {
       flexDirection: "column",
     },
     "& > *": {

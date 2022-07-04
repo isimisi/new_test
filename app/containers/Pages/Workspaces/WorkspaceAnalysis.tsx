@@ -5,7 +5,8 @@
 /* eslint-disable no-bitwise */
 import React, { useEffect, useState, useRef } from "react";
 import { useHistory, Prompt } from "react-router-dom";
-import Hidden from "@material-ui/core/Hidden";
+import Hidden from "@mui/material/Hidden";
+
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Typography from "@material-ui/core/Typography";
@@ -40,7 +41,6 @@ import MiniFlow from "@components/Workspace/Analysis/MiniFlow";
 
 import SidePanel from "@components/Workspace/Analysis/SidePanel";
 
-
 const useStyles = makeStyles((theme: MyTheme) => ({
   root: {
     flexGrow: 1,
@@ -52,17 +52,16 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     display: "flex",
     marginBottom: theme.spacing(3),
     borderRadius: theme.rounded.medium,
-    boxShadow: theme.shade.light,
-
+    boxShadow: theme.shade.light
   },
   drawerPaper: {
     position: "relative",
     width: "100%",
-    borderLeft: `1px solid ${theme.palette.divider}`,
+    borderLeft: `1px solid ${theme.palette.divider}`
   },
   hoverItem: { transition: "1s" },
   drawerContent: {
-    padding: 10,
+    padding: 10
   },
   errorWrap: {
     background: theme.palette.background.paper,
@@ -72,7 +71,7 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     height: 700,
     [theme.breakpoints.down("sm")]: {
       width: 400,
-      height: 400,
+      height: 400
     },
     display: "flex",
     alignItems: "center",
@@ -82,9 +81,9 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     margin: `${theme.spacing(3)}px auto`,
     "& h5": {
       [theme.breakpoints.down("sm")]: {
-        fontSize: "1.2rem",
-      },
-    },
+        fontSize: "1.2rem"
+      }
+    }
   },
   lottie: {
     borderRadius: "50%",
@@ -92,18 +91,18 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     height: 700 / 1.5,
     [theme.breakpoints.down("sm")]: {
       width: 400 / 1.5,
-      height: 400 / 1.5,
-    },
+      height: 400 / 1.5
+    }
   },
-  container: { display: "flex",
+  container: {
+    display: "flex",
     overflow: "scroll",
     height: "90vh",
-    alignSelf: "flex-start",
-
-  },
+    alignSelf: "flex-start"
+  }
 }));
 
-const WorkspaceAnalysis = () => {
+function WorkspaceAnalysis() {
   const dispatch = useDispatch();
   const history = useHistory();
   const id = history.location.pathname.split("/").pop();
@@ -120,7 +119,8 @@ const WorkspaceAnalysis = () => {
   const [activeRevision, setActiveRevision] = useState({});
   const { t } = useTranslation();
 
-  const matchpattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm;
+  const matchpattern =
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm;
 
   useEffect(() => {
     dispatch(analyseOutput(user as User, id as string));
@@ -148,15 +148,15 @@ const WorkspaceAnalysis = () => {
         { list: "ordered" },
         { list: "bullet" },
         { indent: "-1" },
-        { indent: "+1" },
+        { indent: "+1" }
       ],
       ["link"],
-      ["clean"],
+      ["clean"]
     ],
     clipboard: {
       // toggle to add extra line breaks when pasting HTML:
-      matchVisual: true,
-    },
+      matchVisual: true
+    }
   };
 
   const handleQuillChange = (v, index) => {
@@ -217,7 +217,12 @@ const WorkspaceAnalysis = () => {
 
     outputs.forEach((output) => {
       dispatch(
-        saveAnalysis(user as User, id as string, output.action.output, JSON.stringify(output.elements))
+        saveAnalysis(
+          user as User,
+          id as string,
+          output.action.output,
+          JSON.stringify(output.elements)
+        )
       );
     });
   };
@@ -227,15 +232,14 @@ const WorkspaceAnalysis = () => {
     currRevisoion[key] = value;
     setActiveRevision(currRevisoion);
 
-    const revisionString = revisionHistoryList[key].find((x) => x.id === value)
-      .htmlDiffString;
+    const revisionString = revisionHistoryList[key].find(
+      (x) => x.id === value
+    ).htmlDiffString;
 
     handleQuillChange(revisionString, index);
   };
 
-
   const itemsRef = useRef([]);
-
 
   useEffect(() => {
     itemsRef.current = itemsRef.current.slice(0, outputs.length);
@@ -304,11 +308,7 @@ const WorkspaceAnalysis = () => {
           <Typography variant="h6">
             {t("workspace.analysis.nothing")}
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={history.goBack}
-          >
+          <Button variant="contained" color="primary" onClick={history.goBack}>
             {t("404.btn_return_to_workspace")}
           </Button>
         </div>
@@ -327,7 +327,7 @@ const WorkspaceAnalysis = () => {
                   html={output.action.output}
                   elements={output.elements}
                   // @ts-ignore
-                  ref={el => itemsRef.current[index] = el}
+                  ref={(el) => (itemsRef.current[index] = el)}
                 />
               </Grid>
               <Grid
@@ -343,7 +343,7 @@ const WorkspaceAnalysis = () => {
                       width: "100%",
                       justifyContent: "center",
                       alignItems: "center",
-                      display: "flex",
+                      display: "flex"
                     }}
                   >
                     <Button
@@ -352,7 +352,7 @@ const WorkspaceAnalysis = () => {
                       href={output.action.output}
                       target="_blank"
                     >
-                  Åben fil
+                      Åben fil
                     </Button>
                   </div>
                 ) : (
@@ -368,16 +368,20 @@ const WorkspaceAnalysis = () => {
               {open && (
                 <Grid
                   item
-                  xs={open && !matchpattern.test(output.action.output) ? 2 : false}
+                  xs={
+                    open && !matchpattern.test(output.action.output) ? 2 : false
+                  }
                   style={{
-                    display: matchpattern.test(output.action.output) ? "none" : undefined,
+                    display: matchpattern.test(output.action.output)
+                      ? "none"
+                      : undefined
                   }}
                 >
                   <Hidden smDown>
                     <Drawer
                       variant="permanent"
                       classes={{
-                        paper: classes.drawerPaper,
+                        paper: classes.drawerPaper
                       }}
                       style={{ height: "100%" }}
                     >
@@ -399,7 +403,9 @@ const WorkspaceAnalysis = () => {
                                 ]
                                   ? activeRevision[
                                     JSON.stringify(
-                                      removePositionFromElements(output.elements)
+                                      removePositionFromElements(
+                                        output.elements
+                                      )
                                     )
                                   ] === list.id
                                   : revisionIndex === 0
@@ -412,13 +418,12 @@ const WorkspaceAnalysis = () => {
                                   ),
                                   list.id,
                                   index
-                                )
-                              }
+                                )}
                             >
                               <ListItemText
                                 primaryTypographyProps={{
                                   variant: "body1",
-                                  style: { fontSize: 12 },
+                                  style: { fontSize: 12 }
                                 }}
                                 primary={list.created_at}
                                 secondary={
@@ -435,16 +440,21 @@ const WorkspaceAnalysis = () => {
             </Grid>
           ))}
         </div>
-        {outputs.length === 0 ? null : <SidePanel handleImagesForPp={handleImagesForPp} handleVersions={handleDrawer} save={save} />}
+        {outputs.length === 0 ? null : (
+          <SidePanel
+            handleImagesForPp={handleImagesForPp}
+            handleVersions={handleDrawer}
+            save={save}
+          />
+        )}
       </div>
       <Prompt
         when
         message={() =>
-          "Er du sikker på du vil forlade denne side uden at gemme dine ændringer?"
-        }
+          "Er du sikker på du vil forlade denne side uden at gemme dine ændringer?"}
       />
     </>
   );
-};
+}
 
 export default WorkspaceAnalysis;

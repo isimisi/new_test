@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
-import Fade from '@material-ui/core/Fade';
-import Popper from '@material-ui/core/Popper';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+import Button from '@mui/material/Button';
+import withStyles from '@mui/styles/withStyles';
+import Fade from '@mui/material/Fade';
+import Popper from '@mui/material/Popper';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import classNames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Paper from '@material-ui/core/Paper';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Paper from '@mui/material/Paper';
 import Ionicon from 'react-ionicons';
-import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
 import styles from './header-jss';
 
 const LinkBtn = React.forwardRef(function LinkBtn(props, ref) { // eslint-disable-line
@@ -97,7 +97,7 @@ function MegaMenu(props) {
                   <Paper className={classes.dropDownMenu}>
                     <ClickAwayListener onClickAway={handleClose}>
                       <Grid container>
-                        <Grid item md={3} container justify="center">
+                        <Grid item md={3} container justifyContent="center">
                           <span className={classes.bigIcon}>
                             <Ionicon icon={item.icon} />
                           </span>

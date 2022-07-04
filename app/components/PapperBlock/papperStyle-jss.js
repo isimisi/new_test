@@ -1,4 +1,4 @@
-import { lighten } from "@material-ui/core/styles/colorManipulator";
+import { lighten } from '@mui/material/styles';
 const styles = (theme) => ({
   root: theme.mixins.gutters({
     paddingTop: theme.spacing(3),
@@ -14,7 +14,7 @@ const styles = (theme) => ({
     display: "flex",
     alignItems: "center",
     marginBottom: theme.spacing(3),
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down('md')]: {
       marginBottom: theme.spacing(3),
     },
   },
@@ -26,7 +26,7 @@ const styles = (theme) => ({
     fontSize: 16,
     fontWeight: "bold",
     color: "#000",
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       textAlign: "center",
       fontWeight: 600,
       marginBottom: theme.spacing(1),
@@ -36,7 +36,7 @@ const styles = (theme) => ({
     maxWidth: 960,
     fontSize: 15,
     paddingTop: theme.spacing(0.5),
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       textAlign: "center",
     },
   },
@@ -57,7 +57,7 @@ const styles = (theme) => ({
   noMargin: {},
   colorMode: {
     backgroundColor:
-      theme.palette.type === "dark"
+      theme.palette.mode === "dark"
         ? theme.palette.primary.dark
         : theme.palette.primary.main,
     "& $title": {
@@ -77,7 +77,7 @@ const styles = (theme) => ({
   iconTitle: {
     borderRadius: theme.rounded.small,
     border:
-      theme.palette.type === "dark"
+      theme.palette.mode === "dark"
         ? "none"
         : `1px solid ${lighten(theme.palette.primary.dark, 0.9)}`,
     boxShadow: `0 1px 7px -3px ${theme.palette.primary.main}`,
@@ -88,14 +88,14 @@ const styles = (theme) => ({
     lineHeight: "44px",
     verticalAlign: "middle",
     marginRight: theme.spacing(3),
-    [theme.breakpoints.down("xs")]: {
+    [theme.breakpoints.down('sm')]: {
       display: "none",
     },
     "& i": {
       fontSize: 28,
       verticalAlign: "baseline",
       color:
-        theme.palette.type === "dark"
+        theme.palette.mode === "dark"
           ? theme.palette.common.white
           : theme.palette.primary.main,
     },

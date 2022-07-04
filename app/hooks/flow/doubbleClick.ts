@@ -6,23 +6,32 @@ import { selectStyles } from "@api/ui/helper";
 
 import ReactDOM from "react-dom";
 import { WorkspaceRelationship } from "@customTypes/reducers/workspace";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import { SelectOptions } from "@customTypes/data";
-
 
 const useDoubbleClick = (
   saveNode: (name: string) => void,
-  saveEdge: (name: string, edgeTextTarget: HTMLElement, edgeTextActualTarget: SVGElement, edgeTarget: Edge) => void,
+  saveEdge: (
+    name: string,
+    edgeTextTarget: HTMLElement,
+    edgeTextActualTarget: SVGElement,
+    edgeTarget: Edge
+  ) => void,
   relationships: List<WorkspaceRelationship>,
   handleHideEdgePopper: (stopReffrence?: boolean) => void,
   handleHideNodePopper: (stopReffrence?: boolean) => void,
-  handleNoLabelDoubleClick: (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge) => void
+  handleNoLabelDoubleClick: (
+    event: React.MouseEvent<Element, globalThis.MouseEvent>,
+    edge: Edge
+  ) => void
 ) => {
   const [nodeTextTarget, setNodeTextTarget] = useState<HTMLElement | null>(null);
   const [nodeTarget, setNodeTarget] = useState<Node | null>(null);
 
   const [edgeTextTarget, setEdgeTextTarget] = useState<HTMLElement | null>(null);
-  const [edgeTextActualTarget, setEdgeTextActualTarget] = useState<SVGElement | null>(null);
+  const [edgeTextActualTarget, setEdgeTextActualTarget] = useState<SVGElement | null>(
+    null
+  );
   const [edgeTarget, setEdgeTarget] = useState<Edge | null>(null);
 
   const addNodeTextTarget = (target: HTMLElement) => {
@@ -36,17 +45,24 @@ const useDoubbleClick = (
   const removeEdgeTextTarget = () => {
     if (edgeTextTarget && edgeTextActualTarget && edgeTarget) {
       const cont = document.createElement("div");
-      const loader = React.createElement(CircularProgress, { size: 15,
+      const loader = React.createElement(CircularProgress, {
+        size: 15,
         style: {
           position: "absolute",
           left: edgeTextTarget.offsetWidth / 2 - 7.5,
-          top: edgeTextTarget.offsetHeight / 2 - 7.5
-        } });
+          top: edgeTextTarget.offsetHeight / 2 - 7.5,
+        },
+      });
 
       edgeTextTarget.parentElement?.appendChild(cont);
       ReactDOM.render(loader, cont);
 
-      saveEdge(edgeTextTarget.innerText, edgeTextTarget, edgeTextActualTarget, edgeTarget);
+      saveEdge(
+        edgeTextTarget.innerText,
+        edgeTextTarget,
+        edgeTextActualTarget,
+        edgeTarget
+      );
 
       setEdgeTextTarget(null);
       setEdgeTextActualTarget(null);
@@ -56,7 +72,9 @@ const useDoubbleClick = (
       edgeTextActualTarget.style.visibility = "visible";
       setEdgeTarget(null);
       setEdgeTextActualTarget(null);
-      const edgeUltimateParrent = document.getElementsByClassName("react-flow__edges")[0] as HTMLElement;
+      const edgeUltimateParrent = document.getElementsByClassName(
+        "react-flow__edges"
+      )[0] as HTMLElement;
       edgeUltimateParrent.style.zIndex = "2";
     }
   };
@@ -74,8 +92,10 @@ const useDoubbleClick = (
   };
 
   const putCursorAtTheEnd = (target) => {
-    if (typeof window.getSelection !== "undefined"
-    && typeof document.createRange !== "undefined") {
+    if (
+      typeof window.getSelection !== "undefined" &&
+      typeof document.createRange !== "undefined"
+    ) {
       const range = document.createRange();
       range.selectNodeContents(target);
       range.collapse(false);
@@ -92,16 +112,19 @@ const useDoubbleClick = (
     }
   };
 
-  const onNodeDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, node: Node<any>) => {
+  const onNodeDoubleClick = (
+    event: React.MouseEvent<Element, globalThis.MouseEvent>,
+    node: Node<any>
+  ) => {
     handleHideNodePopper();
     const target = event.target as HTMLElement;
     const ifDivtarget = target.querySelector("#nodeLabel");
     if (node.id !== nodeTarget?.id) {
       removeNodeTextTarget();
 
-
       if (target.nodeName === "H6" || ifDivtarget?.nodeName === "H6") {
-        const actualTarget = target.nodeName === "H6" ? target : ifDivtarget as HTMLElement;
+        const actualTarget =
+          target.nodeName === "H6" ? target : (ifDivtarget as HTMLElement);
         setNodeTextTarget(actualTarget);
         setNodeTarget(node);
         actualTarget.setAttribute("contentEditable", "true");
@@ -113,7 +136,10 @@ const useDoubbleClick = (
     }
   };
 
-  const onEdgeDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge<any>) => {
+  const onEdgeDoubleClick = (
+    event: React.MouseEvent<Element, globalThis.MouseEvent>,
+    edge: Edge<any>
+  ) => {
     handleHideEdgePopper(true);
 
     if (edge.data.label.length === 0) {
@@ -126,10 +152,13 @@ const useDoubbleClick = (
     // @ts-ignore
     const targetParent = target.parentElement as SVGElement;
 
-    const relationship = relationships.toJS().find(r => r.label === edge.data.label);
+    const relationship = relationships.toJS().find((r) => r.label === edge.data.label);
 
     if (actualTarget && actualTarget.tagName === "text") {
-      const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', "foreignObject");
+      const foreignObject = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "foreignObject"
+      );
       foreignObject.classList.add("react-flow__edge-textwrapper", "nodrag");
       foreignObject.style.overflow = "visible";
 
@@ -164,7 +193,6 @@ const useDoubbleClick = (
         divContainer.style.width = "100px";
         divContainer.classList.add("nodrag");
 
-
         const select = React.createElement(CreatableSelect, {
           options: relationship.values.map((r) => ({ value: r, label: r })),
           value: { value: actualTarget.textContent, label: actualTarget.textContent },
@@ -172,8 +200,9 @@ const useDoubbleClick = (
           escapeClearsValue: true,
           className: "nowheel",
           defaultMenuIsOpen: true,
-          onChange: (value: SelectOptions | null) => {
-            const valueOfSelect = divContainer.querySelectorAll("[class*=singleValue]")[0];
+          onChange: (value: any) => {
+            const valueOfSelect =
+              divContainer.querySelectorAll("[class*=singleValue]")[0];
 
             if (valueOfSelect) {
               valueOfSelect.innerHTML = value?.value || "";
@@ -181,12 +210,14 @@ const useDoubbleClick = (
 
             if (value) {
               const cont = document.createElement("div");
-              const loader = React.createElement(CircularProgress, { size: 15,
+              const loader = React.createElement(CircularProgress, {
+                size: 15,
                 style: {
                   position: "absolute",
                   left: divContainer.offsetWidth / 2 - 7.5,
-                  top: divContainer.offsetHeight / 2 - 7.5
-                } });
+                  top: divContainer.offsetHeight / 2 - 7.5,
+                },
+              });
 
               divContainer.parentElement?.appendChild(cont);
               ReactDOM.render(loader, cont);
@@ -196,11 +227,11 @@ const useDoubbleClick = (
               saveEdge(value.value, divContainer, actualTarget, edge);
             }
           },
-          styles: { ...selectStyles(),
+          styles: {
+            ...selectStyles(),
             singleValue: (provided) => ({
               ...provided,
               fontSize: 10,
-
             }),
             indicatorsContainer: (provided) => ({
               ...provided,
@@ -209,34 +240,34 @@ const useDoubbleClick = (
                 padding: 2,
                 "> svg": {
                   height: 10,
-                  width: 10
-                }
-              }
+                  width: 10,
+                },
+              },
             }),
             control: (provided) => ({
               ...provided,
-              minHeight: 20
+              minHeight: 20,
             }),
             valueContainer: (provided) => ({
               ...provided,
-              padding: "0px 8px"
+              padding: "0px 8px",
             }),
             input: (provided) => ({
               ...provided,
               padding: "0px",
-              fontSize: "8px"
+              fontSize: "8px",
             }),
             option: (provided) => ({
               ...provided,
               fontSize: "8px",
-              padding: "2px 12px"
+              padding: "2px 12px",
             }),
             menuList: (provided) => ({
               ...provided,
               maxHeight: 150,
 
               "::-webkit-scrollbar": {
-                width: "6px"
+                width: "6px",
               },
 
               "::-webkit-scrollbar-track": {
@@ -253,12 +284,10 @@ const useDoubbleClick = (
               },
               "::-webkit-scrollbar-thumb:window-inactive": {
                 background: "#E7F2FF",
-              }
+              },
             }),
-
           },
         });
-
 
         // eslint-disable-next-line react/no-render-return-value
         ReactDOM.render(select, divContainer);
@@ -269,21 +298,23 @@ const useDoubbleClick = (
         targetParent.appendChild(foreignObject);
         actualTarget.style.visibility = "hidden";
 
-        const edgeUltimateParrent = document.getElementsByClassName("react-flow__edges")[0] as HTMLElement;
+        const edgeUltimateParrent = document.getElementsByClassName(
+          "react-flow__edges"
+        )[0] as HTMLElement;
         edgeUltimateParrent.style.zIndex = "4";
       }
     }
   };
 
-
-  return { nodeTextTarget,
+  return {
+    nodeTextTarget,
     addNodeTextTarget,
     removeNodeTextTarget,
     onNodeDoubleClick,
     onEdgeDoubleClick,
     edgeTarget,
     addEdgeTextTarget,
-    removeEdgeTextTarget
+    removeEdgeTextTarget,
   };
 };
 

@@ -2,7 +2,6 @@
 /* eslint-disable no-param-reassign */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-
 import { useHistory } from "react-router-dom";
 import { authHeader, baseUrl, getId } from "@api/constants";
 import { useTranslation } from "react-i18next";
@@ -13,7 +12,7 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
 
-import ShareModal from '@components/Flow/Share/ShareModal';
+import ShareModal from "@components/Flow/Share/ShareModal";
 import {
   addGroup,
   changeHandleVisability,
@@ -26,13 +25,22 @@ import {
   shareOrgChange,
   showTimeline,
   importEmails,
-  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting, validateEmailsClose
+  timelineElementPersonChange,
+  timelineElementDocumentChange,
+  saveElement,
+  changeTimelineNodeKey,
+  setTimelineNode,
+  putElement,
+  deleteElements,
+  openEmailChange,
+  changeView,
+  setIsUpdating,
+  goThroughSplitChange,
+  clearSplitting,
+  validateEmailsClose
 } from "./reducers/timelineActions";
-import ReactFlow, {
-  isNode,
-  OnLoadParams,
-} from "react-flow-renderer";
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import ReactFlow, { isNode, OnLoadParams } from "react-flow-renderer";
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 import { getPlanId } from "@helpers/userInfo";
 import Collaboration from "@components/Flow/Actions/Collaborations";
 import Meta from "@components/Flow/Actions/Meta";
@@ -42,7 +50,10 @@ import Controls from "@components/Flow/Actions/Controls";
 import { useTheme } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import { handleExport } from "@helpers/export/handleExport";
-import { getGroupDropDown, workspacePowerpoint } from "../Workspaces/reducers/workspaceActions";
+import {
+  getGroupDropDown,
+  workspacePowerpoint
+} from "../Workspaces/reducers/workspaceActions";
 import {
   openMenuAction,
   closeMenuAction,
@@ -59,10 +70,18 @@ import "./timeline.css";
 
 import WorkspaceMeta from "@components/Workspace/Modals/WorkspaceMeta";
 import CreateElement from "@components/Timeline/Modals/CreateElement";
-import { changePerson, getPersonDropDown, showPerson } from "../Persons/reducers/personActions";
+import {
+  changePerson,
+  getPersonDropDown,
+  showPerson
+} from "../Persons/reducers/personActions";
 import Person from "@components/Timeline/Modals/Person";
 import Document from "@components/Timeline/Modals/Document";
-import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
+import {
+  changeDocument,
+  getDocumentDropDown,
+  showDocument
+} from "../Documents/reducers/documentActions";
 import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import Email from "@components/Timeline/Modals/Email";
 import VerticalNode from "@components/Timeline/Nodes/VerticalNode";
@@ -71,7 +90,6 @@ import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
-
 
 const nodeTypes = {
   horizontal: HorizontalNode,
@@ -83,23 +101,35 @@ const edgeTypes = {
   custom: EdgeWithButton
 };
 
-const Timeline = () => {
+function Timeline() {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const elements = useAppSelector(state => state[reducer].get("elements")).toJS();
+  const elements = useAppSelector((state) =>
+    state[reducer].get("elements")
+  ).toJS();
 
-  const messageNotif = useAppSelector(state => state[reducer].get("message"));
-  const createElementOpen = useAppSelector(state => state[reducer].get("createElementOpen"));
-  const goThroughSplitOpen = useAppSelector(state => state[reducer].get("goThroughSplitOpen"));
+  const messageNotif = useAppSelector((state) => state[reducer].get("message"));
+  const createElementOpen = useAppSelector((state) =>
+    state[reducer].get("createElementOpen")
+  );
+  const goThroughSplitOpen = useAppSelector((state) =>
+    state[reducer].get("goThroughSplitOpen")
+  );
 
-
-  const personOptions = useAppSelector(state => state.person.get("personOptions")).toJS();
-  const documentOptions = useAppSelector(state => state.document.get("documentOptions")).toJS();
-  const timelineNode = useAppSelector(state => state[reducer].get("timelineNode"));
-  const view = useAppSelector(state => state[reducer].get("view"));
-  const currSplittingNodeRefference = useAppSelector(state => state[reducer].get("currSplittingNodeRefference"));
-
+  const personOptions = useAppSelector((state) =>
+    state.person.get("personOptions")
+  ).toJS();
+  const documentOptions = useAppSelector((state) =>
+    state.document.get("documentOptions")
+  ).toJS();
+  const timelineNode = useAppSelector((state) =>
+    state[reducer].get("timelineNode")
+  );
+  const view = useAppSelector((state) => state[reducer].get("view"));
+  const currSplittingNodeRefference = useAppSelector((state) =>
+    state[reducer].get("currSplittingNodeRefference")
+  );
 
   const history = useHistory();
   const id = getId(history) as string;
@@ -118,10 +148,12 @@ const Timeline = () => {
   const [elementPersons, setElementPersons] = useState<TPerson[]>([]);
   const [elementDocuments, setElementDocuments] = useState<TDocument[]>([]);
 
-  const changeTimelineNode = (attr: keyof TimelineNode, val: TimelineNode[keyof TimelineNode]) => {
+  const changeTimelineNode = (
+    attr: keyof TimelineNode,
+    val: TimelineNode[keyof TimelineNode]
+  ) => {
     dispatch(changeTimelineNodeKey(val, attr));
   };
-
 
   const openPerson = () => {
     dispatch(timelineElementPersonChange(true));
@@ -141,7 +173,8 @@ const Timeline = () => {
   };
 
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  const handleDocumentClose = () => dispatch(timelineElementDocumentChange(false));
+  const handleDocumentClose = () =>
+    dispatch(timelineElementDocumentChange(false));
 
   const handleDocumentOpen = (_id: string, title?: string) => {
     dispatch(changeDocument("", "initial"));
@@ -163,7 +196,6 @@ const Timeline = () => {
     // changeTimelineNode("email", { mail: null, uri: null });
     dispatch(openEmailChange(false));
   };
-
 
   const handleCloseCreateElement = () => {
     dispatch(setTimelineNode(null));
@@ -187,7 +219,7 @@ const Timeline = () => {
     if (bool !== undefined) {
       setOpenDrawer(bool);
     } else {
-      setOpenDrawer(prevVal => !prevVal);
+      setOpenDrawer((prevVal) => !prevVal);
     }
   };
 
@@ -195,7 +227,7 @@ const Timeline = () => {
     if (bool !== undefined) {
       setOpenTableView(bool);
     } else {
-      setOpenTableView(prevVal => !prevVal);
+      setOpenTableView((prevVal) => !prevVal);
     }
   };
 
@@ -213,14 +245,13 @@ const Timeline = () => {
     setCorrectEmailsOpen(false);
   };
 
-
   const handleToggleCorectEmails = () => {
     if (correctEmailsOpen) {
       handleCloseCorectEmails();
     } else {
       setCorrectEmailsOpen(true);
       const badges = elements.filter(
-        e => !e.data.date && isNode(e) && e.id !== "static-button"
+        (e) => !e.data.date && isNode(e) && e.id !== "static-button"
       );
 
       dispatch(setTimelineNode(badges[0].data.id));
@@ -228,50 +259,58 @@ const Timeline = () => {
     }
   };
 
-  const handleVisability = useAppSelector(state =>
+  const handleVisability = useAppSelector((state) =>
     state[reducer].get("handleVisability")
   );
-  const personModalOpen = useAppSelector(state =>
+  const personModalOpen = useAppSelector((state) =>
     state[reducer].get("personOpen")
   );
-  const documentModalOpen = useAppSelector(state =>
+  const documentModalOpen = useAppSelector((state) =>
     state[reducer].get("documentOpen")
   );
-  const emailModalOpen = useAppSelector(state =>
+  const emailModalOpen = useAppSelector((state) =>
     state[reducer].get("emailOpen")
   );
 
-  const emailsToValidate = useAppSelector(state => state.timeline.get("emailsToValidate"));
+  const emailsToValidate = useAppSelector((state) =>
+    state.timeline.get("emailsToValidate")
+  );
 
-
-  const loadings = useAppSelector(state => state[reducer].get("loadings"));
-  const label = useAppSelector(state => state[reducer].get("title"));
-  const description = useAppSelector(state =>
+  const loadings = useAppSelector((state) => state[reducer].get("loadings"));
+  const label = useAppSelector((state) => state[reducer].get("title"));
+  const description = useAppSelector((state) =>
     state[reducer].get("description")
   );
-  const group = useAppSelector(state => state[reducer].get("group"));
-  const shareOrg = useAppSelector(state => state[reducer].get("shareOrg"));
-  const tags = useAppSelector(state =>
+  const group = useAppSelector((state) => state[reducer].get("group"));
+  const shareOrg = useAppSelector((state) => state[reducer].get("shareOrg"));
+  const tags = useAppSelector((state) =>
     state[reducer].get("specificTimelineTags")
   )?.toJS();
-  const groupsDropDownOptions = useAppSelector(state => state.workspace.get('groupsDropDownOptions')).toJS();
-  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
-  const isUpdatingNode = useAppSelector(state => state[reducer].get('isUpdatingNode'));
-  const currSplittingEmail = useAppSelector(state => state[reducer].get('currSplittingEmail'));
-  const splitElements = useAppSelector(state => state[reducer].get('splitElements'));
-
+  const groupsDropDownOptions = useAppSelector((state) =>
+    state.workspace.get("groupsDropDownOptions")
+  ).toJS();
+  const tagOptions = useAppSelector((state) => state.tags.get("tags")).toJS();
+  const isUpdatingNode = useAppSelector((state) =>
+    state[reducer].get("isUpdatingNode")
+  );
+  const currSplittingEmail = useAppSelector((state) =>
+    state[reducer].get("currSplittingEmail")
+  );
+  const splitElements = useAppSelector((state) =>
+    state[reducer].get("splitElements")
+  );
 
   const handleVisabilityChange = () =>
     dispatch(changeHandleVisability(!handleVisability));
   const handleImage = (type, _stopLoading) =>
     handleExport(type, reactFlowContainer, label, _stopLoading);
-  const handlePowerpoint = _stopLoading => {
+  const handlePowerpoint = (_stopLoading) => {
     id &&
       dispatch(workspacePowerpoint(user, id, label, elements, _stopLoading));
   };
   const toggleSubMenu = () => dispatch(toggleAction);
 
-  const onLoad = _reactFlowInstance => {
+  const onLoad = (_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
     dispatch(showTimeline(user, id as string, setMetaOpen, _reactFlowInstance));
   };
@@ -297,20 +336,22 @@ const Timeline = () => {
     };
   }, [user]);
 
-
   const handleChangeTags = useCallback(
-    _tags => dispatch(changeTags(_tags)),
+    (_tags) => dispatch(changeTags(_tags)),
     []
   );
   const handleLabelChange = useCallback(
-    e => dispatch(labelChange(e.target.value)),
+    (e) => dispatch(labelChange(e.target.value)),
     []
   );
   const handleDescriptionChange = useCallback(
-    e => dispatch(descriptionChange(e.target.value)),
+    (e) => dispatch(descriptionChange(e.target.value)),
     []
   );
-  const handleAddGroup = useCallback(_group => dispatch(addGroup(_group.value)), []);
+  const handleAddGroup = useCallback(
+    (_group) => dispatch(addGroup(_group.value)),
+    []
+  );
   const handleShareOrg = useCallback(() => dispatch(shareOrgChange), []);
 
   const updateMeta = useCallback(
@@ -332,7 +373,11 @@ const Timeline = () => {
 
   const nextElWithoutDate = () => {
     const badges = elements.filter(
-      e => !e.data.date && isNode(e) && e.id !== "static-button" && e.id !== timelineNode.get("id")
+      (e) =>
+        !e.data.date &&
+        isNode(e) &&
+        e.id !== "static-button" &&
+        e.id !== timelineNode.get("id")
     );
     if (badges.length > 0) {
       dispatch(setTimelineNode(badges[0].data.id));
@@ -341,7 +386,10 @@ const Timeline = () => {
     }
   };
 
-  const onSaveElement = (alternativeCloseFunc?: () => void, customSplit?: string) => {
+  const onSaveElement = (
+    alternativeCloseFunc?: () => void,
+    customSplit?: string
+  ) => {
     dispatch(setTimelineNode(null));
     setElementPersons([]);
     setElementDocuments([]);
@@ -354,19 +402,36 @@ const Timeline = () => {
       closeFunc = alternativeCloseFunc;
     }
 
-
     if (isUpdatingNode) {
-      dispatch(putElement(user, timelineNode, elementPersons, elementDocuments, closeFunc));
+      dispatch(
+        putElement(
+          user,
+          timelineNode,
+          elementPersons,
+          elementDocuments,
+          closeFunc
+        )
+      );
     } else {
-      dispatch(saveElement(user, id, timelineNode, currSplittingNodeRefference, customSplit, elementPersons, elementDocuments, closeFunc));
+      dispatch(
+        saveElement(
+          user,
+          id,
+          timelineNode,
+          currSplittingNodeRefference,
+          customSplit,
+          elementPersons,
+          elementDocuments,
+          closeFunc
+        )
+      );
     }
   };
 
-
   const onSavePerson = (person: TPerson) => {
-    setElementPersons(prevState => {
+    setElementPersons((prevState) => {
       const newPersons = [...prevState];
-      const newPersonsFiltered = newPersons.filter(p => {
+      const newPersonsFiltered = newPersons.filter((p) => {
         if (p.id) {
           return p.id !== person.id;
         }
@@ -380,9 +445,9 @@ const Timeline = () => {
   };
 
   const handleSetElementDocuments = (document: TDocument) => {
-    setElementDocuments(prevState => {
+    setElementDocuments((prevState) => {
       const newDocuments = [...prevState];
-      const newDocumentsFiltered = newDocuments.filter(p => {
+      const newDocumentsFiltered = newDocuments.filter((p) => {
         if (p.id) {
           return p.id !== document.id;
         }
@@ -394,8 +459,10 @@ const Timeline = () => {
     dispatch(timelineElementDocumentChange(false));
   };
 
-
-  const onSaveDocument = async (document: TDocument, stopLoading: () => void) => {
+  const onSaveDocument = async (
+    document: TDocument,
+    stopLoading: () => void
+  ) => {
     if (document.file) {
       const url = `${baseUrl}/timelinedocuments/savefile`;
       const header = authHeader(user);
@@ -419,7 +486,7 @@ const Timeline = () => {
   };
 
   const onElementsRemove = (el) => {
-    const nodes = el.filter(e => isNode(e)).map(n => n.id);
+    const nodes = el.filter((e) => isNode(e)).map((n) => n.id);
     dispatch(deleteElements(user, id, nodes));
   };
 
@@ -484,7 +551,6 @@ const Timeline = () => {
     }
   }, [mouseLoading]);
 
-
   const handleSplit = (_timelineNode: ITimelineNode) => {
     dispatch(changeTimelineNodeKey(_timelineNode.get("email"), "email"));
     dispatch(createElementChange(false));
@@ -496,7 +562,6 @@ const Timeline = () => {
     dispatch(validateEmailsClose);
   };
 
-
   return (
     <div style={{ display: "flex", cursor }}>
       <Notification
@@ -507,7 +572,6 @@ const Timeline = () => {
         className={classnames(classes.root, {
           [classes.contentShift]: openDrawer
         })}
-
         ref={reactFlowContainer}
         onMouseLeave={onMouseLeave}
       >
@@ -521,9 +585,11 @@ const Timeline = () => {
           //   [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
           // ]}
           onElementsRemove={onElementsRemove}
+          // @ts-ignore
           nodeTypes={nodeTypes}
+          // @ts-ignore
           edgeTypes={edgeTypes}
-          onMove={flowTransform => {
+          onMove={(flowTransform) => {
             if (flowTransform) {
               setCurrentZoom(flowTransform.zoom);
             }
@@ -550,7 +616,6 @@ const Timeline = () => {
               changeView={handleChangeView}
               handleOpenImportEmails={handleOpenImportEmails}
               handleToggleCorectEmails={handleToggleCorectEmails}
-
               openTable={openTableView}
               toggleDrawer={toggleDrawer}
               elements={elements}
@@ -562,9 +627,7 @@ const Timeline = () => {
               reactFlowInstance={rfInstance}
             />
           </div>
-
         </ReactFlow>
-
       </div>
       <Drawer
         className={classes.drawer}
@@ -572,9 +635,11 @@ const Timeline = () => {
         anchor="right"
         open={openDrawer}
         PaperProps={{ style: { width: drawerWidth } }}
-
       >
-        <div onMouseDown={e => handleMouseDown(e)} className={classes.dragger}>
+        <div
+          onMouseDown={(e) => handleMouseDown(e)}
+          className={classes.dragger}
+        >
           <DragIndicatorIcon />
         </div>
         <Content
@@ -640,47 +705,67 @@ const Timeline = () => {
         currSplittingEmail={currSplittingEmail}
       />
 
-      {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} />}
-      {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
-      {emailModalOpen && <Email
-        open={emailModalOpen}
-        close={handleEmailClose}
-        timelineNode={timelineNode}
-      />}
-      {emailsToValidate.size > 0 && <ValidateEmails
-        open={emailsToValidate.size > 0}
-        close={handleValidateEmailsClose}
-        timeline_id={id}
-      />}
-      {importEmailsOpen && <ImportEmails open={importEmailsOpen} close={handleCloseImportEmails} handleImportEmails={handleImportEmails} loading={loadings.get("modal")} />}
+      {personModalOpen && (
+        <Person
+          open={personModalOpen}
+          close={handlePersonClose}
+          onSave={onSavePerson}
+        />
+      )}
+      {documentModalOpen && (
+        <Document
+          open={documentModalOpen}
+          close={handleDocumentClose}
+          onSave={onSaveDocument}
+        />
+      )}
+      {emailModalOpen && (
+        <Email
+          open={emailModalOpen}
+          close={handleEmailClose}
+          timelineNode={timelineNode}
+        />
+      )}
+      {emailsToValidate.size > 0 && (
+        <ValidateEmails
+          open={emailsToValidate.size > 0}
+          close={handleValidateEmailsClose}
+          timeline_id={id}
+        />
+      )}
+      {importEmailsOpen && (
+        <ImportEmails
+          open={importEmailsOpen}
+          close={handleCloseImportEmails}
+          handleImportEmails={handleImportEmails}
+          loading={loadings.get("modal")}
+        />
+      )}
 
       {/* {openTableView && <Table open={openTableView} close={handleOpenTableView} elements={elements} personOptions={personOptions} />} */}
       {loadings.get("main") && (
-        <>
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: theme.palette.background.default,
-              position: "absolute",
-              zIndex: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <Loader bigFont />
-          </div>
-        </>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: theme.palette.background.default,
+            position: "absolute",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Loader bigFont />
+        </div>
       )}
       <ShareModal
         open={shareModalOpen}
         loading={loadings.get("modal")}
         close={() => setShareModalOpen(false)}
-
       />
     </div>
   );
-};
+}
 
 export default Timeline;

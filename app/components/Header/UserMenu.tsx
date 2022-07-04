@@ -3,30 +3,30 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable camelcase */
 import React, { useState, useEffect } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import withStyles from '@mui/styles/withStyles';
 import { Link, useHistory } from "react-router-dom";
 
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import Divider from "@material-ui/core/Divider";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import IconButton from "@material-ui/core/IconButton";
-import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import Badge from "@material-ui/core/Badge";
+import ExitToApp from "@mui/icons-material/ExitToApp";
+import Divider from "@mui/material/Divider";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import IconButton from "@mui/material/IconButton";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import Badge from "@mui/material/Badge";
 import link from "@api/ui/link";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import store from "@redux/configureStore";
 import { customerPortal } from "@pages/CreateOrganization/reducers/createOrganizationActions";
 import { useTranslation } from "react-i18next";
-import ListItemText from "@material-ui/core/ListItemText";
+import ListItemText from "@mui/material/ListItemText";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./header-jss";
 
 import Avatar, { genConfig } from "react-nice-avatar";
 import { UserMeta } from "@helpers/userInfo";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 
 import NotificationDialog from "./NotificationDialog";
 import CreateNotificationDialog from "./CreateNotificationDialog";
@@ -117,7 +117,7 @@ function UserMenu({ classes }) {
         onClick={handleMenu("notification")}
         color="inherit"
         className={classes.notifIcon}
-      >
+        size="large">
         <Badge
           className={classes.badge}
           badgeContent={notifications.unread}

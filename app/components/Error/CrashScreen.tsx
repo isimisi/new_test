@@ -2,13 +2,13 @@ import React from "react";
 
 import CryptoJS from "crypto-js";
 import Lottie from "lottie-react";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 import logo from "@images/logo.svg";
 import { Trans, useTranslation } from "react-i18next";
 import question from "@lotties/racoon/question.json";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import ButtonBase from "@mui/material/ButtonBase";
 
 interface ErrorProps {
   clearError: () => void;

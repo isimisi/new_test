@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { withStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@mui/material/styles";
+import withStyles from '@mui/styles/withStyles';
 import { useDropzone } from "react-dropzone";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import { useSpring, animated } from "react-spring";
-import NoteAdd from "@material-ui/icons/NoteAdd";
+import NoteAdd from "@mui/icons-material/NoteAdd";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
-import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
-import { ButtonBase } from "@material-ui/core";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import { ButtonBase } from "@mui/material";
 
 const styles = (theme) => ({
   dropzone: {
     display: "flex",
     width: "100%",
-    backgroundColor: theme.palette.type === "dark" ? "#303030" : "#F7F8FA",
+    backgroundColor: theme.palette.mode === "dark" ? "#303030" : "#F7F8FA",
     borderRadius: theme.rounded.small,
-    border: theme.palette.type === "dark" ? "1px solid #606060" : "1px solid #F1F1F1",
+    border: theme.palette.mode === "dark" ? "1px solid #606060" : "1px solid #F1F1F1",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import FloatingPanel from '../Panel/FloatingPanel';
 import styles from './plan-jss';
 import PaymentForm from './PaymentForm';

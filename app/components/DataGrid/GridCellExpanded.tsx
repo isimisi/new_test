@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { Box, Popper, Paper, Typography } from "@material-ui/core";
+import { Box, Popper, Paper, Typography } from "@mui/material";
 
 interface GridCellExpandProps {
   value: string;
