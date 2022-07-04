@@ -843,7 +843,8 @@
     "cancel": "Annuller",
     "import_mails_with_error": "Der er importerede e-mails, der mangler en handling ",
     "delete_email": "Slet e-mail",
-    "choose_emails_or_drag": "eller træk dem ind i feltet her"
+    "choose_emails_or_drag": "eller træk dem ind i feltet her",
+    "tags_placeholder": "Tilføj tags"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",

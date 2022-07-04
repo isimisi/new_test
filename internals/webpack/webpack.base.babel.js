@@ -84,12 +84,6 @@ module.exports = (options) => ({
             },
           },
           {
-            loader: "postcss-loader",
-            options: {
-              sourceMap: false,
-            },
-          },
-          {
             loader: "sass-loader",
             options: {
               outputStyle: "expanded",

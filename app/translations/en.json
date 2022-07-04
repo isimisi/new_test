@@ -841,7 +841,8 @@
     "cancel": "Cancel",
     "import_mails_with_error": "Some imported emails require your input ",
     "delete_email": "Delete email",
-    "choose_emails_or_drag": "or drag them in"
+    "choose_emails_or_drag": "or drag them in",
+    "tags_placeholder": "Add tags"
   },
   "lookup": {
     "search_placeholder": "Search for a company",

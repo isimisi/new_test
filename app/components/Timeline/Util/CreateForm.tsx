@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable default-case */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -40,6 +41,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import { hanldeOnDocumentChange } from "@pages/Documents/constants";
 import { hanldeOnPersonChange, personMapping } from "@pages/Persons/constants";
+import ReactDOM from "react-dom";
+import { isNode } from "react-flow-renderer";
+
 
 interface Props {
   personOptions: MixedPersonOptions[];
@@ -76,6 +80,8 @@ const CreateForm = (props: Props) => {
 
   const { t, i18n } = useTranslation();
   const classes = useStyles();
+
+  const elementsTagOptions = useAppSelector(state => state.timeline.get("elementsTagOptions")).toJS();
 
   const date = timelineNode.get("date");
   const time = timelineNode.get("time");
@@ -114,7 +120,6 @@ const CreateForm = (props: Props) => {
   };
 
   const handleChangeTags = (value) => {
-    console.log({ value });
     changeTimelineNode("tags", value);
   };
 
@@ -185,7 +190,7 @@ const CreateForm = (props: Props) => {
 
   const [inputValue, setInputValue] = useState("");
 
-  const handleInput = (val: string, { action }) => {
+  const handleInput = (val: string) => {
     if (!displayColorPickerColor) {
       setInputValue(val);
     }
@@ -193,6 +198,35 @@ const CreateForm = (props: Props) => {
 
   const chooseColor = () => {
     setDisplayColorPickerColor(true);
+  };
+
+  const handleChangeTagsSelect = (val, meta) => {
+    switch (meta.action) {
+      case "remove-value":
+      case "pop-value":
+      case "deselect-option":
+        // eslint-disable-next-line no-case-declarations
+        const newTags = tags.filter(tag => tag.name !== meta.removedValue.value);
+        handleChangeTags(newTags);
+        break;
+      case "clear":
+        handleChangeTags([]);
+        break;
+      case "set-value":
+      case "select-option":
+        // eslint-disable-next-line no-case-declarations
+        const _newTags = [...tags];
+        // eslint-disable-next-line no-case-declarations
+        const newTag = {
+          name: meta.option.value,
+          color: meta.option.color
+        };
+        _newTags.push(newTag);
+        handleChangeTags(_newTags);
+        break;
+      case "create-option":
+        chooseColor();
+    }
   };
 
   const handleCloseColor = () => {
@@ -221,8 +255,51 @@ const CreateForm = (props: Props) => {
         <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
         <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
       </div>
-    )
+    ),
+
   }));
+
+  const mappedOptions = elementsTagOptions.map(tag => ({
+    value: tag.name,
+    label: (
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
+        <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
+      </div>
+    ),
+    color: tag?.color
+  }));
+
+
+  React.useEffect(() => {
+    const picker = document.getElementsByClassName("sketch-picker");
+
+    if (picker.length > 0) {
+      let div = document.getElementById("saveContainer");
+
+      if (!div) {
+        div = document.createElement("div");
+        div.setAttribute("id", "saveContainer");
+        picker[0].appendChild(div);
+      }
+      // @ts-ignore
+
+      ReactDOM.render(
+        <div className={classes.attributSaveButtonContainer}>
+          <button
+            className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+            tabIndex={0}
+            type="button"
+            onClick={handleCloseColor}
+          >
+            <span className="MuiButton-label">Gem</span>
+            <span className="MuiTouchRipple-root" />
+          </button>
+        </div>,
+        div
+      );
+    }
+  }, [displayColorPickerColor, color]);
 
 
   return (
@@ -425,19 +502,20 @@ const CreateForm = (props: Props) => {
         }))}
       />
       <CreatableSelect
-        components={{
-          DropdownIndicator: null
-        }}
         inputValue={inputValue}
         isClearable
         className={classes.eventSelectField}
         isMulti
-        menuIsOpen={false}
-        onChange={chooseColor}
+        styles={selectStyles()}
+        menuPortalTarget={document.body}
+        menuPlacement="auto"
+        menuPosition="absolute"
+        onChange={handleChangeTagsSelect}
         onInputChange={handleInput}
         onKeyDown={handleKeyDown}
-        placeholder={t("generic.createable_placeholder")}
+        placeholder={t("timeline.tags_placeholder")}
         value={mappedTags}
+        options={mappedOptions}
       />
       {displayColorPickerColor ? (
         <div className={classes.popover}>

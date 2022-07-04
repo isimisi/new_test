@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign */
 import { ITimelineNode } from "@customTypes/reducers/timeline";
 import { Typography, Button } from "@material-ui/core";
-import { t } from "i18next";
+
 import moment from "moment";
 import { useAuth0, User } from "@auth0/auth0-react";
 
@@ -12,6 +12,7 @@ import save from "save-file";
 import axios from "axios";
 import { authHeader, baseUrl } from "@api/constants";
 import Loader from "@components/Loading/LongLoader";
+import { useTranslation } from "react-i18next";
 
 
 interface Props {
@@ -22,8 +23,12 @@ interface Props {
 const Email = ({ timelineNode }: Props) => {
   const classes = useStyles();
 
+  const { t } = useTranslation();
+
   const index = timelineNode.get("email").get("index");
   const customSplit = timelineNode.get("email").get("customSplit");
+
+
   const id = timelineNode.get("id");
 
   const downloadAttachment = file => {

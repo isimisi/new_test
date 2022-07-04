@@ -1,10 +1,11 @@
+/* eslint-disable no-plusplus */
 import {
   TimelineState,
   IImmutableTimelineState,
   TimelineNode,
   ITimelineNode,
 } from "@customTypes/reducers/timeline";
-import { Node } from "react-flow-renderer";
+import { isNode, Node } from "react-flow-renderer";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
 import { EditorState, ContentState } from "draft-js";
@@ -84,6 +85,7 @@ const initialNode: TimelineNode = {
 const initialState: TimelineState = {
   timelines: List(),
   elements: List(),
+  elementsTagOptions: List(),
   emailsToValidate: List(),
   message: "",
   handleVisability: true,
@@ -136,6 +138,23 @@ export default function reducer(
         mutableState.set("specificTimelineTags", fromJS(action.tags));
         mutableState.setIn(["loadings", "main"], false);
         mutableState.set("elements", fromJS(action.elements));
+
+        const tagOptions: any[] = [];
+        const filteredElements = action.elements.filter((e) => isNode(e));
+
+        for (let i = 0; i < filteredElements.length; i++) {
+          const element = filteredElements[i];
+          const _tags = element.data.tags;
+          if (_tags) {
+            for (let z = 0; z < _tags.length; z++) {
+              console.log(_tags);
+              const tag = _tags[z];
+              tagOptions.push(tag);
+            }
+          }
+        }
+
+        mutableState.set("elementsTagOptions", fromJS(tagOptions));
       });
     case IMPORT_EMAILS_SUCCESS:
       return state.withMutations((mutableState) => {
