@@ -26,8 +26,8 @@ const Person = (props: Props) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const person = useAppSelector(state => state.person.get("person"));
-  const isUpdatingNode = useAppSelector(state =>
-    state.timeline.get("isUpdatingNode")
+  const createElementOpen = useAppSelector(state =>
+    state.timeline.get("createElementOpen")
   );
 
   const { t } = useTranslation();
@@ -54,7 +54,7 @@ const Person = (props: Props) => {
           className={classes.createElementContainer}
           style={{ maxHeight: "60vh" }}
         >
-          <PersonForm isUpdatingNode={isUpdatingNode} />
+          <PersonForm isUpdatingNode={createElementOpen} />
           <div style={{ margin: 16 }} />
           <EditAvatar
             /* @ts-ignore */
@@ -67,7 +67,7 @@ const Person = (props: Props) => {
             {t("workspaces.workspace-form.btn_cnx")}
           </Button>
 
-          {isUpdatingNode && (
+          {createElementOpen && (
             <Button
               variant="contained"
               color="secondary"

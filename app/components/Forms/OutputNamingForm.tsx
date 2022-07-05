@@ -133,6 +133,8 @@ const OutputNamingForm = (props: Props) => {
               <CreatableSelect
                 styles={selectStyles()}
                 isMulti
+                noOptionsMessage={() => t("generic.no_options")}
+                formatCreateLabel={input => t("generic.create_new", { input })}
                 isClearable
                 value={tags.map(tagMapping)}
                 onChange={(newValue, meta) =>

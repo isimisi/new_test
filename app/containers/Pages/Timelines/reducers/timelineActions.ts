@@ -122,10 +122,13 @@ export const putTimeline = (
 
 export const deleteTimelines = (user: User, id: string) => async dispatch => {
   const url = `${baseUrl}/${TIMELINES}/${id}`;
+  dispatch({ type: types.DELETE_TIMELINE_LOADING, loadingType: "main" });
   const header = authHeader(user);
   try {
     await axios.delete(url, header);
     dispatch(getTimelines(user));
+    const message = `Du har slettet din tidslinje`;
+    dispatch({ type: types.DELETE_TIMELINE_SUCCESS, message });
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_TIMELINE_FAILED, message });
@@ -158,16 +161,15 @@ export const saveElement = (
     const response = await axios.post(url, body, header);
     dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, elements: response.data });
     handleCloseCreateElement();
-    dispatch(getPersonDropDown(user));
-    dispatch(getDocumentDropDown(user));
+    dispatch(getPersonDropDown(user, timeline_id));
+    dispatch(getDocumentDropDown(user, timeline_id));
   } catch (error: any) {
-    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_TIMELINE_ELEMENT_FAILED, message });
   }
 };
 
-export const putElement = (user: User, element, changedPersons, changedDocuments, handleCloseCreateElement) => async (dispatch) => {
+export const putElement = (user: User, timeline_id, element, changedPersons, changedDocuments, handleCloseCreateElement) => async (dispatch) => {
   dispatch({ type: types.PUT_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/timelinenodes/${element.get("id")}`;
@@ -184,8 +186,8 @@ export const putElement = (user: User, element, changedPersons, changedDocuments
     const response = await axios.put(url, body, header);
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_SUCCESS, element: response.data });
     handleCloseCreateElement();
-    dispatch(getPersonDropDown(user));
-    dispatch(getDocumentDropDown(user));
+    dispatch(getPersonDropDown(user, timeline_id));
+    dispatch(getDocumentDropDown(user, timeline_id));
   } catch (error: any) {
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_FAILED, message });
@@ -223,8 +225,8 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
     const { elements, emails } = response.data;
     dispatch({ type: types.IMPORT_EMAILS_SUCCESS, elements, emails });
     close();
-    dispatch(getPersonDropDown(user));
-    dispatch(getDocumentDropDown(user));
+    dispatch(getPersonDropDown(user, timeline_id));
+    dispatch(getDocumentDropDown(user, timeline_id));
   } catch (error: any) {
     let message = genericErrorMessage;
 

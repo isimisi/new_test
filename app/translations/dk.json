@@ -970,7 +970,9 @@
     "email": "E-mail",
     "save_and_next": "Gem og næste",
     "back": "Tilbage",
-    "createable_placeholder": "Skriv noget og tryk enter..."
+    "createable_placeholder": "Skriv noget og tryk enter...",
+    "create_new": "Opret {{input}}",
+    "no_options": "Ingen valgmuligheder"
   },
   "emails": {
     "body": "E-mailindhold",
@@ -1006,6 +1008,7 @@
   "dates": {
     "invalid": "Datoen er ikke korrekt",
     "max": "Datoen skal være før 2100",
-    "min": "Datoen skal være efter 1900"
+    "min": "Datoen skal være efter 1900",
+    "time_invalid": "Tiden er ikke korrekt"
   }
 }

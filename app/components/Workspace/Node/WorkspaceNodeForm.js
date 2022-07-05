@@ -23,6 +23,7 @@ import square from "./square.svg";
 import triangle from "./triangle.svg";
 import circle from "./circle.svg";
 import person from "./person.svg";
+import { useTranslation } from "react-i18next";
 
 export const figurTypeOptions = [
   {
@@ -88,13 +89,15 @@ const WorkspaceNodeForm = (props) => {
   const [displayLabelColorPickerColor, setDisplayLabelColorPickerColor] = useState();
   const choosenNode = nodes.find((r) => r.label === nodeLabel);
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <div>
       <section className={css.bodyForm}>
         <div className={classes.field}>
           <CreatableSelect
-            classes={classes}
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={(input) => t("generic.create_new", { input })}
             styles={selectStyles()}
             inputId="react-select-single-workspace-node"
             autoFocus
@@ -139,6 +142,8 @@ const WorkspaceNodeForm = (props) => {
                   menuPlacement="auto"
                   menuPosition="absolute"
                   placeholder="Kendetegn"
+                  noOptionsMessage={() => t("generic.no_options")}
+                  formatCreateLabel={(input) => t("generic.create_new", { input })}
                   options={attributesDropDownOptions}
                   value={
                     attribut.label && { label: attribut.label, value: attribut.label }
@@ -177,6 +182,8 @@ const WorkspaceNodeForm = (props) => {
                     ) : (
                       <CreatableSelect
                         styles={selectStyles()}
+                        noOptionsMessage={() => t("generic.no_options")}
+                        formatCreateLabel={(input) => t("generic.create_new", { input })}
                         placeholder="Værdi"
                         options={JSON.parse(attribut.selectionOptions)}
                         value={

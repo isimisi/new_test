@@ -136,6 +136,8 @@ function NodeForm(props) {
                   <CreatableSelect
                     styles={selectStyles()}
                     placeholder={t("nodes.node-form.select_standard_look")}
+                    noOptionsMessage={() => t("generic.no_options")}
+                    formatCreateLabel={(input) => t("generic.create_new", { input })}
                     options={attributesDropDownOptions}
                     value={
                       attribut.label && { label: attribut.label, value: attribut.label }
@@ -159,6 +161,10 @@ function NodeForm(props) {
                       ) : (
                         <CreatableSelect
                           placeholder="Værdi"
+                          noOptionsMessage={() => t("generic.no_options")}
+                          formatCreateLabel={(input) =>
+                            t("generic.create_new", { input })
+                          }
                           options={JSON.parse(attribut.selectionOptions)}
                           value={
                             attribut.value && {
@@ -183,7 +189,6 @@ function NodeForm(props) {
             <div className={classes.field}>
               <NoSsr>
                 <Select
-                  classes={classes}
                   styles={selectStyles}
                   inputId="react-select-single-nodeform"
                   TextFieldProps={{

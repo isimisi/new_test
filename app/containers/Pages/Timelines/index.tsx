@@ -45,6 +45,8 @@ const Timelines = () => {
   const plan_id = getPlanId(user);
   const { t } = useTranslation();
 
+  const col = columns(t);
+
   useEffect(() => {
     dispatch(getTimelines(user));
     dispatch(getTags(user, WhereInApp.timeline));
@@ -90,6 +92,23 @@ const Timelines = () => {
     });
   };
 
+  const activeTags = tags
+    .filter(tag => tag.active)
+    .map(tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}`);
+  col[2].options.filterList = activeTags;
+
+  const handleFilterChanged = (changedColumn, filterList) => {
+    if (changedColumn === "Tags") {
+      const deleted = activeTags.find(tag => !filterList[2].includes(tag));
+      if (deleted) {
+        const tagObj = tags.find(
+          tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}` === deleted
+        );
+        handleMakeActiveTag(tagObj);
+      }
+    }
+  };
+
   return (
     <div className={classes.table}>
       <Notification
@@ -115,8 +134,12 @@ const Timelines = () => {
           <MUIDataTable
             title={t("timelines.your_timelines")}
             data={timelines.toJS()}
-            columns={columns(t)}
-            options={tableOptions(onDelete, loadings.get("main"))}
+            columns={col}
+            options={tableOptions(
+              onDelete,
+              loadings.get("main"),
+              handleFilterChanged
+            )}
           />
         </Grid>
       </Grid>

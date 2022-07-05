@@ -139,6 +139,8 @@ const AlertNamingForm = (props: Props) => {
             <div className={classes.field}>
               <CreatableSelect
                 styles={selectStyles()}
+                noOptionsMessage={() => t("generic.no_options")}
+                formatCreateLabel={input => t("generic.create_new", { input })}
                 isMulti
                 isClearable
                 value={tags.map(tagMapping)}

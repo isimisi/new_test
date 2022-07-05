@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { red } from "@api/palette/colorfull";
 import CreatableSelect from "react-select/creatable";
 import styles from "../condition-jss";
+import { useTranslation } from "react-i18next";
 
 const ConditionNodeForm = (props) => {
   const {
@@ -33,6 +34,7 @@ const ConditionNodeForm = (props) => {
     isUpdatingElement,
     handleDeleteNode,
   } = props;
+  const { t } = useTranslation();
 
   const choosenNode = nodes.find((r) => r.label === nodeLabel);
 
@@ -41,8 +43,9 @@ const ConditionNodeForm = (props) => {
       <section className={css.bodyForm}>
         <div className={classes.field}>
           <CreatableSelect
-            classes={classes}
             styles={selectStyles()}
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={(input) => t("generic.create_new", { input })}
             menuPortalTarget={document.body}
             menuPlacement="auto"
             menuPosition="absolute"

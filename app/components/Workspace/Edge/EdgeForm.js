@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import { useTranslation } from "react-i18next";
 import Button from "@material-ui/core/Button";
 import css from "@styles/Form.scss";
 import "@styles/vendors/react-draft-wysiwyg/react-draft-wysiwyg.css";
@@ -80,14 +81,16 @@ const EdgeForm = (props) => {
   const relationships = iRelationships.toJS();
   const choosenRelationship = relationships.find((r) => r.label === relationshipLabel);
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <div>
       <section className={css.bodyForm}>
         <div className={classes.field}>
           <CreatableSelect
-            classes={classes}
             styles={selectStyles()}
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={(input) => t("generic.create_new", { input })}
             menuPortalTarget={document.body}
             menuPlacement="auto"
             menuPosition="absolute"
@@ -125,6 +128,8 @@ const EdgeForm = (props) => {
               <CreatableSelect
                 isClearable
                 styles={selectStyles()}
+                noOptionsMessage={() => t("generic.no_options")}
+                formatCreateLabel={(input) => t("generic.create_new", { input })}
                 menuPortalTarget={document.body}
                 menuPlacement="auto"
                 menuPosition="absolute"

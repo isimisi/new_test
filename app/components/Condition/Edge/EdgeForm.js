@@ -16,6 +16,7 @@ import styles from "../condition-jss";
 import BeizerCurve from "../../Workspace/Edge/beizerCurve.svg";
 import StraightLine from "../../Workspace/Edge/straightLine.svg";
 import SmoothStep from "../../Workspace/Edge/smoothStep.svg";
+import { useTranslation } from "react-i18next";
 
 const relationshipTypeOptions = [
   {
@@ -67,6 +68,7 @@ const EdgeForm = (props) => {
     handleDeleteEdge,
     isUpdatingElement,
   } = props;
+  const { t } = useTranslation();
 
   const editable = relationshipLabel.length === 0;
   const choosenRelationship = relationships.find((r) => r.label === relationshipLabel);
@@ -77,7 +79,8 @@ const EdgeForm = (props) => {
         <div className={classes.inlineWrap}>
           <div className={classes.attrField} style={{ marginLeft: 0 }}>
             <CreatableSelect
-              classes={classes}
+              noOptionsMessage={() => t("generic.no_options")}
+              formatCreateLabel={(input) => t("generic.create_new", { input })}
               styles={selectStyles()}
               menuPortalTarget={document.body}
               menuPlacement="auto"

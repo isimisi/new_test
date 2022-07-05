@@ -105,6 +105,8 @@ const WorkspaceForm = (props) => {
             menuPortalTarget={document.body}
             menuPlacement="auto"
             menuPosition="absolute"
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={(input) => t("generic.create_new", { input })}
             isMulti
             isClearable
             value={tags.map(tagMapping)}

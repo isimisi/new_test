@@ -962,7 +962,9 @@
     "email": "Email",
     "save_and_next": "Save and next",
     "back": "Back",
-    "createable_placeholder": "Type something and press enter..."
+    "createable_placeholder": "Type something and press enter...",
+    "create_new": "Create {{input}}",
+    "no_options": "No options"
   },
   "emails": {
     "header": "Email information",
@@ -998,6 +1000,7 @@
   "dates": {
     "invalid": "The date is not correct",
     "max": "The date must be before 2100",
-    "min": "The date must be after 1900"
+    "min": "The date must be after 1900",
+    "time_invalid": "The time is not correct"
   }
 }

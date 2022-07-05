@@ -106,8 +106,8 @@ export const getGroupDropDown = (user: User) => async (dispatch) => {
   }
 };
 
-export const getPersonDropDown = (user: User) => async (dispatch) => {
-  const url = `${baseUrl}/${PERSONS}/dropDownValues`;
+export const getPersonDropDown = (user: User, id) => async (dispatch) => {
+  const url = `${baseUrl}/${PERSONS}/dropDownValues?id=${id}`;
   const header = authHeader(user);
   try {
     const response = await axios.get(url, header);

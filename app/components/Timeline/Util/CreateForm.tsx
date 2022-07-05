@@ -262,7 +262,7 @@ const CreateForm = (props: Props) => {
   const mappedOptions = elementsTagOptions.map(tag => ({
     value: tag.name,
     label: (
-      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
         <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
         <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
       </div>
@@ -327,7 +327,7 @@ const CreateForm = (props: Props) => {
           placeholder={t("timeline.time")}
           value={time}
           autoOk
-          invalidDateMessage={t("dates.invalid")}
+          invalidDateMessage={t("dates.time_invalid")}
           maxDateMessage={t("dates.max")}
           minDateMessage={t("dates.min")}
           variant="inline"
@@ -415,6 +415,8 @@ const CreateForm = (props: Props) => {
         isMulti
         isLoading={loadingsP.get("main")}
         menuPortalTarget={document.body}
+        noOptionsMessage={() => t("generic.no_options")}
+        formatCreateLabel={(input) => t("generic.create_new", { input })}
         menuPlacement="auto"
         menuPosition="absolute"
         value={persons.map(p =>
@@ -440,6 +442,8 @@ const CreateForm = (props: Props) => {
         className={classes.eventSelectField}
         isClearable
         isMulti
+        noOptionsMessage={() => t("generic.no_options")}
+        formatCreateLabel={(input) => t("generic.create_new", { input })}
         isLoading={loadingsD.get("main")}
         openMenuOnClick={openMenuOnClick}
         menuPortalTarget={document.body}
@@ -508,6 +512,8 @@ const CreateForm = (props: Props) => {
         isMulti
         styles={selectStyles()}
         menuPortalTarget={document.body}
+        noOptionsMessage={() => t("generic.no_options")}
+        formatCreateLabel={(input) => t("generic.create_new", { input })}
         menuPlacement="auto"
         menuPosition="absolute"
         onChange={handleChangeTagsSelect}

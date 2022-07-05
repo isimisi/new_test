@@ -434,6 +434,8 @@ const PersonalDashboard = () => {
               <CreatableSelect
                 styles={selectStyles()}
                 isMulti
+                noOptionsMessage={() => t("generic.no_options")}
+                formatCreateLabel={(input) => t("generic.create_new", { input })}
                 isClearable
                 value={tags.map(tagMapping)}
                 onChange={(newValue, _meta) => hanldeOnChange(newValue, _meta, changeTags, tags)

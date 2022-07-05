@@ -133,6 +133,8 @@ function RelationshipForm(props) {
               <CreatableSelect
                 style={selectStyles}
                 className={classes.field}
+                noOptionsMessage={() => t("generic.no_options")}
+                formatCreateLabel={(input) => t("generic.create_new", { input })}
                 inputValue={inputValue}
                 isClearable
                 isMulti

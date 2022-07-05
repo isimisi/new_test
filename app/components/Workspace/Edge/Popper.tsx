@@ -356,6 +356,8 @@ const EdgePopper = (props: Props) => {
                     width: "180px"
                   })
                 }}
+                noOptionsMessage={() => t("generic.no_options")}
+                formatCreateLabel={(input) => t("generic.create_new", { input })}
                 inputId="react-select-single-workspace-node"
                 autoFocus
                 TextFieldProps={{

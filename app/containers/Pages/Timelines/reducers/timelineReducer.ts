@@ -59,8 +59,29 @@ import {
   CUSTOM_SPLIT_FAILED,
   CLEAR_SPLITTING,
   GO_THROUGH_SPLIT_CHANGE,
+  DELETE_TIMELINE_LOADING,
+  DELETE_TIMELINE_SUCCESS,
+  DELETE_TIMELINE_FAILED,
 } from "./timelineConstants";
 import moment from "moment";
+
+const getInnerTagOptions = (elements) => {
+  const tagOptions: any[] = [];
+  const filteredElements = elements.filter((e) => isNode(e));
+
+  for (let i = 0; i < filteredElements.length; i++) {
+    const element = filteredElements[i];
+    const _tags = element.data.tags;
+    if (_tags) {
+      for (let z = 0; z < _tags.length; z++) {
+        console.log(_tags);
+        const tag = _tags[z];
+        tagOptions.push(tag);
+      }
+    }
+  }
+  return tagOptions;
+};
 
 const initialLoadings = Map({
   main: false,
@@ -138,23 +159,6 @@ export default function reducer(
         mutableState.set("specificTimelineTags", fromJS(action.tags));
         mutableState.setIn(["loadings", "main"], false);
         mutableState.set("elements", fromJS(action.elements));
-
-        const tagOptions: any[] = [];
-        const filteredElements = action.elements.filter((e) => isNode(e));
-
-        for (let i = 0; i < filteredElements.length; i++) {
-          const element = filteredElements[i];
-          const _tags = element.data.tags;
-          if (_tags) {
-            for (let z = 0; z < _tags.length; z++) {
-              console.log(_tags);
-              const tag = _tags[z];
-              tagOptions.push(tag);
-            }
-          }
-        }
-
-        mutableState.set("elementsTagOptions", fromJS(tagOptions));
       });
     case IMPORT_EMAILS_SUCCESS:
       return state.withMutations((mutableState) => {
@@ -180,6 +184,7 @@ export default function reducer(
         mutableState.set("elements", fromJS(action.elements));
         mutableState.setIn(["loadings", "mouse"], false);
         mutableState.set("createElementOpen", false);
+        mutableState.set("timelineNode", Map(initialNode));
       });
 
     case GET_TIMELINES_LOADING:
@@ -191,6 +196,7 @@ export default function reducer(
     case CUSTOM_SPLIT_LOADING:
     case IMPORT_EMAILS_LOADING:
     case DELETE_TIMELINE_ELEMENTS_LOADING:
+    case DELETE_TIMELINE_LOADING:
       return state.withMutations((mutableState) => {
         const loadingType = action.loadingType;
         mutableState.setIn(["loadings", loadingType], true);
@@ -202,6 +208,8 @@ export default function reducer(
     case CUSTOM_SPLIT_FAILED:
     case SHOW_TIMELINE_FAILED:
     case IMPORT_EMAILS_FAILED:
+    case DELETE_TIMELINE_FAILED:
+    case DELETE_TIMELINE_SUCCESS:
     case PUT_TIMELINE_ELEMENT_FAILED:
     case DELETE_TIMELINE_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
@@ -209,6 +217,7 @@ export default function reducer(
         mutableState.set("message", message);
         mutableState.set("loadings", initialLoadings);
       });
+
     case CUSTOM_SPLIT_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "post"], false);
@@ -278,6 +287,9 @@ export default function reducer(
           // @ts-ignore
           const elements = mutableState.get("elements").toJS();
           const element = elements.find((el) => el.id === id);
+
+          const tagOptions = getInnerTagOptions(elements);
+          mutableState.set("elementsTagOptions", fromJS(tagOptions));
 
           let editorState = EditorState.createEmpty();
           if (element.data.content) {

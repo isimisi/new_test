@@ -66,6 +66,8 @@ const DocumentForm = ({ isUpdatingNode = true }: Props) => {
         <CreatableSelect
           styles={selectStyles()}
           isMulti
+          noOptionsMessage={() => t("generic.no_options")}
+          formatCreateLabel={input => t("generic.create_new", { input })}
           isDisabled={!isUpdatingNode}
           isClearable
           value={doc

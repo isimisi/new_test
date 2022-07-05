@@ -64,10 +64,6 @@ export default memo(({ data }: NodeProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const user = useAuth0().user as User;
-  const [extract, setExtract] = useState(true);
-  const handleExtract = () => {
-    setExtract(prevVal => !prevVal);
-  };
 
   const onEditClick = () => {
     dispatch(setTimelineNode(data.id));
@@ -209,7 +205,15 @@ export default memo(({ data }: NodeProps) => {
                     }
 
                     return (
-                      <Tooltip arrow title={person.name} placement="top">
+                      <Tooltip
+                        arrow
+                        title={`${person.name} ${
+                          person.affiliation
+                            ? "(" + person.affiliation + ")"
+                            : ""
+                        }`}
+                        placement="top"
+                      >
                         <div
                           style={{ cursor: "pointer", margin: "0 2px" }}
                           onClick={() => handleOpenPerson(person.id)}
@@ -340,9 +344,9 @@ export default memo(({ data }: NodeProps) => {
               <div
                 style={{
                   backgroundColor: tag.color,
-                  width: 8,
-                  height: 8,
-                  borderRadius: 4,
+                  width: 12,
+                  height: 12,
+                  borderRadius: 6,
                   margin: 1
                 }}
               />

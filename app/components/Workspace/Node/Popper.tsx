@@ -461,6 +461,8 @@ const NodePopper = (props: Props) => {
                     width: "180px"
                   })
                 }}
+                noOptionsMessage={() => t("generic.no_options")}
+                formatCreateLabel={input => t("generic.create_new", { input })}
                 inputId="react-select-single-workspace-node"
                 autoFocus
                 TextFieldProps={{
@@ -512,6 +514,10 @@ const NodePopper = (props: Props) => {
                           })
                         }}
                         placeholder="Kendetegn"
+                        noOptionsMessage={() => t("generic.no_options")}
+                        formatCreateLabel={input =>
+                          t("generic.create_new", { input })
+                        }
                         options={attributesDropDownOptions}
                         value={
                           attribut.label && {
@@ -571,6 +577,10 @@ const NodePopper = (props: Props) => {
                                 })
                               }}
                               placeholder="Værdi"
+                              noOptionsMessage={() => t("generic.no_options")}
+                              formatCreateLabel={input =>
+                                t("generic.create_new", { input })
+                              }
                               options={JSON.parse(attribut.selectionOptions)}
                               value={
                                 attribut.value && {

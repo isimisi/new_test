@@ -228,6 +228,8 @@ const Table = (props: Props) => {
         <div>
           <CreatableSelect
             isMulti
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={input => t("generic.create_new", { input })}
             styles={{
               ...selectStyles(),
               container: (provided, state) => ({

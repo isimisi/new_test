@@ -120,8 +120,8 @@ export const getGroupDropDown = (user: User) => async (dispatch) => {
   }
 };
 
-export const getDocumentDropDown = (user: User) => async (dispatch) => {
-  const url = `${baseUrl}/${DOCUMENTS}/dropDownValues`;
+export const getDocumentDropDown = (user: User, id) => async (dispatch) => {
+  const url = `${baseUrl}/${DOCUMENTS}/dropDownValues?id=${id}`;
   const header = authHeader(user);
   try {
     const response = await axios.get(url, header);

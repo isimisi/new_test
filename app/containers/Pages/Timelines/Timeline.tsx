@@ -289,8 +289,8 @@ const Timeline = () => {
   useEffect(() => {
     dispatch(closeMenuAction);
     dispatch(getGroupDropDown(user));
-    dispatch(getPersonDropDown(user));
-    dispatch(getDocumentDropDown(user));
+    dispatch(getPersonDropDown(user, id));
+    dispatch(getDocumentDropDown(user, id));
 
     return () => {
       dispatch(openMenuAction);
@@ -356,7 +356,7 @@ const Timeline = () => {
 
 
     if (isUpdatingNode) {
-      dispatch(putElement(user, timelineNode, elementPersons, elementDocuments, closeFunc));
+      dispatch(putElement(user, id, timelineNode, elementPersons, elementDocuments, closeFunc));
     } else {
       dispatch(saveElement(user, id, timelineNode, currSplittingNodeRefference, customSplit, elementPersons, elementDocuments, closeFunc));
     }
@@ -541,7 +541,7 @@ const Timeline = () => {
               elements={elements}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
-              backLink="/app/timeline"
+              backLink="/app/timelines"
               timeline
             />
             <Views

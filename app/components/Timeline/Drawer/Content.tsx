@@ -1,6 +1,7 @@
+/* eslint-disable default-case */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from "react";
+import React, { KeyboardEventHandler, useState } from "react";
 import { useTranslation } from "react-i18next";
 import daLocale from "date-fns/locale/da";
 import enLocale from "date-fns/locale/en-US";
@@ -34,6 +35,8 @@ import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
 import Divider from "@material-ui/core/Divider";
 import Linkify from "react-linkify";
+import { SketchPicker, ColorResult } from "react-color";
+
 import {
   MuiPickersUtilsProvider,
   DateTimePicker,
@@ -107,9 +110,11 @@ const Content = (props: Props) => {
   const email = timelineNode.get("email").get("mail");
   const persons = timelineNode.get("persons").toJS();
   const documents = timelineNode.get("documents").toJS();
+  const tags = timelineNode.get("tags").toJS();
 
   const classes = useStyles();
   const theme = useTheme();
+  const elementsTagOptions = useAppSelector(state => state.timeline.get("elementsTagOptions")).toJS();
 
   const handleSetDate = d => changeTimelineNode("date", d);
   const labelChange = e => changeTimelineNode("title", e.target.value);
@@ -134,6 +139,10 @@ const Content = (props: Props) => {
     const nameSpan = nameDiv.getElementsByTagName("span")[0];
 
     openPerson(id, nameSpan.innerHTML);
+  };
+
+  const handleChangeTags = value => {
+    changeTimelineNode("tags", value);
   };
 
   const handleOpenDocument = e => {
@@ -211,6 +220,126 @@ const Content = (props: Props) => {
       )
     );
   };
+
+  const [displayColorPickerColor, setDisplayColorPickerColor] = useState(false);
+  const [color, setColor] = useState("#ffffff");
+  const handleChangeColor = (col: ColorResult) => setColor(col.hex);
+
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInput = (val: string) => {
+    if (!displayColorPickerColor) {
+      setInputValue(val);
+    }
+  };
+
+  const chooseColor = () => {
+    setDisplayColorPickerColor(true);
+  };
+
+  const handleChangeTagsSelect = (val, meta) => {
+    switch (meta.action) {
+      case "remove-value":
+      case "pop-value":
+      case "deselect-option":
+        // eslint-disable-next-line no-case-declarations
+        const newTags = tags.filter(
+          tag => tag.name !== meta.removedValue.value
+        );
+        handleChangeTags(newTags);
+        break;
+      case "clear":
+        handleChangeTags([]);
+        break;
+      case "set-value":
+      case "select-option":
+        // eslint-disable-next-line no-case-declarations
+        const _newTags = [...tags];
+        // eslint-disable-next-line no-case-declarations
+        const newTag = {
+          name: meta.option.value,
+          color: meta.option.color
+        };
+        _newTags.push(newTag);
+        handleChangeTags(_newTags);
+        break;
+      case "create-option":
+        chooseColor();
+    }
+  };
+
+  const handleCloseColor = () => {
+    setDisplayColorPickerColor(false);
+    const newTag = { name: inputValue, color };
+    tags.push(newTag);
+
+    handleChangeTags(tags);
+    setInputValue("");
+  };
+
+
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = event => {
+    if (!inputValue) return;
+    switch (event.key) {
+      case "Enter":
+      case "Tab":
+        chooseColor();
+        event.preventDefault();
+    }
+  };
+
+  const mappedTags = tags.map(tag => ({
+    value: tag.name,
+    label: (
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
+        <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
+      </div>
+    ),
+
+  }));
+
+  const mappedOptions = elementsTagOptions.map(tag => ({
+    value: tag.name,
+    label: (
+      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
+        <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
+        <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
+      </div>
+    ),
+    color: tag?.color
+  }));
+
+
+  React.useEffect(() => {
+    const picker = document.getElementsByClassName("sketch-picker");
+
+    if (picker.length > 0) {
+      let div = document.getElementById("saveContainer");
+
+      if (!div) {
+        div = document.createElement("div");
+        div.setAttribute("id", "saveContainer");
+        picker[0].appendChild(div);
+      }
+      // @ts-ignore
+
+      ReactDOM.render(
+        <div className={classes.attributSaveButtonContainer}>
+          <button
+            className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+            tabIndex={0}
+            type="button"
+            onClick={handleCloseColor}
+          >
+            <span className="MuiButton-label">Gem</span>
+            <span className="MuiTouchRipple-root" />
+          </button>
+        </div>,
+        div
+      );
+    }
+  }, [displayColorPickerColor, color]);
 
   return (
     <div className={classes.contentContainer}>
@@ -311,6 +440,8 @@ const Content = (props: Props) => {
             className={classes.eventSelectField}
             isClearable
             isMulti
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={(input) => t("generic.create_new", { input })}
             isLoading={loadingsP.get("main")}
             menuPortalTarget={document.body}
             menuPlacement="auto"
@@ -339,6 +470,8 @@ const Content = (props: Props) => {
             isClearable
             isMulti
             isLoading={loadingsD.get("main")}
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={(input) => t("generic.create_new", { input })}
             openMenuOnClick={openMenuOnClick}
             menuPortalTarget={document.body}
             menuPlacement="auto"
@@ -399,6 +532,30 @@ const Content = (props: Props) => {
               label: d.title
             }))}
           />
+          <CreatableSelect
+            inputValue={inputValue}
+            isClearable
+            className={classes.eventSelectField}
+            isMulti
+            styles={selectStyles()}
+            menuPortalTarget={document.body}
+            noOptionsMessage={() => t("generic.no_options")}
+            formatCreateLabel={(input) => t("generic.create_new", { input })}
+            menuPlacement="auto"
+            menuPosition="absolute"
+            onChange={handleChangeTagsSelect}
+            onInputChange={handleInput}
+            onKeyDown={handleKeyDown}
+            placeholder={t("timeline.tags_placeholder")}
+            value={mappedTags}
+            options={mappedOptions}
+          />
+          {displayColorPickerColor ? (
+            <div className={classes.popover}>
+              <div className={classes.cover} onClick={handleCloseColor} />
+              <SketchPicker color={color} onChange={handleChangeColor} />
+            </div>
+          ) : null}
         </div>
       ) : (
         <div
@@ -507,6 +664,7 @@ const Content = (props: Props) => {
                 color: "white",
                 marginRight: 10
               }}
+              onClick={handleDelete}
             >
               {t("generic.delete")}
             </Button>

@@ -136,6 +136,7 @@ export interface PutTimelineSuccess {
 
 export interface DeleteTimelineSuccess {
   type: typeof DELETE_TIMELINE_SUCCESS;
+  message: string;
 }
 
 export interface ShowHandlesChange {
