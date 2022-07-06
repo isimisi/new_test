@@ -181,7 +181,7 @@ export const putElement = (user: User, timeline_id, element, changedPersons, cha
 
   const body = { element: _element, changedPersons, changedDocuments };
   const header = authHeader(user);
-
+  console.log(handleCloseCreateElement);
   try {
     const response = await axios.put(url, body, header);
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_SUCCESS, element: response.data });
@@ -189,6 +189,7 @@ export const putElement = (user: User, timeline_id, element, changedPersons, cha
     dispatch(getPersonDropDown(user, timeline_id));
     dispatch(getDocumentDropDown(user, timeline_id));
   } catch (error: any) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_FAILED, message });
   }

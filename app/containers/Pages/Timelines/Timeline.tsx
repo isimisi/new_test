@@ -346,9 +346,11 @@ const Timeline = () => {
     setElementPersons([]);
     setElementDocuments([]);
     let closeFunc = handleCloseCreateElement;
+
     if (correctEmailsOpen) {
       closeFunc = nextElWithoutDate;
     }
+
 
     if (alternativeCloseFunc) {
       closeFunc = alternativeCloseFunc;

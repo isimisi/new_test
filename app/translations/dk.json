@@ -1009,6 +1009,6 @@
     "invalid": "Datoen er ikke korrekt",
     "max": "Datoen skal være før 2100",
     "min": "Datoen skal være efter 1900",
-    "time_invalid": "Tiden er ikke korrekt"
+    "time_invalid": "Tidspunktet er ikke korrekt"
   }
 }

@@ -43,6 +43,7 @@ import { hanldeOnDocumentChange } from "@pages/Documents/constants";
 import { hanldeOnPersonChange, personMapping } from "@pages/Persons/constants";
 import ReactDOM from "react-dom";
 import { isNode } from "react-flow-renderer";
+import moment from "moment";
 
 
 interface Props {
@@ -226,6 +227,7 @@ const CreateForm = (props: Props) => {
         break;
       case "create-option":
         chooseColor();
+        setInputValue(val.find(x => x.__isNew__).value);
     }
   };
 
@@ -301,6 +303,8 @@ const CreateForm = (props: Props) => {
     }
   }, [displayColorPickerColor, color]);
 
+  const downHaveTime = moment(time).format("HH:mm") === "00:00";
+
 
   return (
     <div className={classes.createElementContainer}>
@@ -325,7 +329,7 @@ const CreateForm = (props: Props) => {
         <KeyboardTimePicker
           label={t("timeline.time")}
           placeholder={t("timeline.time")}
-          value={time}
+          value={downHaveTime ? null : time}
           autoOk
           invalidDateMessage={t("dates.time_invalid")}
           maxDateMessage={t("dates.max")}

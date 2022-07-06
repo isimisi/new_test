@@ -43,6 +43,7 @@ import {
 import { postCondition } from '../Conditions/reducers/conditionActions';
 import { useTranslation } from 'react-i18next';
 import { useAuth0, User } from "@auth0/auth0-react";
+import { encryptId } from '@api/constants';
 
 const Output = () => {
   const [openAlert, setOpenAlert] = useState(false);
@@ -132,7 +133,7 @@ const Output = () => {
 
   const handleCreateOrSeeCondition = (condition, see) => {
     if (see) {
-      window.open('/app/conditions/' + condition.condition_id, '_blank');
+      window.open('/app/conditions/' + encryptId(condition.condition_id), '_blank');
     } else {
       dispatch(postCondition(user, history, true));
     }

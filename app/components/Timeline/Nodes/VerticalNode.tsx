@@ -23,6 +23,8 @@ export default memo(({ data }: NodeProps) => {
     dispatch(setTimelineNode(data.id, true));
   };
 
+  const downHaveTime = moment(data.date).format("HH:mm") === "00:00";
+
   return (
     <div
       className="nodrag"
@@ -50,9 +52,9 @@ export default memo(({ data }: NodeProps) => {
           id="nodeLabel"
         >
           {moment(data.date).isValid()
-            ? `${moment(data.date).format("DD/MM-YYYY")}, kl. ${moment(
-              data.date
-            ).format("HH:mm")}`
+            ? `${moment(data.date).format("DD/MM-YYYY")}${
+              downHaveTime ? "" : ", kl."
+            } ${downHaveTime ? "" : moment(data.date).format("HH:mm")}`
             : t("node.no_date")}
         </Typography>
         <Handle
