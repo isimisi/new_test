@@ -101,7 +101,7 @@ function QontoStepIcon(props: StepIconProps) {
 }
 
 const seperators = [
-  /(?=<div.*border:none.*border-top:solid.*>)/m, // outlook div seperator
+  // /(?=<div.*border:none.*border-top:solid.*>)/m, // outlook div seperator TODO: figure out why this work on the server
   /(?=<div\b[^>]*class="gmail_attr">)/m, // gmail text seperator top
   /(?=<div\b[^>]*class="moz-cite-prefix">)/m, // i dont know where this come from maybe thunderbolt mozilla
   /(?=<div.*border-right:none.*border-top:1pt solid.*>)/m, // gmail div seperator
@@ -222,6 +222,7 @@ const ValidateEmails = (props: Props) => {
   const splitElement = useMemo(() => getSplitElement(t("emails.split_text"), "#73B1FF", true).outerHTML, []);
 
   useEffect(() => {
+    console.log(emailsToValidate.get(activeStep).get("html"));
     const initSplittings = emailsToValidate.get(activeStep).get("html").split(regExForBody).join(splitElement);
     setWorkingEmailToValidate(initSplittings);
   }, [activeStep]);

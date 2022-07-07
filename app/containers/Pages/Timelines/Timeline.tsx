@@ -611,7 +611,7 @@ const Timeline = () => {
         onSave={updateMeta}
         closeForm={() => setMetaOpen(false)}
       />
-      <CreateElement
+      {createElementOpen && <CreateElement
         open={createElementOpen}
         close={handleCloseCreateElement}
         onSave={onSaveElement}
@@ -624,9 +624,9 @@ const Timeline = () => {
         handleDelete={handleDelete}
         isUpdatingNode={isUpdatingNode}
         handleSplit={handleSplit}
-      />
+      />}
 
-      <GoThroughSplit
+      {goThroughSplitOpen && <GoThroughSplit
         open={goThroughSplitOpen}
         close={handleCloseGoThorughSplit}
         onSave={onSaveElement}
@@ -640,7 +640,7 @@ const Timeline = () => {
         isUpdatingNode={isUpdatingNode}
         splitElements={splitElements}
         currSplittingEmail={currSplittingEmail}
-      />
+      />}
 
       {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} />}
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}

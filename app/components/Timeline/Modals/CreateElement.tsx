@@ -135,7 +135,7 @@ const CreateElement = (props: Props) => {
                 variant="contained"
                 color="primary"
                 type="button"
-                disabled={!date || title.length === 0 || loadingsT.get("post")}
+                disabled={!date || title?.length === 0 || loadingsT.get("post")}
                 onClick={handleSave}
               >
                 {loadingsT.get("post") ? (
