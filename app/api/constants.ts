@@ -6,11 +6,9 @@ import { AuthUser, getToken } from '@helpers/userInfo';
 import CryptoJS from 'crypto-js';
 import { History } from 'history';
 
-export const baseUrl = window.location.hostname === 'juristic-web-app-staging.herokuapp.com'
-  ? 'https://juristic-api-gateway-staging.herokuapp.com'
-  : process.env.NODE_ENV === 'production'
-    ? 'https://juristic-api-gateway.herokuapp.com'
-    : window.location.hostname === 'juristicfrontend.eu.ngrok.io' ? "https://juristicapi.eu.ngrok.io" : "http://localhost:3333";
+export const baseUrl = process.env.NODE_ENV === 'production'
+  ? 'https://api.juristic.io/'
+  : window.location.hostname === 'juristicfrontend.eu.ngrok.io' ? "https://juristicapi.eu.ngrok.io" : "http://localhost:3333";
 
 export interface HttpHeader {
   headers: {
