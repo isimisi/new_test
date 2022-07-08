@@ -7,7 +7,7 @@ import CryptoJS from 'crypto-js';
 import { History } from 'history';
 
 export const baseUrl = process.env.NODE_ENV === 'production'
-  ? 'https://api.juristic.io/'
+  ? 'https://api.juristic.io'
   : window.location.hostname === 'juristicfrontend.eu.ngrok.io' ? "https://juristicapi.eu.ngrok.io" : "http://localhost:3333";
 
 export interface HttpHeader {
