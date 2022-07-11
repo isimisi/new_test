@@ -51,7 +51,7 @@ const Outputs = () => {
 
   const onDelete = ({ data }) => {
     const deletedOutput = data.map(v => ({
-      id: outputs[v.dataIndex][3],
+      id: outputs[v.dataIndex][4],
       title: outputs[v.dataIndex][0]
     }));
     deletedOutput.forEach(e => {

@@ -101,7 +101,7 @@ function QontoStepIcon(props: StepIconProps) {
 }
 
 const seperators = [
-  // /(?=<div.*border:none.*border-top:solid.*>)/m, // outlook div seperator TODO: figure out why this work on the server
+  /(?=<div\sstyle.*border:none.*border-top:solid.*>)/m, // outlook div seperator TODO: figure out why this work on the server
   /(?=<div\b[^>]*class="gmail_attr">)/m, // gmail text seperator top
   /(?=<div\b[^>]*class="moz-cite-prefix">)/m, // i dont know where this come from maybe thunderbolt mozilla
   /(?=<div.*border-right:none.*border-top:1pt solid.*>)/m, // gmail div seperator

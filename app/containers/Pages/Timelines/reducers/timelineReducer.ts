@@ -186,10 +186,17 @@ export default function reducer(
         mutableState.set("createElementOpen", false);
         mutableState.set("timelineNode", Map(initialNode));
       });
-
-    case GET_TIMELINES_LOADING:
     case POST_TIMELINE_LOADING:
-    case PUT_TIMELINE_LOADING:
+      return state.withMutations((mutableState) => {
+        const loadingType = action.loadingType;
+        mutableState.setIn(["loadings", loadingType], true);
+        mutableState.set("title", "");
+        mutableState.set("description", "");
+        mutableState.set("group", "");
+        mutableState.set("shareOrg", false);
+        mutableState.set("specificTimelineTags", List());
+      });
+    case GET_TIMELINES_LOADING:
     case POST_TIMELINE_ELEMENT_LOADING:
     case PUT_TIMELINE_ELEMENT_LOADING:
     case SHOW_TIMELINE_LOADING:
