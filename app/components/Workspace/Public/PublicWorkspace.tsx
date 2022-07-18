@@ -22,7 +22,7 @@ import ReactFlow, {
 import { loadFromLocalStorage } from "@api/localStorage/localStorage";
 
 import logoBeta from '@images/logoBeta.svg';
-import brand from '@api/dummy/brand';
+import brand from '@api/ui/brand';
 import WorkspaceFabs from '@components/Workspace/Public/WorkspaceFabs';
 import CustomNode from '@components/Workspace/Node/CustomNode';
 import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';

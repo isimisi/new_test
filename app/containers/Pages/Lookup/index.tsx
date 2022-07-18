@@ -40,7 +40,7 @@ import { getCountry } from "@helpers/countryOptions";
 import Loader from "@components/Loading/LongLoader";
 import NoContent from "@components/NoContent";
 import { getPlanId } from "@helpers/userInfo";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 
 const title = brand.name + " - Lookup";
 const description = brand.desc;

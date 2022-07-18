@@ -56,14 +56,7 @@ function Header(props) {
     };
   }, []);
 
-  const {
-    classes,
-    toggleDrawerOpen,
-    margin,
-    position,
-    openGuide,
-    history
-  } = props;
+  const { classes, toggleDrawerOpen, margin, position, history } = props;
 
   const setMargin = sidebarPosition => {
     if (sidebarPosition === "right-sidebar") {
@@ -141,15 +134,6 @@ function Header(props) {
                   />
                 </IconButton>
               </Tooltip>
-
-              <Tooltip title={`${t("header.guide")}`} placement="bottom">
-                <IconButton className={classes.button} onClick={openGuide}>
-                  <i
-                    className="ion-ios-help-outline"
-                    style={{ color: "#333" }}
-                  />
-                </IconButton>
-              </Tooltip>
             </div>
           </div>
         </Hidden>
@@ -177,7 +161,6 @@ Header.propTypes = {
   toggleDrawerOpen: PropTypes.func.isRequired,
   margin: PropTypes.bool.isRequired,
   position: PropTypes.string.isRequired,
-  openGuide: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired
 };
 

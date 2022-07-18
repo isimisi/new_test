@@ -1,19 +1,22 @@
 function remove(id, callback) {
-  const mysql = require("mysql");
+  const axios = require("axios");
+  const url = "https://api.juristic.io/auth0/delete";
+  const body = {
+    id,
+  };
 
-  const connection = mysql.createConnection({
-    host: configuration.DB_HOST,
-    user: configuration.DB_USER,
-    password: configuration.DB_PASSWORD,
-    database: configuration.DB_DATABASE,
-  });
+  const options = {
+    method: "POST",
+    url,
+    headers: { "content-type": "application/json" },
+    data: body,
+  };
 
-  connection.connect();
-
-  const query = "DELETE FROM users WHERE id = ?";
-
-  connection.query(query, [id], (err) => {
-    if (err) return callback(err);
-    callback(null);
-  });
+  axios(options)
+    .then((res) => {
+      callback(null);
+    })
+    .catch((err) => {
+      callback(err);
+    });
 }

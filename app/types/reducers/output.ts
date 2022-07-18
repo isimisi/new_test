@@ -17,11 +17,9 @@ export type OutputTableOptions = [
 
 export interface OutputState {
   outputs: List<OutputTableOptions>;
-  outputFileUrl: string;
   outputFile: any;
   title: string;
   description: string;
-  fileType: string;
   outputType: string;
   group: string;
   outputConditions: List<unknown>;

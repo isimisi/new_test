@@ -1,11 +1,11 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import brand from '@api/dummy/brand';
-import { Route } from 'react-router-dom';
-import { ErrorWrap } from '@components';
-import { useTranslation } from 'react-i18next';
+import React from "react";
+import { Helmet } from "react-helmet";
+import brand from "@api/ui/brand";
+import { Route } from "react-router-dom";
+import { ErrorWrap } from "@components";
+import { useTranslation } from "react-i18next";
 
-const title = brand.name + ' - Page Not Found';
+const title = brand.name + " - Page Not Found";
 const description = brand.desc;
 
 const NotFound = () => {
@@ -14,7 +14,7 @@ const NotFound = () => {
     <Route
       render={({ staticContext }) => {
         if (staticContext) {
-        staticContext.status = 404; // eslint-disable-line
+          staticContext.status = 404; // eslint-disable-line
         }
         return (
           <div>
@@ -26,7 +26,7 @@ const NotFound = () => {
               <meta property="twitter:title" content={title} />
               <meta property="twitter:description" content={description} />
             </Helmet>
-            <ErrorWrap title="404" desc={t('404.not_found')} />
+            <ErrorWrap title="404" desc={t("404.not_found")} />
           </div>
         );
       }}

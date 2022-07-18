@@ -1,20 +1,20 @@
 function verify(email, callback) {
-  const mysql = require("mysql");
+  const axios = require("axios");
+  const url = "https://api.juristic.io/auth0/verify";
+  const body = { email };
 
-  const connection = mysql.createConnection({
-    host: configuration.DB_HOST,
-    user: configuration.DB_USER,
-    password: configuration.DB_PASSWORD,
-    database: configuration.DB_DATABASE,
-  });
+  const options = {
+    method: "POST",
+    url,
+    headers: { "content-type": "application/json" },
+    data: body,
+  };
 
-  connection.connect();
-
-  const query = 'UPDATE users SET status = "active" WHERE email = ?';
-
-  connection.query(query, [email], (err, results) => {
-    if (err) return callback(err);
-
-    callback(null, results.length > 0);
-  });
+  axios(options)
+    .then((res) => {
+      callback(null, true);
+    })
+    .catch((err) => {
+      callback(err);
+    });
 }

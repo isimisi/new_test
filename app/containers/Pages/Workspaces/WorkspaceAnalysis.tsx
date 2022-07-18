@@ -96,7 +96,7 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     },
   },
   container: { display: "flex",
-    overflow: "scroll",
+    overflowY: "scroll",
     height: "90vh",
     alignSelf: "flex-start",
 
@@ -210,6 +210,19 @@ const WorkspaceAnalysis = () => {
     });
   };
 
+  const downloadFile = (label, file) => {
+    const data = Uint8Array.from(file.Body.data);
+    const content = new Blob([data.buffer], { type: file.ContentType });
+
+    const encodedUri = window.URL.createObjectURL(content);
+    const link = document.createElement("a");
+
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", label);
+
+    link.click();
+  };
+
   const save = () => {
     if (open) {
       handleDrawer();
@@ -319,7 +332,7 @@ const WorkspaceAnalysis = () => {
             <Grid container className={classes.root}>
               <Grid
                 item
-                xs={open && !matchpattern.test(output.action.output) ? 5 : 6}
+                xs={open && output.action.output_type !== "upload" ? 5 : 6}
                 style={{ marginBottom: 40, paddingLeft: 20, paddingTop: 20 }}
               >
                 <Typography variant="h6">{output.conditionLabel}</Typography>
@@ -332,11 +345,11 @@ const WorkspaceAnalysis = () => {
               </Grid>
               <Grid
                 item
-                xs={open && !matchpattern.test(output.action.output) ? 5 : 6}
+                xs={open && output.action.output_type !== "upload" ? 5 : 6}
                 style={{ paddingTop: 20 }}
               >
                 <Typography variant="h6">{output.action.label}</Typography>
-                {matchpattern.test(output.action.output) ? (
+                {output.action.output_type === "upload" ? (
                   <div
                     style={{
                       height: "100%",
@@ -349,8 +362,7 @@ const WorkspaceAnalysis = () => {
                     <Button
                       variant="contained"
                       color="primary"
-                      href={output.action.output}
-                      target="_blank"
+                      onClick={() => downloadFile(output.conditionLabel, output.action.output)}
                     >
                   Åben fil
                     </Button>
@@ -368,9 +380,9 @@ const WorkspaceAnalysis = () => {
               {open && (
                 <Grid
                   item
-                  xs={open && !matchpattern.test(output.action.output) ? 2 : false}
+                  xs={open && output.action.output_type !== "upload" ? 2 : false}
                   style={{
-                    display: matchpattern.test(output.action.output) ? "none" : undefined,
+                    display: output.action.output_type === "upload" ? "none" : undefined,
                   }}
                 >
                   <Hidden smDown>

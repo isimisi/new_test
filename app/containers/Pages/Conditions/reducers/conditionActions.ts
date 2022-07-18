@@ -86,6 +86,8 @@ export const showCondition = (user: User, id: string, setMetaOpen: React.Dispatc
       tags
     });
   } catch (error) {
+    // @ts-ignore
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_CONDITION_FAILED, message });
   }

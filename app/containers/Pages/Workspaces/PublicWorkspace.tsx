@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Notification from "@components/Notification/Notification";

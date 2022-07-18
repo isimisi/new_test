@@ -72,6 +72,8 @@ export const putDocument = (
   const url = `${baseUrl}/${DOCUMENTS}/${id}`;
   const header = authHeader(user);
   const hasNewDoc = Boolean(file);
+  // eslint-disable-next-line no-param-reassign
+  delete document.link;
   header.params = {
     ...document,
     tags: JSON.stringify(document.tags),
@@ -80,8 +82,10 @@ export const putDocument = (
 
   let body;
   if (hasNewDoc) {
+    const blob = new Blob([file.Body.data]);
+
     body = new FormData();
-    body.append("file_content", file);
+    body.append("file_content", blob);
   }
   try {
     await axios.put(url, body, header);

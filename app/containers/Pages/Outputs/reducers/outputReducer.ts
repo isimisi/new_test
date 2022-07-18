@@ -2,7 +2,7 @@ import { fromJS, List, Map } from "immutable";
 import { EditorState, ContentState } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
-import { validURL } from "@api/constants";
+
 import {
   GET_OUTPUTS_SUCCESS,
   GET_OUTPUTS_FAILED,
@@ -18,13 +18,11 @@ import {
   TITLE_CHANGE,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
-  FILE_TYPE_CHANGE,
   GET_GROUP_DROPDOWN_SUCCESS,
   GET_GROUP_DROPDOWN_FAILED,
   GET_CONDITION_DROPDOWN_SUCCESS,
   GET_CONDITION_DROPDOWN_FAILED,
   EDITOR_STATE_CHANGE,
-  ADD_OUTPUT_URL,
   OUTPUT_ADD_CONDITION,
   OUTPUT_CHANGE_CONDITION,
   OUTPUT_DELETE_CONDITION,
@@ -35,11 +33,9 @@ import { IImmutableOutputState, OutputState } from "@customTypes/reducers/output
 
 const initialState: OutputState = {
   outputs: List(),
-  outputFileUrl: "",
   outputFile: Map(),
   title: "",
   description: "",
-  fileType: "",
   outputType: "",
   group: "",
   outputConditions: List(),
@@ -72,8 +68,7 @@ export default function reducer(
         mutableState.set("description", "");
         mutableState.set("group", "");
         mutableState.set("outputConditions", List());
-        mutableState.set("fileType", "");
-        mutableState.set("outputFileUrl", "");
+        mutableState.set("outputFile", Map());
       });
     case POST_OUTPUT_FAILED:
       return state.withMutations((mutableState) => {
@@ -84,19 +79,18 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         const label = fromJS(action.label);
         const description = fromJS(action.description);
-        const output = fromJS(action.output);
+
         const conditions = fromJS(action.conditions);
         const tags = fromJS(action.tags);
 
         const group = fromJS(action.group);
-        const fileType = fromJS(action.file_type);
         const outputType = fromJS(action.output_type);
 
-        if (output) {
-          if (validURL(output)) {
-            mutableState.set("outputFileUrl", output);
+        if (action.output) {
+          if (outputType === "upload" && action.output) {
+            mutableState.set("outputFile", fromJS(action.output));
           } else {
-            const blocksFromHtml = htmlToDraft(output);
+            const blocksFromHtml = htmlToDraft(action.output);
             const { contentBlocks, entityMap } = blocksFromHtml;
             const contentState = ContentState.createFromBlockArray(
               contentBlocks,
@@ -109,7 +103,6 @@ export default function reducer(
 
         mutableState.set("title", label);
         mutableState.set("description", description);
-        mutableState.set("fileType", fileType);
         mutableState.set("outputType", outputType);
         mutableState.set("outputConditions", conditions);
         mutableState.set("outputTags", tags);
@@ -175,21 +168,13 @@ export default function reducer(
         const file = fromJS(action.file);
         mutableState.set("outputFile", file);
       });
-    case ADD_OUTPUT_URL:
-      return state.withMutations((mutableState) => {
-        const url = fromJS(action.url);
-        mutableState.set("outputFileUrl", url);
-      });
+
     case ADD_GROUP:
       return state.withMutations((mutableState) => {
         const group = fromJS(action.group);
         mutableState.set("group", group);
       });
-    case FILE_TYPE_CHANGE:
-      return state.withMutations((mutableState) => {
-        const fileType = fromJS(action.fileType);
-        mutableState.set("fileType", fileType);
-      });
+
     case EDITOR_STATE_CHANGE:
       return state.withMutations((mutableState) => {
         const editor = fromJS(action.editor);

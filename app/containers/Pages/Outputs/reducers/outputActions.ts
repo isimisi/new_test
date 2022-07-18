@@ -36,8 +36,9 @@ export const postOutput = (user: User, history: History) => async (dispatch) => 
   }
 };
 
-export const showOutput = (user: User, id: string) => async (dispatch) => {
+export const showOutput = (user: User, id: string, setLoading) => async (dispatch) => {
   const url = `${baseUrl}/${ACTIONS}/${id}`;
+  setLoading(true);
   const header = authHeader(user);
   try {
     const response = await axios.get(url, header);
@@ -63,6 +64,7 @@ export const showOutput = (user: User, id: string) => async (dispatch) => {
       output_type,
       tags,
     });
+    setLoading(false);
   } catch (error) {
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_OUTPUT_FAILED, message });
@@ -74,8 +76,7 @@ export const putOutput = (
   id: string,
   label: string,
   description: string,
-  output: string,
-  fileType: string,
+  output: any,
   outputType: string,
   group: string,
   conditions: string,
@@ -89,7 +90,6 @@ export const putOutput = (
   header.params = {
     label,
     description,
-    fileType,
     outputType,
     group,
     conditions,
@@ -98,11 +98,12 @@ export const putOutput = (
   };
 
   let body;
-  if (validURL(output) || typeof output === "string") {
-    header.params.output = output;
-  } else {
+  if (!output.AcceptRanges && outputType === "upload") {
+    const blob = new Blob([output.Body.data]);
+
+    header.params.hasFile = true;
     body = new FormData();
-    body.append("file_content", output);
+    body.append("file_content", blob);
   }
 
   try {
@@ -185,11 +186,6 @@ export const descriptionChange = (description) => ({
   description,
 });
 
-export const fileTypeChange = (fileType) => ({
-  type: types.FILE_TYPE_CHANGE,
-  fileType,
-});
-
 export const editorStateChange = (editor) => ({
   type: types.EDITOR_STATE_CHANGE,
   editor,
@@ -203,11 +199,6 @@ export const addGroup = (group) => ({
 export const addOutput = (file) => ({
   type: types.ADD_OUTPUT,
   file,
-});
-
-export const addOutputUrl = (url) => ({
-  type: types.ADD_OUTPUT_URL,
-  url,
 });
 
 export const changeTags = (tags) => ({

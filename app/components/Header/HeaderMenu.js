@@ -9,7 +9,7 @@ import classNames from "classnames";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import logo from "@images/logo.svg";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import Hidden from "@material-ui/core/Hidden";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import MenuIcon from "@material-ui/icons/Menu";

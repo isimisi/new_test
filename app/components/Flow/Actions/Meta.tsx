@@ -53,6 +53,7 @@ interface Props {
   handlePowerpoint: (stopLoading: () => void) => void;
   timeline?: boolean;
   backLink: string
+  customPdfGenerator?: (startLoading: () => void, stopLoading: () => void) => void;
 }
 
 const Meta = (props: Props) => {
@@ -69,7 +70,8 @@ const Meta = (props: Props) => {
     handleImage,
     timeline,
     handlePowerpoint: generatePp,
-    backLink
+    backLink,
+    customPdfGenerator
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -397,7 +399,7 @@ const Meta = (props: Props) => {
                   <MenuItem
                     className={classes.menuItem}
                     disabled={loadingPdf}
-                    onClick={() => handleExport("pdf")}
+                    onClick={() => customPdfGenerator ? customPdfGenerator(startLoadingPdf, stopLoadingPdf) : handleExport("pdf")}
                   >
                     <ListItemIcon>
                       {loadingPdf ? <CircularProgress size={25} /> : <PictureAsPdfIcon fontSize="small" />}

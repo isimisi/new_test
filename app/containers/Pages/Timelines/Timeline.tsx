@@ -12,6 +12,7 @@ import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
+import { usePDF } from '@react-pdf/renderer';
 
 import ShareModal from '@components/Flow/Share/ShareModal';
 import {
@@ -71,6 +72,8 @@ import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
+import Pdf from "@components/Timeline/Export/Pdf";
+import ReactDOM from "react-dom";
 
 
 const nodeTypes = {
@@ -498,6 +501,25 @@ const Timeline = () => {
     dispatch(validateEmailsClose);
   };
 
+  const [instance, update] = usePDF({ document: <Pdf elements={elements} /> });
+
+  useEffect(() => {
+    update();
+  }, [elements]);
+
+
+  const handleExportToPdf = (startLoading, stopLoading) => {
+    startLoading();
+    const tempLink = document.createElement('a');
+
+    if (instance.url) {
+      tempLink.href = instance.url;
+      tempLink.setAttribute('download', 'filename.pdf');
+      tempLink.click();
+    }
+
+    stopLoading();
+  };
 
   return (
     <div style={{ display: "flex", cursor }}>
@@ -545,6 +567,7 @@ const Timeline = () => {
               handleImage={handleImage}
               backLink="/app/timelines"
               timeline
+              customPdfGenerator={handleExportToPdf}
             />
             <Views
               openTableView={handleOpenTableView}

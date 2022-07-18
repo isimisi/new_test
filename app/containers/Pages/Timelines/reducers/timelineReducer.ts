@@ -62,6 +62,9 @@ import {
   DELETE_TIMELINE_LOADING,
   DELETE_TIMELINE_SUCCESS,
   DELETE_TIMELINE_FAILED,
+  DOWNLOAD_DOCUMENT_LOADING,
+  DOWNLOAD_DOCUMENT_SUCCESS,
+  DOWNLOAD_DOCUMENT_FAILED,
 } from "./timelineConstants";
 import moment from "moment";
 
@@ -202,6 +205,7 @@ export default function reducer(
     case SHOW_TIMELINE_LOADING:
     case CUSTOM_SPLIT_LOADING:
     case IMPORT_EMAILS_LOADING:
+    case DOWNLOAD_DOCUMENT_LOADING:
     case DELETE_TIMELINE_ELEMENTS_LOADING:
     case DELETE_TIMELINE_LOADING:
       return state.withMutations((mutableState) => {
@@ -217,6 +221,7 @@ export default function reducer(
     case IMPORT_EMAILS_FAILED:
     case DELETE_TIMELINE_FAILED:
     case DELETE_TIMELINE_SUCCESS:
+    case DOWNLOAD_DOCUMENT_FAILED:
     case PUT_TIMELINE_ELEMENT_FAILED:
     case DELETE_TIMELINE_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
@@ -224,7 +229,10 @@ export default function reducer(
         mutableState.set("message", message);
         mutableState.set("loadings", initialLoadings);
       });
-
+    case DOWNLOAD_DOCUMENT_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set("loadings", initialLoadings);
+      });
     case CUSTOM_SPLIT_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "post"], false);

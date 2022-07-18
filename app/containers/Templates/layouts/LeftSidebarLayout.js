@@ -24,7 +24,6 @@ function LeftSidebarLayout(props) {
     bgPosition,
     changeMode,
     place,
-    handleOpenGuide,
   } = props;
 
   const isTimeline = history.location.pathname.includes("timelines/");
@@ -46,7 +45,6 @@ function LeftSidebarLayout(props) {
           mode={mode}
           title={place}
           history={history}
-          openGuide={handleOpenGuide}
         />
       )}
       <Sidebar

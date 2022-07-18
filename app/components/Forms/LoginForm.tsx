@@ -19,7 +19,7 @@ import ArrowForward from "@material-ui/icons/ArrowForward";
 import Paper from "@material-ui/core/Paper";
 import Icon from "@material-ui/core/Icon";
 import Hidden from "@material-ui/core/Hidden";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import logo from "@images/logo.svg";
 import { useAppSelector } from "@hooks/redux";
 import { useTranslation } from "react-i18next";

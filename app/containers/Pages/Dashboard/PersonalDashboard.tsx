@@ -3,7 +3,7 @@
 import React, {
   ChangeEvent, useEffect, useState
 } from 'react';
-import brand from '@api/dummy/brand';
+import brand from '@api/ui/brand';
 import { countryDropDown, getCountryOptions } from '@helpers/countryOptions';
 import Typography from '@material-ui/core/Typography';
 import { Helmet } from 'react-helmet';
@@ -14,7 +14,6 @@ import type { RootState } from '@redux/configureStore';
 import { useTheme } from '@material-ui/core/styles';
 import classNames from 'classnames';
 import {
-  GuideSlider,
 
   PapperBlock,
   Notification
@@ -108,7 +107,7 @@ const PersonalDashboard = () => {
 
 
   const [showUpgrade, setShowUpgrade] = useState(false);
-  const [openGuide, setOpenGuide] = useState(false);
+
   const [showMobileDisclaimer, setShowMobileDisclaimer] = useState(false);
 
   // workspace
@@ -132,24 +131,6 @@ const PersonalDashboard = () => {
   // const [companyMapping, setCompanyMapping] = useState(uncertainCompanies?.reduce((obj, item) => ({ ...obj, [item.soughtAfterName]: { id: item.id, name: item.name, orgGuessedName: item.name } }), {}));
 
 
-  const handleCloseGuide = () => {
-    if (history.location.search.includes('first_visit')) {
-      history.push('/app');
-    }
-
-    setOpenGuide(false);
-  };
-
-  const handleOpenGuide = () => {
-    // if (introStepIndex !== 0) {
-    //   dispatch(showNotifAction(t('personal-dashboard.find_the_small_circle')));
-    // } else {
-    //   dispatch(handleRunIntro(true));
-    // }
-    setOpenGuide(true);
-  };
-
-
   useEffect(() => {
     if (user) {
       dispatch(getElementCounts(user));
@@ -164,9 +145,6 @@ const PersonalDashboard = () => {
       setShowUpgrade(true);
     }
 
-    if (history.location.search.includes('first_visit') && !isMobile) {
-      handleOpenGuide();
-    }
 
     if (isMobile) {
       setShowMobileDisclaimer(true);
@@ -233,7 +211,6 @@ const PersonalDashboard = () => {
         <meta property="twitter:description" content={description} />
       </Helmet>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
       <Grid container className={classes.root} spacing={3}>
         <Grid item xs={12}>
           {intro || removedIntro ? <div className={classes.racoonAndText}>

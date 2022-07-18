@@ -20,7 +20,7 @@ import Brightness5 from "@material-ui/icons/Brightness5";
 import People from "@material-ui/icons/People";
 import Icon from "@material-ui/core/Icon";
 import Hidden from "@material-ui/core/Hidden";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import logo from "@images/logo.svg";
 import { useTranslation } from "react-i18next";
 import { TextFieldRedux, CheckboxRedux } from "./ReduxFormMUI";
@@ -231,9 +231,7 @@ function RegisterForm(props) {
               className={classes.redBtn}
               type="button"
             >
-              <AllInclusive
-                className={classNames(classes.leftIcon, classes.iconSmall)}
-              />
+              <AllInclusive className={classNames(classes.leftIcon, classes.iconSmall)} />
               Socmed 1
             </Button>
             <Button
@@ -243,9 +241,7 @@ function RegisterForm(props) {
               className={classes.blueBtn}
               type="button"
             >
-              <Brightness5
-                className={classNames(classes.leftIcon, classes.iconSmall)}
-              />
+              <Brightness5 className={classNames(classes.leftIcon, classes.iconSmall)} />
               Socmed 2
             </Button>
             <Button
@@ -255,9 +251,7 @@ function RegisterForm(props) {
               className={classes.cyanBtn}
               type="button"
             >
-              <People
-                className={classNames(classes.leftIcon, classes.iconSmall)}
-              />
+              <People className={classNames(classes.leftIcon, classes.iconSmall)} />
               Socmed 3
             </Button>
           </section>

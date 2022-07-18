@@ -257,6 +257,35 @@ export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn
   }
 };
 
+export const downloadDocument = (user: User, title: string, document_id: string) => async (dispatch) => {
+  dispatch({ type: types.DOWNLOAD_DOCUMENT_LOADING, loadingType: "post" });
+
+  const url = `${baseUrl}/timelinedocuments/download/${document_id}`;
+  const header = authHeader(user);
+
+  try {
+    const response = await axios.get(url, header);
+    console.log(response.data);
+    const { Body, ContentType } = response.data;
+    const data = Uint8Array.from(Body.data);
+    const content = new Blob([data.buffer], {
+      type: ContentType
+    });
+
+    const encodedUri = window.URL.createObjectURL(content);
+    const link = document.createElement("a");
+
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", title);
+
+    link.click();
+    dispatch({ type: types.DOWNLOAD_DOCUMENT_SUCCESS });
+  } catch (error: any) {
+    const message = genericErrorMessage;
+    dispatch({ type: types.DOWNLOAD_DOCUMENT_FAILED, message });
+  }
+};
+
 
 export const labelChange = (title) => ({
   type: types.TITLE_CHANGE,

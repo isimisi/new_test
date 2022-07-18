@@ -1,24 +1,31 @@
 function getByEmail(email, callback) {
-  const mysql = require("mysql");
+  const axios = require("axios");
+  const url = "https://api.juristic.io/auth0/get_user";
+  const body = {
+    email,
+  };
 
-  const connection = mysql.createConnection({
-    host: configuration.DB_HOST,
-    user: configuration.DB_USER,
-    password: configuration.DB_PASSWORD,
-    database: configuration.DB_DATABASE,
-  });
+  const options = {
+    method: "POST",
+    url,
+    headers: { "content-type": "application/json" },
+    data: body,
+  };
 
-  connection.connect();
+  axios(options)
+    .then((res) => {
+      const user = res.data;
 
-  const query = "SELECT id, email FROM users WHERE email = ?";
+      if (!user.id) {
+        return callback(null);
+      }
 
-  connection.query(query, [email], (err, results) => {
-    if (err || results.length === 0) return callback(err || null);
-
-    const user = results[0];
-    callback(null, {
-      user_id: user.id.toString(),
-      email: user.email,
+      callback(null, {
+        user_id: user.id.toString(),
+        email: user.email,
+      });
+    })
+    .catch((err) => {
+      callback(new WrongUsernameOrPasswordError(email));
     });
-  });
 }

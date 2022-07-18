@@ -3,7 +3,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 import { NavLink } from "react-router-dom";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import logoBeta from "@images/logoBeta.svg";
 import pwc from "@images/logo/pwc.svg";
 import Typography from "@material-ui/core/Typography";

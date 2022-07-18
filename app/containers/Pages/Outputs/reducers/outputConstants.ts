@@ -26,7 +26,6 @@ export const ADD_OUTPUT = "ADD_OUTPUT";
 export const ADD_GROUP = "ADD_GROUP";
 export const FILE_TYPE_CHANGE = "FILE_TYPE_CHANGE";
 export const EDITOR_STATE_CHANGE = "EDITOR_STATE_CHANGE";
-export const ADD_OUTPUT_URL = "ADD_OUTPUT_URL";
 
 export const OUTPUT_ADD_CONDITION = "OUTPUT_ADD_CONDITION";
 export const OUTPUT_CHANGE_CONDITION = "OUTPUT_CHANGE_CONDITION";
@@ -59,7 +58,6 @@ export interface ShowOutputSuccess {
   output: string;
   conditions: AlertAndOutputCondition[];
   group: string;
-  file_type: string;
   output_type: string;
   tags: Tag[];
 }
@@ -129,19 +127,9 @@ export interface addGroup {
   group: string;
 }
 
-export interface fileTypeChange {
-  type: typeof FILE_TYPE_CHANGE;
-  fileType: any; // TODO:
-}
-
 export interface editorStateChange {
   type: typeof EDITOR_STATE_CHANGE;
   editor: any;
-}
-
-export interface addOutputUrl {
-  type: typeof ADD_OUTPUT_URL;
-  url: any;
 }
 
 export interface outputAddCondition {
@@ -184,9 +172,7 @@ export type OutputActions =
   | descriptionChange
   | addOutput
   | addGroup
-  | fileTypeChange
   | editorStateChange
-  | addOutputUrl
   | outputAddCondition
   | outputChangeCondition
   | outputDeleteConditions

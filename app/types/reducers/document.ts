@@ -17,7 +17,7 @@ export interface Document {
   id: number | null;
   title: string | null;
   description: string | null;
-  link: string | null;
+  link: any;
   organization_id: number | null;
   group_id: string | null;
   created_at: string | null;

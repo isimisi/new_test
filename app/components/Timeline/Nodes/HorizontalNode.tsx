@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import CustomSwitchFlow from "@components/Switch/CustomSwitchFlow";
 
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
@@ -33,6 +32,7 @@ import { useAppDispatch } from "@hooks/redux";
 import {
   changeTimelineNodeKey,
   createElementChange,
+  downloadDocument,
   openEmailChange,
   setTimelineNode,
   timelineElementDocumentChange,
@@ -78,21 +78,13 @@ export default memo(({ data }: NodeProps) => {
     setShowEdit(false);
   }, []);
 
-  const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  const handleOpenDocument = id => {
-    dispatch(showDocument(user, id, openDocument));
-  };
+  // const openDocument = () => dispatch(timelineElementDocumentChange(true));
+  // const handleOpenDocument = id => {
+  //   dispatch(showDocument(user, id, openDocument));
+  // };
 
-  const download = (url: null | string, title: string, id) => {
-    if (!url) {
-      handleOpenDocument(id);
-    } else {
-      const link = document.createElement("a");
-      link.download = title;
-      link.href = url;
-      link.target = "_blank";
-      link.click();
-    }
+  const download = (title: string, id: string) => {
+    dispatch(downloadDocument(user, title, id));
   };
 
   const openEmail = () => {
@@ -319,9 +311,7 @@ export default memo(({ data }: NodeProps) => {
                   <Tooltip arrow title={document.title} placement="top">
                     <IconButton
                       size="small"
-                      onClick={() =>
-                        download(document.link, document.title, document.id)
-                      }
+                      onClick={() => download(document.title, document.id)}
                     >
                       <DescriptionIcon />
                     </IconButton>

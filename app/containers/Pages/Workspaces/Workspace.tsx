@@ -30,7 +30,7 @@ import useMouse from '@react-hook/mouse-position';
 import Typography from '@material-ui/core/Typography';
 import logoBeta from '@images/logoBeta.svg';
 
-import brand from '@api/dummy/brand';
+import brand from '@api/ui/brand';
 import PropTypes from 'prop-types';
 import {
   useHistory
@@ -1310,7 +1310,7 @@ const Workspace = (props) => {
           }}
         />
       )}
-      <AlertLog
+      {showAlertLog && <AlertLog
         open={showAlertLog}
         close={() => setShowAlertLog(false)}
         alerts={alerts}
@@ -1319,7 +1319,7 @@ const Workspace = (props) => {
         }
         highlightAlertItems={highlightAlertItems}
         removeHighlightAlert={removeHighlightAlert}
-      />
+      />}
       <CvrDialog
         loading={loading}
         open={showCvrModal}

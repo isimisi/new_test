@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import { useSelector, useDispatch } from "react-redux";
 import { plans } from "@api/constants";
 import { useAuth0 } from "@auth0/auth0-react";

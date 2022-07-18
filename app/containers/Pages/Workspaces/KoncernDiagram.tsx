@@ -15,7 +15,7 @@ import ReactFlow, {
   OnLoadParams
 } from "react-flow-renderer";
 import logoBeta from "@images/logoBeta.svg";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import Grid from "@material-ui/core/Grid";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Notification from "@components/Notification/Notification";

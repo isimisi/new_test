@@ -13,8 +13,6 @@ import PapperBlock from "./PapperBlock/PapperBlock";
 // modal
 import CvrDialog from "./DialogModal/CvrDialog";
 
-// Guide
-import GuideSlider from "./GuideSlider";
 // Form
 import Notification from "./Notification/Notification";
 import LoginForm from "./Forms/LoginForm";
@@ -86,7 +84,6 @@ import SendResetPassword from "./User/SendResetPassword";
 
 import CounterIconsWidget from "./Widget/CounterIconsWidget";
 import TimelineWidget from "./Widget/TimelineWidget";
-import NewsListWidget from "./Widget/NewsListWidget";
 
 // plans
 import PaymentPanel from "./Plans/PaymentPanel";
@@ -99,7 +96,6 @@ export {
   SearchUi,
   CounterWidget,
   PapperBlock,
-  GuideSlider,
   Notification,
   LoginForm,
   RegisterForm,
@@ -147,7 +143,6 @@ export {
   SendResetPassword,
   CounterIconsWidget,
   TimelineWidget,
-  NewsListWidget,
   PaymentPanel,
   CompanyDataModel,
   AddressInfoModel,

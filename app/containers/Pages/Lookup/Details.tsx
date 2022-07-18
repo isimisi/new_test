@@ -38,7 +38,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Helmet } from "react-helmet";
 import Button from "@material-ui/core/Button";
 import { postWorkspace } from "../Workspaces/reducers/workspaceActions";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 
 const Person = () => {
   const dispatch = useAppDispatch();

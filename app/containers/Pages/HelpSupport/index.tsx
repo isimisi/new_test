@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Helmet } from "react-helmet";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";

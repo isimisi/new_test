@@ -113,7 +113,7 @@ const MasterData = ({ company, country }: Props) => {
           </Typography>
         </Paper>
       )}
-      {company.primaryIndustry.id && (
+      {company.primaryIndustry?.id && (
         <Paper
           style={{
             marginTop: 15,

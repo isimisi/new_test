@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { Map } from "immutable";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Editor } from "react-draft-wysiwyg";
@@ -12,21 +10,26 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import EditIcon from "@material-ui/icons/Edit";
-import Iframe from "react-iframe";
-import Lottie from "lottie-react";
+
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FileUpload from "../FileUpload/FileUpload";
-import Word from "./word.json";
+import NoteAdd from "@material-ui/icons/NoteAdd";
 
-const styles = (theme) => ({
+import { MyTheme } from "@customTypes/styling";
+
+import Typography from "@material-ui/core/Typography";
+import { useTranslation } from "react-i18next";
+import ButtonBase from "@material-ui/core/ButtonBase";
+
+const useStyles = makeStyles((theme: MyTheme) => ({
   root: {
     flexGrow: 1,
-    padding: 30,
+    padding: 30
   },
   select: {
     width: "40%",
-    marginRight: 20,
+    marginRight: 20
   },
   dropzone: {
     display: "flex",
@@ -34,26 +37,27 @@ const styles = (theme) => ({
     height: 400,
     backgroundColor: theme.palette.type === "dark" ? "#303030" : "#F7F8FA",
     borderRadius: theme.rounded.small,
-    border: theme.palette.type === "dark" ? "1px solid #606060" : "1px solid #F1F1F1",
+    border:
+      theme.palette.type === "dark" ? "1px solid #606060" : "1px solid #F1F1F1",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "column",
+    flexDirection: "column"
   },
   addCircle: {
     width: "30%",
-    height: "30%",
+    height: "30%"
   },
   inlineWrap: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
-    marginBottom: 40,
+    marginBottom: 40
   },
   conditionWrap: {
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "center"
   },
   textEditor: {
     background: theme.palette.background.paper,
@@ -61,7 +65,7 @@ const styles = (theme) => ({
     border: `1px solid ${theme.palette.divider}`,
     padding: "0 10px",
     color: theme.palette.text.primary,
-    borderRadius: theme.rounded.small,
+    borderRadius: theme.rounded.small
   },
   toolbarEditor: {
     borderRadius: theme.rounded.small,
@@ -70,45 +74,59 @@ const styles = (theme) => ({
     "& > div": {
       background: theme.palette.background.paper,
       "& img": {
-        filter: theme.palette.type === "dark" ? "invert(100%)" : "invert(0%)",
+        filter: theme.palette.type === "dark" ? "invert(100%)" : "invert(0%)"
       },
       "& a": {
         color: theme.palette.text.primary,
         "& > div": {
-          borderTopColor: theme.palette.text.primary,
-        },
-      },
-    },
+          borderTopColor: theme.palette.text.primary
+        }
+      }
+    }
   },
   lottie: {
     width: 700 / 1.5,
     height: 700 / 1.5,
     [theme.breakpoints.down("sm")]: {
       width: 400 / 1.5,
-      height: 400 / 1.5,
-    },
+      height: 400 / 1.5
+    }
   },
   lottieContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
-  },
-});
+    width: "100%"
+  }
+}));
 
-const OutputForm = (props) => {
+interface Props {
+  title: string;
+  outputFile: any;
+  editorState: any;
+  onEditorStateChange: (v: any) => void;
+
+  onOutputChange: (f: any) => void;
+}
+
+const OutputForm = (props: Props) => {
   const {
-    classes,
     title,
     outputFile,
-    fileType,
     editorState,
-    onFileTypeChange,
+
     onOutputChange,
-    onEditorStateChange,
+    onEditorStateChange
   } = props;
 
-  const [activeToggleButton, setActiveToggleButton] = useState("Upload et dokument");
+  const { t } = useTranslation();
+
+  const classes = useStyles();
+
+  const [activeToggleButton, setActiveToggleButton] = useState(
+    "Upload et dokument"
+  );
 
   useEffect(() => {
     if (editorState.getCurrentContent().hasText()) {
@@ -121,10 +139,33 @@ const OutputForm = (props) => {
   };
 
   const downloadFile = () => {
+    const data = Uint8Array.from(outputFile.Body.data);
+    const content = new Blob([data.buffer], { type: outputFile.ContentType });
+    const encodedUri = window.URL.createObjectURL(content);
+
     const link = document.createElement("a");
-    link.href = outputFile;
-    link.download = `${title}`;
+
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", title);
+
     link.click();
+  };
+
+  const handleChangeFiles = (_files: File[]) => {
+    const file = _files[0];
+
+    file.arrayBuffer().then(buf => {
+      const buffer = Buffer.from(buf);
+
+      const newFile = {
+        Body: {
+          type: "Buffer",
+          data: buffer
+        },
+        ContentType: file.type
+      };
+      onOutputChange(newFile);
+    });
   };
 
   return (
@@ -140,7 +181,7 @@ const OutputForm = (props) => {
           <Paper className={classes.root}>
             <div className={classes.inlineWrap}>
               <div className={classes.conditionWrap}>
-                {outputFile && outputFile.length > 0 && (
+                {Object.keys(outputFile).length !== 0 && (
                   <div className={classes.conditionWrap}>
                     <Tooltip title="Slet indhold">
                       <IconButton
@@ -149,20 +190,13 @@ const OutputForm = (props) => {
                         component="span"
                         style={{ marginRight: 20 }}
                         onClick={() => {
-                          onFileTypeChange("");
-                          onOutputChange(Map(), "");
+                          onOutputChange(Map());
                         }}
                       >
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
-                    <FileUpload
-                      minimal
-                      handleChangeFile={(_files) => {
-                        onFileTypeChange(_files[0].name.split(".")[1]);
-                        onOutputChange(_files[0], _files[0].preview);
-                      }}
-                    />
+                    <FileUpload minimal handleChangeFile={handleChangeFiles} />
                   </div>
                 )}
                 <ToggleButtonGroup
@@ -182,42 +216,18 @@ const OutputForm = (props) => {
               </div>
             </div>
             {activeToggleButton === "Upload et dokument" ? (
-              outputFile && outputFile.length > 0 ? (
-                fileType === "pdf" || outputFile.includes("https://") ? (
-                  <Iframe
-                    url={
-                      fileType === "pdf"
-                        ? outputFile
-                        : `https://docs.google.com/gview?url=${outputFile}&embedded=true`
-                    }
-                    width="100%"
-                    height="900"
-                    id={title}
-                    style={{ borderRadius: 10 }}
-                    display="initial"
-                    position="relative"
-                  />
-                ) : (
-                  <div className={classes.lottieContainer}>
-                    <Typography variant="h4" component="h2">
-                      Tryk gem for at se et preview af dit inhold
-                    </Typography>
-                    <Lottie
-                      animationData={Word}
-                      className={classes.lottie}
-                      loop={false}
-                      onClick={downloadFile}
-                    />
-                  </div>
-                )
+              Object.keys(outputFile).length !== 0 ? (
+                <ButtonBase
+                  className={classes.lottieContainer}
+                  onClick={downloadFile}
+                >
+                  <Typography style={{ fontSize: 30 }}>
+                    {t("output.download_file")}
+                  </Typography>
+                  <NoteAdd style={{ width: 100, height: 100 }} />
+                </ButtonBase>
               ) : (
-                <FileUpload
-                  height={485}
-                  handleChangeFile={(_files) => {
-                    onFileTypeChange(_files[0].name.split(".")[1]);
-                    onOutputChange(_files[0], _files[0].preview);
-                  }}
-                />
+                <FileUpload height={485} handleChangeFile={handleChangeFiles} />
               )
             ) : (
               <Editor
@@ -234,15 +244,4 @@ const OutputForm = (props) => {
   );
 };
 
-OutputForm.propTypes = {
-  classes: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
-  outputFile: PropTypes.string.isRequired,
-  fileType: PropTypes.string.isRequired,
-  editorState: PropTypes.any.isRequired,
-  onFileTypeChange: PropTypes.func.isRequired,
-  onOutputChange: PropTypes.func.isRequired,
-  onEditorStateChange: PropTypes.func.isRequired,
-};
-
-export default withStyles(styles)(OutputForm);
+export default OutputForm;

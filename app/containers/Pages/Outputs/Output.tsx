@@ -32,9 +32,8 @@ import {
   descriptionChange,
   addGroup,
   addOutput,
-  fileTypeChange,
+
   editorStateChange,
-  addOutputUrl,
   addCondition,
   deleteCondition,
   changeCondition,
@@ -44,6 +43,7 @@ import { postCondition } from '../Conditions/reducers/conditionActions';
 import { useTranslation } from 'react-i18next';
 import { useAuth0, User } from "@auth0/auth0-react";
 import { encryptId } from '@api/constants';
+import Loader from '@components/Loading/LongLoader';
 
 const Output = () => {
   const [openAlert, setOpenAlert] = useState(false);
@@ -58,22 +58,23 @@ const Output = () => {
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const title = useAppSelector(state => state[reducer].get('title'));
   const description = useAppSelector(state => state[reducer].get('description'));
-  const fileType = useAppSelector(state => state[reducer].get('fileType'));
   const group = useAppSelector(state => state[reducer].get('group'));
-  const outputFileUrl = useAppSelector(state => state[reducer].get('outputFileUrl'));
-  const outputFile = useAppSelector(state => state[reducer].get('outputFile'));
+
+  const outputFile = useAppSelector(state => state[reducer].get('outputFile')).toJS();
   const conditionsDropDownOptions = useAppSelector(state => state[reducer].get('conditionsDropDownOptions')).toJS();
   const groupsDropDownOptions = useAppSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
   const editorState = useAppSelector(state => state[reducer].get('editorState'));
   const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
   const tags = useAppSelector(state => state[reducer].get('outputTags')).toJS();
 
+  const [loading, setLoading] = useState(false);
+
 
   const [deletedConditions, setDeletedConditions] = useState<any[]>([]);
 
   useEffect(() => {
     if (!locationState?.fromCondition) {
-      dispatch(showOutput(user, id));
+      dispatch(showOutput(user, id, setLoading));
     }
 
     dispatch(getConditionsDropDown(user));
@@ -87,11 +88,11 @@ const Output = () => {
   const onSave = (from: string) => {
     switch (from) {
       case 'fab':
-        if (outputFileUrl?.length > 0 && editorState.getCurrentContent().hasText()) {
+        if (Object.keys(outputFile).length !== 0 && editorState.getCurrentContent().hasText()) {
           setOpenAlert(true);
         } else if (editorState.getCurrentContent().hasText()) {
           onSave('draft');
-        } else if (outputFileUrl?.length > 0) {
+        } else if (Object.keys(outputFile).length !== 0) {
           onSave('upload');
         } else {
           dispatch(showNotifAction('You must provide some content to your output'));
@@ -103,16 +104,12 @@ const Output = () => {
 
         const markup = draftToHtml(rawContentState);
 
-        dispatch(putOutput(user, id, title, description, markup, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
+        dispatch(putOutput(user, id, title, description, markup, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
         break;
       case 'upload':
         setOpenAlert(false);
+        dispatch(putOutput(user, id, title, description, outputFile, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
 
-        if (typeof outputFile === 'object') {
-          dispatch(putOutput(user, id, title, description, outputFile, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
-        } else {
-          dispatch(putOutput(user, id, title, description, outputFileUrl, fileType, from, group, JSON.stringify(conditions), JSON.stringify(deletedConditions), JSON.stringify(tags), history));
-        }
         break;
     }
   };
@@ -132,12 +129,17 @@ const Output = () => {
   };
 
   const handleCreateOrSeeCondition = (condition, see) => {
+    console.log(condition.condition_id);
     if (see) {
-      window.open('/app/conditions/' + encryptId(condition.condition_id), '_blank');
+      window.open('/app/conditions/' + condition.condition_id, '_blank');
     } else {
       dispatch(postCondition(user, history, true));
     }
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div>
@@ -164,12 +166,9 @@ const Output = () => {
       />
       <OutputForm
         title={title}
-        outputFile={outputFileUrl}
-        fileType={fileType}
-        onFileTypeChange={(f) => dispatch(fileTypeChange(f))}
-        onOutputChange={(f, u) => {
+        outputFile={outputFile}
+        onOutputChange={(f) => {
           dispatch(addOutput(f));
-          dispatch(addOutputUrl(u));
         }}
         editorState={editorState}
         onEditorStateChange={(v) => dispatch(editorStateChange(v))}

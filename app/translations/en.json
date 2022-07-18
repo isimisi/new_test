@@ -131,7 +131,8 @@
     "uploaded_content": "Uploaded content",
     "editor_content": "Editor content",
     "both_upload_and_editor": "It seems like you have both uploaded a document and created some content in the editor. Which one would you like to save?",
-    "upload_or_write_header": "Ooops you need to either upload or write"
+    "upload_or_write_header": "Ooops you need to either upload or write",
+    "download_file": "Download your file"
   },
   "alerts": {
     "your_red_flags": "Your Red Flags",
@@ -476,7 +477,8 @@
   },
   "tag-list": {
     "show_all": "Show all",
-    "add_new_tag": "Add new tag"
+    "add_new_tag": "Add new tag",
+    "show_only_mine": "Show only mine"
   },
   "choose-plan": {
     "free": "Free",

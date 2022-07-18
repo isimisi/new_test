@@ -26,7 +26,11 @@ export const postGroup = (
   image: string | Blob,
   closeModal: React.Dispatch<React.SetStateAction<boolean>>
 ) => async (dispatch) => {
-  const url = `${baseUrl}/${GROUPS}?title=${title}&description=${description}`;
+  const url = `${baseUrl}/${GROUPS}?title=${title}&description=${description}${
+    image
+      ? ""
+      : "&defaultImage=https://app-juristic-media.s3.eu-north-1.amazonaws.com/groups/default.png"
+  }`;
   const body = new FormData();
 
   body.append("file_content", image);
@@ -38,6 +42,8 @@ export const postGroup = (
     dispatch(getGroups(user));
     closeModal(false);
   } catch (error) {
+    // @ts-ignore
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_GROUP_FAILED, message });
   }

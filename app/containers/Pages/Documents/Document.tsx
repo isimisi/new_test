@@ -45,12 +45,8 @@ const Document = () => {
     dispatch(getGroupDropDown(user));
   }, []);
 
-  const handleFileChange = _files => {
-    if (_files) {
-      setFile(_files[0]);
-    } else {
-      setFile(null);
-    }
+  const handleFileChange = _file => {
+    setFile(_file);
   };
 
   if (loadings.get("main")) {

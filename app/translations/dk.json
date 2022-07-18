@@ -131,7 +131,8 @@
     "uploaded_content": "Uploaded indhold",
     "editor_content": "editor indhold",
     "both_upload_and_editor": "Det ser ud til, at du både har uploadet et dokument og lavet indhold selv i vores editor. Hvilken ønsker du at gemme?",
-    "upload_or_write_header": "Hov, du skal enten uploade eller skrive noget indhold"
+    "upload_or_write_header": "Hov, du skal enten uploade eller skrive noget indhold",
+    "download_file": "Download din fil"
   },
   "alerts": {
     "your_red_flags": "Dine Red Flags",
@@ -476,7 +477,8 @@
   },
   "tag-list": {
     "show_all": "Vis alle",
-    "add_new_tag": "Tilføj nyt tag"
+    "add_new_tag": "Tilføj nyt tag",
+    "show_only_mine": "Vis kun mine"
   },
   "choose-plan": {
     "free": "Gratis",

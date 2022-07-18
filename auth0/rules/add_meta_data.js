@@ -1,7 +1,7 @@
 function addUserMetaData(user, context, callback) {
   const axios = require("axios");
 
-  const url = "https://juristic-api-gateway.herokuapp.com/metadata/auth0";
+  const url = "https://api.juristic.io/metadata/auth0";
   const body = {
     email: user.email,
     token: configuration.token,

@@ -5,13 +5,13 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import { toggleAction, openAction, playTransitionAction } from "@redux/actions/uiActions";
-import { GuideSlider } from "@components";
+
 import LeftSidebarLayout from "./layouts/LeftSidebarLayout";
 import styles from "./appStyles-jss";
 
 function Dashboard(props) {
   // Initial header style
-  const [openGuide, setOpenGuide] = useState(false);
+
   const [appHeight, setAppHeight] = useState(0);
 
   useEffect(() => {
@@ -41,14 +41,6 @@ function Dashboard(props) {
     };
   }, []);
 
-  const handleOpenGuide = () => {
-    setOpenGuide(true);
-  };
-
-  const handleCloseGuide = () => {
-    setOpenGuide(false);
-  };
-
   const {
     classes,
     children,
@@ -71,7 +63,6 @@ function Dashboard(props) {
       style={{ minHeight: "100vh" }}
       className={classNames(classes.appFrameInner, classes.sideNav, "light-mode")}
     >
-      <GuideSlider openGuide={openGuide} closeGuide={handleCloseGuide} />
       <LeftSidebarLayout
         history={history}
         toggleDrawer={toggleDrawer}
@@ -84,7 +75,6 @@ function Dashboard(props) {
         deco={deco}
         bgPosition={bgPosition}
         place={place}
-        handleOpenGuide={handleOpenGuide}
       >
         {children}
       </LeftSidebarLayout>

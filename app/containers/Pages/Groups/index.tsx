@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import brand from "@api/dummy/brand";
+import brand from "@api/ui/brand";
 import { useSelector, useDispatch } from "react-redux";
 import SearchGroup from "@components/Search/SearchGroup";
 import GroupGallery from "@components/Group/GroupGallery";

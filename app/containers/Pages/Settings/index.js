@@ -1,6 +1,6 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import brand from '@api/dummy/brand';
+import React from "react";
+import { Helmet } from "react-helmet";
+import brand from "@api/ui/brand";
 
 function Settings() {
   const title = brand.name;
@@ -16,7 +16,6 @@ function Settings() {
         <meta property="twitter:title" content={title} />
         <meta property="twitter:description" content={description} />
       </Helmet>
-
     </div>
   );
 }

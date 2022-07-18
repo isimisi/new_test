@@ -28,6 +28,7 @@ function GroupCard(props) {
     deleteGroup,
   } = props;
   const { t } = useTranslation();
+
   return (
     <Card
       className={classNames(
@@ -35,7 +36,11 @@ function GroupCard(props) {
         isWidthUp("sm", width) && list ? classes.cardList : ""
       )}
     >
-      <CardMedia className={classes.mediaProduct} image={image} title={title} />
+      <CardMedia
+        className={classes.mediaProduct}
+        image={"data:image/jpeg;base64," + image}
+        title={title}
+      />
       <CardContent className={classes.floatingButtonWrap}>
         <Typography
           noWrap
@@ -52,9 +57,9 @@ function GroupCard(props) {
       </CardContent>
       <CardActions className={classes.price}>
         <div className={classes.rightAction}>
-          <Button size="small" variant="outlined" color="primary" onClick={detailOpen}>
+          {/* <Button size="small" variant="outlined" color="primary" onClick={detailOpen}>
             {t("groups.group-card.see_details")}
-          </Button>
+          </Button> */}
         </div>
         <div className={classes.rightAction}>
           <IconButton aria-label="delete" onClick={deleteGroup}>

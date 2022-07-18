@@ -48,6 +48,10 @@ export const CUSTOM_SPLIT_LOADING = "CUSTOM_SPLIT_LOADING";
 export const CUSTOM_SPLIT_SUCCESS = "CUSTOM_SPLIT_SUCCESS";
 export const CUSTOM_SPLIT_FAILED = "CUSTOM_SPLIT_FAILED";
 
+export const DOWNLOAD_DOCUMENT_LOADING = "DOWNLOAD_DOCUMENT_LOADING";
+export const DOWNLOAD_DOCUMENT_SUCCESS = "DOWNLOAD_DOCUMENT_SUCCESS";
+export const DOWNLOAD_DOCUMENT_FAILED = "DOWNLOAD_DOCUMENT_FAILED";
+
 export const TITLE_CHANGE = "TITLE_CHANGE";
 export const DESCRIPTION_CHANGE = "DESCRIPTION_CHANGE";
 export const ADD_GROUP = "ADD_GROUP";
@@ -87,9 +91,11 @@ type FailedTypes =
   | typeof IMPORT_EMAILS_FAILED
   | typeof DELETE_TIMELINE_ELEMENTS_FAILED
   | typeof CUSTOM_SPLIT_FAILED
+  | typeof DOWNLOAD_DOCUMENT_FAILED
   | typeof DELETE_TIMELINE_FAILED;
 
 type LoadingTypes =
+  | typeof DOWNLOAD_DOCUMENT_LOADING
   | typeof GET_TIMELINES_LOADING
   | typeof POST_TIMELINE_LOADING
   | typeof CUSTOM_SPLIT_LOADING
@@ -264,6 +270,10 @@ export interface CustomSplitSuccess {
   elements: FlowElement[];
 }
 
+export interface DownloadDocumentSuccess {
+  type: typeof DOWNLOAD_DOCUMENT_SUCCESS;
+}
+
 export type TimelineActions =
   | NotifyActions
   | SetIsUpdating
@@ -288,6 +298,7 @@ export type TimelineActions =
   | TimelineElementDocumentChange
   | PutTimelineElementSuccess
   | ChangeView
+  | DownloadDocumentSuccess
   | DeleteTimelineElementsSuccess
   | OpenEmailChange
   | CustomSplitSuccess
