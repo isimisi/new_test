@@ -501,25 +501,25 @@ const Timeline = () => {
     dispatch(validateEmailsClose);
   };
 
-  const [instance, update] = usePDF({ document: <Pdf elements={elements} /> });
+  // const [instance, update] = usePDF({ document: <Pdf elements={elements} /> });
 
-  useEffect(() => {
-    update();
-  }, [elements]);
+  // useEffect(() => {
+  //   update();
+  // }, [elements]);
 
 
-  const handleExportToPdf = (startLoading, stopLoading) => {
-    startLoading();
-    const tempLink = document.createElement('a');
+  // const handleExportToPdf = (startLoading, stopLoading) => {
+  //   startLoading();
+  //   const tempLink = document.createElement('a');
 
-    if (instance.url) {
-      tempLink.href = instance.url;
-      tempLink.setAttribute('download', 'filename.pdf');
-      tempLink.click();
-    }
+  //   if (instance.url) {
+  //     tempLink.href = instance.url;
+  //     tempLink.setAttribute('download', 'filename.pdf');
+  //     tempLink.click();
+  //   }
 
-    stopLoading();
-  };
+  //   stopLoading();
+  // };
 
   return (
     <div style={{ display: "flex", cursor }}>
@@ -567,7 +567,7 @@ const Timeline = () => {
               handleImage={handleImage}
               backLink="/app/timelines"
               timeline
-              customPdfGenerator={handleExportToPdf}
+              // customPdfGenerator={handleExportToPdf}
             />
             <Views
               openTableView={handleOpenTableView}
