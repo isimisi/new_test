@@ -13,16 +13,14 @@ import HelpIcon from "@material-ui/icons/Help";
 import Button from "@material-ui/core/Button";
 import useStyles from "./actions.jss";
 import Expand from "react-expand-animated";
-import { isNode, MiniMap, OnLoadParams, Node } from "react-flow-renderer";
-import { ReactFlowInstance } from "react-flow-renderer10";
+import { MiniMap, ReactFlowInstance } from "react-flow-renderer10";
 import { useTheme } from "@material-ui/core/styles";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+
 
 interface Props {
   currentZoom: number;
-  reactFlowInstance: ReactFlowInstance | OnLoadParams | null;
+  reactFlowInstance: ReactFlowInstance | null;
   handleTransform?: (transform: { x: number, y: number, zoom: number }) => void;
   panToNextIndex?: number | null;
 }

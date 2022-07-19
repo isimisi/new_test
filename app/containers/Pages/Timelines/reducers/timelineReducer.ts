@@ -4,8 +4,9 @@ import {
   IImmutableTimelineState,
   TimelineNode,
   ITimelineNode,
+  TCustomNode,
 } from "@customTypes/reducers/timeline";
-import { isNode, Node } from "react-flow-renderer";
+import { isNode } from "react-flow-renderer10";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
 import { EditorState, ContentState } from "draft-js";
@@ -108,7 +109,8 @@ const initialNode: TimelineNode = {
 
 const initialState: TimelineState = {
   timelines: List(),
-  elements: List(),
+  nodes: List(),
+  edges: List(),
   elementsTagOptions: List(),
   emailsToValidate: List(),
   message: "",
@@ -161,30 +163,35 @@ export default function reducer(
         mutableState.set("shareOrg", action.shareOrg);
         mutableState.set("specificTimelineTags", fromJS(action.tags));
         mutableState.setIn(["loadings", "main"], false);
-        mutableState.set("elements", fromJS(action.elements));
+
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
       });
     case IMPORT_EMAILS_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "modal"], false);
-        mutableState.set("elements", fromJS(action.elements));
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
         mutableState.set("emailsToValidate", fromJS(action.emails));
       });
     case PUT_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
-        const newEl = action.element as Node;
+        const newEl = action.node;
         // @ts-ignore
-        const elements = mutableState.get("elements").toJS();
-        const index = elements.findIndex((e) => e.id === action.element.id);
-        newEl.position = elements[index].position;
+        const nodes = mutableState.get("nodes").toJS();
+        const index = nodes.findIndex((e) => e.id === newEl.id);
+        newEl.position = nodes[index].position;
         // @ts-ignore
         newEl.type = mutableState.get("view");
-        elements[index] = newEl;
-        mutableState.set("elements", fromJS(elements));
+        nodes[index] = newEl;
+
+        mutableState.set("nodes", fromJS(nodes));
         mutableState.setIn(["loadings", "post"], false);
       });
     case DELETE_TIMELINE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
-        mutableState.set("elements", fromJS(action.elements));
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
         mutableState.setIn(["loadings", "mouse"], false);
         mutableState.set("createElementOpen", false);
         mutableState.set("timelineNode", Map(initialNode));
@@ -205,6 +212,7 @@ export default function reducer(
     case SHOW_TIMELINE_LOADING:
     case CUSTOM_SPLIT_LOADING:
     case IMPORT_EMAILS_LOADING:
+    case PUT_TIMELINE_LOADING:
     case DOWNLOAD_DOCUMENT_LOADING:
     case DELETE_TIMELINE_ELEMENTS_LOADING:
     case DELETE_TIMELINE_LOADING:
@@ -236,7 +244,9 @@ export default function reducer(
     case CUSTOM_SPLIT_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "post"], false);
-        mutableState.set("elements", fromJS(action.elements));
+
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
       });
     case TITLE_CHANGE:
       return state.withMutations((mutableState) => {
@@ -289,7 +299,8 @@ export default function reducer(
       });
     case POST_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
-        mutableState.set("elements", fromJS(action.elements));
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
         mutableState.set("timelineNode", Map(initialNode));
         mutableState.setIn(["loadings", "post"], false);
       });
@@ -299,15 +310,15 @@ export default function reducer(
         const isVertical = action.isVertical;
 
         if (id) {
-          // @ts-ignore
-          const elements = mutableState.get("elements").toJS();
-          const element = elements.find((el) => el.id === id);
+          const mutableNodes = mutableState.get("nodes") as List<TCustomNode>;
+          const nodes = mutableNodes.toJS() as TCustomNode[];
+          const element = nodes.find((el) => el.id === id) as TCustomNode;
 
-          const tagOptions = getInnerTagOptions(elements);
+          const tagOptions = getInnerTagOptions(nodes);
           mutableState.set("elementsTagOptions", fromJS(tagOptions));
 
           let editorState = EditorState.createEmpty();
-          if (element.data.content) {
+          if (element.data?.content) {
             const blocksFromHtml = htmlToDraft(element.data.content);
             const { contentBlocks, entityMap } = blocksFromHtml;
             const contentState = ContentState.createFromBlockArray(
@@ -319,26 +330,26 @@ export default function reducer(
 
           const node = {
             id: element.id,
-            title: element.data.label,
+            title: element.data?.label,
             content: editorState,
-            email: element.data.email,
-            description: element.data.description,
-            date: moment(element.data.date),
-            time: moment(element.data.date),
+            email: element.data?.email,
+            description: element.data?.description,
+            date: moment(element.data?.date),
+            time: moment(element.data?.date),
             persons: fromJS(
-              element.data.persons.map((p) => ({
+              element.data?.persons.map((p) => ({
                 icon: p.person_icon,
                 id: p.id,
                 name: p.name,
               }))
             ),
             documents: fromJS(
-              element.data.documents.map((d) => ({
+              element.data?.documents.map((d) => ({
                 id: d.id,
                 title: d.title,
               }))
             ),
-            tags: fromJS(element.data.tags),
+            tags: fromJS(element.data?.tags),
           };
           mutableState.set("timelineNode", fromJS(node));
           if (!isVertical) {
@@ -369,7 +380,9 @@ export default function reducer(
     case CHANGE_VIEW:
       return state.withMutations((mutableState) => {
         mutableState.set("view", action.direction);
-        mutableState.set("elements", fromJS(action.elements));
+
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
       });
     case ADD_CURR_SPLITTING_EMAIL:
       return state.withMutations((mutableState) => {

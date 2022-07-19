@@ -6,18 +6,20 @@ import { baseUrl, authHeader, genericErrorMessage } from "@api/constants";
 import { User } from "@auth0/auth0-react";
 import { History } from "history";
 import * as types from "./timelineConstants";
-import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
+import { IImmutableTimelineState, ITimelineNode, TCustomNode, TimelineNode } from "@customTypes/reducers/timeline";
 import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from "draft-js";
-import { isEdge, isNode } from "react-flow-renderer";
+import { Edge, isEdge, isNode } from "react-flow-renderer10";
 import dagre from "dagre";
 import { getDocumentDropDown } from "../../Documents/reducers/documentActions";
 import { getPersonDropDown } from "../../Persons/reducers/personActions";
 import { Person as TPerson } from "@customTypes/reducers/person";
 import { Document as TDocument } from "@customTypes/reducers/document";
+import { ThunkDispatch } from "redux-thunk";
+import { TimelineActions } from "./timelineConstants";
 const TIMELINES = "timelines";
 
-export const getTimelines = (user: User) => async (dispatch) => {
+export const getTimelines = (user: User) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.GET_TIMELINES_LOADING, loadingType: "main" });
   const url = `${baseUrl}/${TIMELINES}`;
   const header = authHeader(user);
@@ -37,7 +39,7 @@ export const postTimeline = (user: User, history: History, label?: string,
   description?: string,
   group?: string,
   tags?: string,
-  shareOrg?: boolean,) => async (dispatch) => {
+  shareOrg?: boolean,) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.POST_TIMELINE_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/${TIMELINES}`;
@@ -61,13 +63,13 @@ export const postTimeline = (user: User, history: History, label?: string,
   }
 };
 
-export const showTimeline = (user: User, id: string, openMeta, rfInstance) => async (dispatch) => {
+export const showTimeline = (user: User, id: string, openMeta, rfInstance) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.SHOW_TIMELINE_LOADING, loadingType: "main" });
   const url = `${baseUrl}/${TIMELINES}/${id}`;
   const header = authHeader(user);
   try {
     const response = await axios.get(url, header);
-    const { title, description, group, tags, is_private: shareOrg, elements } = response.data;
+    const { title, description, group, tags, is_private: shareOrg, nodes, edges } = response.data;
 
     if (
       (!title || title?.length === 0) &&
@@ -83,7 +85,7 @@ export const showTimeline = (user: User, id: string, openMeta, rfInstance) => as
       }, 200);
     }
 
-    dispatch({ type: types.SHOW_TIMELINE_SUCCESS, title, description, group, tags, shareOrg, elements });
+    dispatch({ type: types.SHOW_TIMELINE_SUCCESS, title, description, group, tags, shareOrg, nodes, edges });
   } catch (error: any) {
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_TIMELINE_FAILED, message });
@@ -98,7 +100,7 @@ export const putTimeline = (
   group: string,
   tags: string,
   shareOrg: boolean,
-  openMeta: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch) => {
+  openMeta: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.PUT_TIMELINE_LOADING, loadingType: "modal" });
   const url = `${baseUrl}/${TIMELINES}/${id}`;
   const header = authHeader(user);
@@ -120,7 +122,7 @@ export const putTimeline = (
   }
 };
 
-export const deleteTimelines = (user: User, id: string) => async dispatch => {
+export const deleteTimelines = (user: User, id: string) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   const url = `${baseUrl}/${TIMELINES}/${id}`;
   dispatch({ type: types.DELETE_TIMELINE_LOADING, loadingType: "main" });
   const header = authHeader(user);
@@ -144,7 +146,7 @@ export const saveElement = (
   changedPersons: TPerson[],
   changedDocuments: TDocument[],
   handleCloseCreateElement: () => void
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.POST_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/timelinenodes`;
@@ -159,7 +161,8 @@ export const saveElement = (
 
   try {
     const response = await axios.post(url, body, header);
-    dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, elements: response.data });
+    const { nodes, edges } = response.data;
+    dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, nodes, edges });
     handleCloseCreateElement();
     dispatch(getPersonDropDown(user, timeline_id));
     dispatch(getDocumentDropDown(user, timeline_id));
@@ -169,7 +172,7 @@ export const saveElement = (
   }
 };
 
-export const putElement = (user: User, timeline_id, element, changedPersons, changedDocuments, handleCloseCreateElement) => async (dispatch) => {
+export const putElement = (user: User, timeline_id, element, changedPersons, changedDocuments, handleCloseCreateElement) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.PUT_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/timelinenodes/${element.get("id")}`;
@@ -181,10 +184,11 @@ export const putElement = (user: User, timeline_id, element, changedPersons, cha
 
   const body = { element: _element, changedPersons, changedDocuments };
   const header = authHeader(user);
-  console.log(handleCloseCreateElement);
+
   try {
     const response = await axios.put(url, body, header);
-    dispatch({ type: types.PUT_TIMELINE_ELEMENT_SUCCESS, element: response.data });
+
+    dispatch({ type: types.PUT_TIMELINE_ELEMENT_SUCCESS, node: response.data });
     handleCloseCreateElement();
     dispatch(getPersonDropDown(user, timeline_id));
     dispatch(getDocumentDropDown(user, timeline_id));
@@ -195,23 +199,25 @@ export const putElement = (user: User, timeline_id, element, changedPersons, cha
   }
 };
 
-export const deleteElements = (user: User, timeline_id: string, elements: string[]) => async (dispatch) => {
+export const deleteElements = (user: User, timeline_id: string, elements: string[]) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_LOADING, loadingType: "mouse" });
 
   const url = `${baseUrl}/timelinenodes/delete`;
   const body = { elements, timeline_id };
+
   const header = authHeader(user);
 
   try {
     const response = await axios.post(url, body, header);
-    dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_SUCCESS, elements: response.data });
+    const { nodes, edges } = response.data;
+    dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_SUCCESS, nodes, edges });
   } catch (error: any) {
     const message = genericErrorMessage;
     dispatch({ type: types.DELETE_TIMELINE_ELEMENTS_FAILED, message });
   }
 };
 
-export const importEmails = (user: User, timeline_id: string, files, close) => async (dispatch) => {
+export const importEmails = (user: User, timeline_id: string, files, close) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.IMPORT_EMAILS_LOADING, loadingType: "modal" });
 
   const url = `${baseUrl}/timelines/mail/${timeline_id}?files=${files.length}`;
@@ -224,7 +230,8 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
   try {
     const response = await axios.post(url, body, header);
     const { elements, emails } = response.data;
-    dispatch({ type: types.IMPORT_EMAILS_SUCCESS, elements, emails });
+    const { nodes, edges } = elements;
+    dispatch({ type: types.IMPORT_EMAILS_SUCCESS, nodes, edges, emails });
     close();
     dispatch(getPersonDropDown(user, timeline_id));
     dispatch(getDocumentDropDown(user, timeline_id));
@@ -239,7 +246,7 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
   }
 };
 
-export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn) => async (dispatch) => {
+export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.CUSTOM_SPLIT_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/customSplitUpload`;
@@ -248,7 +255,8 @@ export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn
 
   try {
     const response = await axios.post(url, body, header);
-    dispatch({ type: types.CUSTOM_SPLIT_SUCCESS, elements: response.data });
+    const { nodes, edges } = response.data;
+    dispatch({ type: types.CUSTOM_SPLIT_SUCCESS, nodes, edges });
     moveOn();
   } catch (error: any) {
     const message = genericErrorMessage;
@@ -257,7 +265,7 @@ export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn
   }
 };
 
-export const downloadDocument = (user: User, title: string, document_id: string) => async (dispatch) => {
+export const downloadDocument = (user: User, title: string, document_id: string) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   dispatch({ type: types.DOWNLOAD_DOCUMENT_LOADING, loadingType: "post" });
 
   const url = `${baseUrl}/timelinedocuments/download/${document_id}`;
@@ -353,7 +361,7 @@ export const openEmailChange = (bool: boolean) => ({
   bool,
 });
 
-export const changeView = (direction: "vertical" | "horizontal", elements) => async (dispatch) => {
+export const changeView = (direction: "vertical" | "horizontal", elements) => async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
   const nodeWidth = 150;
   const nodeHeight = 41;
 
@@ -399,7 +407,13 @@ export const changeView = (direction: "vertical" | "horizontal", elements) => as
     return element;
   });
 
-  dispatch({ type: types.CHANGE_VIEW, direction, elements });
+  const nodes = elements.filter(e => isNode(e));
+  const edges = elements.filter(e => !isNode(e));
+
+  dispatch({ type: types.CHANGE_VIEW,
+    direction,
+    nodes,
+    edges });
 };
 
 

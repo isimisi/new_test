@@ -12,12 +12,13 @@ import useStyles from "./actions.jss";
 
 import BorderHorizontalIcon from "@material-ui/icons/BorderHorizontal";
 import BorderVerticalIcon from "@material-ui/icons/BorderVertical";
-import TocIcon from "@material-ui/icons/Toc";
+
 import Divider from "@material-ui/core/Divider";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
-import { FlowElement, isNode } from "react-flow-renderer";
+import { Edge, isNode } from "react-flow-renderer";
 import ErrorIcon from "@material-ui/icons/Error";
 import Badge from "@material-ui/core/Badge";
+import { TCustomNode } from "@customTypes/reducers/timeline";
 
 interface Props {
   openTableView: (bool?: boolean) => void;
@@ -27,7 +28,7 @@ interface Props {
   handleToggleCorectEmails: () => void;
   openTable: boolean;
   toggleDrawer: (bool?: boolean) => void;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
 }
 
 const Items = (props: Props) => {
@@ -38,8 +39,7 @@ const Items = (props: Props) => {
     handleOpenImportEmails,
     handleToggleCorectEmails,
     openTable,
-    elements,
-
+    nodes,
     toggleDrawer
   } = props;
   const classes = useStyles();
@@ -59,9 +59,7 @@ const Items = (props: Props) => {
     openTableView();
   };
 
-  const badges = elements.filter(
-    e => !e.data.date && isNode(e) && e.id !== "static-button"
-  );
+  const badges = nodes.filter(e => !e.data?.date && e.id !== "static-button");
 
   return (
     <>

@@ -5,14 +5,13 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 import { authHeader, baseUrl, getId } from "@api/constants";
-import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import Notification from "@components/Notification/Notification";
 import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
-import { usePDF } from '@react-pdf/renderer';
+
 
 import ShareModal from '@components/Flow/Share/ShareModal';
 import {
@@ -30,16 +29,15 @@ import {
   timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting, validateEmailsClose
 } from "./reducers/timelineActions";
 import ReactFlow, {
-  isNode,
-  OnLoadParams,
-} from "react-flow-renderer";
+  isNode, ReactFlowInstance, NodeChange
+} from "react-flow-renderer10";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import { getPlanId } from "@helpers/userInfo";
+
 import Collaboration from "@components/Flow/Actions/Collaborations";
-import Meta from "@components/Flow/Actions/Meta";
+import Meta from "@components/Flow/Actions/Meta10";
 import { Person as TPerson } from "@customTypes/reducers/person";
 import { Document as TDocument } from "@customTypes/reducers/document";
-import Controls from "@components/Flow/Actions/Controls";
+import Controls from "@components/Flow/Actions/Controls10";
 import { useTheme } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import { handleExport } from "@helpers/export/handleExport";
@@ -64,7 +62,7 @@ import { changePerson, getPersonDropDown, showPerson } from "../Persons/reducers
 import Person from "@components/Timeline/Modals/Person";
 import Document from "@components/Timeline/Modals/Document";
 import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
-import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
+import { ITimelineNode, TCustomNode, TimelineNode } from "@customTypes/reducers/timeline";
 import Email from "@components/Timeline/Modals/Email";
 import VerticalNode from "@components/Timeline/Nodes/VerticalNode";
 import Content from "@components/Timeline/Drawer/Content";
@@ -72,8 +70,7 @@ import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
-import Pdf from "@components/Timeline/Export/Pdf";
-import ReactDOM from "react-dom";
+// import Pdf from "@components/Timeline/Export/Pdf";
 
 
 const nodeTypes = {
@@ -90,7 +87,9 @@ const Timeline = () => {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const elements = useAppSelector(state => state[reducer].get("elements")).toJS();
+
+  const nodes = useAppSelector(state => state[reducer].get("nodes")).toJS();
+  const edges = useAppSelector(state => state[reducer].get("edges")).toJS();
 
   const messageNotif = useAppSelector(state => state[reducer].get("message"));
   const createElementOpen = useAppSelector(state => state[reducer].get("createElementOpen"));
@@ -107,15 +106,13 @@ const Timeline = () => {
   const history = useHistory();
   const id = getId(history) as string;
   const user = useAuth0().user as User;
-  const plan_id = getPlanId(user);
-  const { t } = useTranslation();
 
   // refs
   const reactFlowContainer = useRef(null);
 
   // state
   const [metaOpen, setMetaOpen] = useState(false);
-  const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [elementPersons, setElementPersons] = useState<TPerson[]>([]);
@@ -222,8 +219,8 @@ const Timeline = () => {
       handleCloseCorectEmails();
     } else {
       setCorrectEmailsOpen(true);
-      const badges = elements.filter(
-        e => !e.data.date && isNode(e) && e.id !== "static-button"
+      const badges = nodes.filter(
+        e => !e.data.date && e.id !== "static-button"
       );
 
       dispatch(setTimelineNode(badges[0].data.id));
@@ -270,24 +267,21 @@ const Timeline = () => {
     handleExport(type, reactFlowContainer, label, _stopLoading);
   const handlePowerpoint = _stopLoading => {
     id &&
-      dispatch(workspacePowerpoint(user, id, label, elements, _stopLoading));
+      dispatch(workspacePowerpoint(user, id, label, [...nodes, ...edges], _stopLoading));
   };
   const toggleSubMenu = () => dispatch(toggleAction);
 
-  const onLoad = _reactFlowInstance => {
+  const onInit = (_reactFlowInstance: ReactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
     dispatch(showTimeline(user, id as string, setMetaOpen, _reactFlowInstance));
   };
 
-  const onSave = useCallback(() => {
-    if (rfInstance) {
-      // save
+  const onMove = (e, flowTransform) => {
+    if (flowTransform) {
+      setCurrentZoom(flowTransform.zoom);
     }
-  }, [rfInstance, user]);
+  };
 
-  const onMouseLeave = useCallback(() => {
-    onSave();
-  }, [rfInstance]);
 
   useEffect(() => {
     dispatch(closeMenuAction);
@@ -334,8 +328,8 @@ const Timeline = () => {
   );
 
   const nextElWithoutDate = () => {
-    const badges = elements.filter(
-      e => !e.data.date && isNode(e) && e.id !== "static-button" && e.id !== timelineNode.get("id")
+    const badges = nodes.filter(
+      e => !e.data.date && e.id !== "static-button" && e.id !== timelineNode.get("id")
     );
     if (badges.length > 0) {
       dispatch(setTimelineNode(badges[0].data.id));
@@ -423,13 +417,14 @@ const Timeline = () => {
     dispatch(deleteElements(user, id, [timelineNode.get("id")]));
   };
 
-  const onElementsRemove = (el) => {
-    const nodes = el.filter(e => isNode(e)).map(n => n.id);
-    dispatch(deleteElements(user, id, nodes));
+  const onElementsRemove = (n: TCustomNode[]) => {
+    const _nodes = n.map(x => x.id);
+    dispatch(deleteElements(user, id, _nodes));
   };
 
+
   const handleChangeView = (direction: "horizontal" | "vertical") => {
-    dispatch(changeView(direction, elements));
+    dispatch(changeView(direction, [...nodes, ...edges]));
     setTimeout(() => {
       rfInstance?.fitView();
     }, 200);
@@ -533,10 +528,11 @@ const Timeline = () => {
         })}
 
         ref={reactFlowContainer}
-        onMouseLeave={onMouseLeave}
+
       >
         <ReactFlow
-          elements={elements}
+          nodes={nodes}
+          edges={edges}
           minZoom={0.3}
           maxZoom={3}
           style={{ backgroundColor: "#F3F5F8" }}
@@ -544,15 +540,11 @@ const Timeline = () => {
           //   [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5 / 3],
           //   [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
           // ]}
-          onElementsRemove={onElementsRemove}
+          onNodesDelete={onElementsRemove}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
-          onMove={flowTransform => {
-            if (flowTransform) {
-              setCurrentZoom(flowTransform.zoom);
-            }
-          }}
-          onLoad={onLoad}
+          onMove={onMove}
+          onInit={onInit}
         >
           <div data-html2canvas-ignore="true">
             <Collaboration setShareModalOpen={setShareModalOpen} timeline />
@@ -562,7 +554,8 @@ const Timeline = () => {
               handleVisabilityChange={handleVisabilityChange}
               handlePowerpoint={handlePowerpoint}
               handleVisability={handleVisability}
-              elements={elements}
+              nodes={nodes}
+              edges={edges}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
               backLink="/app/timelines"
@@ -578,7 +571,7 @@ const Timeline = () => {
 
               openTable={openTableView}
               toggleDrawer={toggleDrawer}
-              elements={elements}
+              nodes={nodes}
             />
             <Controls
               // handleTransform={handleTransform}
