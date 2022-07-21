@@ -114,6 +114,8 @@ export const putTimeline = (
     await axios.put(url, body, header);
     openMeta(false);
     dispatch({ type: types.PUT_TIMELINE_SUCCESS });
+    dispatch(getPersonDropDown(user, id));
+    dispatch(getDocumentDropDown(user, id));
   } catch (error: any) {
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_TIMELINE_FAILED, message });

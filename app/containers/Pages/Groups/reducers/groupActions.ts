@@ -27,9 +27,7 @@ export const postGroup = (
   closeModal: React.Dispatch<React.SetStateAction<boolean>>
 ) => async (dispatch) => {
   const url = `${baseUrl}/${GROUPS}?title=${title}&description=${description}${
-    image
-      ? ""
-      : "&defaultImage=https://app-juristic-media.s3.eu-north-1.amazonaws.com/groups/default.png"
+    image ? "" : "&defaultImage=groups/default.png"
   }`;
   const body = new FormData();
 

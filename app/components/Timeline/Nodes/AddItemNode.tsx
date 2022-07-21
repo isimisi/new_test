@@ -6,12 +6,18 @@ import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useAppDispatch } from "@hooks/redux";
-import { createElementChange } from "@pages/Timelines/reducers/timelineActions";
+import {
+  createElementChange,
+  setTimelineNode
+} from "@pages/Timelines/reducers/timelineActions";
 
 export default memo(({ data, isConnectable }: NodeProps) => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const handleOpenCreateElement = () => dispatch(createElementChange(true));
+  const handleOpenCreateElement = () => {
+    dispatch(setTimelineNode(null));
+    dispatch(createElementChange(true));
+  };
 
   return (
     <Paper style={{ borderRadius: "100%" }} className="nodrag">

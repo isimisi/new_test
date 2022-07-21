@@ -72,8 +72,6 @@ import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
-import Pdf from "@components/Timeline/Export/Pdf";
-import ReactDOM from "react-dom";
 
 
 const nodeTypes = {

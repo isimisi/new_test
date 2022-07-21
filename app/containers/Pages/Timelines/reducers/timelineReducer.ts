@@ -10,6 +10,7 @@ import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
 import { EditorState, ContentState } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
+
 import {
   SHOW_HANDLES_CHANGE,
   TimelineActions,

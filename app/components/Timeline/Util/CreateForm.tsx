@@ -315,7 +315,7 @@ const CreateForm = (props: Props) => {
         <KeyboardDatePicker
           label={t("timeline.date")}
           placeholder={t("timeline.date")}
-          value={date}
+          value={moment.isMoment(date) && !date.isValid() ? null : date}
           variant="inline"
           autoOk
           className={classes.eventField}
@@ -329,7 +329,7 @@ const CreateForm = (props: Props) => {
         <KeyboardTimePicker
           label={t("timeline.time")}
           placeholder={t("timeline.time")}
-          value={downHaveTime ? null : time}
+          value={downHaveTime ? null : moment.isMoment(time) && !time.isValid() ? null : time}
           autoOk
           invalidDateMessage={t("dates.time_invalid")}
           maxDateMessage={t("dates.max")}
