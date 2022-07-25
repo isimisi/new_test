@@ -3,7 +3,10 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 
-export const domain = "auth.juristic.io";
+export const domain =
+  window.location.hostname === "staging.juristic.io"
+    ? "staging-auth.juristic.io"
+    : "auth.juristic.io";
 export const client_id =
   window.location.hostname === "staging.juristic.io"
     ? "ZUCXSi5xRKrPeraWFQcLpHebPeiExIga"
