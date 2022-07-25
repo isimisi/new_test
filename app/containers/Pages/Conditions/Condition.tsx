@@ -29,7 +29,7 @@ import ConditionFabs from '@components/Condition/ConditionFabs';
 import Notification from '@components/Notification/Notification';
 import PropTypes from 'prop-types';
 import useMouse from '@react-hook/mouse-position';
-import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
+import { useCutCopyPaste } from '@hooks/useCutCopyPasteOld';
 import {
   useHistory
 } from 'react-router-dom';

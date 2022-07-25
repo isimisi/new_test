@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-plusplus */
-import React from "react";
+import React, { memo } from "react";
 import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt";
 import SearchIcon from "@material-ui/icons/Search";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -440,4 +440,4 @@ const Meta = (props: Props) => {
   );
 };
 
-export default Meta;
+export default memo(Meta);

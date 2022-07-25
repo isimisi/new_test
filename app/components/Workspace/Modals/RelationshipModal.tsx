@@ -8,16 +8,14 @@ import MuiTableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import {
-  FlowElement,
-  Node,
   getOutgoers,
   getIncomers,
-  isEdge,
-  Edge
-} from 'react-flow-renderer';
+  Node
+} from 'react-flow-renderer10';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import FloatingPanel from '../../Panel/FloatingPanel';
+import { TCustomNode, TCustomEdge, NodeData } from '@customTypes/reducers/workspace';
 
 const TableCell = withStyles({
   root: {
@@ -29,8 +27,9 @@ const TableCell = withStyles({
 interface Props {
   open: boolean;
   close: () => void;
-  activeNodeRelations: Node | null;
-  elements: FlowElement[];
+  activeNodeRelations: Node<NodeData> | null;
+  nodes: TCustomNode[];
+  edges: TCustomEdge[];
 }
 
 interface Row {
@@ -43,7 +42,8 @@ function RelationshipModal({
   open,
   close,
   activeNodeRelations,
-  elements
+  nodes,
+  edges
 }: Props) {
   const branch = '';
   const { t } = useTranslation();
@@ -53,34 +53,34 @@ function RelationshipModal({
 
   useEffect(() => {
     if (activeNodeRelations) {
-      const _outgoers = getOutgoers(activeNodeRelations, elements);
-      const _incommers = getIncomers(activeNodeRelations, elements);
+      const _outgoers = getOutgoers(activeNodeRelations, nodes, edges);
+      const _incommers = getIncomers(activeNodeRelations, nodes, edges);
 
       setOutgoers(_outgoers.map(o => {
-        const relation = elements.filter((x): x is Edge => isEdge(x))
-          .find(x => x.source === activeNodeRelations.id && x.target === o.id);
+        const ot = o as Node<NodeData>;
+        const relation: TCustomEdge | undefined = edges.find(x => x.source === activeNodeRelations.id && x.target === ot.id);
 
         return (
           {
-            element: o.data.displayName,
-            relation: relation?.data.label || '',
-            value: relation?.data.value || ''
+            element: ot.data.displayName || "",
+            relation: relation?.data?.label || '',
+            value: relation?.data?.value || ''
           });
       }));
 
       setIncommers(_incommers.map(o => {
-        const relation = elements.filter((x): x is Edge => isEdge(x))
-          .find(x => x.source === o.id && x.target === activeNodeRelations.id);
+        const ot = o as Node<NodeData>;
+        const relation = edges.find(x => x.source === ot.id && x.target === activeNodeRelations.id);
 
         return (
           {
-            element: o.data.displayName,
-            relation: relation?.data.label || '',
-            value: relation?.data.value || ''
+            element: ot.data.displayName || "",
+            relation: relation?.data?.label || '',
+            value: relation?.data?.value || ''
           });
       }));
     }
-  }, [activeNodeRelations, elements]);
+  }, [activeNodeRelations, nodes, edges]);
 
   return (
     <div>
@@ -88,7 +88,7 @@ function RelationshipModal({
         openForm={open}
         branch={branch}
         closeForm={close}
-        title={activeNodeRelations?.data.displayName ? t("workspaces.relations_for", { for: activeNodeRelations?.data.displayName }) : t("workspaces.relations")}
+        title={activeNodeRelations?.data?.displayName ? t("workspaces.relations_for", { for: activeNodeRelations?.data.displayName }) : t("workspaces.relations")}
         extraSize
       >
         <div style={{ maxHeight: 400, overflow: 'auto' }}>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const useItemSidePanel = () => {
   const [cursor, setCursor] = useState("auto");
@@ -7,14 +7,14 @@ const useItemSidePanel = () => {
   const [stickyActive, setStickyActive] = useState(false);
   const [nodeActive, setNodeActive] = useState(false);
 
-  const toggleMouse = () => {
+  const toggleMouse = useCallback(() => {
     setNodeActive(false);
     setStickyActive(false);
     handleCursor("auto");
     setMouseActive(true);
-  };
+  }, []);
 
-  const toggleSticky = () => {
+  const toggleSticky = useCallback(() => {
     setStickyActive((prevVal) => {
       if (!prevVal) {
         setMouseActive(false);
@@ -27,9 +27,9 @@ const useItemSidePanel = () => {
       }
       return !prevVal;
     });
-  };
+  }, []);
 
-  const toggleNode = () => {
+  const toggleNode = useCallback(() => {
     setNodeActive((prevVal) => {
       if (!prevVal) {
         setMouseActive(false);
@@ -42,7 +42,7 @@ const useItemSidePanel = () => {
       }
       return !prevVal;
     });
-  };
+  }, []);
 
   return {
     cursor,

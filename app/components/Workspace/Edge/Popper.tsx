@@ -16,12 +16,10 @@ import CreatableSelect from "react-select/creatable";
 
 import LabelIcon from "@material-ui/icons/Label";
 import {
-  Edge,
-  FlowElement,
-  Node,
-  OnLoadParams,
+  ReactFlowInstance
+} from "react-flow-renderer10";
+import { TCustomEdge, TCustomNode } from '@customTypes/reducers/workspace';
 
-} from "react-flow-renderer";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { selectStyles } from "@api/ui/helper";
 import IconButton from "@material-ui/core/IconButton";
@@ -42,10 +40,10 @@ interface Props {
   currentZoom: number;
   editData: (
     event: MouseEvent,
-    element: FlowElement,
+    element: TCustomEdge,
     showFull: boolean
   ) => void;
-  activeElement: Node | Edge | null;
+  activeElement: TCustomNode | TCustomEdge | null;
   edgeLabel: string;
   relationships: any;
   relationshipLabel: string;
@@ -65,7 +63,7 @@ interface Props {
   handleLineThroughChange: () => void;
   handleDeleteEdge: () => void;
   handleHideEdgePopper: (stopReffrence?: boolean) => void;
-  rfInstance: OnLoadParams<any> | null;
+
   popperComponentRef: React.MutableRefObject<any>
 }
 
@@ -98,12 +96,12 @@ const EdgePopper = (props: Props) => {
     handleLineThroughChange,
     handleDeleteEdge,
     handleHideEdgePopper,
-    rfInstance,
+
     popperComponentRef
   } = props;
 
   // eslint-disable-next-line react/destructuring-assignment
-  const activeElement = props.activeElement as Edge;
+  const activeElement = props.activeElement as TCustomEdge;
 
   const { t } = useTranslation();
 
@@ -249,7 +247,7 @@ const EdgePopper = (props: Props) => {
                     className={classes.nodePopperIcon}
                     style={{
                       color:
-                        activeElement.data.label || edgeLabel
+                        activeElement?.data?.label || edgeLabel
                           ? "black"
                           : "#FFDC79"
                     }}

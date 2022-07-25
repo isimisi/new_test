@@ -40,7 +40,7 @@ import Loader from "@components/Loading/LongLoader";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import styles from "../../../components/Workspace/workspace-jss";
-import { reducer, getLayoutedElements, initErstTypes } from "./constants";
+import { reducer, getLayoutedElementsOld, initErstTypes } from "./constants";
 import {
   cvrSuccess,
   cvrWorkspacePublic,
@@ -84,7 +84,7 @@ const Workspace = props => {
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
 
   const handleCvrSuccess = el => {
-    dispatch(cvrSuccess(getLayoutedElements(el)));
+    dispatch(cvrSuccess(getLayoutedElementsOld(el)));
     setLoading(false);
     setShowInitModal(!hasVisitedPublic);
     if (rfInstance) {

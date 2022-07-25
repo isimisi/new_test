@@ -132,7 +132,7 @@ const Workspace = (props) => {
   const [relationshipValue, setRelationshipValue] = useState('');
   const [relationshipType, setRelationshipType] = useState(null);
   const [relationshipColor, setRelationshipColor] = useState({
-    r: 0, g: 0, b: 0, a: 1
+    r: "0", g: "0", b: "0", a: "1"
   });
   const [showArrow, setShowArrow] = useState(false);
   const [animatedLine, setAnimatedLine] = useState(false);
@@ -149,14 +149,14 @@ const Workspace = (props) => {
 
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [nodeColor, setNodeColor] = useState({
-    r: 255, g: 255, b: 255, a: 1
+    r: "255", g: "255", b: "255", a: "1"
   });
   const [nodeBorderColor, setNodeBorderColor] = useState({
-    r: 0, g: 0, b: 0, a: 1
+    r: "0", g: "0", b: "0", a: "1"
   });
 
   const [nodeLabelColor, setNodeLabelColor] = useState({
-    r: 0, g: 0, b: 0, a: 1
+    r: "0", g: "0", b: "0", a: "1"
   });
   const handleLabelColorChange = (color) => {
     setNodeLabelColor(color.rgb);

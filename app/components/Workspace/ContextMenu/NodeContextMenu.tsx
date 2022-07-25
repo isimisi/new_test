@@ -10,7 +10,7 @@ import {
   CircularProgress,
 
 } from '@material-ui/core';
-import { FlowElement, Node } from 'react-flow-renderer';
+
 import { useTheme } from '@material-ui/styles';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -20,21 +20,23 @@ import { MyTheme } from '@customTypes/styling';
 import { ContextTypes } from '@customTypes/reactFlow';
 import { useTranslation } from 'react-i18next';
 import useStyles from './menu.jss';
+import { NodeData, TCustomNode } from '@customTypes/reducers/workspace';
+import { Node } from 'react-flow-renderer10';
 
 interface Props {
   x: number;
   y: number;
-  contextNode: Node<any> | null;
+  contextNode: TCustomNode | null;
   contextType: ContextTypes;
   show: boolean;
-  handleEdit: (event: MouseEvent, element: FlowElement, showFull: boolean) => void;
-  handleShowNodeRelations: (node: Node) => void;
+  handleEdit: (event: MouseEvent, element: TCustomNode, showFull: boolean) => void;
+  handleShowNodeRelations: (node: Node<NodeData>) => void;
   showCompanyInfo: (id: string) => void;
   getAddressInfo: (id: string) => void;
   loading: boolean;
   cut: (e: any, Node) => void;
   copy: (e: any, Node) => void;
-  onElementsRemove: (elementsToRemove: FlowElement[]) => void
+  onElementsRemove: (elementsToRemove: TCustomNode[]) => void
 }
 
 const NodeContextMenu = ({
@@ -61,10 +63,10 @@ const NodeContextMenu = ({
   const handleCut = (e) => contextNode && cut(e, contextNode);
   const handleCopy = (e) => contextNode && copy(e, contextNode);
   const handleRemove = () => contextNode && onElementsRemove([contextNode]);
-  const showNodeRelationships = () => contextNode && handleShowNodeRelations(contextNode);
+  const showNodeRelationships = () => contextNode && handleShowNodeRelations(contextNode as Node<NodeData>);
 
-  const showInfoButtons = useMemo(() => contextNode?.data.unitNumber, [contextNode]);
-  const isNote = useMemo(() => contextNode?.type !== 'sticky', [contextNode]);
+  const notSticky = useMemo(() => contextNode?.type !== 'sticky', [contextNode]);
+  const showInfoButtons = useMemo(() => contextNode?.data && "unitNumber" in contextNode.data && contextNode.data.unitNumber, [contextNode]);
 
 
   if (show && contextType === ContextTypes.Node) {
@@ -82,7 +84,7 @@ const NodeContextMenu = ({
             <MenuList>
 
 
-              {isNote && <MenuItem onClick={hanldeEditClick}>
+              {notSticky && <MenuItem onClick={hanldeEditClick}>
                 <ListItemIcon>
                   <EditIcon fontSize="small" />
                 </ListItemIcon>
@@ -94,10 +96,11 @@ const NodeContextMenu = ({
                   color="primary"
                   className={classes.editName}
                 >
+                  {/* @ts-ignore */}
                   {contextNode?.data?.displayName}
                 </Typography>
               </MenuItem>}
-              {isNote && <MenuItem onClick={showNodeRelationships}>
+              {notSticky && <MenuItem onClick={showNodeRelationships}>
                 <ListItemText>{t('flow.node_context_menu.relations_info')}</ListItemText>
                 <Typography variant="body2" color="textSecondary">
               alt + R
@@ -147,6 +150,7 @@ const NodeContextMenu = ({
                       color: theme.palette.error.contrastText
                     }
                   }}
+                  /* @ts-ignore */
                   secondary={contextNode?.data?.displayName}
                   secondaryTypographyProps={{
                     style: {

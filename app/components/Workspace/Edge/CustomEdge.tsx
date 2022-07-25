@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { ConditionEdgeData } from "@customTypes/reducers/conditions";
+import { EdgeData } from "@customTypes/reducers/workspace";
 import React, { memo } from "react";
 import {
   EdgeText,
@@ -17,8 +17,7 @@ const getFactor = (
   sourceY: number,
   targetY: number,
   sourceX: number,
-  targetX: number,
-  cpComputedPosition: { x: number; y: number } | undefined
+  targetX: number
 ) => {
   const leftAndRight = [Position.Left, Position.Right];
   let factor = 0;
@@ -117,7 +116,6 @@ const drawCurve = (
   targetX: number,
   targetY: number,
   targetPosition: Position,
-  controlPoints: string,
   source: string,
   target: string
 ): string => {
@@ -141,21 +139,21 @@ const drawCurve = (
   let cp2x = 0;
   let cp2y = 0;
 
-  const cpMiddle = document.querySelector(`[data-id=${controlPoints}]`);
+  // const cpMiddle = document.querySelector(`[data-id=${controlPoints}]`);
 
-  const middleRadius = 3;
-  let cpComputedPosition;
-  if (cpMiddle) {
-    // @ts-ignore
-    const { x, y } = cpMiddle.computedStyleMap().get("transform")[0];
-    cpComputedPosition = {
-      x: x.value,
-      y: y.value
-    };
-  }
+  // const middleRadius = 3;
+  // let cpComputedPosition;
+  // if (cpMiddle) {
+  //   // @ts-ignore
+  //   const { x, y } = cpMiddle.computedStyleMap().get("transform")[0];
+  //   cpComputedPosition = {
+  //     x: x.value,
+  //     y: y.value
+  //   };
+  // }
 
-  let cpMidX = cpComputedPosition ? cpComputedPosition.x - 50 : 0;
-  const cpMidY = cpComputedPosition ? cpComputedPosition.y : 0;
+  // let cpMidX = cpComputedPosition ? cpComputedPosition.x - 50 : 0;
+  // const cpMidY = cpComputedPosition ? cpComputedPosition.y : 0;
 
   const factor = getFactor(
     sourcePosition,
@@ -163,8 +161,7 @@ const drawCurve = (
     sourceY,
     targetY,
     sourceX,
-    targetX,
-    cpComputedPosition
+    targetX
   );
 
   const offset = lengthBetweenPoints * factor;
@@ -182,7 +179,6 @@ const drawCurve = (
     cp1y = cY - offset;
     cp2x = targetX;
     cp2y = cY - offset;
-    cpMidX = cpComputedPosition ? cpComputedPosition.x - 10 : 0;
   } else if (
     sourcePosition === Position.Top &&
     targetPosition.includes("left")
@@ -294,7 +290,6 @@ const drawCurve = (
     cp1y = sourceY;
     cp2x = targetX - offset;
     cp2y = targetY;
-    cpMidX = cpComputedPosition ? cpComputedPosition.x - 50 : 0;
   } else if (
     sourcePosition.includes("right") &&
     targetPosition.includes("right")
@@ -305,17 +300,9 @@ const drawCurve = (
     cp2y = targetY;
   }
 
-  let path = `
+  const path = `
   M${sourceX},${sourceY}
   C${cp1x},${cp1y} ${cp2x},${cp2y} ${targetX},${targetY}`;
-
-  if (cpComputedPosition) {
-    path = `
-    M${sourceX},${sourceY}
-    C${cp1x},${cp1y} ${cpMidX},${cpMidY} ${cpComputedPosition.x +
-      middleRadius},${cpComputedPosition.y + middleRadius}
-    S${cp2x},${cp2y} ${targetX},${targetY}`;
-  }
 
   return path;
 };
@@ -353,15 +340,14 @@ const CustomEdge = ({
   sourcePosition,
   targetPosition,
   style = {},
-  data,
+  data = {} as EdgeData | ConditionEdgeData,
   // label,
-  labelStyle,
-  labelShowBg,
-  labelBgStyle,
-  labelBgPadding,
-  labelBgBorderRadius,
-  arrowHeadType,
-  markerEndId
+  labelStyle = {},
+  labelShowBg = false,
+  labelBgStyle = {},
+  labelBgPadding = [0, 0] as [number, number],
+  arrowHeadType = undefined,
+  markerEndId = undefined
 }) => {
   const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
 
@@ -372,7 +358,6 @@ const CustomEdge = ({
     targetX,
     targetY,
     targetPosition,
-    data.controlPoints,
     source,
     target
   );
@@ -386,7 +371,8 @@ const CustomEdge = ({
   }${data.value}`;
 
   if (isCondition) {
-    label = `${data.label} ${data.comparison_type} ${data.comparison_value}`;
+    const { comparison_type, comparison_value } = data as ConditionEdgeData;
+    label = `${data.label} ${comparison_type} ${comparison_value}`;
   }
 
   const text = label ? (
@@ -398,7 +384,6 @@ const CustomEdge = ({
       labelShowBg={labelShowBg}
       labelBgStyle={labelBgStyle}
       labelBgPadding={labelBgPadding}
-      labelBgBorderRadius={labelBgBorderRadius}
     />
   ) : null;
 

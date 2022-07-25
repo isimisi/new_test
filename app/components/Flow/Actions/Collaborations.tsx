@@ -1,7 +1,7 @@
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import React from "react";
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import Button from "@material-ui/core/Button";
@@ -96,4 +96,4 @@ const Collaboration = (props: Props) => {
   );
 };
 
-export default Collaboration;
+export default memo(Collaboration);

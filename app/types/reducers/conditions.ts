@@ -2,6 +2,12 @@ import IImmutableStateMap from "@customTypes/immutable";
 import { List } from "immutable";
 import { GroupDropdown } from "./groups";
 import { TagDeconstructedOnOtherElements } from "./tags";
+import { EdgeData } from "./workspace";
+
+export interface ConditionEdgeData extends EdgeData {
+  comparison_type: string;
+  comparison_value: string;
+}
 
 export type ConditionTableOptions = [
   string,

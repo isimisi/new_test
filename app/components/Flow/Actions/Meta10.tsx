@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-plusplus */
-import React from "react";
+import React, { memo } from "react";
 import SystemUpdateAltIcon from "@material-ui/icons/SystemUpdateAlt";
 import SearchIcon from "@material-ui/icons/Search";
 import SettingsIcon from "@material-ui/icons/Settings";
@@ -33,12 +33,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CustomSwitch from "@components/Switch/CustomSwitch";
 import Shortcuts from "./Shortcuts";
-// import * as XLSX from "xlsx";
-import { Edge, getIncomers, getOutgoers, isEdge } from "react-flow-renderer10";
-// import { saveAs } from "file-saver";
-// import { s2ab } from "@helpers/export/handleExport";
 import { useAuth0, User } from "@auth0/auth0-react";
-import { TCustomNode } from "@customTypes/reducers/timeline";
 
 interface Props {
   label: string;
@@ -50,8 +45,8 @@ interface Props {
   handleAutoLayout?: () => void;
   handleOpenMenu: () => void;
   handleImage: (type: "image" | "pdf", stopLoading: () => void) => void;
-  nodes: TCustomNode[];
-  edges: Edge[];
+  handleExcel?: () => void;
+  loadingExcel?: boolean;
   handlePowerpoint: (stopLoading: () => void) => void;
   timeline?: boolean;
   backLink: string;
@@ -64,8 +59,6 @@ interface Props {
 const Meta = (props: Props) => {
   const {
     label,
-    nodes,
-    edges,
     setMetaOpen,
     handleVisabilityChange,
     handleVisability,
@@ -77,7 +70,9 @@ const Meta = (props: Props) => {
     timeline,
     handlePowerpoint: generatePp,
     backLink,
-    customPdfGenerator
+    customPdfGenerator,
+    handleExcel,
+    loadingExcel
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -92,10 +87,6 @@ const Meta = (props: Props) => {
   const [loadingPdf, setLoadingPdf] = React.useState(false);
   const stopLoadingPdf = () => setLoadingPdf(false);
   const startLoadingPdf = () => setLoadingPdf(true);
-
-  const [loadingExcel, setLoadingExcel] = React.useState(false);
-  const stopLoadingExcel = () => setLoadingExcel(false);
-  const startLoadingExcel = () => setLoadingExcel(true);
 
   const [loadingPp, setLoadingPp] = React.useState(false);
   const stopLoadingPp = () => setLoadingPp(false);
@@ -173,81 +164,6 @@ const Meta = (props: Props) => {
     }
     handleImage(type, stopLoading);
   };
-
-  // const getSheetName = node => {
-  //   const regex = /[^A-Za-z0-9]/g;
-  //   return node.data.displayName
-  //     ? node.data.displayName.substring(0, 30).replace(regex, "")
-  //     : node.data.label.substring(0, 30).replace(regex, "");
-  // };
-
-  // const handleExcel = () => {
-  //   startLoadingExcel();
-
-  //   const wb = XLSX.utils.book_new();
-  //   const _nodes = nodes.filter((e) => {
-  //     const checkIfNodeHasText = e.data.label && e.data.label.length > 0 && e.data.displayName && e.data.displayName.length > 0;
-  //     return checkIfNodeHasText;
-  //   });
-
-  //   const names = _nodes.map(n => getSheetName(n));
-
-  //   wb.SheetNames = names.filter((c, index) => names.indexOf(c) === index);
-
-  //   const header = [
-  //     t("workspace.meta.excel.headers.element"),
-  //     t("workspace.meta.excel.headers.relation"),
-  //     t("workspace.meta.excel.headers.value"),
-  //     t("workspace.meta.excel.headers.type")
-  //   ];
-
-  //   for (let index = 0; index < _nodes.length; index++) {
-  //     const node = _nodes[index];
-
-  //     const outgoers = getOutgoers(node, elements);
-  //     const incommers = getIncomers(node, elements);
-
-  //     const outData = outgoers.map(o => {
-  //       const relation = elements.filter((x): x is Edge => isEdge(x))
-  //         .find(x => x.source === node.id && x.target === o.id);
-
-  //       return (
-  //         {
-  //           [header[0]]: o.data.displayName,
-  //           [header[1]]: relation?.data.label || '',
-  //           [header[2]]: relation?.data.value || '',
-  //           [header[3]]: t("workspace.meta.excel.headers.outgoer")
-  //         });
-  //     });
-
-  //     const inData = incommers.map(o => {
-  //       const relation = elements.filter((x): x is Edge => isEdge(x))
-  //         .find(x => x.source === o.id && x.target === node.id);
-
-  //       return (
-  //         {
-  //           [header[0]]: o.data.displayName,
-  //           [header[1]]: relation?.data.label || '',
-  //           [header[2]]: relation?.data.value || '',
-  //           [header[3]]: t("workspace.meta.excel.headers.incommer")
-  //         });
-  //     });
-
-  //     const wsData = [...outData, ...inData];
-
-  //     const ws = XLSX.utils.json_to_sheet(wsData, { header });
-
-  //     wb.Sheets[getSheetName(node)] = ws;
-  //   }
-  //   const wbout = XLSX.write(wb, { bookType: "xlsx", type: "binary" });
-  //   saveAs(
-  //     new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-  //     `${label}.xlsx`
-  //   );
-  //   setTimeout(() => {
-  //     stopLoadingExcel();
-  //   }, 500);
-  // };
 
   const handlePowerpoint = () => {
     startLoadingPp();
@@ -438,7 +354,7 @@ const Meta = (props: Props) => {
                   {!timeline && (
                     <MenuItem
                       className={classes.menuItem}
-                      // onClick={handleExcel}
+                      onClick={handleExcel}
                       disabled={loadingExcel}
                     >
                       <ListItemIcon>
@@ -487,4 +403,4 @@ const Meta = (props: Props) => {
   );
 };
 
-export default Meta;
+export default memo(Meta);

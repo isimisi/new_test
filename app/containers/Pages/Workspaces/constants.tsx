@@ -1,17 +1,19 @@
 /* eslint-disable no-param-reassign */
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { isNode, Position, FlowElement } from "react-flow-renderer";
+import { Position } from "react-flow-renderer10";
 import dagre from "dagre";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import CheckIcon from "@material-ui/icons/Check";
 import Chip from "@material-ui/core/Chip";
+import { TCustomNode, TCustomEdge } from "@customTypes/reducers/workspace";
+import { FlowElement, isNode } from "react-flow-renderer";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-export const getLayoutedElements = (elements, direction = "TB") => {
+export const getLayoutedElementsOld = (elements, direction = "TB") => {
   // these should be calculated
   const nodeWidth = 172;
   const nodeHeight = 36;
@@ -46,6 +48,44 @@ export const getLayoutedElements = (elements, direction = "TB") => {
 
     return el;
   });
+};
+
+export const getLayoutedElements = (
+  nodes: TCustomNode[],
+  edges: TCustomEdge[],
+  direction = "TB"
+) => {
+  const nodeWidth = 172;
+  const nodeHeight = 36;
+
+  dagreGraph.setGraph({ rankdir: direction });
+
+  nodes.forEach(node => {
+    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+  });
+
+  edges.forEach(edge => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(dagreGraph);
+
+  nodes.forEach(node => {
+    const nodeWithPosition = dagreGraph.node(node.id);
+    node.targetPosition = Position.Top;
+    node.sourcePosition = Position.Bottom;
+
+    // We are shifting the dagre node position (anchor=center center) to the top left
+    // so it matches the React Flow node anchor point (top left).
+    node.position = {
+      x: nodeWithPosition.x - nodeWidth / 2,
+      y: nodeWithPosition.y - nodeHeight / 2
+    };
+
+    return node;
+  });
+
+  return { nodes, edges };
 };
 
 export const columns = t => [

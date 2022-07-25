@@ -1,7 +1,7 @@
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import MapIcon from "@material-ui/icons/Map";
@@ -13,22 +13,20 @@ import HelpIcon from "@material-ui/icons/Help";
 import Button from "@material-ui/core/Button";
 import useStyles from "./actions.jss";
 import Expand from "react-expand-animated";
-import { isNode, MiniMap, OnLoadParams, Node } from "react-flow-renderer";
-import { ReactFlowInstance } from "react-flow-renderer10";
+import { MiniMap, ReactFlowInstance } from "react-flow-renderer10";
 import { useTheme } from "@material-ui/core/styles";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+
 
 interface Props {
   currentZoom: number;
-  reactFlowInstance: ReactFlowInstance | OnLoadParams | null;
+  reactFlowInstance: ReactFlowInstance | null;
   handleTransform?: (transform: { x: number, y: number, zoom: number }) => void;
   panToNextIndex?: number | null;
 }
 
 const Controls = (props: Props) => {
-  const { currentZoom, reactFlowInstance, handleTransform, panToNextIndex } = props;
+  const { currentZoom, reactFlowInstance } = props;
   const classes = useStyles();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -202,4 +200,4 @@ const Controls = (props: Props) => {
   );
 };
 
-export default Controls;
+export default memo(Controls);

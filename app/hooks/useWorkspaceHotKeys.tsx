@@ -1,4 +1,5 @@
-import { OnLoadParams, Node } from "react-flow-renderer";
+import { NodeData, TCustomNode } from "@customTypes/reducers/workspace";
+import { ReactFlowInstance, Node } from "react-flow-renderer10";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export default function useWorkspaceHotKeys(
@@ -7,9 +8,9 @@ export default function useWorkspaceHotKeys(
   handlePostSticky: () => void,
   handleVisabilityChange: () => void,
   setSnapToGrid: React.Dispatch<React.SetStateAction<boolean>>,
-  rfInstance: OnLoadParams<any> | null,
-  contextNode: Node<any> | null,
-  handleShowNodeRelations: (node: Node) => void,
+  rfInstance: ReactFlowInstance | null,
+  contextNode: TCustomNode | null,
+  handleShowNodeRelations: (node: Node<NodeData>) => void,
   getCompanyData: (id: string) => void,
   getAddressData: (id: string) => void,
   handleOpenCvr: () => void,
@@ -68,7 +69,7 @@ export default function useWorkspaceHotKeys(
 
 
   useHotkeys("alt+r", () => {
-    contextNode && handleShowNodeRelations(contextNode);
+    contextNode && handleShowNodeRelations(contextNode as Node<NodeData>);
   }, [contextNode, handleShowNodeRelations]);
 
   useHotkeys("alt+e", () => {

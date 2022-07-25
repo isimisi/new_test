@@ -9,7 +9,8 @@ import {
   genericErrorMessage as message,
   getIdFromEncrypted,
 } from "@api/constants";
-import { isNode, OnLoadParams, FlowElement } from "react-flow-renderer";
+import { ReactFlowInstance, Node } from "react-flow-renderer10";
+import { isNode, FlowElement, OnLoadParams } from "react-flow-renderer";
 import _history from "@utils/history";
 import LogRocket from "logrocket";
 import { toast } from "react-toastify";
@@ -20,11 +21,14 @@ import { RGBA } from "@customTypes/data";
 import { History } from 'history';
 import { EdgeData } from "@customTypes/reactFlow";
 import { saveToLocalStorage } from "@api/localStorage/localStorage";
+import { ThunkDispatch } from "redux-thunk";
+import { IImmutableWorkspaceState, TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
+import { WorkspaceActions } from "./workspaceConstants";
 
 
 const WORKSPACES = "workspaces";
 
-export const getWorkspaces = (user: User) => async (dispatch) => {
+export const getWorkspaces = (user: User) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.GET_WORKSPACES_LOADING });
 
   const url = `${baseUrl}/${WORKSPACES}`;
@@ -38,7 +42,7 @@ export const getWorkspaces = (user: User) => async (dispatch) => {
   }
 };
 
-export const cvrWorkspace = (user: User, id: string, cvr: string, close: any, erstTypes: ErstTypes) => async (dispatch) => {
+export const cvrWorkspace = (user: User, id: string, cvr: string, close: any, erstTypes: ErstTypes) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/${id}/cvr`;
   const body = { cvr, erstTypes };
@@ -75,7 +79,7 @@ export const analyseAlerts = (
   }
 };
 
-export const analyseOutput = (user: User, workspaceId: string) => async (dispatch) => {
+export const analyseOutput = (user: User, workspaceId: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.ANALYSE_OUTPUT_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/analyse/actions/${workspaceId}`;
   const header = authHeader(user);
@@ -98,7 +102,7 @@ export const postWorkspace = (
   tags?: string,
   shareOrg?: boolean,
   cvr?: string,
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.POST_WORKSPACE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}`;
   const body = {
@@ -131,8 +135,8 @@ export const showWorkspace = (
   id: string,
   setMetaOpen?: React.Dispatch<React.SetStateAction<boolean>>,
   setAlerts?: (alerts: any, initial: boolean) => void,
-  _reactFlowInstance?: OnLoadParams,
-) => async (dispatch) => {
+  _reactFlowInstance?: ReactFlowInstance | OnLoadParams,
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   dispatch({ type: types.SHOW_WORKSPACE_LOADING });
 
@@ -141,7 +145,8 @@ export const showWorkspace = (
   try {
     const response = await axios.get(url, header);
     const {
-      elements,
+      nodes,
+      edges,
       label,
       description,
       group,
@@ -158,7 +163,8 @@ export const showWorkspace = (
       label,
       description,
       group,
-      elements,
+      nodes,
+      edges,
       zoom,
       x_position,
       y_position,
@@ -177,11 +183,11 @@ export const showWorkspace = (
     setAlerts && dispatch(analyseAlerts(user, id, setAlerts, true));
 
     if (_reactFlowInstance) {
-      _reactFlowInstance.fitView();
+      setTimeout(() => {
+        _reactFlowInstance.fitView();
+      }, 100);
     }
   } catch (error) {
-    // @ts-ignore
-
     // @ts-ignore
     if (error?.response?.status === 403) {
       _history.replace("/app/not-found");
@@ -200,7 +206,7 @@ export const putWorkspace = (
   tags: string,
   shareOrg: boolean,
   setMetaOpen: React.Dispatch<React.SetStateAction<boolean>>
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}`;
   const body = {
     label,
@@ -233,7 +239,7 @@ export const saveWorkspace = (
   workspaceXPosition: number,
   workspaceYPosition: number,
   nodes: string,
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/${WORKSPACES}/${workspace_id}/position`;
   const body = {
     workspaceZoom,
@@ -251,7 +257,7 @@ export const saveWorkspace = (
   }
 };
 
-export const deleteWorkspaces = (user: User, id: string, title: string) => async (dispatch) => {
+export const deleteWorkspaces = (user: User, id: string, title: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/${WORKSPACES}/${id}`;
   const header = authHeader(user);
   try {
@@ -313,6 +319,54 @@ export const deleteWorkspaceElement = (
   }
 };
 
+
+export const deleteWorkspaceNodes = (
+  user: User,
+  nodesToRemove: TCustomNode[],
+  remainingNodes: TCustomNode[],
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
+  dispatch({ type: types.DELETE_WORKSPACE_NODES_LOADING, message });
+
+  const header = authHeader(user);
+  const url = `${baseUrl}/${WORKSPACES}/deleteNodes`;
+  const elements = nodesToRemove.map((element) => element.id);
+  const body = { elements };
+
+  dispatch({
+    type: types.DELETE_WORKSPACE_NODES_SUCCESS,
+    nodes: remainingNodes,
+  });
+  try {
+    await axios.post(url, body, header);
+  } catch (error) {
+    dispatch({ type: types.DELETE_WORKSPACE_NODES_FAILED, message });
+  }
+};
+
+export const deleteWorkspaceEdges = (
+  user: User,
+  edgesToRemove: TCustomEdge[],
+  remainingEdges: TCustomEdge[],
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
+  dispatch({ type: types.DELETE_WORKSPACE_EDGES_LOADING, message });
+
+  const header = authHeader(user);
+  const url = `${baseUrl}/${WORKSPACES}/deleteEdges`;
+  const elements = edgesToRemove.map((element) => element.id);
+  const body = { elements };
+
+  dispatch({
+    type: types.DELETE_WORKSPACE_EDGES_SUCCESS,
+    edges: remainingEdges,
+  });
+  try {
+    await axios.post(url, body, header);
+  } catch (error) {
+    dispatch({ type: types.DELETE_WORKSPACE_EDGES_FAILED, message });
+  }
+};
+
+
 export const postNode = (
   user: User,
   workspace_id: string,
@@ -327,7 +381,7 @@ export const postNode = (
   setAlerts: ((alerts: any, initial?: boolean) => void) | null,
   x,
   y
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.WORKSPACE_POST_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes`;
   const body = {
@@ -355,16 +409,18 @@ export const postNode = (
   }
 };
 
-export const addElements = (user: User, id: string, elements: FlowElement[]) => async (dispatch) => {
+export const addElements = (user: User, id: string, elements: Array<TCustomNode | TCustomEdge>) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.WORKSPACE_ADD_ELEMENTS_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/addElements/${id}`;
   const body = { elements: JSON.stringify(elements) };
   const header = authHeader(user);
   try {
     const response = await axios.post(url, body, header);
+    const { nodes, edges } = response.data;
     dispatch({
       type: types.WORKSPACE_ADD_ELEMENTS_SUCCESS,
-      elements: response.data
+      nodes,
+      edges
     });
   } catch (error) {
     dispatch({ type: types.WORKSPACE_ADD_ELEMENTS_FAILED, message });
@@ -384,7 +440,7 @@ export const putNode = (
   attributes: string,
   deletedAttributes: string,
   close: () => void
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.WORKSPACE_PUT_NODE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/nodes/${workspaceNodeId}`;
   const body = {
@@ -462,7 +518,7 @@ export const putEdge = (
   workspace_id?: string,
   edgeTextTarget?: HTMLElement,
   edgeTextActualTarget?: SVGGraphicsElement,
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.PUT_EDGE_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/relationship/${edgeId}`;
   const body = {
@@ -494,7 +550,7 @@ export const putEdge = (
   }
 };
 
-export const getNodes = (user: User, group: string) => async (dispatch) => {
+export const getNodes = (user: User, group: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/nodes/workspace?group=${group}`;
   const header = authHeader(user);
   try {
@@ -506,7 +562,7 @@ export const getNodes = (user: User, group: string) => async (dispatch) => {
   }
 };
 
-export const getRelationships = (user: User, group: string) => async (dispatch) => {
+export const getRelationships = (user: User, group: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/relationships/workspace?group=${group}`;
   const header = authHeader(user);
   try {
@@ -518,7 +574,7 @@ export const getRelationships = (user: User, group: string) => async (dispatch) 
   }
 };
 
-export const getGroupDropDown = (user: User) => async (dispatch) => {
+export const getGroupDropDown = (user: User) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/groups/dropDownValues`;
   const header = authHeader(user);
   try {
@@ -530,7 +586,7 @@ export const getGroupDropDown = (user: User) => async (dispatch) => {
   }
 };
 
-export const getAttributeDropDown = (user: User, group: string) => async (dispatch) => {
+export const getAttributeDropDown = (user: User, group: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/attributs/dropDownValues?group=${group}`;
   const header = authHeader(user);
   try {
@@ -542,7 +598,7 @@ export const getAttributeDropDown = (user: User, group: string) => async (dispat
   }
 };
 
-export const postSticky = (user: User, workspace_id: string, x: number, y: number) => async (dispatch) => {
+export const postSticky = (user: User, workspace_id: string, x: number, y: number) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/workspaces/sticky`;
   const body = {
     workspace_id,
@@ -560,7 +616,7 @@ export const postSticky = (user: User, workspace_id: string, x: number, y: numbe
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const putSticky = (user: User, id: string, text: string) => async (dispatch) => {
+export const putSticky = (user: User, id: string, text: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/workspaces/sticky/${id}`;
   const body = {
     text,
@@ -573,7 +629,7 @@ export const putSticky = (user: User, id: string, text: string) => async (dispat
   }
 };
 
-export const getCompanyData = (user: User, id: string, setShowContextMenu?: React.Dispatch<React.SetStateAction<boolean>>, handleNodePopper?: () => void, handleHideEdgePopper?: () => void) => async (dispatch) => {
+export const getCompanyData = (user: User, id: string, setShowContextMenu?: React.Dispatch<React.SetStateAction<boolean>>, handleNodePopper?: () => void, handleHideEdgePopper?: () => void) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
   const url = `${baseUrl}/workspacenodes/company/info/${id}`;
   const header = authHeader(user);
@@ -604,7 +660,7 @@ export const getCompanyData = (user: User, id: string, setShowContextMenu?: Reac
   }
 };
 
-export const getAddressInfo = (user: User, id: string, setShowContextMenu: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch) => {
+export const getAddressInfo = (user: User, id: string, setShowContextMenu: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.GET_WORKSPACE_NODE_ADDRESS_INFO_LOADING });
   const url = `${baseUrl}/workspacenodes/company/addressInfo/${id}`;
   const header = authHeader(user);
@@ -640,7 +696,7 @@ export const shareWorkspace = (
   phone: string,
   editable: boolean,
   setShareModalOpen: React.Dispatch<React.SetStateAction<boolean>>
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.SHARE_WORKSPACE_LOADING });
 
   const url = `${baseUrl}/workspaces/share/${id}`;
@@ -683,7 +739,7 @@ export const accessPublicWorkspace = (
   publicUserFirstName: string,
   publicUserLastName: string,
   securityCode: string,
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.PUBLIC_ACCESS_WORKSPACE_LOADING });
 
   const url = `${baseUrl}/workspaces/public/access/${workspaceId}`;
@@ -696,7 +752,8 @@ export const accessPublicWorkspace = (
     const response = await axios.post(url, body);
     const { workspace, user, accessToken, organization } = response.data;
     const {
-      elements,
+      nodes,
+      edges,
       label,
       description,
       group,
@@ -705,6 +762,7 @@ export const accessPublicWorkspace = (
       y_position,
       signed,
       signed_by,
+      tags
     } = workspace;
 
     dispatch({
@@ -712,12 +770,14 @@ export const accessPublicWorkspace = (
       label,
       description,
       group,
-      elements,
+      nodes,
+      edges,
       zoom,
       x_position,
       y_position,
       signed,
       signed_by,
+      tags,
     });
 
     saveToLocalStorage({
@@ -753,7 +813,7 @@ export const accessPublicWorkspace = (
   }
 };
 
-export const signWorkspace = (user: User, id: string, setShowSignWorkspace: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch) => {
+export const signWorkspace = (user: User, id: string, setShowSignWorkspace: React.Dispatch<React.SetStateAction<boolean>>) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/workspaces/sign/${id}`;
   const body = {};
   const header = authHeader(user);
@@ -766,7 +826,7 @@ export const signWorkspace = (user: User, id: string, setShowSignWorkspace: Reac
   }
 };
 
-export const saveAnalysis = (user: User, id: string, output: string, subgraph: string) => async (dispatch) => {
+export const saveAnalysis = (user: User, id: string, output: string, subgraph: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/workspaces/analysis/${id}`;
   const body = { output, subgraph };
   const header = authHeader(user);
@@ -778,7 +838,7 @@ export const saveAnalysis = (user: User, id: string, output: string, subgraph: s
   }
 };
 
-export const revisionHistory = (user: User, id: string) => async (dispatch) => {
+export const revisionHistory = (user: User, id: string) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/workspaces/analysis/${id}`;
   const header = authHeader(user);
   try {
@@ -793,7 +853,7 @@ export const revisionHistory = (user: User, id: string) => async (dispatch) => {
   }
 };
 
-export const cvrWorkspacePublic = (user: User, id: string, cvr: string, erstTypes: ErstTypes) => async (dispatch) => {
+export const cvrWorkspacePublic = (user: User, id: string, cvr: string, erstTypes: ErstTypes) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   const url = `${baseUrl}/koncerndiagrammer/${id}`;
   const body = {
     cvr,
@@ -812,7 +872,7 @@ export const cvrWorkspacePublic = (user: User, id: string, cvr: string, erstType
   }
 };
 
-export const connectNewUser = (user: User, id: string) => async (dispatch) => {
+export const connectNewUser = (user: User, id: string) => async () => {
   const url = `${baseUrl}/workspaces/newUserConnected/${id}`;
   const header = authHeader(user);
   try {
@@ -827,7 +887,7 @@ export const workspacePowerpoint = (
   label: string,
   elements: any[],
   stopLoading: () => void,
-) => async (dispatch) => {
+) => async () => {
   const url = `${baseUrl}/workspaces/powerpoint/${id}`;
   const body = {
     elements
@@ -855,7 +915,7 @@ export const workspacePowerpoint = (
   }
 };
 
-export const analysisPowerpoint = (user: User, params) => async (dispatch) => {
+export const analysisPowerpoint = (user: User, params) => async () => {
   const url = `${baseUrl}/analysis/powerpoint`;
   const body = { params };
   const header = authHeader(user);
@@ -883,7 +943,7 @@ export const mapUncertainCompanies = (
   id: string,
   uncertainCompanies: any,
   erstTypes: ErstTypes
-) => async (dispatch) => {
+) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.GET_CVR_NODES_LOADING });
   const url = `${baseUrl}/workspaces/uncertainCompanies/${id}`;
   const header = authHeader(user);
@@ -911,9 +971,10 @@ export const cvrSuccess = (elements) => ({
   elements,
 });
 
-export const layoutElements = (elements) => ({
+export const layoutElements = ({ nodes, edges }: {nodes: TCustomNode[], edges: TCustomEdge[]}) => ({
   type: types.LAYOUT_ELEMENTS,
-  elements,
+  nodes,
+  edges
 });
 
 export const uncertainCompaniesChange = (companies) => ({
@@ -1017,4 +1078,14 @@ export const setConnectedUsers = (user) => ({
 export const removeConnectedUsers = (user) => ({
   type: types.REMOVE_CONNECTED_USERS,
   user,
+});
+
+export const changeNodes = (nodes: TCustomNode[]) => ({
+  type: types.CHANGE_NODES,
+  nodes,
+});
+
+export const changeEdges = (edges: TCustomEdge[]) => ({
+  type: types.CHANGE_EDGES,
+  edges,
 });

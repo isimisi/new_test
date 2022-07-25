@@ -29,7 +29,7 @@ import {
   timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting, validateEmailsClose
 } from "./reducers/timelineActions";
 import ReactFlow, {
-  isNode, ReactFlowInstance, NodeChange
+  ReactFlowInstance
 } from "react-flow-renderer10";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 
@@ -554,8 +554,6 @@ const Timeline = () => {
               handleVisabilityChange={handleVisabilityChange}
               handlePowerpoint={handlePowerpoint}
               handleVisability={handleVisability}
-              nodes={nodes}
-              edges={edges}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
               backLink="/app/timelines"

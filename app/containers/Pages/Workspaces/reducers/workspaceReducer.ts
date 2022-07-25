@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { fromJS, List, Map } from "immutable";
-import { isNode, isEdge } from "react-flow-renderer";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 
 import {
@@ -14,6 +13,8 @@ import {
   SHOW_WORKSPACE_SUCCESS,
   SHOW_WORKSPACE_FAILED,
   LABEL_CHANGE,
+  CHANGE_NODES,
+  CHANGE_EDGES,
   DESCRIPTION_CHANGE,
   ADD_GROUP,
   CHANGE_TAGS,
@@ -44,9 +45,9 @@ import {
   DELETE_WORKSPACE_FAILED,
   SAVE_WORKSPACE_SUCCESS,
   SAVE_WORKSPACE_FAILED,
+  STOP_LOADING,
   DELETE_WORKSPACE_ELEMENTS_SUCCESS,
   DELETE_WORKSPACE_ELEMENTS_FAILED,
-  STOP_LOADING,
   WORKSPACE_PUT_NODE_LOADING,
   WORKSPACE_PUT_NODE_SUCCESS,
   WORKSPACE_PUT_NODE_FAILED,
@@ -109,7 +110,9 @@ const initialState: WorkspaceState = {
   signed: false,
   signedBy: "",
   editable: false,
-  elements: List(),
+  elements: List(), // skal slettes
+  nodeElements: List(),
+  edgeElements: List(),
   message: "",
   groupsDropDownOptions: List(),
   attributesDropDownOptions: List(),
@@ -181,8 +184,8 @@ export default function reducer(
     case WORKSPACE_ADD_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set("mouseLoading", false);
-        const elements = fromJS(action.elements);
-        mutableState.set("elements", elements);
+        mutableState.set("nodeElements", fromJS(action.nodes));
+        mutableState.set("edgeElements", fromJS(action.edges));
       });
     case WORKSPACE_ADD_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
@@ -191,8 +194,7 @@ export default function reducer(
       });
     case DELETE_WORKSPACE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
-        const elements = fromJS(action.remainingElements);
-        mutableState.set("elements", elements);
+        mutableState.set("elements", fromJS(action.remainingElements));
       });
     case DELETE_WORKSPACE_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
@@ -205,7 +207,8 @@ export default function reducer(
         mutableState.set("description", "");
         mutableState.set("group", "");
         mutableState.set("workspaceId", null);
-        mutableState.set("elements", List());
+        mutableState.set("nodeElements", List());
+        mutableState.set("edgeElements", List());
       });
     case POST_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {
@@ -220,14 +223,16 @@ export default function reducer(
     case SHOW_WORKSPACE_LOADING:
       return state.withMutations((mutableState) => {
         mutableState.set("initialLoading", true);
-        mutableState.set("elements", List());
+        mutableState.set("nodeElements", List());
+        mutableState.set("edgeElements", List());
       });
     case SHOW_WORKSPACE_SUCCESS:
       return state.withMutations((mutableState) => {
         const label = fromJS(action.label);
         const description = fromJS(action.description);
         const group = fromJS(action.group);
-        const elements = fromJS(action.elements);
+        const nodes = fromJS(action.nodes);
+        const edges = fromJS(action.edges);
         const zoom = fromJS(action.zoom);
         const xPosition = fromJS(action.x_position);
         const yPosition = fromJS(action.y_position);
@@ -238,7 +243,8 @@ export default function reducer(
         mutableState.set("label", label);
         mutableState.set("description", description);
         mutableState.set("group", group || "");
-        mutableState.set("elements", elements);
+        mutableState.set("nodeElements", nodes);
+        mutableState.set("edgeElements", edges);
         mutableState.set("zoom", zoom);
         mutableState.set("xPosition", xPosition);
         mutableState.set("yPosition", yPosition);
@@ -290,6 +296,7 @@ export default function reducer(
         const message = fromJS(action.message);
         mutableState.set("message", message);
       });
+
     case LABEL_CHANGE:
       return state.withMutations((mutableState) => {
         const label = fromJS(action.label);
@@ -321,7 +328,7 @@ export default function reducer(
     case POST_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
         const edge = fromJS(action.edge);
-        mutableState.update("elements", (myList) => myList.push(edge));
+        mutableState.update("edgeElements", (myList) => myList.push(edge));
         mutableState.set("loading", false);
       });
     case POST_EDGE_FAILED:
@@ -336,10 +343,10 @@ export default function reducer(
       });
     case PUT_EDGE_SUCCESS:
       return state.withMutations((mutableState) => {
-        const elements = mutableState.get("elements").toJS();
-        const index = elements.findIndex((e) => e.id === action.edge.id && isEdge(e));
-        elements[index] = action.edge;
-        mutableState.set("elements", fromJS(elements));
+        const edges = mutableState.get("edgeElements").toJS();
+        const index = edges.findIndex((e) => e.id === action.edge.id);
+        edges[index] = action.edge;
+        mutableState.set("edgeElements", fromJS(edges));
         mutableState.set("loading", false);
       });
     case PUT_EDGE_FAILED:
@@ -355,7 +362,7 @@ export default function reducer(
     case WORKSPACE_POST_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
         const node = fromJS(action.node);
-        mutableState.update("elements", (myList) => myList.push(node));
+        mutableState.update("nodeElements", (myList) => myList.push(node));
         mutableState.set("loading", false);
       });
     case WORKSPACE_POST_NODE_FAILED:
@@ -370,11 +377,11 @@ export default function reducer(
       });
     case WORKSPACE_PUT_NODE_SUCCESS:
       return state.withMutations((mutableState) => {
-        const elements = mutableState.get("elements").toJS();
-        const index = elements.findIndex((e) => e.id === action.node.id && isNode(e));
-        elements[index] = action.node;
+        const nodes = mutableState.get("nodeElements").toJS();
+        const index = nodes.findIndex((e) => e.id === action.node.id);
+        nodes[index] = action.node;
 
-        mutableState.set("elements", fromJS(elements));
+        mutableState.set("nodeElements", fromJS(nodes));
         mutableState.set("loading", false);
       });
     case WORKSPACE_PUT_NODE_FAILED:
@@ -427,8 +434,8 @@ export default function reducer(
       });
     case GET_CVR_NODES_SUCCESS:
       return state.withMutations((mutableState) => {
-        const elements = fromJS(action.elements);
-        mutableState.set("elements", elements);
+        mutableState.set("nodeElements", fromJS(action.nodes));
+        mutableState.set("edgeElements", fromJS(action.edges));
         mutableState.set("loading", false);
         mutableState.set("initialLoadingCvr", false);
       });
@@ -441,8 +448,8 @@ export default function reducer(
       });
     case LAYOUT_ELEMENTS:
       return state.withMutations((mutableState) => {
-        const elements = fromJS(action.elements);
-        mutableState.set("elements", elements);
+        mutableState.set("nodeElements", fromJS(action.nodes));
+        mutableState.set("edgeElements", fromJS(action.edges));
       });
     case GET_WORKSPACE_NODE_COMPANY_DATA_LOADING:
       return state.withMutations((mutableState) => {
@@ -631,6 +638,15 @@ export default function reducer(
         mutableState.set("loading", false);
         mutableState.set("initialLoadingCvr", false);
       });
+    case CHANGE_NODES:
+      return state.withMutations((mutableState) => {
+        mutableState.set("nodeElements", fromJS(action.nodes));
+      });
+    case CHANGE_EDGES:
+      return state.withMutations((mutableState) => {
+        mutableState.set("edgeElements", fromJS(action.edges));
+      });
+
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { Node, Edge } from "react-flow-renderer";
 import { List } from "immutable";
 import CreatableSelect from "react-select/creatable";
@@ -92,7 +92,7 @@ const useDoubbleClick = (
     }
   };
 
-  const onNodeDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, node: Node<any>) => {
+  const onNodeDoubleClick = useCallback((event: React.MouseEvent<Element, globalThis.MouseEvent>, node: Node<any>) => {
     handleHideNodePopper();
     const target = event.target as HTMLElement;
     const ifDivtarget = target.querySelector("#nodeLabel");
@@ -111,9 +111,9 @@ const useDoubbleClick = (
         putCursorAtTheEnd(actualTarget);
       }
     }
-  };
+  }, []);
 
-  const onEdgeDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge<any>) => {
+  const onEdgeDoubleClick = useCallback((event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge<any>) => {
     handleHideEdgePopper(true);
 
     if (edge.data.label.length === 0) {
@@ -273,7 +273,7 @@ const useDoubbleClick = (
         edgeUltimateParrent.style.zIndex = "4";
       }
     }
-  };
+  }, []);
 
 
   return { nodeTextTarget,

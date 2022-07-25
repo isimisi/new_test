@@ -8,7 +8,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, {
-  useState, useEffect, useCallback, useRef, MouseEvent, useMemo
+  useState, useEffect, useCallback, useRef, useMemo
 } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
@@ -17,12 +17,15 @@ import ReactFlow, {
   Node,
   ConnectionMode,
   BackgroundVariant,
-  FlowElement,
-  OnLoadParams,
   isEdge,
   Edge,
+  ReactFlowInstance,
   Connection,
-} from 'react-flow-renderer';
+  OnInit,
+  OnMove,
+  applyNodeChanges,
+  applyEdgeChanges
+} from 'react-flow-renderer10';
 
 
 import useMouse from '@react-hook/mouse-position';
@@ -81,7 +84,7 @@ import {
   getRelationships, getNodes, postEdge, postNode,
   changeHandleVisability, labelChange, descriptionChange,
   addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
-  showWorkspace, saveWorkspace, deleteWorkspaceElement,
+  showWorkspace, saveWorkspace,
   putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
   addEdgeToList, addWorkspaceNodeAttributToList,
   cvrWorkspace, postSticky, showNotifAction,
@@ -91,13 +94,16 @@ import {
   mapUncertainCompanies, changeTags, addElements,
   getCompanyData, getAddressInfo, layoutElements,
   stopLoading, workspacePowerpoint,
-  doNotShowInternationalDisclaimerAgain
+  doNotShowInternationalDisclaimerAgain,
+  deleteWorkspaceEdges,
+  deleteWorkspaceNodes,
+  changeNodes, changeEdges
 } from './reducers/workspaceActions';
 import './workspace.css';
 
 import Controls from '@components/Flow/Actions/Controls';
 import Items from '@components/Flow/Actions/Items';
-import Meta from '@components/Flow/Actions/Meta';
+import Meta from '@components/Flow/Actions/Meta10';
 import Collaboration from '@components/Flow/Actions/Collaborations';
 import { RGBA, SelectChoice } from '@customTypes/data';
 
@@ -106,6 +112,8 @@ import useFlowContextMenus from '@hooks/flow/flowContexts';
 import useItemSidePanel from '@hooks/flow/itemPanel';
 import useDoubbleClick from '@hooks/flow/doubbleClick';
 import Loader from '@components/Loading/LongLoader';
+import { Attribut, EdgeData, NodeData, TCustomEdge, TCustomNode } from '@customTypes/reducers/workspace';
+import useExcelExport from '@hooks/workspace/useExcelExport';
 
 
 const nodeTypes = {
@@ -114,10 +122,20 @@ const nodeTypes = {
   controlPoint: ControlPoint
 };
 
+const edgeTypes = { custom: CustomEdge };
+
 const initialAttribut = {
   label: null,
   value: ''
 };
+
+const proOptions = {
+  // passing in the account property will enable hiding the attribution
+  account: 'paid-pro',
+  // in combination with the account property, hideAttribution: true will remove the attribution
+  hideAttribution: true,
+};
+
 
 const BASE_BG_GAP = 32;
 const BASE_BG_STROKE = 1;
@@ -152,7 +170,8 @@ const Workspace = (props) => {
 
   const handleVisability = useAppSelector(state => state[reducer].get('handleVisability'));
 
-  const elements = useAppSelector(state => state[reducer].get('elements')).toJS();
+  const nodeElements: TCustomNode[] = useAppSelector(state => state[reducer].get('nodeElements')).toJS();
+  const edgeElements: TCustomEdge[] = useAppSelector(state => state[reducer].get('edgeElements')).toJS();
   // const connectedUsers = useAppSelector(state => state[reducer].get('connectedUsers')).toJS();
   const label = useAppSelector(state => state[reducer].get('label'));
   const description = useAppSelector(state => state[reducer].get('description'));
@@ -185,11 +204,11 @@ const Workspace = (props) => {
 
 
   const [metaOpen, setMetaOpen] = useState(false);
-  const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
 
   const [showNodeRelations, setShowNodeRelations] = useState(false);
-  const [activeNodeRelations, setActiveNodeRelations] = useState<Node | null>(null);
-  const handleShowNodeRelations = (contextNode?: Node) => {
+  const [activeNodeRelations, setActiveNodeRelations] = useState<Node<NodeData> | null>(null);
+  const handleShowNodeRelations = (contextNode?: Node<NodeData>) => {
     setShowNodeRelations(prevVal => !prevVal);
     if (contextNode) {
       setActiveNodeRelations(contextNode);
@@ -230,6 +249,8 @@ const Workspace = (props) => {
   const [erstTypes, setErstTypes] = useState(initErstTypes);
   const [shareModalOpen, setShareModalOpen] = useState(false);
 
+  const closeShareModal = () => setShareModalOpen(false);
+
 
   const [showAlertLog, setShowAlertLog] = useState(false);
   const [alerts, setAlerts] = useState<any[]>([]);
@@ -237,21 +258,16 @@ const Workspace = (props) => {
   const [alertId, setAlertId] = useState<number | null>(null);
 
   const [isUpdatingElement, setIsUpdatingElement] = useState(false);
-  const [elementToUpdate, setElementToUpdate] = useState<FlowElement | null>(null);
+  const [elementToUpdate, setElementToUpdate] = useState<TCustomNode | TCustomEdge | null>(null);
 
   // relationship
   const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
-  const [currentConnectionData, setCurrentConnectionData] = useState<Connection>({
-    source: "",
-    target: "",
-    sourceHandle: "",
-    targetHandle: "",
-  });
+
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
   const [relationshipType, setRelationshipType] = useState('custom');
   const [relationshipColor, setRelationshipColor] = useState<RGBA>({
-    r: 0, g: 0, b: 0, a: 1
+    r: "0", g: "0", b: "0", a: "1"
   });
   const [showArrow, setShowArrow] = useState(false);
   const [animatedLine, setAnimatedLine] = useState(false);
@@ -279,9 +295,9 @@ const Workspace = (props) => {
   };
 
   const [nodeDisplayName, setNodeDisplayName] = useState('');
-  const [nodeFigur, setNodeFigur] = useState(null);
+  const [nodeFigur, setNodeFigur] = useState<string | null>(null);
   const handleNodeFigur = (_figur) => setNodeFigur(_figur ? _figur.value : null);
-  const [attributes, setAttributes] = useState([initialAttribut]);
+  const [attributes, setAttributes] = useState<Attribut[]>([initialAttribut]);
 
   const handleChangeAttributes = (_attributes, newRow, isNew) => {
     if (isNew && plan_id !== 1) {
@@ -309,16 +325,16 @@ const Workspace = (props) => {
   };
 
   const [nodeColor, setNodeColor] = useState({
-    r: 255, g: 255, b: 255, a: 1
+    r: "255", g: "255", b: "255", a: "1"
   });
   const handleNodeColorChange = (color) => setNodeColor(color.rgb);
   const [nodeBorderColor, setNodeBorderColor] = useState({
-    r: 0, g: 0, b: 0, a: 1
+    r: "0", g: "0", b: "0", a: "1"
   });
   const handleBorderColorChange = (color) => setNodeBorderColor(color.rgb);
 
   const [nodeLabelColor, setNodeLabelColor] = useState({
-    r: 0, g: 0, b: 0, a: 1
+    r: "0", g: "0", b: "0", a: "1"
   });
   const handleLabelColorChange = (color) => setNodeLabelColor(color.rgb);
 
@@ -327,7 +343,7 @@ const Workspace = (props) => {
   // const [colabSubscription, setColabSubscription] = useState(null);
 
 
-  const handleVisabilityChange = () => dispatch(changeHandleVisability(!handleVisability));
+  const handleVisabilityChange = useCallback(() => dispatch(changeHandleVisability(!handleVisability)), []);
 
 
   const [showInternationalDisclaimer, setShowInternationalDisclaimer] = useState(false);
@@ -342,7 +358,7 @@ const Workspace = (props) => {
 
   const handleCvrSuccess = (el) => {
     setShowCvrModal(false);
-    dispatch(cvrSuccess(getLayoutedElements(el)));
+    dispatch(cvrSuccess(getLayoutedElements(nodeElements, edgeElements)));
 
     if (internationalDisclaimer && el[0].data.data_provider === "firmnav") {
       setShowInternationalDisclaimer(true);
@@ -475,7 +491,7 @@ const Workspace = (props) => {
       setRelationshipValue('');
       setRelationshipType('custom');
       setRelationshipColor({
-        r: 0, g: 0, b: 0, a: 1
+        r: "0", g: "0", b: "0", a: "1"
       });
       setShowArrow(false);
       setAnimatedLine(false);
@@ -512,8 +528,8 @@ const Workspace = (props) => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const rf = rfInstance?.toObject();
     if (!x && !y) {
-      x = rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250 : undefined;
-      y = rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150 : undefined;
+      x = rf && reactFlowDimensions ? (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250 : undefined;
+      y = rf && reactFlowDimensions ? (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150 : undefined;
     }
 
     const nodeId = choosenNode ? choosenNode.id : null;
@@ -577,7 +593,7 @@ const Workspace = (props) => {
     removeEdgeTextTarget
   } = useDoubbleClick(updateNodeDisplayName, updateEdgeDisplayName, relationships, handleHideEdgePopper, handleHideNodePopper, handleNoLabelDoubleClick);
 
-  const hideContext = (e?: any) => {
+  const hideContext = useCallback(() => {
     handleHideNodePopper();
     handleHideEdgePopper();
 
@@ -585,7 +601,7 @@ const Workspace = (props) => {
     removeEdgeTextTarget();
 
     setShowContextMenu(false);
-  };
+  }, []);
 
   const handleRelationshipSave = () => {
     const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
@@ -623,9 +639,8 @@ const Workspace = (props) => {
 
   const onConnect = (data: Edge<any> | Connection) => {
     if (data.source !== data.target) {
-      setCurrentConnectionData(data as Connection);
       const color = {
-        r: 0, g: 0, b: 0, a: 1
+        r: "0", g: "0", b: "0", a: "1"
       };
       const edge = {
         relationship_id: null,
@@ -644,65 +659,84 @@ const Workspace = (props) => {
     }
   };
 
-  const onElementsRemove = (elementsToRemove: FlowElement[]): void => {
-    removeAllUpdatingRefference();
+  const onNodesDelete = useCallback(
+    (_nodes: TCustomNode[]) => {
+      const idsToRemove = _nodes.map(n => n.id);
+      const remainingNodes = _nodes.filter((n: TCustomNode) => !idsToRemove.includes(n.id));
 
-    const nodeIdsToRemove = elementsToRemove.filter(n => isNode(n)).map((n) => n.id);
-    const edgeIdsToRemove = elementsToRemove.filter(r => !isNode(r)).map((r) => r.id);
-    const remainingElements = elements.filter((el: FlowElement) => {
-      if (isNode(el)) {
-        return !nodeIdsToRemove.includes(el.id);
-      }
-      return !edgeIdsToRemove.includes(el.id);
-    });
-
-
-    if (elementsToRemove.length === 1) {
-      if (isNode(elementsToRemove[0]) || elementsToRemove.length > 1) {
+      if (_nodes.length === 1) {
         setDefineNodeOpen(false);
-      } else {
+      }
+      dispatch(deleteWorkspaceNodes(user, _nodes, remainingNodes));
+
+      hideContext();
+    },
+    [],
+  );
+
+  const onEdgesDelete = useCallback(
+    (_edges: TCustomEdge[]) => {
+      const idsToRemove = _edges.map(n => n.id);
+      const remainingEdges = _edges.filter((e: TCustomEdge) => !idsToRemove.includes(e.id));
+
+      if (_edges.length === 1) {
         setDefineEdgeOpen(false);
       }
-    }
+      dispatch(deleteWorkspaceEdges(user, _edges, remainingEdges));
 
-    dispatch(deleteWorkspaceElement(user, elementsToRemove, remainingElements));
-    hideContext();
-  };
+      hideContext();
+    },
+    [],
+  );
 
-  const [activeElement, setActiveElement] = useState<Node | Edge | null>(null);
+
+  const [activeElement, setActiveElement] = useState<TCustomNode | TCustomEdge | null>(null);
 
 
-  const onElementClick = (event: MouseEvent, element: FlowElement, showFull?: boolean) => {
-    const foreignObj = document.getElementById("doubleClickForeign");
+  const onElementClick = useCallback(
+    (element) => {
+      setActiveElement(element);
+      dispatch(setShowCompanyData(false));
+      setDefineEdgeOpen(false);
+      setDefineNodeOpen(false);
+      setIsUpdatingElement(true);
+      setShowContextMenu(false);
+      setElementToUpdate(element);
+      setDeletedAttributes([]);
+      removeNodeTextTarget();
+      removeEdgeTextTarget();
+      setNodePopperRef(null);
+      setEdgePopperRef(null);
+      handleHideNodePopper();
+      handleHideEdgePopper();
+    },
+    [],
+  );
 
-    if (foreignObj) {
-      if (foreignObj.contains(event.target as HTMLElement)) {
-        return;
+  const onNodeClick = useCallback(
+    (event: React.MouseEvent, node: TCustomNode, showFull?: boolean) => {
+      if (!signed) {
+        return undefined;
       }
-    }
 
-    setActiveElement(element);
-    dispatch(setShowCompanyData(false));
-    setDefineEdgeOpen(false);
-    setDefineNodeOpen(false);
-    setIsUpdatingElement(true);
-    setShowContextMenu(false);
-    setElementToUpdate(element);
-    setDeletedAttributes([]);
-    removeNodeTextTarget();
-    removeEdgeTextTarget();
-    setNodePopperRef(null);
-    setEdgePopperRef(null);
-    handleHideNodePopper();
-    handleHideEdgePopper();
-    const backgroundColor = element.data.backgroundColor ? element.data.backgroundColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
-    const borderColor = element.data.borderColor && !element.data.borderColor.includes("undefined") ? element.data.borderColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
-    const labelColor = element.data.labelColor ? element.data.labelColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
-    if (isNode(element)) {
-      setNodeLabel(element.data.label);
-      setNodeDisplayName(element.data.displayName || '');
-      setNodeFigur(element.data.figur);
-      setAttributes([...element.data.attributes, initialAttribut]);
+      const {
+        backgroundColor: nodeBgColor,
+        borderColor: nodeBorder,
+        labelColor: lColor,
+        label: _label,
+        displayName,
+        figur,
+        attributes: _attributes
+      } = node.data as NodeData;
+
+      const backgroundColor = nodeBgColor ? nodeBgColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
+      const borderColor = nodeBorder && !nodeBorder.includes("undefined") ? nodeBorder.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+      const labelColor = lColor ? lColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+
+      setNodeLabel(_label || "");
+      setNodeDisplayName(displayName || '');
+      setNodeFigur(figur);
+      setAttributes([..._attributes, initialAttribut]);
       setNodeColor({
         r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
       });
@@ -713,27 +747,53 @@ const Workspace = (props) => {
       setNodeLabelColor({ r: labelColor[0], g: labelColor[1], b: labelColor[2], a: labelColor[3] });
       if (showFull) {
         setDefineNodeOpen(true);
-      } else if (element.type === "custom") {
+      } else if (node.type === "custom") {
         const target = event.target as HTMLElement;
         const ifDivtarget = target.querySelector("#nodeLabel");
         handleShowNodePopper();
         setNodePopperRef(target.nodeName === "H6" ? event.target : ifDivtarget);
       }
-    } else {
-      // @ts-ignore
-      if (edgeTarget) {
-        return;
+    },
+    [],
+  );
+
+  const onEdgeClick = useCallback(
+    (event: React.MouseEvent, edge: TCustomEdge, showFull?: boolean) => {
+      if (!signed) {
+        return undefined;
       }
 
+      const foreignObj = document.getElementById("doubleClickForeign");
+
+      if (foreignObj) {
+        if (foreignObj.contains(event.target as HTMLElement)) {
+          return undefined;
+        }
+      }
+
+      if (edgeTarget) {
+        return undefined;
+      }
+
+      const {
+        label: edgeLabel,
+        value,
+        color,
+        showArrow: edgeShowarrow,
+        animated,
+        showLabel: edgeShowLabel,
+        lineThrough: edgeLineThrough
+      } = edge.data as EdgeData;
+
       event.persist();
-      setRelationshipLabel(element.data.label);
-      setRelationshipValue(element.data.value);
-      setRelationshipType(element.type || 'custom');
-      setRelationshipColor(element.data.color);
-      setShowArrow(element.data.showArrow);
-      setAnimatedLine(element.data.animated);
-      setShowlabel(element.data.showLabel);
-      setLineThrough(element.data.lineThrough);
+      setRelationshipLabel(edgeLabel || "");
+      setRelationshipValue(value);
+      setRelationshipType(edge.type || 'custom');
+      setRelationshipColor(color);
+      setShowArrow(edgeShowarrow);
+      setAnimatedLine(animated);
+      setShowlabel(edgeShowLabel);
+      setLineThrough(edgeLineThrough);
       if (showFull) {
         setDefineEdgeOpen(true);
       } else {
@@ -741,8 +801,11 @@ const Workspace = (props) => {
         handleShowEdgePopper();
         setEdgePopperRef(target);
       }
-    }
-  };
+    },
+    [],
+  );
+
+  const { handleExcel, loadingExcel } = useExcelExport(nodeElements, edgeElements, label);
 
 
   // WORKSPACE GENERAL
@@ -750,21 +813,27 @@ const Workspace = (props) => {
   const onWorkspaceSave = useCallback(() => {
     if (rfInstance) {
       const flow = rfInstance.toObject();
-      const _nodes = flow.elements.filter((n): n is Node => isNode(n));
+      const _nodes = flow.nodes;
 
       const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      user && id && dispatch(saveWorkspace(user, id, flow.zoom, flow.position[0], flow.position[1], JSON.stringify(mappedNodes)));
+      user && id && dispatch(saveWorkspace(user, id, flow.viewport.zoom, flow.viewport.x, flow.viewport.y, JSON.stringify(mappedNodes)));
     }
   }, [rfInstance, user]);
 
 
-  const onLoad = (_reactFlowInstance) => {
+  const onInit: OnInit = useCallback((_reactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
     dispatch(showWorkspace(user, id as string, setMetaOpen, handleAlerts, _reactFlowInstance));
     _reactFlowInstance.fitView();
-  };
+  }, []);
 
-  const toggleSubMenu = () => dispatch(toggleAction);
+  const onMove: OnMove = useCallback((e, viewport) => {
+    if (viewport) {
+      setCurrentZoom(viewport.zoom);
+    }
+  }, []);
+
+  const toggleSubMenu = useCallback(() => dispatch(toggleAction), [toggleAction]);
 
   useEffect(() => {
     dispatch(getGroupDropDown(user));
@@ -834,7 +903,7 @@ const Workspace = (props) => {
   const handleAnimatedLineChange = useCallback(() => setAnimatedLine(val => !val), []);
   const handleShowLabelChange = useCallback(() => setShowlabel(val => !val), []);
   const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
-  const handleDeleteEdge = useCallback(() => elementToUpdate && onElementsRemove([elementToUpdate]), [elementToUpdate]);
+  const handleDeleteEdge = useCallback(() => elementToUpdate && onEdgesDelete([elementToUpdate as TCustomEdge]), [elementToUpdate]);
 
 
   const handlePostSticky = (e?: any, shortcut = false, x?: number, y?: number) => {
@@ -851,8 +920,8 @@ const Workspace = (props) => {
 
 
     if (!x && !y) {
-      x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.position[0] * -1 + reactFlowDimensions.width / 3) / rf.zoom - 250 : 0;
-      y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.position[1] * -1 + reactFlowDimensions.height / 2) / rf.zoom - 150 : 0;
+      x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.viewport.x * -1 + reactFlowDimensions.width / 3) / rf.viewport.zoom - 250 : 0;
+      y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.viewport.y * -1 + reactFlowDimensions.height / 2) / rf.viewport.zoom - 150 : 0;
     }
 
 
@@ -880,7 +949,7 @@ const Workspace = (props) => {
 
   const onMouseLeave = useCallback(() => {
     onWorkspaceSave();
-  }, [rfInstance, elements]);
+  }, [rfInstance, nodeElements, edgeElements]);
 
   const onConfirm = (value, close) => {
     const erstNodeArray = Object.values(erstTypes.nodes);
@@ -914,8 +983,8 @@ const Workspace = (props) => {
     if (!mouse.clientY) {
       const rf = rfInstance?.toObject();
       if (rf && reactFlowDimensions) {
-        position.x = (rf.position[0] * -1 + reactFlowDimensions.width) / rf.zoom - 250;
-        position.y = (rf.position[1] * -1 + reactFlowDimensions.height) / rf.zoom - 150;
+        position.x = (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250;
+        position.y = (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150;
       }
     }
 
@@ -943,7 +1012,7 @@ const Workspace = (props) => {
     dispatch(addElements(user, id as string, elementsToAdd));
   };
 
-  const { cut, copy, paste } = useCutCopyPaste(elements, onElementsRemove, handlePaste);
+  const { cut, copy, paste } = useCutCopyPaste(nodeElements, edgeElements, onNodesDelete, onEdgesDelete, handlePaste);
   const { handleNodeContextMenu,
     handlePaneContextMenu,
     handleSelctionContextMenu,
@@ -957,10 +1026,10 @@ const Workspace = (props) => {
   const [snapToGrid, setSnapToGrid] = useState(false);
 
 
-  const handleOpenCvr = () => {
+  const handleOpenCvr = useCallback(() => {
     dispatch(handleRunIntro(false));
     setShowCvrModal(true);
-  };
+  }, []);
   const handleGetCompanyData = (_id) => {
     dispatch(getCompanyData(user, _id, setShowContextMenu, handleHideNodePopper, handleHideEdgePopper));
   };
@@ -982,18 +1051,20 @@ const Workspace = (props) => {
   );
 
 
-  const handleAutoLayout = () => dispatch(layoutElements(getLayoutedElements(elements)));
+  const handleAutoLayout = useCallback(() => dispatch(layoutElements(getLayoutedElements(nodeElements, edgeElements))), [nodeElements.length, edgeElements.length]);
 
-  const handleImage = (type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading);
-  const handlePowerpoint = (_stopLoading) => {
-    id && dispatch(workspacePowerpoint(user, id, label, elements, _stopLoading));
-  };
+  const handleImage = useCallback((type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading), []);
+
+  const handlePowerpoint = useCallback((_stopLoading) => {
+    id && dispatch(workspacePowerpoint(user, id, label, [...nodeElements, ...edgeElements], _stopLoading));
+  }, [nodeElements.length, edgeElements.length, label, id]);
 
 
   const onDragOver = (event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   };
+
 
   const onDrop = (event) => {
     event.preventDefault();
@@ -1029,7 +1100,7 @@ const Workspace = (props) => {
   }, [mouseLoading]);
 
 
-  const onPaneClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
+  const onPaneClick = useCallback((event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     removeAllUpdatingRefference();
 
     if (reactFlowContainer && rfInstance) {
@@ -1047,7 +1118,7 @@ const Workspace = (props) => {
         handleNodeSave(position.x, position.y, true);
       }
     }
-  };
+  }, [reactFlowContainer, rfInstance, stickyActive, nodeActive]);
 
   const paneContextNodeClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
     if (reactFlowContainer && rfInstance) {
@@ -1065,14 +1136,29 @@ const Workspace = (props) => {
 
   const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
 
-  const showPopperAgain = () => {
+  const showPopperAgain = useCallback(() => {
     if (edgePopperRef) {
       handleShowEdgePopper();
     }
     if (nodePopperRef) {
       handleShowNodePopper();
     }
-  };
+  }, [edgePopperRef, nodePopperRef]);
+
+  const onNodesChange = useCallback(
+    (changes) => {
+      console.log(applyNodeChanges(changes, nodeElements));
+      dispatch(changeNodes(applyNodeChanges(changes, nodeElements)));
+    },
+    [nodeElements]
+  );
+  const onEdgesChange = useCallback(
+    (changes) => changeEdges(applyEdgeChanges(changes, edgeElements)),
+    [edgeElements]
+  );
+
+  const handleShare = (firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(user, id as string, firstName, lastName, email, phone, editable, setShareModalOpen));
+
 
   return (
     <div style={{ cursor }}>
@@ -1080,8 +1166,13 @@ const Workspace = (props) => {
       <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
 
         <ReactFlow
-          elements={elements}
-          onElementsRemove={onElementsRemove}
+          proOptions={proOptions}
+          nodes={nodeElements}
+          edges={edgeElements}
+          onNodesDelete={onNodesDelete}
+          onEdgesDelete={onEdgesDelete}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
           onConnect={onConnect}
           minZoom={0.3}
           maxZoom={3}
@@ -1103,7 +1194,7 @@ const Workspace = (props) => {
           nodesConnectable={interactive}
           elementsSelectable={interactive}
           selectNodesOnDrag={interactive}
-          paneMoveable={interactive}
+          panOnDrag={interactive}
           zoomOnDoubleClick={interactive}
           zoomOnPinch={interactive}
           zoomOnScroll={interactive}
@@ -1115,15 +1206,12 @@ const Workspace = (props) => {
           snapGrid={[BASE_BG_GAP / currentZoom, BASE_BG_GAP / currentZoom]}
 
           nodeTypes={nodeTypes}
-          onMove={(flowTransform) => {
-            if (flowTransform) {
-              setCurrentZoom(flowTransform.zoom);
-            }
-          }}
-          edgeTypes={{ custom: CustomEdge }}
-          onLoad={onLoad}
+          onMove={onMove}
+          edgeTypes={edgeTypes}
+          onInit={onInit}
           connectionMode={ConnectionMode.Loose}
-          onElementClick={!signed ? onElementClick : undefined}
+          onNodeClick={onNodeClick}
+          onEdgeClick={onEdgeClick}
         >
           {!signed && <div data-html2canvas-ignore="true">
             <Collaboration
@@ -1135,13 +1223,14 @@ const Workspace = (props) => {
               handleVisabilityChange={handleVisabilityChange}
               handlePowerpoint={handlePowerpoint}
               handleVisability={handleVisability}
-              elements={elements}
+              handleExcel={handleExcel}
+              loadingExcel={loadingExcel}
               setSnapToGrid={setSnapToGrid}
               snapToGrid={snapToGrid}
               handleAutoLayout={handleAutoLayout}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
-              backLink="/app/workspace"
+              backLink="/app/workspaces"
             />
             <Items
               toggleNode={toggleNode}
@@ -1211,7 +1300,7 @@ const Workspace = (props) => {
         ) : null}
       </div>
 
-      <WorkspaceMeta
+      {metaOpen && <WorkspaceMeta
         open={metaOpen}
         label={label}
         description={description}
@@ -1235,8 +1324,8 @@ const Workspace = (props) => {
           shareOrg,
           setMetaOpen))}
         closeForm={() => setMetaOpen(false)}
-      />
-      <DefineEdge
+      />}
+      {defineEdgeOpen && <DefineEdge
         open={defineEdgeOpen}
         close={closeDefineEdge}
         relationships={relationships}
@@ -1260,7 +1349,7 @@ const Workspace = (props) => {
         isUpdatingElement={isUpdatingElement}
         handleDeleteEdge={handleDeleteEdge}
         loading={loading}
-      />
+      />}
       {defineNodeOpen && (
         <DefineNode
           open={defineNodeOpen}
@@ -1283,7 +1372,7 @@ const Workspace = (props) => {
           isUpdatingElement={isUpdatingElement}
           elementToUpdate={elementToUpdate}
           handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
-          handleDeleteNode={() => elementToUpdate && onElementsRemove([elementToUpdate])}
+          handleDeleteNode={() => elementToUpdate && onNodesDelete([elementToUpdate as TCustomNode])}
           loading={loading}
           attributesDropDownOptions={attributesDropDownOptions}
           handleRemoveAttributes={handelRemoveAttributes}
@@ -1320,7 +1409,7 @@ const Workspace = (props) => {
         highlightAlertItems={highlightAlertItems}
         removeHighlightAlert={removeHighlightAlert}
       />}
-      <CvrDialog
+      {showCvrModal && <CvrDialog
         loading={loading}
         open={showCvrModal}
         handleClose={() => {
@@ -1335,8 +1424,8 @@ const Workspace = (props) => {
         uncertainCompanies={uncertainCompanies}
         mapUncertainCompanies={(uncertainMapping) => dispatch(mapUncertainCompanies(user, id as string, uncertainMapping, erstTypes))}
         onConfirm={onConfirm}
-      />
-      <MapTypesForErst
+      />}
+      {showMapErst && <MapTypesForErst
         open={showMapErst}
         handleClose={() => setShowMapErst(false)}
         onConfirm={(types) => {
@@ -1368,29 +1457,31 @@ const Workspace = (props) => {
         initErstTypes={erstTypes}
         nodes={nodes}
         relationships={relationships}
-      />
+      />}
       {companyData && Object.keys(companyData).length > 0 && <CompanyDataModel
         open={showCompanyData}
         close={() => dispatch(setShowCompanyData(false))}
         companyData={companyData}
       />}
-      <AddressInfoModel
+      {showAddressInfo && <AddressInfoModel
         open={showAddressInfo}
         close={() => dispatch(setShowAddressInfo(false))}
         addressInfo={addressInfo}
-      />
-      <ShareModal
+      />}
+      {shareModalOpen && <ShareModal
         open={shareModalOpen}
         loading={loading}
-        close={() => setShareModalOpen(false)}
-        onShare={(firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(user, id as string, firstName, lastName, email, phone, editable, setShareModalOpen))}
-      />
+        close={closeShareModal}
+        onShare={handleShare}
+      />}
+      {showNodeRelations &&
       <RelationshipModal
         open={showNodeRelations}
         close={handleShowNodeRelations}
         activeNodeRelations={activeNodeRelations}
-        elements={elements}
-      />
+        nodes={nodeElements}
+        edges={edgeElements}
+      />}
 
       {!signed && (
         <>
@@ -1406,7 +1497,7 @@ const Workspace = (props) => {
             loading={loading}
             cut={cut}
             copy={copy}
-            onElementsRemove={onElementsRemove}
+            onElementsRemove={onNodesDelete}
           />
           <SelectionContextMenu
             {...contextAnchor}
@@ -1415,7 +1506,7 @@ const Workspace = (props) => {
             show={showContextMenu}
             cut={cut}
             copy={copy}
-            onElementsRemove={onElementsRemove}
+            onElementsRemove={onNodesDelete}
           />
           <PaneContextMenu
             {...contextAnchor}
@@ -1430,7 +1521,7 @@ const Workspace = (props) => {
             snapToGrid={snapToGrid}
             fitView={() => rfInstance?.fitView()}
           />
-          <InternationalStructureAlert open={showInternationalDisclaimer} close={closeInternationalDisclaimer} />
+          {showInternationalDisclaimer && <InternationalStructureAlert open={showInternationalDisclaimer} close={closeInternationalDisclaimer} />}
           {showNodePopper && nodePopperRef && <NodePopper
             nodePopperRef={nodePopperRef}
             showNodePopper={showNodePopper}
@@ -1484,7 +1575,6 @@ const Workspace = (props) => {
             handleLineThroughChange={handleLineThroughChange}
             handleDeleteEdge={handleDeleteEdge}
             handleHideEdgePopper={handleHideEdgePopper}
-            rfInstance={rfInstance}
             popperComponentRef={edgePopperComponentRef}
           />}
         </>

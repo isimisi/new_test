@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React from "react";
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import IconButton from "@material-ui/core/IconButton";
@@ -254,4 +254,4 @@ const Items = (props: Props) => {
   );
 };
 
-export default Items;
+export default memo(Items);

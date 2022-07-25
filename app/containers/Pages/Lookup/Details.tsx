@@ -15,26 +15,21 @@ import Typography from "@material-ui/core/Typography";
 import Loader from "@components/Loading/LongLoader";
 import { SelectOptions } from "@customTypes/data";
 
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-
 import Divider from "@material-ui/core/Divider";
-import Paper from "@material-ui/core/Paper";
+
 import { getCountry } from "@helpers/countryOptions";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import TabPanel from "@components/Tabs/TabPanel";
 import Acconting from "@components/Lookup/Acconting";
-import Diagram from "@components/Lookup/Diagram";
+
 import Directors from "@components/Lookup/Directors";
 import Owners from "@components/Lookup/Owners";
 
 import Timeline from "@components/Lookup/Timeline";
 import MasterData from "@components/Lookup/MasterData";
 import Hidden from "@material-ui/core/Hidden";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { Helmet } from "react-helmet";
 import Button from "@material-ui/core/Button";
 import { postWorkspace } from "../Workspaces/reducers/workspaceActions";
@@ -191,7 +186,7 @@ const Person = () => {
               scrollButtons="on"
             >
               <Tab label={t("lookup.accounting")} value={0} />
-              {/* <Tab label={t("lookup.diagram")} value={1} /> */}
+
               <Tab
                 label={t("lookup.timeline")}
                 value={2}
@@ -216,9 +211,7 @@ const Person = () => {
               handleYear={handleYear}
             />
           </TabPanel>
-          {/* <TabPanel value={activeTab} index={1}>
-            <Diagram data={company["CVR-nummer"]} user={user} />
-          </TabPanel> */}
+
           <TabPanel value={activeTab} index={2}>
             <Timeline data={company.timeline} />
           </TabPanel>
