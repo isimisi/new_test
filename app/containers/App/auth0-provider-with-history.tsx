@@ -4,7 +4,10 @@ import { useHistory } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 
 export const domain = "auth.juristic.io";
-export const client_id = "h366XrBedL1hG3OJiSXfFxlYrbSIpas5";
+export const client_id =
+  window.location.hostname === "staging.juristic.io"
+    ? "ZUCXSi5xRKrPeraWFQcLpHebPeiExIga"
+    : "h366XrBedL1hG3OJiSXfFxlYrbSIpas5";
 
 const Auth0ProviderWithHistory = ({ children }) => {
   const history = useHistory();
