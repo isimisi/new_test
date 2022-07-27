@@ -5,14 +5,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 import { authHeader, baseUrl, getId } from "@api/constants";
-import { useTranslation } from "react-i18next";
+
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import Notification from "@components/Notification/Notification";
 import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
-import { usePDF } from '@react-pdf/renderer';
+
 
 import ShareModal from '@components/Flow/Share/ShareModal';
 import {
@@ -34,7 +34,7 @@ import ReactFlow, {
   OnLoadParams,
 } from "react-flow-renderer";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import { getPlanId } from "@helpers/userInfo";
+
 import Collaboration from "@components/Flow/Actions/Collaborations";
 import Meta from "@components/Flow/Actions/Meta";
 import { Person as TPerson } from "@customTypes/reducers/person";
@@ -105,8 +105,7 @@ const Timeline = () => {
   const history = useHistory();
   const id = getId(history) as string;
   const user = useAuth0().user as User;
-  const plan_id = getPlanId(user);
-  const { t } = useTranslation();
+
 
   // refs
   const reactFlowContainer = useRef(null);
@@ -361,7 +360,7 @@ const Timeline = () => {
     if (isUpdatingNode) {
       dispatch(putElement(user, id, timelineNode, elementPersons, elementDocuments, closeFunc));
     } else {
-      dispatch(saveElement(user, id, timelineNode, currSplittingNodeRefference, customSplit, elementPersons, elementDocuments, closeFunc));
+      dispatch(saveElement(user, id, timelineNode, currSplittingNodeRefference, customSplit, elementPersons, elementDocuments, closeFunc, view));
     }
   };
 
@@ -402,8 +401,10 @@ const Timeline = () => {
     if (document.file) {
       const url = `${baseUrl}/timelinedocuments/savefile`;
       const header = authHeader(user);
+      const blob = new Blob([document.file.Body.data]);
+
       const body = new FormData();
-      body.append("file_content", document.file);
+      body.append("file_content", blob);
       try {
         const response = await axios.post(url, body, header);
         document.link = response.data.link;

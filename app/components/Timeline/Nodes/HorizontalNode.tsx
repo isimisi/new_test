@@ -44,7 +44,6 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 import Linkify from "react-linkify";
-import { showDocument } from "@pages/Documents/reducers/documentActions";
 
 const moreDocsMapping = [
   Filter1Icon,

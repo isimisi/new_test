@@ -186,7 +186,10 @@ const ValidateEmails = (props: Props) => {
               el.parentNode?.insertBefore(splitElContainer, el);
             }
           },
-          elementFilter
+          elementFilter: (el) => {
+            const currEmail = document.getElementById("elementPickerContainer")?.outerHTML;
+            return elementFilter(el, currEmail);
+          }
         });
       }
     }

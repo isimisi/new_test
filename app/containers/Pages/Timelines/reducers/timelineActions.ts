@@ -11,7 +11,7 @@ import draftToHtml from 'draftjs-to-html';
 import { convertToRaw } from "draft-js";
 import { isEdge, isNode } from "react-flow-renderer";
 import dagre from "dagre";
-import { getDocumentDropDown } from "../../Documents/reducers/documentActions";
+import { getDocumentDropDown, showDocument } from "../../Documents/reducers/documentActions";
 import { getPersonDropDown } from "../../Persons/reducers/personActions";
 import { Person as TPerson } from "@customTypes/reducers/person";
 import { Document as TDocument } from "@customTypes/reducers/document";
@@ -117,6 +117,7 @@ export const putTimeline = (
     dispatch(getPersonDropDown(user, id));
     dispatch(getDocumentDropDown(user, id));
   } catch (error: any) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.PUT_TIMELINE_FAILED, message });
   }
@@ -145,7 +146,8 @@ export const saveElement = (
   customSplit: string | undefined,
   changedPersons: TPerson[],
   changedDocuments: TDocument[],
-  handleCloseCreateElement: () => void
+  handleCloseCreateElement: () => void,
+  direction: "vertical" | "horizontal"
 ) => async (dispatch) => {
   dispatch({ type: types.POST_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
 
@@ -161,7 +163,16 @@ export const saveElement = (
 
   try {
     const response = await axios.post(url, body, header);
-    dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, elements: response.data });
+
+
+    if (direction === "vertical") {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      dispatch(changeView("vertical", response.data));
+    } else {
+      dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, elements: response.data });
+    }
+
+
     handleCloseCreateElement();
     dispatch(getPersonDropDown(user, timeline_id));
     dispatch(getDocumentDropDown(user, timeline_id));
@@ -183,7 +194,7 @@ export const putElement = (user: User, timeline_id, element, changedPersons, cha
 
   const body = { element: _element, changedPersons, changedDocuments };
   const header = authHeader(user);
-  console.log(handleCloseCreateElement);
+
   try {
     const response = await axios.put(url, body, header);
     dispatch({ type: types.PUT_TIMELINE_ELEMENT_SUCCESS, element: response.data });
@@ -259,6 +270,11 @@ export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn
   }
 };
 
+export const timelineElementDocumentChange = (bool: boolean) => ({
+  type: types.TIMELINE_ELEMENT_DOCUMENT_CHANGE,
+  bool,
+});
+
 export const downloadDocument = (user: User, title: string, document_id: string) => async (dispatch) => {
   dispatch({ type: types.DOWNLOAD_DOCUMENT_LOADING, loadingType: "post" });
 
@@ -267,7 +283,7 @@ export const downloadDocument = (user: User, title: string, document_id: string)
 
   try {
     const response = await axios.get(url, header);
-    console.log(response.data);
+
     const { Body, ContentType } = response.data;
     const data = Uint8Array.from(Body.data);
     const content = new Blob([data.buffer], {
@@ -283,8 +299,8 @@ export const downloadDocument = (user: User, title: string, document_id: string)
     link.click();
     dispatch({ type: types.DOWNLOAD_DOCUMENT_SUCCESS });
   } catch (error: any) {
-    const message = genericErrorMessage;
-    dispatch({ type: types.DOWNLOAD_DOCUMENT_FAILED, message });
+    const openDocument = () => dispatch(timelineElementDocumentChange(true));
+    dispatch(showDocument(user, document_id, openDocument));
   }
 };
 
@@ -333,10 +349,6 @@ export const timelineElementPersonChange = (bool: boolean) => ({
   bool,
 });
 
-export const timelineElementDocumentChange = (bool: boolean) => ({
-  type: types.TIMELINE_ELEMENT_DOCUMENT_CHANGE,
-  bool,
-});
 
 export const setTimelineNode = (id: string | null, isVertical = false) => ({
   type: types.SET_TIMELINE_NODE,

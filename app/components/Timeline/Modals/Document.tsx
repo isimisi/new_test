@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import css from "@styles/Form.scss";
@@ -35,9 +35,9 @@ const Document = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const stopLoading = () => setLoading(false);
 
-  const handleFileChange = _files => {
-    if (_files) {
-      setFile(_files[0]);
+  const handleFileChange = _file => {
+    if (_file) {
+      setFile(_file);
     } else {
       setFile(null);
     }
