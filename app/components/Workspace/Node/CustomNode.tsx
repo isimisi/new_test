@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { memo, useMemo, useCallback, useState } from "react";
 import { useTheme } from "@material-ui/core/styles";
-import { Handle, Position } from "react-flow-renderer";
+import { Handle, Position } from "react-flow-renderer10";
 import Typography from "@material-ui/core/Typography";
 import { useHistory } from "react-router-dom";
 

@@ -144,7 +144,7 @@ const WorkspaceNodeForm = (props) => {
                   placeholder="Kendetegn"
                   noOptionsMessage={() => t("generic.no_options")}
                   formatCreateLabel={(input) => t("generic.create_new", { input })}
-                  options={attributesDropDownOptions}
+                  options={attributesDropDownOptions.toJS()}
                   value={
                     attribut.label && { label: attribut.label, value: attribut.label }
                   }

@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useState, memo } from "react";
 import Popper from "@material-ui/core/Popper";
 import Paper from "@material-ui/core/Paper";
 
@@ -20,7 +20,6 @@ import { selectStyles } from "@api/ui/helper";
 import Select from "react-select";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import { Node, Edge, FlowElement } from "react-flow-renderer";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import IconButton from "@material-ui/core/IconButton";
@@ -32,6 +31,8 @@ import TextField from "@material-ui/core/TextField";
 import { figurTypeOptions } from "./WorkspaceNodeForm";
 import ReactDOM from "react-dom";
 import FormatColorTextIcon from "@material-ui/icons/FormatColorText";
+import { Node } from "react-flow-renderer10";
+import { NodeData } from "@customTypes/reducers/workspace";
 
 interface Props {
   classes: any;
@@ -49,12 +50,12 @@ interface Props {
   handleNodeSave: () => void;
   editData: (
     event: MouseEvent,
-    element: FlowElement,
+    element: Node<NodeData>,
     showFull: boolean
   ) => void;
   getCompanyData: (id) => void;
   loading: boolean;
-  activeElement: Node | Edge | null;
+  activeElement: Node<NodeData>;
   attributesDropDownOptions: any;
   attributes: any;
   handleChangeAttributes: any;
@@ -94,7 +95,7 @@ const NodePopper = (props: Props) => {
     handleLabelColorChange
   } = props;
   // eslint-disable-next-line react/destructuring-assignment
-  const activeElement = props.activeElement as Node;
+  const activeElement = props.activeElement as Node<NodeData>;
 
   const choosenNode = nodes.find(r => r.label === nodeLabel);
   const { t } = useTranslation();
@@ -693,4 +694,4 @@ const NodePopper = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(NodePopper);
+export default memo(withStyles(styles)(NodePopper));

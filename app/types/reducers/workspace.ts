@@ -48,6 +48,19 @@ export type EdgeData = {
 
 export type TCustomEdge = Edge<EdgeData>;
 
+export interface NodeDropdown {
+  id: string;
+  label: string;
+  description: string;
+  style: string;
+  attributes: {
+    label: string;
+    value: string;
+    type: string;
+    selectionOptions: string;
+  };
+}
+
 export interface WorkspaceRelationship {
   id: number;
   label: string;
@@ -118,7 +131,7 @@ export interface WorkspaceState {
   groupsDropDownOptions: List<GroupDropdown>;
   attributesDropDownOptions: List<AttributeDropdown>;
   relationships: List<WorkspaceRelationship>;
-  nodes: List<unknown>;
+  nodes: List<NodeDropdown>;
   handleVisability: boolean;
   zoom: number;
   xPosition: number;

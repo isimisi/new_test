@@ -22,7 +22,7 @@ import { History } from 'history';
 import { EdgeData } from "@customTypes/reactFlow";
 import { saveToLocalStorage } from "@api/localStorage/localStorage";
 import { ThunkDispatch } from "redux-thunk";
-import { IImmutableWorkspaceState, TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
+import { IImmutableWorkspaceState, NodeDropdown, TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
 import { WorkspaceActions } from "./workspaceConstants";
 
 
@@ -323,7 +323,6 @@ export const deleteWorkspaceElement = (
 export const deleteWorkspaceNodes = (
   user: User,
   nodesToRemove: TCustomNode[],
-  remainingNodes: TCustomNode[],
 ) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.DELETE_WORKSPACE_NODES_LOADING, message });
 
@@ -334,7 +333,6 @@ export const deleteWorkspaceNodes = (
 
   dispatch({
     type: types.DELETE_WORKSPACE_NODES_SUCCESS,
-    nodes: remainingNodes,
   });
   try {
     await axios.post(url, body, header);
@@ -346,7 +344,6 @@ export const deleteWorkspaceNodes = (
 export const deleteWorkspaceEdges = (
   user: User,
   edgesToRemove: TCustomEdge[],
-  remainingEdges: TCustomEdge[],
 ) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
   dispatch({ type: types.DELETE_WORKSPACE_EDGES_LOADING, message });
 
@@ -357,7 +354,6 @@ export const deleteWorkspaceEdges = (
 
   dispatch({
     type: types.DELETE_WORKSPACE_EDGES_SUCCESS,
-    edges: remainingEdges,
   });
   try {
     await axios.post(url, body, header);
@@ -555,7 +551,7 @@ export const getNodes = (user: User, group: string) => async (dispatch: ThunkDis
   const header = authHeader(user);
   try {
     const response = await axios.get(url, header);
-    const nodes = response.data.filter((n) => n.label !== "*");
+    const nodes: NodeDropdown = response.data.filter((n) => n.label !== "*");
     dispatch({ type: types.GET_NODE_VALUES_SUCCESS, nodes });
   } catch (error) {
     dispatch({ type: types.GET_NODE_VALUES_FAILED, message });
@@ -968,7 +964,8 @@ export const analysisTextChange = (text, index) => ({
 
 export const cvrSuccess = (elements) => ({
   type: types.GET_CVR_NODES_SUCCESS,
-  elements,
+  nodes: elements.nodes,
+  edges: elements.edges,
 });
 
 export const layoutElements = ({ nodes, edges }: {nodes: TCustomNode[], edges: TCustomEdge[]}) => ({

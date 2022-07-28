@@ -141,13 +141,13 @@ const NodeContextMenu = ({
               <Divider />
               <MenuItem onClick={handleRemove}>
                 <ListItemIcon>
-                  <DeleteIcon fontSize="small" style={{ color: theme.palette.error.contrastText }} />
+                  <DeleteIcon fontSize="small" style={{ color: theme.palette.error.main }} />
                 </ListItemIcon>
                 <ListItemText
                   primary={t('flow.node_context_menu.delete')}
                   primaryTypographyProps={{
                     style: {
-                      color: theme.palette.error.contrastText
+                      color: theme.palette.error.main
                     }
                   }}
                   /* @ts-ignore */
@@ -158,7 +158,7 @@ const NodeContextMenu = ({
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      color: theme.palette.error.contrastText
+                      color: theme.palette.error.main
                     }
                   }}
                 />

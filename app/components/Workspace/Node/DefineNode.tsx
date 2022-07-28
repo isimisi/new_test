@@ -8,6 +8,8 @@ import styles from "../workspace-jss";
 import { RGBA, SelectChoice, SelectOptions } from "@customTypes/data";
 import { ColorResult } from "react-color";
 import { FlowElement } from "react-flow-renderer";
+import { List } from "immutable";
+import { AttributeDropdown } from "@customTypes/reducers/attribute";
 interface Props {
   open: boolean;
   close: () => void;
@@ -27,7 +29,7 @@ interface Props {
   elementToUpdate: FlowElement | null;
   handleDeleteNode: () => void;
   loading: boolean;
-  attributesDropDownOptions: SelectOptions[];
+  attributesDropDownOptions: List<AttributeDropdown>;
   handleRemoveAttributes: (id: any, index: number) => void;
   nodeFigur: string | null;
   handleNodeFigurChange: (figur: SelectOptions) => void;

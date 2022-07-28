@@ -15,9 +15,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import CreatableSelect from "react-select/creatable";
 
 import LabelIcon from "@material-ui/icons/Label";
-import {
-  ReactFlowInstance
-} from "react-flow-renderer10";
+
 import { TCustomEdge, TCustomNode } from '@customTypes/reducers/workspace';
 
 import ButtonBase from "@material-ui/core/ButtonBase";
@@ -161,7 +159,7 @@ const EdgePopper = (props: Props) => {
     switch (type) {
       case "straight":
         return StraightLine;
-      case "custom":
+      case "default":
         return BeizerCurve;
       case "smoothstep":
         return SmoothStep;

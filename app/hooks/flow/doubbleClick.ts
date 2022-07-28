@@ -61,7 +61,7 @@ const useDoubbleClick = (
     }
   };
 
-  const removeNodeTextTarget = () => {
+  const removeNodeTextTarget = useCallback(() => {
     if (nodeTextTarget) {
       saveNode(nodeTextTarget.innerText);
       nodeTextTarget.classList.remove("nodrag");
@@ -71,7 +71,7 @@ const useDoubbleClick = (
       setNodeTextTarget(null);
       setNodeTarget(null);
     }
-  };
+  }, [nodeTextTarget]);
 
   const putCursorAtTheEnd = (target) => {
     if (typeof window.getSelection !== "undefined"
@@ -273,7 +273,7 @@ const useDoubbleClick = (
         edgeUltimateParrent.style.zIndex = "4";
       }
     }
-  }, []);
+  }, [relationships, saveEdge]);
 
 
   return { nodeTextTarget,

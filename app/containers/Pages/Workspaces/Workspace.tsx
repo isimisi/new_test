@@ -55,7 +55,7 @@ import ControlPoint from '@components/Workspace/Node/ControlPoint';
 import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
 import WorkspaceMeta from '@components/Workspace/Modals/WorkspaceMeta';
 import InternationalStructureAlert from '@components/Workspace/Modals/InternationalStructureAlert';
-import CustomEdge from '@components/Workspace/Edge/CustomEdge';
+
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
 import NodePopper from '@components/Workspace/Node/Popper';
@@ -122,8 +122,6 @@ const nodeTypes = {
   controlPoint: ControlPoint
 };
 
-const edgeTypes = { custom: CustomEdge };
-
 const initialAttribut = {
   label: null,
   value: ''
@@ -179,7 +177,7 @@ const Workspace = (props) => {
   const shareOrg = useAppSelector(state => state[reducer].get('shareOrg'));
 
   const groupsDropDownOptions = useAppSelector(state => state[reducer].get('groupsDropDownOptions')).toJS();
-  const attributesDropDownOptions = useAppSelector(state => state[reducer].get('attributesDropDownOptions')).toJS();
+  const attributesDropDownOptions = useAppSelector(state => state[reducer].get('attributesDropDownOptions'));
   const messageNotif = useAppSelector(state => state[reducer].get('message'));
   const loading = useAppSelector(state => state[reducer].get('loading'));
   const initialLoading = useAppSelector(state => state[reducer].get('initialLoading'));
@@ -235,13 +233,13 @@ const Workspace = (props) => {
     setShowNodePopper(true);
   };
 
-  const handleHideNodePopper = (stopReffrence = false) => {
+  const handleHideNodePopper = useCallback((stopReffrence = false) => {
     setShowNodePopper(false);
 
     if (stopReffrence) {
       setNodePopperRef(null);
     }
-  };
+  }, []);
 
 
   const [showCvrModal, setShowCvrModal] = useState(false);
@@ -265,7 +263,7 @@ const Workspace = (props) => {
 
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
-  const [relationshipType, setRelationshipType] = useState('custom');
+  const [relationshipType, setRelationshipType] = useState('default');
   const [relationshipColor, setRelationshipColor] = useState<RGBA>({
     r: "0", g: "0", b: "0", a: "1"
   });
@@ -277,7 +275,7 @@ const Workspace = (props) => {
   // NODE
   const [defineNodeOpen, setDefineNodeOpen] = useState(false);
   const [nodeLabel, setNodeLabel] = useState('');
-  const handleChangeLabelNode = (_label: SelectChoice) => {
+  const handleChangeLabelNode = useCallback((_label: SelectChoice) => {
     if (_label.__isNew__ && plan_id !== 1) {
       dispatch(addWorkspaceNodeToList({
         attributes: [],
@@ -292,14 +290,14 @@ const Workspace = (props) => {
     } else {
       setNodeLabel(_label.value);
     }
-  };
+  }, []);
 
   const [nodeDisplayName, setNodeDisplayName] = useState('');
   const [nodeFigur, setNodeFigur] = useState<string | null>(null);
-  const handleNodeFigur = (_figur) => setNodeFigur(_figur ? _figur.value : null);
+  const handleNodeFigur = useCallback((_figur) => setNodeFigur(_figur ? _figur.value : null), []);
   const [attributes, setAttributes] = useState<Attribut[]>([initialAttribut]);
 
-  const handleChangeAttributes = (_attributes, newRow, isNew) => {
+  const handleChangeAttributes = useCallback((_attributes, newRow, isNew) => {
     if (isNew && plan_id !== 1) {
       newRow.value = newRow.label;
       dispatch(addWorkspaceNodeAttributToList(newRow));
@@ -310,33 +308,33 @@ const Workspace = (props) => {
     } else {
       setAttributes(_attributes);
     }
-  };
+  }, []);
 
   const [choosenNode, setChoosenNode] = useState<NodeDropdownInstance | null>(null);
 
   const [deletedAttributes, setDeletedAttributes] = useState([]);
 
-  const handelRemoveAttributes = (_id, index) => {
+  const handelRemoveAttributes = useCallback((_id, index) => {
     setAttributes(att => att.filter((v, i) => i !== index));
     if (_id) {
     // @ts-ignore
       setDeletedAttributes(attr => [...attr, _id]);
     }
-  };
+  }, []);
 
   const [nodeColor, setNodeColor] = useState({
     r: "255", g: "255", b: "255", a: "1"
   });
-  const handleNodeColorChange = (color) => setNodeColor(color.rgb);
+  const handleNodeColorChange = useCallback((color) => setNodeColor(color.rgb), []);
   const [nodeBorderColor, setNodeBorderColor] = useState({
     r: "0", g: "0", b: "0", a: "1"
   });
-  const handleBorderColorChange = (color) => setNodeBorderColor(color.rgb);
+  const handleBorderColorChange = useCallback((color) => setNodeBorderColor(color.rgb), []);
 
   const [nodeLabelColor, setNodeLabelColor] = useState({
     r: "0", g: "0", b: "0", a: "1"
   });
-  const handleLabelColorChange = (color) => setNodeLabelColor(color.rgb);
+  const handleLabelColorChange = useCallback((color) => setNodeLabelColor(color.rgb), []);
 
   // socket for cvr
   const [subscription, setSubscription] = useState(null);
@@ -356,16 +354,17 @@ const Workspace = (props) => {
   };
 
 
-  const handleCvrSuccess = (el) => {
+  const handleCvrSuccess = (_nodes, _edges) => {
     setShowCvrModal(false);
-    dispatch(cvrSuccess(getLayoutedElements(nodeElements, edgeElements)));
+    dispatch(cvrSuccess(getLayoutedElements(_nodes, _edges)));
 
-    if (internationalDisclaimer && el[0].data.data_provider === "firmnav") {
+    if (internationalDisclaimer && _nodes[0].data.data_provider === "firmnav") {
       setShowInternationalDisclaimer(true);
     }
-    document.getElementById("fitView")?.click();
-    // dispatch(changeStepIndex(10));
-    // dispatch(handleRunIntro(true));
+    setTimeout(() => {
+      document.getElementById("fitView")?.click();
+    }, 100
+    );
   };
 
 
@@ -524,7 +523,7 @@ const Workspace = (props) => {
     }
   };
 
-  const handleNodeSave = (x?: number, y?: number, drag?: boolean) => {
+  const handleNodeSave = useCallback((x?: number, y?: number, drag?: boolean) => {
     const _attributes = JSON.stringify(attributes.filter(a => a.label));
     const rf = rfInstance?.toObject();
     if (!x && !y) {
@@ -562,7 +561,7 @@ const Workspace = (props) => {
             x, y
       ));
     }
-  };
+  }, [attributes, rfInstance, choosenNode, isUpdatingElement, elementToUpdate, nodeDisplayName, nodeFigur, nodeColor, nodeBorderColor, nodeLabelColor, deletedAttributes, id]);
 
   const edgePopperComponentRef = useRef<any>(null);
 
@@ -647,7 +646,7 @@ const Workspace = (props) => {
         relationshipLabel: null,
         relationshipValue: null,
         relationshipColor: color,
-        relationshipType: "custom",
+        relationshipType: "default",
         showArrow: false,
         animatedLine: false,
         showLabel: false,
@@ -661,13 +660,10 @@ const Workspace = (props) => {
 
   const onNodesDelete = useCallback(
     (_nodes: TCustomNode[]) => {
-      const idsToRemove = _nodes.map(n => n.id);
-      const remainingNodes = _nodes.filter((n: TCustomNode) => !idsToRemove.includes(n.id));
-
       if (_nodes.length === 1) {
         setDefineNodeOpen(false);
       }
-      dispatch(deleteWorkspaceNodes(user, _nodes, remainingNodes));
+      dispatch(deleteWorkspaceNodes(user, _nodes));
 
       hideContext();
     },
@@ -676,13 +672,11 @@ const Workspace = (props) => {
 
   const onEdgesDelete = useCallback(
     (_edges: TCustomEdge[]) => {
-      const idsToRemove = _edges.map(n => n.id);
-      const remainingEdges = _edges.filter((e: TCustomEdge) => !idsToRemove.includes(e.id));
-
+      console.log(_edges);
       if (_edges.length === 1) {
         setDefineEdgeOpen(false);
       }
-      dispatch(deleteWorkspaceEdges(user, _edges, remainingEdges));
+      dispatch(deleteWorkspaceEdges(user, _edges));
 
       hideContext();
     },
@@ -715,10 +709,10 @@ const Workspace = (props) => {
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: TCustomNode, showFull?: boolean) => {
-      if (!signed) {
+      if (signed) {
         return undefined;
       }
-
+      onElementClick(node);
       const {
         backgroundColor: nodeBgColor,
         borderColor: nodeBorder,
@@ -759,10 +753,10 @@ const Workspace = (props) => {
 
   const onEdgeClick = useCallback(
     (event: React.MouseEvent, edge: TCustomEdge, showFull?: boolean) => {
-      if (!signed) {
+      if (signed) {
         return undefined;
       }
-
+      onElementClick(edge);
       const foreignObj = document.getElementById("doubleClickForeign");
 
       if (foreignObj) {
@@ -788,7 +782,7 @@ const Workspace = (props) => {
       event.persist();
       setRelationshipLabel(edgeLabel || "");
       setRelationshipValue(value);
-      setRelationshipType(edge.type || 'custom');
+      setRelationshipType(edge.type || 'default');
       setRelationshipColor(color);
       setShowArrow(edgeShowarrow);
       setAnimatedLine(animated);
@@ -1030,9 +1024,9 @@ const Workspace = (props) => {
     dispatch(handleRunIntro(false));
     setShowCvrModal(true);
   }, []);
-  const handleGetCompanyData = (_id) => {
+  const handleGetCompanyData = useCallback((_id) => {
     dispatch(getCompanyData(user, _id, setShowContextMenu, handleHideNodePopper, handleHideEdgePopper));
-  };
+  }, []);
   useWorkspaceHotKeys(
     setDefineNodeOpen,
     setShowContextMenu,
@@ -1147,13 +1141,14 @@ const Workspace = (props) => {
 
   const onNodesChange = useCallback(
     (changes) => {
-      console.log(applyNodeChanges(changes, nodeElements));
       dispatch(changeNodes(applyNodeChanges(changes, nodeElements)));
     },
     [nodeElements]
   );
   const onEdgesChange = useCallback(
-    (changes) => changeEdges(applyEdgeChanges(changes, edgeElements)),
+    (changes) => {
+      dispatch(changeEdges(applyEdgeChanges(changes, edgeElements)));
+    },
     [edgeElements]
   );
 
@@ -1180,7 +1175,9 @@ const Workspace = (props) => {
           onNodeDragStop={showPopperAgain}
           onMoveEnd={showPopperAgain}
           onSelectionDragStop={showPopperAgain}
-          onConnectStart={removeAllUpdatingRefference}
+          onConnectStart={() => {
+            console.log('sdmfæk');
+          }}
           onDrop={onDrop}
           onDragOver={onDragOver}
           onDragStart={hideContext}
@@ -1204,10 +1201,8 @@ const Workspace = (props) => {
           onEdgeContextMenu={handleEdgeContextMenu}
           snapToGrid={snapToGrid}
           snapGrid={[BASE_BG_GAP / currentZoom, BASE_BG_GAP / currentZoom]}
-
           nodeTypes={nodeTypes}
           onMove={onMove}
-          edgeTypes={edgeTypes}
           onInit={onInit}
           connectionMode={ConnectionMode.Loose}
           onNodeClick={onNodeClick}
@@ -1537,9 +1532,9 @@ const Workspace = (props) => {
             nodeLabel={nodeLabel}
             handleChangeLabel={handleChangeLabelNode}
             handleNodeSave={handleNodeSave}
-            editData={onElementClick}
+            editData={onNodeClick}
             loading={loading}
-            activeElement={activeElement}
+            activeElement={activeElement as Node<NodeData>}
             getCompanyData={handleGetCompanyData}
             attributesDropDownOptions={attributesDropDownOptions}
             attributes={attributes}
@@ -1554,7 +1549,7 @@ const Workspace = (props) => {
             edgePopperRef={edgePopperRef}
             showEdgePopper={showEdgePopper}
             currentZoom={currentZoom}
-            editData={onElementClick}
+            editData={onEdgeClick}
             activeElement={activeElement}
             edgeLabel={relationshipLabel}
             relationships={relationships}

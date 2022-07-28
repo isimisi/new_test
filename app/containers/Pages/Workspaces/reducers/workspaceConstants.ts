@@ -3,6 +3,7 @@
 import { Tag } from "@customTypes/reducers/tags";
 import {
   CompanyData,
+  NodeDropdown,
   TCustomEdge,
   TCustomNode,
   WorkspaceTableOptions,
@@ -241,7 +242,7 @@ export interface GetRelationsshipValuesFailed {
 
 export interface GetNodeValuesSuccess {
   type: typeof GET_NODE_VALUES_SUCCESS;
-  nodes: any; // TODO:
+  nodes: NodeDropdown;
 }
 
 export interface GetNodeValuesFailed {
@@ -321,7 +322,6 @@ export interface DeleteWorkspaceNodesLoading {
 
 export interface DeleteWorkspaceNodesSuccess {
   type: typeof DELETE_WORKSPACE_NODES_SUCCESS;
-  nodes: TCustomNode[];
 }
 
 export interface DeleteWorkspaceNodesFailed {
@@ -335,7 +335,6 @@ export interface DeleteWorkspaceEdgesLoading {
 
 export interface DeleteWorkspaceEdgesSuccess {
   type: typeof DELETE_WORKSPACE_EDGES_SUCCESS;
-  edges: TCustomEdge[];
 }
 
 export interface DeleteWorkspaceEdgesFailed {
@@ -682,4 +681,4 @@ export type WorkspaceActions =
   | DoNotShowInternationalDisclaimerAgain
   | StopLoading
   | ChangeNodes
-|ChangeEdges;
+  | ChangeEdges;

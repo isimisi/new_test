@@ -63,7 +63,6 @@ import ShareModal from "./Flow/Share/ShareModal";
 import PublicWorkspace from "./Workspace/Public/PublicWorkspace";
 
 import CustomConnectionLine from "./Workspace/Edge/CustomConnectionLine";
-import CustomEdge from "./Workspace/Edge/CustomEdge";
 import DefineEdge from "./Workspace/Edge/DefineEdge";
 
 import DefineNode from "./Workspace/Node/DefineNode";
@@ -127,7 +126,6 @@ export {
   ShareModal,
   MapTypesForErst,
   CustomConnectionLine,
-  CustomEdge,
   CustomNode,
   StickyNoteNode,
   MiniFlow,

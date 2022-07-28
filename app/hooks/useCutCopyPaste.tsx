@@ -2,7 +2,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/prefer-default-export */
 import { TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { isEdge, getConnectedEdges } from "react-flow-renderer10";
 
 interface NodeMap {
@@ -59,35 +59,47 @@ export function useCutCopyPaste(
 ) {
   const selectedNodes: TCustomNode[] = []; // get selected elements
 
-  function cut(event, element = null) {
-    // remove selected nodes from graph
-    // copy to clipboard
-    if (selectedNodes.length > 0 || element) {
-      const data = element
-        ? JSON.stringify([element])
-        : JSON.stringify(getSelectedGraph(selectedNodes, [...nodes, ...edges]));
-      navigator.clipboard.writeText(data);
+  const cut = useCallback(
+    (event, element = null) => {
+      // remove selected nodes from graph
+      // copy to clipboard
+      if (selectedNodes.length > 0 || element) {
+        const data = element
+          ? JSON.stringify([element])
+          : JSON.stringify(
+            getSelectedGraph(selectedNodes, [...nodes, ...edges])
+          );
+        navigator.clipboard.writeText(data);
 
-      if (element) {
-        // onElementsRemove([element]);
-      } else {
-        // onElementsRemove(selectedElements);
+        if (element) {
+          // onElementsRemove([element]);
+        } else {
+          // onElementsRemove(selectedElements);
+        }
+
+        event.preventDefault();
       }
+    },
+    [selectedNodes]
+  );
 
-      event.preventDefault();
-    }
-  }
-  function copy(event, element = null) {
-    if (selectedNodes.length > 0 || element) {
-      const data = element
-        ? JSON.stringify([element])
-        : JSON.stringify(getSelectedGraph(selectedNodes, [...nodes, ...edges]));
+  const copy = useCallback(
+    (event, element = null) => {
+      if (selectedNodes.length > 0 || element) {
+        const data = element
+          ? JSON.stringify([element])
+          : JSON.stringify(
+            getSelectedGraph(selectedNodes, [...nodes, ...edges])
+          );
 
-      navigator.clipboard.writeText(data);
-      event.preventDefault();
-    }
-  }
-  async function paste(event) {
+        navigator.clipboard.writeText(data);
+        event.preventDefault();
+      }
+    },
+    [selectedNodes]
+  );
+
+  const paste = useCallback(async event => {
     try {
       const elementsToAdd = JSON.parse(await navigator.clipboard.readText());
       event.preventDefault();
@@ -95,7 +107,8 @@ export function useCutCopyPaste(
     } catch (error) {
       console.error(error);
     }
-  }
+  }, []);
+
   useEffect(() => {
     document.addEventListener("cut", cut);
     document.addEventListener("copy", copy);

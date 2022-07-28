@@ -27,7 +27,6 @@ import WorkspaceFabs from '@components/Workspace/Public/WorkspaceFabs';
 import CustomNode from '@components/Workspace/Node/CustomNode';
 import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
 import DefineEdge from '@components/Workspace/Edge/DefineEdge';
-import CustomEdge from '@components/Workspace/Edge/CustomEdge';
 import DefineNode from '@components/Workspace/Node/DefineNode';
 import CompanyDataModel from '@components/Workspace/CompanyData/CompanyDataModel';
 import CvrDialog from '@components/DialogModal/CvrDialog';
@@ -130,7 +129,7 @@ const Workspace = (props) => {
   });
   const [relationshipLabel, setRelationshipLabel] = useState('');
   const [relationshipValue, setRelationshipValue] = useState('');
-  const [relationshipType, setRelationshipType] = useState(null);
+  const [relationshipType, setRelationshipType] = useState("default");
   const [relationshipColor, setRelationshipColor] = useState({
     r: "0", g: "0", b: "0", a: "1"
   });
@@ -435,7 +434,7 @@ const Workspace = (props) => {
               setCurrentZoom(flowTransform.zoom);
             }
           }}
-          edgeTypes={{ custom: CustomEdge }}
+
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
           onElementClick={editable && !signed && onElementClick}

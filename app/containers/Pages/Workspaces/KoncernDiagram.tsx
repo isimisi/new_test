@@ -21,7 +21,6 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import Notification from "@components/Notification/Notification";
 import CustomNode from "@components/Workspace/Node/CustomNode";
 import StickyNoteNode from "@components/Workspace/Node/StickyNoteNode";
-import CustomEdge from "@components/Workspace/Edge/CustomEdge";
 import WorkspaceFabs from "@components/Workspace/Public/WorkspaceFabs";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
@@ -178,7 +177,6 @@ const Workspace = props => {
               setCurrentZoom(flowTransform.zoom);
             }
           }}
-          edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
           onElementClick={handleActions}

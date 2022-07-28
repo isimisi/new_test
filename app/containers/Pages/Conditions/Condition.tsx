@@ -20,7 +20,7 @@ import ReactFlow, {
   ConnectionMode
 } from 'react-flow-renderer';
 import { useAppDispatch, useAppSelector } from '@hooks/redux';
-import CustomEdge from '@components/Workspace/Edge/CustomEdge';
+
 import CustomNode from '@components/Workspace/Node/CustomNode';
 import ConditionDefineEdge from '@components/Condition/Edge/DefineEdge';
 import ConditionDefineNode from '@components/Condition/Node/DefineNode';
@@ -82,7 +82,7 @@ const Condition = (props) => {
     targetHandle: "",
   });
   const [relationshipLabel, setRelationshipLabel] = useState('');
-  const [relationshipType, setRelationshipType] = useState('custom');
+  const [relationshipType, setRelationshipType] = useState('default');
   const [comparisonType, setComparisonType] = useState('exists');
   const [comparisonValue, setComparisonValue] = useState('');
 
@@ -316,7 +316,6 @@ const Condition = (props) => {
           onElementsRemove={onElementsRemove}
           onConnect={onConnect}
           nodeTypes={{ custom: CustomNode }}
-          edgeTypes={{ custom: CustomEdge }}
           onLoad={onLoad}
           connectionMode={ConnectionMode.Loose}
           onElementClick={onElementClick}

@@ -32,7 +32,7 @@ export const relationshipTypeOptions = [
     ),
   },
   {
-    value: "custom",
+    value: "default",
     label: (
       <>
         <span style={{ paddingRight: "5px" }}>Beizer Kurve</span>
