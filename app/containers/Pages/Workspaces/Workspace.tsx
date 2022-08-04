@@ -33,7 +33,7 @@ import logoBeta from '@images/logoBeta.svg';
 import brand from '@api/ui/brand';
 import PropTypes from 'prop-types';
 import {
-  useHistory
+  useHistory, useLocation
 } from 'react-router-dom';
 import { useAuth0, User } from "@auth0/auth0-react";
 
@@ -887,6 +887,7 @@ const Workspace = (props) => {
     const erstEdgeArray = Object.values(erstTypes.edges);
     const nodeLabels = nodes.map((node) => node.label);
     const relationshipLabels = relationships.toJS().map((r) => r.label);
+
     if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
       if (!subscription) {
         connection.connect();
@@ -898,6 +899,19 @@ const Workspace = (props) => {
       setShowMapErst(true);
     }
   };
+
+  const { search } = useLocation();
+  const queryParams = new URLSearchParams(search);
+  const cvr = queryParams.get("cvr");
+  useEffect(() => {
+    if (subscription && user && cvr && nodes.length > 0 && relationships.size > 0) {
+      onConfirm(cvr, false);
+      queryParams.delete('cvr');
+      history.replace({
+        search: queryParams.toString(),
+      });
+    }
+  }, [subscription, user, nodes.length, relationships.size, cvr]);
 
 
   const handlePaste = (elementsToAdd) => {
