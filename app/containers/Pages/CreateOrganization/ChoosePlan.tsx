@@ -26,7 +26,7 @@ function Pricing() {
   const { t } = useTranslation();
 
   const handleGetItem = () => {
-    window.open("https://calendly.com/juristic_aps/demo", "_blank");
+    window.open("https://calendly.com/juristic_aps/consultation", "_blank");
   };
 
   const title = brand.name + " - Pricing";
