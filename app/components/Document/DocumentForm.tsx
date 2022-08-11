@@ -10,11 +10,7 @@ import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { changeDocument } from "@pages/Documents/reducers/documentActions";
 import { fromJS } from "immutable";
 
-interface Props {
-  isUpdatingNode?: boolean;
-}
-
-const DocumentForm = ({ isUpdatingNode = true }: Props) => {
+const DocumentForm = () => {
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useAppDispatch();
@@ -48,7 +44,6 @@ const DocumentForm = ({ isUpdatingNode = true }: Props) => {
         fullWidth
         onChange={handleTitleChange}
         value={doc.get("title")}
-        disabled={!isUpdatingNode}
       />
       <TextField
         name="description"
@@ -60,7 +55,6 @@ const DocumentForm = ({ isUpdatingNode = true }: Props) => {
         rows={2}
         onChange={handleDescriptionChange}
         value={doc.get("description")}
-        disabled={!isUpdatingNode}
       />
       <div className={classes.field}>
         <CreatableSelect
@@ -68,7 +62,6 @@ const DocumentForm = ({ isUpdatingNode = true }: Props) => {
           isMulti
           noOptionsMessage={() => t("generic.no_options")}
           formatCreateLabel={input => t("generic.create_new", { input })}
-          isDisabled={!isUpdatingNode}
           isClearable
           value={doc
             .get("tags")
@@ -91,7 +84,6 @@ const DocumentForm = ({ isUpdatingNode = true }: Props) => {
         <Select
           classes={classes}
           styles={selectStyles}
-          isDisabled={!isUpdatingNode}
           inputId="react-select-single-nodeform"
           TextFieldProps={{
             label: t("nodes.node-form.select_group"),

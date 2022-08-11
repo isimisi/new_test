@@ -1,5 +1,4 @@
 import { makeStyles } from "@material-ui/core/styles";
-import themePalette from "@api/palette/themePalette";
 import { MyTheme } from "../../types/styling";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
@@ -32,6 +31,13 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     right: "0px",
     bottom: "0px",
     left: "0px",
+  },
+  row: {
+    display: "flex",
+  },
+  fat: {
+    fontWeight: "bold",
+    minWidth: "150px",
   },
   attributSaveButtonContainer: {
     width: "100%",

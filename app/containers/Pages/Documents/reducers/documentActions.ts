@@ -5,6 +5,7 @@ import { baseUrl, authHeader, genericErrorMessage } from "@api/constants";
 import { User } from "@auth0/auth0-react";
 import * as types from "./documentConstants";
 import { Document } from "@customTypes/reducers/document";
+import { History } from "history";
 const DOCUMENTS = "timelinedocuments";
 
 export const getDocuments = (user: User) => async (dispatch) => {
@@ -65,8 +66,9 @@ export const putDocument = (
   user: User,
   id: string,
   document: Document,
-  file,
-  history
+  file: any,
+  history?: History,
+  close?: () => void
 ) => async (dispatch) => {
   dispatch({ type: types.PUT_DOCUMENT_LOADING, loadingType: "post" });
   const url = `${baseUrl}/${DOCUMENTS}/${id}`;
@@ -90,7 +92,8 @@ export const putDocument = (
   try {
     await axios.put(url, body, header);
     dispatch({ type: types.PUT_DOCUMENT_SUCCESS });
-    history.push(`/app/documents`);
+    history && history.push(`/app/documents`);
+    close && close();
   } catch (error) {
     // @ts-ignore
 

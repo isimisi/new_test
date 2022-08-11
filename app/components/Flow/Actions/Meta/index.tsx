@@ -16,7 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Divider from "@material-ui/core/Divider";
 import { useTranslation } from "react-i18next";
 import Button from "@material-ui/core/Button";
-import useStyles from "./actions.jss";
+import useStyles from "../actions.jss";
 import IconButton from "@material-ui/core/IconButton";
 import GridOnIcon from "@material-ui/icons/GridOn";
 import BorderOuterIcon from "@material-ui/icons/BorderOuter";
@@ -32,12 +32,16 @@ import PictureAsPdfIcon from "@material-ui/icons/PictureAsPdf";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CustomSwitch from "@components/Switch/CustomSwitch";
-import Shortcuts from "./Shortcuts";
+import Shortcuts from "../Shortcuts";
 import * as XLSX from "xlsx";
-import { Edge, getIncomers, getOutgoers, isEdge, isNode, Node } from "react-flow-renderer";
+import { Edge, getIncomers, getOutgoers, isEdge, isNode, Node, OnLoadParams } from "react-flow-renderer";
 import { saveAs } from "file-saver";
 import { s2ab } from '@helpers/export/handleExport';
 import { useAuth0, User } from "@auth0/auth0-react";
+import Overview from "./Overview";
+import SearchPopper from "./SerachPopper";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import FilterPopper from "./FilterPopper";
 
 interface Props {
   label: string;
@@ -54,6 +58,7 @@ interface Props {
   timeline?: boolean;
   backLink: string
   customPdfGenerator?: (startLoading: () => void, stopLoading: () => void) => void;
+  rfInstance?: OnLoadParams<any> | null;
 }
 
 const Meta = (props: Props) => {
@@ -71,7 +76,8 @@ const Meta = (props: Props) => {
     timeline,
     handlePowerpoint: generatePp,
     backLink,
-    customPdfGenerator
+    customPdfGenerator,
+    rfInstance
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -122,6 +128,24 @@ const Meta = (props: Props) => {
 
     prevOpen.current = settingsOpen;
   }, [settingsOpen]);
+
+  const [searchOpen, setSearchOpen] = React.useState(false);
+  const anchorRefSearch = React.useRef<HTMLButtonElement>(null);
+
+  const handleToggleSearch = () => {
+    setSearchOpen(prevVal => !prevVal);
+  };
+
+  const closeSearch = () => setSearchOpen(false);
+
+  const [filterOpen, setFilterOpen] = React.useState(false);
+  const anchorRefFilter = React.useRef<HTMLButtonElement>(null);
+
+  const handleToggleFilter = () => {
+    setFilterOpen(prevVal => !prevVal);
+  };
+
+  const closeFilter = () => setFilterOpen(false);
 
   const [exportOpen, setExportOpen] = React.useState(false);
   const anchorRefexport = React.useRef<HTMLButtonElement>(null);
@@ -303,12 +327,44 @@ const Meta = (props: Props) => {
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.search")}`} placement="bottom">
           <span>
-            <IconButton className={classes.buttons} disabled>
+            <IconButton
+              className={classes.buttons}
+              disabled={!timeline}
+              ref={anchorRefSearch}
+              onClick={handleToggleSearch}
+            >
               <SearchIcon className={classes.buttons} />
             </IconButton>
           </span>
         </Tooltip>
+
+        {/* {timeline && <Tooltip arrow title={`${t("generic.filter")}`} placement="bottom">
+          <span>
+            <IconButton
+              className={classes.buttons}
+              ref={anchorRefFilter}
+              onClick={handleToggleFilter}
+            >
+              <FilterListIcon className={classes.buttons} />
+            </IconButton>
+          </span>
+        </Tooltip>} */}
+
+        {timeline && <>
+          <Divider
+            orientation="vertical"
+            flexItem
+            className={classes.verDivder}
+          />
+          <Overview
+            classes={classes}
+            t={t}
+            elements={elements}
+          />
+        </>}
       </Paper>
+      <SearchPopper open={searchOpen} close={closeSearch} anchor={anchorRefSearch.current} t={t} elements={elements} rfInstance={rfInstance} />
+      {/* <FilterPopper open={filterOpen} close={closeFilter} anchor={anchorRefFilter.current} t={t} elements={elements} classes={classes} /> */}
       <Popper
         open={settingsOpen}
         anchorEl={anchorRefSettings.current}

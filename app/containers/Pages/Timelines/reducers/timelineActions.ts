@@ -244,8 +244,9 @@ export const importEmails = (user: User, timeline_id: string, files, close) => a
   } catch (error: any) {
     let message = genericErrorMessage;
 
-    if (error.response.data.status === 403) {
-      message = "Vi kan desværre ikke håndtere den ønskede e-mail";
+
+    if (error?.response?.status === 400) {
+      message = error.response.data;
     }
 
     dispatch({ type: types.IMPORT_EMAILS_FAILED, message });
@@ -264,7 +265,11 @@ export const customSplitUpload = (user: User, timeline_id: string, mails, moveOn
     dispatch({ type: types.CUSTOM_SPLIT_SUCCESS, elements: response.data });
     moveOn();
   } catch (error: any) {
-    const message = genericErrorMessage;
+    let message = genericErrorMessage;
+
+    if (error?.response?.status === 400) {
+      message = error.response.data;
+    }
 
     dispatch({ type: types.CUSTOM_SPLIT_FAILED, message });
   }
@@ -436,6 +441,16 @@ export const removeEmailSplit = (splitElement) => ({
   type: types.REMOVE_EMAIL_SPLIT,
   splitElement
 });
+
+export const openTag = (tag) => ({
+  type: types.OPEN_TAG,
+  tag
+});
+
+export const closeTag = {
+  type: types.CLOSE_TAG,
+};
+
 
 export const validateEmailsClose = {
   type: types.VALIDATE_EMAILS_CLOSE,

@@ -13,7 +13,6 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
 
-
 import ShareModal from '@components/Flow/Share/ShareModal';
 import {
   addGroup,
@@ -27,7 +26,7 @@ import {
   shareOrgChange,
   showTimeline,
   importEmails,
-  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting, validateEmailsClose
+  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting, validateEmailsClose, closeTag
 } from "./reducers/timelineActions";
 import ReactFlow, {
   isNode,
@@ -72,6 +71,7 @@ import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
+import Tag from "@components/Timeline/Modals/Tag";
 
 
 const nodeTypes = {
@@ -142,6 +142,7 @@ const Timeline = () => {
 
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
   const handleDocumentClose = () => dispatch(timelineElementDocumentChange(false));
+  const handleTagClose = () => dispatch(closeTag);
 
   const handleDocumentOpen = (_id: string, title?: string) => {
     dispatch(changeDocument("", "initial"));
@@ -237,9 +238,13 @@ const Timeline = () => {
   const documentModalOpen = useAppSelector(state =>
     state[reducer].get("documentOpen")
   );
+  const tagModalOpen = useAppSelector(state =>
+    state[reducer].get("tagOpen")
+  );
   const emailModalOpen = useAppSelector(state =>
     state[reducer].get("emailOpen")
   );
+
 
   const emailsToValidate = useAppSelector(state => state.timeline.get("emailsToValidate"));
 
@@ -259,6 +264,9 @@ const Timeline = () => {
   const isUpdatingNode = useAppSelector(state => state[reducer].get('isUpdatingNode'));
   const currSplittingEmail = useAppSelector(state => state[reducer].get('currSplittingEmail'));
   const splitElements = useAppSelector(state => state[reducer].get('splitElements'));
+  const tag = useAppSelector(state =>
+    state[reducer].get("tag")
+  );
 
 
   const handleVisabilityChange = () =>
@@ -446,34 +454,28 @@ const Timeline = () => {
     dispatch(importEmails(user, id, files, handleCloseImportEmails));
   };
 
-  // const [panToNextIndex, setPanToNextIndex] = useState<number | null>(null);
+  const [panToNextIndex, setPanToNextIndex] = useState<number | null>(null);
 
-  // const handleTransform = useCallback(
-  //   (transform) => {
-  //     if (rfInstance) {
-  //       const {
-  //         position: [x, y],
-  //         zoom,
-  //       } = rfInstance.toObject();
-  //       if (panToNextIndex !== null) {
-  //         // @ts-ignore
-  //         setPanToNextIndex((prevVal) => prevVal + 1);
-  //       } else {
-  //         setPanToNextIndex(0);
-  //       }
-  //       rfInstance.setTransform(transform);
-  //       // animate({
-  //       //   from: { x, y, zoom },
-  //       //   to: transform,
-  //       //   onUpdate: ({ _x, _y, _zoom }) => {
-  //       //     console.log('ashbo');
-  //       //     rfInstance.setTransform({ x: _x, y: _y, zoom: _zoom });
-  //       //   },
-  //       // });
-  //     }
-  //   },
-  //   [rfInstance, panToNextIndex]
-  // );
+
+  const handleTransform = useCallback(
+    (trans, direction: "front" | "back") => {
+      if (rfInstance) {
+        if (typeof panToNextIndex === 'number') {
+          if (direction === "front") {
+            setPanToNextIndex((prevVal) => prevVal as number + 1);
+          } else {
+            setPanToNextIndex((prevVal) => prevVal as number - 1);
+          }
+        } else {
+          setPanToNextIndex(0);
+        }
+
+
+        rfInstance.setTransform(trans);
+      }
+    },
+    [rfInstance, panToNextIndex]
+  );
 
   const [cursor, setCursor] = useState("auto");
   const handleCursor = (_type) => setCursor(_type);
@@ -520,6 +522,7 @@ const Timeline = () => {
   //   stopLoading();
   // };
 
+
   return (
     <div style={{ display: "flex", cursor }}>
       <Notification
@@ -529,7 +532,7 @@ const Timeline = () => {
       <div
         className={classnames(classes.root, {
           [classes.contentShift]: openDrawer
-        })}
+        }, "transition")}
 
         ref={reactFlowContainer}
         onMouseLeave={onMouseLeave}
@@ -554,20 +557,8 @@ const Timeline = () => {
           onLoad={onLoad}
         >
           <div data-html2canvas-ignore="true">
-            <Collaboration setShareModalOpen={setShareModalOpen} timeline />
-            <Meta
-              label={label}
-              setMetaOpen={setMetaOpen}
-              handleVisabilityChange={handleVisabilityChange}
-              handlePowerpoint={handlePowerpoint}
-              handleVisability={handleVisability}
-              elements={elements}
-              handleOpenMenu={toggleSubMenu}
-              handleImage={handleImage}
-              backLink="/app/timelines"
-              timeline
-              // customPdfGenerator={handleExportToPdf}
-            />
+            {/* <Collaboration setShareModalOpen={setShareModalOpen} timeline /> */}
+
             <Views
               openTableView={handleOpenTableView}
               view={view}
@@ -580,10 +571,23 @@ const Timeline = () => {
               elements={elements}
             />
             <Controls
-              // handleTransform={handleTransform}
-              // panToNextIndex={panToNextIndex}
+              handleTransform={view === "horizontal" ? handleTransform : undefined}
+              panToNextIndex={panToNextIndex}
               currentZoom={currentZoom}
               reactFlowInstance={rfInstance}
+            />
+            <Meta
+              label={label}
+              setMetaOpen={setMetaOpen}
+              handleVisabilityChange={handleVisabilityChange}
+              handlePowerpoint={handlePowerpoint}
+              handleVisability={handleVisability}
+              elements={elements}
+              handleOpenMenu={toggleSubMenu}
+              handleImage={handleImage}
+              backLink="/app/timelines"
+              timeline
+              rfInstance={rfInstance}
             />
           </div>
 
@@ -664,8 +668,9 @@ const Timeline = () => {
         currSplittingEmail={currSplittingEmail}
       />}
 
-      {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} />}
+      {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} user={user} />}
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
+      {tagModalOpen && <Tag open={tagModalOpen} close={handleTagClose} tag={tag as string} />}
       {emailModalOpen && <Email
         open={emailModalOpen}
         close={handleEmailClose}

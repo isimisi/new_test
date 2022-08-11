@@ -3,6 +3,7 @@ import axios from "axios";
 import * as notification from "@redux/constants/notifConstants";
 import { baseUrl, authHeader, genericErrorMessage } from "@api/constants";
 import { User } from "@auth0/auth0-react";
+import { History } from "history";
 
 import * as types from "./personConstants";
 import { Person } from "@customTypes/reducers/person";
@@ -56,15 +57,19 @@ export const showPerson = (user: User, id: string, openModal?: () => void) => as
     }
   } catch (error) {
     // @ts-ignore
-
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.SHOW_PERSON_FAILED, message });
   }
 };
 
-export const putPerson = (user: User, id: string, person: Person, history) => async (
-  dispatch
-) => {
+export const putPerson = (
+  user: User,
+  id: string,
+  person: Person,
+  history?: History,
+  close?: () => void
+) => async (dispatch) => {
   dispatch({ type: types.PUT_PERSON_LOADING, loadingType: "post" });
   const url = `${baseUrl}/${PERSONS}/${id}`;
   const header = authHeader(user);
@@ -72,7 +77,8 @@ export const putPerson = (user: User, id: string, person: Person, history) => as
   try {
     await axios.put(url, person, header);
     dispatch({ type: types.PUT_PERSON_SUCCESS });
-    history.push("/app/persons");
+    history && history.push("/app/persons");
+    close && close();
   } catch (error) {
     // @ts-ignore
 

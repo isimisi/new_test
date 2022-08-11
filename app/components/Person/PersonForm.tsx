@@ -11,11 +11,7 @@ import { mapSelectOptions, selectStyles } from "@api/ui/helper";
 import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
 
-interface Props {
-  isUpdatingNode?: boolean;
-}
-
-const PersonForm = ({ isUpdatingNode = true }: Props) => {
+const PersonForm = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const tagOptions = useAppSelector(state => state.tags.get("tags")).toJS();
@@ -68,7 +64,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
         onChange={handleNameChange}
         className={classes.field}
         value={person.get("name")}
-        disabled={!isUpdatingNode}
       />
       <TextField
         name="description"
@@ -79,7 +74,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
         rows={2}
         onChange={handleDescriptionChange}
         value={person.get("description")}
-        disabled={!isUpdatingNode}
       />
       <TextField
         name="Affiliation"
@@ -88,7 +82,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
         label={t("person.affiliation")}
         onChange={handleAffiliationChange}
         value={person.get("affiliation")}
-        disabled={!isUpdatingNode}
       />
       <TextField
         name="company"
@@ -97,7 +90,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
         label={t("person.company")}
         onChange={handleCompanyChange}
         value={person.get("company")}
-        disabled={!isUpdatingNode}
       />
       <TextField
         name="email"
@@ -106,7 +98,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
         label={t("email")}
         onChange={handleEmailChange}
         value={person.get("email")}
-        disabled={!isUpdatingNode}
       />
       <TextField
         name="phone"
@@ -115,7 +106,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
         label={t("phone")}
         onChange={handlePhoneChange}
         value={person.get("phone")}
-        disabled={!isUpdatingNode}
       />
       <TextField
         name="address"
@@ -124,7 +114,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
         label={t("address")}
         onChange={handleAddressChange}
         value={person.get("address")}
-        disabled={!isUpdatingNode}
       />
       <div className={classes.field} style={{ marginTop: 16 }}>
         <CreatableSelect
@@ -148,7 +137,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
           inputId="react-select-tags"
           placeholder={t("tags.add_tag")}
           options={tagOptions.map(tagMapping)}
-          isDisabled={!isUpdatingNode}
         />
       </div>
       <div className={classes.field} style={{ marginTop: 16 }}>
@@ -172,7 +160,6 @@ const PersonForm = ({ isUpdatingNode = true }: Props) => {
             }
           }
           onChange={handleChangeGroups}
-          isDisabled={!isUpdatingNode}
         />
       </div>
     </>

@@ -66,6 +66,8 @@ import {
   DOWNLOAD_DOCUMENT_LOADING,
   DOWNLOAD_DOCUMENT_SUCCESS,
   DOWNLOAD_DOCUMENT_FAILED,
+  OPEN_TAG,
+  CLOSE_TAG,
 } from "./timelineConstants";
 import moment from "moment";
 
@@ -78,12 +80,14 @@ const getInnerTagOptions = (elements) => {
     const _tags = element.data.tags;
     if (_tags) {
       for (let z = 0; z < _tags.length; z++) {
-        console.log(_tags);
         const tag = _tags[z];
-        tagOptions.push(tag);
+        if (!tagOptions.some((t) => t.name === tag.name)) {
+          tagOptions.push(tag);
+        }
       }
     }
   }
+
   return tagOptions;
 };
 
@@ -124,6 +128,8 @@ const initialState: TimelineState = {
   goThroughSplitOpen: false,
   personOpen: false,
   documentOpen: false,
+  tagOpen: false,
+  tag: null,
   timelineNode: Map(initialNode),
   isUpdatingNode: false,
   emailOpen: false,
@@ -388,6 +394,15 @@ export default function reducer(
         mutableState.update("splitElements", (myList: any) =>
           myList.push(action.splitElement)
         );
+      });
+    case OPEN_TAG:
+      return state.withMutations((mutableState) => {
+        mutableState.set("tagOpen", true);
+        mutableState.set("tag", action.tag);
+      });
+    case CLOSE_TAG:
+      return state.withMutations((mutableState) => {
+        mutableState.set("tagOpen", false);
       });
     case REMOVE_EMAIL_SPLIT:
       return state.withMutations((mutableState) => {

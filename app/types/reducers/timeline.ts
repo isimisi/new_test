@@ -90,6 +90,8 @@ export interface TimelineState {
   loadings: ILoadings;
   personOpen: boolean;
   documentOpen: boolean;
+  tagOpen: boolean;
+  tag: string | null;
   timelineNode: ITimelineNode;
   isUpdatingNode: boolean;
   emailOpen: boolean;

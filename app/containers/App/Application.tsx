@@ -37,6 +37,7 @@ import {
 } from "../pageListAsync";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UserMeta } from "@helpers/userInfo";
+import LogRocket from "logrocket";
 
 function Application() {
   const history = useHistory();
@@ -45,10 +46,14 @@ function Application() {
 
   useEffect(() => {
     const meta: UserMeta = user && user["https://juristic.io/meta"];
-    const { type } = meta.dbUser;
+    const { type, organization_id } = meta.dbUser;
 
     if (type === "client") {
       localStorage.clear();
+    }
+
+    if (organization_id !== 72 && process.env.NODE_ENV === "production") {
+      LogRocket.init("pm66tw/juristic-web-app");
     }
   }, []);
 

@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import useStyles from "./actions.jss";
+import useStyles from "../actions.jss";
 
 import BorderHorizontalIcon from "@material-ui/icons/BorderHorizontal";
 import BorderVerticalIcon from "@material-ui/icons/BorderVertical";
@@ -65,7 +65,7 @@ const Items = (props: Props) => {
 
   return (
     <>
-      <Paper elevation={4} className={classes.itemsPaper}>
+      <Paper elevation={4} className={classes.viewsPaper}>
         <Tooltip arrow title={`${t("timeline.horizontal")}`} placement="right">
           <IconButton className={classes.buttons} onClick={handleHorizontal}>
             <BorderHorizontalIcon

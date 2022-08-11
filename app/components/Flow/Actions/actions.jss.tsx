@@ -1,5 +1,6 @@
 import { MyTheme } from "@customTypes/styling";
 import { makeStyles } from "@material-ui/core/styles";
+import themePalette from "@api/palette/themePalette";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
   metaPaper: {
@@ -24,6 +25,15 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     justifyContent: "center",
     flexDirection: "row"
   },
+  countContainer: {
+    padding: 2,
+    paddingRight: 8,
+    paddingLeft: 8,
+    backgroundColor: theme.palette.background.default
+  },
+  tagCount: {
+    color: themePalette.info
+  },
   itemsPaper: {
     position: "absolute",
     zIndex: 1000,
@@ -34,6 +44,17 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column"
+  },
+  viewsPaper: {
+    position: "absolute",
+    zIndex: 1000,
+    backgroundColor: "#fcfcfc",
+    left: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    top: "calc(50% - 85px)"
   },
   controlsPaper: {
     position: "absolute",

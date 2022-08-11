@@ -389,7 +389,7 @@
     "editMeta": "Rediger arbejdsområde indstillinger",
     "settings": "Indstillinger",
     "export": "Eksport",
-    "search": "Søg (Snart)",
+    "search": "Søg",
     "share": "Del",
     "you": "{{first_name}} {{last_name}} (dig)",
     "collaborators_curser": "Vis andres mus (snart)",
@@ -846,7 +846,16 @@
     "import_mails_with_error": "Der er importerede e-mails, der mangler en handling ",
     "delete_email": "Slet e-mail",
     "choose_emails_or_drag": "eller træk dem ind i feltet her",
-    "tags_placeholder": "Tilføj tags"
+    "tags_placeholder": "Tilføj tags",
+    "overview": "Oversigt",
+    "people": "Personer",
+    "documents": "Dokumenter",
+    "tags": "Tags",
+    "elements": "Elementer",
+    "exists_in": "{{name}} er nævnt i:",
+    "nodesTable": "Oversigt over events",
+    "search": "Søg",
+    "noResults": "Der var ingen resultater ..."
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -936,7 +945,7 @@
     "avatar": "Avatar",
     "company": "Virksomhed",
     "affiliation": "Tilhørsforhold",
-    "form_header": "Persondata"
+    "form_header": "Oplysninger om person"
   },
   "Description": "Skriv en beskrivelse",
   "email": "E-mail",
@@ -974,7 +983,18 @@
     "back": "Tilbage",
     "createable_placeholder": "Skriv noget og tryk enter...",
     "create_new": "Opret {{input}}",
-    "no_options": "Ingen valgmuligheder"
+    "no_options": "Ingen valgmuligheder",
+    "see_all": "See alle",
+    "date": "Dato",
+    "label": "Event",
+    "description": "Beskrivelse",
+    "event": "Event",
+    "tags": "Tags",
+    "search": "Søg",
+    "noTitle": "Ingen titel",
+    "filter": "Filtre",
+    "persons": "Personer",
+    "documents": "Dokumenter"
   },
   "emails": {
     "body": "E-mailindhold",

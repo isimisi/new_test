@@ -18,13 +18,16 @@ import { useTheme } from "@material-ui/core/styles";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import useWindowDimensions from "@hooks/useWindowDiemensions";
+import { timelineNodeDimensions } from "@pages/Timelines/constants";
 
 interface Props {
   currentZoom: number;
   reactFlowInstance: OnLoadParams | null;
-  handleTransform?: (transform: { x: number, y: number, zoom: number }) => void;
+  handleTransform?: (transform: { x: number, y: number, zoom: number }, direction: "front" | "back") => void;
   panToNextIndex?: number | null;
 }
+
 
 const Controls = (props: Props) => {
   const { currentZoom, reactFlowInstance, handleTransform, panToNextIndex } = props;
@@ -49,28 +52,42 @@ const Controls = (props: Props) => {
   const handleCloseFitTooltip = () => setFitViewOpen(false);
   const handleOpenFitTooltip = () => setFitViewOpen(true);
 
-  const nodes = reactFlowInstance?.getElements().filter((e): e is Node => isNode(e));
 
-  // const handleNext = () => {
-  //   if (nodes) {
-  //     const nextPosition = nodes[panToNextIndex || 0];
-  //     console.log(nextPosition, panToNextIndex);
-  //     if (handleTransform && nextPosition) {
-  //       console.log(nextPosition);
-  //       handleTransform({ ...nextPosition.position, zoom: 2 });
-  //     }
-  //   }
-  // };
+  const { width, height } = useWindowDimensions();
 
-  // const handleBack = () => {
-  //   handleTransform;
-  // };
+  const nodes = reactFlowInstance?.getElements().filter((e): e is Node => isNode(e) && e.type === "horizontal");
+
+  const move = (nextPosition, direction: "front" | "back") => {
+    const { x, y } = nextPosition.position;
+
+    const calcX = 0 - x * 2 + (width || 0) / 2 - timelineNodeDimensions.width / 2;
+    const calcY = 0 - y * 2 + (height || 0) / 2 + timelineNodeDimensions.height / 2 + 50;
+
+    if (handleTransform && nextPosition) {
+      handleTransform({ x: calcX, y: calcY, zoom: 2 }, direction);
+    }
+  };
+
+  const handleNext = () => {
+    if (nodes) {
+      const nextPosition = nodes[typeof panToNextIndex === "number" ? panToNextIndex + 1 : 0];
+      move(nextPosition, "front");
+    }
+  };
+
+  const handleBack = () => {
+    if (nodes) {
+      const nextPosition = nodes[typeof panToNextIndex === "number" ? panToNextIndex - 1 : 0];
+
+      move(nextPosition, "back");
+    }
+  };
 
 
   return (
     <>
       <Paper elevation={4} className={classes.controlsPaper}>
-        {/* {handleTransform && <>
+        {handleTransform && <>
           <Tooltip
             arrow
             title={`${
@@ -80,6 +97,7 @@ const Controls = (props: Props) => {
           >
             <IconButton
               className={classes.buttons}
+              disabled={panToNextIndex === 0}
               onClick={handleBack}
             >
               <NavigateBeforeIcon
@@ -101,7 +119,7 @@ const Controls = (props: Props) => {
             <IconButton
               className={classes.buttons}
               onClick={handleNext}
-              disabled={nodes && panToNextIndex === nodes.length - 2}
+              disabled={nodes && panToNextIndex === nodes.length - 1}
             >
               <NavigateNextIcon
                 className={classNames(
@@ -112,7 +130,7 @@ const Controls = (props: Props) => {
             </IconButton>
           </Tooltip>
           {' '}
-        </>} */}
+        </>}
         <Tooltip
           arrow
           title={`${

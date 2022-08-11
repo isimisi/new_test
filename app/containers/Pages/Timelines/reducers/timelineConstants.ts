@@ -80,6 +80,8 @@ export const ADD_EMAIL_SPLIT = "ADD_EMAIL_SPLIT";
 export const REMOVE_EMAIL_SPLIT = "REMOVE_EMAIL_SPLIT";
 export const CLEAR_SPLITTING = "CLEAR_SPLITTING";
 export const VALIDATE_EMAILS_CLOSE = "VALIDATE_EMAILS_CLOSE";
+export const OPEN_TAG = "OPEN_TAG";
+export const CLOSE_TAG = "CLOSE_TAG";
 
 type FailedTypes =
   | typeof GET_TIMELINES_FAILED
@@ -252,6 +254,15 @@ export interface AddEmailSplit {
   splitElement: string;
 }
 
+export interface OpenTag {
+  type: typeof OPEN_TAG;
+  tag: string;
+}
+
+export interface CloseTag {
+  type: typeof CLOSE_TAG;
+}
+
 export interface RemoveEmailSplit {
   type: typeof REMOVE_EMAIL_SPLIT;
   splitElement: string;
@@ -308,4 +319,6 @@ export type TimelineActions =
   | RemoveEmailSplit
   | GoThroughSplitChange
   | ValidateEmailsClose
+  | OpenTag
+  | CloseTag
   | ClearSplitting;
