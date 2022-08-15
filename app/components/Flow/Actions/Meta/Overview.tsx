@@ -16,7 +16,11 @@ import EventIcon from "@material-ui/icons/Event";
 import Popper from "@material-ui/core/Popper";
 import Paper from "@material-ui/core/Paper";
 import MaterialAvatar from "@material-ui/core/Avatar";
-import { stringToColor, stringAvatar } from "@pages/Timelines/constants";
+import {
+  stringToColor,
+  stringAvatar,
+  nodeTypes
+} from "@pages/Timelines/constants";
 import IconButton from "@material-ui/core/IconButton";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import Typography from "@material-ui/core/Typography";
@@ -31,6 +35,9 @@ import {
 import { showDocument } from "@pages/Documents/reducers/documentActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import NodesTableModal from "@components/Timeline/Modals/NodesTable";
+import Persons from "@components/Timeline/Modals/Persons";
+import Documents from "@components/Timeline/Modals/Documents";
+import Tags from "@components/Timeline/Modals/Tags";
 
 interface Props {
   classes: any;
@@ -39,8 +46,6 @@ interface Props {
 }
 
 type ActiveItem = "People" | "Documents" | "Tags" | "Elements";
-
-const nodeTypes = ["vertical", "horizontal"];
 
 const Overview = ({ classes, t, elements }: Props) => {
   const [activeMenuItem, setActiveMenuItem] = useState<ActiveItem | null>(null);
@@ -53,6 +58,19 @@ const Overview = ({ classes, t, elements }: Props) => {
   );
 
   const user = useAuth0().user as User;
+
+  const [peopleOpen, setPeopleOpen] = useState(false);
+  const closePeople = () => setPeopleOpen(false);
+  const openPeople = () => setPeopleOpen(true);
+
+
+  const [documentsOpen, setDocumentsOpen] = useState(false);
+  const closeDocuments = () => setDocumentsOpen(false);
+  const openDocuments = () => setDocumentsOpen(true);
+
+  const [tagsOpen, setTagsOpen] = useState(false);
+  const closeTags = () => setTagsOpen(false);
+  const openTags = () => setTagsOpen(true);
 
   const [itemOpen, setItemOpen] = useState(false);
 
@@ -112,6 +130,7 @@ const Overview = ({ classes, t, elements }: Props) => {
             const existingItem = item.find(p => p.id === person.id);
             if (!existingItem) {
               item.push({
+                type: "People",
                 icon: (
                   <MaterialAvatar
                     style={{
@@ -148,6 +167,7 @@ const Overview = ({ classes, t, elements }: Props) => {
 
             if (!existingItem) {
               item.push({
+                type: "Documents",
                 icon: <DescriptionIcon />,
                 name: document.title,
                 id: document.id,
@@ -172,6 +192,7 @@ const Overview = ({ classes, t, elements }: Props) => {
 
             if (!existingItem) {
               item.push({
+                type: "Tags",
                 icon: (
                   <div
                     style={{
@@ -193,32 +214,6 @@ const Overview = ({ classes, t, elements }: Props) => {
           }
         }
         break;
-      case "Elements":
-        for (let index = 0; index < nodes.length; index++) {
-          const node = nodes[index];
-          console.log(node);
-
-          //   for (let z = 0; z < tags.length; z++) {
-          //     const tag = tags[z];
-          //     if (!item.find(d => d.id === tag.id)) {
-          //       item.push({
-          //         icon: (
-          //           <div
-          //             style={{
-          //               backgroundColor: tag.color,
-          //               width: 12,
-          //               height: 12,
-          //               borderRadius: 6
-          //             }}
-          //           />
-          //         ),
-          //         name: tag.name,
-          //         id: tag.id
-          //       });
-          //     }
-          //   }
-        }
-        break;
     }
 
     setMenuItems(item);
@@ -230,8 +225,19 @@ const Overview = ({ classes, t, elements }: Props) => {
     setActiveMenuItem(activeItem);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleMenuClick = (activeItem: ActiveItem) => {};
+  const handleMenuClick = (activeItem: ActiveItem) => {
+    switch (activeItem) {
+      case "People":
+        openPeople();
+        break;
+      case "Documents":
+        openDocuments();
+        break;
+      case "Tags":
+        openTags();
+        break;
+    }
+  };
 
   const paperLeave = e => {
     const _time = setTimeout(() => {
@@ -319,7 +325,10 @@ const Overview = ({ classes, t, elements }: Props) => {
                             </ListItemSecondaryAction>
                           </MenuItem>
                         ))}
-                      <MenuItem className={classes.menuItem}>
+                      <MenuItem
+                        className={classes.menuItem}
+                        onClick={() => handleMenuClick(menuItems[0]?.type)}
+                      >
                         <ListItemText
                           primaryTypographyProps={{
                             style: { fontWeight: "bold" }
@@ -345,6 +354,15 @@ const Overview = ({ classes, t, elements }: Props) => {
       )}
       {nodesTableOpen && (
         <NodesTableModal open={nodesTableOpen} close={handleCLoseNodeTable} />
+      )}
+      {peopleOpen && (
+        <Persons open={peopleOpen} close={closePeople} user={user} />
+      )}
+      {documentsOpen && (
+        <Documents open={documentsOpen} close={closeDocuments} user={user} />
+      )}
+      {tagsOpen && (
+        <Tags open={tagsOpen} close={closeTags} user={user} />
       )}
     </>
   );

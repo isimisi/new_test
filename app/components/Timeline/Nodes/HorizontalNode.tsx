@@ -113,7 +113,8 @@ export default memo(({ data }: NodeProps) => {
       style={{
         alignItems: "center",
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        opacity: data.isHidden ? 0.2 : 1
       }}
       onMouseOver={handelShowEdit}
       onFocus={handelShowEdit}

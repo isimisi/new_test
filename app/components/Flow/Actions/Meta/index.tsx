@@ -59,6 +59,7 @@ interface Props {
   backLink: string
   customPdfGenerator?: (startLoading: () => void, stopLoading: () => void) => void;
   rfInstance?: OnLoadParams<any> | null;
+  overview?: boolean
 }
 
 const Meta = (props: Props) => {
@@ -77,7 +78,8 @@ const Meta = (props: Props) => {
     handlePowerpoint: generatePp,
     backLink,
     customPdfGenerator,
-    rfInstance
+    rfInstance,
+    overview
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -338,7 +340,7 @@ const Meta = (props: Props) => {
           </span>
         </Tooltip>
 
-        {/* {timeline && <Tooltip arrow title={`${t("generic.filter")}`} placement="bottom">
+        {timeline && overview && <Tooltip arrow title={`${t("generic.filter")}`} placement="bottom">
           <span>
             <IconButton
               className={classes.buttons}
@@ -348,9 +350,9 @@ const Meta = (props: Props) => {
               <FilterListIcon className={classes.buttons} />
             </IconButton>
           </span>
-        </Tooltip>} */}
+        </Tooltip>}
 
-        {timeline && <>
+        {timeline && overview && <>
           <Divider
             orientation="vertical"
             flexItem
@@ -363,8 +365,8 @@ const Meta = (props: Props) => {
           />
         </>}
       </Paper>
-      <SearchPopper open={searchOpen} close={closeSearch} anchor={anchorRefSearch.current} t={t} elements={elements} rfInstance={rfInstance} />
-      {/* <FilterPopper open={filterOpen} close={closeFilter} anchor={anchorRefFilter.current} t={t} elements={elements} classes={classes} /> */}
+      {searchOpen && <SearchPopper open={searchOpen} close={closeSearch} anchor={anchorRefSearch.current} t={t} elements={elements} rfInstance={rfInstance} />}
+      {filterOpen && <FilterPopper open={filterOpen} close={closeFilter} anchor={anchorRefFilter.current} t={t} classes={classes} />}
       <Popper
         open={settingsOpen}
         anchorEl={anchorRefSettings.current}

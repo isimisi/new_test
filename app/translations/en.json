@@ -853,7 +853,8 @@
     "exists_in": "{{name}} is Referenced in:",
     "nodesTable": "Overview over events",
     "search": "Search",
-    "noResults": "There were no results..."
+    "noResults": "There were no results...",
+    "filter": "Filter timeline"
   },
   "lookup": {
     "search_placeholder": "Search for a company",
@@ -986,7 +987,8 @@
     "noTitle": "No Title",
     "filter": "Filter",
     "persons": "People",
-    "documents": "Documents"
+    "documents": "Documents",
+    "clear": "Clear"
   },
   "emails": {
     "header": "Email information",

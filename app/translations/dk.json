@@ -855,7 +855,8 @@
     "exists_in": "{{name}} er nævnt i:",
     "nodesTable": "Oversigt over events",
     "search": "Søg",
-    "noResults": "Der var ingen resultater ..."
+    "noResults": "Der var ingen resultater ...",
+    "filter": "Filtrer tidslinje"
   },
   "lookup": {
     "search_placeholder": "Søg efter en virksomhed",
@@ -994,7 +995,8 @@
     "noTitle": "Ingen titel",
     "filter": "Filtre",
     "persons": "Personer",
-    "documents": "Dokumenter"
+    "documents": "Dokumenter",
+    "clear": "Nulstil"
   },
   "emails": {
     "body": "E-mailindhold",

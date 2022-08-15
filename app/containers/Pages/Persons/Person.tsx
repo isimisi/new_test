@@ -84,21 +84,12 @@ const Person = () => {
       />
 
       <Grid container spacing={2}>
-        <Grid item xl={6} lg={5} md={12}>
-          <Paper className={classes.profilePaper}>
-            <Typography variant="h5" component="h3">
-              {t("person.form_header")}
-            </Typography>
-            <PersonForm />
-          </Paper>
-        </Grid>
-        <Grid item xl={6} lg={7} md={12}>
-          <EditAvatar
-            /* @ts-ignore */
-            getConfig={handleGetConfig}
-            avatar={JSON.parse(person.get("person_icon"))}
-          />
-        </Grid>
+        <Paper className={classes.profilePaper}>
+          <Typography variant="h5" component="h3">
+            {t("person.form_header")}
+          </Typography>
+          <PersonForm />
+        </Paper>
       </Grid>
       <Fab
         variant="extended"

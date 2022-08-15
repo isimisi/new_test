@@ -77,7 +77,10 @@ export interface TimelineState {
   timelines: List<TimelineTableOptions>;
   message: string;
   elements: List<FlowElement>;
-  elementsTagOptions: List<any>;
+  timelinePersons: List<any>;
+  timelineDocuments: List<any>;
+  timelineTags: List<any>;
+  filters: List<string>
   emailsToValidate: List<IEmailsFromImport>;
   handleVisability: boolean;
   createElementOpen: boolean;

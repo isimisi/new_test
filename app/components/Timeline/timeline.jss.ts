@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { MyTheme } from "../../types/styling";
+import themePalette from "@api/palette/themePalette";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
   horizontalNodeOffTimeLine: {
@@ -18,6 +19,15 @@ const useStyles = makeStyles((theme: MyTheme) => ({
   attachmentContainer: {
     marginTop: 10,
     marginBottom: 10,
+  },
+  countContainer: {
+    padding: 2,
+    paddingRight: 8,
+    paddingLeft: 8,
+    backgroundColor: theme.palette.background.default,
+  },
+  tagCount: {
+    color: themePalette.info,
   },
   popover: {
     position: "fixed",

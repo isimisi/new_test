@@ -29,15 +29,13 @@ import store from "./redux/configureStore";
 import "./i18n";
 import Auth0ProviderWithHistory from "./containers/App/auth0-provider-with-history";
 import ErrorView from "@components/Error/CrashScreen";
-import { persistStore } from "redux-persist";
-import { PersistGate } from "redux-persist/integration/react";
 
 // bugsnag
 if (process.env.NODE_ENV === "production") {
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()],
-    appVersion: "1.4.75"
+    appVersion: "1.4.76"
   });
 }
 

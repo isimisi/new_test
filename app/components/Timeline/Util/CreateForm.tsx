@@ -82,7 +82,7 @@ const CreateForm = (props: Props) => {
   const { t, i18n } = useTranslation();
   const classes = useStyles();
 
-  const elementsTagOptions = useAppSelector(state => state.timeline.get("elementsTagOptions")).toJS();
+  const elementsTagOptions = useAppSelector(state => state.timeline.get("timelineTags")).toJS();
 
   const date = timelineNode.get("date");
   const time = timelineNode.get("time");
@@ -93,7 +93,6 @@ const CreateForm = (props: Props) => {
   const persons = timelineNode.get("persons").toJS();
   const documents = timelineNode.get("documents").toJS();
   const tags = timelineNode.get("tags").toJS();
-
   const loadingsP = useAppSelector(state => state.person.get("loadings"));
   const loadingsD = useAppSelector(state => state.document.get("loadings"));
 
@@ -423,14 +422,13 @@ const CreateForm = (props: Props) => {
         formatCreateLabel={(input) => t("generic.create_new", { input })}
         menuPlacement="auto"
         menuPosition="absolute"
-        value={persons.map(p =>
-          personMapping(
-            p,
-            true,
-            handleOpenPerson,
-            handleMouseOverValue,
-            handleMouseLeaveValue
-          )
+        value={persons.map(p => personMapping(
+          p,
+          true,
+          handleOpenPerson,
+          handleMouseOverValue,
+          handleMouseLeaveValue
+        )
         )}
         onChange={(newValue, meta) =>
           hanldeOnPersonChange(newValue, meta, handleChangePersons, persons)

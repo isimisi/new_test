@@ -5,10 +5,10 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { Chip, IconButton } from "@material-ui/core";
+import { Avatar, Chip, IconButton } from "@material-ui/core";
 import { PersonCleanOption } from "@customTypes/reducers/person";
-import Avatar from "react-nice-avatar";
 import EditIcon from "@material-ui/icons/Edit";
+import { stringToColor, stringAvatar } from "@pages/Timelines/constants";
 
 export const columns = t => [
   {
@@ -103,12 +103,16 @@ export const personMapping = (
       data-icon={person.icon || null}
       onClick={onClick}
     >
-      {person.icon && (
-        <Avatar
-          style={{ width: 15, height: 15, marginRight: 5 }}
-          {...JSON.parse(person.icon)}
-        />
-      )}
+      <Avatar
+        style={{
+          width: 15,
+          height: 15,
+          backgroundColor: stringToColor(person.name || person.email),
+          fontSize: 8,
+          marginRight: 5
+        }}
+        {...stringAvatar(person.name, person.email)}
+      />
 
       <span style={{ paddingRight: "5px" }}>{person.name || person.label}</span>
       {value && (

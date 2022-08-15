@@ -2,68 +2,65 @@
 /* eslint-disable no-duplicate-case */
 /* eslint-disable default-case */
 /* eslint-disable no-plusplus */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Popper,
   Grow,
   Paper,
   ClickAwayListener,
-  MenuList,
   Typography,
-  MenuItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  IconButton
+  Chip,
+  Avatar,
+  Button
 } from "@material-ui/core";
-import CustomSwitch from "@components/Switch/CustomSwitch";
 
-import { FlowElement, isNode, Node } from "react-flow-renderer";
+import { stringToColor, stringAvatar } from "@pages/Timelines/constants";
+import DoneIcon from "@material-ui/icons/Done";
+
+import { useAppDispatch, useAppSelector } from "@hooks/redux";
+import {
+  clearFilter,
+  filterTimeline
+} from "@pages/Timelines/reducers/timelineActions";
 
 interface Props {
   open: boolean;
   close: () => void;
   anchor: HTMLButtonElement | null;
   t: any;
-  elements: FlowElement[];
   classes: any;
 }
 
 const FilterPopper = (props: Props) => {
-  const { open, close, anchor, t, elements, classes } = props;
+  const { open, close, anchor, t, classes } = props;
 
-  const persons: any = [];
-  const documents: any = [];
-  const tags: any = [];
+  const dispatch = useAppDispatch();
+  const persons = useAppSelector(state =>
+    state.timeline.get("timelinePersons")
+  ).toJS();
+  const documents = useAppSelector(state =>
+    state.timeline.get("timelineDocuments")
+  ).toJS();
+  const tags = useAppSelector(state =>
+    state.timeline.get("timelineTags")
+  ).toJS();
+  const filters = useAppSelector(state => state.timeline.get("filters"));
 
-  const nodes = elements.filter(
-    (element): element is Node => isNode(element) && element.type !== "addItem"
-  );
-
-  for (let index = 0; index < nodes.length; index++) {
-    const node = nodes[index];
-    const { persons: _persons, documents: _documents, tags: _tags } = node.data;
-
-    for (let z = 0; z < _persons.length; z++) {
-      const person = _persons[z];
-      if (!persons.some(p => p.id === person.id)) {
-        persons.push(person);
-      }
+  const handleClick = (item, type) => {
+    if (type === "tags") {
+      dispatch(filterTimeline(item.name));
     }
 
-    for (let z = 0; z < _documents.length; z++) {
-      const document = _documents[z];
-      if (!documents.some(p => p.id === document.id)) {
-        documents.push(document);
-      }
+    if (type === "persons") {
+      dispatch(filterTimeline("p" + item.id));
     }
 
-    for (let z = 0; z < _tags.length; z++) {
-      const tag = _tags[z];
-      if (!tags.some(p => p.name === tag.name)) {
-        tags.push(tag);
-      }
+    if (type === "documents") {
+      dispatch(filterTimeline("d" + item.id));
     }
-  }
+  };
+
+  const handleClear = () => dispatch(clearFilter);
 
   return (
     <Popper
@@ -79,43 +76,145 @@ const FilterPopper = (props: Props) => {
         <Grow {...TransitionProps}>
           <Paper
             elevation={4}
-            style={{ backgroundColor: "#fcfcfc", padding: 10 }}
+            style={{
+              backgroundColor: "#fcfcfc",
+              padding: 10,
+              maxHeight: "50vh",
+              overflowY: "auto"
+            }}
           >
             <ClickAwayListener onClickAway={close}>
               <div>
-                <Typography style={{ fontWeight: "bold" }}>
-                  {t("generic.tags")}
-                </Typography>
-                <MenuList>
-                  <MenuItem className={classes.menuItem}>
-                    <ListItemText>{t("workspaces.excel")}</ListItemText>
-                    <ListItemSecondaryAction style={{ right: 0 }}>
-                      <CustomSwitch />
-                    </ListItemSecondaryAction>
-                  </MenuItem>
-                </MenuList>
-                <Typography style={{ fontWeight: "bold" }}>
-                  {t("generic.persons")}
-                </Typography>
-                <MenuList>
-                  <MenuItem className={classes.menuItem}>
-                    <ListItemText>{t("workspaces.excel")}</ListItemText>
-                    <ListItemSecondaryAction style={{ right: 0 }}>
-                      <CustomSwitch />
-                    </ListItemSecondaryAction>
-                  </MenuItem>
-                </MenuList>
-                <Typography style={{ fontWeight: "bold" }}>
-                  {t("generic.documents")}
-                </Typography>
-                <MenuList>
-                  <MenuItem className={classes.menuItem}>
-                    <ListItemText>{t("workspaces.excel")}</ListItemText>
-                    <ListItemSecondaryAction style={{ right: 0 }}>
-                      <CustomSwitch />
-                    </ListItemSecondaryAction>
-                  </MenuItem>
-                </MenuList>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <Typography style={{ fontWeight: "bold", fontSize: 18 }}>
+                    {t("timeline.filter")}
+                  </Typography>
+                  <Button onClick={handleClear}>{t("generic.clear")}</Button>
+                </div>
+                <div style={{ width: 400 }}>
+                  <div>
+                    <Typography className={classes.filterHeaders}>
+                      {t("generic.tags")}
+                    </Typography>
+                    <div className={classes.filterChipContainer}>
+                      {tags.map(tag => (
+                        <Chip
+                          className={classes.filterChip}
+                          variant="outlined"
+                          color={
+                            filters.includes(tag.name) ? "primary" : "default"
+                          }
+                          icon={
+                            <div className={classes.chipIconContainer}>
+                              {filters.includes(tag.name) ? (
+                                <DoneIcon
+                                  color="primary"
+                                  className={classes.filterDone}
+                                />
+                              ) : (
+                                <div
+                                  className={classes.tag}
+                                  style={{ backgroundColor: tag.color }}
+                                />
+                              )}
+                            </div>
+                          }
+                          onClick={() => handleClick(tag, "tags")}
+                          label={tag.name}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Typography className={classes.filterHeaders}>
+                      {t("generic.persons")}
+                    </Typography>
+                    <div className={classes.filterChipContainer}>
+                      {persons.map(person => (
+                        <Chip
+                          className={classes.filterChip}
+                          variant="outlined"
+                          color={
+                            filters.includes(`p${person.id}`)
+                              ? "primary"
+                              : "default"
+                          }
+                          icon={
+                            <div className={classes.chipIconContainer}>
+                              {filters.includes(`p${person.id}`) ? (
+                                <DoneIcon
+                                  color="primary"
+                                  className={classes.filterDone}
+                                />
+                              ) : (
+                                <Avatar
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    backgroundColor: stringToColor(
+                                      person.name || person.email
+                                    ),
+                                    fontSize: 8
+                                  }}
+                                  {...stringAvatar(person.name, person.email)}
+                                />
+                              )}
+                            </div>
+                          }
+                          onClick={() => handleClick(person, "persons")}
+                          label={person.name || person.email}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Typography className={classes.filterHeaders}>
+                      {t("generic.documents")}
+                    </Typography>
+                    <div className={classes.filterChipContainer}>
+                      {documents.map(document => (
+                        <Chip
+                          className={classes.filterChip}
+                          variant="outlined"
+                          color={
+                            filters.includes(`d${document.id}`)
+                              ? "primary"
+                              : "default"
+                          }
+                          icon={
+                            <div className={classes.chipIconContainer}>
+                              {filters.includes(`d${document.id}`) ? (
+                                <DoneIcon
+                                  color="primary"
+                                  className={classes.filterDone}
+                                />
+                              ) : (
+                                <div
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    borderRadius: 20,
+                                    border: "1px solid black"
+                                  }}
+                                />
+                              )}
+                            </div>
+                          }
+                          onClick={() => handleClick(document, "documents")}
+                          label={document.title}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </ClickAwayListener>
           </Paper>

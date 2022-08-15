@@ -25,6 +25,29 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     justifyContent: "center",
     flexDirection: "row"
   },
+  filterChipContainer: {
+    marginTop: 10
+  },
+  filterHeaders: {
+    fontWeight: "bold",
+    marginTop: 15
+  },
+  chipIconContainer: {
+    display: "flex",
+    alignItems: "center"
+  },
+  tag: {
+    width: 20,
+    height: 20,
+    borderRadius: 10
+  },
+  filterDone: {
+    width: 20
+  },
+  filterChip: {
+    margin: 4,
+    borderRadius: 10
+  },
   countContainer: {
     padding: 2,
     paddingRight: 8,

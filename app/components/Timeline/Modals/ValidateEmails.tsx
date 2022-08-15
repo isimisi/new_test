@@ -225,7 +225,6 @@ const ValidateEmails = (props: Props) => {
   const splitElement = useMemo(() => getSplitElement(t("emails.split_text"), "#73B1FF", true).outerHTML, []);
 
   useEffect(() => {
-    console.log(emailsToValidate.get(activeStep).get("html"));
     const initSplittings = emailsToValidate.get(activeStep).get("html").split(regExForBody).join(splitElement);
     setWorkingEmailToValidate(initSplittings);
   }, [activeStep]);

@@ -82,6 +82,8 @@ export const CLEAR_SPLITTING = "CLEAR_SPLITTING";
 export const VALIDATE_EMAILS_CLOSE = "VALIDATE_EMAILS_CLOSE";
 export const OPEN_TAG = "OPEN_TAG";
 export const CLOSE_TAG = "CLOSE_TAG";
+export const FILTER_TIMELINE = "FILTER_TIMELINE";
+export const CLEAR_FILTER = "CLEAR_FILTER";
 
 type FailedTypes =
   | typeof GET_TIMELINES_FAILED
@@ -219,7 +221,7 @@ export interface PutTimelineElementSuccess {
 
 export interface DeleteTimelineElementsSuccess {
   type: typeof DELETE_TIMELINE_ELEMENTS_SUCCESS;
-  elements: string[];
+  elements: FlowElement[];
 }
 
 export interface OpenEmailChange {
@@ -281,6 +283,15 @@ export interface CustomSplitSuccess {
   elements: FlowElement[];
 }
 
+export interface FilterTimeline {
+  type: typeof FILTER_TIMELINE;
+  filter: string;
+}
+
+export interface ClearFilter {
+  type: typeof CLEAR_FILTER;
+}
+
 export interface DownloadDocumentSuccess {
   type: typeof DOWNLOAD_DOCUMENT_SUCCESS;
 }
@@ -321,4 +332,6 @@ export type TimelineActions =
   | ValidateEmailsClose
   | OpenTag
   | CloseTag
+  | ClearFilter
+  | FilterTimeline
   | ClearSplitting;

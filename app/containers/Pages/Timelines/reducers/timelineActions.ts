@@ -447,6 +447,17 @@ export const openTag = (tag) => ({
   tag
 });
 
+
+export const filterTimeline = (filter) => ({
+  type: types.FILTER_TIMELINE,
+  filter
+});
+
+export const clearFilter = {
+  type: types.CLEAR_FILTER,
+};
+
+
 export const closeTag = {
   type: types.CLOSE_TAG,
 };

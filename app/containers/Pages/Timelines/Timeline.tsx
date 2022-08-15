@@ -588,6 +588,7 @@ const Timeline = () => {
               backLink="/app/timelines"
               timeline
               rfInstance={rfInstance}
+              overview={view === "horizontal"}
             />
           </div>
 
