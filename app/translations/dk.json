@@ -996,7 +996,8 @@
     "filter": "Filtre",
     "persons": "Personer",
     "documents": "Dokumenter",
-    "clear": "Nulstil"
+    "clear": "Nulstil",
+    "no_description": "Der er ikke nogen beskrivelse"
   },
   "emails": {
     "body": "E-mailindhold",

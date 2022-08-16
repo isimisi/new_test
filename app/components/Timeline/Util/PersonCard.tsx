@@ -31,10 +31,10 @@ const PersonTable = (props: Props) => {
               <EditIcon />
             </IconButton>
           }
-          subheader={person.get("description")}
+          subheader={person.get("description") || t("generic.no_description")}
           subheaderTypographyProps={{
             // @ts-ignore
-            color: "black"
+            color: person.get("description") ? "black" : "gray"
           }}
         />
         <CardContent>

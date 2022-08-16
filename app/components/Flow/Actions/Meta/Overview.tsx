@@ -34,20 +34,21 @@ import {
 } from "@pages/Timelines/reducers/timelineActions";
 import { showDocument } from "@pages/Documents/reducers/documentActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import NodesTableModal from "@components/Timeline/Modals/NodesTable";
-import Persons from "@components/Timeline/Modals/Persons";
-import Documents from "@components/Timeline/Modals/Documents";
-import Tags from "@components/Timeline/Modals/Tags";
+
 
 interface Props {
   classes: any;
   t: any;
   elements: any;
+  handleOpenNodeTable: () => void;
+  openPeople: () => void;
+  openDocuments: () => void;
+  openTags: () => void;
 }
 
 type ActiveItem = "People" | "Documents" | "Tags" | "Elements";
 
-const Overview = ({ classes, t, elements }: Props) => {
+const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openDocuments, openTags }: Props) => {
   const [activeMenuItem, setActiveMenuItem] = useState<ActiveItem | null>(null);
   const dispatch = useAppDispatch();
   const loadingsPerson = useAppSelector(state =>
@@ -59,18 +60,6 @@ const Overview = ({ classes, t, elements }: Props) => {
 
   const user = useAuth0().user as User;
 
-  const [peopleOpen, setPeopleOpen] = useState(false);
-  const closePeople = () => setPeopleOpen(false);
-  const openPeople = () => setPeopleOpen(true);
-
-
-  const [documentsOpen, setDocumentsOpen] = useState(false);
-  const closeDocuments = () => setDocumentsOpen(false);
-  const openDocuments = () => setDocumentsOpen(true);
-
-  const [tagsOpen, setTagsOpen] = useState(false);
-  const closeTags = () => setTagsOpen(false);
-  const openTags = () => setTagsOpen(true);
 
   const [itemOpen, setItemOpen] = useState(false);
 
@@ -112,9 +101,6 @@ const Overview = ({ classes, t, elements }: Props) => {
 
   const handleOpenTag = tag => dispatch(openTag(tag));
 
-  const [nodesTableOpen, setNodesTableOpen] = useState(false);
-  const handleOpenNodeTable = () => setNodesTableOpen(true);
-  const handleCLoseNodeTable = () => setNodesTableOpen(false);
 
   const getItems = (activeItem: ActiveItem) => {
     const nodes = elements.filter(e => nodeTypes.includes(e.type));
@@ -352,18 +338,7 @@ const Overview = ({ classes, t, elements }: Props) => {
           )}
         </Popper>
       )}
-      {nodesTableOpen && (
-        <NodesTableModal open={nodesTableOpen} close={handleCLoseNodeTable} />
-      )}
-      {peopleOpen && (
-        <Persons open={peopleOpen} close={closePeople} user={user} />
-      )}
-      {documentsOpen && (
-        <Documents open={documentsOpen} close={closeDocuments} user={user} />
-      )}
-      {tagsOpen && (
-        <Tags open={tagsOpen} close={closeTags} user={user} />
-      )}
+
     </>
   );
 };

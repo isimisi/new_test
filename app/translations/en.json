@@ -988,7 +988,8 @@
     "filter": "Filter",
     "persons": "People",
     "documents": "Documents",
-    "clear": "Clear"
+    "clear": "Clear",
+    "no_description": "There is no description"
   },
   "emails": {
     "header": "Email information",

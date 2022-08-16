@@ -59,7 +59,11 @@ interface Props {
   backLink: string
   customPdfGenerator?: (startLoading: () => void, stopLoading: () => void) => void;
   rfInstance?: OnLoadParams<any> | null;
-  overview?: boolean
+  overview?: boolean;
+  handleOpenNodeTable?: () => void;
+  openPeople?: () => void;
+  openDocuments?: () => void;
+  openTags?: () => void;
 }
 
 const Meta = (props: Props) => {
@@ -79,7 +83,11 @@ const Meta = (props: Props) => {
     backLink,
     customPdfGenerator,
     rfInstance,
-    overview
+    overview,
+    handleOpenNodeTable,
+    openPeople,
+    openDocuments,
+    openTags
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -362,6 +370,10 @@ const Meta = (props: Props) => {
             classes={classes}
             t={t}
             elements={elements}
+            handleOpenNodeTable={handleOpenNodeTable as () => void}
+            openPeople={openPeople as () => void}
+            openDocuments={openDocuments as () => void}
+            openTags={openTags as () => void}
           />
         </>}
       </Paper>

@@ -104,7 +104,7 @@ const Persons = (props: Props) => {
                   <TableCell align="left">{t("email")}</TableCell>
                   <TableCell align="left">{t("person.company")}</TableCell>
                   <TableCell align="left">{t("person.affiliation")}</TableCell>
-                  <TableCell align="left" />
+                  <TableCell align="left" width="50 px" />
                   <TableCell align="left" />
                 </TableRow>
               </TableHead>

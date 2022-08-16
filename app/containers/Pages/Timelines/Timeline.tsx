@@ -12,7 +12,10 @@ import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
-
+import NodesTableModal from "@components/Timeline/Modals/NodesTable";
+import Persons from "@components/Timeline/Modals/Persons";
+import Documents from "@components/Timeline/Modals/Documents";
+import Tags from "@components/Timeline/Modals/Tags";
 import ShareModal from '@components/Flow/Share/ShareModal';
 import {
   addGroup,
@@ -522,6 +525,23 @@ const Timeline = () => {
   //   stopLoading();
   // };
 
+  const [nodesTableOpen, setNodesTableOpen] = useState(false);
+  const handleOpenNodeTable = () => setNodesTableOpen(true);
+  const handleCLoseNodeTable = () => setNodesTableOpen(false);
+
+  const [peopleOpen, setPeopleOpen] = useState(false);
+  const closePeople = () => setPeopleOpen(false);
+  const openPeople = () => setPeopleOpen(true);
+
+
+  const [documentsOpen, setDocumentsOpen] = useState(false);
+  const closeDocuments = () => setDocumentsOpen(false);
+  const openDocuments = () => setDocumentsOpen(true);
+
+  const [tagsOpen, setTagsOpen] = useState(false);
+  const closeTags = () => setTagsOpen(false);
+  const openTags = () => setTagsOpen(true);
+
 
   return (
     <div style={{ display: "flex", cursor }}>
@@ -589,6 +609,10 @@ const Timeline = () => {
               timeline
               rfInstance={rfInstance}
               overview={view === "horizontal"}
+              handleOpenNodeTable={handleOpenNodeTable}
+              openPeople={openPeople}
+              openDocuments={openDocuments}
+              openTags={openTags}
             />
           </div>
 
@@ -709,6 +733,18 @@ const Timeline = () => {
         close={() => setShareModalOpen(false)}
 
       />
+      {nodesTableOpen && (
+        <NodesTableModal open={nodesTableOpen} close={handleCLoseNodeTable} />
+      )}
+      {peopleOpen && (
+        <Persons open={peopleOpen} close={closePeople} user={user} />
+      )}
+      {documentsOpen && (
+        <Documents open={documentsOpen} close={closeDocuments} user={user} />
+      )}
+      {tagsOpen && (
+        <Tags open={tagsOpen} close={closeTags} user={user} />
+      )}
     </div>
   );
 };
