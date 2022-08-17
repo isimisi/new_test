@@ -231,6 +231,11 @@ const useDoubbleClick = (
               fontSize: "8px",
               padding: "2px 12px"
             }),
+            noOptionsMessage: (provided) => ({
+              ...provided,
+              fontSize: "8px",
+              padding: "2px 12px"
+            }),
             menuList: (provided) => ({
               ...provided,
               maxHeight: 150,

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { memo, useMemo, useState, useCallback, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import { Resizable } from "re-resizable";
@@ -8,20 +8,28 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {
   putSticky,
-  deleteWorkspaceElement,
+  deleteWorkspaceNodes
 } from "@pages/Workspaces/reducers/workspaceActions";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0, User } from "@auth0/auth0-react";
+import { useAppSelector, useAppDispatch } from "@hooks/redux";
+import useChangeElements from "@hooks/workspace/useChangeElements";
 
 const StickyNote = ({ data }) => {
-  const handleVisability = useSelector((state) =>
+  const handleVisability = useAppSelector(state =>
     state.workspace.get("handleVisability")
   );
   const [value, setValue] = useState(data.text);
   const [showDelete, setShowDelete] = useState(false);
-  const dispatch = useDispatch();
-  const user = useAuth0().user;
+  const dispatch = useAppDispatch();
+  const user = useAuth0().user as User;
 
-  const elements = useSelector((state) => state.workspace.get("elements")).toJS();
+  const nodeElements = useAppSelector(state =>
+    state.workspace.get("nodeElements")
+  ).toJS();
+
+  const edgeElements = useAppSelector(state =>
+    state.workspace.get("edgeElements")
+  ).toJS();
 
   useEffect(() => {
     setValue(data.text);
@@ -34,7 +42,7 @@ const StickyNote = ({ data }) => {
       minHeight: 20,
       display: "flex",
       justifyContent: "flex-end",
-      alignItems: "center",
+      alignItems: "center"
     }),
     []
   );
@@ -46,7 +54,7 @@ const StickyNote = ({ data }) => {
       height: "100%",
       backgroundColor: "#fdfdfd",
       borderBottomLeftRadius: 5,
-      borderBottomRightRadius: 5,
+      borderBottomRightRadius: 5
     }),
     []
   );
@@ -54,7 +62,7 @@ const StickyNote = ({ data }) => {
   const container = useMemo(
     () => ({
       border: "1px solid #f1f1f1",
-      borderRadius: 5,
+      borderRadius: 5
     }),
     []
   );
@@ -63,7 +71,7 @@ const StickyNote = ({ data }) => {
     () => ({
       height: 15,
       width: 15,
-      marginRight: 2,
+      marginRight: 2
     }),
     []
   );
@@ -71,7 +79,7 @@ const StickyNote = ({ data }) => {
   const icon = useMemo(
     () => ({
       height: 10,
-      width: 10,
+      width: 10
     }),
     []
   );
@@ -85,7 +93,7 @@ const StickyNote = ({ data }) => {
       topRight: false,
       bottomRight: false,
       bottomLeft: false,
-      topLeft: false,
+      topLeft: false
     }),
     []
   );
@@ -99,7 +107,7 @@ const StickyNote = ({ data }) => {
       topRight: "nodrag",
       bottomRight: "nodrag",
       bottomLeft: "nodrag",
-      topLeft: "nodrag",
+      topLeft: "nodrag"
     }),
     []
   );
@@ -109,14 +117,19 @@ const StickyNote = ({ data }) => {
       [{ header: "1" }, { header: "2" }, { font: [] }],
       [{ size: [] }],
       ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" }
+      ],
       ["link"],
-      ["clean"],
+      ["clean"]
     ],
     clipboard: {
       // toggle to add extra line breaks when pasting HTML:
-      matchVisual: true,
-    },
+      matchVisual: true
+    }
   };
 
   const handleBlur = useCallback(() => {
@@ -124,7 +137,7 @@ const StickyNote = ({ data }) => {
     dispatch(putSticky(user, data.id, value));
   }, [value]);
 
-  const handleChange = useCallback((html) => {
+  const handleChange = useCallback(html => {
     setValue(html);
   }, []);
 
@@ -132,11 +145,24 @@ const StickyNote = ({ data }) => {
     setShowDelete(true);
   }, []);
 
+  const { onNodesChange } = useChangeElements(
+    dispatch,
+    nodeElements,
+    edgeElements
+  );
+
   const deleteNote = useCallback(() => {
     const elementsToRemove = [{ id: `sticky-${data.id}` }];
-    const remainingElements = elements.filter((e) => e.id !== elementsToRemove[0].id);
-    dispatch(deleteWorkspaceElement(user, elementsToRemove, remainingElements));
-  }, [elements]);
+
+    dispatch(deleteWorkspaceNodes(user, elementsToRemove));
+
+    onNodesChange([
+      {
+        id: `sticky-${data.id}`,
+        type: "remove"
+      }
+    ]);
+  }, [nodeElements, edgeElements]);
 
   return (
     <Resizable

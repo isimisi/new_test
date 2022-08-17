@@ -90,6 +90,9 @@ import {
   SET_CONNECTED_USERS,
   REMOVE_CONNECTED_USERS,
   DO_NOT_SHOW_INTERNATIONAL_DISCLAIMER_AGAIN,
+  DELETE_WORKSPACE_NODES_LOADING,
+  DELETE_WORKSPACE_NODES_SUCCESS,
+  DELETE_WORKSPACE_NODES_FAILED,
   WorkspaceActions,
 } from "./workspaceConstants";
 import {
@@ -184,8 +187,12 @@ export default function reducer(
     case WORKSPACE_ADD_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set("mouseLoading", false);
-        mutableState.set("nodeElements", fromJS(action.nodes));
-        mutableState.set("edgeElements", fromJS(action.edges));
+        mutableState.update("nodeElements", (myList) =>
+          myList.concat(fromJS(action.nodes))
+        );
+        mutableState.update("edgeElements", (myList) =>
+          myList.concat(fromJS(action.edges))
+        );
       });
     case WORKSPACE_ADD_ELEMENTS_FAILED:
       return state.withMutations((mutableState) => {
@@ -355,6 +362,20 @@ export default function reducer(
         mutableState.set("message", message);
         mutableState.set("loading", false);
       });
+    case DELETE_WORKSPACE_NODES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", true);
+      });
+    case DELETE_WORKSPACE_NODES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", false);
+      });
+    case DELETE_WORKSPACE_NODES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set("message", message);
+        mutableState.set("mouseLoading", false);
+      });
     case WORKSPACE_POST_NODE_LOADING:
       return state.withMutations((mutableState) => {
         mutableState.set("loading", true);
@@ -379,6 +400,9 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         const nodes = mutableState.get("nodeElements").toJS();
         const index = nodes.findIndex((e) => e.id === action.node.id);
+
+        action.node.position = nodes[index].position;
+
         nodes[index] = action.node;
 
         mutableState.set("nodeElements", fromJS(nodes));

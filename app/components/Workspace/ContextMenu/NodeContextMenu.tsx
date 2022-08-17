@@ -36,7 +36,7 @@ interface Props {
   loading: boolean;
   cut: (e: any, Node) => void;
   copy: (e: any, Node) => void;
-  onElementsRemove: (elementsToRemove: TCustomNode[]) => void
+  onElementsRemove: (elementsToRemove: TCustomNode[], changeNodes: boolean) => void
 }
 
 const NodeContextMenu = ({
@@ -62,7 +62,7 @@ const NodeContextMenu = ({
   const hanldeShowAddressInfo = () => contextNode && getAddressInfo(contextNode.id);
   const handleCut = (e) => contextNode && cut(e, contextNode);
   const handleCopy = (e) => contextNode && copy(e, contextNode);
-  const handleRemove = () => contextNode && onElementsRemove([contextNode]);
+  const handleRemove = () => contextNode && onElementsRemove([contextNode], true);
   const showNodeRelationships = () => contextNode && handleShowNodeRelations(contextNode as Node<NodeData>);
 
   const notSticky = useMemo(() => contextNode?.type !== 'sticky', [contextNode]);

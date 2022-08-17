@@ -13,6 +13,21 @@ import { FlowElement, isNode } from "react-flow-renderer";
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
+export const initialAttribut = {
+  label: null,
+  value: ""
+};
+
+export const proOptions = {
+  // passing in the account property will enable hiding the attribution
+  account: "paid-pro",
+  // in combination with the account property, hideAttribution: true will remove the attribution
+  hideAttribution: true
+};
+
+export const BASE_BG_GAP = 32;
+export const BASE_BG_STROKE = 1;
+
 export const getLayoutedElementsOld = (elements, direction = "TB") => {
   // these should be calculated
   const nodeWidth = 172;

@@ -20,7 +20,7 @@ const config = genConfig({
 });
 
 interface Props {
-  setShareModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setShareModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   timeline?: boolean;
 }
 
@@ -30,9 +30,10 @@ const Collaboration = (props: Props) => {
   const { t } = useTranslation();
   const { user } = useAuth0();
   const meta: UserMeta = user && user["https://juristic.io/meta"];
-  const { first_name, last_name } = meta.dbUser;
+  const { first_name, last_name } = meta?.dbUser || { first_name: "", last_name: "" };
 
-  const toggleShare = () => setShareModalOpen(prevVal => !prevVal);
+  const toggleShare = () =>
+    setShareModalOpen && setShareModalOpen(prevVal => !prevVal);
 
   return (
     <Paper elevation={4} className={classes.collaborationPaper}>
@@ -86,7 +87,7 @@ const Collaboration = (props: Props) => {
       <Button
         variant="contained"
         color="primary"
-        disabled={timeline}
+        disabled={timeline || setShareModalOpen === undefined}
         className={classes.shareButton}
         onClick={toggleShare}
       >

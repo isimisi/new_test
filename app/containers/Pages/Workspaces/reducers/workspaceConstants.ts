@@ -322,6 +322,8 @@ export interface DeleteWorkspaceNodesLoading {
 
 export interface DeleteWorkspaceNodesSuccess {
   type: typeof DELETE_WORKSPACE_NODES_SUCCESS;
+  nodes?: TCustomNode[];
+  edges?: TCustomEdge[];
 }
 
 export interface DeleteWorkspaceNodesFailed {

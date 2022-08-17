@@ -41,7 +41,7 @@ interface Props {
     element: TCustomEdge,
     showFull: boolean
   ) => void;
-  activeElement: TCustomNode | TCustomEdge | null;
+  activeElement: TCustomEdge | null;
   edgeLabel: string;
   relationships: any;
   relationshipLabel: string;

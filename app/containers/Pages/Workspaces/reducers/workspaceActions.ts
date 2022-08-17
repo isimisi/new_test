@@ -322,20 +322,17 @@ export const deleteWorkspaceElement = (
 
 export const deleteWorkspaceNodes = (
   user: User,
-  nodesToRemove: TCustomNode[],
+  nodesToRemove: TCustomNode[] | {id: string}[],
 ) => async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
-  dispatch({ type: types.DELETE_WORKSPACE_NODES_LOADING, message });
+  dispatch({ type: types.DELETE_WORKSPACE_NODES_LOADING });
 
   const header = authHeader(user);
   const url = `${baseUrl}/${WORKSPACES}/deleteNodes`;
   const elements = nodesToRemove.map((element) => element.id);
   const body = { elements };
-
-  dispatch({
-    type: types.DELETE_WORKSPACE_NODES_SUCCESS,
-  });
   try {
     await axios.post(url, body, header);
+    dispatch({ type: types.DELETE_WORKSPACE_NODES_SUCCESS });
   } catch (error) {
     dispatch({ type: types.DELETE_WORKSPACE_NODES_FAILED, message });
   }
@@ -409,10 +406,12 @@ export const addElements = (user: User, id: string, elements: Array<TCustomNode 
   dispatch({ type: types.WORKSPACE_ADD_ELEMENTS_LOADING });
   const url = `${baseUrl}/${WORKSPACES}/addElements/${id}`;
   const body = { elements: JSON.stringify(elements) };
+
   const header = authHeader(user);
   try {
     const response = await axios.post(url, body, header);
     const { nodes, edges } = response.data;
+
     dispatch({
       type: types.WORKSPACE_ADD_ELEMENTS_SUCCESS,
       nodes,
@@ -857,7 +856,8 @@ export const cvrWorkspacePublic = (user: User, id: string, cvr: string, erstType
   };
   try {
     await axios.post(url, body);
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error.response);
     let _message = "Vi har desværre nogle problemer med kommunkationen til CVR";
     // @ts-ignore
     if (error?.response?.status === 503) {

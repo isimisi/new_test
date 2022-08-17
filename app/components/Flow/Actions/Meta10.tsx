@@ -12,6 +12,7 @@ import excel from "@images/icons/excel.png";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import logoBeta from "@images/logoBeta.svg";
 
 import Divider from "@material-ui/core/Divider";
 import { useTranslation } from "react-i18next";
@@ -78,7 +79,7 @@ const Meta = (props: Props) => {
   const { t } = useTranslation();
   const handleOpenMeta = () => setMetaOpen(prevVal => !prevVal);
   const user = useAuth0().user as User;
-  const { logo: customLogo } = user["https://juristic.io/meta"].organization;
+  const { logo: customLogo } = user ? user["https://juristic.io/meta"]?.organization : { logo: logoBeta };
 
   const [loadingImg, setLoadingImg] = React.useState(false);
   const stopLoadingImg = () => setLoadingImg(false);
@@ -151,7 +152,14 @@ const Meta = (props: Props) => {
     setSnapToGrid && setSnapToGrid(prevVal => !prevVal);
 
   const [showShortCuts, setShowShortCuts] = React.useState(false);
-  const handleToggleShortCuts = () => setShowShortCuts(prevVal => !prevVal);
+  const handleToggleShortCuts = () => {
+    if (backLink === "/app") {
+      // Koncerndiagrammer wants to open CTA
+      handleExcel && handleExcel();
+    } else {
+      setShowShortCuts(prevVal => !prevVal);
+    }
+  };
   const handleCloseShortcuts = () => setShowShortCuts(false);
 
   const handleExport = (type: "image" | "pdf") => {
@@ -166,7 +174,8 @@ const Meta = (props: Props) => {
   };
 
   const handlePowerpoint = () => {
-    startLoadingPp();
+    // Koncerndiagrammer will use the /app
+    backLink !== "/app" && startLoadingPp();
     generatePp(stopLoadingPp);
   };
 

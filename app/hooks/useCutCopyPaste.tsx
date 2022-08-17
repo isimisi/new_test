@@ -2,8 +2,16 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/prefer-default-export */
 import { TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
+import { MousePosition } from "@react-hook/mouse-position";
 import { useCallback, useEffect } from "react";
-import { isEdge, getConnectedEdges } from "react-flow-renderer10";
+import {
+  isEdge,
+  getConnectedEdges,
+  OnNodesChange,
+  isNode,
+  ReactFlowInstance,
+  Dimensions
+} from "react-flow-renderer10";
 
 interface NodeMap {
   [nodeId: string]: TCustomNode;
@@ -54,10 +62,14 @@ export function useCutCopyPaste(
   nodes: TCustomNode[],
   edges: TCustomEdge[],
   onNodesDelete: (nodes: TCustomNode[]) => void,
-  onEdgesDelete: (edges: TCustomEdge[]) => void,
-  handleSave: (elementsToAdd: Array<TCustomNode | TCustomEdge>) => void
+  onNodesChange: OnNodesChange,
+  _addElements: (elements: Array<TCustomNode | TCustomEdge>) => void,
+  mouse: MousePosition,
+  rfInstance: ReactFlowInstance | null,
+  reactFlowContainer: React.RefObject<HTMLDivElement>,
+  reactFlowDimensions: Dimensions | null,
 ) {
-  const selectedNodes: TCustomNode[] = []; // get selected elements
+  const selectedNodes = nodes.filter(node => node.selected);
 
   const cut = useCallback(
     (event, element = null) => {
@@ -72,15 +84,19 @@ export function useCutCopyPaste(
         navigator.clipboard.writeText(data);
 
         if (element) {
-          // onElementsRemove([element]);
+          onNodesDelete([element]);
+          onNodesChange([element].map(el => ({ id: el.id, type: "remove" })));
         } else {
-          // onElementsRemove(selectedElements);
+          onNodesDelete(selectedNodes);
+          onNodesChange(
+            selectedNodes.map(el => ({ id: el.id, type: "remove" }))
+          );
         }
 
         event.preventDefault();
       }
     },
-    [selectedNodes]
+    [selectedNodes, nodes, edges, onNodesDelete]
   );
 
   const copy = useCallback(
@@ -96,18 +112,61 @@ export function useCutCopyPaste(
         event.preventDefault();
       }
     },
-    [selectedNodes]
+    [edges, nodes, selectedNodes]
   );
 
-  const paste = useCallback(async event => {
+  const handlePaste = (elementsToAdd) => {
+    if (mouse && rfInstance && reactFlowContainer.current) {
+      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+
+      const position = rfInstance.project({
+        x: mouse.clientX as number - reactFlowBounds.left,
+        y: mouse.clientY as number - reactFlowBounds.top,
+      });
+
+      if (!mouse.clientY) {
+        const rf = rfInstance?.toObject();
+        if (rf && reactFlowDimensions) {
+          position.x = (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250;
+          position.y = (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150;
+        }
+      }
+
+
+      const sortedByY = elementsToAdd.filter(e => isNode(e)).sort((a, b) => b.position.y - a.position.y);
+      const topNode = sortedByY[sortedByY.length - 1];
+
+      const now = Date.now();
+      elementsToAdd.map((element) => {
+        if (isEdge(element)) {
+          element.id = `${element.id}_${now}-edit`;
+          element.source = `${element.source}_${now}-edit`;
+          element.target = `${element.target}_${now}-edit`;
+        } else {
+          element.id = `${element.id}_${now}-edit`;
+          const xDistanceToTopNode = element.position.x - topNode.position.x;
+          const yDistanceToTopNode = element.position.y - topNode.position.y;
+
+          element.position.x = position.x + xDistanceToTopNode;
+          element.position.y = position.y + yDistanceToTopNode;
+        }
+        return element;
+      });
+
+      _addElements(elementsToAdd);
+    }
+  };
+
+  const paste = async event => {
     try {
       const elementsToAdd = JSON.parse(await navigator.clipboard.readText());
+
       event.preventDefault();
-      handleSave(elementsToAdd);
+      handlePaste(elementsToAdd);
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  };
 
   useEffect(() => {
     document.addEventListener("cut", cut);
@@ -118,7 +177,7 @@ export function useCutCopyPaste(
       document.removeEventListener("copy", copy);
       document.removeEventListener("paste", paste);
     };
-  }, [nodes, edges, selectedNodes]);
+  }, [nodes, edges, selectedNodes, cut, copy, paste]);
 
   return { cut, copy, paste };
 }

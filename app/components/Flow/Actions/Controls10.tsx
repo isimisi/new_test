@@ -172,11 +172,7 @@ const Controls = (props: Props) => {
           <IconButton
             className={classes.buttons}
             onClick={() => {
-              const helper = document.querySelectorAll("[data-cshid*='-']");
-              if (helper?.length > 0) {
-                // @ts-ignore
-                helper[0].click();
-              }
+              $crisp.push(['do', 'chat:open']);
             }}
           >
             <HelpIcon className={classes.buttons} />

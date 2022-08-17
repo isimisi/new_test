@@ -8,25 +8,15 @@
 /* eslint-disable consistent-return */
 /* eslint-disable no-param-reassign */
 import React, {
-  useState, useEffect, useCallback, useRef, useMemo
+  useState, useCallback, useRef
 } from 'react';
 import { withStyles, useTheme } from '@material-ui/core/styles';
 import ReactFlow, {
   Background,
-  isNode,
   Node,
   ConnectionMode,
   BackgroundVariant,
-  isEdge,
-  Edge,
-  ReactFlowInstance,
-  Connection,
-  OnInit,
-  OnMove,
-  applyNodeChanges,
-  applyEdgeChanges
 } from 'react-flow-renderer10';
-
 
 import useMouse from '@react-hook/mouse-position';
 // import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
@@ -42,17 +32,11 @@ import { useAuth0, User } from "@auth0/auth0-react";
 
 
 import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
-import { toast } from 'react-toastify';
 import { getPlanId } from "@helpers/userInfo";
 import Notification from '@components/Notification/Notification';
 
 import { getId, encryptId } from '@api/constants';
-import connection from '@api/socket/SocketConnection';
 import AlertModal from '@components/Alerts/AlertModal';
-import CustomNode from '@components/Workspace/Node/CustomNode';
-import ControlPoint from '@components/Workspace/Node/ControlPoint';
-
-import StickyNoteNode from '@components/Workspace/Node/StickyNoteNode';
 import WorkspaceMeta from '@components/Workspace/Modals/WorkspaceMeta';
 import InternationalStructureAlert from '@components/Workspace/Modals/InternationalStructureAlert';
 
@@ -74,85 +58,69 @@ import { useTranslation } from 'react-i18next';
 import useContextMenu from '@hooks/useContextMenu';
 import useWorkspaceHotKeys from '@hooks/useWorkspaceHotKeys';
 import SelectionContextMenu from '@components/Workspace/ContextMenu/SelectionContextMenu';
-import { openMenuAction, closeMenuAction, toggleAction } from '@redux/actions/uiActions';
-import { NodeDropdownInstance } from '../../../types/reactFlow';
 import styles from './workspace-jss';
 import {
-  reducer, initErstTypes, getLayoutedElements
+  reducer,
+  proOptions,
+  BASE_BG_GAP,
+  BASE_BG_STROKE,
 } from './constants';
 import {
-  getRelationships, getNodes, postEdge, postNode,
-  changeHandleVisability, labelChange, descriptionChange,
-  addGroup, getGroupDropDown, putWorkspace, closeNotifAction,
-  showWorkspace, saveWorkspace,
-  putNode, putEdge, getAttributeDropDown, addWorkspaceNodeToList,
-  addEdgeToList, addWorkspaceNodeAttributToList,
-  cvrWorkspace, postSticky, showNotifAction,
-  shareWorkspace, cvrSuccess, shareOrgChange,
-  setShowCompanyData, setShowAddressInfo,
-  handleRunIntro, uncertainCompaniesChange,
+  labelChange, descriptionChange,
+  addGroup, putWorkspace, closeNotifAction,
+  showWorkspace, saveWorkspace, addWorkspaceNodeToList,
+  addEdgeToList, shareWorkspace, shareOrgChange,
+  setShowCompanyData, setShowAddressInfo, handleRunIntro,
   mapUncertainCompanies, changeTags, addElements,
-  getCompanyData, getAddressInfo, layoutElements,
-  stopLoading, workspacePowerpoint,
-  doNotShowInternationalDisclaimerAgain,
-  deleteWorkspaceEdges,
-  deleteWorkspaceNodes,
-  changeNodes, changeEdges
+  getCompanyData, getAddressInfo,
+  stopLoading, deleteWorkspaceEdges, deleteWorkspaceNodes,
 } from './reducers/workspaceActions';
 import './workspace.css';
 
-import Controls from '@components/Flow/Actions/Controls';
+import Controls from '@components/Flow/Actions/Controls10';
 import Items from '@components/Flow/Actions/Items';
 import Meta from '@components/Flow/Actions/Meta10';
 import Collaboration from '@components/Flow/Actions/Collaborations';
-import { RGBA, SelectChoice } from '@customTypes/data';
-
-import { handleExport } from '@helpers/export/handleExport';
 import useFlowContextMenus from '@hooks/flow/flowContexts';
 import useItemSidePanel from '@hooks/flow/itemPanel';
 import useDoubbleClick from '@hooks/flow/doubbleClick';
 import Loader from '@components/Loading/LongLoader';
-import { Attribut, EdgeData, NodeData, TCustomEdge, TCustomNode } from '@customTypes/reducers/workspace';
+import { NodeData, TCustomEdge, TCustomNode } from '@customTypes/reducers/workspace';
 import useExcelExport from '@hooks/workspace/useExcelExport';
+import useMove from '@hooks/flow/useMove';
+import useInit from '@hooks/flow/useInit';
+import useAlerts from '@hooks/workspace/useAlerts';
+import useMouseLoading from '@hooks/flow/useMouseLoading';
+import useFlowGenerics from '@hooks/flow/useFlowGenerics';
+import usePane from '@hooks/flow/usePane';
+import useCvr from '@hooks/workspace/useCvr';
+import useNode from '@hooks/workspace/useNode';
+import useEdge from '@hooks/workspace/useEdge';
+import useMeta from '@hooks/flow/useMeta';
+import useChangeElements from '@hooks/workspace/useChangeElements';
+import CustomNode from "@components/Workspace/Node/CustomNode";
+import StickyNoteNode from "@components/Workspace/Node/StickyNoteNode";
+import ControlPoint from "@components/Workspace/Node/ControlPoint";
+import CustomEdge from "@components/Workspace/Edge/CustomEdge";
 
-
-const nodeTypes = {
+export const nodeTypes = {
   custom: CustomNode,
   sticky: StickyNoteNode,
   controlPoint: ControlPoint
 };
 
-const initialAttribut = {
-  label: null,
-  value: ''
+export const edgeTypes = {
+  custom: CustomEdge
 };
-
-const proOptions = {
-  // passing in the account property will enable hiding the attribution
-  account: 'paid-pro',
-  // in combination with the account property, hideAttribution: true will remove the attribution
-  hideAttribution: true,
-};
-
-
-const BASE_BG_GAP = 32;
-const BASE_BG_STROKE = 1;
-
-interface Dimensions {
-  height: number;
-  width: number;
-}
 
 const Workspace = (props) => {
   const { classes } = props;
   const dispatch = useAppDispatch();
   const history = useHistory();
   const theme = useTheme();
-  const id = getId(history);
-  const reactFlowContainer = useRef(null);
+  const id = getId(history) as string;
+  const reactFlowContainer = useRef<HTMLDivElement>(null);
 
-  const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
-  const [currentZoom, setCurrentZoom] = useState(1);
   const { t } = useTranslation();
   const mouse = useMouse(reactFlowContainer, { fps: 10, enterDelay: 100, leaveDelay: 100 });
 
@@ -198,397 +166,167 @@ const Workspace = (props) => {
   const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
   const tags = useAppSelector(state => state[reducer].get('specificWorkspaceTags'))?.toJS();
 
-  const internationalDisclaimer = useAppSelector(state => state[reducer].get('showInternationalDisclaimer'));
-
+  const { reactFlowDimensions, toggleSubMenu } = useFlowGenerics(reactFlowContainer, dispatch, user, group);
 
   const [metaOpen, setMetaOpen] = useState(false);
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
 
-  const [showNodeRelations, setShowNodeRelations] = useState(false);
-  const [activeNodeRelations, setActiveNodeRelations] = useState<Node<NodeData> | null>(null);
-  const handleShowNodeRelations = (contextNode?: Node<NodeData>) => {
-    setShowNodeRelations(prevVal => !prevVal);
-    if (contextNode) {
-      setActiveNodeRelations(contextNode);
-    }
-  };
-
-  const [edgePopperRef, setEdgePopperRef] = useState<SVGElement | null>(null);
-  const [showEdgePopper, setShowEdgePopper] = useState(false);
-  const handleShowEdgePopper = () => {
-    setShowEdgePopper(true);
-  };
-
-
-  const handleHideEdgePopper = (stopReffrence = false) => {
-    setShowEdgePopper(false);
-    if (stopReffrence) {
-      setEdgePopperRef(null);
-    }
-  };
-
-  const [nodePopperRef, setNodePopperRef] = useState<EventTarget | null>(null);
-  const [showNodePopper, setShowNodePopper] = useState(false);
-  const handleShowNodePopper = () => {
-    setShowNodePopper(true);
-  };
-
-  const handleHideNodePopper = useCallback((stopReffrence = false) => {
-    setShowNodePopper(false);
-
-    if (stopReffrence) {
-      setNodePopperRef(null);
-    }
-  }, []);
+  const {
+    handleAlerts,
+    alertId,
+    alerts,
+    setAlertId,
+    highlightAlertItems,
+    removeHighlightAlert,
+    alertOpen,
+    setAlertOpen
+  } = useAlerts();
+  const { onMove, currentZoom } = useMove();
+  const initFunc = (_reactFlowInstance) => dispatch(
+    showWorkspace(user, id as string, setMetaOpen, handleAlerts, _reactFlowInstance)
+  );
+  const { rfInstance, onInit } = useInit(initFunc);
 
 
-  const [showCvrModal, setShowCvrModal] = useState(false);
-  const [showMapErst, setShowMapErst] = useState(false);
-  const [erstTypes, setErstTypes] = useState(initErstTypes);
   const [shareModalOpen, setShareModalOpen] = useState(false);
-
   const closeShareModal = () => setShareModalOpen(false);
-
-
   const [showAlertLog, setShowAlertLog] = useState(false);
-  const [alerts, setAlerts] = useState<any[]>([]);
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [alertId, setAlertId] = useState<number | null>(null);
 
-  const [isUpdatingElement, setIsUpdatingElement] = useState(false);
-  const [elementToUpdate, setElementToUpdate] = useState<TCustomNode | TCustomEdge | null>(null);
+  const onWorkspaceSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      const _nodes = flow.nodes;
 
-  // relationship
-  const [defineEdgeOpen, setDefineEdgeOpen] = useState(false);
-
-  const [relationshipLabel, setRelationshipLabel] = useState('');
-  const [relationshipValue, setRelationshipValue] = useState('');
-  const [relationshipType, setRelationshipType] = useState('default');
-  const [relationshipColor, setRelationshipColor] = useState<RGBA>({
-    r: "0", g: "0", b: "0", a: "1"
-  });
-  const [showArrow, setShowArrow] = useState(false);
-  const [animatedLine, setAnimatedLine] = useState(false);
-  const [showLabel, setShowlabel] = useState(false);
-  const [lineThrough, setLineThrough] = useState(false);
-
-  // NODE
-  const [defineNodeOpen, setDefineNodeOpen] = useState(false);
-  const [nodeLabel, setNodeLabel] = useState('');
-  const handleChangeLabelNode = useCallback((_label: SelectChoice) => {
-    if (_label.__isNew__ && plan_id !== 1) {
-      dispatch(addWorkspaceNodeToList({
-        attributes: [],
-        description: null,
-        id: null,
-        label: _label.value,
-        style: '{"borderColor": {"a": 1, "b": 0, "g": 0, "r": 0}, "backgroundColor": {"a": 1, "b": 255, "g": 255, "r": 255}}'
-      }));
+      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
+      user && id && dispatch(saveWorkspace(user, id, flow.viewport.zoom, flow.viewport.x, flow.viewport.y, JSON.stringify(mappedNodes)));
     }
-    if (_label.__isNew__ && plan_id === 1) {
-      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_item_types')));
-    } else {
-      setNodeLabel(_label.value);
-    }
-  }, []);
+  }, [rfInstance, user]);
 
-  const [nodeDisplayName, setNodeDisplayName] = useState('');
-  const [nodeFigur, setNodeFigur] = useState<string | null>(null);
-  const handleNodeFigur = useCallback((_figur) => setNodeFigur(_figur ? _figur.value : null), []);
-  const [attributes, setAttributes] = useState<Attribut[]>([initialAttribut]);
+  const {
+    showCvrModal,
+    showMapErst,
+    setErstTypes,
+    showInternationalDisclaimer,
+    closeInternationalDisclaimer,
+    onConfirm,
+    setShowCvrModal,
+    handleUncertainCompanies,
+    setShowMapErst,
+    erstTypes
+  } = useCvr(
+    dispatch,
+    useAppSelector,
+    id as string,
+    t,
+    user,
+    nodes,
+    relationships,
+    onWorkspaceSave,
+  );
 
-  const handleChangeAttributes = useCallback((_attributes, newRow, isNew) => {
-    if (isNew && plan_id !== 1) {
-      newRow.value = newRow.label;
-      dispatch(addWorkspaceNodeAttributToList(newRow));
-    }
+  const {
+    onNodeClick,
+    defineNodeOpen,
+    nodePopperRef,
+    showNodeRelations,
+    activeNodeRelations,
+    handleChangeLabelNode,
+    handleNodeFigur,
+    handleChangeAttributes,
+    handelRemoveAttributes,
+    handleNodeColorChange,
+    handleBorderColorChange,
+    updateNodeDisplayName,
+    handleNodeSave,
+    handleHideNodePopper,
+    setDefineNodeOpen,
+    setNodePopperRef,
+    setIsUpdatingNode,
+    setNodeToUpdate,
+    handleVisabilityChange,
+    handleShowNodeRelations,
+    closeNode,
+    handleShowNodePopper,
+    nodeLabel,
+    attributes,
+    nodeColor,
+    handleChangeNodeColor,
+    nodeBorderColor,
+    nodeLabelColor,
+    handleLabelColorChange,
+    nodeDisplayName,
+    nodeFigur,
+    isUpdatingNode,
+    nodeToUpdate,
+    handleDisplayNameChange,
+    showNodePopper,
+    handlePostSticky
+  } = useNode(
+    dispatch,
+    plan_id,
+    t,
+    handleVisability,
+    user,
+    rfInstance,
+    reactFlowContainer,
+    reactFlowDimensions,
+    id,
+    handleAlerts,
+    signed,
+    nodes,
+    setShowContextMenu,
+    mouse
+  );
 
-    if (isNew && plan_id === 1) {
-      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_attribute_types')));
-    } else {
-      setAttributes(_attributes);
-    }
-  }, []);
-
-  const [choosenNode, setChoosenNode] = useState<NodeDropdownInstance | null>(null);
-
-  const [deletedAttributes, setDeletedAttributes] = useState([]);
-
-  const handelRemoveAttributes = useCallback((_id, index) => {
-    setAttributes(att => att.filter((v, i) => i !== index));
-    if (_id) {
-    // @ts-ignore
-      setDeletedAttributes(attr => [...attr, _id]);
-    }
-  }, []);
-
-  const [nodeColor, setNodeColor] = useState({
-    r: "255", g: "255", b: "255", a: "1"
-  });
-  const handleNodeColorChange = useCallback((color) => setNodeColor(color.rgb), []);
-  const [nodeBorderColor, setNodeBorderColor] = useState({
-    r: "0", g: "0", b: "0", a: "1"
-  });
-  const handleBorderColorChange = useCallback((color) => setNodeBorderColor(color.rgb), []);
-
-  const [nodeLabelColor, setNodeLabelColor] = useState({
-    r: "0", g: "0", b: "0", a: "1"
-  });
-  const handleLabelColorChange = useCallback((color) => setNodeLabelColor(color.rgb), []);
-
-  // socket for cvr
-  const [subscription, setSubscription] = useState(null);
-  // const [colabSubscription, setColabSubscription] = useState(null);
-
-
-  const handleVisabilityChange = useCallback(() => dispatch(changeHandleVisability(!handleVisability)), []);
-
-
-  const [showInternationalDisclaimer, setShowInternationalDisclaimer] = useState(false);
-
-  const closeInternationalDisclaimer = (doNotShowAgain) => {
-    setShowInternationalDisclaimer(false);
-    if (doNotShowAgain) {
-      dispatch(doNotShowInternationalDisclaimerAgain);
-    }
-  };
-
-
-  const handleCvrSuccess = (_nodes, _edges) => {
-    setShowCvrModal(false);
-    dispatch(cvrSuccess(getLayoutedElements(_nodes, _edges)));
-
-    if (internationalDisclaimer && _nodes[0].data.data_provider === "firmnav") {
-      setShowInternationalDisclaimer(true);
-    }
-    setTimeout(() => {
-      document.getElementById("fitView")?.click();
-    }, 100
-    );
-  };
-
-
-  const handleCvrError = () => {
-    setShowCvrModal(false);
-    dispatch(showNotifAction(t('workspaces.drawing_error')));
-    dispatch(stopLoading);
-  };
-
-  const handleUncertainCompanies = (companies = []) => {
-    companies.length > 0 && setShowCvrModal(true);
-    dispatch(uncertainCompaniesChange(companies));
-  };
-
-  // const handleNewConnection = (data) => {
-  //   dispatch(setConnectedUsers(data));
-  // };
-
-  useEffect(() => {
-    connection.connect(user);
-
-    // storing the subscription in the global variable
-    // passing the incoming data handler fn as a second argument
-
-    const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
-    setSubscription(sub);
-
-    // const sub2 = connection.subscribeToWorkspace(`collaboration:${id}`, handleNewConnection);
-    // setColabSubscription(sub2);
-
-    // if (id) {
-    //   dispatch(connectNewUser(user, id));
-    // }
-
-
-    // Specify how to clean up after this effect:
-    return function cleanup() {
-      if (subscription) {
-        // @ts-ignore
-        subscription.close();
-      }
-
-      // if (colabSubscription) {
-      //   // @ts-ignore
-      //   colabSubscription.close();
-      // }
-    };
-  }, []);
-
-
-  const closeNode = useCallback(() => {
-    if (!showNodePopper) {
-      setDefineNodeOpen(false);
-      setNodeLabel('');
-      setNodeDisplayName('');
-      setNodeFigur(null);
-      setAttributes([initialAttribut]);
-      setChoosenNode(null);
-      setIsUpdatingElement(false);
-    }
-  }, [showNodePopper]);
-
-  const highlightAlertItems = (alert, constant = false) => {
-    alert.elements.forEach((element) => {
-      let htmlNode;
-      if (isNode(element)) {
-        htmlNode = document.querySelector(`[data-id="${element.id}"]`);
-      } else {
-        htmlNode = document.querySelector(`.id_${element.id}`);
-      }
-      htmlNode.classList.add(constant ? 'pulseConstant' : 'pulse');
-    });
-  };
-
-  const removeHighlightAlert = () => {
-    Array.from(document.querySelectorAll('.pulse')).map(x => x.classList.remove('pulse'));
-    Array.from(document.querySelectorAll('.pulseConstant')).map(x => x.classList.remove('pulseConstant'));
-  };
-
-  const handleAlerts = (_alerts, initial) => {
-    if (initial) {
-      setAlerts([..._alerts]);
-    } else {
-      const cleanAlertsString = alerts.map(alert => alert.elements.map(x => x.id).join(''));
-      const newAlerts = _alerts.filter(x => !cleanAlertsString.includes(x.elements.map(y => y.id).join('')));
-
-      removeHighlightAlert();
-
-      newAlerts.forEach((alert, index) => {
-        highlightAlertItems(alert);
-        setAlerts(list => [...list, alert]);
-
-        toast(alert.alert.label, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: false,
-          toastId: alerts.length + index,
-          style: {
-            backgroundColor: theme.palette.primary.main,
-            color: 'white'
-          },
-          onClick: (e) => {
-            setAlertId(Number(e.currentTarget.id));
-          }
-        });
-      });
-    }
-  };
-
-  const updateNodeDisplayName = (name) => {
-    const _attributes = JSON.stringify(attributes.filter(a => a.label));
-    const nodeId = choosenNode ? choosenNode.id : null;
-    const _nodeLabel = choosenNode ? choosenNode.label : null;
-    if (isUpdatingElement && elementToUpdate) {
-      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, name, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
-    }
-  };
-
-  const closeDefineEdge = useCallback(() => {
-    if (!showEdgePopper) {
-      setDefineEdgeOpen(false);
-      setIsUpdatingElement(false);
-      setRelationshipLabel('');
-      setRelationshipValue('');
-      setRelationshipType('custom');
-      setRelationshipColor({
-        r: "0", g: "0", b: "0", a: "1"
-      });
-      setShowArrow(false);
-      setAnimatedLine(false);
-      setShowlabel(false);
-      setLineThrough(false);
-    }
-  }, [showEdgePopper]);
-
-  const updateEdgeDisplayName = (name, edgeTextTarget, edgeTextActualTarget, edge) => {
-    const choosenRelationship = relationships.toJS().find(r => r.label === edge.data.label);
-    if (isUpdatingElement && elementToUpdate && choosenRelationship) {
-      dispatch(putEdge(
-        user,
-        elementToUpdate.id,
-        choosenRelationship.id,
-        choosenRelationship.label,
-        name,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        closeDefineEdge,
-        handleAlerts,
-        id,
-        edgeTextTarget,
-        edgeTextActualTarget,
-      ));
-    }
-  };
-
-  const handleNodeSave = useCallback((x?: number, y?: number, drag?: boolean) => {
-    const _attributes = JSON.stringify(attributes.filter(a => a.label));
-    const rf = rfInstance?.toObject();
-    if (!x && !y) {
-      x = rf && reactFlowDimensions ? (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250 : undefined;
-      y = rf && reactFlowDimensions ? (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150 : undefined;
-    }
-
-    const nodeId = choosenNode ? choosenNode.id : null;
-    const _nodeLabel = choosenNode ? choosenNode.label : null;
-
-    if (isUpdatingElement && elementToUpdate && !drag) {
-      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
-    } else if (drag) {
-      dispatch(postNode(
-        user,
-            id as string,
-            null, null,
-            "", null,
-            JSON.stringify({
-              r: 255, g: 255, b: 255, a: 1
-            }), JSON.stringify({
-              r: 0, g: 0, b: 0, a: 1
-            }),
-            JSON.stringify([initialAttribut].filter(a => a.label)), closeNode, handleAlerts,
-            x, y
-      ));
-    } else {
-      dispatch(postNode(
-        user,
-            id as string,
-            nodeId, _nodeLabel,
-            nodeDisplayName, nodeFigur,
-            JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
-            _attributes, closeNode, handleAlerts,
-            x, y
-      ));
-    }
-  }, [attributes, rfInstance, choosenNode, isUpdatingElement, elementToUpdate, nodeDisplayName, nodeFigur, nodeColor, nodeBorderColor, nodeLabelColor, deletedAttributes, id]);
-
-  const edgePopperComponentRef = useRef<any>(null);
-
-  const handleNoLabelDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge) => {
-    event.persist();
-    setRelationshipLabel(edge.data.label);
-    setRelationshipValue(edge.data.value);
-    setRelationshipType(edge.type || 'custom');
-    setRelationshipColor(edge.data.color);
-    setShowArrow(edge.data.showArrow);
-    setAnimatedLine(edge.data.animated);
-    setShowlabel(edge.data.showLabel);
-    setLineThrough(edge.data.lineThrough);
-    const target = event.target as SVGElement;
-    handleShowEdgePopper();
-    setEdgePopperRef(target);
-
-    if (edgePopperComponentRef.current) {
-      edgePopperComponentRef.current.toggleLabelMenu(event);
-    }
-  };
+  const {
+    edgePopperRef,
+    defineEdgeOpen,
+    updateEdgeDisplayName,
+    handleNoLabelDoubleClick,
+    handleRelationshipSave,
+    handleChangeLabel,
+    handleChangeValue,
+    handleTypeChange,
+    handleColorChange,
+    handleShowArrowChange,
+    handleAnimatedLineChange,
+    handleShowLabelChange,
+    handleLineThroughChange,
+    handleHideEdgePopper,
+    setEdgePopperRef,
+    setIsUpdatingEdge,
+    setEdgeToUpdate,
+    setDefineEdgeOpen,
+    handleShowEdgePopper,
+    onConnect,
+    onEdgeClick,
+    closeDefineEdge,
+    relationshipLabel,
+    relationshipValue,
+    relationshipType,
+    relationshipColor,
+    showArrow,
+    animatedLine,
+    showLabel,
+    lineThrough,
+    isUpdatingEdge,
+    edgeToUpdate,
+    showEdgePopper,
+    edgePopperComponentRef
+  } = useEdge(
+    dispatch,
+    user,
+    relationships,
+    handleAlerts,
+    id,
+    signed,
+    plan_id,
+    t
+  );
 
   const {
     removeNodeTextTarget,
     onNodeDoubleClick,
     onEdgeDoubleClick,
-    edgeTarget,
     removeEdgeTextTarget
   } = useDoubbleClick(updateNodeDisplayName, updateEdgeDisplayName, relationships, handleHideEdgePopper, handleHideNodePopper, handleNoLabelDoubleClick);
 
@@ -602,411 +340,95 @@ const Workspace = (props) => {
     setShowContextMenu(false);
   }, []);
 
-  const handleRelationshipSave = () => {
-    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
+  const { onNodesChange, onEdgesChange } = useChangeElements(dispatch, nodeElements, edgeElements);
 
-    if (isUpdatingElement && elementToUpdate) {
-      dispatch(putEdge(
-        user,
-        elementToUpdate.id,
-        choosenRelationship?.id,
-        choosenRelationship?.label,
-        relationshipValue,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        closeDefineEdge,
-        handleAlerts,
-        id
-      ));
-    }
-  };
 
-  const removeAllUpdatingRefference = () => {
+  const removeAllUpdatingRefference = useCallback(() => {
     removeNodeTextTarget();
+    removeEdgeTextTarget();
     setNodePopperRef(null);
     setEdgePopperRef(null);
-    setIsUpdatingElement(false);
-    setElementToUpdate(null);
+    setIsUpdatingNode(false);
+    setNodeToUpdate(null);
+    setIsUpdatingEdge(false);
+    setEdgeToUpdate(null);
     handleHideNodePopper();
     handleHideEdgePopper();
-  };
-
-
-  const onConnect = (data: Edge<any> | Connection) => {
-    if (data.source !== data.target) {
-      const color = {
-        r: "0", g: "0", b: "0", a: "1"
-      };
-      const edge = {
-        relationship_id: null,
-        relationshipLabel: null,
-        relationshipValue: null,
-        relationshipColor: color,
-        relationshipType: "default",
-        showArrow: false,
-        animatedLine: false,
-        showLabel: false,
-        lineThrough: false,
-        ...data as Connection
-      };
-
-      dispatch(postEdge(user, id as string, edge, closeDefineEdge));
-    }
-  };
+    setShowContextMenu(false);
+  }, [removeNodeTextTarget, removeEdgeTextTarget]);
 
   const onNodesDelete = useCallback(
-    (_nodes: TCustomNode[]) => {
+    (_nodes: TCustomNode[], changeNode?: boolean) => {
       if (_nodes.length === 1) {
         setDefineNodeOpen(false);
       }
       dispatch(deleteWorkspaceNodes(user, _nodes));
 
-      hideContext();
+      if (changeNode) {
+        onNodesChange(_nodes.map(n => ({ id: n.id, type: "remove" })));
+      }
+
+      removeAllUpdatingRefference();
     },
-    [],
+    [nodeElements, edgeElements],
   );
 
+
   const onEdgesDelete = useCallback(
-    (_edges: TCustomEdge[]) => {
-      console.log(_edges);
+    (_edges: TCustomEdge[], changeEdge?: boolean) => {
       if (_edges.length === 1) {
         setDefineEdgeOpen(false);
       }
       dispatch(deleteWorkspaceEdges(user, _edges));
 
-      hideContext();
+      if (changeEdge) {
+        onEdgesChange(_edges.map(e => ({ id: e.id, type: "remove" })));
+      }
+
+      removeAllUpdatingRefference();
     },
-    [],
+    [nodeElements, edgeElements],
+
   );
-
-
-  const [activeElement, setActiveElement] = useState<TCustomNode | TCustomEdge | null>(null);
 
 
   const onElementClick = useCallback(
-    (element) => {
-      setActiveElement(element);
-      dispatch(setShowCompanyData(false));
-      setDefineEdgeOpen(false);
-      setDefineNodeOpen(false);
-      setIsUpdatingElement(true);
-      setShowContextMenu(false);
-      setElementToUpdate(element);
-      setDeletedAttributes([]);
+    () => {
       removeNodeTextTarget();
-      removeEdgeTextTarget();
-      setNodePopperRef(null);
-      setEdgePopperRef(null);
-      handleHideNodePopper();
       handleHideEdgePopper();
+      removeEdgeTextTarget();
+      setShowContextMenu(false);
+      setEdgePopperRef(null);
+      setNodePopperRef(null);
+      handleHideNodePopper();
     },
     [],
   );
 
-  const onNodeClick = useCallback(
-    (event: React.MouseEvent, node: TCustomNode, showFull?: boolean) => {
-      if (signed) {
-        return undefined;
-      }
-      onElementClick(node);
-      const {
-        backgroundColor: nodeBgColor,
-        borderColor: nodeBorder,
-        labelColor: lColor,
-        label: _label,
-        displayName,
-        figur,
-        attributes: _attributes
-      } = node.data as NodeData;
+  const handleNodeClick = useCallback((event: React.MouseEvent, node: TCustomNode, showFull?: boolean) => {
+    onElementClick();
+    onNodeClick(event, node, showFull);
+  }, []);
 
-      const backgroundColor = nodeBgColor ? nodeBgColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
-      const borderColor = nodeBorder && !nodeBorder.includes("undefined") ? nodeBorder.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
-      const labelColor = lColor ? lColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+  const handleEdgeClick = useCallback((event: React.MouseEvent, edge: TCustomEdge, showFull?: boolean) => {
+    onElementClick();
+    onEdgeClick(event, edge, showFull);
+  }, []);
 
-      setNodeLabel(_label || "");
-      setNodeDisplayName(displayName || '');
-      setNodeFigur(figur);
-      setAttributes([..._attributes, initialAttribut]);
-      setNodeColor({
-        r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
-      });
-
-      setNodeBorderColor({
-        r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
-      });
-      setNodeLabelColor({ r: labelColor[0], g: labelColor[1], b: labelColor[2], a: labelColor[3] });
-      if (showFull) {
-        setDefineNodeOpen(true);
-      } else if (node.type === "custom") {
-        const target = event.target as HTMLElement;
-        const ifDivtarget = target.querySelector("#nodeLabel");
-        handleShowNodePopper();
-        setNodePopperRef(target.nodeName === "H6" ? event.target : ifDivtarget);
-      }
-    },
-    [],
-  );
-
-  const onEdgeClick = useCallback(
-    (event: React.MouseEvent, edge: TCustomEdge, showFull?: boolean) => {
-      if (signed) {
-        return undefined;
-      }
-      onElementClick(edge);
-      const foreignObj = document.getElementById("doubleClickForeign");
-
-      if (foreignObj) {
-        if (foreignObj.contains(event.target as HTMLElement)) {
-          return undefined;
-        }
-      }
-
-      if (edgeTarget) {
-        return undefined;
-      }
-
-      const {
-        label: edgeLabel,
-        value,
-        color,
-        showArrow: edgeShowarrow,
-        animated,
-        showLabel: edgeShowLabel,
-        lineThrough: edgeLineThrough
-      } = edge.data as EdgeData;
-
-      event.persist();
-      setRelationshipLabel(edgeLabel || "");
-      setRelationshipValue(value);
-      setRelationshipType(edge.type || 'default');
-      setRelationshipColor(color);
-      setShowArrow(edgeShowarrow);
-      setAnimatedLine(animated);
-      setShowlabel(edgeShowLabel);
-      setLineThrough(edgeLineThrough);
-      if (showFull) {
-        setDefineEdgeOpen(true);
-      } else {
-        const target = event.target as SVGElement;
-        handleShowEdgePopper();
-        setEdgePopperRef(target);
-      }
-    },
-    [],
-  );
 
   const { handleExcel, loadingExcel } = useExcelExport(nodeElements, edgeElements, label);
-
-
-  // WORKSPACE GENERAL
-
-  const onWorkspaceSave = useCallback(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      const _nodes = flow.nodes;
-
-      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      user && id && dispatch(saveWorkspace(user, id, flow.viewport.zoom, flow.viewport.x, flow.viewport.y, JSON.stringify(mappedNodes)));
-    }
-  }, [rfInstance, user]);
-
-
-  const onInit: OnInit = useCallback((_reactFlowInstance) => {
-    setRfInstance(_reactFlowInstance);
-    dispatch(showWorkspace(user, id as string, setMetaOpen, handleAlerts, _reactFlowInstance));
-    _reactFlowInstance.fitView();
-  }, []);
-
-  const onMove: OnMove = useCallback((e, viewport) => {
-    if (viewport) {
-      setCurrentZoom(viewport.zoom);
-    }
-  }, []);
-
-  const toggleSubMenu = useCallback(() => dispatch(toggleAction), [toggleAction]);
-
-  useEffect(() => {
-    dispatch(getGroupDropDown(user));
-    dispatch(closeMenuAction);
-
-    return () => {
-      dispatch(openMenuAction);
-    };
-  }, [user]);
-
-  useEffect(() => {
-    if (group) {
-      dispatch(getRelationships(user, group));
-      dispatch(getNodes(user, group));
-      dispatch(getAttributeDropDown(user, group));
-    }
-  }, [user, group]);
-
-  useEffect(() => {
-    if (alertId || alertId === 0) {
-      setAlertOpen(true);
-    }
-  }, [alertId]);
-
-
-  useEffect(() => {
-    const _node = nodes.find(r => r.label === nodeLabel);
-    if (_node) {
-      setChoosenNode(_node);
-      setNodeColor(JSON.parse(_node.style).backgroundColor);
-      setNodeBorderColor(JSON.parse(_node.style).borderColor);
-      setAttributes([..._node.attributes, initialAttribut]);
-    }
-  }, [nodeLabel]);
-
-
-  // RELATIONSHIP
-
-
-  const handleChangeLabel = useCallback((_label) => {
-    if (_label.__isNew__ && plan_id !== 1) {
-      dispatch(addEdgeToList({
-        id: null,
-        label: _label.value,
-        description: null,
-        values: [],
-        style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
-      }));
-    }
-    if (_label.__isNew__ && plan_id === 1) {
-      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_relationship_types')));
-    } else {
-      setRelationshipLabel(_label.value);
-      setRelationshipValue("");
-    }
-  }, []);
-  const handleChangeValue = useCallback((value) => {
-    if (value.value) {
-      setRelationshipValue(value.value);
-    } else {
-      setRelationshipValue(value.target.value);
-    }
-  }, []);
-  const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
-  const handleColorChange = useCallback((color) => setRelationshipColor(color.rgb), []);
-  const handleShowArrowChange = useCallback(() => setShowArrow(val => !val), []);
-  const handleAnimatedLineChange = useCallback(() => setAnimatedLine(val => !val), []);
-  const handleShowLabelChange = useCallback(() => setShowlabel(val => !val), []);
-  const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
-  const handleDeleteEdge = useCallback(() => elementToUpdate && onEdgesDelete([elementToUpdate as TCustomEdge]), [elementToUpdate]);
-
-
-  const handlePostSticky = (e?: any, shortcut = false, x?: number, y?: number) => {
-    const rf = rfInstance?.toObject();
-    // @ts-ignore
-    const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
-
-    const position = rfInstance?.project({
-      // @ts-ignore
-      x: mouse.clientX - reactFlowBounds.left,
-      // @ts-ignore
-      y: mouse.clientY - reactFlowBounds.top,
-    });
-
-
-    if (!x && !y) {
-      x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.viewport.x * -1 + reactFlowDimensions.width / 3) / rf.viewport.zoom - 250 : 0;
-      y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.viewport.y * -1 + reactFlowDimensions.height / 2) / rf.viewport.zoom - 150 : 0;
-    }
-
-
-    if (x && y) {
-      dispatch(postSticky(user, id as string, x, y));
-    }
-
-    setShowContextMenu(false);
-  };
 
   window.onbeforeunload = () => {
     onWorkspaceSave();
   };
 
-  useEffect(() => {
-    if (reactFlowContainer) {
-      setReactFlowDimensions({
-        // @ts-ignore
-        height: reactFlowContainer.current.clientHeight, // @ts-ignore
-        width: reactFlowContainer.current.clientWidth
-      });
-    }
-  }, []);
-
-
   const onMouseLeave = useCallback(() => {
     onWorkspaceSave();
-  }, [rfInstance, nodeElements, edgeElements]);
-
-  const onConfirm = (value, close) => {
-    const erstNodeArray = Object.values(erstTypes.nodes);
-    const erstEdgeArray = Object.values(erstTypes.edges);
-    const nodeLabels = nodes.map((node) => node.label);
-    const relationshipLabels = relationships.toJS().map((r) => r.label);
-    if (erstNodeArray.every(n => nodeLabels.includes(n)) && erstEdgeArray.every(e => relationshipLabels.includes(e))) {
-      if (!subscription) {
-        connection.connect();
-        const sub = connection.subscribeToCvr('cvr:' + id, handleCvrSuccess, handleCvrError, handleUncertainCompanies);
-        setSubscription(sub);
-      }
-      dispatch(cvrWorkspace(user, id as string, value, close, erstTypes));
-    } else {
-      setShowMapErst(true);
-    }
-  };
+  }, [onWorkspaceSave]);
 
 
-  const handlePaste = (elementsToAdd) => {
-    // @ts-ignore
-    const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
-    // @ts-ignore
-    const position = rfInstance.project({
-      // @ts-ignore
-      x: mouse.clientX - reactFlowBounds.left,
-      // @ts-ignore
-      y: mouse.clientY - reactFlowBounds.top,
-    });
-
-    if (!mouse.clientY) {
-      const rf = rfInstance?.toObject();
-      if (rf && reactFlowDimensions) {
-        position.x = (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250;
-        position.y = (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150;
-      }
-    }
-
-
-    const sortedByY = elementsToAdd.filter(e => isNode(e)).sort((a, b) => b.position.y - a.position.y);
-    const topNode = sortedByY[sortedByY.length - 1];
-
-    const now = Date.now();
-    elementsToAdd.map((element) => {
-      if (isEdge(element)) {
-        element.id = `${element.id}_${now}-edit`;
-        element.source = `${element.source}_${now}-edit`;
-        element.target = `${element.target}_${now}-edit`;
-      } else {
-        element.id = `${element.id}_${now}-edit`;
-        const xDistanceToTopNode = element.position.x - topNode.position.x;
-        const yDistanceToTopNode = element.position.y - topNode.position.y;
-
-        element.position.x = position.x + xDistanceToTopNode;
-        element.position.y = position.y + yDistanceToTopNode;
-      }
-      return element;
-    });
-
-    dispatch(addElements(user, id as string, elementsToAdd));
-  };
-
-  const { cut, copy, paste } = useCutCopyPaste(nodeElements, edgeElements, onNodesDelete, onEdgesDelete, handlePaste);
+  const _addElements = (elementsToAdd) => dispatch(addElements(user, id as string, elementsToAdd));
+  const { cut, copy, paste } = useCutCopyPaste(nodeElements, edgeElements, onNodesDelete, onNodesChange, _addElements, mouse, rfInstance, reactFlowContainer, reactFlowDimensions);
   const { handleNodeContextMenu,
     handlePaneContextMenu,
     handleSelctionContextMenu,
@@ -1016,17 +438,17 @@ const Workspace = (props) => {
     contextSelection,
     contextType } = useFlowContextMenus();
 
-
-  const [snapToGrid, setSnapToGrid] = useState(false);
-
-
   const handleOpenCvr = useCallback(() => {
     dispatch(handleRunIntro(false));
     setShowCvrModal(true);
   }, []);
+
   const handleGetCompanyData = useCallback((_id) => {
     dispatch(getCompanyData(user, _id, setShowContextMenu, handleHideNodePopper, handleHideEdgePopper));
-  }, []);
+  }, [handleHideNodePopper, setShowContextMenu, user]);
+
+  const { handleAutoLayout, handleImage, handlePowerpoint, snapToGrid, setSnapToGrid } = useMeta(dispatch, nodeElements, edgeElements, reactFlowContainer, label, user, id,);
+
   useWorkspaceHotKeys(
     setDefineNodeOpen,
     setShowContextMenu,
@@ -1045,15 +467,6 @@ const Workspace = (props) => {
   );
 
 
-  const handleAutoLayout = useCallback(() => dispatch(layoutElements(getLayoutedElements(nodeElements, edgeElements))), [nodeElements.length, edgeElements.length]);
-
-  const handleImage = useCallback((type, _stopLoading) => handleExport(type, reactFlowContainer, label, _stopLoading), []);
-
-  const handlePowerpoint = useCallback((_stopLoading) => {
-    id && dispatch(workspacePowerpoint(user, id, label, [...nodeElements, ...edgeElements], _stopLoading));
-  }, [nodeElements.length, edgeElements.length, label, id]);
-
-
   const onDragOver = (event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
@@ -1062,6 +475,7 @@ const Workspace = (props) => {
 
   const onDrop = (event) => {
     event.preventDefault();
+
     if (reactFlowContainer && rfInstance) {
       // @ts-ignore
       const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
@@ -1084,51 +498,21 @@ const Workspace = (props) => {
   };
 
   const { cursor, handleCursor, mouseActive, stickyActive, toggleMouse, toggleSticky, toggleNode, nodeActive } = useItemSidePanel();
+  useMouseLoading(handleCursor, mouseLoading);
 
-  useEffect(() => {
-    if (mouseLoading) {
-      handleCursor("progress");
-    } else {
-      handleCursor("auto");
-    }
-  }, [mouseLoading]);
-
-
-  const onPaneClick = useCallback((event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
-    removeAllUpdatingRefference();
-
-    if (reactFlowContainer && rfInstance) {
-      // @ts-ignore
-      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
-      const position = rfInstance.project({
-        x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top,
-      });
-      if (stickyActive) {
-        handlePostSticky(event, false, position.x, position.y);
-      }
-      if (nodeActive) {
-        closeNode();
-        handleNodeSave(position.x, position.y, true);
-      }
-    }
-  }, [reactFlowContainer, rfInstance, stickyActive, nodeActive]);
-
-  const paneContextNodeClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>) => {
-    if (reactFlowContainer && rfInstance) {
-    // @ts-ignore
-      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
-      const position = rfInstance.project({
-        x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top,
-      });
-      closeNode();
-      handleNodeSave(position.x, position.y, true);
-      setShowContextMenu(false);
-    }
-  };
-
-  const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
+  const { interactive, paneContextNodeClick, onPaneClick } = usePane(
+    removeAllUpdatingRefference,
+    reactFlowContainer,
+    rfInstance,
+    stickyActive,
+    handlePostSticky,
+    nodeActive,
+    closeNode,
+    handleNodeSave,
+    setShowContextMenu,
+    signed,
+    mouseActive
+  );
 
   const showPopperAgain = useCallback(() => {
     if (edgePopperRef) {
@@ -1139,18 +523,6 @@ const Workspace = (props) => {
     }
   }, [edgePopperRef, nodePopperRef]);
 
-  const onNodesChange = useCallback(
-    (changes) => {
-      dispatch(changeNodes(applyNodeChanges(changes, nodeElements)));
-    },
-    [nodeElements]
-  );
-  const onEdgesChange = useCallback(
-    (changes) => {
-      dispatch(changeEdges(applyEdgeChanges(changes, edgeElements)));
-    },
-    [edgeElements]
-  );
 
   const handleShare = (firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(user, id as string, firstName, lastName, email, phone, editable, setShareModalOpen));
 
@@ -1171,13 +543,12 @@ const Workspace = (props) => {
           onConnect={onConnect}
           minZoom={0.3}
           maxZoom={3}
+
           onNodeDragStart={hideContext}
           onNodeDragStop={showPopperAgain}
           onMoveEnd={showPopperAgain}
           onSelectionDragStop={showPopperAgain}
-          onConnectStart={() => {
-            console.log('sdmfæk');
-          }}
+          onConnectStart={removeAllUpdatingRefference}
           onDrop={onDrop}
           onDragOver={onDragOver}
           onDragStart={hideContext}
@@ -1201,12 +572,15 @@ const Workspace = (props) => {
           onEdgeContextMenu={handleEdgeContextMenu}
           snapToGrid={snapToGrid}
           snapGrid={[BASE_BG_GAP / currentZoom, BASE_BG_GAP / currentZoom]}
+
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
           onMove={onMove}
+
           onInit={onInit}
           connectionMode={ConnectionMode.Loose}
-          onNodeClick={onNodeClick}
-          onEdgeClick={onEdgeClick}
+          onNodeClick={handleNodeClick}
+          onEdgeClick={handleEdgeClick}
         >
           {!signed && <div data-html2canvas-ignore="true">
             <Collaboration
@@ -1341,8 +715,8 @@ const Workspace = (props) => {
         lineThrough={lineThrough}
         handleLineThroughChange={handleLineThroughChange}
         handleSave={handleRelationshipSave}
-        isUpdatingElement={isUpdatingElement}
-        handleDeleteEdge={handleDeleteEdge}
+        isUpdatingElement={isUpdatingEdge}
+        handleDeleteEdge={() => edgeToUpdate && onEdgesDelete([edgeToUpdate as TCustomEdge], true)}
         loading={loading}
       />}
       {defineNodeOpen && (
@@ -1355,7 +729,7 @@ const Workspace = (props) => {
           attributes={attributes}
           handleChangeAttributes={handleChangeAttributes}
           nodeColor={nodeColor}
-          handleChangeColor={(color) => setNodeColor(color.rgb)}
+          handleChangeColor={handleChangeNodeColor}
           nodeBorderColor={nodeBorderColor}
           handleBorderColorChange={handleBorderColorChange}
           nodeLabelColor={nodeLabelColor}
@@ -1364,10 +738,10 @@ const Workspace = (props) => {
           nodeDisplayName={nodeDisplayName}
           nodeFigur={nodeFigur}
           handleNodeFigurChange={handleNodeFigur}
-          isUpdatingElement={isUpdatingElement}
-          elementToUpdate={elementToUpdate}
-          handleDisplayNameChange={(e) => setNodeDisplayName(e.target.value)}
-          handleDeleteNode={() => elementToUpdate && onNodesDelete([elementToUpdate as TCustomNode])}
+          isUpdatingElement={isUpdatingNode}
+          elementToUpdate={nodeToUpdate}
+          handleDisplayNameChange={handleDisplayNameChange}
+          handleDeleteNode={() => nodeToUpdate && onNodesDelete([nodeToUpdate as TCustomNode], true)}
           loading={loading}
           attributesDropDownOptions={attributesDropDownOptions}
           handleRemoveAttributes={handelRemoveAttributes}
@@ -1485,7 +859,7 @@ const Workspace = (props) => {
             contextNode={contextNode}
             contextType={contextType}
             show={showContextMenu}
-            handleEdit={onElementClick}
+            handleEdit={handleNodeClick}
             handleShowNodeRelations={handleShowNodeRelations}
             showCompanyInfo={handleGetCompanyData}
             getAddressInfo={(_id) => dispatch(getAddressInfo(user, _id, setShowContextMenu))}
@@ -1532,9 +906,9 @@ const Workspace = (props) => {
             nodeLabel={nodeLabel}
             handleChangeLabel={handleChangeLabelNode}
             handleNodeSave={handleNodeSave}
-            editData={onNodeClick}
+            editData={handleNodeClick}
             loading={loading}
-            activeElement={activeElement as Node<NodeData>}
+            activeElement={nodeToUpdate as Node<NodeData>}
             getCompanyData={handleGetCompanyData}
             attributesDropDownOptions={attributesDropDownOptions}
             attributes={attributes}
@@ -1549,8 +923,8 @@ const Workspace = (props) => {
             edgePopperRef={edgePopperRef}
             showEdgePopper={showEdgePopper}
             currentZoom={currentZoom}
-            editData={onEdgeClick}
-            activeElement={activeElement}
+            editData={handleEdgeClick}
+            activeElement={edgeToUpdate}
             edgeLabel={relationshipLabel}
             relationships={relationships}
             relationshipLabel={relationshipLabel}
@@ -1568,7 +942,7 @@ const Workspace = (props) => {
             handleShowLabelChange={handleShowLabelChange}
             lineThrough={lineThrough}
             handleLineThroughChange={handleLineThroughChange}
-            handleDeleteEdge={handleDeleteEdge}
+            handleDeleteEdge={() => edgeToUpdate && onEdgesDelete([edgeToUpdate as TCustomEdge], true)}
             handleHideEdgePopper={handleHideEdgePopper}
             popperComponentRef={edgePopperComponentRef}
           />}
