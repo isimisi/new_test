@@ -83,7 +83,7 @@ export const personMapping = (
   handleMouseOver?: (e) => void,
   handleMouseLeave?: (e) => void
 ) => ({
-  value: person.name || person.value,
+  value: person.name || person.email || person.value,
   ...("__isNew__" in person && { __isNew__: person.__isNew__ }),
   label: (
     <div
@@ -107,11 +107,13 @@ export const personMapping = (
         style={{
           width: 15,
           height: 15,
-          backgroundColor: stringToColor(person.name || person.email),
+          backgroundColor: stringToColor(
+            person.name || person.email || person.value
+          ),
           fontSize: 8,
           marginRight: 5
         }}
-        {...stringAvatar(person.name, person.email)}
+        {...stringAvatar(person.name || person.value, person.email)}
       />
 
       <span style={{ paddingRight: "5px" }}>{person.name || person.label}</span>

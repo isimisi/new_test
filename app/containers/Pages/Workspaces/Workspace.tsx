@@ -547,7 +547,7 @@ const Workspace = (props) => {
       ));
     }
   };
-
+  // be awere of
   const edgePopperComponentRef = useRef<any>(null);
 
   const handleNoLabelDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge) => {
