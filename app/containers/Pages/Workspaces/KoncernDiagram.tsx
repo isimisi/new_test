@@ -46,6 +46,7 @@ import CustomNode from "@components/Workspace/Node/CustomNode";
 import Meta from "@components/Flow/Actions/Meta10";
 import useMeta from "@hooks/flow/useMeta";
 import Controls from "@components/Flow/Actions/Controls10";
+import Items from "@components/Flow/Actions/Items";
 
 const nodeTypes = {
   custom: CustomNode,
@@ -175,6 +176,7 @@ const Workspace = props => {
               handleImage={handleImage}
               backLink="/app"
             />
+            <Items />
             <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
 
           </div>
@@ -255,7 +257,7 @@ const Workspace = props => {
                       fontSize="inherit"
                       className={classes.textIconError}
                     />
-                    Regnskabstal (beta)
+                    Regnskabstal
                   </Typography>
                 </div>
               </div>

@@ -22,10 +22,11 @@ const config = genConfig({
 interface Props {
   setShareModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   timeline?: boolean;
+  setShowSignWorkspace?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const Collaboration = (props: Props) => {
-  const { setShareModalOpen, timeline } = props;
+  const { setShareModalOpen, timeline, setShowSignWorkspace } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const { user } = useAuth0();
@@ -34,6 +35,8 @@ const Collaboration = (props: Props) => {
 
   const toggleShare = () =>
     setShareModalOpen && setShareModalOpen(prevVal => !prevVal);
+
+  const sign = () => setShowSignWorkspace && setShowSignWorkspace(true);
 
   return (
     <Paper elevation={4} className={classes.collaborationPaper}>
@@ -87,11 +90,11 @@ const Collaboration = (props: Props) => {
       <Button
         variant="contained"
         color="primary"
-        disabled={timeline || setShareModalOpen === undefined}
+        disabled={timeline || (setShareModalOpen === undefined && setShowSignWorkspace === undefined)}
         className={classes.shareButton}
-        onClick={toggleShare}
+        onClick={setShowSignWorkspace ? sign : toggleShare}
       >
-        {t("workspaces.share")}
+        {setShowSignWorkspace ? t("workspaces.sign") : t("workspaces.share")}
       </Button>
     </Paper>
   );

@@ -16,20 +16,18 @@ import ReactFlow, {
   Node,
   ConnectionMode,
   BackgroundVariant,
+  ReactFlowInstance,
 } from 'react-flow-renderer10';
 
 import useMouse from '@react-hook/mouse-position';
-// import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
-import Typography from '@material-ui/core/Typography';
-import logoBeta from '@images/logoBeta.svg';
 
-import brand from '@api/ui/brand';
 import PropTypes from 'prop-types';
 import {
   useHistory
 } from 'react-router-dom';
 import { useAuth0, User } from "@auth0/auth0-react";
 
+import SignWorkspace from '@components/Workspace/Modals/SignWorkspace';
 
 import { useCutCopyPaste } from '@hooks/useCutCopyPaste';
 import { getPlanId } from "@helpers/userInfo";
@@ -68,12 +66,12 @@ import {
 import {
   labelChange, descriptionChange,
   addGroup, putWorkspace, closeNotifAction,
-  showWorkspace, saveWorkspace, addWorkspaceNodeToList,
+  showWorkspace, addWorkspaceNodeToList,
   addEdgeToList, shareWorkspace, shareOrgChange,
   setShowCompanyData, setShowAddressInfo, handleRunIntro,
   mapUncertainCompanies, changeTags, addElements,
   getCompanyData, getAddressInfo,
-  stopLoading, deleteWorkspaceEdges, deleteWorkspaceNodes,
+  stopLoading, deleteWorkspaceEdges, deleteWorkspaceNodes, signWorkspace,
 } from './reducers/workspaceActions';
 import './workspace.css';
 
@@ -102,6 +100,8 @@ import CustomNode from "@components/Workspace/Node/CustomNode";
 import StickyNoteNode from "@components/Workspace/Node/StickyNoteNode";
 import ControlPoint from "@components/Workspace/Node/ControlPoint";
 import CustomEdge from "@components/Workspace/Edge/CustomEdge";
+import useAutoSave from '@hooks/workspace/useAutoSave';
+import Signing from '@components/Workspace/Public/Signing';
 
 export const nodeTypes = {
   custom: CustomNode,
@@ -113,8 +113,15 @@ export const edgeTypes = {
   custom: CustomEdge
 };
 
+/**
+ * pub is related to wheter or not the workspace is public.
+ * Thus it will be avaialable on a public route.
+ * There is some things that is different why the pub will be used in a lot of ternary operators,
+ * if we do not want the logic in public
+ * */
+
 const Workspace = (props) => {
-  const { classes } = props;
+  const { classes, pub } = props;
   const dispatch = useAppDispatch();
   const history = useHistory();
   const theme = useTheme();
@@ -158,6 +165,8 @@ const Workspace = (props) => {
   const signedBy = useAppSelector(state => state[reducer].get('signedBy'));
   const showCompanyData = useAppSelector(state => state[reducer].get('showCompanyData'));
   const showAddressInfo = useAppSelector(state => state[reducer].get('showAddressInfo'));
+  const editable = useAppSelector(state => state[reducer].get('editable'));
+
 
   // const runIntro = useAppSelector(state => state[reducer].get('runIntro'));
   // const introStepIndex = useAppSelector(state => state[reducer].get('introStepIndex'));
@@ -181,7 +190,8 @@ const Workspace = (props) => {
     setAlertOpen
   } = useAlerts();
   const { onMove, currentZoom } = useMove();
-  const initFunc = (_reactFlowInstance) => dispatch(
+
+  const initFunc = (_reactFlowInstance: ReactFlowInstance<any, any>) => dispatch(
     showWorkspace(user, id as string, setMetaOpen, handleAlerts, _reactFlowInstance)
   );
   const { rfInstance, onInit } = useInit(initFunc);
@@ -191,15 +201,12 @@ const Workspace = (props) => {
   const closeShareModal = () => setShareModalOpen(false);
   const [showAlertLog, setShowAlertLog] = useState(false);
 
-  const onWorkspaceSave = useCallback(() => {
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      const _nodes = flow.nodes;
-
-      const mappedNodes = _nodes.map(n => ({ id: n.id, x: n.position.x, y: n.position.y }));
-      user && id && dispatch(saveWorkspace(user, id, flow.viewport.zoom, flow.viewport.x, flow.viewport.y, JSON.stringify(mappedNodes)));
-    }
-  }, [rfInstance, user]);
+  const { onWorkspaceSave, onMouseLeave } = useAutoSave(
+    rfInstance,
+    user,
+    id,
+    dispatch
+  );
 
   const {
     showCvrModal,
@@ -418,14 +425,6 @@ const Workspace = (props) => {
 
   const { handleExcel, loadingExcel } = useExcelExport(nodeElements, edgeElements, label);
 
-  window.onbeforeunload = () => {
-    onWorkspaceSave();
-  };
-
-  const onMouseLeave = useCallback(() => {
-    onWorkspaceSave();
-  }, [onWorkspaceSave]);
-
 
   const _addElements = (elementsToAdd) => dispatch(addElements(user, id as string, elementsToAdd));
   const { cut, copy, paste } = useCutCopyPaste(nodeElements, edgeElements, onNodesDelete, onNodesChange, _addElements, mouse, rfInstance, reactFlowContainer, reactFlowDimensions);
@@ -524,22 +523,23 @@ const Workspace = (props) => {
   }, [edgePopperRef, nodePopperRef]);
 
 
-  const handleShare = (firstName, lastName, email, phone, editable) => dispatch(shareWorkspace(user, id as string, firstName, lastName, email, phone, editable, setShareModalOpen));
+  const handleShare = (firstName, lastName, email, phone, edit) => dispatch(shareWorkspace(user, id as string, firstName, lastName, email, phone, edit, setShareModalOpen));
+  const [showSignWorkspace, setShowSignWorkspace] = useState(false);
 
 
   return (
     <div style={{ cursor }}>
       <Notification close={() => dispatch(closeNotifAction)} message={messageNotif} />
-      <div className={classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
+      <div className={pub ? classes.pubRoot : classes.root} ref={reactFlowContainer} onMouseLeave={onMouseLeave}>
 
         <ReactFlow
           proOptions={proOptions}
           nodes={nodeElements}
           edges={edgeElements}
-          onNodesDelete={onNodesDelete}
-          onEdgesDelete={onEdgesDelete}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
+          onNodesDelete={pub && !editable ? undefined : onNodesDelete}
+          onEdgesDelete={pub && !editable ? undefined : onEdgesDelete}
+          onNodesChange={pub && !editable ? undefined : onNodesChange}
+          onEdgesChange={pub && !editable ? undefined : onEdgesChange}
           onConnect={onConnect}
           minZoom={0.3}
           maxZoom={3}
@@ -547,17 +547,18 @@ const Workspace = (props) => {
           onNodeDragStart={hideContext}
           onNodeDragStop={showPopperAgain}
           onMoveEnd={showPopperAgain}
+
           onSelectionDragStop={showPopperAgain}
           onConnectStart={removeAllUpdatingRefference}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
+          onDrop={pub && !editable ? undefined : onDrop}
+          onDragOver={pub && !editable ? undefined : onDragOver}
           onDragStart={hideContext}
           onMoveStart={hideContext}
           onSelectionDragStart={hideContext}
           onPaneScroll={hideContext}
-          onPaneClick={onPaneClick}
-          onNodeDoubleClick={onNodeDoubleClick}
-          onEdgeDoubleClick={onEdgeDoubleClick}
+          onPaneClick={pub && !editable ? undefined : onPaneClick}
+          onNodeDoubleClick={pub && !editable ? undefined : onNodeDoubleClick}
+          onEdgeDoubleClick={pub && !editable ? undefined : onEdgeDoubleClick}
           nodesDraggable={interactive}
           nodesConnectable={interactive}
           elementsSelectable={interactive}
@@ -566,25 +567,25 @@ const Workspace = (props) => {
           zoomOnDoubleClick={interactive}
           zoomOnPinch={interactive}
           zoomOnScroll={interactive}
-          onNodeContextMenu={handleNodeContextMenu}
-          onPaneContextMenu={handlePaneContextMenu}
-          onSelectionContextMenu={handleSelctionContextMenu}
-          onEdgeContextMenu={handleEdgeContextMenu}
+          onNodeContextMenu={pub && !editable ? undefined : handleNodeContextMenu}
+          onPaneContextMenu={pub && !editable ? undefined : handlePaneContextMenu}
+          onSelectionContextMenu={pub && !editable ? undefined : handleSelctionContextMenu}
+          onEdgeContextMenu={pub && !editable ? undefined : handleEdgeContextMenu}
           snapToGrid={snapToGrid}
           snapGrid={[BASE_BG_GAP / currentZoom, BASE_BG_GAP / currentZoom]}
 
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
           onMove={onMove}
-
           onInit={onInit}
           connectionMode={ConnectionMode.Loose}
-          onNodeClick={handleNodeClick}
-          onEdgeClick={handleEdgeClick}
+          onNodeClick={pub && !editable ? undefined : handleNodeClick}
+          onEdgeClick={pub && !editable ? undefined : handleEdgeClick}
         >
           {!signed && <div data-html2canvas-ignore="true">
             <Collaboration
               setShareModalOpen={setShareModalOpen}
+              setShowSignWorkspace={pub && setShowSignWorkspace}
             />
             <Meta
               label={label}
@@ -599,7 +600,8 @@ const Workspace = (props) => {
               handleAutoLayout={handleAutoLayout}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
-              backLink="/app/workspaces"
+              backLink="/app"
+              pub={pub}
             />
             <Items
               toggleNode={toggleNode}
@@ -615,6 +617,8 @@ const Workspace = (props) => {
               toggleMouse={toggleMouse}
               toggleSticky={toggleSticky}
               zoom={currentZoom}
+              pub={pub}
+              editable={editable}
             />
             <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
           </div>}
@@ -638,35 +642,7 @@ const Workspace = (props) => {
             </div>
           </>
         )}
-        {signed ? (
-          <>
-            <a
-              href="https://www.juristic.io/"
-              className={classes.signedLogo}
-            >
-              <img className={classes.img} src={logoBeta} alt={brand.name} />
-            </a>
-
-            <div className={classes.signed}>
-              <div className={classes.signedRow}>
-                <div className={classes.signedCircle} />
-                <Typography className={classes.signedText}>
-                  {t('workspaces.approved_and_locked_off')}
-                  {' '}
-                  {' '}
-                  {signedBy}
-                </Typography>
-              </div>
-              <div className={classes.signedRow}>
-                <Typography className={classes.signedId}>
-                  {t('workspaces.id')}
-                  {' '}
-                  {window.btoa(signedBy + id)}
-                </Typography>
-              </div>
-            </div>
-          </>
-        ) : null}
+        {signed && <Signing signedBy={signedBy} id={id} />}
       </div>
 
       {metaOpen && <WorkspaceMeta
@@ -948,12 +924,22 @@ const Workspace = (props) => {
           />}
         </>
       )}
+      {showSignWorkspace && <SignWorkspace
+        open={showSignWorkspace}
+        closeForm={() => setShowSignWorkspace(false)}
+        onSave={() => dispatch(signWorkspace(user, id, setShowSignWorkspace))}
+      />}
     </div>
   );
 };
 
 Workspace.propTypes = {
   classes: PropTypes.object.isRequired,
+  pub: PropTypes.bool
+};
+
+Workspace.defaultProps = {
+  pub: false
 };
 
 export default withStyles(styles)(Workspace);

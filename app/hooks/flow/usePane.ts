@@ -18,7 +18,8 @@ const usePane = (
   handleNodeSave: (x: number, y: number, drag: boolean) => void,
   setShowContextMenu: (value: React.SetStateAction<boolean>) => void,
   signed: boolean,
-  mouseActive: boolean
+  mouseActive: boolean,
+  editable = true
 ) => {
   const onPaneClick = useCallback(
     (event: MouseEvent<Element, globalThis.MouseEvent>) => {
@@ -67,7 +68,10 @@ const usePane = (
     }
   };
 
-  const interactive = useMemo(() => !signed && mouseActive, [signed, mouseActive]);
+  const interactive = useMemo(() => editable && !signed && mouseActive, [
+    signed,
+    mouseActive,
+  ]);
 
   return { onPaneClick, interactive, paneContextNodeClick };
 };

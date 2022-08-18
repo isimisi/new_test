@@ -47,13 +47,13 @@ const styles = (theme) => ({
     position: "absolute",
     zIndex: 9999,
     bottom: 70,
-    right: 20,
+    right: 375,
   },
   signed: {
     position: "absolute",
     zIndex: 9999,
     bottom: 10,
-    right: 10,
+    right: 375,
     padding: 5,
     paddingRight: 9,
     borderRadius: 5,
@@ -87,6 +87,14 @@ const styles = (theme) => ({
     [theme.breakpoints.up("sm")]: {
       display: "flex",
     },
+  },
+  pubRoot: {
+    flexGrow: 1,
+    height: "100vh",
+    width: "100vw",
+    zIndex: 1,
+    overflow: "hidden",
+    position: "relative",
   },
   signedRow: {
     display: "flex",

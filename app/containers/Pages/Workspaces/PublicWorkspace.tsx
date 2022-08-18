@@ -4,7 +4,7 @@ import brand from "@api/ui/brand";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Notification from "@components/Notification/Notification";
-import PublicWorkspace from "@components/Workspace/Public/PublicWorkspace";
+import Workspace from "./Workspace";
 import LockForm from "@components/Forms/LockForm";
 import styles from "@components/Forms/user-jss";
 import { useSelector, useDispatch } from "react-redux";
@@ -81,7 +81,7 @@ function PublicFirewall(props) {
           </div>
         </div>
       ) : (
-        <PublicWorkspace />
+        <Workspace pub />
       )}
     </div>
   );

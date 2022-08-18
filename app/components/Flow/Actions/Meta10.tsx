@@ -44,7 +44,7 @@ interface Props {
   setSnapToGrid?: React.Dispatch<React.SetStateAction<boolean>>;
   snapToGrid?: boolean;
   handleAutoLayout?: () => void;
-  handleOpenMenu: () => void;
+  handleOpenMenu?: () => void;
   handleImage: (type: "image" | "pdf", stopLoading: () => void) => void;
   handleExcel?: () => void;
   loadingExcel?: boolean;
@@ -55,6 +55,7 @@ interface Props {
     startLoading: () => void,
     stopLoading: () => void
   ) => void;
+  pub?: boolean;
 }
 
 const Meta = (props: Props) => {
@@ -73,7 +74,8 @@ const Meta = (props: Props) => {
     backLink,
     customPdfGenerator,
     handleExcel,
-    loadingExcel
+    loadingExcel,
+    pub
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -199,8 +201,9 @@ const Meta = (props: Props) => {
         <Tooltip arrow title={`${t("workspaces.editMeta")}`} placement="bottom">
           <Button
             className={classes.buttons}
-            style={{ fontSize: 15 }}
+            style={{ fontSize: 15, color: "black" }}
             onClick={handleOpenMeta}
+            disabled={pub}
           >
             {label}
           </Button>
@@ -210,11 +213,11 @@ const Meta = (props: Props) => {
           flexItem
           className={classes.verDivder}
         />
-        <Tooltip arrow title={`${t("workspaces.menu")}`} placement="bottom">
+        {!pub && <Tooltip arrow title={`${t("workspaces.menu")}`} placement="bottom">
           <IconButton className={classes.buttons} onClick={handleOpenMenu}>
             <MenuIcon className={classes.buttons} />
           </IconButton>
-        </Tooltip>
+        </Tooltip>}
         {!timeline && (
           <Tooltip
             arrow
@@ -287,7 +290,7 @@ const Meta = (props: Props) => {
                     </ListItemText>
                     <CustomSwitch checked={handleVisability} name="showGrid" />
                   </MenuItem>
-                  <MenuItem
+                  {!pub && <MenuItem
                     className={classes.menuItem}
                     onClick={handleToggleShortCuts}
                   >
@@ -295,7 +298,7 @@ const Meta = (props: Props) => {
                       <KeyboardIcon fontSize="small" />
                     </ListItemIcon>
                     <ListItemText>{t("workspaces.open_shotcuts")}</ListItemText>
-                  </MenuItem>
+                  </MenuItem>}
                   {handleAutoLayout && (
                     <MenuItem
                       className={classes.menuItem}

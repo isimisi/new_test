@@ -797,6 +797,7 @@ export const accessPublicWorkspace = (
       editable: user.editable,
     });
   } catch (error) {
+    console.log(error);
     let _message = message;
     // @ts-ignore
     if (error?.response?.status === 403) {

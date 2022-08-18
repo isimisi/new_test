@@ -9,7 +9,6 @@ import { useCallback, useEffect, useState } from "react";
 import { Dimensions } from "react-flow-renderer10";
 import { openMenuAction, closeMenuAction, toggleAction } from "@redux/actions/uiActions";
 import { User } from "@auth0/auth0-react";
-import { GroupDropdown } from "@customTypes/reducers/groups";
 
 const useFlowGenerics = (
   reactFlowContainer: React.RefObject<HTMLDivElement>,
