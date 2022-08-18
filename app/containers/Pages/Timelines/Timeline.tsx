@@ -693,6 +693,19 @@ const Timeline = () => {
         currSplittingEmail={currSplittingEmail}
       />}
 
+      {nodesTableOpen && (
+        <NodesTableModal open={nodesTableOpen} close={handleCLoseNodeTable} />
+      )}
+      {peopleOpen && (
+        <Persons open={peopleOpen} close={closePeople} user={user} />
+      )}
+      {documentsOpen && (
+        <Documents open={documentsOpen} close={closeDocuments} user={user} />
+      )}
+      {tagsOpen && (
+        <Tags open={tagsOpen} close={closeTags} user={user} />
+      )}
+
       {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} user={user} />}
       {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
       {tagModalOpen && <Tag open={tagModalOpen} close={handleTagClose} tag={tag as string} />}
@@ -733,18 +746,7 @@ const Timeline = () => {
         close={() => setShareModalOpen(false)}
 
       />
-      {nodesTableOpen && (
-        <NodesTableModal open={nodesTableOpen} close={handleCLoseNodeTable} />
-      )}
-      {peopleOpen && (
-        <Persons open={peopleOpen} close={closePeople} user={user} />
-      )}
-      {documentsOpen && (
-        <Documents open={documentsOpen} close={closeDocuments} user={user} />
-      )}
-      {tagsOpen && (
-        <Tags open={tagsOpen} close={closeTags} user={user} />
-      )}
+
     </div>
   );
 };
