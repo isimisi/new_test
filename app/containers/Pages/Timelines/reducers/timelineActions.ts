@@ -177,6 +177,7 @@ export const saveElement = (
     dispatch(getPersonDropDown(user, timeline_id));
     dispatch(getDocumentDropDown(user, timeline_id));
   } catch (error: any) {
+    console.log(error.response);
     const message = genericErrorMessage;
     dispatch({ type: types.POST_TIMELINE_ELEMENT_FAILED, message });
   }

@@ -42,7 +42,7 @@ import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import { hanldeOnDocumentChange } from "@pages/Documents/constants";
 import { hanldeOnPersonChange, personMapping } from "@pages/Persons/constants";
 import ReactDOM from "react-dom";
-import { isNode } from "react-flow-renderer";
+
 import moment from "moment";
 
 

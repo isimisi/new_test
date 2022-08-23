@@ -30,6 +30,10 @@ const Document = (props: Props) => {
   const classes = useStyles();
 
   const document = useAppSelector(state => state.document.get("document"));
+  const createElementOpen = useAppSelector(state =>
+    state.timeline.get("createElementOpen")
+  );
+
   const isUpdatingNode = useAppSelector(state =>
     state.timeline.get("isUpdatingNode")
   );
@@ -110,7 +114,7 @@ const Document = (props: Props) => {
           className={classes.createElementContainer}
           style={{ maxHeight: "60vh" }}
         >
-          {isUpdatingNode || edit ? (
+          {isUpdatingNode || edit || createElementOpen ? (
             <>
               <DocumentForm />
               <UploadForm file={file} handleFileChange={handleFileChange} />
@@ -138,7 +142,7 @@ const Document = (props: Props) => {
             {t("workspaces.workspace-form.btn_cnx")}
           </Button>
 
-          {(isUpdatingNode || edit) && (
+          {(isUpdatingNode || edit || createElementOpen) && (
             <Button
               variant="contained"
               color="secondary"

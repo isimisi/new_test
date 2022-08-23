@@ -129,7 +129,6 @@ const Output = () => {
   };
 
   const handleCreateOrSeeCondition = (condition, see) => {
-    console.log(condition.condition_id);
     if (see) {
       window.open('/app/conditions/' + condition.condition_id, '_blank');
     } else {
