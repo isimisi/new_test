@@ -104,6 +104,7 @@ export const personMapping = (
       onClick={onClick}
     >
       {person.icon && (
+        // @ts-ignore
         <Avatar
           style={{ width: 15, height: 15, marginRight: 5 }}
           {...JSON.parse(person.icon)}

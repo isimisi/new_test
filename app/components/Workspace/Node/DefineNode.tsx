@@ -1,10 +1,8 @@
 import React from "react";
 
-import { withStyles } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import WorkspaceNodeForm from "./WorkspaceNodeForm";
 import FloatingPanel from "../../Panel/FloatingPanel";
-import styles from "../workspace-jss";
 import { RGBA, SelectChoice, SelectOptions } from "@customTypes/data";
 import { ColorResult } from "react-color";
 import { FlowElement } from "react-flow-renderer";
@@ -106,4 +104,4 @@ function DefineNode(props: Props) {
   );
 }
 
-export default withStyles(styles)(DefineNode);
+export default DefineNode;

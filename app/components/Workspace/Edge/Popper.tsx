@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { MouseEvent, useState } from "react";
 import Popper from "@material-ui/core/Popper";
 import Paper from "@material-ui/core/Paper";
@@ -7,8 +8,8 @@ import { useTranslation } from "react-i18next";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Divider from "@material-ui/core/Divider";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { withStyles } from "@material-ui/core/styles";
-import styles from "../workspace-jss";
+
+import useStyles from "../workspace-jss";
 import { SketchPicker } from "react-color";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -16,7 +17,7 @@ import CreatableSelect from "react-select/creatable";
 
 import LabelIcon from "@material-ui/icons/Label";
 
-import { TCustomEdge, TCustomNode } from '@customTypes/reducers/workspace';
+import { TCustomEdge } from "@customTypes/reducers/workspace";
 
 import ButtonBase from "@material-ui/core/ButtonBase";
 import { selectStyles } from "@api/ui/helper";
@@ -30,9 +31,7 @@ import { relationshipTypeOptions } from "./EdgeForm";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 
-
 interface Props {
-  classes: any;
   edgePopperRef: SVGElement | null;
   showEdgePopper: boolean;
   currentZoom: number;
@@ -62,15 +61,14 @@ interface Props {
   handleDeleteEdge: () => void;
   handleHideEdgePopper: (stopReffrence?: boolean) => void;
 
-  popperComponentRef: React.MutableRefObject<any>
+  popperComponentRef: React.MutableRefObject<any>;
 }
 
 const popperHeight = 45;
 const popperWidth = 382.22;
 
-const EdgePopper = (props: Props) => {
+function EdgePopper(props: Props) {
   const {
-    classes,
     edgePopperRef,
     showEdgePopper,
     currentZoom,
@@ -98,6 +96,8 @@ const EdgePopper = (props: Props) => {
     popperComponentRef
   } = props;
 
+  const classes = useStyles();
+
   // eslint-disable-next-line react/destructuring-assignment
   const activeElement = props.activeElement as TCustomEdge;
 
@@ -113,34 +113,33 @@ const EdgePopper = (props: Props) => {
     setTypeRef(null);
     setLabelRef(null);
     setMoreRef(null);
-    setDisplayColorPicker(prevVal => !prevVal);
+    setDisplayColorPicker((prevVal) => !prevVal);
   };
 
-  const handleEditData = e => {
+  const handleEditData = (e) => {
     editData(e, activeElement, true);
   };
 
-
-  const toggleLabelMenu = e => {
+  const toggleLabelMenu = (e) => {
     setMoreRef(null);
     setTypeRef(null);
     setDisplayColorPicker(false);
-    setLabelRef(prevVal => (!prevVal ? e.target : null));
+    setLabelRef((prevVal) => (!prevVal ? e.target : null));
   };
 
-  const toggleTypeMenu = e => {
+  const toggleTypeMenu = (e) => {
     setLabelRef(null);
     setMoreRef(null);
     setDisplayColorPicker(false);
-    setTypeRef(prevVal => (!prevVal ? e.target : null));
+    setTypeRef((prevVal) => (!prevVal ? e.target : null));
   };
 
-  const toggleMoreMenu = e => {
+  const toggleMoreMenu = (e) => {
     setLabelRef(null);
     setTypeRef(null);
     setDisplayColorPicker(false);
 
-    setMoreRef(prevVal => (!prevVal ? e.target : null));
+    setMoreRef((prevVal) => (!prevVal ? e.target : null));
   };
 
   const handleSave = () => {
@@ -167,7 +166,6 @@ const EdgePopper = (props: Props) => {
         return BeizerCurve;
     }
   }, [type]);
-
 
   React.useEffect(() => {
     const picker = document.getElementsByClassName("sketch-picker");
@@ -199,9 +197,7 @@ const EdgePopper = (props: Props) => {
     }
   }, [displayColorPicker, edgeColor]);
 
-
   const boundingRect = edgePopperRef?.getBoundingClientRect() as DOMRect;
-
 
   return (
     <>
@@ -213,12 +209,16 @@ const EdgePopper = (props: Props) => {
         transition
         style={{
           zIndex: 1000,
-          ...(edgePopperRef?.tagName === "path" ?
-            { position: "absolute",
+          ...(edgePopperRef?.tagName === "path"
+            ? {
+              position: "absolute",
 
-              top: boundingRect.top + boundingRect.height / 2 - popperHeight / 2,
-              left: boundingRect.left + boundingRect.width / 2 - popperWidth / 2
-            } : {
+              top:
+                  boundingRect.top + boundingRect.height / 2 - popperHeight / 2,
+              left:
+                  boundingRect.left + boundingRect.width / 2 - popperWidth / 2
+            }
+            : {
               marginBottom: 15
             })
         }}
@@ -287,9 +287,7 @@ const EdgePopper = (props: Props) => {
                   <div
                     className={classes.colorQuick}
                     style={{
-                      backgroundColor: `rgba(${edgeColor.r}, ${edgeColor.g}, ${
-                        edgeColor.b
-                      }, ${edgeColor.a})`,
+                      backgroundColor: `rgba(${edgeColor.r}, ${edgeColor.g}, ${edgeColor.b}, ${edgeColor.a})`,
                       border: "1px solid gray"
                     }}
                   />
@@ -347,13 +345,14 @@ const EdgePopper = (props: Props) => {
               <CreatableSelect
                 styles={{
                   ...selectStyles(),
-                  valueContainer: provided => ({
+                  valueContainer: (provided) => ({
                     ...provided,
                     width: "180px"
                   })
                 }}
                 noOptionsMessage={() => t("generic.no_options")}
-                formatCreateLabel={(input) => t("generic.create_new", { input })}
+                formatCreateLabel={(input) =>
+                  t("generic.create_new", { input })}
                 inputId="react-select-single-workspace-node"
                 autoFocus
                 TextFieldProps={{
@@ -365,7 +364,7 @@ const EdgePopper = (props: Props) => {
                   placeholder: "Relation"
                 }}
                 placeholder={t("workspace.node.label_placeholder")}
-                options={relationships.toJS().map(n => ({
+                options={relationships.toJS().map((n) => ({
                   value: n.label,
                   label: n.label
                 }))}
@@ -406,7 +405,7 @@ const EdgePopper = (props: Props) => {
                 menuPosition="absolute"
                 styles={{
                   ...selectStyles(),
-                  valueContainer: provided => ({
+                  valueContainer: (provided) => ({
                     ...provided,
                     width: "180px"
                   })
@@ -423,7 +422,7 @@ const EdgePopper = (props: Props) => {
                 placeholder="type"
                 options={relationshipTypeOptions}
                 value={
-                  type && relationshipTypeOptions.find(x => x.value === type)
+                  type && relationshipTypeOptions.find((x) => x.value === type)
                 }
                 onChange={handleTypeChange}
               />
@@ -516,6 +515,6 @@ const EdgePopper = (props: Props) => {
       </Popper>
     </>
   );
-};
+}
 
-export default withStyles(styles)(EdgePopper);
+export default EdgePopper;

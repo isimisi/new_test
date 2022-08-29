@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
@@ -35,7 +36,6 @@ import {
   downloadDocument,
   openEmailChange,
   setTimelineNode,
-  timelineElementDocumentChange,
   timelineElementPersonChange
 } from "@pages/Timelines/reducers/timelineActions";
 import { useTranslation } from "react-i18next";
@@ -44,7 +44,6 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 import Linkify from "react-linkify";
-import { showDocument } from "@pages/Documents/reducers/documentActions";
 
 const moreDocsMapping = [
   Filter1Icon,
@@ -102,7 +101,7 @@ export default memo(({ data }: NodeProps) => {
   };
 
   const openPerson = () => dispatch(timelineElementPersonChange(true));
-  const handleOpenPerson = id => {
+  const handleOpenPerson = (id) => {
     dispatch(showPerson(user, id, openPerson));
   };
 
@@ -178,7 +177,7 @@ export default memo(({ data }: NodeProps) => {
                         <Tooltip
                           arrow
                           title={data.persons
-                            .map(p => p.name)
+                            .map((p) => p.name)
                             .slice(3)
                             .join(", ")}
                           placement="top"
@@ -212,6 +211,7 @@ export default memo(({ data }: NodeProps) => {
                           style={{ cursor: "pointer", margin: "0 2px" }}
                           onClick={() => handleOpenPerson(person.id)}
                         >
+                          {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
                           <Avatar
                             style={{ width: 20, height: 20 }}
                             {...JSON.parse(person.person_icon)}
@@ -331,7 +331,7 @@ export default memo(({ data }: NodeProps) => {
             alignItems: "center"
           }}
         >
-          {data.tags.map(tag => (
+          {data.tags.map((tag) => (
             <Tooltip arrow title={tag.name} placement="top" key={tag.id}>
               <div
                 style={{

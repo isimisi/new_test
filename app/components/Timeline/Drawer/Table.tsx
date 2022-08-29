@@ -1,13 +1,14 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
-import {
-  DataGrid,
-  GridColumns,
-  GridRenderCellParams,
-  GridRenderEditCellParams,
-  GridRowsProp
-} from "@mui/x-data-grid";
+// import {
+//   DataGrid,
+//   GridColumns,
+//   GridRenderCellParams,
+//   GridRenderEditCellParams,
+//   GridRowsProp
+// } from "@mui/x-data-grid";
 import Button from "@material-ui/core/Button";
 import { FlowElement } from "react-flow-renderer";
 import Dialog from "@material-ui/core/Dialog";
@@ -30,52 +31,48 @@ import Avatar from "react-nice-avatar";
 import GridCellExpand from "@components/DataGrid/GridCellExpanded";
 import GredCellExpandedWYS from "@components/DataGrid/GridCellExpandedWYS";
 
-const rows: GridRowsProp = [
-  {
-    id: 1,
-    name: "tets",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam placeat molestias officiis quo vel unde quis incidunt, velit deleniti similique numquam. Iste consequatur laborum eligendi ratione repellendus possimus nostrum nam.",
+// const rows: GridRowsProp = [
+//   {
+//     id: 1,
+//     name: "tets",
+//     description:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam placeat molestias officiis quo vel unde quis incidunt, velit deleniti similique numquam. Iste consequatur laborum eligendi ratione repellendus possimus nostrum nam.",
 
-    persons: [
-      {
-        icon:
-          '{"sex": "man", "bgColor": "#9287FF", "earSize": "big", "eyeStyle": "circle", "hatColor": "#F48150", "hatStyle": "none", "faceColor": "#AC6651", "hairColor": "#000", "hairStyle": "mohawk", "noseStyle": "short", "mouthStyle": "smile", "shirtColor": "#77311D", "shirtStyle": "hoody", "eyeBrowStyle": "up", "glassesStyle": "none"}',
-        id: 117,
-        name: "Pernille Fredskild Thogersen"
-      },
-      {
-        icon:
-          '{"sex": "woman", "bgColor": "#E0DDFF", "earSize": "big", "eyeStyle": "smile", "hatColor": "#77311D", "hatStyle": "turban", "faceColor": "#F9C9B6", "hairColor": "#fff", "hairStyle": "womanLong", "noseStyle": "round", "mouthStyle": "smile", "shirtColor": "#F4D150", "shirtStyle": "short", "eyeBrowStyle": "upWoman", "glassesStyle": "none"}',
-        id: 116,
-        name: "Kean Ottesen"
-      }
-    ],
-    documents: "test"
-  },
-  {
-    id: 2,
-    name: "tets",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam placeat molestias officiis quo vel unde quis incidunt, velit deleniti similique numquam. Iste consequatur laborum eligendi ratione repellendus possimus nostrum nam.",
+//     persons: [
+//       {
+//         icon: '{"sex": "man", "bgColor": "#9287FF", "earSize": "big", "eyeStyle": "circle", "hatColor": "#F48150", "hatStyle": "none", "faceColor": "#AC6651", "hairColor": "#000", "hairStyle": "mohawk", "noseStyle": "short", "mouthStyle": "smile", "shirtColor": "#77311D", "shirtStyle": "hoody", "eyeBrowStyle": "up", "glassesStyle": "none"}',
+//         id: 117,
+//         name: "Pernille Fredskild Thogersen"
+//       },
+//       {
+//         icon: '{"sex": "woman", "bgColor": "#E0DDFF", "earSize": "big", "eyeStyle": "smile", "hatColor": "#77311D", "hatStyle": "turban", "faceColor": "#F9C9B6", "hairColor": "#fff", "hairStyle": "womanLong", "noseStyle": "round", "mouthStyle": "smile", "shirtColor": "#F4D150", "shirtStyle": "short", "eyeBrowStyle": "upWoman", "glassesStyle": "none"}',
+//         id: 116,
+//         name: "Kean Ottesen"
+//       }
+//     ],
+//     documents: "test"
+//   },
+//   {
+//     id: 2,
+//     name: "tets",
+//     description:
+//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam placeat molestias officiis quo vel unde quis incidunt, velit deleniti similique numquam. Iste consequatur laborum eligendi ratione repellendus possimus nostrum nam.",
 
-    persons: [
-      {
-        icon:
-          '{"sex": "man", "bgColor": "#9287FF", "earSize": "big", "eyeStyle": "circle", "hatColor": "#F48150", "hatStyle": "none", "faceColor": "#AC6651", "hairColor": "#000", "hairStyle": "mohawk", "noseStyle": "short", "mouthStyle": "smile", "shirtColor": "#77311D", "shirtStyle": "hoody", "eyeBrowStyle": "up", "glassesStyle": "none"}',
-        id: 117,
-        name: "Pernille Fredskild Thogersen"
-      },
-      {
-        icon:
-          '{"sex": "woman", "bgColor": "#E0DDFF", "earSize": "big", "eyeStyle": "smile", "hatColor": "#77311D", "hatStyle": "turban", "faceColor": "#F9C9B6", "hairColor": "#fff", "hairStyle": "womanLong", "noseStyle": "round", "mouthStyle": "smile", "shirtColor": "#F4D150", "shirtStyle": "short", "eyeBrowStyle": "upWoman", "glassesStyle": "none"}',
-        id: 116,
-        name: "Kean Ottesen"
-      }
-    ],
-    documents: "test"
-  }
-];
+//     persons: [
+//       {
+//         icon: '{"sex": "man", "bgColor": "#9287FF", "earSize": "big", "eyeStyle": "circle", "hatColor": "#F48150", "hatStyle": "none", "faceColor": "#AC6651", "hairColor": "#000", "hairStyle": "mohawk", "noseStyle": "short", "mouthStyle": "smile", "shirtColor": "#77311D", "shirtStyle": "hoody", "eyeBrowStyle": "up", "glassesStyle": "none"}',
+//         id: 117,
+//         name: "Pernille Fredskild Thogersen"
+//       },
+//       {
+//         icon: '{"sex": "woman", "bgColor": "#E0DDFF", "earSize": "big", "eyeStyle": "smile", "hatColor": "#77311D", "hatStyle": "turban", "faceColor": "#F9C9B6", "hairColor": "#fff", "hairStyle": "womanLong", "noseStyle": "round", "mouthStyle": "smile", "shirtColor": "#F4D150", "shirtStyle": "short", "eyeBrowStyle": "upWoman", "glassesStyle": "none"}',
+//         id: 116,
+//         name: "Kean Ottesen"
+//       }
+//     ],
+//     documents: "test"
+//   }
+// ];
 
 interface Props {
   close: (bool?: boolean) => void;
@@ -109,7 +106,7 @@ function renderCellExpandWYS(params) {
   );
 }
 
-const Table = (props: Props) => {
+function Table(props: Props) {
   const { open, close, elements, personOptions } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -118,7 +115,7 @@ const Table = (props: Props) => {
     close(false);
   };
 
-  const handleOpenPerson = e => {
+  const handleOpenPerson = (e) => {
     const id = e.target.closest(".idDiv").getAttribute("data-id");
 
     const nameDiv = e.target.closest(".idDiv");
@@ -127,7 +124,7 @@ const Table = (props: Props) => {
     // openPerson(id, nameSpan.innerHTML);
   };
 
-  const handleOpenDocument = e => {
+  const handleOpenDocument = (e) => {
     const id = e.target.closest(".idDiv").getAttribute("data-id");
 
     const nameDiv = e.target.closest(".idDiv");
@@ -158,145 +155,148 @@ const Table = (props: Props) => {
     // changeTimelineNode("documents", p);
   };
 
-  const columns: GridColumns = [
-    {
-      field: "date",
-      headerName: "Date",
-      type: "date",
-      editable: true,
-      flex: 1
-    },
-    {
-      field: "name",
-      headerName: "Navn",
-      editable: true,
-      flex: 1,
-      renderCell: renderCellExpand
-    },
+  // const columns: GridColumns = [
+  //   {
+  //     field: "date",
+  //     headerName: "Date",
+  //     type: "date",
+  //     editable: true,
+  //     flex: 1
+  //   },
+  //   {
+  //     field: "name",
+  //     headerName: "Navn",
+  //     editable: true,
+  //     flex: 1,
+  //     renderCell: renderCellExpand
+  //   },
 
-    {
-      field: "description",
-      headerName: "Description",
-      editable: true,
-      flex: 1,
-      renderCell: renderCellExpand
-    },
-    {
-      field: "content",
-      headerName: "Indhold",
-      editable: true,
-      flex: 1,
-      renderCell: renderCellExpandWYS,
-      renderEditCell: params => (
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
-          <Button variant="contained" color="secondary">
-            Rediger indhold
-          </Button>
-        </div>
-      )
-    },
-    {
-      field: "persons",
-      headerName: "Persons",
-      resizable: true,
-      renderCell: cellValues => (
-        <div className={classes.personDiv}>
-          {// @ts-ignore
-            cellValues.value.map(person => (
-              <Tooltip arrow title={person.name} placement="top">
-                <div
-                  style={{ cursor: "pointer", margin: 2 }}
-                  onClick={handleOpenPerson}
-                >
-                  <Avatar
-                    style={{ width: 30, height: 30 }}
-                    {...JSON.parse(person.icon)}
-                  />
-                </div>
-              </Tooltip>
-            ))}
-        </div>
-      ),
-      renderEditCell: params => (
-        <div>
-          <CreatableSelect
-            isMulti
-            noOptionsMessage={() => t("generic.no_options")}
-            formatCreateLabel={input => t("generic.create_new", { input })}
-            styles={{
-              ...selectStyles(),
-              container: (provided, state) => ({
-                ...provided,
-                width: `${params.colDef.computedWidth - 2}px`,
-                lineHeight: "37px"
-              }),
-              control: (provided, state) => ({
-                ...provided,
-                borderWidth: 0
-              }),
-              valueContainer: (provided, state) => ({
-                ...provided,
-                flexWrap: "nowrap"
-              }),
-              multiValue: (provided, state) => ({
-                ...provided,
-                minWidth: "30%"
-              })
-            }}
-            value={[
-              { value: "purple", label: "Purple", color: "#5243AA" },
-              { value: "red", label: "Red", color: "#FF5630", isFixed: true },
-              { value: "yellow", label: "Yellow", color: "#FFC400" },
-              { value: "green", label: "Green", color: "#36B37E" },
-              { value: "forest", label: "Forest", color: "#00875A" }
-            ]}
-            options={[
-              {
-                value: "ocean",
-                label: "Ocean",
-                color: "#00B8D9",
-                isFixed: true
-              },
-              {
-                value: "blue",
-                label: "Blue",
-                color: "#0052CC",
-                isDisabled: true
-              },
-              { value: "purple", label: "Purple", color: "#5243AA" },
-              { value: "red", label: "Red", color: "#FF5630", isFixed: true },
-              { value: "orange", label: "Orange", color: "#FF8B00" },
-              { value: "yellow", label: "Yellow", color: "#FFC400" },
-              { value: "green", label: "Green", color: "#36B37E" },
-              { value: "forest", label: "Forest", color: "#00875A" },
-              { value: "slate", label: "Slate", color: "#253858" },
-              { value: "silver", label: "Silver", color: "#666666" }
-            ]}
-          />
-        </div>
-      ),
-      editable: true,
-      flex: 1
-    },
-    {
-      field: "documents",
-      headerName: "Documents",
-      renderCell: cellValues => (
-        <Button variant="contained" color="primary">
-          Print
-        </Button>
-      ),
-      editable: true,
-      flex: 1
-    }
-  ];
+  //   {
+  //     field: "description",
+  //     headerName: "Description",
+  //     editable: true,
+  //     flex: 1,
+  //     renderCell: renderCellExpand
+  //   },
+  //   {
+  //     field: "content",
+  //     headerName: "Indhold",
+  //     editable: true,
+  //     flex: 1,
+  //     renderCell: renderCellExpandWYS,
+  //     renderEditCell: (params) => (
+  //       <div
+  //         style={{
+  //           display: "flex",
+  //           width: "100%",
+  //           alignItems: "center",
+  //           justifyContent: "center"
+  //         }}
+  //       >
+  //         <Button variant="contained" color="secondary">
+  //           Rediger indhold
+  //         </Button>
+  //       </div>
+  //     )
+  //   },
+  //   {
+  //     field: "persons",
+  //     headerName: "Persons",
+  //     resizable: true,
+  //     renderCell: (cellValues) => (
+  //       <div className={classes.personDiv}>
+  //         {
+  //           // @ts-ignore
+  //           cellValues.value.map((person) => (
+  //             <Tooltip arrow title={person.name} placement="top">
+  //               <div
+  //                 style={{ cursor: "pointer", margin: 2 }}
+  //                 onClick={handleOpenPerson}
+  //               >
+  //                 {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
+  //                 <Avatar
+  //                   style={{ width: 30, height: 30 }}
+  //                   {...JSON.parse(person.icon)}
+  //                 />
+  //               </div>
+  //             </Tooltip>
+  //           ))
+  //         }
+  //       </div>
+  //     ),
+  //     renderEditCell: (params) => (
+  //       <div>
+  //         <CreatableSelect
+  //           isMulti
+  //           noOptionsMessage={() => t("generic.no_options")}
+  //           formatCreateLabel={(input) => t("generic.create_new", { input })}
+  //           styles={{
+  //             ...selectStyles(),
+  //             container: (provided, state) => ({
+  //               ...provided,
+  //               width: `${params.colDef.computedWidth - 2}px`,
+  //               lineHeight: "37px"
+  //             }),
+  //             control: (provided, state) => ({
+  //               ...provided,
+  //               borderWidth: 0
+  //             }),
+  //             valueContainer: (provided, state) => ({
+  //               ...provided,
+  //               flexWrap: "nowrap"
+  //             }),
+  //             multiValue: (provided, state) => ({
+  //               ...provided,
+  //               minWidth: "30%"
+  //             })
+  //           }}
+  //           value={[
+  //             { value: "purple", label: "Purple", color: "#5243AA" },
+  //             { value: "red", label: "Red", color: "#FF5630", isFixed: true },
+  //             { value: "yellow", label: "Yellow", color: "#FFC400" },
+  //             { value: "green", label: "Green", color: "#36B37E" },
+  //             { value: "forest", label: "Forest", color: "#00875A" }
+  //           ]}
+  //           options={[
+  //             {
+  //               value: "ocean",
+  //               label: "Ocean",
+  //               color: "#00B8D9",
+  //               isFixed: true
+  //             },
+  //             {
+  //               value: "blue",
+  //               label: "Blue",
+  //               color: "#0052CC",
+  //               isDisabled: true
+  //             },
+  //             { value: "purple", label: "Purple", color: "#5243AA" },
+  //             { value: "red", label: "Red", color: "#FF5630", isFixed: true },
+  //             { value: "orange", label: "Orange", color: "#FF8B00" },
+  //             { value: "yellow", label: "Yellow", color: "#FFC400" },
+  //             { value: "green", label: "Green", color: "#36B37E" },
+  //             { value: "forest", label: "Forest", color: "#00875A" },
+  //             { value: "slate", label: "Slate", color: "#253858" },
+  //             { value: "silver", label: "Silver", color: "#666666" }
+  //           ]}
+  //         />
+  //       </div>
+  //     ),
+  //     editable: true,
+  //     flex: 1
+  //   },
+  //   {
+  //     field: "documents",
+  //     headerName: "Documents",
+  //     renderCell: (cellValues) => (
+  //       <Button variant="contained" color="primary">
+  //         Print
+  //       </Button>
+  //     ),
+  //     editable: true,
+  //     flex: 1
+  //   }
+  // ];
 
   return (
     <Dialog
@@ -323,15 +323,15 @@ const Table = (props: Props) => {
           </Button>
         </Toolbar>
       </AppBar>
-      <DataGrid
+      {/* <DataGrid
         checkboxSelection
         disableSelectionOnClick
-        rows={rows}
+        minRows={rows}
         columns={columns}
         editMode="row"
-      />
+      /> */}
     </Dialog>
   );
-};
+}
 
 export default Table;

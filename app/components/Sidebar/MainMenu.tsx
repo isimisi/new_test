@@ -42,7 +42,7 @@ interface Props {
   sidebarOpen: boolean;
 }
 
-const MainMenu = (props: Props) => {
+function MainMenu(props: Props) {
   const {
     openSubMenu,
     open,
@@ -66,7 +66,7 @@ const MainMenu = (props: Props) => {
   const classes = useStyle();
   const { width } = useWindowDimensions();
 
-  const getMenus = menuArray =>
+  const getMenus = (menuArray) =>
     menuArray.map((item: any, index) => {
       if (item.child || item.linkParent) {
         const { t } = useTranslation();
@@ -78,11 +78,9 @@ const MainMenu = (props: Props) => {
             classes={{
               tooltip: classes.tooltip
             }}
+            key={item.key}
           >
-            <div
-              key={index.toString()}
-              className={"for_intro_" + index.toString()}
-            >
+            <div className={"for_intro_" + index.toString()}>
               <ListItem
                 button
                 /* @ts-ignore */
@@ -102,7 +100,7 @@ const MainMenu = (props: Props) => {
                   open.indexOf(item.key) > -1 ? classes.opened : ""
                 )}
                 onClick={() => {
-                  if (!sidebarOpen && (width && width > 1279)) {
+                  if (!sidebarOpen && width && width > 1279) {
                     openDrawer();
                   }
 
@@ -166,7 +164,7 @@ const MainMenu = (props: Props) => {
         return (
           <ListSubheader
             disableSticky
-            key={index.toString()}
+            key={item.key}
             component="div"
             className={classes.title}
           >
@@ -177,7 +175,7 @@ const MainMenu = (props: Props) => {
       const { t } = useTranslation();
       return (
         <ListItem
-          key={index.toString()}
+          key={item.key}
           button
           // @ts-ignore
           exact
@@ -207,7 +205,7 @@ const MainMenu = (props: Props) => {
       );
     });
   return <div>{getMenus(dataMenu)}</div>;
-};
+}
 
 const openAction = (key, keyParent) => ({
   type: "OPEN_SUBMENU",
@@ -216,20 +214,17 @@ const openAction = (key, keyParent) => ({
 });
 const reducer = "ui";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   ...state,
   open: state[reducer].get("subMenuOpen"),
   sidebarOpen: state[reducer].get("sidebarOpen")
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   openSubMenu: bindActionCreators(openAction, dispatch),
   openDrawer: () => dispatch(openMenuAction)
 });
 
-const MainMenuMapped = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainMenu);
+const MainMenuMapped = connect(mapStateToProps, mapDispatchToProps)(MainMenu);
 
 export default MainMenuMapped;

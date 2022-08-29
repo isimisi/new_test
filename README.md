@@ -77,8 +77,8 @@ Juristic is built on top of [Material UI](https://material-ui.com/)
   - Try to start project again npm start
 
 - **Error warning at the first time npm install Module not found: Error: and ERROR in dll reactBoilerplateDeps. What that’s mean?**  
-  Don’t worry for the errors when npm install or npm build:dll it’s warning messages because the webpack dll cannot go through inside those dependencies directory, some dependencies work for backend side (such as fs and moment module ) so that will not built in dll libraries. You can continue to start the project by run npm start or npm run start:prod (if production) and should work properly. If the program cannot running properly, please try to remove all module in node_modules/. Then install again with npm install.
-  _FYI: The webpack dll itself use for optimizing building script. Here’s article about webpack dll https://medium.com/@emilycoco/how-to-use-the-dll-plugin-to-speed-up-your-webpack-build-dbf330d3b13c._
+  Don’t worry for the errors when npm install or npm build:dll it’s warning messages because the webpack dll cannot go through inside those dependencies directory, some dependencies work for backend side (such as fs and moment module ) so that will not built in dll libraries. You can continue to start the project by run npm start or npm run start:prod (if production) and should work properly. If the program cannot running properly, please try to remove all module in node*modules/. Then install again with npm install.
+  \_FYI: The webpack dll itself use for optimizing building script. Here’s article about webpack dll https://medium.com/@emilycoco/how-to-use-the-dll-plugin-to-speed-up-your-webpack-build-dbf330d3b13c.*
 - _if got an error with a dependencies installation_. Try to remove the problematic package in `package.json`. Then install again with `npm install`. After finish try to install the problematic package manually.
 - if still got an error. Try to update the problematic package instead.
 
@@ -95,7 +95,7 @@ You can put google analytics, font icon, embeded fonts, etc here.
 
 #### Main JS
 
-The JS root in `/app/app.js`. This is the entry file for the application, only setup and boilerplate code.
+The JS root in `/app/app.tsx`. This is the entry file for the application, only setup and boilerplate code.
 
 #### Directory Alias
 

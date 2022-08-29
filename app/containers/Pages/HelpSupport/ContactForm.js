@@ -1,44 +1,37 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import { Field, reduxForm } from 'redux-form/immutable';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import { PapperBlock } from '@components';
-import { TextFieldRedux } from '@components/Forms/ReduxFormMUI';
-import { initAction, clearAction } from '@redux/actions/reduxFormActions';
-import { useTranslation } from 'react-i18next';
-import styles from './helpSupport-jss';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import { Field, reduxForm } from "redux-form/immutable";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import Button from "@material-ui/core/Button";
+import { PapperBlock } from "@components";
+import { TextFieldRedux } from "@components/Forms/ReduxFormMUI";
+import { initAction, clearAction } from "@redux/actions/reduxFormActions";
+import { useTranslation } from "react-i18next";
+import styles from "./helpSupport-jss";
 
 // validation functions
-const required = value => (value == null ? 'Required' : undefined);
-const email = value => (
+const required = (value) => (value == null ? "Required" : undefined);
+const email = (value) =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
-    ? 'Invalid email'
-    : undefined
-);
+    ? "Invalid email"
+    : undefined;
 
 function ContactForm(props) {
   const trueBool = true;
-  const {
-    classes,
-    handleSubmit,
-    pristine,
-    reset,
-    submitting,
-  } = props;
+  const { classes, handleSubmit, pristine, reset, submitting } = props;
   const { t } = useTranslation();
 
   return (
-    <PapperBlock title={t('help-support.contact-form.contact_us')} whiteBg>
+    <PapperBlock title={t("help-support.contact-form.contact_us")} whiteBg>
       <form onSubmit={handleSubmit}>
         <div>
           <Field
             name="name"
             component={TextFieldRedux}
-            placeholder={t('help-support.contact-form.name')}
-            label={t('help-support.contact-form.name')}
+            placeholder={t("help-support.contact-form.name")}
+            label={t("help-support.contact-form.name")}
             validate={required}
             required
             className={classes.field}
@@ -48,8 +41,8 @@ function ContactForm(props) {
           <Field
             name="email"
             component={TextFieldRedux}
-            placeholder={t('help-support.contact-form.email')}
-            label={t('help-support.contact-form.email')}
+            placeholder={t("help-support.contact-form.email")}
+            label={t("help-support.contact-form.email")}
             required
             validate={[required, email]}
             className={classes.field}
@@ -61,22 +54,23 @@ function ContactForm(props) {
             className={classes.field}
             component={TextFieldRedux}
             validate={required}
-            placeholder={t('help-support.contact-form.message')}
-            label={t('help-support.contact-form.message')}
+            placeholder={t("help-support.contact-form.message")}
+            label={t("help-support.contact-form.message")}
             multiline={trueBool}
-            rows={4}
+            minRows={4}
           />
         </div>
         <div>
-          <Button variant="contained" color="secondary" type="submit" disabled={submitting}>
-            {t('help-support.contact-form.send')}
-          </Button>
           <Button
-            type="button"
-            disabled={pristine || submitting}
-            onClick={reset}
+            variant="contained"
+            color="secondary"
+            type="submit"
+            disabled={submitting}
           >
-            {t('help-support.contact-form.reset')}
+            {t("help-support.contact-form.send")}
+          </Button>
+          <Button type="button" disabled={pristine || submitting} onClick={reset}>
+            {t("help-support.contact-form.reset")}
           </Button>
         </div>
       </form>
@@ -92,22 +86,22 @@ ContactForm.propTypes = {
   submitting: PropTypes.bool.isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   init: bindActionCreators(initAction, dispatch),
   clear: () => dispatch(clearAction),
 });
 
 const ContactFormMapped = reduxForm({
-  form: 'immutableExample',
+  form: "immutableExample",
 })(ContactForm);
 
-const reducer = 'initval';
+const reducer = "initval";
 const FormInit = connect(
-  state => ({
+  (state) => ({
     force: state,
-    initialValues: state[reducer].get('formValues')
+    initialValues: state[reducer].get("formValues"),
   }),
-  mapDispatchToProps,
+  mapDispatchToProps
 )(ContactFormMapped);
 
 export default withStyles(styles)(FormInit);

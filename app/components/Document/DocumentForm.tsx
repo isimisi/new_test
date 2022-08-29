@@ -57,7 +57,7 @@ const DocumentForm = ({ isUpdatingNode = true }: Props) => {
         label={t("nodes.node-form.desc")}
         multiline
         fullWidth
-        rows={2}
+        minRows={2}
         onChange={handleDescriptionChange}
         value={doc.get("description")}
         disabled={!isUpdatingNode}

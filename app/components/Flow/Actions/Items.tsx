@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable no-param-reassign */
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
@@ -49,7 +50,7 @@ interface Props {
   editable?: boolean;
 }
 
-const Items = (props: Props) => {
+function Items(props: Props) {
   const {
     mouseActive,
     stickyActive,
@@ -89,14 +90,14 @@ const Items = (props: Props) => {
   };
 
   const [editSteps, setEditSteps] = React.useState(false);
-  const toggleEditSteps = () => setEditSteps(prevVal => !prevVal);
+  const toggleEditSteps = () => setEditSteps((prevVal) => !prevVal);
 
   const toggleShowAlerts = () =>
-    setShowAlertLog && setShowAlertLog(prevVal => !prevVal);
+    setShowAlertLog && setShowAlertLog((prevVal) => !prevVal);
   const goToAnalysis = () => history.push(`analysis/${id}`);
 
-  const handleDragNode = e => onDragStartNode(e, zoom);
-  const handleDragNote = e => onDragStartNote(e, zoom);
+  const handleDragNode = (e) => onDragStartNode(e, zoom);
+  const handleDragNote = (e) => onDragStartNote(e, zoom);
   // const handleDragStep = e => (e, zoom);
 
   return (
@@ -280,6 +281,7 @@ const Items = (props: Props) => {
                       <LowPriorityIcon />
                     </ListItemIcon>
                     <ListItemText>{t("workspace.edit_steps")}</ListItemText>
+                    {/* @ts-ignore - with styles */}
                     <CustomSwitch checked={editSteps} name="editSteps" />
                   </MenuItem>
                 </MenuList>
@@ -290,6 +292,6 @@ const Items = (props: Props) => {
       </Popper>
     </>
   );
-};
+}
 
 export default memo(Items);

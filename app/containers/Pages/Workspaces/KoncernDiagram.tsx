@@ -8,11 +8,10 @@ import { withStyles, useTheme } from "@material-ui/core/styles";
 import ReactFlow, {
   Background,
   ConnectionMode,
-  BackgroundVariant,
-
+  BackgroundVariant
 } from "react-flow-renderer10";
-import { useTranslation } from 'react-i18next';
-import Collaboration from '@components/Flow/Actions/Collaborations';
+import { useTranslation } from "react-i18next";
+import Collaboration from "@components/Flow/Actions/Collaborations";
 import Grid from "@material-ui/core/Grid";
 import { useHistory, useLocation } from "react-router-dom";
 import Notification from "@components/Notification/Notification";
@@ -28,11 +27,17 @@ import Loader from "@components/Loading/LongLoader";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import styles from "../../../components/Workspace/workspace-jss";
-import { reducer, initErstTypes, BASE_BG_STROKE, BASE_BG_GAP, proOptions } from "./constants";
+import {
+  reducer,
+  initErstTypes,
+  BASE_BG_STROKE,
+  BASE_BG_GAP,
+  proOptions
+} from "./constants";
 import {
   cvrWorkspacePublic,
   closeNotifAction,
-  changeHandleVisability,
+  changeHandleVisability
 } from "./reducers/workspaceActions";
 import "./workspace.css";
 import { useAuth0, User } from "@auth0/auth0-react";
@@ -43,16 +48,16 @@ import { useAppSelector, useAppDispatch } from "@hooks/redux";
 import useCvr from "@hooks/workspace/useCvr";
 import useChangeElements from "@hooks/workspace/useChangeElements";
 import CustomNode from "@components/Workspace/Node/CustomNode";
-import Meta from "@components/Flow/Actions/Meta10";
+import Meta from "@components/Flow/Actions/Meta";
 import useMeta from "@hooks/flow/useMeta";
-import Controls from "@components/Flow/Actions/Controls10";
+import Controls from "@components/Flow/Actions/Controls";
 import Items from "@components/Flow/Actions/Items";
 
 const nodeTypes = {
-  custom: CustomNode,
+  custom: CustomNode
 };
 
-const Workspace = props => {
+function Workspace(props) {
   const { classes } = props;
   const dispatch = useAppDispatch();
   const history = useHistory();
@@ -63,17 +68,22 @@ const Workspace = props => {
   const id = getId(history);
   const { search } = useLocation();
   const cvr = new URLSearchParams(search).get("cvr");
-  const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const messageNotif = useAppSelector((state) => state[reducer].get("message"));
 
   const reactFlowContainer = useRef(null);
-  const nodeElements = useAppSelector(state => state[reducer].get("nodeElements")).toJS();
-  const edgeElements = useAppSelector(state => state[reducer].get("edgeElements")).toJS();
-  const handleVisability = useAppSelector(state => state[reducer].get('handleVisability'));
+  const nodeElements = useAppSelector((state) =>
+    state[reducer].get("nodeElements")
+  ).toJS();
+  const edgeElements = useAppSelector((state) =>
+    state[reducer].get("edgeElements")
+  ).toJS();
+  const handleVisability = useAppSelector((state) =>
+    state[reducer].get("handleVisability")
+  );
 
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
 
   const [loading, setLoading] = useState(true);
-
 
   const { onMove, currentZoom } = useMove();
   const { onInit, rfInstance } = useInit();
@@ -93,7 +103,6 @@ const Workspace = props => {
     undefined,
     cvrFinish
   );
-
 
   useEffect(() => {
     if (subscription) {
@@ -121,10 +130,19 @@ const Workspace = props => {
     setOpenRegisterModal(false);
   };
 
+  const { onNodesChange, onEdgesChange } = useChangeElements(
+    dispatch,
+    nodeElements,
+    edgeElements
+  );
 
-  const { onNodesChange, onEdgesChange } = useChangeElements(dispatch, nodeElements, edgeElements);
-
-  const { handleAutoLayout, handleImage, snapToGrid, setSnapToGrid } = useMeta(dispatch, nodeElements, edgeElements, reactFlowContainer, cvr || "download");
+  const { handleAutoLayout, handleImage, snapToGrid, setSnapToGrid } = useMeta(
+    dispatch,
+    nodeElements,
+    edgeElements,
+    reactFlowContainer,
+    cvr || "download"
+  );
 
   return (
     <div>
@@ -177,17 +195,20 @@ const Workspace = props => {
               backLink="/app"
             />
             <Items />
-            <Controls currentZoom={currentZoom} reactFlowInstance={rfInstance} />
-
+            <Controls
+              currentZoom={currentZoom}
+              reactFlowInstance={rfInstance}
+            />
           </div>
 
-          {handleVisability && <Background
-            variant={BackgroundVariant.Lines}
-            gap={BASE_BG_GAP / currentZoom}
-            size={BASE_BG_STROKE / currentZoom}
-          />}
+          {handleVisability && (
+            <Background
+              variant={BackgroundVariant.Lines}
+              gap={BASE_BG_GAP / currentZoom}
+              size={BASE_BG_STROKE / currentZoom}
+            />
+          )}
         </ReactFlow>
-
       </div>
 
       <Dialog
@@ -327,8 +348,7 @@ const Workspace = props => {
             color="primary"
             variant="contained"
             onClick={() =>
-              window.open("https://app.juristic.io/app", "_blank")?.focus()
-            }
+              window.open("https://app.juristic.io/app", "_blank")?.focus()}
           >
             Opret GRATIS bruger
           </Button>
@@ -336,7 +356,7 @@ const Workspace = props => {
       </Dialog>
     </div>
   );
-};
+}
 
 Workspace.propTypes = {
   classes: PropTypes.object.isRequired

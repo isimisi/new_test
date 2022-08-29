@@ -1,7 +1,7 @@
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import React, { useState, memo } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import MapIcon from "@material-ui/icons/Map";
@@ -26,7 +26,7 @@ interface Props {
 }
 
 const Controls = (props: Props) => {
-  const { currentZoom, reactFlowInstance } = props;
+  const { currentZoom, reactFlowInstance, handleTransform, panToNextIndex } = props;
   const classes = useStyles();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -196,4 +196,4 @@ const Controls = (props: Props) => {
   );
 };
 
-export default memo(Controls);
+export default Controls;

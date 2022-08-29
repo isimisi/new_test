@@ -35,7 +35,7 @@ import Button from "@material-ui/core/Button";
 import { postWorkspace } from "../Workspaces/reducers/workspaceActions";
 import brand from "@api/ui/brand";
 
-const Person = () => {
+function Person() {
   const dispatch = useAppDispatch();
 
   const { t } = useTranslation();
@@ -44,21 +44,23 @@ const Person = () => {
   const theme = useTheme();
   const cvr = history.location.pathname.split("/").pop();
 
-  const company = useAppSelector(state => state[reducer].get("company")).toJS();
+  const company = useAppSelector((state) =>
+    state[reducer].get("company")
+  ).toJS();
 
   const title = brand.name + " - " + company.name;
 
-  const loading = useAppSelector(state => state[reducer].get("loading"));
-  const monitorLoading = useAppSelector(state =>
+  const loading = useAppSelector((state) => state[reducer].get("loading"));
+  const monitorLoading = useAppSelector((state) =>
     state[reducer].get("monitorLoading")
   );
 
   const [years, setYears] = useState<SelectOptions[]>([
     { value: "2022", label: "2022" }
   ]);
-  const handleYears = y => setYears(y);
+  const handleYears = (y) => setYears(y);
   const [year, setYear] = useState({ value: "2022", label: "2022" });
-  const handleYear = v => setYear(v);
+  const handleYear = (v) => setYear(v);
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -97,22 +99,20 @@ const Person = () => {
 
   if (loading) {
     return (
-      <>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: theme.palette.background.default,
-            position: "absolute",
-            zIndex: 10,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
-          <Loader bigFont />
-        </div>
-      </>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: theme.palette.background.default,
+          position: "absolute",
+          zIndex: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <Loader bigFont />
+      </div>
     );
   }
 
@@ -222,6 +222,8 @@ const Person = () => {
             <Owners data={company} />
           </TabPanel>
         </Grid>
+        {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
+
         <Hidden mdDown>
           <Divider
             orientation="vertical"
@@ -232,6 +234,6 @@ const Person = () => {
       </Grid>
     </div>
   );
-};
+}
 
 export default Person;

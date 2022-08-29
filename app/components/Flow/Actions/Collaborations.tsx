@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -25,16 +26,19 @@ interface Props {
   setShowSignWorkspace?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Collaboration = (props: Props) => {
+function Collaboration(props: Props) {
   const { setShareModalOpen, timeline, setShowSignWorkspace } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const { user } = useAuth0();
   const meta: UserMeta = user && user["https://juristic.io/meta"];
-  const { first_name, last_name } = meta?.dbUser || { first_name: "", last_name: "" };
+  const { first_name, last_name } = meta?.dbUser || {
+    first_name: "",
+    last_name: ""
+  };
 
   const toggleShare = () =>
-    setShareModalOpen && setShareModalOpen(prevVal => !prevVal);
+    setShareModalOpen && setShareModalOpen((prevVal) => !prevVal);
 
   const sign = () => setShowSignWorkspace && setShowSignWorkspace(true);
 
@@ -84,13 +88,18 @@ const Collaboration = (props: Props) => {
         placement="bottom"
       >
         <div style={{ cursor: "pointer", margin: "0 12px" }}>
+          {/* @ts-ignore */}
           <Avatar className={classes.avatar} {...config} />
         </div>
       </Tooltip>
       <Button
         variant="contained"
         color="primary"
-        disabled={timeline || (setShareModalOpen === undefined && setShowSignWorkspace === undefined)}
+        disabled={
+          timeline ||
+          (setShareModalOpen === undefined &&
+            setShowSignWorkspace === undefined)
+        }
         className={classes.shareButton}
         onClick={setShowSignWorkspace ? sign : toggleShare}
       >
@@ -98,6 +107,6 @@ const Collaboration = (props: Props) => {
       </Button>
     </Paper>
   );
-};
+}
 
 export default memo(Collaboration);

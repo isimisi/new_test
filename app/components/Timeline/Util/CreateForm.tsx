@@ -357,7 +357,7 @@ const CreateForm = (props: Props) => {
         placeholder={t("workspaces.workspace-form.desc")}
         label={t("workspaces.workspace-form.desc")}
         multiline
-        rows={2}
+        minRows={2}
         className={classes.eventField}
         value={description}
         onChange={descriptionChange}

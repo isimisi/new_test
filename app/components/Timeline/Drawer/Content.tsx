@@ -1,23 +1,19 @@
 /* eslint-disable default-case */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { KeyboardEventHandler, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import daLocale from "date-fns/locale/da";
-import enLocale from "date-fns/locale/en-US";
-import axios from "axios";
+
 import {
   DocumentCleanOption,
-  MixedDocumentOptions
 } from "@customTypes/reducers/document";
-import { hanldeOnDocumentChange } from "@pages/Documents/constants";
-import { useAppDispatch, useAppSelector } from "@hooks/redux";
+
+import { useAppDispatch } from "@hooks/redux";
 import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import { MixedPersonOptions } from "@customTypes/reducers/person";
 import useStyles from "../timeline.jss";
 import { useTheme } from "@material-ui/core/styles";
-import { baseUrl } from "@api/constants";
-import { useDropzone } from "react-dropzone";
+
 import Button from "@material-ui/core/Button";
 import NoContent from "@components/NoContent";
 import Typography from "@material-ui/core/Typography";
@@ -64,7 +60,7 @@ interface Props {
   handleDocumentOpen: (id: string, name?: string) => void;
 }
 
-const Content = (props: Props) => {
+function Content(props: Props) {
   const {
     onSave,
     personOptions,
@@ -101,13 +97,13 @@ const Content = (props: Props) => {
   const user = useAuth0().user as User;
   const dispatch = useAppDispatch();
 
-  const handleOpenPersonNonEdit = id => {
+  const handleOpenPersonNonEdit = (id) => {
     dispatch(
       showPerson(user, id, () => dispatch(timelineElementPersonChange(true)))
     );
   };
 
-  const handleOpenDocumentNonEdit = id => {
+  const handleOpenDocumentNonEdit = (id) => {
     dispatch(
       showDocument(user, id, () =>
         dispatch(timelineElementDocumentChange(true))
@@ -178,6 +174,7 @@ const Content = (props: Props) => {
                     {title}
                   </Typography>
                   <Linkify
+                    // eslint-disable-next-line react/no-unstable-nested-components
                     componentDecorator={(decoratedHref, decoratedText, key) => (
                       <a target="blank" href={decoratedHref} key={key}>
                         {decoratedText}
@@ -193,12 +190,13 @@ const Content = (props: Props) => {
                   {(persons.length !== 0 || documents.length !== 0) && (
                     <div className={classes.peopleAndDocumentsContainer}>
                       <div className={classes.personDiv}>
-                        {persons.map(person => (
+                        {persons.map((person) => (
                           <Tooltip arrow title={person.name} placement="top">
                             <div
                               style={{ cursor: "pointer", margin: 2 }}
                               onClick={() => handleOpenPersonNonEdit(person.id)}
                             >
+                              {/* @ts-ignore */}
                               <Avatar
                                 style={{ width: 30, height: 30 }}
                                 {...JSON.parse(person.icon)}
@@ -211,13 +209,12 @@ const Content = (props: Props) => {
                         <div className={classes.personAndDocsDivider} />
                       )}
                       <div className={classes.personDiv}>
-                        {documents.map(document => (
+                        {documents.map((document) => (
                           <Tooltip arrow title={document.title} placement="top">
                             <IconButton
                               size="small"
                               onClick={() =>
-                                handleOpenDocumentNonEdit(document.id)
-                              }
+                                handleOpenDocumentNonEdit(document.id)}
                             >
                               <DescriptionIcon style={{ fontSize: 25 }} />
                             </IconButton>
@@ -225,7 +222,7 @@ const Content = (props: Props) => {
                         ))}
                       </div>
                       <div className={classes.personDiv}>
-                        {tags.map(tag => (
+                        {tags.map((tag) => (
                           <Tooltip
                             arrow
                             title={tag.name}
@@ -302,6 +299,6 @@ const Content = (props: Props) => {
       </div>
     </div>
   );
-};
+}
 
 export default Content;

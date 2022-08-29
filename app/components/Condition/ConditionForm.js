@@ -53,7 +53,7 @@ const ConditionForm = (props) => {
             placeholder={t("conditions.condition-form.form_desc")}
             label={t("conditions.condition-form.form_desc")}
             multiline
-            rows={2}
+            minRows={2}
             value={description}
             onChange={descriptionChange}
           />

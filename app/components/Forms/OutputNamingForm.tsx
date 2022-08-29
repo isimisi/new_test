@@ -100,7 +100,7 @@ const OutputNamingForm = (props: Props) => {
                 placeholder={t("output.OutputNamingForm.desc")}
                 label={t("output.OutputNamingForm.desc")}
                 multiline
-                rows={2}
+                minRows={2}
                 onChange={e => onDescriptionChange(e.target.value)}
                 value={description}
               />

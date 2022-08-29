@@ -5,11 +5,12 @@ import teal from "@material-ui/core/colors/teal";
 import brown from "@material-ui/core/colors/brown";
 import red from "@material-ui/core/colors/red";
 import { lighten, darken, alpha } from "@material-ui/core/styles/colorManipulator";
+import { makeStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 300;
 const drawerHeight = "100vh";
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   table: {
     "& > div": {
       overflow: "auto",
@@ -451,6 +452,6 @@ const styles = (theme) => ({
       maxWidth: "250px",
     },
   },
-});
+}));
 
-export default styles;
+export default useStyles;

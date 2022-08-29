@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+// import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { Box, Popper, Paper, Typography } from "@material-ui/core";
 
 interface GridCellExpandProps {
@@ -23,7 +23,6 @@ const GridCellExpand = React.memo((props: GridCellExpandProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [showFullCell, setShowFullCell] = React.useState(false);
   const [showPopper, setShowPopper] = React.useState(false);
-
 
   const handleMouseEnter = () => {
     const isCurrentlyOverflown = isOverflown(cellValue.current!);
@@ -56,6 +55,7 @@ const GridCellExpand = React.memo((props: GridCellExpandProps) => {
   }, [setShowFullCell, showFullCell]);
 
   return (
+    /* @ts-ignore - old react */
     <Box
       // @ts-ignore
       ref={wrapper}
@@ -70,6 +70,7 @@ const GridCellExpand = React.memo((props: GridCellExpandProps) => {
         display: "flex"
       }}
     >
+      {/* @ts-ignore - old react */}
       <Box
         // @ts-ignore
         ref={cellDiv}
@@ -81,6 +82,7 @@ const GridCellExpand = React.memo((props: GridCellExpandProps) => {
           top: 0
         }}
       />
+      {/* @ts-ignore - old react */}
       <Box
         // @ts-ignore
         ref={cellValue}
@@ -96,13 +98,11 @@ const GridCellExpand = React.memo((props: GridCellExpandProps) => {
         <Popper
           open={showFullCell && anchorEl !== null}
           anchorEl={anchorEl}
-          container={wrapper.current?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode as HTMLElement}
-          style={{ width,
-            marginLeft: -17,
-            marginTop: 17,
-            zIndex: 1000,
-
-          }}
+          container={
+            wrapper.current?.parentNode?.parentNode?.parentNode?.parentNode
+              ?.parentNode as HTMLElement
+          }
+          style={{ width, marginLeft: -17, marginTop: 17, zIndex: 1000 }}
         >
           <Paper
             elevation={1}
@@ -110,8 +110,7 @@ const GridCellExpand = React.memo((props: GridCellExpandProps) => {
               width,
 
               display: "flex",
-              flexWrap: "wrap",
-
+              flexWrap: "wrap"
             }}
           >
             <Typography variant="body2" style={{ padding: 8 }}>

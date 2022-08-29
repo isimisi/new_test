@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import css from "@styles/Form.scss";
 import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import FloatingPanel from "../../Panel/FloatingPanel";
-import styles from "../workspace-jss";
+import useStyles from "../workspace-jss";
 
 function WorkspaceMeta(props) {
-  const { open, classes, closeForm, onSave } = props;
+  const { open, closeForm, onSave } = props;
+  const classes = useStyles();
 
   const [signed, setSigned] = useState(false);
 
@@ -64,7 +64,6 @@ function WorkspaceMeta(props) {
 }
 
 WorkspaceMeta.propTypes = {
-  classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   closeForm: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
@@ -75,4 +74,4 @@ WorkspaceMeta.defaultProps = {
   description: "",
 };
 
-export default withStyles(styles)(WorkspaceMeta);
+export default WorkspaceMeta;

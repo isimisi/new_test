@@ -7,8 +7,7 @@ import { useTranslation } from "react-i18next";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Divider from "@material-ui/core/Divider";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import { withStyles } from "@material-ui/core/styles";
-import styles from "../workspace-jss";
+import useStyles from "../workspace-jss";
 import { RGBA, SelectChoice } from "@customTypes/data";
 import ListIcon from "@material-ui/icons/List";
 import { SketchPicker, ColorResult } from "react-color";
@@ -35,7 +34,6 @@ import { Node } from "react-flow-renderer10";
 import { NodeData } from "@customTypes/reducers/workspace";
 
 interface Props {
-  classes: any;
   nodePopperRef: EventTarget | null;
   showNodePopper: boolean;
   currentZoom: number;
@@ -67,9 +65,8 @@ interface Props {
   handleLabelColorChange: (color: RGBA) => void;
 }
 
-const NodePopper = (props: Props) => {
+function NodePopper(props: Props) {
   const {
-    classes,
     nodePopperRef,
     showNodePopper,
     currentZoom,
@@ -94,24 +91,22 @@ const NodePopper = (props: Props) => {
     nodeLabelColor,
     handleLabelColorChange
   } = props;
+
+  const classes = useStyles();
   // eslint-disable-next-line react/destructuring-assignment
   const activeElement = props.activeElement as Node<NodeData>;
 
-  const choosenNode = nodes.find(r => r.label === nodeLabel);
+  const choosenNode = nodes.find((r) => r.label === nodeLabel);
   const { t } = useTranslation();
   const [labelRef, setLabelRef] = useState<EventTarget | null>(null);
   const [attributRef, setAttributRefRef] = useState<EventTarget | null>(null);
   const [typeRef, setTypeRef] = useState<EventTarget | null>(null);
 
   const [displayColorPickerColor, setDisplayColorPickerColor] = useState(false);
-  const [
-    displayBorderColorPickerColor,
-    setDisplayBorderColorPickerColor
-  ] = useState(false);
-  const [
-    displayLabelColorPickerColor,
-    setDisplayLabelColorPickerColor
-  ] = useState(false);
+  const [displayBorderColorPickerColor, setDisplayBorderColorPickerColor] =
+    useState(false);
+  const [displayLabelColorPickerColor, setDisplayLabelColorPickerColor] =
+    useState(false);
 
   const toggleDisplayColor = () => {
     setTypeRef(null);
@@ -119,7 +114,7 @@ const NodePopper = (props: Props) => {
     setDisplayBorderColorPickerColor(false);
     setAttributRefRef(null);
     setLabelRef(null);
-    setDisplayColorPickerColor(prevVal => !prevVal);
+    setDisplayColorPickerColor((prevVal) => !prevVal);
   };
 
   const toggleDisplayBorderColor = () => {
@@ -128,7 +123,7 @@ const NodePopper = (props: Props) => {
     setDisplayColorPickerColor(false);
     setLabelRef(null);
     setAttributRefRef(null);
-    setDisplayBorderColorPickerColor(prevVal => !prevVal);
+    setDisplayBorderColorPickerColor((prevVal) => !prevVal);
   };
 
   const toggleDisplayLabelColor = () => {
@@ -137,38 +132,38 @@ const NodePopper = (props: Props) => {
     setLabelRef(null);
     setAttributRefRef(null);
     setDisplayBorderColorPickerColor(false);
-    setDisplayLabelColorPickerColor(prevVal => !prevVal);
+    setDisplayLabelColorPickerColor((prevVal) => !prevVal);
   };
 
-  const toggleLabelMenu = e => {
+  const toggleLabelMenu = (e) => {
     removeNodeTextTarget();
     setDisplayLabelColorPickerColor(false);
     setTypeRef(null);
     setDisplayBorderColorPickerColor(false);
     setDisplayColorPickerColor(false);
     setAttributRefRef(null);
-    setLabelRef(prevVal => (!prevVal ? e.target : null));
+    setLabelRef((prevVal) => (!prevVal ? e.target : null));
   };
 
-  const toggleAttributMenu = e => {
+  const toggleAttributMenu = (e) => {
     setTypeRef(null);
     setDisplayLabelColorPickerColor(false);
     setDisplayBorderColorPickerColor(false);
     setDisplayColorPickerColor(false);
     setLabelRef(null);
-    setAttributRefRef(prevVal => (!prevVal ? e.target : null));
+    setAttributRefRef((prevVal) => (!prevVal ? e.target : null));
   };
 
-  const toggleTypeMenu = e => {
+  const toggleTypeMenu = (e) => {
     setDisplayBorderColorPickerColor(false);
     setDisplayLabelColorPickerColor(false);
     setDisplayColorPickerColor(false);
     setAttributRefRef(null);
     setLabelRef(null);
-    setTypeRef(prevVal => (!prevVal ? e.target : null));
+    setTypeRef((prevVal) => (!prevVal ? e.target : null));
   };
 
-  const handleEditData = e => {
+  const handleEditData = (e) => {
     removeNodeTextTarget();
     editData(e, activeElement, true);
   };
@@ -201,7 +196,7 @@ const NodePopper = (props: Props) => {
     handleNodeSave();
   };
   const figurValue = React.useMemo(
-    () => nodeFigur && figurTypeOptions.find(x => x.value === nodeFigur),
+    () => nodeFigur && figurTypeOptions.find((x) => x.value === nodeFigur),
     [nodeFigur]
   );
 
@@ -327,9 +322,7 @@ const NodePopper = (props: Props) => {
                   <div
                     className={classes.colorQuick}
                     style={{
-                      backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${
-                        nodeColor.b
-                      }, ${nodeColor.a})`,
+                      backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeColor.a})`,
                       border: "1px solid gray"
                     }}
                   />
@@ -355,9 +348,7 @@ const NodePopper = (props: Props) => {
                   <div
                     className={classes.colorQuick}
                     style={{
-                      border: `4px solid rgba(${nodeBorderColor.r}, ${
-                        nodeBorderColor.g
-                      }, ${nodeBorderColor.b}, ${nodeBorderColor.a})`
+                      border: `4px solid rgba(${nodeBorderColor.r}, ${nodeBorderColor.g}, ${nodeBorderColor.b}, ${nodeBorderColor.a})`
                     }}
                   />
                 </ButtonBase>
@@ -381,9 +372,7 @@ const NodePopper = (props: Props) => {
                 >
                   <FormatColorTextIcon
                     style={{
-                      color: `rgba(${nodeLabelColor.r}, ${nodeLabelColor.g}, ${
-                        nodeLabelColor.b
-                      }, ${nodeLabelColor.a})`,
+                      color: `rgba(${nodeLabelColor.r}, ${nodeLabelColor.g}, ${nodeLabelColor.b}, ${nodeLabelColor.a})`,
                       fontSize: 25,
                       stroke: "gray"
                     }}
@@ -457,13 +446,14 @@ const NodePopper = (props: Props) => {
               <CreatableSelect
                 styles={{
                   ...selectStyles(),
-                  valueContainer: provided => ({
+                  valueContainer: (provided) => ({
                     ...provided,
                     width: "180px"
                   })
                 }}
                 noOptionsMessage={() => t("generic.no_options")}
-                formatCreateLabel={input => t("generic.create_new", { input })}
+                formatCreateLabel={(input) =>
+                  t("generic.create_new", { input })}
                 inputId="react-select-single-workspace-node"
                 autoFocus
                 TextFieldProps={{
@@ -475,7 +465,7 @@ const NodePopper = (props: Props) => {
                   placeholder: "Element"
                 }}
                 placeholder={t("workspace.node.label_placeholder")}
-                options={nodes.map(n => ({ value: n.label, label: n.label }))}
+                options={nodes.map((n) => ({ value: n.label, label: n.label }))}
                 value={nodeLabel && { label: nodeLabel, value: nodeLabel }}
                 onChange={handleChangeLabel}
               />
@@ -509,16 +499,15 @@ const NodePopper = (props: Props) => {
                       <CreatableSelect
                         styles={{
                           ...selectStyles(),
-                          valueContainer: provided => ({
+                          valueContainer: (provided) => ({
                             ...provided,
                             width: "180px"
                           })
                         }}
                         placeholder="Kendetegn"
                         noOptionsMessage={() => t("generic.no_options")}
-                        formatCreateLabel={input =>
-                          t("generic.create_new", { input })
-                        }
+                        formatCreateLabel={(input) =>
+                          t("generic.create_new", { input })}
                         options={attributesDropDownOptions}
                         value={
                           attribut.label && {
@@ -527,10 +516,9 @@ const NodePopper = (props: Props) => {
                           }
                         }
                         isDisabled={Boolean(attribut.label)}
-                        isOptionDisabled={option =>
-                          attributes.map(a => a.label).includes(option.label)
-                        }
-                        onChange={value => {
+                        isOptionDisabled={(option) =>
+                          attributes.map((a) => a.label).includes(option.label)}
+                        onChange={(value) => {
                           const newRow = { ...attribut };
                           newRow.label = value.label;
                           newRow.type = value.type || "Value";
@@ -558,7 +546,7 @@ const NodePopper = (props: Props) => {
                             <TextField
                               value={attribut.value}
                               placeholder="Værdi"
-                              onChange={e => {
+                              onChange={(e) => {
                                 const newArray = [...attributes];
                                 newArray[index] = {
                                   ...newArray[index],
@@ -572,16 +560,15 @@ const NodePopper = (props: Props) => {
                             <CreatableSelect
                               styles={{
                                 ...selectStyles(),
-                                valueContainer: provided => ({
+                                valueContainer: (provided) => ({
                                   ...provided,
                                   width: "180px"
                                 })
                               }}
                               placeholder="Værdi"
                               noOptionsMessage={() => t("generic.no_options")}
-                              formatCreateLabel={input =>
-                                t("generic.create_new", { input })
-                              }
+                              formatCreateLabel={(input) =>
+                                t("generic.create_new", { input })}
                               options={JSON.parse(attribut.selectionOptions)}
                               value={
                                 attribut.value && {
@@ -589,7 +576,7 @@ const NodePopper = (props: Props) => {
                                   value: attribut.value
                                 }
                               }
-                              onChange={value => {
+                              onChange={(value) => {
                                 const newArray = [...attributes];
                                 newArray[index] = {
                                   ...newArray[index],
@@ -625,8 +612,7 @@ const NodePopper = (props: Props) => {
                             handelRemoveAttributes(
                               attribut.workspace_node_attribut_id,
                               index
-                            )
-                          }
+                            )}
                         >
                           <DeleteIcon />
                         </IconButton>
@@ -659,7 +645,7 @@ const NodePopper = (props: Props) => {
                 classes={classes}
                 styles={{
                   ...selectStyles(),
-                  valueContainer: provided => ({
+                  valueContainer: (provided) => ({
                     ...provided,
                     width: "180px"
                   })
@@ -692,6 +678,6 @@ const NodePopper = (props: Props) => {
       </Popper>
     </>
   );
-};
+}
 
-export default memo(withStyles(styles)(NodePopper));
+export default memo(NodePopper);
