@@ -30,7 +30,8 @@
     "postsetup": "npm run build:dll",
     "clean": "shjs ./internals/scripts/clean.js",
     "clean:all": "npm run analyze:clean && npm run test:clean && npm run build:clean",
-    "generate": "plop --plopfile internals/generators/index.js"
+    "generate": "plop --plopfile internals/generators/index.js",
+    "prettify": "prettier --write"
   },
   "browserslist": [
     "last 1 version",
@@ -240,7 +241,7 @@
     "styled-components": "^5.3.0",
     "terser-webpack-plugin": "^5.3.1",
     "ts-loader": "^9.3.1",
-    "typescript": "4.8.2",
+    "typescript": "^4.8.2",
     "unused-webpack-plugin": "^2.4.0",
     "url-loader": "^1.1.2",
     "use-react-screenshot": "^1.0.2",
