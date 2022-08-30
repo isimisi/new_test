@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.4.83",
+  "version": "1.4.84",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -17,7 +17,7 @@
     "build": "cross-env NODE_ENV=production webpack --config internals/webpack/webpack.prod.babel.js --color --progress",
     "build:clean": "rimraf ./build",
     "build:dll": "node ./internals/scripts/dependencies.js",
-    "start": "cross-env NODE_ENV=development node server",
+    "start": "node server",
     "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true node server",
     "start:production": "npm run test && npm run build && npm run start:prod",
     "start:prod": "cross-env NODE_ENV=production node server",
