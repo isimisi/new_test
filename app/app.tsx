@@ -31,14 +31,13 @@ import "./i18n";
 import Auth0ProviderWithHistory from "./containers/App/auth0-provider-with-history";
 import ErrorView from "@components/Error/CrashScreen";
 
-
 // bugsnag
 if (process.env.NODE_ENV === "production") {
   LogRocket.init("pm66tw/juristic-web-app");
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()],
-    appVersion: "1.4.70"
+    appVersion: "1.4.82"
   });
 }
 
@@ -52,7 +51,6 @@ openSansObserver.load().then(() => {
 });
 
 const domainGroupId = "e25f2e52-b958-4868-bb38-05482f232612";
-
 
 // TODO: påsæt reux with loace storage så den bliver initeret med localstorage og jeg dermed aldrig skal kigge i locale storage
 const MOUNT_NODE = document.getElementById("app");
@@ -97,7 +95,6 @@ if (process.env.NODE_ENV === "production") {
         {/* @ts-ignore - old react */}
         <ErrorBoundary FallbackComponent={ErrorView}>
           <Provider store={store}>
-            
             {/* @ts-ignore - old react */}
             <ConnectedRouter history={history}>
               <Auth0ProviderWithHistory>
@@ -106,7 +103,6 @@ if (process.env.NODE_ENV === "production") {
                 <CookieBot domainGroupId={domainGroupId} />
               </Auth0ProviderWithHistory>
             </ConnectedRouter>
-            
           </Provider>
         </ErrorBoundary>
       </>,
@@ -115,6 +111,4 @@ if (process.env.NODE_ENV === "production") {
   };
 }
 
-
-  render();
-
+render();
