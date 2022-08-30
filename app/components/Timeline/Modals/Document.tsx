@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -18,13 +17,13 @@ interface Props {
   onSave: (document: TDocument, stopLoading: () => void) => void;
 }
 
-const Document = (props: Props) => {
+function Document(props: Props) {
   const { open, close, onSave } = props;
 
   const classes = useStyles();
 
-  const document = useAppSelector(state => state.document.get("document"));
-  const isUpdatingNode = useAppSelector(state =>
+  const document = useAppSelector((state) => state.document.get("document"));
+  const isUpdatingNode = useAppSelector((state) =>
     state.timeline.get("isUpdatingNode")
   );
 
@@ -35,7 +34,7 @@ const Document = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const stopLoading = () => setLoading(false);
 
-  const handleFileChange = _files => {
+  const handleFileChange = (_files) => {
     if (_files) {
       setFile(_files[0]);
     } else {
@@ -88,6 +87,6 @@ const Document = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Document;

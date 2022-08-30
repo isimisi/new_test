@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-param-reassign */
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { useHistory } from "react-router-dom";
@@ -38,7 +38,7 @@ import {
   clearSplitting,
   validateEmailsClose
 } from "./reducers/timelineActions";
-import ReactFlow, { ReactFlowInstance } from "react-flow-renderer10";
+import ReactFlow, { ReactFlowInstance } from "react-flow-renderer";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 import Collaboration from "@components/Flow/Actions/Collaborations";

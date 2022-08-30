@@ -2,6 +2,8 @@ import {
   ConditionTableOptions,
   NodeAttribute,
   RelationshipLabel,
+  TCustomEdge,
+  TCustomNode,
 } from "@customTypes/reducers/conditions";
 import { GroupDropdown } from "@customTypes/reducers/groups";
 import { Tag } from "@customTypes/reducers/tags";
@@ -27,11 +29,9 @@ export const GET_GROUP_DROPDOWN_FAILED = "GET_GROUP_DROPDOWN_FAILED";
 export const SAVE_CONDITION_SUCCESS = "SAVE_CONDITION_SUCCESS";
 export const SAVE_CONDITION_FAILED = "SAVE_CONDITION_FAILED";
 
-export const CONDITION_ADD_ELEMENTS = "CONDITION_ADD_ELEMENTS";
-export const CONDITION_UPDATE_ELEMENTS = "CONDITION_UPDATE_ELEMENTS";
-
-export const DELETE_CONDITION_ELEMENTS_SUCCESS = "DELETE_CONDITION_ELEMENTS_SUCCESS";
-export const DELETE_CONDITION_ELEMENTS_FAILED = "DELETE_CONDITION_ELEMENTS_FAILED";
+export const CONDITION_ADD_ELEMENTS_LOADING = "CONDITION_ADD_ELEMENTS_LOADING";
+export const CONDITION_ADD_ELEMENTS_SUCCESS = "CONDITION_ADD_ELEMENTS_SUCCESS";
+export const CONDITION_ADD_ELEMENTS_FAILED = "CONDITION_ADD_ELEMENTS_FAILED";
 
 export const GET_NODE_VALUES_SUCCESS = "GET_NODE_VALUES_SUCCESS";
 export const GET_NODE_VALUES_FAILED = "GET_NODE_VALUES_FAILED";
@@ -56,6 +56,9 @@ export const DESCRIPTION_CHANGE_CONDITION = "DESCRIPTION_CHANGE_CONDITION";
 export const ADD_GROUP = "ADD_GROUP";
 export const CHANGE_CONDITION_ROW = "CHANGE_CONDITION_ROW";
 export const CHANGE_TAGS = "CHANGE_TAGS";
+
+export const CHANGE_NODES = "CHANGE_NODES";
+export const CHANGE_EDGES = "CHANGE_EDGES";
 
 export interface GetConditionLoading {
   type: typeof GET_CONDITIONS_LOADING;
@@ -96,7 +99,8 @@ export interface ShowConditionSuccess {
   label: string;
   description: string;
   group: string;
-  elements: Element[];
+  nodes: TCustomNode[];
+  edges: TCustomEdge[];
   tags: Tag[];
 }
 
@@ -144,23 +148,18 @@ export interface SaveConditionFailed {
   message: string;
 }
 
-export interface ConditionAddElement {
-  type: typeof CONDITION_ADD_ELEMENTS;
-  elements: any; // todo
-}
-export interface ConditionUpdateElement {
-  type: typeof CONDITION_UPDATE_ELEMENTS;
-  nodesWithOrgId: string;
-  edgesWithOrgId: string;
+export interface ConditionAddElementsLoading {
+  type: typeof CONDITION_ADD_ELEMENTS_LOADING;
 }
 
-export interface DeleteConditionElementSuccess {
-  type: typeof DELETE_CONDITION_ELEMENTS_SUCCESS;
-  remainingElements: any; // TODO:
+export interface ConditionAddElementSuccess {
+  type: typeof CONDITION_ADD_ELEMENTS_SUCCESS;
+  nodes: TCustomNode[];
+  edges: TCustomEdge[];
 }
 
-export interface DeleteConditionElementFailed {
-  type: typeof DELETE_CONDITION_ELEMENTS_FAILED;
+export interface ConditionAddElementFailed {
+  type: typeof CONDITION_ADD_ELEMENTS_FAILED;
   message: string;
 }
 
@@ -263,6 +262,15 @@ export interface changeTags {
   tags: any;
 }
 
+export interface ChangeNodes {
+  type: typeof CHANGE_NODES;
+  nodes: TCustomNode[];
+}
+export interface ChangeEdges {
+  type: typeof CHANGE_EDGES;
+  edges: TCustomEdge[];
+}
+
 export type ConditionActions =
   | GetConditionLoading
   | GetConditionSuccess
@@ -281,10 +289,9 @@ export type ConditionActions =
   | GetGroupDropdownFailed
   | SaveConditionSuccess
   | SaveConditionFailed
-  | ConditionAddElement
-  | ConditionUpdateElement
-  | DeleteConditionElementSuccess
-  | DeleteConditionElementFailed
+  | ConditionAddElementSuccess
+  | ConditionAddElementFailed
+  | ConditionAddElementsLoading
   | GetNodesValuesSuccess
   | GetNodesValuesFailed
   | GetRelationshipValuesSuccess
@@ -305,4 +312,6 @@ export type ConditionActions =
   | addGroup
   | changeConditionRow
   | changeTags
+  | ChangeNodes
+  | ChangeEdges
   | NotifyActions;

@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable @typescript-eslint/no-empty-interface */
-/* eslint-disable no-param-reassign */
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";

@@ -3,7 +3,7 @@
 import { NodeData, TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
 import { useCallback, useState } from "react";
 import * as XLSX from "xlsx";
-import { getIncomers, getOutgoers, Node } from "react-flow-renderer10";
+import { getIncomers, getOutgoers, Node } from "react-flow-renderer";
 import { useTranslation } from 'react-i18next';
 
 import { saveAs } from "file-saver";

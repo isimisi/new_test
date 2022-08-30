@@ -1,6 +1,6 @@
 import { VoidFunc } from "@customTypes/generic";
 import { useCallback, useMemo, MouseEvent } from "react";
-import { ReactFlowInstance } from "react-flow-renderer10";
+import { ReactFlowInstance } from "react-flow-renderer";
 
 const usePane = (
   removeAllUpdatingRefference: VoidFunc,
@@ -68,10 +68,10 @@ const usePane = (
     }
   };
 
-  const interactive = useMemo(() => editable && !signed && mouseActive, [
-    signed,
-    mouseActive,
-  ]);
+  const interactive = useMemo(
+    () => editable && !signed && mouseActive,
+    [signed, mouseActive]
+  );
 
   return { onPaneClick, interactive, paneContextNodeClick };
 };

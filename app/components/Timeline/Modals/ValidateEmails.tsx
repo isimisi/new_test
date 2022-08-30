@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
+
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useTranslation } from "react-i18next";

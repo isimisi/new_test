@@ -6,15 +6,17 @@ import {
 } from "@pages/Workspaces/reducers/workspaceActions";
 import { AppDispatch } from "@redux/configureStore";
 import { useCallback, useEffect, useState } from "react";
-import { Dimensions } from "react-flow-renderer10";
+import { Dimensions } from "react-flow-renderer";
 import { openMenuAction, closeMenuAction, toggleAction } from "@redux/actions/uiActions";
 import { User } from "@auth0/auth0-react";
+import { getBuildTypeValueOptions } from "@pages/Conditions/reducers/conditionActions";
 
 const useFlowGenerics = (
   reactFlowContainer: React.RefObject<HTMLDivElement>,
   dispatch: AppDispatch,
   user: User,
-  group: string
+  group: string,
+  condition = false
 ) => {
   const [reactFlowDimensions, setReactFlowDimensions] = useState<Dimensions | null>(null);
 
@@ -42,7 +44,12 @@ const useFlowGenerics = (
     if (group) {
       dispatch(getRelationships(user, group));
       dispatch(getNodes(user, group));
-      dispatch(getAttributeDropDown(user, group));
+
+      if (condition) {
+        dispatch(getBuildTypeValueOptions(user, group));
+      } else {
+        dispatch(getAttributeDropDown(user, group));
+      }
     }
   }, [user, group]);
 

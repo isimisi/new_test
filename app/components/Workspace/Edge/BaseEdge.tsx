@@ -1,6 +1,6 @@
 import React from "react";
 
-import { EdgeText, BaseEdgeProps } from "react-flow-renderer10";
+import { EdgeText, BaseEdgeProps } from "react-flow-renderer";
 
 export default ({
   path,

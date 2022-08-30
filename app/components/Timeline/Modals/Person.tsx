@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React from "react";
 
 import { useTranslation } from "react-i18next";
@@ -20,13 +19,13 @@ interface Props {
   onSave: (person: Person) => void;
 }
 
-const Person = (props: Props) => {
+function Person(props: Props) {
   const { open, close, onSave } = props;
 
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const person = useAppSelector(state => state.person.get("person"));
-  const createElementOpen = useAppSelector(state =>
+  const person = useAppSelector((state) => state.person.get("person"));
+  const createElementOpen = useAppSelector((state) =>
     state.timeline.get("createElementOpen")
   );
 
@@ -81,6 +80,6 @@ const Person = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Person;

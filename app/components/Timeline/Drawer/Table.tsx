@@ -10,7 +10,7 @@ import React, { useState } from "react";
 //   GridRowsProp
 // } from "@mui/x-data-grid";
 import Button from "@material-ui/core/Button";
-import { FlowElement } from "react-flow-renderer";
+
 import Dialog from "@material-ui/core/Dialog";
 import { TransitionProps } from "@material-ui/core/transitions";
 import Slide from "@material-ui/core/Slide";
@@ -77,7 +77,7 @@ import GredCellExpandedWYS from "@components/DataGrid/GridCellExpandedWYS";
 interface Props {
   close: (bool?: boolean) => void;
   open: boolean;
-  elements: FlowElement[];
+  elements: any[];
   personOptions: MixedPersonOptions[];
 }
 

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { OnMove } from "react-flow-renderer10";
+import { OnMove } from "react-flow-renderer";
 
 const useMove = () => {
   const [currentZoom, setCurrentZoom] = useState(1);

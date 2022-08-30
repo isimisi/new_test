@@ -13,7 +13,7 @@ import HelpIcon from "@material-ui/icons/Help";
 import Button from "@material-ui/core/Button";
 import useStyles from "./actions.jss";
 import Expand from "react-expand-animated";
-import { MiniMap, ReactFlowInstance } from "react-flow-renderer10";
+import { MiniMap, ReactFlowInstance } from "react-flow-renderer";
 import { useTheme } from "@material-ui/core/styles";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
 

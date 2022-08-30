@@ -1,22 +1,29 @@
 /* eslint-disable consistent-return */
-/* eslint-disable no-param-reassign */
+
 import { User } from "@auth0/auth0-react";
 import { SelectChoice } from "@customTypes/data";
 import { NodeDropdownInstance } from "@customTypes/reactFlow";
 import { Attribut, NodeData, TCustomNode } from "@customTypes/reducers/workspace";
 import { initialAttribut } from "@pages/Workspaces/constants";
-import { addWorkspaceNodeAttributToList, addWorkspaceNodeToList, changeHandleVisability, postNode, postSticky, putNode, showNotifAction } from "@pages/Workspaces/reducers/workspaceActions";
+import {
+  addWorkspaceNodeAttributToList,
+  addWorkspaceNodeToList,
+  changeHandleVisability,
+  postNode,
+  postSticky,
+  putNode,
+  showNotifAction,
+} from "@pages/Workspaces/reducers/workspaceActions";
 import { MousePosition } from "@react-hook/mouse-position";
 import { AppDispatch } from "@redux/configureStore";
 import { useCallback, useEffect, useState } from "react";
-import { Dimensions, Node, ReactFlowInstance } from "react-flow-renderer10";
+import { Dimensions, Node, ReactFlowInstance } from "react-flow-renderer";
 import { TFunction } from "react-i18next";
 
 const useNode = (
   dispatch: AppDispatch,
   plan_id: number | null,
   t: TFunction<"translation", undefined>,
-  handleVisability: boolean,
   user: User,
   rfInstance: ReactFlowInstance | null,
   reactFlowContainer: React.RefObject<HTMLDivElement>,
@@ -115,14 +122,11 @@ const useNode = (
     a: "1",
   });
   const handleLabelColorChange = useCallback((color) => setNodeLabelColor(color.rgb), []);
-
-  const handleVisabilityChange = useCallback(
-    () => dispatch(changeHandleVisability(!handleVisability)),
-    [handleVisability]
-  );
-
   const handleChangeNodeColor = useCallback((color) => setNodeColor(color.rgb), []);
-  const handleDisplayNameChange = useCallback((e) => setNodeDisplayName(e.target.value), []);
+  const handleDisplayNameChange = useCallback(
+    (e) => setNodeDisplayName(e.target.value),
+    []
+  );
 
   const handleShowNodeRelations = (contextNode?: Node<NodeData>) => {
     setShowNodeRelations((prevVal) => !prevVal);
@@ -179,46 +183,104 @@ const useNode = (
     }
   };
 
-  const handleNodeSave = useCallback((x?: number, y?: number, drag?: boolean) => {
-    const _attributes = JSON.stringify(attributes.filter(a => a.label));
-    const rf = rfInstance?.toObject();
-    if (!x && !y) {
-      x = rf && reactFlowDimensions ? (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250 : undefined;
-      y = rf && reactFlowDimensions ? (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150 : undefined;
-    }
+  const handleNodeSave = useCallback(
+    (x?: number, y?: number, drag?: boolean) => {
+      const _attributes = JSON.stringify(attributes.filter((a) => a.label));
+      const rf = rfInstance?.toObject();
+      if (!x && !y) {
+        x =
+          rf && reactFlowDimensions
+            ? (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250
+            : undefined;
+        y =
+          rf && reactFlowDimensions
+            ? (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150
+            : undefined;
+      }
 
-    const nodeId = choosenNode ? choosenNode.id : null;
-    const _nodeLabel = choosenNode ? choosenNode.label : null;
+      const nodeId = choosenNode ? choosenNode.id : null;
+      const _nodeLabel = choosenNode ? choosenNode.label : null;
 
-    if (isUpdatingNode && nodeToUpdate && !drag) {
-      dispatch(putNode(user, nodeToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
-    } else if (drag) {
-      dispatch(postNode(
-        user,
-        id,
-        null, null,
-        "", null,
-        JSON.stringify({
-          r: 255, g: 255, b: 255, a: 1
-        }), JSON.stringify({
-          r: 0, g: 0, b: 0, a: 1
-        }),
-        JSON.stringify([initialAttribut].filter(a => a.label)), closeNode, handleAlerts,
-        x, y
-      ));
-    } else {
-      dispatch(postNode(
-        user,
+      if (isUpdatingNode && nodeToUpdate && !drag) {
+        dispatch(
+          putNode(
+            user,
+            nodeToUpdate.id,
+            nodeId,
+            _nodeLabel,
+            nodeDisplayName,
+            nodeFigur,
+            JSON.stringify(nodeColor),
+            JSON.stringify(nodeBorderColor),
+            JSON.stringify(nodeLabelColor),
+            _attributes,
+            JSON.stringify(deletedAttributes),
+            closeNode
+          )
+        );
+      } else if (drag) {
+        dispatch(
+          postNode(
+            user,
+            id,
+            null,
+            null,
+            "",
+            null,
+            JSON.stringify({
+              r: 255,
+              g: 255,
+              b: 255,
+              a: 1,
+            }),
+            JSON.stringify({
+              r: 0,
+              g: 0,
+              b: 0,
+              a: 1,
+            }),
+            JSON.stringify([initialAttribut].filter((a) => a.label)),
+            closeNode,
+            handleAlerts,
+            x,
+            y
+          )
+        );
+      } else {
+        dispatch(
+          postNode(
+            user,
             id as string,
-            nodeId, _nodeLabel,
-            nodeDisplayName, nodeFigur,
-            JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
-            _attributes, closeNode, handleAlerts,
-            x, y
-      ));
-    }
-  }, [attributes, rfInstance, choosenNode, isUpdatingNode, nodeToUpdate, nodeDisplayName, nodeFigur, nodeColor, nodeBorderColor, nodeLabelColor, deletedAttributes, id]);
-
+            nodeId,
+            _nodeLabel,
+            nodeDisplayName,
+            nodeFigur,
+            JSON.stringify(nodeColor),
+            JSON.stringify(nodeBorderColor),
+            _attributes,
+            closeNode,
+            handleAlerts,
+            x,
+            y
+          )
+        );
+      }
+    },
+    [
+      attributes,
+      rfInstance,
+      choosenNode,
+      isUpdatingNode,
+      nodeToUpdate,
+      nodeDisplayName,
+      nodeFigur,
+      nodeColor,
+      nodeBorderColor,
+      nodeLabelColor,
+      deletedAttributes,
+      id,
+    ]
+  );
 
   const onNodeClick = useCallback(
     (event: React.MouseEvent, node: TCustomNode, showFull?: boolean) => {
@@ -231,7 +293,6 @@ const useNode = (
       setNodeToUpdate(node);
       setDeletedAttributes([]);
 
-
       const {
         backgroundColor: nodeBgColor,
         borderColor: nodeBorder,
@@ -239,25 +300,43 @@ const useNode = (
         label: _label,
         displayName,
         figur,
-        attributes: _attributes
+        attributes: _attributes,
       } = node.data as NodeData;
 
-      const backgroundColor = nodeBgColor ? nodeBgColor.replace(/[^\d,]/g, '').split(',') : ['255', '255', '255', '1'];
-      const borderColor = nodeBorder && !nodeBorder.includes("undefined") ? nodeBorder.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
-      const labelColor = lColor ? lColor.replace(/[^\d,]/g, '').split(',') : ['0', '0', '0', '1'];
+      const backgroundColor = nodeBgColor
+        ? nodeBgColor.replace(/[^\d,]/g, "").split(",")
+        : ["255", "255", "255", "1"];
+      const borderColor =
+        nodeBorder && !nodeBorder.includes("undefined")
+          ? nodeBorder.replace(/[^\d,]/g, "").split(",")
+          : ["0", "0", "0", "1"];
+      const labelColor = lColor
+        ? lColor.replace(/[^\d,]/g, "").split(",")
+        : ["0", "0", "0", "1"];
 
       setNodeLabel(_label || "");
-      setNodeDisplayName(displayName || '');
+      setNodeDisplayName(displayName || "");
       setNodeFigur(figur);
       setAttributes([..._attributes, initialAttribut]);
       setNodeColor({
-        r: backgroundColor[0], g: backgroundColor[1], b: backgroundColor[2], a: backgroundColor[3]
+        r: backgroundColor[0],
+        g: backgroundColor[1],
+        b: backgroundColor[2],
+        a: backgroundColor[3],
       });
 
       setNodeBorderColor({
-        r: borderColor[0], g: borderColor[1], b: borderColor[2], a: borderColor[3]
+        r: borderColor[0],
+        g: borderColor[1],
+        b: borderColor[2],
+        a: borderColor[3],
       });
-      setNodeLabelColor({ r: labelColor[0], g: labelColor[1], b: labelColor[2], a: labelColor[3] });
+      setNodeLabelColor({
+        r: labelColor[0],
+        g: labelColor[1],
+        b: labelColor[2],
+        a: labelColor[3],
+      });
       if (showFull) {
         setDefineNodeOpen(true);
       } else if (node.type === "custom") {
@@ -267,25 +346,39 @@ const useNode = (
         setNodePopperRef(target.nodeName === "H6" ? event.target : ifDivtarget);
       }
     },
-    [],
+    []
   );
 
-  const handlePostSticky = (e?: React.MouseEvent<Element, globalThis.MouseEvent>, shortcut = false, x?: number, y?: number) => {
+  const handlePostSticky = (
+    e?: React.MouseEvent<Element, globalThis.MouseEvent>,
+    shortcut = false,
+    x?: number,
+    y?: number
+  ) => {
     const rf = rfInstance?.toObject();
 
-    const reactFlowBounds = reactFlowContainer.current?.getBoundingClientRect() || { left: 0, top: 0 };
+    const reactFlowBounds = reactFlowContainer.current?.getBoundingClientRect() || {
+      left: 0,
+      top: 0,
+    };
 
     const position = rfInstance?.project({
       x: (mouse.clientX || 0) - reactFlowBounds.left,
       y: (mouse.clientY || 0) - reactFlowBounds.top,
     });
 
-
     if (!x && !y) {
-      x = shortcut ? position?.x : rf && reactFlowDimensions ? (rf.viewport.x * -1 + reactFlowDimensions.width / 3) / rf.viewport.zoom - 250 : 0;
-      y = shortcut ? position?.y : rf && reactFlowDimensions ? (rf.viewport.y * -1 + reactFlowDimensions.height / 2) / rf.viewport.zoom - 150 : 0;
+      x = shortcut
+        ? position?.x
+        : rf && reactFlowDimensions
+        ? (rf.viewport.x * -1 + reactFlowDimensions.width / 3) / rf.viewport.zoom - 250
+        : 0;
+      y = shortcut
+        ? position?.y
+        : rf && reactFlowDimensions
+        ? (rf.viewport.y * -1 + reactFlowDimensions.height / 2) / rf.viewport.zoom - 150
+        : 0;
     }
-
 
     if (x && y) {
       dispatch(postSticky(user, id as string, x, y));
@@ -295,7 +388,7 @@ const useNode = (
   };
 
   useEffect(() => {
-    const _node = nodes.find(r => r.label === nodeLabel);
+    const _node = nodes.find((r) => r.label === nodeLabel);
     if (_node) {
       setChoosenNode(_node);
       setNodeColor(JSON.parse(_node.style).backgroundColor);
@@ -323,7 +416,6 @@ const useNode = (
     setNodePopperRef,
     setIsUpdatingNode,
     setNodeToUpdate,
-    handleVisabilityChange,
     handleShowNodeRelations,
     closeNode,
     handleShowNodePopper,
@@ -340,7 +432,7 @@ const useNode = (
     isUpdatingNode,
     nodeToUpdate,
     showNodePopper,
-    handlePostSticky
+    handlePostSticky,
   };
 };
 

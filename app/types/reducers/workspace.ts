@@ -1,7 +1,7 @@
 import { RGBA } from "@customTypes/data";
 import IImmutableStateMap from "@customTypes/immutable";
 import { List } from "immutable";
-import { Edge, Node } from "react-flow-renderer10";
+import { Edge, Node } from "react-flow-renderer";
 import { AttributeDropdown } from "./attribute";
 import { GroupDropdown } from "./groups";
 import { TagDeconstructedOnOtherElements } from "./tags";

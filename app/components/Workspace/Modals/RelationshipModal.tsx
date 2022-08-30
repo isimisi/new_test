@@ -7,7 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import MuiTableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import TableHead from "@material-ui/core/TableHead";
-import { getOutgoers, getIncomers, Node } from "react-flow-renderer10";
+import { getOutgoers, getIncomers, Node } from "react-flow-renderer";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
 import FloatingPanel from "../../Panel/FloatingPanel";

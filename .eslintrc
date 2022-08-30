@@ -19,14 +19,17 @@
     "@typescript-eslint/no-explicit-any": "off",
     "no-nested-ternary": 0,
     "react/require-default-props": 0,
+    "no-param-reassign": 0,
     "import/no-unresolved": 0,
     "import/no-named-as-default": 0,
     "no-unused-expressions": 0,
     "comma-dangle": 0, // not sure why airbnb turned this on. gross!
-    "indent": [2, 2, { "SwitchCase": 1 }],
+    "indent": 0,
+    "default-param-last": 0,
     "no-console": 0,
     "no-alert": 0,
     "no-plusplus": 0,
+    "react/jsx-curly-newline": 0,
     "id-length": 0,
     "no-script-url": 0,
     "react/jsx-props-no-spreading": 0,
@@ -84,6 +87,7 @@
       "moduleDirectory": ["node_modules", "src"]
     }
   },
+
   "globals": {
     "__CLIENT__": true,
     "__SERVER__": true,

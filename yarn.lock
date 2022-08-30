@@ -2445,7 +2445,7 @@
     "@types/d3-interpolate" "*"
     "@types/d3-selection" "*"
 
-"@types/d3@^7.1.0", "@types/d3@^7.4.0":
+"@types/d3@^7.4.0":
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/@types/d3/-/d3-7.4.0.tgz#fc5cac5b1756fc592a3cf1f3dc881bf08225f515"
   integrity sha512-jIfNVK0ZlxcuRDKtRS/SypEyOQ6UHaFQBKv032X45VvxSJ6Yi5G9behy9h6tNTHTDGh5Vq+KbmBjUWLgY4meCA==
@@ -10578,14 +10578,6 @@ react-draft-wysiwyg@^1.14.5:
     linkify-it "^2.2.0"
     prop-types "^15.7.2"
 
-react-draggable@^4.4.4:
-  version "4.4.5"
-  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-4.4.5.tgz#9e37fe7ce1a4cf843030f521a0a4cc41886d7e7c"
-  integrity sha512-OMHzJdyJbYTZo4uQE393fHcqqPYsEtkjfMgvCHr6rejT+Ezn4OZbNyGH50vv+SunC1RMvwOTSWkEODQLzw1M9g==
-  dependencies:
-    clsx "^1.1.1"
-    prop-types "^15.8.1"
-
 react-dropzone@^10.2.1:
   version "10.2.2"
   resolved "https://registry.yarnpkg.com/react-dropzone/-/react-dropzone-10.2.2.tgz#67b4db7459589a42c3b891a82eaf9ade7650b815"
@@ -10641,7 +10633,7 @@ react-floater@^0.7.6:
     react-proptype-conditional-require "^1.0.4"
     tree-changes "^0.9.1"
 
-"react-flow-renderer10@npm:react-flow-renderer@latest":
+react-flow-renderer@^10.3.16:
   version "10.3.16"
   resolved "https://registry.yarnpkg.com/react-flow-renderer/-/react-flow-renderer-10.3.16.tgz#7285dfcfa35678c2227ede649c8ed5518bf9f30c"
   integrity sha512-QNvM/W1eurDd4gDK47wBLNE4GfK6Gx+JeygI00JsanNIDKEL/cxNdXcP2fwYgJme72AxuaLXc5xliHGaGmy+Jw==
@@ -10654,22 +10646,6 @@ react-floater@^0.7.6:
     d3-selection "^3.0.0"
     d3-zoom "^3.0.0"
     zustand "^3.7.2"
-
-react-flow-renderer@9.7.0:
-  version "9.7.0"
-  resolved "https://registry.yarnpkg.com/react-flow-renderer/-/react-flow-renderer-9.7.0.tgz#876da98edca5c34aced943a99c03db8510565aa3"
-  integrity sha512-Hp9dzzGabPUrgAfj3TmgvwtMmod5GOZT+DRX+qfkTTeI0CctJWBN5R4MUZ7d5zbnT1Xc5t2QKttNtR1UBLff6w==
-  dependencies:
-    "@babel/runtime" "^7.16.3"
-    "@types/d3" "^7.1.0"
-    "@types/react-redux" "^7.1.20"
-    classcat "^5.0.3"
-    d3-selection "^3.0.0"
-    d3-zoom "^3.0.0"
-    fast-deep-equal "^3.1.3"
-    react-draggable "^4.4.4"
-    react-redux "^7.2.6"
-    redux "^4.1.2"
 
 react-ga@^3.3.0:
   version "3.3.1"
@@ -11364,7 +11340,7 @@ redux@4.0.5:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
 
-"redux@^3.6.0 || ^4.0.0", redux@^4.0.0, redux@^4.0.1, redux@^4.0.4, redux@^4.1.2:
+"redux@^3.6.0 || ^4.0.0", redux@^4.0.0, redux@^4.0.1, redux@^4.0.4:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/redux/-/redux-4.2.0.tgz#46f10d6e29b6666df758780437651eeb2b969f13"
   integrity sha512-oSBmcKKIuIR4ME29/AeNUnl5L+hvBq7OaJWzaptTQJAntaPvxIJqfnjbaEiCzzaIz+XmVILfqAM3Ob0aXLPfjA==

@@ -463,7 +463,7 @@ function PersonalDashboard() {
             </div>
             {/* @ts-ignore Iframe does not have a compatible version yet */}
             <Iframe
-              url="https://juristic.storylane.io/demo/hyupzxzra3ys?embed=true%22"
+              url={dashboard === "timeline" ? "https://juristic.storylane.io/demo/fbys7zqhbyls" : "https://juristic.storylane.io/demo/hyupzxzra3ys?embed=true%22"}
               width="100%"
               height="80%"
               className={classes.iframe}

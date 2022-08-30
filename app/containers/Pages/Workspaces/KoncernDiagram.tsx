@@ -2,14 +2,14 @@
 /* eslint-disable new-cap */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
-/* eslint-disable no-param-reassign */
+
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { withStyles, useTheme } from "@material-ui/core/styles";
 import ReactFlow, {
   Background,
   ConnectionMode,
   BackgroundVariant
-} from "react-flow-renderer10";
+} from "react-flow-renderer";
 import { useTranslation } from "react-i18next";
 import Collaboration from "@components/Flow/Actions/Collaborations";
 import Grid from "@material-ui/core/Grid";
@@ -51,7 +51,7 @@ import CustomNode from "@components/Workspace/Node/CustomNode";
 import Meta from "@components/Flow/Actions/Meta";
 import useMeta from "@hooks/flow/useMeta";
 import Controls from "@components/Flow/Actions/Controls";
-import Items from "@components/Flow/Actions/Items";
+import Items from "@components/Flow/Actions/Items/WorkspaceItems";
 
 const nodeTypes = {
   custom: CustomNode
@@ -141,7 +141,8 @@ function Workspace(props) {
     nodeElements,
     edgeElements,
     reactFlowContainer,
-    cvr || "download"
+    cvr || "download",
+    handleVisability
   );
 
   return (
@@ -348,7 +349,8 @@ function Workspace(props) {
             color="primary"
             variant="contained"
             onClick={() =>
-              window.open("https://app.juristic.io/app", "_blank")?.focus()}
+              window.open("https://app.juristic.io/app", "_blank")?.focus()
+            }
           >
             Opret GRATIS bruger
           </Button>

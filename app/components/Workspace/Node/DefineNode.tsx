@@ -5,9 +5,9 @@ import WorkspaceNodeForm from "./WorkspaceNodeForm";
 import FloatingPanel from "../../Panel/FloatingPanel";
 import { RGBA, SelectChoice, SelectOptions } from "@customTypes/data";
 import { ColorResult } from "react-color";
-import { FlowElement } from "react-flow-renderer";
 import { List } from "immutable";
 import { AttributeDropdown } from "@customTypes/reducers/attribute";
+import { TCustomNode } from "@customTypes/reducers/workspace";
 interface Props {
   open: boolean;
   close: () => void;
@@ -24,7 +24,7 @@ interface Props {
   nodeDisplayName: string;
   handleDisplayNameChange: (event: any) => void;
   isUpdatingElement: boolean;
-  elementToUpdate: FlowElement | null;
+  elementToUpdate: TCustomNode | null;
   handleDeleteNode: () => void;
   loading: boolean;
   attributesDropDownOptions: List<AttributeDropdown>;

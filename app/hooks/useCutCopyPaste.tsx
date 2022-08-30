@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
+
 /* eslint-disable import/prefer-default-export */
 import { TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
 import { MousePosition } from "@react-hook/mouse-position";
@@ -11,7 +11,7 @@ import {
   isNode,
   ReactFlowInstance,
   Dimensions
-} from "react-flow-renderer10";
+} from "react-flow-renderer";
 
 interface NodeMap {
   [nodeId: string]: TCustomNode;
@@ -27,7 +27,7 @@ function getSelectedGraph(
 ): Array<TCustomNode | TCustomEdge> {
   const allEdges: TCustomEdge[] = [];
   const allNodeMap: NodeMap = {};
-  elements.forEach(node => {
+  elements.forEach((node) => {
     if (isEdge(node)) {
       allEdges.push(node);
     } else {
@@ -37,16 +37,16 @@ function getSelectedGraph(
   const edgeMap: EdgeMap = {};
   const selectedNodeIds: string[] = [];
   const nodes: Array<TCustomNode | TCustomEdge> = [];
-  selectedNodes.forEach(node => {
+  selectedNodes.forEach((node) => {
     if (!isEdge(node)) {
       selectedNodeIds.push(node.id);
       const connectedEdges = getConnectedEdges([node], allEdges);
-      connectedEdges.forEach(edge => (edgeMap[edge.id] = edge));
+      connectedEdges.forEach((edge) => (edgeMap[edge.id] = edge));
       nodes.push(allNodeMap[node.id]);
     }
   });
   // pick edges which has both nodes present in selectedNodes
-  Object.values(edgeMap).forEach(edge => {
+  Object.values(edgeMap).forEach((edge) => {
     if (
       selectedNodeIds.includes(edge.source) &&
       selectedNodeIds.includes(edge.target)
@@ -67,9 +67,9 @@ export function useCutCopyPaste(
   mouse: MousePosition,
   rfInstance: ReactFlowInstance | null,
   reactFlowContainer: React.RefObject<HTMLDivElement>,
-  reactFlowDimensions: Dimensions | null,
+  reactFlowDimensions: Dimensions | null
 ) {
-  const selectedNodes = nodes.filter(node => node.selected);
+  const selectedNodes = nodes.filter((node) => node.selected);
 
   const cut = useCallback(
     (event, element = null) => {
@@ -79,17 +79,17 @@ export function useCutCopyPaste(
         const data = element
           ? JSON.stringify([element])
           : JSON.stringify(
-            getSelectedGraph(selectedNodes, [...nodes, ...edges])
-          );
+              getSelectedGraph(selectedNodes, [...nodes, ...edges])
+            );
         navigator.clipboard.writeText(data);
 
         if (element) {
           onNodesDelete([element]);
-          onNodesChange([element].map(el => ({ id: el.id, type: "remove" })));
+          onNodesChange([element].map((el) => ({ id: el.id, type: "remove" })));
         } else {
           onNodesDelete(selectedNodes);
           onNodesChange(
-            selectedNodes.map(el => ({ id: el.id, type: "remove" }))
+            selectedNodes.map((el) => ({ id: el.id, type: "remove" }))
           );
         }
 
@@ -105,8 +105,8 @@ export function useCutCopyPaste(
         const data = element
           ? JSON.stringify([element])
           : JSON.stringify(
-            getSelectedGraph(selectedNodes, [...nodes, ...edges])
-          );
+              getSelectedGraph(selectedNodes, [...nodes, ...edges])
+            );
 
         navigator.clipboard.writeText(data);
         event.preventDefault();
@@ -117,23 +117,31 @@ export function useCutCopyPaste(
 
   const handlePaste = (elementsToAdd) => {
     if (mouse && rfInstance && reactFlowContainer.current) {
-      const reactFlowBounds = reactFlowContainer.current.getBoundingClientRect();
+      const reactFlowBounds =
+        reactFlowContainer.current.getBoundingClientRect();
 
       const position = rfInstance.project({
-        x: mouse.clientX as number - reactFlowBounds.left,
-        y: mouse.clientY as number - reactFlowBounds.top,
+        x: (mouse.clientX as number) - reactFlowBounds.left,
+        y: (mouse.clientY as number) - reactFlowBounds.top
       });
 
       if (!mouse.clientY) {
         const rf = rfInstance?.toObject();
         if (rf && reactFlowDimensions) {
-          position.x = (rf.viewport.x * -1 + reactFlowDimensions.width) / rf.viewport.zoom - 250;
-          position.y = (rf.viewport.y * -1 + reactFlowDimensions.height) / rf.viewport.zoom - 150;
+          position.x =
+            (rf.viewport.x * -1 + reactFlowDimensions.width) /
+              rf.viewport.zoom -
+            250;
+          position.y =
+            (rf.viewport.y * -1 + reactFlowDimensions.height) /
+              rf.viewport.zoom -
+            150;
         }
       }
 
-
-      const sortedByY = elementsToAdd.filter(e => isNode(e)).sort((a, b) => b.position.y - a.position.y);
+      const sortedByY = elementsToAdd
+        .filter((e) => isNode(e))
+        .sort((a, b) => b.position.y - a.position.y);
       const topNode = sortedByY[sortedByY.length - 1];
 
       const now = Date.now();
@@ -157,7 +165,7 @@ export function useCutCopyPaste(
     }
   };
 
-  const paste = async event => {
+  const paste = async (event) => {
     try {
       const elementsToAdd = JSON.parse(await navigator.clipboard.readText());
 

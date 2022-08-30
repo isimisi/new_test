@@ -1,5 +1,5 @@
 import { NodeData, TCustomNode } from "@customTypes/reducers/workspace";
-import { ReactFlowInstance, Node } from "react-flow-renderer10";
+import { ReactFlowInstance, Node } from "react-flow-renderer";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export default function useWorkspaceHotKeys(

@@ -28,10 +28,13 @@ function LeftSidebarLayout(props) {
 
   const isTimeline = history.location.pathname.includes("timelines/");
 
+  const isCondition = history.location.pathname.includes("conditions/");
+
   const isWorkspace =
     (history.location.pathname.includes("workspaces/") &&
       !history.location.pathname.includes("analysis")) ||
-    isTimeline;
+    isTimeline ||
+    isCondition;
 
   return (
     <>
@@ -122,6 +125,7 @@ LeftSidebarLayout.propTypes = {
   deco: PropTypes.bool.isRequired,
   bgPosition: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
+  handleOpenGuide: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(LeftSidebarLayout);

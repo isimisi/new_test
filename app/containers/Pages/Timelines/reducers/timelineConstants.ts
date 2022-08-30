@@ -7,7 +7,7 @@ import {
   TCustomNode,
 } from "@customTypes/reducers/timeline";
 import { NotifyActions } from "@redux/constants/notifConstants";
-import { Edge } from "react-flow-renderer10";
+import { Edge } from "react-flow-renderer";
 
 export const GET_TIMELINES_LOADING = "GET_TIMELINES_LOADING";
 export const GET_TIMELINES_SUCCESS = "GET_TIMELINES_SUCCESS";

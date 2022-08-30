@@ -1,13 +1,52 @@
 import IImmutableStateMap from "@customTypes/immutable";
 import { List } from "immutable";
+import { Edge, Node as rfNode } from "react-flow-renderer";
 import { GroupDropdown } from "./groups";
 import { TagDeconstructedOnOtherElements } from "./tags";
-import { EdgeData } from "./workspace";
 
-export interface ConditionEdgeData extends EdgeData {
+export interface Attribut {
+  created_at: string;
+  description: string;
+  group_id: number;
+  id: number;
+  label: string;
+  organization_id: number;
+  selectionOptions: string | null;
+  type: string;
+  updated_at: string;
+}
+
+export interface ConditionValue {
+  attribut: Attribut;
+  attribut_id: number;
   comparison_type: string;
   comparison_value: string;
+  condition_node_id: number;
+  created_at: string;
+  id: number;
+  updated_at: string;
 }
+
+export type NodeData = {
+  label: string;
+  conditionValues: ConditionValue[];
+};
+
+export type TCustomNode = rfNode<NodeData>;
+
+export type EdgeData = {
+  relationship_id: string;
+  relationshipLabel: string;
+  comparisonType: string;
+  comparisonValue: string;
+  relationshipType: string;
+  source: string | null;
+  target: string | null;
+  sourceHandle: string | null;
+  targetHandle: string | null;
+};
+
+export type TCustomEdge = Edge<EdgeData>;
 
 export type ConditionTableOptions = [
   string,
@@ -16,6 +55,12 @@ export type ConditionTableOptions = [
   string,
   string
 ];
+
+export interface HistoryState {
+  fromContent?: boolean;
+  place?: string;
+  placeId?: string;
+}
 
 export interface NodeAttribute {
   label: string;
@@ -40,6 +85,13 @@ export interface Element {
   };
 }
 
+export interface ConditionValueSelector {
+  conditionNodeValueId?: number;
+  attribut: string | null;
+  comparison_type: string;
+  comparison_value: string;
+}
+
 export interface AlertAndOutputCondition {
   id?: string;
   label: string;
@@ -60,7 +112,8 @@ export interface ConditionState {
   label: "";
   description: "";
   group: "";
-  elements: List<Element>;
+  nodeElements: List<TCustomNode>;
+  edgeElements: List<TCustomEdge>;
   message: "";
   groupsDropDownOptions: List<GroupDropdown>;
   nodeAttributes: List<NodeAttribute>;
@@ -68,6 +121,7 @@ export interface ConditionState {
   nodes: List<Node>;
   relationships: List<unknown>;
   conditionTags: List<unknown>;
+  mouseLoading: boolean;
 }
 
 export type IImmutableConditionState = IImmutableStateMap<ConditionState>;

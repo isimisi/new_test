@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { isNode } from "react-flow-renderer10";
+import { isNode } from "react-flow-renderer";
 import { toast } from "react-toastify";
 import { useTheme } from "@material-ui/core/styles";
 
@@ -11,7 +11,7 @@ const useAlerts = () => {
   const [alertId, setAlertId] = useState<number | null>(null);
 
   const highlightAlertItems = (alert, constant = false) => {
-    alert.elements.forEach(element => {
+    alert.elements.forEach((element) => {
       let htmlNode;
       if (isNode(element)) {
         htmlNode = document.querySelector(`[data-id="${element.id}"]`);
@@ -23,10 +23,10 @@ const useAlerts = () => {
   };
 
   const removeHighlightAlert = () => {
-    Array.from(document.querySelectorAll(".pulse")).map(x =>
+    Array.from(document.querySelectorAll(".pulse")).map((x) =>
       x.classList.remove("pulse")
     );
-    Array.from(document.querySelectorAll(".pulseConstant")).map(x =>
+    Array.from(document.querySelectorAll(".pulseConstant")).map((x) =>
       x.classList.remove("pulseConstant")
     );
   };
@@ -35,18 +35,18 @@ const useAlerts = () => {
     if (initial) {
       setAlerts([..._alerts]);
     } else {
-      const cleanAlertsString = alerts.map(alert =>
-        alert.elements.map(x => x.id).join("")
+      const cleanAlertsString = alerts.map((alert) =>
+        alert.elements.map((x) => x.id).join("")
       );
       const newAlerts = _alerts.filter(
-        x => !cleanAlertsString.includes(x.elements.map(y => y.id).join(""))
+        (x) => !cleanAlertsString.includes(x.elements.map((y) => y.id).join(""))
       );
 
       removeHighlightAlert();
 
       newAlerts.forEach((alert, index) => {
         highlightAlertItems(alert);
-        setAlerts(list => [...list, alert]);
+        setAlerts((list) => [...list, alert]);
 
         toast(alert.alert.label, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -54,11 +54,11 @@ const useAlerts = () => {
           toastId: alerts.length + index,
           style: {
             backgroundColor: theme.palette.primary.main,
-            color: "white"
+            color: "white",
           },
-          onClick: e => {
+          onClick: (e) => {
             setAlertId(Number(e.currentTarget.id));
-          }
+          },
         });
       });
     }
@@ -78,7 +78,7 @@ const useAlerts = () => {
     highlightAlertItems,
     removeHighlightAlert,
     alertOpen,
-    setAlertOpen
+    setAlertOpen,
   };
 };
 

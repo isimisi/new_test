@@ -1,5 +1,6 @@
 import { User } from "@auth0/auth0-react";
 import {
+  changeHandleVisability,
   layoutElements,
   workspacePowerpoint,
 } from "@pages/Workspaces/reducers/workspaceActions";
@@ -15,10 +16,16 @@ const useMeta = (
   edgeElements: TCustomEdge[],
   reactFlowContainer: React.RefObject<HTMLDivElement>,
   label: string,
+  handleVisability: boolean,
   user?: User,
   id?: string
 ) => {
   const [snapToGrid, setSnapToGrid] = useState(false);
+
+  const handleVisabilityChange = useCallback(
+    () => dispatch(changeHandleVisability(!handleVisability)),
+    [handleVisability]
+  );
 
   const handleAutoLayout = useCallback(
     () => dispatch(layoutElements(getLayoutedElements(nodeElements, edgeElements))),
@@ -46,7 +53,14 @@ const useMeta = (
     [id, user, label, nodeElements, edgeElements]
   );
 
-  return { handleAutoLayout, handleImage, handlePowerpoint, snapToGrid, setSnapToGrid };
+  return {
+    handleAutoLayout,
+    handleImage,
+    handlePowerpoint,
+    snapToGrid,
+    setSnapToGrid,
+    handleVisabilityChange,
+  };
 };
 
 export default useMeta;

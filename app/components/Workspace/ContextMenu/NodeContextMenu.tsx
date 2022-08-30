@@ -21,7 +21,7 @@ import { ContextTypes } from '@customTypes/reactFlow';
 import { useTranslation } from 'react-i18next';
 import useStyles from './menu.jss';
 import { NodeData, TCustomNode } from '@customTypes/reducers/workspace';
-import { Node } from 'react-flow-renderer10';
+import { Node } from 'react-flow-renderer';
 
 interface Props {
   x: number;

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { OnInit, ReactFlowInstance } from "react-flow-renderer10";
+import { OnInit, ReactFlowInstance } from "react-flow-renderer";
 
 const useInit = (initFunc?: (rf: ReactFlowInstance<any, any>) => void) => {
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);

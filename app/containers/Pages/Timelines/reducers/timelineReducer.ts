@@ -6,7 +6,7 @@ import {
   ITimelineNode,
   TCustomNode,
 } from "@customTypes/reducers/timeline";
-import { isNode } from "react-flow-renderer10";
+import { isNode } from "react-flow-renderer";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
 import { EditorState, ContentState } from "draft-js";
@@ -388,9 +388,9 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         const currSplit = mutableState.get("currSplittingEmail");
         if (!currSplit) {
-          const timelineNode = (mutableState.get(
+          const timelineNode = mutableState.get(
             "timelineNode"
-          ) as unknown) as ITimelineNode;
+          ) as unknown as ITimelineNode;
           mutableState.set("currSplittingEmail", action.email);
           mutableState.set("currSplittingNodeRefference", timelineNode.get("id"));
         }

@@ -1,7 +1,7 @@
 import { ContextTypes } from "@customTypes/reactFlow";
 import { TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
 import { useCallback, useState } from "react";
-import { Edge, Node } from "react-flow-renderer10";
+import { Edge, Node } from "react-flow-renderer";
 
 const useFlowContextMenus = () => {
   const [contextAnchor, setContextAnchor] = useState({ x: 0, y: 0 });

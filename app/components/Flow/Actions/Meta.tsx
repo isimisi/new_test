@@ -37,6 +37,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import CustomSwitch from "@components/Switch/CustomSwitch";
 import Shortcuts from "./Shortcuts";
 import { useAuth0, User } from "@auth0/auth0-react";
+import { LocationDescriptor, Location } from "history";
 
 interface Props {
   label: string;
@@ -50,9 +51,11 @@ interface Props {
   handleImage: (type: "image" | "pdf", stopLoading: () => void) => void;
   handleExcel?: () => void;
   loadingExcel?: boolean;
-  handlePowerpoint: (stopLoading: () => void) => void;
+  handlePowerpoint?: (stopLoading: () => void) => void;
   timeline?: boolean;
-  backLink: string;
+  backLink:
+    | LocationDescriptor<unknown>
+    | ((location: Location<unknown>) => LocationDescriptor<unknown>);
   customPdfGenerator?: (
     startLoading: () => void,
     stopLoading: () => void
@@ -182,7 +185,7 @@ function Meta(props: Props) {
   const handlePowerpoint = () => {
     // Koncerndiagrammer will use the /app
     backLink !== "/app" && startLoadingPp();
-    generatePp(stopLoadingPp);
+    generatePp && generatePp(stopLoadingPp);
   };
 
   return (
@@ -362,7 +365,8 @@ function Meta(props: Props) {
                     onClick={() =>
                       customPdfGenerator
                         ? customPdfGenerator(startLoadingPdf, stopLoadingPdf)
-                        : handleExport("pdf")}
+                        : handleExport("pdf")
+                    }
                   >
                     <ListItemIcon>
                       {loadingPdf ? (
@@ -374,7 +378,7 @@ function Meta(props: Props) {
                     <ListItemText>{t("workspaces.pdf")}</ListItemText>
                   </MenuItem>
 
-                  {!timeline && (
+                  {!timeline && handleExcel && (
                     <MenuItem
                       className={classes.menuItem}
                       onClick={handleExcel}
@@ -395,7 +399,7 @@ function Meta(props: Props) {
                     </MenuItem>
                   )}
 
-                  {!timeline && (
+                  {!timeline && generatePp && (
                     <MenuItem
                       className={classes.menuItem}
                       onClick={handlePowerpoint}

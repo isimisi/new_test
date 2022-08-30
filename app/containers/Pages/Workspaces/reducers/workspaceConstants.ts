@@ -571,16 +571,6 @@ export interface StopLoading {
   type: typeof STOP_LOADING;
 }
 
-export interface DeleteWorkspaceElementsSuccess {
-  type: typeof DELETE_WORKSPACE_ELEMENTS_SUCCESS;
-  remainingElements: any; // TODO:
-}
-
-export interface DeleteWorkspaceElementsFailed {
-  type: typeof DELETE_WORKSPACE_ELEMENTS_FAILED;
-  message: string;
-}
-
 export interface ChangeNodes {
   type: typeof CHANGE_NODES;
   nodes: TCustomNode[];
@@ -593,8 +583,6 @@ export interface ChangeEdges {
 export type WorkspaceActions =
   | GetWorkspacesLoading
   | GetWorkspacesSuccess
-  | DeleteWorkspaceElementsSuccess
-  | DeleteWorkspaceElementsFailed
   | GetWorkspacesFailed
   | PostWorkspaceLoading
   | PostWorkspacesSuccess

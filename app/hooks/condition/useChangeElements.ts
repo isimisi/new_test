@@ -1,5 +1,5 @@
-import { TCustomNode, TCustomEdge } from "@customTypes/reducers/workspace";
-import { changeEdges, changeNodes } from "@pages/Workspaces/reducers/workspaceActions";
+import { TCustomNode, TCustomEdge } from "@customTypes/reducers/conditions";
+import { changeEdges, changeNodes } from "@pages/Conditions/reducers/conditionActions";
 import { AppDispatch } from "@redux/configureStore";
 import { useCallback } from "react";
 import {

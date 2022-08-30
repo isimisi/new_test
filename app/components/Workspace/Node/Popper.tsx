@@ -30,7 +30,7 @@ import TextField from "@material-ui/core/TextField";
 import { figurTypeOptions } from "./WorkspaceNodeForm";
 import ReactDOM from "react-dom";
 import FormatColorTextIcon from "@material-ui/icons/FormatColorText";
-import { Node } from "react-flow-renderer10";
+import { Node } from "react-flow-renderer";
 import { NodeData } from "@customTypes/reducers/workspace";
 
 interface Props {

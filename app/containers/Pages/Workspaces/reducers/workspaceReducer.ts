@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { fromJS, List, Map } from "immutable";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
@@ -46,8 +45,6 @@ import {
   SAVE_WORKSPACE_SUCCESS,
   SAVE_WORKSPACE_FAILED,
   STOP_LOADING,
-  DELETE_WORKSPACE_ELEMENTS_SUCCESS,
-  DELETE_WORKSPACE_ELEMENTS_FAILED,
   WORKSPACE_PUT_NODE_LOADING,
   WORKSPACE_PUT_NODE_SUCCESS,
   WORKSPACE_PUT_NODE_FAILED,
@@ -198,15 +195,6 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         mutableState.set("message", action.message);
         mutableState.set("mouseLoading", false);
-      });
-    case DELETE_WORKSPACE_ELEMENTS_SUCCESS:
-      return state.withMutations((mutableState) => {
-        mutableState.set("elements", fromJS(action.remainingElements));
-      });
-    case DELETE_WORKSPACE_ELEMENTS_FAILED:
-      return state.withMutations((mutableState) => {
-        const message = fromJS(action.message);
-        mutableState.set("message", message);
       });
     case POST_WORKSPACE_LOADING:
       return state.withMutations((mutableState) => {

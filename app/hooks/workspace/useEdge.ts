@@ -1,12 +1,21 @@
 /* eslint-disable consistent-return */
 import { User } from "@auth0/auth0-react";
 import { RGBA } from "@customTypes/data";
-import { EdgeData, TCustomEdge, WorkspaceRelationship } from "@customTypes/reducers/workspace";
-import { addEdgeToList, postEdge, putEdge, showNotifAction } from "@pages/Workspaces/reducers/workspaceActions";
+import {
+  EdgeData,
+  TCustomEdge,
+  WorkspaceRelationship,
+} from "@customTypes/reducers/workspace";
+import {
+  addEdgeToList,
+  postEdge,
+  putEdge,
+  showNotifAction,
+} from "@pages/Workspaces/reducers/workspaceActions";
 import { AppDispatch } from "@redux/configureStore";
 import { List } from "immutable";
 import { useCallback, useRef, useState } from "react";
-import { Connection, Edge } from "react-flow-renderer10";
+import { Connection, Edge } from "react-flow-renderer";
 import { TFunction } from "react-i18next";
 
 const useEdge = (
@@ -17,7 +26,7 @@ const useEdge = (
   id: string,
   signed: boolean,
   plan_id: number | null,
-  t: TFunction<"translation", undefined>,
+  t: TFunction<"translation", undefined>
 ) => {
   const edgePopperComponentRef = useRef<any>(null);
   const [isUpdatingEdge, setIsUpdatingEdge] = useState(false);
@@ -106,12 +115,14 @@ const useEdge = (
     setRelationshipLabel(edge.data?.label || "");
     setRelationshipValue(edge.data?.value || "");
     setRelationshipType(edge.type || "custom");
-    setRelationshipColor(edge.data?.color || {
-      r: "0",
-      g: "0",
-      b: "0",
-      a: "1",
-    });
+    setRelationshipColor(
+      edge.data?.color || {
+        r: "0",
+        g: "0",
+        b: "0",
+        a: "1",
+      }
+    );
     setShowArrow(edge.data?.showArrow || false);
     setAnimatedLine(edge.data?.animated || false);
     setShowlabel(edge.data?.showLabel || false);
@@ -126,32 +137,39 @@ const useEdge = (
   };
 
   const handleRelationshipSave = () => {
-    const choosenRelationship = relationships.toJS().find(r => r.label === relationshipLabel);
+    const choosenRelationship = relationships
+      .toJS()
+      .find((r) => r.label === relationshipLabel);
 
     if (isUpdatingEdge && edgeToUpdate) {
-      dispatch(putEdge(
-        user,
-        edgeToUpdate.id,
-        choosenRelationship?.id,
-        choosenRelationship?.label,
-        relationshipValue,
-        relationshipColor,
-        relationshipType,
-        showArrow,
-        animatedLine,
-        showLabel,
-        lineThrough,
-        closeDefineEdge,
-        handleAlerts,
-        id
-      ));
+      dispatch(
+        putEdge(
+          user,
+          edgeToUpdate.id,
+          choosenRelationship?.id,
+          choosenRelationship?.label,
+          relationshipValue,
+          relationshipColor,
+          relationshipType,
+          showArrow,
+          animatedLine,
+          showLabel,
+          lineThrough,
+          closeDefineEdge,
+          handleAlerts,
+          id
+        )
+      );
     }
   };
 
   const onConnect = (data: Edge<any> | Connection) => {
     if (data.source !== data.target) {
       const color = {
-        r: "0", g: "0", b: "0", a: "1"
+        r: "0",
+        g: "0",
+        b: "0",
+        a: "1",
       };
       const edge = {
         relationship_id: null,
@@ -163,7 +181,7 @@ const useEdge = (
         animatedLine: false,
         showLabel: false,
         lineThrough: false,
-        ...data as Connection
+        ...(data as Connection),
       };
 
       dispatch(postEdge(user, id as string, edge, closeDefineEdge));
@@ -179,7 +197,6 @@ const useEdge = (
       setEdgeToUpdate(edge);
       setDefineEdgeOpen(false);
       setIsUpdatingEdge(true);
-
 
       const foreignObj = document.getElementById("doubleClickForeign");
 
@@ -200,13 +217,13 @@ const useEdge = (
         showArrow: edgeShowarrow,
         animated,
         showLabel: edgeShowLabel,
-        lineThrough: edgeLineThrough
+        lineThrough: edgeLineThrough,
       } = edge.data as EdgeData;
 
       event.persist();
       setRelationshipLabel(edgeLabel || "");
       setRelationshipValue(value);
-      setRelationshipType(edge.type || 'custom');
+      setRelationshipType(edge.type || "custom");
       setRelationshipColor(color);
       setShowArrow(edgeShowarrow);
       setAnimatedLine(animated);
@@ -220,21 +237,25 @@ const useEdge = (
         setEdgePopperRef(target);
       }
     },
-    [],
+    []
   );
 
   const handleChangeLabel = useCallback((_label) => {
     if (_label.__isNew__ && plan_id !== 1) {
-      dispatch(addEdgeToList({
-        id: null,
-        label: _label.value,
-        description: null,
-        values: [],
-        style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}'
-      }));
+      dispatch(
+        addEdgeToList({
+          id: null,
+          label: _label.value,
+          description: null,
+          values: [],
+          style: '{"color": {"a": 1, "b": 0, "g": 0, "r": 0}',
+        })
+      );
     }
     if (_label.__isNew__ && plan_id === 1) {
-      dispatch(showNotifAction(t('workspaces.you_can_not_create_new_relationship_types')));
+      dispatch(
+        showNotifAction(t("workspaces.you_can_not_create_new_relationship_types"))
+      );
     } else {
       setRelationshipLabel(_label.value);
       setRelationshipValue("");
@@ -249,10 +270,10 @@ const useEdge = (
   }, []);
   const handleTypeChange = useCallback((type) => setRelationshipType(type.value), []);
   const handleColorChange = useCallback((color) => setRelationshipColor(color.rgb), []);
-  const handleShowArrowChange = useCallback(() => setShowArrow(val => !val), []);
-  const handleAnimatedLineChange = useCallback(() => setAnimatedLine(val => !val), []);
-  const handleShowLabelChange = useCallback(() => setShowlabel(val => !val), []);
-  const handleLineThroughChange = useCallback(() => setLineThrough(val => !val), []);
+  const handleShowArrowChange = useCallback(() => setShowArrow((val) => !val), []);
+  const handleAnimatedLineChange = useCallback(() => setAnimatedLine((val) => !val), []);
+  const handleShowLabelChange = useCallback(() => setShowlabel((val) => !val), []);
+  const handleLineThroughChange = useCallback(() => setLineThrough((val) => !val), []);
 
   return {
     edgePopperRef,
@@ -288,7 +309,7 @@ const useEdge = (
     isUpdatingEdge,
     edgeToUpdate,
     showEdgePopper,
-    edgePopperComponentRef
+    edgePopperComponentRef,
   };
 };
 

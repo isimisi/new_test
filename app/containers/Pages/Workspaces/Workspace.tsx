@@ -6,7 +6,7 @@
 /* eslint-disable new-cap */
 /* eslint-disable camelcase */
 /* eslint-disable consistent-return */
-/* eslint-disable no-param-reassign */
+
 import React, { useState, useCallback, useRef } from "react";
 import { useTheme } from "@material-ui/core/styles";
 import ReactFlow, {
@@ -15,7 +15,7 @@ import ReactFlow, {
   ConnectionMode,
   BackgroundVariant,
   ReactFlowInstance
-} from "react-flow-renderer10";
+} from "react-flow-renderer";
 
 import useMouse from "@react-hook/mouse-position";
 
@@ -81,7 +81,7 @@ import {
 import "./workspace.css";
 
 import Controls from "@components/Flow/Actions/Controls";
-import Items from "@components/Flow/Actions/Items";
+import Items from "@components/Flow/Actions/Items/WorkspaceItems";
 import Meta from "@components/Flow/Actions/Meta";
 import Collaboration from "@components/Flow/Actions/Collaborations";
 import useFlowContextMenus from "@hooks/flow/flowContexts";
@@ -305,7 +305,6 @@ function Workspace(props) {
     setNodePopperRef,
     setIsUpdatingNode,
     setNodeToUpdate,
-    handleVisabilityChange,
     handleShowNodeRelations,
     closeNode,
     handleShowNodePopper,
@@ -327,7 +326,6 @@ function Workspace(props) {
     dispatch,
     plan_id,
     t,
-    handleVisability,
     user,
     rfInstance,
     reactFlowContainer,
@@ -543,13 +541,15 @@ function Workspace(props) {
     handleImage,
     handlePowerpoint,
     snapToGrid,
-    setSnapToGrid
+    setSnapToGrid,
+    handleVisabilityChange
   } = useMeta(
     dispatch,
     nodeElements,
     edgeElements,
     reactFlowContainer,
     label,
+    handleVisability,
     user,
     id
   );
@@ -815,7 +815,8 @@ function Workspace(props) {
                 shareOrg,
                 setMetaOpen
               )
-            )}
+            )
+          }
           closeForm={() => setMetaOpen(false)}
         />
       )}
@@ -843,7 +844,8 @@ function Workspace(props) {
           handleSave={handleRelationshipSave}
           isUpdatingElement={isUpdatingEdge}
           handleDeleteEdge={() =>
-            edgeToUpdate && onEdgesDelete([edgeToUpdate as TCustomEdge], true)}
+            edgeToUpdate && onEdgesDelete([edgeToUpdate as TCustomEdge], true)
+          }
           loading={loading}
         />
       )}
@@ -870,7 +872,8 @@ function Workspace(props) {
           elementToUpdate={nodeToUpdate}
           handleDisplayNameChange={handleDisplayNameChange}
           handleDeleteNode={() =>
-            nodeToUpdate && onNodesDelete([nodeToUpdate as TCustomNode], true)}
+            nodeToUpdate && onNodesDelete([nodeToUpdate as TCustomNode], true)
+          }
           loading={loading}
           attributesDropDownOptions={attributesDropDownOptions}
           handleRemoveAttributes={handelRemoveAttributes}
@@ -929,7 +932,8 @@ function Workspace(props) {
                 uncertainMapping,
                 erstTypes
               )
-            )}
+            )
+          }
           onConfirm={onConfirm}
         />
       )}
@@ -1016,7 +1020,8 @@ function Workspace(props) {
             handleShowNodeRelations={handleShowNodeRelations}
             showCompanyInfo={handleGetCompanyData}
             getAddressInfo={(_id) =>
-              dispatch(getAddressInfo(user, _id, setShowContextMenu))}
+              dispatch(getAddressInfo(user, _id, setShowContextMenu))
+            }
             loading={loading}
             cut={cut}
             copy={copy}
@@ -1106,7 +1111,8 @@ function Workspace(props) {
               handleLineThroughChange={handleLineThroughChange}
               handleDeleteEdge={() =>
                 edgeToUpdate &&
-                onEdgesDelete([edgeToUpdate as TCustomEdge], true)}
+                onEdgesDelete([edgeToUpdate as TCustomEdge], true)
+              }
               handleHideEdgePopper={handleHideEdgePopper}
               popperComponentRef={edgePopperComponentRef}
             />

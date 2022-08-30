@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 /* eslint-disable default-case */
 import React, { memo } from "react";
-import { EdgeProps, Position } from "react-flow-renderer10";
+import { EdgeProps, Position } from "react-flow-renderer";
 import BaseEdge from "./BaseEdge";
 
 export interface GetBezierPathParams {

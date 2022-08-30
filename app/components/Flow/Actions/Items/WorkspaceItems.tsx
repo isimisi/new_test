@@ -1,5 +1,4 @@
 /* eslint-disable react/require-default-props */
-/* eslint-disable no-param-reassign */
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -7,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import useStyles from "./actions.jss";
+import useStyles from "../actions.jss";
 import Divider from "@material-ui/core/Divider";
 import BusinessIcon from "@material-ui/icons/Business";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
