@@ -205,10 +205,11 @@ function CustomNode({ data }) {
             <ErrorIcon
               data-html2canvas-ignore="true"
               style={{
-                color:
-                  deltaE("rgb(255, 220, 121, 1)", data.backgroundColor || "rgb(255,255,255)") < 30
+                color: data.backgroundColor
+                  ? deltaE("rgb(255, 220, 121, 1)", data.backgroundColor) < 30
                     ? "black"
-                    : "rgb(255,220,121)",
+                    : "rgb(255,220,121)"
+                  : "black",
                 fontSize: 10,
                 position: "absolute",
                 top: 2,

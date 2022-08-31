@@ -60,6 +60,13 @@ export const CHANGE_TAGS = "CHANGE_TAGS";
 export const CHANGE_NODES = "CHANGE_NODES";
 export const CHANGE_EDGES = "CHANGE_EDGES";
 
+export const DELETE_CONDITION_NODES_LOADING = "DELETE_CONDITION_NODES_LOADING";
+export const DELETE_CONDITION_NODES_SUCCESS = "DELETE_CONDITION_NODES_SUCCESS";
+export const DELETE_CONDITION_NODES_FAILED = "DELETE_CONDITION_NODES_FAILED";
+export const DELETE_CONDITION_EDGES_LOADING = "DELETE_CONDITION_EDGES_LOADING";
+export const DELETE_CONDITION_EDGES_SUCCESS = "DELETE_CONDITION_EDGES_SUCCESS";
+export const DELETE_CONDITION_EDGES_FAILED = "DELETE_CONDITION_EDGES_FAILED";
+
 export interface GetConditionLoading {
   type: typeof GET_CONDITIONS_LOADING;
 }
@@ -271,6 +278,27 @@ export interface ChangeEdges {
   edges: TCustomEdge[];
 }
 
+export interface DeleteConditionNodesLoading {
+  type: typeof DELETE_CONDITION_NODES_LOADING;
+}
+export interface DeleteConditionNodesSuccess {
+  type: typeof DELETE_CONDITION_NODES_SUCCESS;
+}
+export interface DeleteConditionNodesFailed {
+  type: typeof DELETE_CONDITION_NODES_FAILED;
+  message: string;
+}
+export interface DeleteConditionEdgesLoading {
+  type: typeof DELETE_CONDITION_EDGES_LOADING;
+}
+export interface DeleteConditionEdgesSuccess {
+  type: typeof DELETE_CONDITION_EDGES_SUCCESS;
+}
+export interface DeleteConditionEdgesFailed {
+  type: typeof DELETE_CONDITION_EDGES_FAILED;
+  message: string;
+}
+
 export type ConditionActions =
   | GetConditionLoading
   | GetConditionSuccess
@@ -314,4 +342,10 @@ export type ConditionActions =
   | changeTags
   | ChangeNodes
   | ChangeEdges
+  | DeleteConditionNodesLoading
+  | DeleteConditionNodesSuccess
+  | DeleteConditionNodesFailed
+  | DeleteConditionEdgesLoading
+  | DeleteConditionEdgesSuccess
+  | DeleteConditionEdgesFailed
   | NotifyActions;

@@ -319,7 +319,7 @@ export const deleteWorkspaceNodes =
 export const deleteWorkspaceEdges =
   (user: User, edgesToRemove: TCustomEdge[]) =>
   async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
-    dispatch({ type: types.DELETE_WORKSPACE_EDGES_LOADING, message });
+    dispatch({ type: types.DELETE_WORKSPACE_EDGES_LOADING });
 
     const header = authHeader(user);
     const url = `${baseUrl}/${WORKSPACES}/deleteEdges`;

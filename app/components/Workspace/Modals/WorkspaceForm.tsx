@@ -67,7 +67,7 @@ function WorkspaceForm(props) {
             label={t("workspaces.workspace-form.desc")}
             multiline
             minRows={2}
-            value={description}
+            value={description || ""}
             onChange={descriptionChange}
           />
         </div>
@@ -120,7 +120,8 @@ function WorkspaceForm(props) {
             isClearable
             value={tags.map(tagMapping)}
             onChange={(newValue, meta) =>
-              hanldeOnChange(newValue, meta, changeTags, tags)}
+              hanldeOnChange(newValue, meta, changeTags, tags)
+            }
             inputId="react-select-tags"
             placeholder={t(
               "workspaces.workspace-form.add_tags_to_your_workspace"
@@ -175,7 +176,7 @@ WorkspaceForm.propTypes = {
   descriptionChange: PropTypes.func.isRequired,
   addGroup: PropTypes.func.isRequired,
   groupsDropDownOptions: PropTypes.array.isRequired,
-  closeForm: PropTypes.func.isRequired,
+  closeForm: PropTypes.func,
   onSave: PropTypes.func.isRequired,
   shareOrg: PropTypes.bool.isRequired,
   handleShareOrg: PropTypes.func.isRequired,

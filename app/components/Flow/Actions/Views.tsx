@@ -15,7 +15,7 @@ import BorderVerticalIcon from "@material-ui/icons/BorderVertical";
 
 import Divider from "@material-ui/core/Divider";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
-import { Edge, isNode } from "react-flow-renderer";
+
 import ErrorIcon from "@material-ui/icons/Error";
 import Badge from "@material-ui/core/Badge";
 import { TCustomNode } from "@customTypes/reducers/timeline";

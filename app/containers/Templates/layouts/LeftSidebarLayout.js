@@ -125,7 +125,6 @@ LeftSidebarLayout.propTypes = {
   deco: PropTypes.bool.isRequired,
   bgPosition: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
-  handleOpenGuide: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(LeftSidebarLayout);

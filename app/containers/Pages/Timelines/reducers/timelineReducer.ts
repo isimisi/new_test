@@ -160,7 +160,7 @@ export default function reducer(
         mutableState.set("title", action.title);
         mutableState.set("description", action.description);
         mutableState.set("group", action.group);
-        mutableState.set("shareOrg", action.shareOrg);
+        mutableState.set("shareOrg", Boolean(action.shareOrg));
         mutableState.set("specificTimelineTags", fromJS(action.tags));
         mutableState.setIn(["loadings", "main"], false);
 

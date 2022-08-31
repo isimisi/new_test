@@ -1,5 +1,5 @@
 /* eslint-disable no-plusplus */
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import ReactFlow, {
   Background,
@@ -30,7 +30,10 @@ import {
   addGroup,
   showCondition,
   putConditionMeta,
-  changeTags
+  changeTags,
+  deleteConditionNodes,
+  deleteConditionEdges,
+  addElements
 } from "./reducers/conditionActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useMove from "@hooks/flow/useMove";
@@ -44,10 +47,16 @@ import Meta from "@components/Flow/Actions/Meta";
 import useMeta from "@hooks/flow/useMeta";
 import "@pages/Workspaces/workspace.css";
 import useAutoSave from "@hooks/condition/useAutoSave";
-import { HistoryState } from "@customTypes/reducers/conditions";
+import {
+  HistoryState,
+  TCustomEdge,
+  TCustomNode
+} from "@customTypes/reducers/conditions";
 import useChangeElements from "@hooks/condition/useChangeElements";
 import CustomEdge from "@components/Workspace/Edge/CustomEdge";
 import useItemSidePanel from "@hooks/flow/itemPanel";
+import useMouseLoading from "@hooks/flow/useMouseLoading";
+import useMouse from "@react-hook/mouse-position";
 
 const BASE_BG_GAP = 32;
 const BASE_BG_STROKE = 1;
@@ -148,7 +157,9 @@ function Condition(props) {
     handleNodeChange,
     conditionValues,
     addConditionValues,
-    deleteConditionValue
+    deleteConditionValue,
+    setDefineNodeOpen,
+    nodeToUpdate
   } = useNode(dispatch, user, rfInstance, reactFlowDimensions, id, nodes);
 
   const {
@@ -165,7 +176,9 @@ function Condition(props) {
     comparisonValue,
     handleComparisonValueChange,
     isUpdatingEdge,
-    onConnect
+    onConnect,
+    setDefineEdgeOpen,
+    edgeToUpdate
   } = useEdge(dispatch, user, relationships, id);
 
   const { onNodesChange, onEdgesChange } = useChangeElements(
@@ -205,8 +218,67 @@ function Condition(props) {
     }
   };
 
-  const { cursor, mouseActive, toggleMouse, toggleNode, nodeActive } =
-    useItemSidePanel();
+  const {
+    cursor,
+    mouseActive,
+    toggleMouse,
+    toggleNode,
+    nodeActive,
+    handleCursor
+  } = useItemSidePanel();
+  const mouseLoading = useAppSelector((state) =>
+    state[reducer].get("mouseLoading")
+  );
+  useMouseLoading(handleCursor, mouseLoading);
+
+  const onNodesDelete = useCallback(
+    (_nodes: TCustomNode[], changeNode?: boolean) => {
+      if (_nodes.length === 1) {
+        setDefineNodeOpen(false);
+      }
+      dispatch(deleteConditionNodes(user, _nodes));
+
+      if (changeNode) {
+        onNodesChange(_nodes.map((n) => ({ id: n.id, type: "remove" })));
+      }
+    },
+    [nodeElements, edgeElements]
+  );
+
+  const onEdgesDelete = useCallback(
+    (_edges: TCustomEdge[], changeEdge?: boolean) => {
+      if (_edges.length === 1) {
+        setDefineEdgeOpen(false);
+      }
+      dispatch(deleteConditionEdges(user, _edges));
+
+      if (changeEdge) {
+        onEdgesChange(_edges.map((e) => ({ id: e.id, type: "remove" })));
+      }
+    },
+    [nodeElements, edgeElements]
+  );
+
+  const mouse = useMouse(reactFlowContainer, {
+    fps: 10,
+    enterDelay: 100,
+    leaveDelay: 100
+  });
+
+  const _addElements = (elementsToAdd) =>
+    dispatch(addElements(user, id as string, elementsToAdd));
+
+  useCutCopyPaste(
+    nodeElements,
+    edgeElements,
+    onNodesDelete as any,
+    onNodesChange,
+    _addElements,
+    mouse,
+    rfInstance,
+    reactFlowContainer,
+    reactFlowDimensions
+  );
 
   return (
     <div style={{ cursor }}>
@@ -223,8 +295,8 @@ function Condition(props) {
           maxZoom={3}
           onDrop={onDrop}
           onDragOver={onDragOver}
-          // onNodesDelete={onNodesDelete}
-          // onEdgesDelete={onEdgesDelete}
+          onNodesDelete={onNodesDelete}
+          onEdgesDelete={onEdgesDelete}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
@@ -310,7 +382,7 @@ function Condition(props) {
           comparisonValue={comparisonValue}
           handleComparisonValueChange={handleComparisonValueChange}
           isUpdatingElement={isUpdatingEdge}
-          // handleDeleteEdge={() => elementToUpdate && onElementsRemove([elementToUpdate])}
+          handleDeleteEdge={() => edgeToUpdate && onEdgesDelete([edgeToUpdate])}
         />
       )}
 
@@ -329,10 +401,7 @@ function Condition(props) {
           addConditionValue={addConditionValues}
           deleteConditionValue={deleteConditionValue}
           isUpdatingElement={isUpdatingNode}
-          handleDeleteNode={
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            () => {} // nodeToUpdate && onNodesDelete([nodeToUpdate as TCustomNode], true)
-          }
+          handleDeleteNode={() => nodeToUpdate && onNodesDelete([nodeToUpdate], true)}
         />
       )}
     </div>

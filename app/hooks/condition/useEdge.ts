@@ -124,6 +124,8 @@ const useEdge = (dispatch: AppDispatch, user: User, relationships: any, id: stri
     handleComparisonValueChange,
     isUpdatingEdge,
     onConnect,
+    setDefineEdgeOpen,
+    edgeToUpdate,
   };
 };
 

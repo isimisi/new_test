@@ -65,6 +65,7 @@ export const addElements =
     try {
       const response = await axios.post(url, body, header);
       const { nodes, edges } = response.data;
+      console.log(nodes);
       dispatch({ type: types.CONDITION_ADD_ELEMENTS_SUCCESS, nodes, edges });
     } catch (error) {
       const message = genericErrorMessage;
@@ -218,6 +219,45 @@ export const deleteCondition =
     } catch (error) {
       const message = genericErrorMessage;
       dispatch({ type: types.DELETE_CONDITION_FAILED, message });
+    }
+  };
+
+export const deleteConditionNodes =
+  (user: User, nodesToRemove: TCustomNode[] | { id: string }[]) =>
+  async (dispatch: ThunkDispatch<IImmutableConditionState, any, ConditionActions>) => {
+    dispatch({ type: types.DELETE_CONDITION_NODES_LOADING });
+
+    const header = authHeader(user);
+    const url = `${baseUrl}/${CONDITIONS}/deleteNodes`;
+    const elements = nodesToRemove.map((element) => element.id);
+    const body = { elements };
+    try {
+      await axios.post(url, body, header);
+      dispatch({ type: types.DELETE_CONDITION_NODES_SUCCESS });
+    } catch (error) {
+      const message = genericErrorMessage;
+      dispatch({ type: types.DELETE_CONDITION_NODES_FAILED, message });
+    }
+  };
+
+export const deleteConditionEdges =
+  (user: User, edgesToRemove: TCustomEdge[]) =>
+  async (dispatch: ThunkDispatch<IImmutableConditionState, any, ConditionActions>) => {
+    dispatch({ type: types.DELETE_CONDITION_EDGES_LOADING });
+
+    const header = authHeader(user);
+    const url = `${baseUrl}/${CONDITIONS}/deleteEdges`;
+    const elements = edgesToRemove.map((element) => element.id);
+    const body = { elements };
+
+    dispatch({
+      type: types.DELETE_CONDITION_EDGES_SUCCESS,
+    });
+    try {
+      await axios.post(url, body, header);
+    } catch (error) {
+      const message = genericErrorMessage;
+      dispatch({ type: types.DELETE_CONDITION_EDGES_FAILED, message });
     }
   };
 

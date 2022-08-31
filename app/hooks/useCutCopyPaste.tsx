@@ -116,6 +116,7 @@ export function useCutCopyPaste(
   );
 
   const handlePaste = (elementsToAdd) => {
+    console.log(elementsToAdd);
     if (mouse && rfInstance && reactFlowContainer.current) {
       const reactFlowBounds =
         reactFlowContainer.current.getBoundingClientRect();
@@ -139,26 +140,38 @@ export function useCutCopyPaste(
         }
       }
 
-      const sortedByY = elementsToAdd
+      const sortedByY = [...elementsToAdd]
         .filter((e) => isNode(e))
         .sort((a, b) => b.position.y - a.position.y);
       const topNode = sortedByY[sortedByY.length - 1];
 
       const now = Date.now();
       elementsToAdd.map((element) => {
-        if (isEdge(element)) {
-          element.id = `${element.id}_${now}-edit`;
-          element.source = `${element.source}_${now}-edit`;
-          element.target = `${element.target}_${now}-edit`;
+        const newEl = { ...element };
+        if (isEdge(newEl)) {
+          newEl.id = `${newEl.id}_${now}-edit`;
+          newEl.source = `${newEl.source}_${now}-edit`;
+          newEl.target = `${newEl.target}_${now}-edit`;
         } else {
-          element.id = `${element.id}_${now}-edit`;
-          const xDistanceToTopNode = element.position.x - topNode.position.x;
-          const yDistanceToTopNode = element.position.y - topNode.position.y;
+          newEl.id = `${newEl.id}_${now}-edit`;
+          const xDistanceToTopNode = newEl.position.x - topNode.position.x;
+          const yDistanceToTopNode = newEl.position.y - topNode.position.y;
 
-          element.position.x = position.x + xDistanceToTopNode;
-          element.position.y = position.y + yDistanceToTopNode;
+          console.log({
+            topNode,
+            xDistanceToTopNode,
+            yDistanceToTopNode,
+            x: position.x + xDistanceToTopNode,
+            y: position.y + yDistanceToTopNode,
+            label: newEl.data.label,
+            orgPosX: newEl.position.x,
+            orgPosY: newEl.position.y
+          });
+
+          newEl.position.x = position.x + xDistanceToTopNode;
+          newEl.position.y = position.y + yDistanceToTopNode;
         }
-        return element;
+        return newEl;
       });
 
       _addElements(elementsToAdd);

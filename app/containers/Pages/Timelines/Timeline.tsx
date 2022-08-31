@@ -777,11 +777,11 @@ function Timeline() {
           <Loader bigFont />
         </div>
       )}
-      <ShareModal
+      {/* <ShareModal
         open={shareModalOpen}
         loading={loadings.get("modal")}
         close={() => setShareModalOpen(false)}
-      />
+      /> */}
     </div>
   );
 }

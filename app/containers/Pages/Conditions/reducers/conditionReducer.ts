@@ -42,6 +42,12 @@ import {
   CONDITION_ADD_ELEMENTS_SUCCESS,
   CONDITION_ADD_ELEMENTS_FAILED,
   CONDITION_ADD_ELEMENTS_LOADING,
+  DELETE_CONDITION_NODES_LOADING,
+  DELETE_CONDITION_NODES_SUCCESS,
+  DELETE_CONDITION_NODES_FAILED,
+  DELETE_CONDITION_EDGES_LOADING,
+  DELETE_CONDITION_EDGES_SUCCESS,
+  DELETE_CONDITION_EDGES_FAILED,
   ConditionActions,
 } from "./conditionConstants";
 import {
@@ -282,6 +288,34 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         const message = fromJS(action.message);
         mutableState.set("message", message);
+      });
+    case DELETE_CONDITION_NODES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", true);
+      });
+    case DELETE_CONDITION_NODES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", false);
+      });
+    case DELETE_CONDITION_NODES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set("message", message);
+        mutableState.set("mouseLoading", false);
+      });
+    case DELETE_CONDITION_EDGES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", true);
+      });
+    case DELETE_CONDITION_EDGES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", false);
+      });
+    case DELETE_CONDITION_EDGES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set("message", message);
+        mutableState.set("mouseLoading", false);
       });
     case CONDITION_RELATIONSHIP_ADD_TO_LIST:
       return state.withMutations((mutableState) => {

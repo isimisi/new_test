@@ -42,9 +42,7 @@ import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import { hanldeOnDocumentChange } from "@pages/Documents/constants";
 import { hanldeOnPersonChange, personMapping } from "@pages/Persons/constants";
 import ReactDOM from "react-dom";
-import { isNode } from "react-flow-renderer";
 import moment from "moment";
-
 
 interface Props {
   personOptions: MixedPersonOptions[];
@@ -66,7 +64,7 @@ const localeMap = {
   da: daLocale
 };
 
-const CreateForm = (props: Props) => {
+function CreateForm(props: Props) {
   const {
     personOptions,
     documentOptions,
@@ -82,7 +80,9 @@ const CreateForm = (props: Props) => {
   const { t, i18n } = useTranslation();
   const classes = useStyles();
 
-  const elementsTagOptions = useAppSelector(state => state.timeline.get("elementsTagOptions")).toJS();
+  const elementsTagOptions = useAppSelector((state) =>
+    state.timeline.get("elementsTagOptions")
+  ).toJS();
 
   const date = timelineNode.get("date");
   const time = timelineNode.get("time");
@@ -94,19 +94,19 @@ const CreateForm = (props: Props) => {
   const documents = timelineNode.get("documents").toJS();
   const tags = timelineNode.get("tags").toJS();
 
-  const loadingsP = useAppSelector(state => state.person.get("loadings"));
-  const loadingsD = useAppSelector(state => state.document.get("loadings"));
+  const loadingsP = useAppSelector((state) => state.person.get("loadings"));
+  const loadingsD = useAppSelector((state) => state.document.get("loadings"));
 
-  const handleSetDate = d => {
+  const handleSetDate = (d) => {
     changeTimelineNode("date", d);
   };
 
-  const handleSetTime = _t => {
+  const handleSetTime = (_t) => {
     changeTimelineNode("time", _t);
   };
 
-  const labelChange = e => changeTimelineNode("title", e.target.value);
-  const descriptionChange = e =>
+  const labelChange = (e) => changeTimelineNode("title", e.target.value);
+  const descriptionChange = (e) =>
     changeTimelineNode("description", e.target.value);
 
   const handleChangePersons = (p: MixedPersonOptions[]) => {
@@ -116,7 +116,7 @@ const CreateForm = (props: Props) => {
   const handleChangeDocuments = (p: MixedDocumentOptions[]) =>
     changeTimelineNode("documents", p);
 
-  const onEditorStateChange = v => {
+  const onEditorStateChange = (v) => {
     changeTimelineNode("content", v);
   };
 
@@ -124,7 +124,7 @@ const CreateForm = (props: Props) => {
     changeTimelineNode("tags", value);
   };
 
-  const handleOpenPerson = e => {
+  const handleOpenPerson = (e) => {
     const id = e.target.closest(".idDiv").getAttribute("data-id");
 
     const nameDiv = e.target.closest(".idDiv");
@@ -133,7 +133,7 @@ const CreateForm = (props: Props) => {
     openPerson(id, nameSpan.innerHTML);
   };
 
-  const handleOpenDocument = e => {
+  const handleOpenDocument = (e) => {
     const id = e.target.closest(".idDiv").getAttribute("data-id");
 
     const nameDiv = e.target.closest(".idDiv");
@@ -159,7 +159,7 @@ const CreateForm = (props: Props) => {
     const body = new FormData();
     body.append("file_content", file);
 
-    axios.post(url, body).then(res => {
+    axios.post(url, body).then((res) => {
       const { data } = res;
       changeTimelineNode("email", data);
       setLoadingEmail(false);
@@ -167,7 +167,7 @@ const CreateForm = (props: Props) => {
   };
 
   const options = {
-    onDrop: acceptedFiles => {
+    onDrop: (acceptedFiles) => {
       const file = acceptedFiles[0];
       readEmlFile(file);
     },
@@ -177,9 +177,11 @@ const CreateForm = (props: Props) => {
     maxFiles: 1
   };
 
-  const { getRootProps, getInputProps, open: handleAddEmail } = useDropzone(
-    options
-  );
+  const {
+    getRootProps,
+    getInputProps,
+    open: handleAddEmail
+  } = useDropzone(options);
 
   const handleRemoveEmail = () => {
     changeTimelineNode("email", { mail: null, uri: null });
@@ -207,7 +209,9 @@ const CreateForm = (props: Props) => {
       case "pop-value":
       case "deselect-option":
         // eslint-disable-next-line no-case-declarations
-        const newTags = tags.filter(tag => tag.name !== meta.removedValue.value);
+        const newTags = tags.filter(
+          (tag) => tag.name !== meta.removedValue.value
+        );
         handleChangeTags(newTags);
         break;
       case "clear":
@@ -227,7 +231,7 @@ const CreateForm = (props: Props) => {
         break;
       case "create-option":
         chooseColor();
-        setInputValue(val.find(x => x.__isNew__).value);
+        setInputValue(val.find((x) => x.__isNew__).value);
     }
   };
 
@@ -240,7 +244,7 @@ const CreateForm = (props: Props) => {
     setInputValue("");
   };
 
-  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = event => {
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (!inputValue) return;
     switch (event.key) {
       case "Enter":
@@ -250,28 +254,58 @@ const CreateForm = (props: Props) => {
     }
   };
 
-  const mappedTags = tags.map(tag => ({
+  const mappedTags = tags.map((tag) => ({
     value: tag.name,
     label: (
-      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <div
+          style={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            backgroundColor: tag?.color,
+            marginRight: 5
+          }}
+        />
         <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
       </div>
-    ),
-
+    )
   }));
 
-  const mappedOptions = elementsTagOptions.map(tag => ({
+  const mappedOptions = elementsTagOptions.map((tag) => ({
     value: tag.name,
     label: (
-      <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
-        <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: tag?.color, marginRight: 5 }} />
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start"
+        }}
+      >
+        <div
+          style={{
+            width: 10,
+            height: 10,
+            borderRadius: 5,
+            backgroundColor: tag?.color,
+            marginRight: 5
+          }}
+        />
         <span style={{ paddingRight: "5px" }}>{tag?.name}</span>
       </div>
     ),
     color: tag?.color
   }));
-
 
   React.useEffect(() => {
     const picker = document.getElementsByClassName("sketch-picker");
@@ -284,7 +318,6 @@ const CreateForm = (props: Props) => {
         div.setAttribute("id", "saveContainer");
         picker[0].appendChild(div);
       }
-      // @ts-ignore
 
       ReactDOM.render(
         <div className={classes.attributSaveButtonContainer}>
@@ -304,7 +337,6 @@ const CreateForm = (props: Props) => {
   }, [displayColorPickerColor, color]);
 
   const downHaveTime = moment(time).format("HH:mm") === "00:00";
-
 
   return (
     <div className={classes.createElementContainer}>
@@ -423,7 +455,7 @@ const CreateForm = (props: Props) => {
         formatCreateLabel={(input) => t("generic.create_new", { input })}
         menuPlacement="auto"
         menuPosition="absolute"
-        value={persons.map(p =>
+        value={persons.map((p) =>
           personMapping(
             p,
             true,
@@ -438,7 +470,7 @@ const CreateForm = (props: Props) => {
         inputId="react-select-persons"
         openMenuOnClick={openMenuOnClick}
         placeholder={t("persons.add_person")}
-        options={personOptions.map(p => personMapping(p, false))}
+        options={personOptions.map((p) => personMapping(p, false))}
       />
 
       <CreatableSelect
@@ -453,7 +485,7 @@ const CreateForm = (props: Props) => {
         menuPortalTarget={document.body}
         menuPlacement="auto"
         menuPosition="absolute"
-        value={documents.map(d => ({
+        value={documents.map((d) => ({
           // @ts-ignore
           value: d.id || d.value,
           ...("__isNew__" in d && { __isNew__: d.__isNew__ }),
@@ -504,7 +536,7 @@ const CreateForm = (props: Props) => {
         }
         inputId="react-select-documents"
         placeholder={t("documents.add_document")}
-        options={documentOptions.map(d => ({
+        options={documentOptions.map((d) => ({
           value: d.id,
           label: d.title
         }))}
@@ -529,15 +561,12 @@ const CreateForm = (props: Props) => {
       />
       {displayColorPickerColor ? (
         <div className={classes.popover}>
-          <div
-            className={classes.cover}
-            onClick={handleCloseColor}
-          />
+          <div className={classes.cover} onClick={handleCloseColor} />
           <SketchPicker color={color} onChange={handleChangeColor} />
         </div>
       ) : null}
     </div>
   );
-};
+}
 
 export default CreateForm;

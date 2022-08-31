@@ -90,6 +90,9 @@ import {
   DELETE_WORKSPACE_NODES_LOADING,
   DELETE_WORKSPACE_NODES_SUCCESS,
   DELETE_WORKSPACE_NODES_FAILED,
+  DELETE_WORKSPACE_EDGES_LOADING,
+  DELETE_WORKSPACE_EDGES_SUCCESS,
+  DELETE_WORKSPACE_EDGES_FAILED,
   WorkspaceActions,
 } from "./workspaceConstants";
 import {
@@ -349,6 +352,20 @@ export default function reducer(
         const message = fromJS(action.message);
         mutableState.set("message", message);
         mutableState.set("loading", false);
+      });
+    case DELETE_WORKSPACE_EDGES_LOADING:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", true);
+      });
+    case DELETE_WORKSPACE_EDGES_SUCCESS:
+      return state.withMutations((mutableState) => {
+        mutableState.set("mouseLoading", false);
+      });
+    case DELETE_WORKSPACE_EDGES_FAILED:
+      return state.withMutations((mutableState) => {
+        const message = fromJS(action.message);
+        mutableState.set("message", message);
+        mutableState.set("mouseLoading", false);
       });
     case DELETE_WORKSPACE_NODES_LOADING:
       return state.withMutations((mutableState) => {

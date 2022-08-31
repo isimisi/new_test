@@ -75,11 +75,11 @@ function ThemeWrapper(props) {
     };
   }, []);
 
-  const handleChangeMode = (modeParam) => {
+  const handleChangeMode = React.useCallback((modeParam) => {
     const { changeMode } = props;
     setTheme(createTheme(applicationTheme(color, modeParam, direction)));
     changeMode(modeParam);
-  };
+  }, []);
 
   return (
     <StylesProvider jss={jss}>
@@ -136,9 +136,6 @@ const dispatchToProps = (dispatch) => ({
   changeDirection: bindActionCreators(changeDirectionAction, dispatch),
 });
 
-const ThemeWrapperMapped = connect(
-  mapStateToProps,
-  dispatchToProps
-)(ThemeWrapper);
+const ThemeWrapperMapped = connect(mapStateToProps, dispatchToProps)(ThemeWrapper);
 
 export default withStyles(styles)(ThemeWrapperMapped);
