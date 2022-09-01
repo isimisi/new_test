@@ -90,7 +90,7 @@ module.exports = require("./webpack.base.babel")({
     // that will be released, rather than for every development build
     new BugsnagSourceMapUploaderPlugin({
       apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
-      appVersion: "1.4.85",
+      appVersion: "1.4.86",
       publicPath: "*/",
     }),
 
