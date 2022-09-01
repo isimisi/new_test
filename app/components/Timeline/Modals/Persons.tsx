@@ -34,24 +34,24 @@ interface Props {
   close: () => void;
 }
 
-const Persons = (props: Props) => {
+function Persons(props: Props) {
   const { open, close, user } = props;
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const elements = useAppSelector(state =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
 
   const [people, setPeople] = useState<any>([]);
 
   const openPerson = () => dispatch(timelineElementPersonChange(true));
-  const handleOpenPerson = id => {
+  const handleOpenPerson = (id) => {
     dispatch(showPerson(user, id, openPerson));
   };
 
   useEffect(() => {
-    const nodes = elements.filter(e => nodeTypes.includes(e.type));
+    const nodes = nodeElements.filter((e) => nodeTypes.includes(e.type));
     const item: any[] = [];
 
     for (let index = 0; index < nodes.length; index++) {
@@ -59,7 +59,7 @@ const Persons = (props: Props) => {
       const { persons } = node.data;
       for (let z = 0; z < persons.length; z++) {
         const person = persons[z];
-        const existingItem = item.find(p => p.id === person.id);
+        const existingItem = item.find((p) => p.id === person.id);
         if (!existingItem) {
           item.push({
             ...person,
@@ -109,7 +109,7 @@ const Persons = (props: Props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {people.map(row => (
+                {people.map((row) => (
                   <TableRow>
                     <TableCell align="left">
                       <Avatar
@@ -156,6 +156,6 @@ const Persons = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Persons;

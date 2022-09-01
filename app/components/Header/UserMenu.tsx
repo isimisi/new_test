@@ -24,17 +24,14 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import styles from "./header-jss";
 
-import Avatar, { genConfig } from "react-nice-avatar";
 import { UserMeta } from "@helpers/userInfo";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 
 import NotificationDialog from "./NotificationDialog";
 import CreateNotificationDialog from "./CreateNotificationDialog";
 import { readNotification } from "@pages/Dashboard/reducers/dashboardActions";
-
-const config = genConfig({
-  isGradient: Boolean(Math.round(Math.random()))
-});
+import Avatar from "@material-ui/core/Avatar";
+import { stringToColor, stringAvatar } from "@pages/Timelines/constants";
 
 function UserMenu({ classes }) {
   const dispatch = useAppDispatch();
@@ -182,8 +179,14 @@ function UserMenu({ classes }) {
         onClick={handleMenu("user-setting")}
         style={{ cursor: "pointer", margin: "0 12px" }}
       >
-        {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
-        <Avatar style={{ width: 40, height: 40 }} {...config} hairColorRandom />
+        <Avatar
+          style={{
+            width: 40,
+            height: 40,
+            backgroundColor: stringToColor(name)
+          }}
+          {...stringAvatar(name, "user")}
+        />
       </div>
       <Menu
         id="menu-appbar"

@@ -36,24 +36,15 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import CustomSwitch from "@components/Switch/CustomSwitch";
 import Shortcuts from "../Shortcuts";
-import * as XLSX from "xlsx";
-import {
-  Edge,
-  getIncomers,
-  getOutgoers,
-  isEdge,
-  isNode,
-  Node,
-  OnLoadParams
-} from "react-flow-renderer";
-import { saveAs } from "file-saver";
-import { s2ab } from "@helpers/export/handleExport";
+
 import { useAuth0, User } from "@auth0/auth0-react";
 import Overview from "./Overview";
 import SearchPopper from "./SerachPopper";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import FilterPopper from "./FilterPopper";
 import { LocationDescriptor, Location } from "history";
+import { ReactFlowInstance } from "react-flow-renderer";
+import { TCustomNode } from "@customTypes/reducers/timeline";
 
 interface Props {
   label: string;
@@ -77,12 +68,13 @@ interface Props {
     stopLoading: () => void
   ) => void;
   pub?: boolean;
-  rfInstance?: OnLoadParams<any> | null;
+  rfInstance?: ReactFlowInstance<any> | null;
   overview?: boolean;
   handleOpenNodeTable?: () => void;
   openPeople?: () => void;
   openDocuments?: () => void;
   openTags?: () => void;
+  nodes?: TCustomNode[];
 }
 
 function Meta(props: Props) {
@@ -108,8 +100,10 @@ function Meta(props: Props) {
     handleOpenNodeTable,
     openPeople,
     openDocuments,
-    openTags
+    openTags,
+    nodes
   } = props;
+
   const classes = useStyles();
   const { t } = useTranslation();
   const handleOpenMeta = () => setMetaOpen((prevVal) => !prevVal);
@@ -334,7 +328,7 @@ function Meta(props: Props) {
             <Overview
               classes={classes}
               t={t}
-              elements={elements}
+              nodes={nodes as TCustomNode[]}
               handleOpenNodeTable={handleOpenNodeTable as () => void}
               openPeople={openPeople as () => void}
               openDocuments={openDocuments as () => void}
@@ -349,7 +343,7 @@ function Meta(props: Props) {
           close={closeSearch}
           anchor={anchorRefSearch.current}
           t={t}
-          elements={elements}
+          nodes={nodes as TCustomNode[]}
           rfInstance={rfInstance}
         />
       )}

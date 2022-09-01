@@ -11,12 +11,7 @@ import Button from "@material-ui/core/Button";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 
 import { User } from "@auth0/auth0-react";
-import Avatar from "@material-ui/core/Avatar";
-import {
-  stringToColor,
-  stringAvatar,
-  nodeTypes
-} from "@pages/Timelines/constants";
+import { nodeTypes } from "@pages/Timelines/constants";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 
 import TableContainer from "@material-ui/core/TableContainer";
@@ -39,24 +34,24 @@ interface Props {
   close: () => void;
 }
 
-const Documents = (props: Props) => {
+function Documents(props: Props) {
   const { open, close, user } = props;
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const elements = useAppSelector(state =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
 
   const [documents, setDocuments] = useState<any>([]);
 
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  const handleOpenDocument = id => {
+  const handleOpenDocument = (id) => {
     dispatch(showDocument(user, id, openDocument));
   };
 
   useEffect(() => {
-    const nodes = elements.filter(e => nodeTypes.includes(e.type));
+    const nodes = nodeElements.filter((e) => nodeTypes.includes(e.type));
     const item: any[] = [];
 
     for (let index = 0; index < nodes.length; index++) {
@@ -64,7 +59,7 @@ const Documents = (props: Props) => {
       const { documents: _documents } = node.data;
       for (let z = 0; z < _documents.length; z++) {
         const document = _documents[z];
-        const existingItem = item.find(p => p.id === document.id);
+        const existingItem = item.find((p) => p.id === document.id);
         if (!existingItem) {
           item.push({
             ...document,
@@ -113,7 +108,7 @@ const Documents = (props: Props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {documents.map(row => (
+                {documents.map((row) => (
                   <TableRow>
                     <TableCell align="left">{row.title}</TableCell>
                     <TableCell align="right">
@@ -149,6 +144,6 @@ const Documents = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Documents;

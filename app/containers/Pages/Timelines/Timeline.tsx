@@ -15,7 +15,6 @@ import NodesTableModal from "@components/Timeline/Modals/NodesTable";
 import Persons from "@components/Timeline/Modals/Persons";
 import Documents from "@components/Timeline/Modals/Documents";
 import Tags from "@components/Timeline/Modals/Tags";
-import ShareModal from "@components/Flow/Share/ShareModal";
 import {
   addGroup,
   changeHandleVisability,
@@ -645,6 +644,12 @@ function Timeline() {
               handleImage={handleImage}
               backLink="/app/timelines"
               timeline
+              overview
+              nodes={nodes}
+              handleOpenNodeTable={handleOpenNodeTable}
+              openPeople={openPeople}
+              openDocuments={openDocuments}
+              openTags={openTags}
               // customPdfGenerator={handleExportToPdf}
             />
             <Views
@@ -757,7 +762,7 @@ function Timeline() {
       {documentsOpen && (
         <Documents open={documentsOpen} close={closeDocuments} user={user} />
       )}
-      {tagsOpen && <Tags open={tagsOpen} close={closeTags} user={user} />}
+      {tagsOpen && <Tags open={tagsOpen} close={closeTags} />}
 
       {personModalOpen && (
         <Person

@@ -36,20 +36,18 @@ function Document(props: Props) {
   const isUpdatingNode = useAppSelector((state) =>
     state.timeline.get("isUpdatingNode")
   );
-  const elements = useAppSelector((state) =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
 
   const nodes = useMemo(
     () =>
-      elements
-        .filter((e): e is Node => isNode(e))
-        .filter(
-          (n) =>
-            n.data.documents &&
-            n.data.documents.some((p) => p.id === document.get("id"))
-        ),
-    [elements, document]
+      nodeElements.filter(
+        (n) =>
+          n.data.documents &&
+          n.data.documents.some((p) => p.id === document.get("id"))
+      ),
+    [nodeElements, document]
   );
 
   const { t } = useTranslation();

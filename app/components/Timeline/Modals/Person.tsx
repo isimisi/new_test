@@ -10,7 +10,6 @@ import Button from "@material-ui/core/Button";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import PersonForm from "@components/Person/PersonForm";
 import { Person } from "@customTypes/reducers/person";
-import { isNode, Node } from "react-flow-renderer";
 import NodesTable from "../Util/NodesTable";
 import PersonCard from "../Util/PersonCard";
 import { putPerson } from "@pages/Persons/reducers/personActions";
@@ -29,21 +28,19 @@ function Person(props: Props) {
   const dispatch = useAppDispatch();
   const classes = useStyles();
   const person = useAppSelector((state) => state.person.get("person"));
-  const elements = useAppSelector((state) =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
   const loadings = useAppSelector((state) => state.person.get("loadings"));
 
   const nodes = useMemo(
     () =>
-      elements
-        .filter((e): e is Node => isNode(e))
-        .filter(
-          (n) =>
-            n.data.persons &&
-            n.data.persons.some((p) => p.id === person.get("id"))
-        ),
-    [elements, person]
+      nodeElements.filter(
+        (n) =>
+          n.data.persons &&
+          n.data.persons.some((p) => p.id === person.get("id"))
+      ),
+    [nodeElements, person]
   );
 
   const createElementOpen = useAppSelector((state) =>

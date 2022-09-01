@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import { useAppSelector } from "@hooks/redux";
 
 import NodesTable from "../Util/NodesTable";
-import { isNode } from "react-flow-renderer";
+
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -16,21 +16,21 @@ interface Props {
   tag: string;
 }
 
-const Tag = (props: Props) => {
+function Tag(props: Props) {
   const { open, close, tag } = props;
 
   const classes = useStyles();
 
-  const elements = useAppSelector(state =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
 
   const nodes = useMemo(
     () =>
-      elements
-        .filter((e): e is Node => isNode(e))
-        .filter(n => n.data.tags && n.data.tags.some(t => t.name === tag)),
-    [elements, tag]
+      nodeElements.filter(
+        (n) => n.data.tags && n.data.tags.some((t) => t.name === tag)
+      ),
+    [nodeElements, tag]
   );
 
   const { t } = useTranslation();
@@ -59,6 +59,6 @@ const Tag = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Tag;
