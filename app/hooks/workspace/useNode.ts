@@ -14,7 +14,7 @@ import {
   putNode,
   showNotifAction,
 } from "@pages/Workspaces/reducers/workspaceActions";
-import { MousePosition } from "@react-hook/mouse-position";
+
 import { AppDispatch } from "@redux/configureStore";
 import { useCallback, useEffect, useState } from "react";
 import { Dimensions, Node, ReactFlowInstance } from "react-flow-renderer";
@@ -33,7 +33,7 @@ const useNode = (
   signed: boolean,
   nodes: NodeDropdownInstance[],
   setShowContextMenu: React.Dispatch<React.SetStateAction<boolean>>,
-  mouse: MousePosition
+  mouse: any
 ) => {
   const [isUpdatingNode, setIsUpdatingNode] = useState(false);
   const [nodeToUpdate, setNodeToUpdate] = useState<TCustomNode | null>(null);

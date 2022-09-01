@@ -284,6 +284,7 @@ function ValidateEmails(props: Props) {
             /* @ts-ignore - No implicit children can be removed when material ui is upgraded */
             connector={<QontoConnector />}
           >
+            {/* @ts-ignore */}
             {emailsToValidate.map((label, index) => (
               <Step key={label?.get("refference")}>
                 <StepLabel StepIconComponent={QontoStepIcon}>
@@ -304,6 +305,7 @@ function ValidateEmails(props: Props) {
         >
           <div
             id="elementPickerContainer"
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: workingEmailToValidate }}
             className={classes.emailContent}
           />

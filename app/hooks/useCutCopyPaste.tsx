@@ -2,7 +2,6 @@
 
 /* eslint-disable import/prefer-default-export */
 import { TCustomEdge, TCustomNode } from "@customTypes/reducers/workspace";
-import { MousePosition } from "@react-hook/mouse-position";
 import { useCallback, useEffect } from "react";
 import {
   isEdge,
@@ -64,7 +63,7 @@ export function useCutCopyPaste(
   onNodesDelete: (nodes: TCustomNode[]) => void,
   onNodesChange: OnNodesChange,
   _addElements: (elements: Array<TCustomNode | TCustomEdge>) => void,
-  mouse: MousePosition,
+  mouse: any,
   rfInstance: ReactFlowInstance | null,
   reactFlowContainer: React.RefObject<HTMLDivElement>,
   reactFlowDimensions: Dimensions | null
@@ -72,7 +71,7 @@ export function useCutCopyPaste(
   const selectedNodes = nodes.filter((node) => node.selected);
 
   const cut = useCallback(
-    (event, element = null) => {
+    (event, element: any = null) => {
       // remove selected nodes from graph
       // copy to clipboard
       if (selectedNodes.length > 0 || element) {

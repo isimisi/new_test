@@ -152,7 +152,7 @@ function Lookup() {
                 md={listView === "list" ? 12 : 4}
                 sm={listView === "list" ? 12 : 6}
                 xs={12}
-                key={item.country}
+                key={item.value}
               >
                 <Card style={{ position: "relative" }}>
                   <ButtonBase
