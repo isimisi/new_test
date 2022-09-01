@@ -27,11 +27,10 @@ export default function CustomEdge({
   targetPosition,
   style = {},
   data,
-  arrowHeadType,
-  markerEndId
+  markerEnd
 }: EdgeProps) {
   const dispatch = useAppDispatch();
-  const view = useAppSelector(state => state.timeline.get("view"));
+  const view = useAppSelector((state) => state.timeline.get("view"));
   const handleOpenCreateElement = () => {
     dispatch(setTimelineNode(null));
     dispatch(createElementChange(true));
@@ -44,7 +43,7 @@ export default function CustomEdge({
     targetY,
     targetPosition
   });
-  const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+
   const [edgeCenterX, edgeCenterY] = getEdgeCenter({
     sourceX,
     sourceY,

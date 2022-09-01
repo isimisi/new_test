@@ -8,7 +8,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import MuiTableCell from "@material-ui/core/TableCell";
 import FloatingPanel from "../../Panel/FloatingPanel";
-import styles from "../workspace-jss";
 
 const TableCell = withStyles({
   root: {
@@ -50,5 +49,4 @@ AddressInfoModel.propTypes = {
   close: PropTypes.func.isRequired,
   addressInfo: PropTypes.object.isRequired,
 };
-
-export default withStyles(styles)(AddressInfoModel);
+export default AddressInfoModel;

@@ -178,7 +178,7 @@ const Attribute = (props) => {
             multiline
             onChange={(e) => dispatch(descriptionChange(e.target.value))}
             value={description}
-            rows={2}
+            minRows={2}
             fullWidth
           />
         </div>

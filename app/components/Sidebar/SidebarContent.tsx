@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable camelcase */
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
@@ -16,7 +17,7 @@ import useStyle from "./sidebar-jss";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UserMeta } from "@helpers/userInfo";
 
-const BorderLinearProgress = withStyles(theme => ({
+const BorderLinearProgress = withStyles((theme) => ({
   root: {
     height: 10,
     marginTop: 10,
@@ -95,6 +96,7 @@ function SidebarContent(props: Props) {
         {status === "need_confirmation" && drawerPaper && (
           <div className={classes.confirmEmail}>
             <Typography variant="subtitle2">Opsætning af konto</Typography>
+            {/* @ts-ignore withstyles */}
             <BorderLinearProgress value={50} variant="indeterminate" />
             <div className={classes.inlineWrap}>
               <CheckCircleOutlineOutlinedIcon style={{ color: "green" }} />

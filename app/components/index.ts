@@ -54,16 +54,14 @@ import AlertLog from "./Alerts/AlertLog";
 // Workspace
 import WorkspaceForm from "./Workspace/Modals/WorkspaceForm";
 import WorkspaceMeta from "./Workspace/Modals/WorkspaceMeta";
-import WorkspaceFabs from "./Workspace/Public/WorkspaceFabs";
+
 import MapTypesForErst from "./Workspace/Modals/MapTypesForErst";
 import CustomNode from "./Workspace/Node/CustomNode";
 import StickyNoteNode from "./Workspace/Node/StickyNoteNode";
 import MiniFlow from "./Workspace/Analysis/MiniFlow";
 import ShareModal from "./Flow/Share/ShareModal";
-import PublicWorkspace from "./Workspace/Public/PublicWorkspace";
 
 import CustomConnectionLine from "./Workspace/Edge/CustomConnectionLine";
-import CustomEdge from "./Workspace/Edge/CustomEdge";
 import DefineEdge from "./Workspace/Edge/DefineEdge";
 
 import DefineNode from "./Workspace/Node/DefineNode";
@@ -122,12 +120,9 @@ export {
   AlertLog,
   WorkspaceForm,
   WorkspaceMeta,
-  WorkspaceFabs,
-  PublicWorkspace,
   ShareModal,
   MapTypesForErst,
   CustomConnectionLine,
-  CustomEdge,
   CustomNode,
   StickyNoteNode,
   MiniFlow,

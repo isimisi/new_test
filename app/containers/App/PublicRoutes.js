@@ -1,9 +1,7 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import Outer from '../Templates/Outer';
-import {
-  PublicWorkspace, KoncernDiagram
-} from '../pageListAsync';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import Outer from "../Templates/Outer";
+import { PublicWorkspace, KoncernDiagram } from "../pageListAsync";
 
 const PublicRoutes = () => (
   <Outer>

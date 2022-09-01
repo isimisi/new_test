@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect, Router } from "react-router-dom";
 
 import { NotFound } from "../pageListAsync";
 
@@ -15,16 +15,20 @@ import ErrorView from "@components/Error/CrashScreen";
 // @ts-ignore
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
-const App = () => {
+interface Props {
+  history: any;
+}
+
+function App(props: Props) {
   const { loginWithRedirect, isAuthenticated, isLoading, error } = useAuth0();
+  const { history } = props;
 
   if (error) {
     return (
       <ErrorView
         error={error}
         clearError={() =>
-          window.location.replace("https://app.juristic.io/app")
-        }
+          window.location.replace("https://app.juristic.io/app")}
       />
     );
   }
@@ -50,18 +54,20 @@ const App = () => {
 
   return (
     <ThemeWrapper>
-      <Switch>
-        <Route exact path="/" render={() => <Redirect to="/app" />} />
-        <PrivateRoute path="/app">
-          <Application />
-        </PrivateRoute>
-        <PublicRoute path="/public">
-          <PublicRoutes />
-        </PublicRoute>
-        <Route component={NotFound} />
-      </Switch>
+      <Router history={history}>
+        <Switch>
+          <Route exact path="/" render={() => <Redirect to="/app" />} />
+          <PrivateRoute path="/app">
+            <Application />
+          </PrivateRoute>
+          <PublicRoute path="/public">
+            <PublicRoutes />
+          </PublicRoute>
+          <Route component={NotFound} />
+        </Switch>
+      </Router>
     </ThemeWrapper>
   );
-};
+}
 
 export default App;

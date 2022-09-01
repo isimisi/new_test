@@ -3,9 +3,11 @@ import orange from "@material-ui/core/colors/orange";
 import blue from "@material-ui/core/colors/indigo";
 import cyan from "@material-ui/core/colors/cyan";
 import { lighten, darken, alpha } from "@material-ui/core/styles/colorManipulator";
+import { makeStyles } from "@material-ui/core/styles";
+
 const drawerWidth = 240;
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     minHeight: 500,
@@ -525,6 +527,6 @@ const styles = (theme) => ({
   },
   packageBullets: { marginTop: 20, marginLeft: 5 },
   bulletText: { margin: 8 },
-});
+}));
 
-export default styles;
+export default useStyles;

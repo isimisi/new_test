@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
@@ -80,7 +81,7 @@ export default memo(({ data }: NodeProps) => {
   }, []);
 
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  const handleOpenDocument = id => {
+  const handleOpenDocument = (id) => {
     dispatch(showDocument(user, id, openDocument));
   };
 
@@ -99,11 +100,11 @@ export default memo(({ data }: NodeProps) => {
   };
 
   const openPerson = () => dispatch(timelineElementPersonChange(true));
-  const handleOpenPerson = id => {
+  const handleOpenPerson = (id) => {
     dispatch(showPerson(user, id, openPerson));
   };
 
-  const handleOpenTag = tag => dispatch(openTag(tag));
+  const handleOpenTag = (tag) => dispatch(openTag(tag));
 
   const downHaveTime = moment(data.date).format("HH:mm") === "00:00";
 
@@ -178,7 +179,7 @@ export default memo(({ data }: NodeProps) => {
                         <Tooltip
                           arrow
                           title={data.persons
-                            .map(p => p.name)
+                            .map((p) => p.name)
                             .slice(3)
                             .join(", ")}
                           placement="top"
@@ -338,7 +339,7 @@ export default memo(({ data }: NodeProps) => {
             alignItems: "center"
           }}
         >
-          {data.tags.map(tag => (
+          {data.tags.map((tag) => (
             <Tooltip arrow title={tag.name} placement="top" key={tag.id}>
               <ButtonBase onClick={() => handleOpenTag(tag.name)}>
                 <div
@@ -365,8 +366,8 @@ export default memo(({ data }: NodeProps) => {
         >
           {moment(data.date).isValid()
             ? `${moment(data.date).format("DD/MM-YYYY")}${
-              downHaveTime ? "" : ", kl."
-            } ${downHaveTime ? "" : moment(data.date).format("HH:mm")}`
+                downHaveTime ? "" : ", kl."
+              } ${downHaveTime ? "" : moment(data.date).format("HH:mm")}`
             : t("node.no_date")}
         </Typography>
         <Handle

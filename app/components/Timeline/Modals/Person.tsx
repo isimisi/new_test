@@ -24,29 +24,29 @@ interface Props {
   onSave: (person: Person) => void;
 }
 
-const Person = (props: Props) => {
+function Person(props: Props) {
   const { open, close, onSave, user } = props;
   const dispatch = useAppDispatch();
   const classes = useStyles();
-  const person = useAppSelector(state => state.person.get("person"));
-  const elements = useAppSelector(state =>
+  const person = useAppSelector((state) => state.person.get("person"));
+  const elements = useAppSelector((state) =>
     state.timeline.get("elements")
   ).toJS();
-  const loadings = useAppSelector(state => state.person.get("loadings"));
+  const loadings = useAppSelector((state) => state.person.get("loadings"));
 
   const nodes = useMemo(
     () =>
       elements
         .filter((e): e is Node => isNode(e))
         .filter(
-          n =>
+          (n) =>
             n.data.persons &&
-            n.data.persons.some(p => p.id === person.get("id"))
+            n.data.persons.some((p) => p.id === person.get("id"))
         ),
     [elements, person]
   );
 
-  const createElementOpen = useAppSelector(state =>
+  const createElementOpen = useAppSelector((state) =>
     state.timeline.get("createElementOpen")
   );
 
@@ -119,6 +119,6 @@ const Person = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Person;

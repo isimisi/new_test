@@ -1,65 +1,81 @@
-/* eslint-disable no-param-reassign */
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { isNode, Position, FlowElement } from "react-flow-renderer";
+import { Position, isNode } from "react-flow-renderer";
 import dagre from "dagre";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import CheckIcon from "@material-ui/icons/Check";
 import Chip from "@material-ui/core/Chip";
+import { TCustomNode, TCustomEdge } from "@customTypes/reducers/workspace";
 
 const dagreGraph = new dagre.graphlib.Graph();
 dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-export const getLayoutedElements = (elements, direction = "TB") => {
-  // these should be calculated
+export const initialAttribut = {
+  label: null,
+  value: ""
+};
+
+export const proOptions = {
+  // passing in the account property will enable hiding the attribution
+  account: "paid-pro",
+  // in combination with the account property, hideAttribution: true will remove the attribution
+  hideAttribution: true
+};
+
+export const BASE_BG_GAP = 32;
+export const BASE_BG_STROKE = 1;
+
+export const getLayoutedElements = (
+  nodes: TCustomNode[],
+  edges: TCustomEdge[],
+  direction = "TB"
+) => {
   const nodeWidth = 172;
   const nodeHeight = 36;
 
-  const isHorizontal = direction === "LR";
   dagreGraph.setGraph({ rankdir: direction });
 
-  elements.forEach(el => {
-    if (isNode(el)) {
-      dagreGraph.setNode(el.id, { width: nodeWidth, height: nodeHeight });
-    } else {
-      dagreGraph.setEdge(el.source, el.target);
-    }
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+  });
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
   });
 
   dagre.layout(dagreGraph);
 
-  return elements.map((el: FlowElement) => {
-    if (isNode(el)) {
-      const nodeWithPosition = dagreGraph.node(el.id);
-      el.targetPosition = isHorizontal ? Position.Left : Position.Top;
-      el.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
+  nodes.forEach((node) => {
+    const nodeWithPosition = dagreGraph.node(node.id);
+    node.targetPosition = Position.Top;
+    node.sourcePosition = Position.Bottom;
 
-      // unfortunately we need this little hack to pass a slightly different position
-      // to notify react flow about the change. Moreover we are shifting the dagre node position
-      // (anchor=center center) to the top left so it matches the react flow node anchor point (top left).
-      el.position = {
-        x: nodeWithPosition.x - nodeWidth / 2 + Math.random() / 1000,
-        y: nodeWithPosition.y - nodeHeight / 2
-      };
-    }
+    // We are shifting the dagre node position (anchor=center center) to the top left
+    // so it matches the React Flow node anchor point (top left).
+    node.position = {
+      x: nodeWithPosition.x - nodeWidth / 2,
+      y: nodeWithPosition.y - nodeHeight / 2
+    };
 
-    return el;
+    return node;
   });
+
+  return { nodes, edges };
 };
 
-export const columns = t => [
+export const columns = (t) => [
   {
     name: t("workspaces.table_title"),
     options: {
       filter: true,
       filterOptions: {
-        renderValue: v => v.split("∉")[0]
+        renderValue: (v) => v.split("∉")[0]
       },
       customFilterListOptions: {
-        render: v => v.split("∉")[0]
+        render: (v) => v.split("∉")[0]
       },
-      customBodyRender: value =>
+      customBodyRender: (value) =>
         value.split("∉").map((v, i) => {
           if (i === 0) {
             return v;
@@ -85,15 +101,15 @@ export const columns = t => [
       filterOptions: {
         logic: (tags, filters) => {
           const mappedTags = tags.map(
-            tag => `${tag.tag.emoji ? tag.tag.emoji : ""} ${tag.tag.name}`
+            (tag) => `${tag.tag.emoji ? tag.tag.emoji : ""} ${tag.tag.name}`
           );
-          return !filters.every(tag => mappedTags.includes(tag));
+          return !filters.every((tag) => mappedTags.includes(tag));
         }
       },
       sort: false,
-      customBodyRender: tags =>
+      customBodyRender: (tags) =>
         Array.isArray(tags) &&
-        tags.map(tag => (
+        tags.map((tag) => (
           <Chip
             key={tag.id}
             style={{ margin: 2 }}
@@ -115,7 +131,7 @@ export const columns = t => [
       filter: false,
       sort: false,
       viewColumns: false,
-      customBodyRender: value => (
+      customBodyRender: (value) => (
         <Tooltip
           title={
             !value
@@ -171,7 +187,7 @@ export const initErstTypes = {
   }
 };
 
-const localeSteps = t => [
+const localeSteps = (t) => [
   {
     skip: (
       <Button size="small" style={{ color: "#bbb" }}>
@@ -183,7 +199,7 @@ const localeSteps = t => [
   }
 ];
 
-export const steps = t => [
+export const steps = (t) => [
   {
     content: <h2>{t("workspaces.welcome_to_the_work_area")}</h2>,
     locale: localeSteps,

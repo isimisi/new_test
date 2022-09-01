@@ -59,7 +59,7 @@ interface Props {
   handleDocumentOpen: (id: string, name?: string) => void;
 }
 
-const Content = (props: Props) => {
+function Content(props: Props) {
   const {
     onSave,
     personOptions,
@@ -96,13 +96,13 @@ const Content = (props: Props) => {
   const user = useAuth0().user as User;
   const dispatch = useAppDispatch();
 
-  const handleOpenPersonNonEdit = id => {
+  const handleOpenPersonNonEdit = (id) => {
     dispatch(
       showPerson(user, id, () => dispatch(timelineElementPersonChange(true)))
     );
   };
 
-  const handleOpenDocumentNonEdit = id => {
+  const handleOpenDocumentNonEdit = (id) => {
     dispatch(
       showDocument(user, id, () =>
         dispatch(timelineElementDocumentChange(true))
@@ -164,8 +164,8 @@ const Content = (props: Props) => {
                     <Typography className={classes.verticalDate}>
                       {moment(date).isValid()
                         ? `${moment(date).format("DD/MM-YYYY")}${
-                          downHaveTime ? "" : ", kl."
-                        } ${downHaveTime ? "" : moment(date).format("HH:mm")}`
+                            downHaveTime ? "" : ", kl."
+                          } ${downHaveTime ? "" : moment(date).format("HH:mm")}`
                         : t("node.no_date")}
                     </Typography>
                   </Paper>
@@ -173,6 +173,7 @@ const Content = (props: Props) => {
                     {title}
                   </Typography>
                   <Linkify
+                    // eslint-disable-next-line react/no-unstable-nested-components
                     componentDecorator={(decoratedHref, decoratedText, key) => (
                       <a target="blank" href={decoratedHref} key={key}>
                         {decoratedText}
@@ -188,12 +189,13 @@ const Content = (props: Props) => {
                   {(persons.length !== 0 || documents.length !== 0) && (
                     <div className={classes.peopleAndDocumentsContainer}>
                       <div className={classes.personDiv}>
-                        {persons.map(person => (
+                        {persons.map((person) => (
                           <Tooltip arrow title={person.name} placement="top">
                             <div
                               style={{ cursor: "pointer", margin: 2 }}
                               onClick={() => handleOpenPersonNonEdit(person.id)}
                             >
+                              {/* @ts-ignore */}
                               <Avatar
                                 style={{
                                   width: 30,
@@ -213,7 +215,7 @@ const Content = (props: Props) => {
                         <div className={classes.personAndDocsDivider} />
                       )}
                       <div className={classes.personDiv}>
-                        {documents.map(document => (
+                        {documents.map((document) => (
                           <Tooltip arrow title={document.title} placement="top">
                             <IconButton
                               size="small"
@@ -227,7 +229,7 @@ const Content = (props: Props) => {
                         ))}
                       </div>
                       <div className={classes.personDiv}>
-                        {tags.map(tag => (
+                        {tags.map((tag) => (
                           <Tooltip
                             arrow
                             title={tag.name}
@@ -304,6 +306,6 @@ const Content = (props: Props) => {
       </div>
     </div>
   );
-};
+}
 
 export default Content;

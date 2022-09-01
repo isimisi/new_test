@@ -57,12 +57,12 @@ export class SocketConnection {
       });
 
       result.on("completed", (data) => {
-        const { elements, uncertainCompanies } = data;
+        const { nodes, edges, uncertainCompanies } = data;
 
         if (uncertainCompanies && uncertainCompanies.length > 0) {
           handleUncertainCompanies && handleUncertainCompanies(uncertainCompanies);
         } else {
-          handleCompleted(elements);
+          handleCompleted(nodes, edges);
         }
       });
 

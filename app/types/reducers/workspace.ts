@@ -1,9 +1,65 @@
+import { RGBA } from "@customTypes/data";
 import IImmutableStateMap from "@customTypes/immutable";
 import { List } from "immutable";
-import { FlowElement } from "react-flow-renderer";
+import { Edge, Node } from "react-flow-renderer";
 import { AttributeDropdown } from "./attribute";
 import { GroupDropdown } from "./groups";
 import { TagDeconstructedOnOtherElements } from "./tags";
+
+export type Attribut = {
+  label: string | null;
+  value: string | null;
+  show?: boolean;
+  workspace_node_attribut_id?: string;
+  type?: string;
+  selectionOptions?: string;
+};
+
+export type NodeData = {
+  label: string | null;
+  id: string;
+  displayName: string | null;
+  figur: string | null;
+  unitNumber: string | null;
+  data_provider: "erst" | "firmnav";
+  attributes: Attribut[];
+  backgroundColor: string;
+  borderColor: string;
+  labelColor: string;
+};
+
+export type StickyNodeData = {
+  id: string;
+  text: string;
+};
+
+export type TCustomNode = Node<NodeData | StickyNodeData>;
+
+export type EdgeData = {
+  label: string | null;
+  value: string;
+  showLabel: boolean;
+  color: RGBA;
+  showArrow: boolean;
+  animated: boolean;
+  lineThrough: boolean;
+  stroke: string | null;
+};
+
+export type TCustomEdge = Edge<EdgeData>;
+
+export interface NodeDropdown {
+  id: string;
+  label: string;
+  description: string;
+  style: string;
+  attributes: {
+    label: string;
+    value: string;
+    type: string;
+    selectionOptions: string;
+  };
+}
 
 export interface WorkspaceRelationship {
   id: number;
@@ -68,12 +124,14 @@ export interface WorkspaceState {
   signed: boolean;
   signedBy: string;
   editable: boolean;
-  elements: List<FlowElement>;
+  elements: any;
+  nodeElements: List<NodeData>;
+  edgeElements: List<EdgeData>;
   message: string;
   groupsDropDownOptions: List<GroupDropdown>;
   attributesDropDownOptions: List<AttributeDropdown>;
   relationships: List<WorkspaceRelationship>;
-  nodes: List<unknown>;
+  nodes: List<NodeDropdown>;
   handleVisability: boolean;
   zoom: number;
   xPosition: number;

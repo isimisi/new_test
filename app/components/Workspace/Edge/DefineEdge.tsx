@@ -1,13 +1,11 @@
 /* eslint-disable react/require-default-props */
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import EdgeForm from "./EdgeForm";
 import FloatingPanel from "../../Panel/FloatingPanel";
-import styles from "../workspace-jss";
 
-const DefineEdge = (props) => {
+function DefineEdge(props) {
   const {
     open,
     close,
@@ -31,7 +29,7 @@ const DefineEdge = (props) => {
     relationships,
     isUpdatingElement,
     handleDeleteEdge,
-    loading,
+    loading
   } = props;
 
   return (
@@ -71,7 +69,7 @@ const DefineEdge = (props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 DefineEdge.propTypes = {
   open: PropTypes.bool.isRequired,
@@ -96,7 +94,7 @@ DefineEdge.propTypes = {
   relationships: PropTypes.object.isRequired,
   isUpdatingElement: PropTypes.bool.isRequired,
   handleDeleteEdge: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired
 };
 
-export default withStyles(styles)(DefineEdge);
+export default DefineEdge;

@@ -6,7 +6,7 @@ import ReactTextTransition, { presets } from "react-text-transition";
 import walking from "@lotties/racoon/walk.json";
 import loader from "@lotties/loader.json";
 
-const Loader = ({ bigFont = false, size = "20%" }) => {
+function Loader({ bigFont = false, size = "20%" }) {
   const [raccoon, setRaccoon] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
 
@@ -71,6 +71,6 @@ const Loader = ({ bigFont = false, size = "20%" }) => {
       />
     </div>
   );
-};
+}
 
 export default Loader;

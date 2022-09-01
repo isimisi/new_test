@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -18,7 +17,7 @@ interface Props {
   handleImportEmails: (files: any[]) => void;
 }
 
-const Email = (props: Props) => {
+function Email(props: Props) {
   const { open, close, handleImportEmails, loading } = props;
 
   const classes = useStyles();
@@ -27,14 +26,14 @@ const Email = (props: Props) => {
 
   const [files, setFiles] = useState<any[]>([]);
 
-  const handleFileChange = _files => {
-    setFiles(prevFiles => [..._files, ...prevFiles]);
+  const handleFileChange = (_files) => {
+    setFiles((prevFiles) => [..._files, ...prevFiles]);
   };
 
   const callback = {
-    onDrop: acceptedFiles => {
+    onDrop: (acceptedFiles) => {
       handleFileChange(
-        acceptedFiles.map(_file =>
+        acceptedFiles.map((_file) =>
           Object.assign(_file, {
             preview: URL.createObjectURL(_file)
           })
@@ -47,7 +46,7 @@ const Email = (props: Props) => {
   const { getRootProps, getInputProps } = useDropzone(callback);
 
   const removeFile = (index: number) => {
-    setFiles(prevFiles => {
+    setFiles((prevFiles) => {
       prevFiles.splice(index, 1);
       return [...prevFiles];
     });
@@ -118,6 +117,6 @@ const Email = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Email;

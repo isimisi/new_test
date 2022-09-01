@@ -22,7 +22,6 @@ const GredCellExpandedWYS = React.memo((props: GridCellExpandProps) => {
   const [showFullCell, setShowFullCell] = React.useState(false);
   const [showPopper, setShowPopper] = React.useState(false);
 
-
   const handleMouseEnter = () => {
     const isCurrentlyOverflown = isOverflown(cellValue.current!);
     setShowPopper(isCurrentlyOverflown);
@@ -54,6 +53,7 @@ const GredCellExpandedWYS = React.memo((props: GridCellExpandProps) => {
   }, [setShowFullCell, showFullCell]);
 
   return (
+    /* @ts-ignore - old react */
     <Box
       // @ts-ignore
       ref={wrapper}
@@ -68,6 +68,7 @@ const GredCellExpandedWYS = React.memo((props: GridCellExpandProps) => {
         display: "flex"
       }}
     >
+      {/* @ts-ignore - old react */}
       <Box
         // @ts-ignore
         ref={cellDiv}
@@ -79,6 +80,7 @@ const GredCellExpandedWYS = React.memo((props: GridCellExpandProps) => {
           top: 0
         }}
       />
+      {/* @ts-ignore - old react */}
       <Box
         // @ts-ignore
         ref={cellValue}
@@ -94,11 +96,11 @@ const GredCellExpandedWYS = React.memo((props: GridCellExpandProps) => {
         <Popper
           open={showFullCell && anchorEl !== null}
           anchorEl={anchorEl}
-          container={wrapper.current?.parentNode?.parentNode?.parentNode?.parentNode?.parentNode as HTMLElement}
-          style={{ width,
-            marginLeft: -17,
-            zIndex: 1000,
-          }}
+          container={
+            wrapper.current?.parentNode?.parentNode?.parentNode?.parentNode
+              ?.parentNode as HTMLElement
+          }
+          style={{ width, marginLeft: -17, zIndex: 1000 }}
         >
           <Paper
             elevation={1}
@@ -106,8 +108,7 @@ const GredCellExpandedWYS = React.memo((props: GridCellExpandProps) => {
               width,
 
               display: "flex",
-              flexWrap: "wrap",
-
+              flexWrap: "wrap"
             }}
           >
             <Typography variant="body2" style={{ padding: 8 }}>

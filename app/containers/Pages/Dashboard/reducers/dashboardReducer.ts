@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { fromJS } from "immutable";
 import { CLOSE_NOTIF } from "@redux/constants/notifConstants";
 import {

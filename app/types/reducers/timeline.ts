@@ -2,10 +2,25 @@ import IImmutableStateMap from "@customTypes/immutable";
 import { MaterialUiPickersDate } from "@material-ui/pickers/typings/date";
 
 import { List, Map } from "immutable";
-import { FlowElement } from "react-flow-renderer";
+import { Edge, Node } from "react-flow-renderer";
 import { MixedDocumentOptions } from "./document";
 import { MixedPersonOptions } from "./person";
 import { TagDeconstructedOnOtherElements } from "./tags";
+
+export type NodeData = {
+  id: string;
+  persons: any;
+  documents: any;
+  tags: any;
+  label: string;
+  content: string;
+  email: any;
+  date: string;
+  inExtract: boolean;
+  description: string;
+};
+
+export type TCustomNode = Node<NodeData>;
 
 export interface Loadings {
   main: boolean;
@@ -76,11 +91,12 @@ export interface IEmailsFromImport extends Map<string, any> {
 export interface TimelineState {
   timelines: List<TimelineTableOptions>;
   message: string;
-  elements: List<FlowElement>;
+  nodes: List<TCustomNode>;
+  edges: List<Edge>;
   timelinePersons: List<any>;
   timelineDocuments: List<any>;
   timelineTags: List<any>;
-  filters: List<string>
+  filters: List<string>;
   emailsToValidate: List<IEmailsFromImport>;
   handleVisability: boolean;
   createElementOpen: boolean;

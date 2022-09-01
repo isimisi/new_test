@@ -22,7 +22,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { getCompanyData } from "@pages/Workspaces/reducers/workspaceActions";
 
-export const getSVG = figur => {
+export const getSVG = (figur) => {
   switch (figur) {
     case "triangle":
       return triangle;
@@ -37,17 +37,17 @@ export const getSVG = figur => {
   }
 };
 
-const CustomNode = ({ data }) => {
+function CustomNode({ data }) {
   const theme = useTheme<MyTheme>();
   const history = useHistory();
   const { t } = useTranslation();
-  const handleVisability = useAppSelector(state =>
+  const handleVisability = useAppSelector((state) =>
     state.workspace.get("handleVisability")
   );
   const dispatch = useAppDispatch();
 
-  const signed = useAppSelector(state => state.workspace.get("signed"));
-  const loading = useAppSelector(state => state.workspace.get("loading"));
+  const signed = useAppSelector((state) => state.workspace.get("signed"));
+  const loading = useAppSelector((state) => state.workspace.get("loading"));
   const showHover = history.location.pathname.includes("workspace");
   const _public = history.location.pathname.includes("public");
   const user = useAuth0().user as User;
@@ -205,10 +205,11 @@ const CustomNode = ({ data }) => {
             <ErrorIcon
               data-html2canvas-ignore="true"
               style={{
-                color:
-                  deltaE("rgb(255, 220, 121, 1)", data.backgroundColor) < 30
+                color: data.backgroundColor
+                  ? deltaE("rgb(255, 220, 121, 1)", data.backgroundColor) < 30
                     ? "black"
-                    : "rgb(255,220,121)",
+                    : "rgb(255,220,121)"
+                  : "black",
                 fontSize: 10,
                 position: "absolute",
                 top: 2,
@@ -221,7 +222,7 @@ const CustomNode = ({ data }) => {
         )}
       </div>
       {data.conditionValues &&
-        data.conditionValues.map(cv => (
+        data.conditionValues.map((cv) => (
           <Typography variant="body2" style={attr} key={cv.attribut.label}>
             {cv.attribut.label}
             {' '}
@@ -232,8 +233,8 @@ const CustomNode = ({ data }) => {
         ))}
       {data.attributes &&
         data.attributes
-          .filter(cv => cv.show)
-          .map(cv => (
+          .filter((cv) => cv.show)
+          .map((cv) => (
             <Typography variant="body2" style={attr} key={cv.label}>
               {cv.label}
               {": "}
@@ -283,6 +284,6 @@ const CustomNode = ({ data }) => {
       />
     </div>
   );
-};
+}
 
 export default memo(CustomNode);

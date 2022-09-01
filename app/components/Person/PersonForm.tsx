@@ -71,7 +71,7 @@ const PersonForm = () => {
         placeholder={t("nodes.node-form.desc")}
         label={t("nodes.node-form.desc")}
         multiline
-        rows={2}
+        minRows={2}
         onChange={handleDescriptionChange}
         value={person.get("description")}
       />

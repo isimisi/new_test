@@ -21,10 +21,10 @@ export interface SelectOptions {
 export type setBoolState = React.Dispatch<React.SetStateAction<boolean>>;
 
 export interface RGBA {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
+  r: string;
+  g: string;
+  b: string;
+  a: string;
 }
 
 export interface SelectChoice {

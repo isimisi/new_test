@@ -12,7 +12,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import styles from "../../Workspace/workspace-jss";
 
-const ShareForm = (props) => {
+function ShareForm(props) {
   const {
     classes,
     close,
@@ -134,7 +134,7 @@ const ShareForm = (props) => {
       </div>
     </div>
   );
-};
+}
 
 ShareForm.propTypes = {
   classes: PropTypes.object.isRequired,

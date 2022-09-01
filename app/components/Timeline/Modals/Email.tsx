@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
+
 import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,12 @@ import Button from "@material-ui/core/Button";
 
 import { ITimelineNode } from "@customTypes/reducers/timeline";
 import EmailContent from "../Util/Email";
-import { elementFilter, ElementPicker, getSplitElement, traverseParentsUntilUniqueSplit } from "../Util/ElementPicker";
+import {
+  elementFilter,
+  ElementPicker,
+  getSplitElement,
+  traverseParentsUntilUniqueSplit
+} from "../Util/ElementPicker";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import {
@@ -27,15 +32,16 @@ interface Props {
   open: boolean;
   close: () => void;
   timelineNode: ITimelineNode;
-
 }
 
-const Email = (props: Props) => {
-  const { open, close, timelineNode, } = props;
+function Email(props: Props) {
+  const { open, close, timelineNode } = props;
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const splitElements = useAppSelector(state => state.timeline.get("splitElements"));
+  const splitElements = useAppSelector((state) =>
+    state.timeline.get("splitElements")
+  );
 
   const [picker, setPicker] = useState<ElementPicker | null>(null);
 
@@ -66,15 +72,14 @@ const Email = (props: Props) => {
     dispatch(goThroughSplitChange(true));
   };
 
-
   const split = () => {
     if (picker) {
-      setSplitting(prevVal => !prevVal);
+      setSplitting((prevVal) => !prevVal);
       if (splitting) {
         picker.stop();
       } else {
         picker.start({
-          onClick: el => {
+          onClick: (el) => {
             const splitElContainer = getSplitElement(t("emails.split_text"));
 
             if (el.className.includes("splitting_element")) {
@@ -82,18 +87,32 @@ const Email = (props: Props) => {
                 dispatch(removeEmailSplit(el.nextElementSibling?.outerHTML));
                 el.remove();
               } else if (el.className === "splitting_element_innerDiv") {
-                dispatch(removeEmailSplit(el.parentElement?.nextElementSibling?.outerHTML));
+                dispatch(
+                  removeEmailSplit(
+                    el.parentElement?.nextElementSibling?.outerHTML
+                  )
+                );
                 el.parentElement?.remove();
               } else {
-                dispatch(removeEmailSplit(el.parentElement?.parentElement?.nextElementSibling?.outerHTML));
+                dispatch(
+                  removeEmailSplit(
+                    el.parentElement?.parentElement?.nextElementSibling
+                      ?.outerHTML
+                  )
+                );
                 el.parentElement?.parentElement?.remove();
               }
             } else {
-              const currEmail = document.getElementById("elementPickerContainer")?.outerHTML;
+              const currEmail = document.getElementById(
+                "elementPickerContainer"
+              )?.outerHTML;
 
               dispatch(addCurrSplittingEmail(currEmail));
 
-              const getSplitVal = traverseParentsUntilUniqueSplit(el, currEmail);
+              const getSplitVal = traverseParentsUntilUniqueSplit(
+                el,
+                currEmail
+              );
 
               dispatch(addEmailSplit(getSplitVal));
 
@@ -109,7 +128,6 @@ const Email = (props: Props) => {
     }
   };
 
-
   return (
     <div>
       <FloatingPanel
@@ -122,14 +140,24 @@ const Email = (props: Props) => {
       >
         <div
           className={classes.createElementContainer}
-          style={{ maxHeight: "60vh", cursor: splitting ? "crosshair" : "auto" }}
+          style={{
+            maxHeight: "60vh",
+            cursor: splitting ? "crosshair" : "auto"
+          }}
         >
           <EmailContent timelineNode={timelineNode} />
         </div>
         <div className={css.buttonArea}>
           <Tooltip title={`${t("emails.split_explainer")}`}>
-            <Button type="button" onClick={splitElements.size > 0 ? walkThrough : split}>
-              {splitElements.size > 0 ? t("emails.walk_through") : splitting ? t("emails.stop_split") : t("emails.split")}
+            <Button
+              type="button"
+              onClick={splitElements.size > 0 ? walkThrough : split}
+            >
+              {splitElements.size > 0
+                ? t("emails.walk_through")
+                : splitting
+                ? t("emails.stop_split")
+                : t("emails.split")}
             </Button>
           </Tooltip>
           <Button type="button" onClick={handleClose}>
@@ -139,6 +167,6 @@ const Email = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Email;

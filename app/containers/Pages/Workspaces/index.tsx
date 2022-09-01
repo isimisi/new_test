@@ -23,7 +23,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import { useTranslation } from "react-i18next";
 import { columns, reducer } from "./constants";
-import styles from "./workspace-jss";
+import useStyles from "./workspace-jss";
 import {
   getWorkspaces,
   closeNotifAction,
@@ -35,8 +35,8 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
 import { Tag } from "@customTypes/reducers/tags";
 
-const Workspaces = props => {
-  const { classes } = props;
+const Workspaces = () => {
+  const classes = useStyles()
 
   const dispatch = useAppDispatch();
   const workspaces = useAppSelector(state =>
@@ -167,4 +167,4 @@ Workspaces.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Workspaces);
+export default Workspaces;

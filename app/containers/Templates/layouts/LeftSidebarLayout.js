@@ -28,13 +28,16 @@ function LeftSidebarLayout(props) {
 
   const isTimeline = history.location.pathname.includes("timelines/");
 
+  const isCondition = history.location.pathname.includes("conditions/");
+
   const isWorkspace =
     (history.location.pathname.includes("workspaces/") &&
       !history.location.pathname.includes("analysis")) ||
-    isTimeline;
+    isTimeline ||
+    isCondition;
 
   return (
-    <Fragment>
+    <>
       {!isWorkspace && (
         <Header
           toggleDrawerOpen={toggleDrawer}
@@ -104,7 +107,7 @@ function LeftSidebarLayout(props) {
           </Fade>
         </section>
       </main>
-    </Fragment>
+    </>
   );
 }
 
@@ -122,7 +125,6 @@ LeftSidebarLayout.propTypes = {
   deco: PropTypes.bool.isRequired,
   bgPosition: PropTypes.string.isRequired,
   place: PropTypes.string.isRequired,
-  handleOpenGuide: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(LeftSidebarLayout);

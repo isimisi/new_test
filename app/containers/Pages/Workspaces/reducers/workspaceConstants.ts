@@ -1,9 +1,14 @@
 /* eslint-disable operator-linebreak */
 
 import { Tag } from "@customTypes/reducers/tags";
-import { CompanyData, WorkspaceTableOptions } from "@customTypes/reducers/workspace";
+import {
+  CompanyData,
+  NodeDropdown,
+  TCustomEdge,
+  TCustomNode,
+  WorkspaceTableOptions,
+} from "@customTypes/reducers/workspace";
 import { NotifyActions } from "@redux/constants/notifConstants";
-import { FlowElement } from "react-flow-renderer";
 
 // API
 export const GET_WORKSPACES_LOADING = "GET_WORKSPACES_LOADING";
@@ -27,6 +32,9 @@ export const GET_RELATIONSHIP_VALUES_SUCCESS = "GET_RELATIONSHIP_VALUES_SUCCESS"
 export const GET_RELATIONSHIP_VALUES_FAILED = "GET_RELATIONSHIP_VALUES_FAILED";
 export const GET_NODE_VALUES_SUCCESS = "GET_NODE_VALUES_SUCCESS";
 export const GET_NODE_VALUES_FAILED = "GET_NODE_VALUES_FAILED";
+
+export const DELETE_WORKSPACE_ELEMENTS_SUCCESS = "DELETE_WORKSPACE_ELEMENTS_SUCCESS";
+export const DELETE_WORKSPACE_ELEMENTS_FAILED = "DELETE_WORKSPACE_ELEMENTS_FAILED";
 
 export const WORKSPACE_ADD_ELEMENTS_LOADING = "WORKSPACE_ADD_ELEMENTS_LOADING";
 export const WORKSPACE_ADD_ELEMENTS_SUCCESS = "WORKSPACE_ADD_ELEMENTS_SUCCESS";
@@ -55,8 +63,13 @@ export const ANALYSE_OUTPUT_FAILED = "ANALYSE_OUTPUT_FAILED";
 export const SAVE_WORKSPACE_SUCCESS = "SAVE_WORKSPACE_SUCCESS";
 export const SAVE_WORKSPACE_FAILED = "SAVE_WORKSPACE_FAILED";
 
-export const DELETE_WORKSPACE_ELEMENTS_SUCCESS = "DELETE_WORKSPACE_ELEMENTS_SUCCESS";
-export const DELETE_WORKSPACE_ELEMENTS_FAILED = "DELETE_WORKSPACE_ELEMENTS_FAILED";
+export const DELETE_WORKSPACE_NODES_LOADING = "DELETE_WORKSPACE_NODES_LOADING";
+export const DELETE_WORKSPACE_NODES_SUCCESS = "DELETE_WORKSPACE_NODES_SUCCESS";
+export const DELETE_WORKSPACE_NODES_FAILED = "DELETE_WORKSPACE_NODES_FAILED";
+
+export const DELETE_WORKSPACE_EDGES_LOADING = "DELETE_WORKSPACE_EDGES_LOADING";
+export const DELETE_WORKSPACE_EDGES_SUCCESS = "DELETE_WORKSPACE_EDGES_SUCCESS";
+export const DELETE_WORKSPACE_EDGES_FAILED = "DELETE_WORKSPACE_EDGES_FAILED";
 
 export const SHARE_WORKSPACE_SUCCESS = "SHARE_WORKSPACE_SUCCESS";
 export const SHARE_WORKSPACE_LOADING = "SHARE_WORKSPACE_LOADING";
@@ -123,6 +136,9 @@ export const REMOVE_CONNECTED_USERS = "REMOVE_CONNECTED_USERS";
 export const DO_NOT_SHOW_INTERNATIONAL_DISCLAIMER_AGAIN =
   "DO_NOT_SHOW_INTERNATIONAL_DISCLAIMER_AGAIN";
 
+export const CHANGE_NODES = "CHANGE_NODES";
+export const CHANGE_EDGES = "CHANGE_EDGES";
+
 export interface GetWorkspacesLoading {
   type: typeof GET_WORKSPACES_LOADING;
 }
@@ -160,7 +176,8 @@ export interface ShowWorkspacesSuccess {
   label: string;
   description: string;
   group: string;
-  elements: Element[]; // TODO:
+  nodes: TCustomNode[];
+  edges: TCustomEdge[];
   zoom: number;
   x_position: number;
   y_position: number;
@@ -225,7 +242,7 @@ export interface GetRelationsshipValuesFailed {
 
 export interface GetNodeValuesSuccess {
   type: typeof GET_NODE_VALUES_SUCCESS;
-  nodes: any; // TODO:
+  nodes: NodeDropdown;
 }
 
 export interface GetNodeValuesFailed {
@@ -239,7 +256,8 @@ export interface GetCvrNodesLoading {
 
 export interface GetCvrNodesSuccess {
   type: typeof GET_CVR_NODES_SUCCESS;
-  elements: Element;
+  nodes: TCustomNode[];
+  edges: TCustomEdge[];
 }
 
 export interface GetCvrNodesFailed {
@@ -298,13 +316,31 @@ export interface SaveWorkspaceFailed {
   message: string;
 }
 
-export interface DeleteWorkspaceElementsSuccess {
-  type: typeof DELETE_WORKSPACE_ELEMENTS_SUCCESS;
-  remainingElements: any; // TODO:
+export interface DeleteWorkspaceNodesLoading {
+  type: typeof DELETE_WORKSPACE_NODES_LOADING;
 }
 
-export interface DeleteWorkspaceElementsFailed {
-  type: typeof DELETE_WORKSPACE_ELEMENTS_FAILED;
+export interface DeleteWorkspaceNodesSuccess {
+  type: typeof DELETE_WORKSPACE_NODES_SUCCESS;
+  nodes?: TCustomNode[];
+  edges?: TCustomEdge[];
+}
+
+export interface DeleteWorkspaceNodesFailed {
+  type: typeof DELETE_WORKSPACE_NODES_FAILED;
+  message: string;
+}
+
+export interface DeleteWorkspaceEdgesLoading {
+  type: typeof DELETE_WORKSPACE_EDGES_LOADING;
+}
+
+export interface DeleteWorkspaceEdgesSuccess {
+  type: typeof DELETE_WORKSPACE_EDGES_SUCCESS;
+}
+
+export interface DeleteWorkspaceEdgesFailed {
+  type: typeof DELETE_WORKSPACE_EDGES_FAILED;
   message: string;
 }
 
@@ -329,7 +365,7 @@ export interface PublicAccessWorkspaceSucces {
   type: typeof PUBLIC_ACCESS_WORKSPACE_SUCCESS;
   publicUserFirstName: string;
   publicUserLastName: string;
-  workspaceId: number;
+  workspaceId: string;
   editable: boolean;
 }
 
@@ -502,7 +538,8 @@ export interface WorkspaceAddElementsLoading {
 
 export interface WorkspaceAddElementsSuccess {
   type: typeof WORKSPACE_ADD_ELEMENTS_SUCCESS;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: TCustomEdge[];
 }
 
 export interface WorkspaceAddElementsFailed {
@@ -512,7 +549,8 @@ export interface WorkspaceAddElementsFailed {
 
 export interface LayoutElements {
   type: typeof LAYOUT_ELEMENTS;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: TCustomEdge[];
 }
 
 export interface SetConnectedUsers {
@@ -531,6 +569,15 @@ export interface DoNotShowInternationalDisclaimerAgain {
 
 export interface StopLoading {
   type: typeof STOP_LOADING;
+}
+
+export interface ChangeNodes {
+  type: typeof CHANGE_NODES;
+  nodes: TCustomNode[];
+}
+export interface ChangeEdges {
+  type: typeof CHANGE_EDGES;
+  edges: TCustomEdge[];
 }
 
 export type WorkspaceActions =
@@ -569,8 +616,12 @@ export type WorkspaceActions =
   | AnalyseOutputFailed
   | SaveWorkspaceSuccess
   | SaveWorkspaceFailed
-  | DeleteWorkspaceElementsSuccess
-  | DeleteWorkspaceElementsFailed
+  | DeleteWorkspaceNodesLoading
+  | DeleteWorkspaceNodesSuccess
+  | DeleteWorkspaceNodesFailed
+  | DeleteWorkspaceEdgesLoading
+  | DeleteWorkspaceEdgesSuccess
+  | DeleteWorkspaceEdgesFailed
   | ShareWorkspaceSuccess
   | ShareWorkspaceLoading
   | ShareWorkspaceFailed
@@ -618,4 +669,6 @@ export type WorkspaceActions =
   | SetConnectedUsers
   | RemoveConnectedUsers
   | DoNotShowInternationalDisclaimerAgain
-  | StopLoading;
+  | StopLoading
+  | ChangeNodes
+  | ChangeEdges;

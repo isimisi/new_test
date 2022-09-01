@@ -40,7 +40,7 @@ function UserMenu({ classes }) {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { logout, user } = useAuth0();
-  const notifications = useAppSelector(state =>
+  const notifications = useAppSelector((state) =>
     state.dashboard.get("notifications")
   ).toJS();
   const { t } = useTranslation();
@@ -50,7 +50,7 @@ function UserMenu({ classes }) {
     openMenu: null
   });
 
-  const handleMenu = menu => event => {
+  const handleMenu = (menu) => (event) => {
     const { openMenu } = menuState;
     setMenuState({
       openMenu: openMenu === menu ? null : menu,
@@ -76,7 +76,7 @@ function UserMenu({ classes }) {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [activeNotification, setActiveNotification] = useState(null);
 
-  const handleOpenNotificationModal = n => {
+  const handleOpenNotificationModal = (n) => {
     setActiveNotification(n);
     user && !n.read && dispatch(readNotification(user, n.id));
     setNotificationOpen(true);
@@ -99,7 +99,9 @@ function UserMenu({ classes }) {
   };
 
   useEffect(() => {
-    const intrusiveNotification = notifications?.notifications?.find(n => n.notification.intrusive && !n.read);
+    const intrusiveNotification = notifications?.notifications?.find(
+      (n) => n.notification.intrusive && !n.read
+    );
     if (intrusiveNotification) {
       handleOpenNotificationModal(intrusiveNotification);
     }
@@ -122,6 +124,7 @@ function UserMenu({ classes }) {
           className={classes.badge}
           badgeContent={notifications.unread}
           color="primary"
+          overlap="rectangular"
         >
           <NotificationsNoneIcon fontSize="inherit" />
         </Badge>
@@ -148,8 +151,9 @@ function UserMenu({ classes }) {
         onClose={handleClose}
       >
         {notifications?.notifications?.length > 0 &&
-          notifications.notifications.map(n => (
+          notifications.notifications.map((n) => (
             <MenuItem
+              key={n.id}
               onClick={() => handleOpenNotificationModal(n)}
               style={{ backgroundColor: n.read ? "transparant" : "#E7F2FF" }}
             >
@@ -178,6 +182,7 @@ function UserMenu({ classes }) {
         onClick={handleMenu("user-setting")}
         style={{ cursor: "pointer", margin: "0 12px" }}
       >
+        {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
         <Avatar style={{ width: 40, height: 40 }} {...config} hairColorRandom />
       </div>
       <Menu

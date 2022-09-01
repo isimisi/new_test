@@ -1,10 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 import WorkspaceForm from "./WorkspaceForm";
 import FloatingPanel from "../../Panel/FloatingPanel";
-import styles from "../workspace-jss";
 
 function WorkspaceMeta(props) {
   const {
@@ -76,4 +74,4 @@ WorkspaceMeta.defaultProps = {
   description: "",
 };
 
-export default withStyles(styles)(WorkspaceMeta);
+export default WorkspaceMeta;

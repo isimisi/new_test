@@ -1,13 +1,13 @@
 import React from "react";
 
-import { withStyles } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import WorkspaceNodeForm from "./WorkspaceNodeForm";
 import FloatingPanel from "../../Panel/FloatingPanel";
-import styles from "../workspace-jss";
 import { RGBA, SelectChoice, SelectOptions } from "@customTypes/data";
 import { ColorResult } from "react-color";
-import { FlowElement } from "react-flow-renderer";
+import { List } from "immutable";
+import { AttributeDropdown } from "@customTypes/reducers/attribute";
+import { TCustomNode } from "@customTypes/reducers/workspace";
 interface Props {
   open: boolean;
   close: () => void;
@@ -24,10 +24,10 @@ interface Props {
   nodeDisplayName: string;
   handleDisplayNameChange: (event: any) => void;
   isUpdatingElement: boolean;
-  elementToUpdate: FlowElement | null;
+  elementToUpdate: TCustomNode | null;
   handleDeleteNode: () => void;
   loading: boolean;
-  attributesDropDownOptions: SelectOptions[];
+  attributesDropDownOptions: List<AttributeDropdown>;
   handleRemoveAttributes: (id: any, index: number) => void;
   nodeFigur: string | null;
   handleNodeFigurChange: (figur: SelectOptions) => void;
@@ -104,4 +104,4 @@ function DefineNode(props: Props) {
   );
 }
 
-export default withStyles(styles)(DefineNode);
+export default DefineNode;

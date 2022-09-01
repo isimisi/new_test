@@ -462,7 +462,8 @@
       "animated": "Animated",
       "more": "More"
     },
-    "no_label_double_click": "You must add a relationship type before you can edit the text"
+    "no_label_double_click": "You must add a relationship type before you can edit the text",
+    "sign": "Sign"
   },
   "workspace-analysis": {
     "earlier_versions": "Earlier versions",

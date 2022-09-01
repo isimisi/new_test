@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { withStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { useTranslation } from "react-i18next";
 import Button from "@material-ui/core/Button";
@@ -16,7 +16,7 @@ import { SketchPicker } from "react-color";
 import Typography from "@material-ui/core/Typography";
 import Checkbox from "@material-ui/core/Checkbox";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import styles from "../workspace-jss";
+import useStyles from "../workspace-jss";
 import BeizerCurve from "./beizerCurve.svg";
 import StraightLine from "./straightLine.svg";
 import SmoothStep from "./smoothStep.svg";
@@ -32,7 +32,7 @@ export const relationshipTypeOptions = [
     ),
   },
   {
-    value: "custom",
+    value: "default",
     label: (
       <>
         <span style={{ paddingRight: "5px" }}>Beizer Kurve</span>
@@ -51,9 +51,8 @@ export const relationshipTypeOptions = [
   },
 ];
 
-const EdgeForm = (props) => {
+function EdgeForm(props) {
   const {
-    classes,
     close,
     relationshipLabel,
     handleChangeLabel,
@@ -82,6 +81,7 @@ const EdgeForm = (props) => {
   const choosenRelationship = relationships.find((r) => r.label === relationshipLabel);
   const theme = useTheme();
   const { t } = useTranslation();
+  const classes = useStyles();
 
   return (
     <div>
@@ -267,10 +267,9 @@ const EdgeForm = (props) => {
       </div>
     </div>
   );
-};
+}
 
 EdgeForm.propTypes = {
-  classes: PropTypes.object.isRequired,
   close: PropTypes.func.isRequired,
   relationshipLabel: PropTypes.string.isRequired,
   handleChangeLabel: PropTypes.func.isRequired,
@@ -294,4 +293,4 @@ EdgeForm.propTypes = {
   handleDeleteEdge: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(EdgeForm);
+export default EdgeForm;

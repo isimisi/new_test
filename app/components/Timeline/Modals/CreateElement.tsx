@@ -38,7 +38,7 @@ interface Props {
   handleSplit: (node: ITimelineNode) => void;
 }
 
-const CreateElement = (props: Props) => {
+function CreateElement(props: Props) {
   const {
     open,
     close,
@@ -62,7 +62,7 @@ const CreateElement = (props: Props) => {
   const email = timelineNode.get("email").get("mail");
 
   const theme = useTheme();
-  const loadingsT = useAppSelector(state => state.timeline.get("loadings"));
+  const loadingsT = useAppSelector((state) => state.timeline.get("loadings"));
 
   const handleSave = () => {
     onSave();
@@ -123,7 +123,11 @@ const CreateElement = (props: Props) => {
                   marginRight: 10
                 }}
               >
-                {t("generic.delete")}
+                {loadingsT.get("mouse") ? (
+                  <CircularProgress />
+                ) : (
+                  t("generic.delete")
+                )}
               </Button>
             )}
             <div>
@@ -150,6 +154,6 @@ const CreateElement = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default CreateElement;
