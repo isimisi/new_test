@@ -58,8 +58,8 @@ function Controls(props: Props) {
   const { width, height } = useWindowDimensions();
 
   const nodes = reactFlowInstance
-    ?.getElements()
-    .filter((e): e is Node => isNode(e) && e.type === "horizontal");
+    ?.getNodes()
+    .filter((e) => e.type === "horizontal");
 
   const move = (nextPosition, direction: "front" | "back") => {
     const { x, y } = nextPosition.position;

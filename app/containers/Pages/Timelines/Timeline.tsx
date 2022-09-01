@@ -43,7 +43,7 @@ import {
   validateEmailsClose,
   closeTag
 } from "./reducers/timelineActions";
-import ReactFlow, { ReactFlowInstance } from "react-flow-renderer";
+import ReactFlow, { ReactFlowInstance, Viewport } from "react-flow-renderer";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 import Collaboration from "@components/Flow/Actions/Collaborations";
@@ -524,7 +524,7 @@ function Timeline() {
   const [panToNextIndex, setPanToNextIndex] = useState<number | null>(null);
 
   const handleTransform = useCallback(
-    (trans, direction: "front" | "back") => {
+    (trans: Viewport, direction: "front" | "back") => {
       if (rfInstance) {
         if (typeof panToNextIndex === "number") {
           if (direction === "front") {
@@ -536,7 +536,7 @@ function Timeline() {
           setPanToNextIndex(0);
         }
 
-        rfInstance.setTransform(trans);
+        rfInstance.setViewport(trans, { duration: 500 });
       }
     },
     [rfInstance, panToNextIndex]

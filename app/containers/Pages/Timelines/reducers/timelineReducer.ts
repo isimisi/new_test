@@ -463,7 +463,7 @@ export default function reducer(
 
         const filters = mutableState.get("filters") as List<string>;
 
-        mutableState.update("elements", (myList: any) =>
+        mutableState.update("nodes", (myList: any) =>
           myList.map((el) => {
             if (["addItem", "custom"].includes(el.get("type"))) {
               return el;

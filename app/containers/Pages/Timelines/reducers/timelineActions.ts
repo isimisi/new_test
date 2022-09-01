@@ -14,7 +14,10 @@ import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
 import { isEdge, isNode } from "react-flow-renderer";
 import dagre from "dagre";
-import { getDocumentDropDown, showDocument } from "../../Documents/reducers/documentActions";
+import {
+  getDocumentDropDown,
+  showDocument,
+} from "../../Documents/reducers/documentActions";
 import { getPersonDropDown } from "../../Persons/reducers/personActions";
 import { Person as TPerson } from "@customTypes/reducers/person";
 import { Document as TDocument } from "@customTypes/reducers/document";
@@ -121,19 +124,6 @@ export const showTimeline =
       dispatch({ type: types.SHOW_TIMELINE_FAILED, message });
     }
   };
-=======
-  try {
-    await axios.put(url, body, header);
-    openMeta(false);
-    dispatch({ type: types.PUT_TIMELINE_SUCCESS });
-    dispatch(getPersonDropDown(user, id));
-    dispatch(getDocumentDropDown(user, id));
-  } catch (error: any) {
-    console.log(error.response);
-    const message = genericErrorMessage;
-    dispatch({ type: types.PUT_TIMELINE_FAILED, message });
-  }
-};
 
 export const putTimeline =
   (
@@ -163,10 +153,10 @@ export const putTimeline =
       openMeta(false);
       dispatch({ type: types.PUT_TIMELINE_SUCCESS });
       dispatch(getPersonDropDown(user, id));
-    dispatch(getDocumentDropDown(user, id));
-  } catch (error: any) {
+      dispatch(getDocumentDropDown(user, id));
+    } catch (error: any) {
       console.log(error.response);
-    const message = genericErrorMessage;
+      const message = genericErrorMessage;
       dispatch({ type: types.PUT_TIMELINE_FAILED, message });
     }
   };
@@ -198,7 +188,7 @@ export const saveElement =
     changedPersons: TPerson[],
     changedDocuments: TDocument[],
     handleCloseCreateElement: () => void,
-  direction: "vertical" | "horizontal"
+    direction: "vertical" | "horizontal"
   ) =>
   async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
     dispatch({ type: types.POST_TIMELINE_ELEMENT_LOADING, loadingType: "post" });
@@ -222,22 +212,20 @@ export const saveElement =
     try {
       const response = await axios.post(url, body, header);
       const { nodes, edges } = response.data;
-  
 
-    if (direction === "vertical") {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      dispatch(changeView("vertical", response.data));
-    } else {
-      dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, nodes, edges });
+      if (direction === "vertical") {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        dispatch(changeView("vertical", response.data));
+      } else {
+        dispatch({ type: types.POST_TIMELINE_ELEMENT_SUCCESS, nodes, edges });
       }
 
-
-    handleCloseCreateElement();
+      handleCloseCreateElement();
       dispatch(getPersonDropDown(user, timeline_id));
       dispatch(getDocumentDropDown(user, timeline_id));
     } catch (error: any) {
       console.log(error.response);
-    const message = genericErrorMessage;
+      const message = genericErrorMessage;
       dispatch({ type: types.POST_TIMELINE_ELEMENT_FAILED, message });
     }
   };
@@ -321,10 +309,9 @@ export const importEmails =
     } catch (error: any) {
       let message = genericErrorMessage;
 
-
-    if (error?.response?.status === 400) {
-      message = error.response.data;
-    }
+      if (error?.response?.status === 400) {
+        message = error.response.data;
+      }
 
       dispatch({ type: types.IMPORT_EMAILS_FAILED, message });
     }
@@ -347,9 +334,9 @@ export const customSplitUpload =
     } catch (error: any) {
       let message = genericErrorMessage;
 
-    if (error?.response?.status === 400) {
-      message = error.response.data;
-    }
+      if (error?.response?.status === 400) {
+        message = error.response.data;
+      }
 
       dispatch({ type: types.CUSTOM_SPLIT_FAILED, message });
     }
@@ -370,7 +357,7 @@ export const downloadDocument =
 
     try {
       const response = await axios.get(url, header);
-      console.log(response.data);
+
       const { Body, ContentType } = response.data;
       const data = Uint8Array.from(Body.data);
       const content = new Blob([data.buffer], {
@@ -386,6 +373,7 @@ export const downloadDocument =
       link.click();
       dispatch({ type: types.DOWNLOAD_DOCUMENT_SUCCESS });
     } catch (error: any) {
+      // @ts-ignore
       const openDocument = () => dispatch(timelineElementDocumentChange(true));
       dispatch(showDocument(user, document_id, openDocument));
     }
@@ -432,7 +420,6 @@ export const timelineElementPersonChange = (bool: boolean) => ({
   type: types.TIMELINE_ELEMENT_PERSON_CHANGE,
   bool,
 });
-
 
 export const setTimelineNode = (id: string | null, isVertical = false) => ({
   type: types.SET_TIMELINE_NODE,
@@ -548,24 +535,21 @@ export const removeEmailSplit = (splitElement) => ({
 
 export const openTag = (tag) => ({
   type: types.OPEN_TAG,
-  tag
+  tag,
 });
-
 
 export const filterTimeline = (filter) => ({
   type: types.FILTER_TIMELINE,
-  filter
+  filter,
 });
 
 export const clearFilter = {
   type: types.CLEAR_FILTER,
 };
 
-
 export const closeTag = {
   type: types.CLOSE_TAG,
 };
-
 
 export const validateEmailsClose = {
   type: types.VALIDATE_EMAILS_CLOSE,

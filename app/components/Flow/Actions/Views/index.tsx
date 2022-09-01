@@ -31,7 +31,7 @@ interface Props {
   nodes: TCustomNode[];
 }
 
-function Items(props: Props) {
+function Views(props: Props) {
   const {
     openTableView,
     view,
@@ -62,31 +62,30 @@ function Items(props: Props) {
   const badges = nodes.filter((e) => !e.data?.date && e.id !== "static-button");
 
   return (
-    <>
-      <Paper elevation={4} className={classes.viewsPaper}>
-        <Tooltip arrow title={`${t("timeline.horizontal")}`} placement="right">
-          <IconButton className={classes.buttons} onClick={handleHorizontal}>
-            <BorderHorizontalIcon
-              className={classNames(
-                classes.buttons,
-                classes.biggerIcon,
-                view === "horizontal" ? classes.activeButton : ""
-              )}
-            />
-          </IconButton>
-        </Tooltip>
-        <Tooltip arrow title={`${t("timeline.vertical")}`} placement="right">
-          <IconButton className={classes.buttons} onClick={handleVertical}>
-            <BorderVerticalIcon
-              className={classNames(
-                classes.buttons,
-                classes.biggerIcon,
-                view === "vertical" ? classes.activeButton : ""
-              )}
-            />
-          </IconButton>
-        </Tooltip>
-        {/* <Tooltip arrow title={`${t("timeline.table")}`} placement="right">
+    <Paper elevation={4} className={classes.viewsPaper}>
+      <Tooltip arrow title={`${t("timeline.horizontal")}`} placement="right">
+        <IconButton className={classes.buttons} onClick={handleHorizontal}>
+          <BorderHorizontalIcon
+            className={classNames(
+              classes.buttons,
+              classes.biggerIcon,
+              view === "horizontal" ? classes.activeButton : ""
+            )}
+          />
+        </IconButton>
+      </Tooltip>
+      <Tooltip arrow title={`${t("timeline.vertical")}`} placement="right">
+        <IconButton className={classes.buttons} onClick={handleVertical}>
+          <BorderVerticalIcon
+            className={classNames(
+              classes.buttons,
+              classes.biggerIcon,
+              view === "vertical" ? classes.activeButton : ""
+            )}
+          />
+        </IconButton>
+      </Tooltip>
+      {/* <Tooltip arrow title={`${t("timeline.table")}`} placement="right">
           <IconButton className={classes.buttons} onClick={handleTable}>
             <TocIcon
               className={classNames(
@@ -135,4 +134,4 @@ function Items(props: Props) {
   );
 }
 
-export default Items;
+export default Views;
