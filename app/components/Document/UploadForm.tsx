@@ -12,6 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 interface Props {
   file: any;
   handleFileChange: (files: any) => void;
+
 }
 
 const UploadForm = (props: Props) => {

@@ -5,12 +5,12 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { Chip, IconButton } from "@material-ui/core";
+import { Avatar, Chip, IconButton } from "@material-ui/core";
 import { PersonCleanOption } from "@customTypes/reducers/person";
-import Avatar from "react-nice-avatar";
 import EditIcon from "@material-ui/icons/Edit";
+import { stringToColor, stringAvatar } from "@pages/Timelines/constants";
 
-export const columns = t => [
+export const columns = (t) => [
   {
     name: t("columns.title"),
     options: {
@@ -31,15 +31,15 @@ export const columns = t => [
       filterOptions: {
         logic: (tags, filters) => {
           const mappedTags = tags.map(
-            tag => `${tag.tag.emoji ? tag.tag.emoji : ""} ${tag.tag.name}`
+            (tag) => `${tag.tag.emoji ? tag.tag.emoji : ""} ${tag.tag.name}`
           );
-          return !filters.every(tag => mappedTags.includes(tag));
+          return !filters.every((tag) => mappedTags.includes(tag));
         }
       },
       sort: false,
-      customBodyRender: tags =>
+      customBodyRender: (tags) =>
         Array.isArray(tags) &&
-        tags.map(tag => (
+        tags.map((tag) => (
           <Chip
             key={tag.id}
             style={{ margin: 2 }}
@@ -59,7 +59,7 @@ export const columns = t => [
     name: t("columns.see_person"),
     options: {
       filter: true,
-      customBodyRender: value => (
+      customBodyRender: (value) => (
         <Link to={`/app/persons/${value}`} style={{ textDecoration: "none" }}>
           <Button variant="contained" color="secondary">
             {t("columns.btn_open")}
@@ -83,7 +83,7 @@ export const personMapping = (
   handleMouseOver?: (e) => void,
   handleMouseLeave?: (e) => void
 ) => ({
-  value: person.name || person.value,
+  value: person.name || person.email || person.value,
   ...("__isNew__" in person && { __isNew__: person.__isNew__ }),
   label: (
     <div
@@ -103,13 +103,18 @@ export const personMapping = (
       data-icon={person.icon || null}
       onClick={onClick}
     >
-      {person.icon && (
-        // @ts-ignore
-        <Avatar
-          style={{ width: 15, height: 15, marginRight: 5 }}
-          {...JSON.parse(person.icon)}
-        />
-      )}
+      <Avatar
+        style={{
+          width: 15,
+          height: 15,
+          backgroundColor: stringToColor(
+            person.name || person.email || person.value
+          ),
+          fontSize: 8,
+          marginRight: 5
+        }}
+        {...stringAvatar(person.name || person.value, person.email)}
+      />
 
       <span style={{ paddingRight: "5px" }}>{person.name || person.label}</span>
       {value && (
@@ -147,7 +152,7 @@ export const hanldeOnPersonChange = (newValue, meta, changePerson, persons) => {
     case "deselect-option":
       if (meta.removedValue.__isNew__) {
         changePerson(
-          persons.filter(t => {
+          persons.filter((t) => {
             if ("__isNew__" in t) {
               return t.value !== meta.removedValue.value;
             }
@@ -156,7 +161,7 @@ export const hanldeOnPersonChange = (newValue, meta, changePerson, persons) => {
         );
       } else {
         changePerson(
-          persons.filter(t => {
+          persons.filter((t) => {
             if ("icon" in t) {
               return t.id !== meta.removedValue.label.props["data-id"];
             }

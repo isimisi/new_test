@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
-import themePalette from "@api/palette/themePalette";
 import { MyTheme } from "../../types/styling";
+import themePalette from "@api/palette/themePalette";
 
 const useStyles = makeStyles((theme: MyTheme) => ({
   horizontalNodeOffTimeLine: {
@@ -20,6 +20,15 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     marginTop: 10,
     marginBottom: 10,
   },
+  countContainer: {
+    padding: 2,
+    paddingRight: 8,
+    paddingLeft: 8,
+    backgroundColor: theme.palette.background.default,
+  },
+  tagCount: {
+    color: themePalette.info,
+  },
   popover: {
     position: "fixed",
     bottom: 30,
@@ -32,6 +41,13 @@ const useStyles = makeStyles((theme: MyTheme) => ({
     right: "0px",
     bottom: "0px",
     left: "0px",
+  },
+  row: {
+    display: "flex",
+  },
+  fat: {
+    fontWeight: "bold",
+    minWidth: "150px",
   },
   attributSaveButtonContainer: {
     width: "100%",

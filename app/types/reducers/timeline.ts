@@ -93,7 +93,10 @@ export interface TimelineState {
   message: string;
   nodes: List<TCustomNode>;
   edges: List<Edge>;
-  elementsTagOptions: List<any>;
+  timelinePersons: List<any>;
+  timelineDocuments: List<any>;
+  timelineTags: List<any>;
+  filters: List<string>;
   emailsToValidate: List<IEmailsFromImport>;
   handleVisability: boolean;
   createElementOpen: boolean;
@@ -106,6 +109,8 @@ export interface TimelineState {
   loadings: ILoadings;
   personOpen: boolean;
   documentOpen: boolean;
+  tagOpen: boolean;
+  tag: string | null;
   timelineNode: ITimelineNode;
   isUpdatingNode: boolean;
   emailOpen: boolean;

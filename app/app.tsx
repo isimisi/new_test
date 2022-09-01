@@ -22,7 +22,6 @@ import BugsnagPluginReact from "@bugsnag/plugin-react";
 import "!file-loader?name=[name].[ext]!../public/favicons/favicon.ico"; // eslint-disable-line
 import "file-loader?name=.htaccess!./.htaccess"; // eslint-disable-line
 
-import LogRocket from "logrocket";
 import { isMobile } from "react-device-detect";
 import App from "./containers/App";
 import history from "./utils/history";
@@ -33,7 +32,6 @@ import ErrorView from "@components/Error/CrashScreen";
 
 // bugsnag
 if (process.env.NODE_ENV === "production") {
-  LogRocket.init("pm66tw/juristic-web-app");
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()],

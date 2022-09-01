@@ -208,7 +208,12 @@ function ValidateEmails(props: Props) {
               el.parentNode?.insertBefore(splitElContainer, el);
             }
           },
-          elementFilter
+          elementFilter: (el) => {
+            const currEmail = document.getElementById(
+              "elementPickerContainer"
+            )?.outerHTML;
+            return elementFilter(el, currEmail);
+          }
         });
       }
     }
@@ -247,7 +252,6 @@ function ValidateEmails(props: Props) {
   );
 
   useEffect(() => {
-    console.log(emailsToValidate.get(activeStep).get("html"));
     const initSplittings = emailsToValidate
       .get(activeStep)
       .get("html")

@@ -4,13 +4,17 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 import { authHeader, baseUrl, getId } from "@api/constants";
+
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import Notification from "@components/Notification/Notification";
 import { reducer } from "./constants";
 import { useAuth0, User } from "@auth0/auth0-react";
 import useStyles from "./timeline-jss";
 import axios from "axios";
-
+import NodesTableModal from "@components/Timeline/Modals/NodesTable";
+import Persons from "@components/Timeline/Modals/Persons";
+import Documents from "@components/Timeline/Modals/Documents";
+import Tags from "@components/Timeline/Modals/Tags";
 import ShareModal from "@components/Flow/Share/ShareModal";
 import {
   addGroup,
@@ -36,7 +40,8 @@ import {
   setIsUpdating,
   goThroughSplitChange,
   clearSplitting,
-  validateEmailsClose
+  validateEmailsClose,
+  closeTag
 } from "./reducers/timelineActions";
 import ReactFlow, { ReactFlowInstance } from "react-flow-renderer";
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
@@ -93,7 +98,7 @@ import getDrawerWidth from "@hooks/timeline/drawerWidth";
 import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
-// import Pdf from "@components/Timeline/Export/Pdf";
+import Tag from "@components/Timeline/Modals/Tag";
 
 const nodeTypes = {
   horizontal: HorizontalNode,
@@ -177,6 +182,7 @@ function Timeline() {
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
   const handleDocumentClose = () =>
     dispatch(timelineElementDocumentChange(false));
+  const handleTagClose = () => dispatch(closeTag);
 
   const handleDocumentOpen = (_id: string, title?: string) => {
     dispatch(changeDocument("", "initial"));
@@ -270,6 +276,7 @@ function Timeline() {
   const documentModalOpen = useAppSelector((state) =>
     state[reducer].get("documentOpen")
   );
+  const tagModalOpen = useAppSelector((state) => state[reducer].get("tagOpen"));
   const emailModalOpen = useAppSelector((state) =>
     state[reducer].get("emailOpen")
   );
@@ -301,6 +308,7 @@ function Timeline() {
   const splitElements = useAppSelector((state) =>
     state[reducer].get("splitElements")
   );
+  const tag = useAppSelector((state) => state[reducer].get("tag"));
 
   const handleVisabilityChange = () =>
     dispatch(changeHandleVisability(!handleVisability));
@@ -423,7 +431,8 @@ function Timeline() {
           customSplit,
           elementPersons,
           elementDocuments,
-          closeFunc
+          closeFunc,
+          view
         )
       );
     }
@@ -467,8 +476,10 @@ function Timeline() {
     if (document.file) {
       const url = `${baseUrl}/timelinedocuments/savefile`;
       const header = authHeader(user);
+      const blob = new Blob([document.file.Body.data]);
+
       const body = new FormData();
-      body.append("file_content", document.file);
+      body.append("file_content", blob);
       try {
         const response = await axios.post(url, body, header);
         document.link = response.data.link;
@@ -510,34 +521,26 @@ function Timeline() {
     dispatch(importEmails(user, id, files, handleCloseImportEmails));
   };
 
-  // const [panToNextIndex, setPanToNextIndex] = useState<number | null>(null);
+  const [panToNextIndex, setPanToNextIndex] = useState<number | null>(null);
 
-  // const handleTransform = useCallback(
-  //   (transform) => {
-  //     if (rfInstance) {
-  //       const {
-  //         position: [x, y],
-  //         zoom,
-  //       } = rfInstance.toObject();
-  //       if (panToNextIndex !== null) {
-  //         // @ts-ignore
-  //         setPanToNextIndex((prevVal) => prevVal + 1);
-  //       } else {
-  //         setPanToNextIndex(0);
-  //       }
-  //       rfInstance.setTransform(transform);
-  //       // animate({
-  //       //   from: { x, y, zoom },
-  //       //   to: transform,
-  //       //   onUpdate: ({ _x, _y, _zoom }) => {
-  //       //     console.log('ashbo');
-  //       //     rfInstance.setTransform({ x: _x, y: _y, zoom: _zoom });
-  //       //   },
-  //       // });
-  //     }
-  //   },
-  //   [rfInstance, panToNextIndex]
-  // );
+  const handleTransform = useCallback(
+    (trans, direction: "front" | "back") => {
+      if (rfInstance) {
+        if (typeof panToNextIndex === "number") {
+          if (direction === "front") {
+            setPanToNextIndex((prevVal) => (prevVal as number) + 1);
+          } else {
+            setPanToNextIndex((prevVal) => (prevVal as number) - 1);
+          }
+        } else {
+          setPanToNextIndex(0);
+        }
+
+        rfInstance.setTransform(trans);
+      }
+    },
+    [rfInstance, panToNextIndex]
+  );
 
   const [cursor, setCursor] = useState("auto");
   const handleCursor = (_type) => setCursor(_type);
@@ -582,6 +585,22 @@ function Timeline() {
   //   stopLoading();
   // };
 
+  const [nodesTableOpen, setNodesTableOpen] = useState(false);
+  const handleOpenNodeTable = () => setNodesTableOpen(true);
+  const handleCLoseNodeTable = () => setNodesTableOpen(false);
+
+  const [peopleOpen, setPeopleOpen] = useState(false);
+  const closePeople = () => setPeopleOpen(false);
+  const openPeople = () => setPeopleOpen(true);
+
+  const [documentsOpen, setDocumentsOpen] = useState(false);
+  const closeDocuments = () => setDocumentsOpen(false);
+  const openDocuments = () => setDocumentsOpen(true);
+
+  const [tagsOpen, setTagsOpen] = useState(false);
+  const closeTags = () => setTagsOpen(false);
+  const openTags = () => setTagsOpen(true);
+
   return (
     <div style={{ display: "flex", cursor }}>
       <Notification
@@ -589,9 +608,13 @@ function Timeline() {
         message={messageNotif}
       />
       <div
-        className={classnames(classes.root, {
-          [classes.contentShift]: openDrawer
-        })}
+        className={classnames(
+          classes.root,
+          {
+            [classes.contentShift]: openDrawer
+          },
+          "transition"
+        )}
         ref={reactFlowContainer}
       >
         <ReactFlow
@@ -635,8 +658,10 @@ function Timeline() {
               nodes={nodes}
             />
             <Controls
-              // handleTransform={handleTransform}
-              // panToNextIndex={panToNextIndex}
+              handleTransform={
+                view === "horizontal" ? handleTransform : undefined
+              }
+              panToNextIndex={panToNextIndex}
               currentZoom={currentZoom}
               reactFlowInstance={rfInstance}
             />
@@ -723,11 +748,23 @@ function Timeline() {
         />
       )}
 
+      {nodesTableOpen && (
+        <NodesTableModal open={nodesTableOpen} close={handleCLoseNodeTable} />
+      )}
+      {peopleOpen && (
+        <Persons open={peopleOpen} close={closePeople} user={user} />
+      )}
+      {documentsOpen && (
+        <Documents open={documentsOpen} close={closeDocuments} user={user} />
+      )}
+      {tagsOpen && <Tags open={tagsOpen} close={closeTags} user={user} />}
+
       {personModalOpen && (
         <Person
           open={personModalOpen}
           close={handlePersonClose}
           onSave={onSavePerson}
+          user={user}
         />
       )}
       {documentModalOpen && (
@@ -736,6 +773,9 @@ function Timeline() {
           close={handleDocumentClose}
           onSave={onSaveDocument}
         />
+      )}
+      {tagModalOpen && (
+        <Tag open={tagModalOpen} close={handleTagClose} tag={tag as string} />
       )}
       {emailModalOpen && (
         <Email

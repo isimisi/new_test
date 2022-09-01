@@ -81,6 +81,10 @@ export const ADD_EMAIL_SPLIT = "ADD_EMAIL_SPLIT";
 export const REMOVE_EMAIL_SPLIT = "REMOVE_EMAIL_SPLIT";
 export const CLEAR_SPLITTING = "CLEAR_SPLITTING";
 export const VALIDATE_EMAILS_CLOSE = "VALIDATE_EMAILS_CLOSE";
+export const OPEN_TAG = "OPEN_TAG";
+export const CLOSE_TAG = "CLOSE_TAG";
+export const FILTER_TIMELINE = "FILTER_TIMELINE";
+export const CLEAR_FILTER = "CLEAR_FILTER";
 
 type FailedTypes =
   | typeof GET_TIMELINES_FAILED
@@ -258,6 +262,15 @@ export interface AddEmailSplit {
   splitElement: string;
 }
 
+export interface OpenTag {
+  type: typeof OPEN_TAG;
+  tag: string;
+}
+
+export interface CloseTag {
+  type: typeof CLOSE_TAG;
+}
+
 export interface RemoveEmailSplit {
   type: typeof REMOVE_EMAIL_SPLIT;
   splitElement: string;
@@ -275,6 +288,15 @@ export interface CustomSplitSuccess {
   type: typeof CUSTOM_SPLIT_SUCCESS;
   nodes: TCustomNode[];
   edges: Edge[];
+}
+
+export interface FilterTimeline {
+  type: typeof FILTER_TIMELINE;
+  filter: string;
+}
+
+export interface ClearFilter {
+  type: typeof CLEAR_FILTER;
 }
 
 export interface DownloadDocumentSuccess {
@@ -315,4 +337,8 @@ export type TimelineActions =
   | RemoveEmailSplit
   | GoThroughSplitChange
   | ValidateEmailsClose
+  | OpenTag
+  | CloseTag
+  | ClearFilter
+  | FilterTimeline
   | ClearSplitting;

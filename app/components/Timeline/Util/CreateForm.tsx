@@ -42,6 +42,7 @@ import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import { hanldeOnDocumentChange } from "@pages/Documents/constants";
 import { hanldeOnPersonChange, personMapping } from "@pages/Persons/constants";
 import ReactDOM from "react-dom";
+
 import moment from "moment";
 
 interface Props {
@@ -81,7 +82,7 @@ function CreateForm(props: Props) {
   const classes = useStyles();
 
   const elementsTagOptions = useAppSelector((state) =>
-    state.timeline.get("elementsTagOptions")
+    state.timeline.get("timelineTags")
   ).toJS();
 
   const date = timelineNode.get("date");
@@ -93,7 +94,6 @@ function CreateForm(props: Props) {
   const persons = timelineNode.get("persons").toJS();
   const documents = timelineNode.get("documents").toJS();
   const tags = timelineNode.get("tags").toJS();
-
   const loadingsP = useAppSelector((state) => state.person.get("loadings"));
   const loadingsD = useAppSelector((state) => state.document.get("loadings"));
 
@@ -347,7 +347,7 @@ function CreateForm(props: Props) {
         <KeyboardDatePicker
           label={t("timeline.date")}
           placeholder={t("timeline.date")}
-          value={date}
+          value={moment.isMoment(date) && !date.isValid() ? null : date}
           variant="inline"
           autoOk
           className={classes.eventField}
@@ -361,7 +361,13 @@ function CreateForm(props: Props) {
         <KeyboardTimePicker
           label={t("timeline.time")}
           placeholder={t("timeline.time")}
-          value={downHaveTime ? null : time}
+          value={
+            downHaveTime
+              ? null
+              : moment.isMoment(time) && !time.isValid()
+              ? null
+              : time
+          }
           autoOk
           invalidDateMessage={t("dates.time_invalid")}
           maxDateMessage={t("dates.max")}

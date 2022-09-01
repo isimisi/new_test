@@ -32,7 +32,7 @@ function Collaboration(props: Props) {
   const { t } = useTranslation();
   const { user } = useAuth0();
   const meta: UserMeta = user && user["https://juristic.io/meta"];
-  const { first_name, last_name } = meta?.dbUser || {
+  const { first_name, last_name, organization_id } = meta?.dbUser || {
     first_name: "",
     last_name: ""
   };
@@ -97,6 +97,7 @@ function Collaboration(props: Props) {
         color="primary"
         disabled={
           timeline ||
+          organization_id === 72 ||
           (setShareModalOpen === undefined &&
             setShowSignWorkspace === undefined)
         }

@@ -60,7 +60,7 @@ export const traverseParentsUntilUniqueSplit = (el, currEmail) => {
   return traverseParentsUntilUniqueSplit(el.parentElement, currEmail);
 };
 
-export const elementFilter = el => {
+export const elementFilter = (el, currEmail) => {
   let childOfHtmlDiv = false;
   for (let p = el && el.parentElement; p; p = p.parentElement) {
     if (p.id === "elementPickerContainer") {
@@ -68,5 +68,8 @@ export const elementFilter = el => {
     }
   }
 
-  return childOfHtmlDiv;
+  const splitTest = currEmail?.split(el.outerHTML);
+  const unique = splitTest?.length === 2;
+
+  return childOfHtmlDiv && unique;
 };

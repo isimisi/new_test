@@ -32,7 +32,8 @@ export default memo(({ data }: NodeProps) => {
         alignItems: "center",
         display: "flex",
         justifyContent: "center",
-        width: 150
+        width: 150,
+        opacity: data.isHidden ? 0.2 : 1
       }}
     >
       <Paper className={classes.horizontalNodeOnTimeLine}>

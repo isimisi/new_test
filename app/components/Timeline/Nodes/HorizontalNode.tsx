@@ -12,7 +12,6 @@ import React, { memo, useCallback, useState } from "react";
 import { Handle, NodeProps, Position } from "react-flow-renderer";
 import useStyles from "../timeline.jss";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Avatar from "react-nice-avatar";
 import MaterialAvatar from "@material-ui/core/Avatar";
 import DescriptionIcon from "@material-ui/icons/Description";
 import classnames from "classnames";
@@ -36,7 +35,9 @@ import {
   downloadDocument,
   openEmailChange,
   setTimelineNode,
-  timelineElementPersonChange
+  timelineElementDocumentChange,
+  timelineElementPersonChange,
+  openTag
 } from "@pages/Timelines/reducers/timelineActions";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@material-ui/icons/Edit";
@@ -44,6 +45,8 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 import Linkify from "react-linkify";
+import { stringToColor, stringAvatar } from "@pages/Timelines/constants";
+import { showDocument } from "@pages/Documents/reducers/documentActions";
 
 const moreDocsMapping = [
   Filter1Icon,
@@ -77,13 +80,9 @@ export default memo(({ data }: NodeProps) => {
     setShowEdit(false);
   }, []);
 
-  // const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  // const handleOpenDocument = id => {
-  //   dispatch(showDocument(user, id, openDocument));
-  // };
-
-  const download = (title: string, id: string) => {
-    dispatch(downloadDocument(user, title, id));
+  const openDocument = () => dispatch(timelineElementDocumentChange(true));
+  const handleOpenDocument = (id) => {
+    dispatch(showDocument(user, id, openDocument));
   };
 
   const openEmail = () => {
@@ -105,6 +104,8 @@ export default memo(({ data }: NodeProps) => {
     dispatch(showPerson(user, id, openPerson));
   };
 
+  const handleOpenTag = (tag) => dispatch(openTag(tag));
+
   const downHaveTime = moment(data.date).format("HH:mm") === "00:00";
 
   return (
@@ -113,7 +114,8 @@ export default memo(({ data }: NodeProps) => {
       style={{
         alignItems: "center",
         display: "flex",
-        justifyContent: "center"
+        justifyContent: "center",
+        opacity: data.isHidden ? 0.2 : 1
       }}
       onMouseOver={handelShowEdit}
       onFocus={handelShowEdit}
@@ -200,7 +202,7 @@ export default memo(({ data }: NodeProps) => {
                     return (
                       <Tooltip
                         arrow
-                        title={`${person.name} ${
+                        title={`${person.name ? person.name : person.email} ${
                           person.affiliation
                             ? "(" + person.affiliation + ")"
                             : ""
@@ -211,10 +213,16 @@ export default memo(({ data }: NodeProps) => {
                           style={{ cursor: "pointer", margin: "0 2px" }}
                           onClick={() => handleOpenPerson(person.id)}
                         >
-                          {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
-                          <Avatar
-                            style={{ width: 20, height: 20 }}
-                            {...JSON.parse(person.person_icon)}
+                          <MaterialAvatar
+                            style={{
+                              width: 20,
+                              height: 20,
+                              backgroundColor: stringToColor(
+                                person.name || person.email
+                              ),
+                              fontSize: 8
+                            }}
+                            {...stringAvatar(person.name, person.email)}
                           />
                         </div>
                       </Tooltip>
@@ -311,7 +319,7 @@ export default memo(({ data }: NodeProps) => {
                   <Tooltip arrow title={document.title} placement="top">
                     <IconButton
                       size="small"
-                      onClick={() => download(document.title, document.id)}
+                      onClick={() => handleOpenDocument(document.id)}
                     >
                       <DescriptionIcon />
                     </IconButton>
@@ -333,15 +341,17 @@ export default memo(({ data }: NodeProps) => {
         >
           {data.tags.map((tag) => (
             <Tooltip arrow title={tag.name} placement="top" key={tag.id}>
-              <div
-                style={{
-                  backgroundColor: tag.color,
-                  width: 12,
-                  height: 12,
-                  borderRadius: 6,
-                  margin: 1
-                }}
-              />
+              <ButtonBase onClick={() => handleOpenTag(tag.name)}>
+                <div
+                  style={{
+                    backgroundColor: tag.color,
+                    width: 12,
+                    height: 12,
+                    borderRadius: 6,
+                    margin: 1
+                  }}
+                />
+              </ButtonBase>
             </Tooltip>
           ))}
         </div>
@@ -356,8 +366,8 @@ export default memo(({ data }: NodeProps) => {
         >
           {moment(data.date).isValid()
             ? `${moment(data.date).format("DD/MM-YYYY")}${
-              downHaveTime ? "" : ", kl."
-            } ${downHaveTime ? "" : moment(data.date).format("HH:mm")}`
+                downHaveTime ? "" : ", kl."
+              } ${downHaveTime ? "" : moment(data.date).format("HH:mm")}`
             : t("node.no_date")}
         </Typography>
         <Handle

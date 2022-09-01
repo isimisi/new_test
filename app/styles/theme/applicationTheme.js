@@ -213,7 +213,11 @@ const applicationTheme = (color) => ({
         fontWeight: "lighter",
       },
     },
-
+    MuiListItemIcon: {
+      root: {
+        minWidth: 40,
+      },
+    },
     MuiInputAdornment: {
       root: {
         alignItems: "flex-end",

@@ -4,9 +4,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import {
-  DocumentCleanOption,
-} from "@customTypes/reducers/document";
+import { DocumentCleanOption } from "@customTypes/reducers/document";
 
 import { useAppDispatch } from "@hooks/redux";
 import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
@@ -17,6 +15,7 @@ import { useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import NoContent from "@components/NoContent";
 import Typography from "@material-ui/core/Typography";
+import { stringToColor, stringAvatar } from "@pages/Timelines/constants";
 
 import moment from "moment";
 import Email from "../Util/Email";
@@ -24,7 +23,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import Avatar from "react-nice-avatar";
 import IconButton from "@material-ui/core/IconButton";
 import DescriptionIcon from "@material-ui/icons/Description";
 import draftToHtml from "draftjs-to-html";
@@ -41,6 +39,7 @@ import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
 import { showDocument } from "@pages/Documents/reducers/documentActions";
 import CreateForm from "../Util/CreateForm";
+import Avatar from "@material-ui/core/Avatar";
 
 interface Props {
   onSave: () => void;
@@ -165,8 +164,8 @@ function Content(props: Props) {
                     <Typography className={classes.verticalDate}>
                       {moment(date).isValid()
                         ? `${moment(date).format("DD/MM-YYYY")}${
-                          downHaveTime ? "" : ", kl."
-                        } ${downHaveTime ? "" : moment(date).format("HH:mm")}`
+                            downHaveTime ? "" : ", kl."
+                          } ${downHaveTime ? "" : moment(date).format("HH:mm")}`
                         : t("node.no_date")}
                     </Typography>
                   </Paper>
@@ -198,8 +197,15 @@ function Content(props: Props) {
                             >
                               {/* @ts-ignore */}
                               <Avatar
-                                style={{ width: 30, height: 30 }}
-                                {...JSON.parse(person.icon)}
+                                style={{
+                                  width: 30,
+                                  height: 30,
+                                  backgroundColor: stringToColor(
+                                    person.name || person.email
+                                  ),
+                                  fontSize: 12
+                                }}
+                                {...stringAvatar(person.name, person.email)}
                               />
                             </div>
                           </Tooltip>
@@ -214,7 +220,8 @@ function Content(props: Props) {
                             <IconButton
                               size="small"
                               onClick={() =>
-                                handleOpenDocumentNonEdit(document.id)}
+                                handleOpenDocumentNonEdit(document.id)
+                              }
                             >
                               <DescriptionIcon style={{ fontSize: 25 }} />
                             </IconButton>

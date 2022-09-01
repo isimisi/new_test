@@ -31,6 +31,7 @@ interface Props {
     | "overline"
     | undefined;
   elevation?: number;
+  fontSize?: string;
 }
 
 const NoContent = ({
@@ -42,7 +43,8 @@ const NoContent = ({
   marginTop = 50,
   margin = 0,
   textVariant = "h5",
-  elevation = 1
+  elevation = 1,
+  fontSize = "1.5rem"
 }: Props) => (
   <Paper
     elevation={elevation}
@@ -60,7 +62,7 @@ const NoContent = ({
   >
     <Typography
       variant={textVariant}
-      style={{ textAlign: "center", marginBottom: noLottie ? 0 : 20 }}
+      style={{ textAlign: "center", marginBottom: noLottie ? 0 : 20, fontSize }}
     >
       {text}
     </Typography>

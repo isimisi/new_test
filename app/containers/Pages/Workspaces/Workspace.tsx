@@ -286,6 +286,7 @@ function Workspace(props) {
     onWorkspaceSave
   );
 
+<<<<<<< HEAD
   const {
     onNodeClick,
     defineNodeOpen,
@@ -383,6 +384,57 @@ function Workspace(props) {
     plan_id,
     t
   );
+=======
+    if (isUpdatingElement && elementToUpdate && !drag) {
+      dispatch(putNode(user, elementToUpdate.id, nodeId, _nodeLabel, nodeDisplayName, nodeFigur, JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor), JSON.stringify(nodeLabelColor), _attributes, JSON.stringify(deletedAttributes), closeNode));
+    } else if (drag) {
+      dispatch(postNode(
+        user,
+            id as string,
+            null, null,
+            "", null,
+            JSON.stringify({
+              r: 255, g: 255, b: 255, a: 1
+            }), JSON.stringify({
+              r: 0, g: 0, b: 0, a: 1
+            }),
+            JSON.stringify([initialAttribut].filter(a => a.label)), closeNode, handleAlerts,
+            x, y
+      ));
+    } else {
+      dispatch(postNode(
+        user,
+            id as string,
+            nodeId, _nodeLabel,
+            nodeDisplayName, nodeFigur,
+            JSON.stringify(nodeColor), JSON.stringify(nodeBorderColor),
+            _attributes, closeNode, handleAlerts,
+            x, y
+      ));
+    }
+  };
+  // be awere of
+  const edgePopperComponentRef = useRef<any>(null);
+
+  const handleNoLabelDoubleClick = (event: React.MouseEvent<Element, globalThis.MouseEvent>, edge: Edge) => {
+    event.persist();
+    setRelationshipLabel(edge.data.label);
+    setRelationshipValue(edge.data.value);
+    setRelationshipType(edge.type || 'custom');
+    setRelationshipColor(edge.data.color);
+    setShowArrow(edge.data.showArrow);
+    setAnimatedLine(edge.data.animated);
+    setShowlabel(edge.data.showLabel);
+    setLineThrough(edge.data.lineThrough);
+    const target = event.target as SVGElement;
+    handleShowEdgePopper();
+    setEdgePopperRef(target);
+
+    if (edgePopperComponentRef.current) {
+      edgePopperComponentRef.current.toggleLabelMenu(event);
+    }
+  };
+>>>>>>> eabb26652e0313295c1460bf31210c4a8e3318fd
 
   const {
     removeNodeTextTarget,

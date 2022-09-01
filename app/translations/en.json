@@ -389,7 +389,7 @@
     "editMeta": "Edit board settings",
     "settings": "Settings",
     "export": "Export",
-    "search": "Search (Soon)",
+    "search": "Search",
     "share": "Share",
     "you": "{{first_name}} {{last_name}} (you)",
     "collaborators_curser": "Show collaborator's cursor (soon)",
@@ -845,7 +845,17 @@
     "import_mails_with_error": "Some imported emails require your input ",
     "delete_email": "Delete email",
     "choose_emails_or_drag": "or drag them in",
-    "tags_placeholder": "Add tags"
+    "tags_placeholder": "Add tags",
+    "overview": "Overview",
+    "people": "People",
+    "documents": "Documents",
+    "tags": "Tags",
+    "elements": "Elements",
+    "exists_in": "{{name}} is Referenced in:",
+    "nodesTable": "Overview over events",
+    "search": "Search",
+    "noResults": "There were no results...",
+    "filter": "Filter timeline"
   },
   "lookup": {
     "search_placeholder": "Search for a company",
@@ -927,7 +937,7 @@
   "percent": "%",
   "numberformat": "en-GB",
   "person": {
-    "form_header": "Person data",
+    "form_header": "Information About Person",
     "name": "Name",
     "affiliation": "Affiliation",
     "company": "Company"
@@ -967,7 +977,20 @@
     "back": "Back",
     "createable_placeholder": "Type something and press enter...",
     "create_new": "Create {{input}}",
-    "no_options": "No options"
+    "no_options": "No options",
+    "see_all": "See all",
+    "date": "Date",
+    "label": "Event",
+    "description": "Description",
+    "event": "Event",
+    "tags": "Tags",
+    "search": "Search...",
+    "noTitle": "No Title",
+    "filter": "Filter",
+    "persons": "People",
+    "documents": "Documents",
+    "clear": "Clear",
+    "no_description": "There is no description"
   },
   "emails": {
     "header": "Email information",

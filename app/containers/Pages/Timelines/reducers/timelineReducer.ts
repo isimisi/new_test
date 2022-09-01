@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable no-plusplus */
 import {
   TimelineState,
@@ -6,11 +7,11 @@ import {
   ITimelineNode,
   TCustomNode,
 } from "@customTypes/reducers/timeline";
-import { isNode } from "react-flow-renderer";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
 import { EditorState, ContentState } from "draft-js";
 import htmlToDraft from "html-to-draftjs";
+
 import {
   SHOW_HANDLES_CHANGE,
   TimelineActions,
@@ -29,6 +30,8 @@ import {
   SHARE_ORG_CHANGE,
   PUT_TIMELINE_SUCCESS,
   PUT_TIMELINE_FAILED,
+  FILTER_TIMELINE,
+  CLEAR_FILTER,
   PUT_TIMELINE_LOADING,
   SHOW_TIMELINE_LOADING,
   SHOW_TIMELINE_FAILED,
@@ -66,25 +69,50 @@ import {
   DOWNLOAD_DOCUMENT_LOADING,
   DOWNLOAD_DOCUMENT_SUCCESS,
   DOWNLOAD_DOCUMENT_FAILED,
+  OPEN_TAG,
+  CLOSE_TAG,
 } from "./timelineConstants";
 import moment from "moment";
 
-const getInnerTagOptions = (elements) => {
-  const tagOptions: any[] = [];
-  const filteredElements = elements.filter((e) => isNode(e));
+const getInnerTagsDocumentsAndPeople = (mutableState: any, elements?: TCustomNode[]) => {
+  const persons: any = [];
+  const documents: any = [];
+  const tags: any = [];
 
-  for (let i = 0; i < filteredElements.length; i++) {
-    const element = filteredElements[i];
-    const _tags = element.data.tags;
-    if (_tags) {
-      for (let z = 0; z < _tags.length; z++) {
-        console.log(_tags);
-        const tag = _tags[z];
-        tagOptions.push(tag);
+  // eslint-disable-next-line no-param-reassign
+  elements = elements || (mutableState.get("nodes").toJS() as TCustomNode[]);
+
+  const nodes = elements.filter((element) => element.type !== "addItem");
+
+  for (let index = 0; index < nodes.length; index++) {
+    const node = nodes[index];
+    const { persons: _persons, documents: _documents, tags: _tags } = node.data;
+
+    for (let z = 0; z < _persons.length; z++) {
+      const person = _persons[z];
+      if (!persons.some((p) => p.id === person.id)) {
+        persons.push(person);
+      }
+    }
+
+    for (let z = 0; z < _documents.length; z++) {
+      const document = _documents[z];
+      if (!documents.some((p) => p.id === document.id)) {
+        documents.push(document);
+      }
+    }
+
+    for (let z = 0; z < _tags.length; z++) {
+      const tag = _tags[z];
+      if (!tags.some((p) => p.name === tag.name)) {
+        tags.push(tag);
       }
     }
   }
-  return tagOptions;
+
+  mutableState.set("timelinePersons", fromJS(persons));
+  mutableState.set("timelineDocuments", fromJS(documents));
+  mutableState.set("timelineTags", fromJS(tags));
 };
 
 const initialLoadings = Map({
@@ -111,7 +139,10 @@ const initialState: TimelineState = {
   timelines: List(),
   nodes: List(),
   edges: List(),
-  elementsTagOptions: List(),
+  timelinePersons: List(),
+  timelineDocuments: List(),
+  timelineTags: List(),
+  filters: List(),
   emailsToValidate: List(),
   message: "",
   handleVisability: true,
@@ -125,6 +156,8 @@ const initialState: TimelineState = {
   goThroughSplitOpen: false,
   personOpen: false,
   documentOpen: false,
+  tagOpen: false,
+  tag: null,
   timelineNode: Map(initialNode),
   isUpdatingNode: false,
   emailOpen: false,
@@ -166,12 +199,14 @@ export default function reducer(
 
         mutableState.set("nodes", fromJS(action.nodes));
         mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
       });
     case IMPORT_EMAILS_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "modal"], false);
         mutableState.set("nodes", fromJS(action.nodes));
         mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
         mutableState.set("emailsToValidate", fromJS(action.emails));
       });
     case PUT_TIMELINE_ELEMENT_SUCCESS:
@@ -186,12 +221,14 @@ export default function reducer(
         nodes[index] = newEl;
 
         mutableState.set("nodes", fromJS(nodes));
+        getInnerTagsDocumentsAndPeople(mutableState, nodes);
         mutableState.setIn(["loadings", "post"], false);
       });
     case DELETE_TIMELINE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.set("nodes", fromJS(action.nodes));
         mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
         mutableState.setIn(["loadings", "mouse"], false);
         mutableState.set("createElementOpen", false);
         mutableState.set("timelineNode", Map(initialNode));
@@ -247,6 +284,7 @@ export default function reducer(
 
         mutableState.set("nodes", fromJS(action.nodes));
         mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
       });
     case TITLE_CHANGE:
       return state.withMutations((mutableState) => {
@@ -301,6 +339,7 @@ export default function reducer(
       return state.withMutations((mutableState) => {
         mutableState.set("nodes", fromJS(action.nodes));
         mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
         mutableState.set("timelineNode", Map(initialNode));
         mutableState.setIn(["loadings", "post"], false);
       });
@@ -313,9 +352,6 @@ export default function reducer(
           const mutableNodes = mutableState.get("nodes") as List<TCustomNode>;
           const nodes = mutableNodes.toJS() as TCustomNode[];
           const element = nodes.find((el) => el.id === id) as TCustomNode;
-
-          const tagOptions = getInnerTagOptions(nodes);
-          mutableState.set("elementsTagOptions", fromJS(tagOptions));
 
           let editorState = EditorState.createEmpty();
           if (element.data?.content) {
@@ -340,7 +376,7 @@ export default function reducer(
               element.data?.persons.map((p) => ({
                 icon: p.person_icon,
                 id: p.id,
-                name: p.name,
+                name: p.name || p.email,
               }))
             ),
             documents: fromJS(
@@ -401,10 +437,79 @@ export default function reducer(
           myList.push(action.splitElement)
         );
       });
+    case OPEN_TAG:
+      return state.withMutations((mutableState) => {
+        mutableState.set("tagOpen", true);
+        mutableState.set("tag", action.tag);
+      });
+    case CLOSE_TAG:
+      return state.withMutations((mutableState) => {
+        mutableState.set("tagOpen", false);
+      });
     case REMOVE_EMAIL_SPLIT:
       return state.withMutations((mutableState) => {
         mutableState.update("splitElements", (myList: any) =>
           myList.filter((x: string) => action.splitElement !== x)
+        );
+      });
+    case FILTER_TIMELINE:
+      return state.withMutations((mutableState) => {
+        mutableState.update("filters", (myList: any) => {
+          if (myList.includes(action.filter)) {
+            return myList.filter((x) => x !== action.filter);
+          }
+          return myList.push(action.filter);
+        });
+
+        const filters = mutableState.get("filters") as List<string>;
+
+        mutableState.update("elements", (myList: any) =>
+          myList.map((el) => {
+            if (["addItem", "custom"].includes(el.get("type"))) {
+              return el;
+            }
+
+            const personCheck = el
+              .get("data")
+              .get("persons")
+              .map((p) => `p${p.get("id")}`);
+
+            const documentCheck = el
+              .get("data")
+              .get("documents")
+              .map((d) => `d${d.get("id")}`);
+
+            const tagCheck = el
+              .get("data")
+              .get("tags")
+              .map((t) => t.get("name"));
+
+            return el.setIn(
+              ["data", "isHidden"],
+              filters.size === 0
+                ? false
+                : !filters.every((f) =>
+                    [
+                      ...personCheck.toJS(),
+                      ...documentCheck.toJS(),
+                      ...tagCheck.toJS(),
+                    ].includes(f)
+                  )
+            );
+          })
+        );
+      });
+    case CLEAR_FILTER:
+      return state.withMutations((mutableState) => {
+        mutableState.set("filters", List());
+        mutableState.update("nodes", (myList: any) =>
+          myList.map((el) => {
+            if (["addItem", "custom"].includes(el.get("type"))) {
+              return el;
+            }
+
+            return el.setIn(["data", "isHidden"], false);
+          })
         );
       });
     case CLEAR_SPLITTING:
