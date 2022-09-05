@@ -35,16 +35,16 @@ import { useAuth0, User } from "@auth0/auth0-react";
 import { getPlanId } from "@helpers/userInfo";
 import { Tag } from "@customTypes/reducers/tags";
 
-const Workspaces = () => {
-  const classes = useStyles()
+function Workspaces() {
+  const classes = useStyles();
 
   const dispatch = useAppDispatch();
-  const workspaces = useAppSelector(state =>
+  const workspaces = useAppSelector((state) =>
     state[reducer].get("workspaces")
   ).toJS();
-  const messageNotif = useAppSelector(state => state[reducer].get("message"));
-  const loading = useAppSelector(state => state[reducer].get("loading"));
-  const tags = useAppSelector(state => state.tags.get("tags")).toJS();
+  const messageNotif = useAppSelector((state) => state[reducer].get("message"));
+  const loading = useAppSelector((state) => state[reducer].get("loading"));
+  const tags = useAppSelector((state) => state.tags.get("tags")).toJS();
   const history = useHistory();
   const { t } = useTranslation();
   const user = useAuth0().user as User;
@@ -60,11 +60,11 @@ const Workspaces = () => {
   }, [user]);
 
   const onDelete = ({ data }) => {
-    const deletedWorkspaces = data.map(v => ({
+    const deletedWorkspaces = data.map((v) => ({
       id: workspaces[v.dataIndex][4],
       title: workspaces[v.dataIndex][0]
     }));
-    deletedWorkspaces.forEach(e => {
+    deletedWorkspaces.forEach((e) => {
       const id = CryptoJS.AES.decrypt(
         decodeURIComponent(e.id),
         "path"
@@ -83,7 +83,7 @@ const Workspaces = () => {
     }
   };
 
-  const handleDeleteTag = id => {
+  const handleDeleteTag = (id) => {
     dispatch(deleteTag(user, id));
   };
 
@@ -100,16 +100,16 @@ const Workspaces = () => {
   };
 
   const activeTags = tags
-    .filter(tag => tag.active)
-    .map(tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}`);
+    .filter((tag) => tag.active)
+    .map((tag) => `${tag.emoji ? tag.emoji : ""} ${tag.name}`);
   col[2].options.filterList = activeTags;
 
   const handleFilterChanged = (changedColumn, filterList) => {
     if (changedColumn === "Tags") {
-      const deleted = activeTags.find(tag => !filterList[2].includes(tag));
+      const deleted = activeTags.find((tag) => !filterList[2].includes(tag));
       if (deleted) {
         const tagObj = tags.find(
-          tag => `${tag.emoji ? tag.emoji : ""} ${tag.name}` === deleted
+          (tag) => `${tag.emoji ? tag.emoji : ""} ${tag.name}` === deleted
         );
         handleMakeActiveTag(tagObj);
       }
@@ -117,8 +117,8 @@ const Workspaces = () => {
   };
 
   const handleShowAll = () => {
-    const actTags = tags.filter(tag => tag.active);
-    actTags.forEach(tag => {
+    const actTags = tags.filter((tag) => tag.active);
+    actTags.forEach((tag) => {
       dispatch(changeTagActivity(tag));
     });
   };
@@ -161,10 +161,6 @@ const Workspaces = () => {
       </Fab>
     </div>
   );
-};
-
-Workspaces.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+}
 
 export default Workspaces;

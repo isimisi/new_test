@@ -16,6 +16,7 @@ export const getElementCounts = (user: User) => async (dispatch) => {
     const elementCounts = response.data;
     dispatch({ type: types.GET_ELEMET_COUNTS_SUCCESS, elementCounts });
   } catch (error) {
+    console.log(error);
     const message = genericErrorMessage;
     dispatch({ type: types.GET_ELEMET_COUNTS_FAILED, message });
   }
@@ -44,23 +45,19 @@ export const noIntro = (user: User) => async () => {
   } catch (error) {}
 };
 
-export const postNotifications = (
-  user: User,
-  header: string,
-  body: string,
-  icon: string,
-  intrusive: boolean
-) => async (dispatch) => {
-  const url = `${baseUrl}/notifications`;
-  const _header = authHeader(user);
-  const _body = { header, body, icon, intrusive };
-  try {
-    await axios.post(url, _body, _header);
-  } catch (error) {
-    const message = genericErrorMessage;
-    dispatch({ type: types.POST_NOTIFICATIONS_FAILED, message });
-  }
-};
+export const postNotifications =
+  (user: User, header: string, body: string, icon: string, intrusive: boolean) =>
+  async (dispatch) => {
+    const url = `${baseUrl}/notifications`;
+    const _header = authHeader(user);
+    const _body = { header, body, icon, intrusive };
+    try {
+      await axios.post(url, _body, _header);
+    } catch (error) {
+      const message = genericErrorMessage;
+      dispatch({ type: types.POST_NOTIFICATIONS_FAILED, message });
+    }
+  };
 
 export const readNotification = (user: User, id: string) => async (dispatch) => {
   const url = `${baseUrl}/read/notifications`;
@@ -88,41 +85,42 @@ export const getTimeline = (user: User) => async (dispatch) => {
   }
 };
 
-export const postFeatureRequest = (
-  user: User,
-  wish: string,
-  setFeatureValue: React.Dispatch<React.SetStateAction<string>>
-) => async (dispatch) => {
-  const url = `${baseUrl}/${DASHBOARD}/featureRequest`;
-  const body = { wish };
-  const header = authHeader(user);
-  try {
-    await axios.post(url, body, header);
-    const message = "Vi har modtaget din forspørgsel";
-    dispatch({ type: types.POST_FEATURE_SUCCESS, message });
-    setFeatureValue("");
-  } catch (error) {
-    const message = genericErrorMessage;
-    dispatch({ type: types.POST_FEATURE_FAILED, message });
-  }
-};
+export const postFeatureRequest =
+  (
+    user: User,
+    wish: string,
+    setFeatureValue: React.Dispatch<React.SetStateAction<string>>
+  ) =>
+  async (dispatch) => {
+    const url = `${baseUrl}/${DASHBOARD}/featureRequest`;
+    const body = { wish };
+    const header = authHeader(user);
+    try {
+      await axios.post(url, body, header);
+      const message = "Vi har modtaget din forspørgsel";
+      dispatch({ type: types.POST_FEATURE_SUCCESS, message });
+      setFeatureValue("");
+    } catch (error) {
+      const message = genericErrorMessage;
+      dispatch({ type: types.POST_FEATURE_FAILED, message });
+    }
+  };
 
-export const helpMe = (user: User, name: string, email: string, mesg: string) => async (
-  dispatch
-) => {
-  const url = `${baseUrl}/helpMe`;
-  const body = { name, email, mesg };
-  const header = authHeader(user);
-  try {
-    await axios.post(url, body, header);
-    const message =
-      "Vi har sendt din mail til vores support og vender tilbage hurtigst muligt.";
-    dispatch({ type: types.POST_FEATURE_SUCCESS, message });
-  } catch (error) {
-    const message = genericErrorMessage;
-    dispatch({ type: types.POST_FEATURE_FAILED, message });
-  }
-};
+export const helpMe =
+  (user: User, name: string, email: string, mesg: string) => async (dispatch) => {
+    const url = `${baseUrl}/helpMe`;
+    const body = { name, email, mesg };
+    const header = authHeader(user);
+    try {
+      await axios.post(url, body, header);
+      const message =
+        "Vi har sendt din mail til vores support og vender tilbage hurtigst muligt.";
+      dispatch({ type: types.POST_FEATURE_SUCCESS, message });
+    } catch (error) {
+      const message = genericErrorMessage;
+      dispatch({ type: types.POST_FEATURE_FAILED, message });
+    }
+  };
 
 export const handleRunIntro = (run: boolean) => ({
   type: types.RUN_INTRO,

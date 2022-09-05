@@ -785,7 +785,7 @@ function Workspace(props) {
             <Loader bigFont />
           </div>
         )}
-        {signed && <Signing signedBy={signedBy} id={id} />}
+        {signed ? <Signing signedBy={signedBy} id={id} /> : null}
       </div>
 
       {metaOpen && (
