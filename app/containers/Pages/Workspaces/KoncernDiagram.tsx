@@ -26,7 +26,7 @@ import { getId } from "@api/constants";
 import Loader from "@components/Loading/LongLoader";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
-import styles from "../../../components/Workspace/workspace-jss";
+import useStyles from "../../../components/Workspace/workspace-jss";
 import {
   reducer,
   initErstTypes,
@@ -57,8 +57,8 @@ const nodeTypes = {
   custom: CustomNode
 };
 
-function Workspace(props) {
-  const { classes } = props;
+function Workspace() {
+  const classes = useStyles();
   const dispatch = useAppDispatch();
   const history = useHistory();
   const user = useAuth0().user as User;
@@ -360,8 +360,4 @@ function Workspace(props) {
   );
 }
 
-Workspace.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(Workspace);
+export default Workspace;
