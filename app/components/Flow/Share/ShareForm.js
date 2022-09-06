@@ -10,11 +10,10 @@ import Checkbox from "@material-ui/core/Checkbox";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import styles from "../../Workspace/workspace-jss";
+import useStyles from "../../Workspace/workspace-jss";
 
 function ShareForm(props) {
   const {
-    classes,
     close,
     firstName,
     onFirstNameChange,
@@ -29,6 +28,7 @@ function ShareForm(props) {
     onShare,
     clearInput,
   } = props;
+  const classes = useStyles();
   const [changeGroup, setChangeGroup] = useState(false);
   const onChangeGroup = () => setChangeGroup((prev) => !prev);
   const filled =
@@ -137,7 +137,6 @@ function ShareForm(props) {
 }
 
 ShareForm.propTypes = {
-  classes: PropTypes.object.isRequired,
   close: PropTypes.func.isRequired,
   firstName: PropTypes.string.isRequired,
   onFirstNameChange: PropTypes.func.isRequired,
@@ -153,4 +152,4 @@ ShareForm.propTypes = {
   clearInput: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(ShareForm);
+export default ShareForm;

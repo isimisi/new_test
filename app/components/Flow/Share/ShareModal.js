@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import FloatingPanel from "../../Panel/FloatingPanel";
 import ShareForm from "./ShareForm";
-import styles from "../../Workspace/workspace-jss";
 
 function ShareModal(props) {
   const { open, close, onShare, loading } = props;
@@ -77,4 +76,4 @@ ShareModal.propTypes = {
   loading: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(ShareModal);
+export default ShareModal;
