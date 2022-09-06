@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
+
 import React, { useEffect, useMemo, useState } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,12 @@ import FloatingPanel from "../../Panel/FloatingPanel";
 import useStyles from "../timeline.jss";
 import Button from "@material-ui/core/Button";
 
-import { elementFilter, ElementPicker, getSplitElement, traverseParentsUntilUniqueSplit } from "../Util/ElementPicker";
+import {
+  elementFilter,
+  ElementPicker,
+  getSplitElement,
+  traverseParentsUntilUniqueSplit
+} from "../Util/ElementPicker";
 import Tooltip from "@material-ui/core/Tooltip";
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 import {
@@ -16,8 +21,7 @@ import {
   addEmailSplit,
   clearSplitting,
   customSplitUpload,
-  removeEmailSplit,
-
+  removeEmailSplit
 } from "@pages/Timelines/reducers/timelineActions";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -30,7 +34,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import StepConnector from "@material-ui/core/StepConnector";
 import { StepIconProps } from "@material-ui/core/StepIcon";
 import classnames from "classnames";
-import CheckIcon from '@material-ui/icons/Check';
+import CheckIcon from "@material-ui/icons/Check";
 
 interface Props {
   open: boolean;
@@ -41,49 +45,48 @@ interface Props {
 const QontoConnector = withStyles({
   alternativeLabel: {
     top: 10,
-    left: 'calc(-50% + 16px)',
-    right: 'calc(50% + 16px)',
+    left: "calc(-50% + 16px)",
+    right: "calc(50% + 16px)"
   },
   active: {
-    '& $line': {
-      borderColor: '#73B1FF',
-    },
+    "& $line": {
+      borderColor: "#73B1FF"
+    }
   },
   completed: {
-    '& $line': {
-      borderColor: '#73B1FF',
-    },
+    "& $line": {
+      borderColor: "#73B1FF"
+    }
   },
   line: {
-    borderColor: '#E7F2FF',
+    borderColor: "#E7F2FF",
     borderTopWidth: 3,
-    borderRadius: 1,
-  },
+    borderRadius: 1
+  }
 })(StepConnector);
 
 const useQontoStepIconStyles = makeStyles({
   root: {
-    color: '#E7F2FF',
-    display: 'flex',
+    color: "#E7F2FF",
+    display: "flex",
     height: 22,
-    alignItems: 'center',
+    alignItems: "center"
   },
   active: {
-    color: '#73B1FF',
+    color: "#73B1FF"
   },
   circle: {
     width: 8,
     height: 8,
-    borderRadius: '50%',
-    backgroundColor: 'currentColor',
+    borderRadius: "50%",
+    backgroundColor: "currentColor"
   },
   completed: {
-    color: '#73B1FF',
+    color: "#73B1FF",
     zIndex: 1,
-    fontSize: 18,
-  },
+    fontSize: 18
+  }
 });
-
 
 function QontoStepIcon(props: StepIconProps) {
   const classes = useQontoStepIconStyles();
@@ -92,10 +95,14 @@ function QontoStepIcon(props: StepIconProps) {
   return (
     <div
       className={classnames(classes.root, {
-        [classes.active]: active,
+        [classes.active]: active
       })}
     >
-      {completed ? <CheckIcon className={classes.completed} /> : <div className={classes.circle} />}
+      {completed ? (
+        <CheckIcon className={classes.completed} />
+      ) : (
+        <div className={classes.circle} />
+      )}
     </div>
   );
 }
@@ -107,28 +114,28 @@ const seperators = [
   /(?=<div.*border-right:none.*border-top:1pt solid.*>)/m, // gmail div seperator
   /-{1,10}\sOriginal meddelelse\s-{1,10}/m, // common seperator phrases
   /(?=<div>\s<div.*border-top:\ssolid\s#B5C4DF\s?.*>)/m, // i dont know where
-  /-{1,10}\sVideresendt meddelelse\s-{1,10}/m, // common seperator phrases
+  /-{1,10}\sVideresendt meddelelse\s-{1,10}/m // common seperator phrases
 ]
   .map((regex) => new RegExp(regex).source)
   .join("|");
 
 const regExForBody = new RegExp(seperators, "gm");
 
-const ValidateEmails = (props: Props) => {
+function ValidateEmails(props: Props) {
   const { open, close, timeline_id } = props;
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const emailsToValidate = useAppSelector(state =>
+  const emailsToValidate = useAppSelector((state) =>
     state.timeline.get("emailsToValidate")
   );
-  const splitElements = useAppSelector(state => state.timeline.get("splitElements"));
-  const loadingsT = useAppSelector(state => state.timeline.get("loadings"));
-
+  const splitElements = useAppSelector((state) =>
+    state.timeline.get("splitElements")
+  );
+  const loadingsT = useAppSelector((state) => state.timeline.get("loadings"));
 
   const [workingEmailToValidate, setWorkingEmailToValidate] = useState("");
-
 
   const [picker, setPicker] = useState<ElementPicker | null>(null);
 
@@ -152,15 +159,14 @@ const ValidateEmails = (props: Props) => {
     close();
   };
 
-
   const split = () => {
     if (picker) {
-      setSplitting(prevVal => !prevVal);
+      setSplitting((prevVal) => !prevVal);
       if (splitting) {
         picker.stop();
       } else {
         picker.start({
-          onClick: el => {
+          onClick: (el) => {
             const splitElContainer = getSplitElement(t("emails.split_text"));
 
             if (el.className.includes("splitting_element")) {
@@ -168,18 +174,34 @@ const ValidateEmails = (props: Props) => {
                 dispatch(removeEmailSplit(el.nextElementSibling?.outerHTML));
                 el.remove();
               } else if (el.className === "splitting_element_innerDiv") {
-                dispatch(removeEmailSplit(el.parentElement?.nextElementSibling?.outerHTML));
+                dispatch(
+                  removeEmailSplit(
+                    el.parentElement?.nextElementSibling?.outerHTML
+                  )
+                );
                 el.parentElement?.remove();
               } else {
-                dispatch(removeEmailSplit(el.parentElement?.parentElement?.nextElementSibling?.outerHTML));
+                dispatch(
+                  removeEmailSplit(
+                    el.parentElement?.parentElement?.nextElementSibling
+                      ?.outerHTML
+                  )
+                );
                 el.parentElement?.parentElement?.remove();
               }
             } else {
-              const currEmail = document.getElementById("elementPickerContainer");
-              Array.from(document.querySelectorAll('.auto_splitting_element')).map(x => x.remove);
+              const currEmail = document.getElementById(
+                "elementPickerContainer"
+              );
+              Array.from(
+                document.querySelectorAll(".auto_splitting_element")
+              ).map((x) => x.remove);
               dispatch(addCurrSplittingEmail(currEmail?.outerHTML));
 
-              const getSplitVal = traverseParentsUntilUniqueSplit(el, currEmail?.outerHTML);
+              const getSplitVal = traverseParentsUntilUniqueSplit(
+                el,
+                currEmail?.outerHTML
+              );
 
               dispatch(addEmailSplit(getSplitVal));
 
@@ -187,7 +209,9 @@ const ValidateEmails = (props: Props) => {
             }
           },
           elementFilter: (el) => {
-            const currEmail = document.getElementById("elementPickerContainer")?.outerHTML;
+            const currEmail = document.getElementById(
+              "elementPickerContainer"
+            )?.outerHTML;
             return elementFilter(el, currEmail);
           }
         });
@@ -201,34 +225,40 @@ const ValidateEmails = (props: Props) => {
     if (activeStep === emailsToValidate.size - 1) {
       handleClose();
     } else {
-      setActiveStep(prevActiveStep => prevActiveStep + 1);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
 
   const user = useAuth0().user as User;
 
-
   const handleSaveAndNext = () => {
     if (splitElements.size === 0) {
       handleNext();
     } else {
-      const mails = splitElements.map(el => ({
-        timeline_node_refference_id: emailsToValidate.get(activeStep).get("refference"),
+      const mails = splitElements.map((el) => ({
+        timeline_node_refference_id: emailsToValidate
+          .get(activeStep)
+          .get("refference"),
         customSplit: el
       }));
-
 
       dispatch(customSplitUpload(user, timeline_id, mails, handleNext));
     }
   };
 
-  const splitElement = useMemo(() => getSplitElement(t("emails.split_text"), "#73B1FF", true).outerHTML, []);
+  const splitElement = useMemo(
+    () => getSplitElement(t("emails.split_text"), "#73B1FF", true).outerHTML,
+    []
+  );
 
   useEffect(() => {
-    const initSplittings = emailsToValidate.get(activeStep).get("html").split(regExForBody).join(splitElement);
+    const initSplittings = emailsToValidate
+      .get(activeStep)
+      .get("html")
+      .split(regExForBody)
+      .join(splitElement);
     setWorkingEmailToValidate(initSplittings);
   }, [activeStep]);
-
 
   return (
     <div>
@@ -247,24 +277,35 @@ const ValidateEmails = (props: Props) => {
             </Typography>
           </Paper>
         </div>
-        {emailsToValidate.size > 1 && <Stepper activeStep={activeStep} alternativeLabel connector={<QontoConnector />}>
-          {emailsToValidate.map((label, index) => (
-            <Step key={label?.get("refference")}>
-              <StepLabel StepIconComponent={QontoStepIcon}>
-                {`${t("generic.email")} - ${
-                  index !== undefined ? index + 1 : ""
-                }`}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>}
+        {emailsToValidate.size > 1 && (
+          <Stepper
+            activeStep={activeStep}
+            alternativeLabel
+            /* @ts-ignore - No implicit children can be removed when material ui is upgraded */
+            connector={<QontoConnector />}
+          >
+            {/* @ts-ignore */}
+            {emailsToValidate.map((label, index) => (
+              <Step key={label?.get("refference")}>
+                <StepLabel StepIconComponent={QontoStepIcon}>
+                  {`${t("generic.email")} - ${
+                    index !== undefined ? index + 1 : ""
+                  }`}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        )}
         <div
           className={classes.createElementContainer}
-          style={{ maxHeight: "50vh", cursor: splitting ? "crosshair" : "auto" }}
+          style={{
+            maxHeight: "50vh",
+            cursor: splitting ? "crosshair" : "auto"
+          }}
         >
-
           <div
             id="elementPickerContainer"
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: workingEmailToValidate }}
             className={classes.emailContent}
           />
@@ -272,11 +313,7 @@ const ValidateEmails = (props: Props) => {
 
         <div
           className={css.buttonArea}
-          style={
-
-            { justifyContent: "space-between", display: "flex" }
-
-          }
+          style={{ justifyContent: "space-between", display: "flex" }}
         >
           <Button type="button" onClick={handleClose}>
             {t("generic.close")}
@@ -291,18 +328,17 @@ const ValidateEmails = (props: Props) => {
             <Button type="button" onClick={handleSaveAndNext}>
               {loadingsT.get("post") ? (
                 <CircularProgress />
+              ) : activeStep === emailsToValidate.size - 1 ? (
+                t("generic.save")
               ) : (
-                activeStep === emailsToValidate.size - 1 ? t("generic.save") : t("generic.save_and_next")
+                t("generic.save_and_next")
               )}
-
             </Button>
           </div>
-
-
         </div>
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default ValidateEmails;

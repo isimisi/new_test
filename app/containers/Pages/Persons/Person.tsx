@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import React, { useEffect } from "react";
 import Notification from "@components/Notification/Notification";
 import Fab from "@material-ui/core/Fab";
@@ -28,11 +27,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import PersonForm from "@components/Person/PersonForm";
 import Typography from "@material-ui/core/Typography";
 
-const Person = () => {
+function Person() {
   const dispatch = useAppDispatch();
-  const messageNotif = useAppSelector(state => state[reducer].get("message"));
-  const person = useAppSelector(state => state[reducer].get("person"));
-  const loadings = useAppSelector(state => state[reducer].get("loadings"));
+  const messageNotif = useAppSelector((state) => state[reducer].get("message"));
+  const person = useAppSelector((state) => state[reducer].get("person"));
+  const loadings = useAppSelector((state) => state[reducer].get("loadings"));
 
   const history = useHistory();
   const id = getId(history) as string;
@@ -107,6 +106,6 @@ const Person = () => {
       </Fab>
     </>
   );
-};
+}
 
 export default Person;

@@ -13,30 +13,33 @@ import HelpIcon from "@material-ui/icons/Help";
 import Button from "@material-ui/core/Button";
 import useStyles from "./actions.jss";
 import Expand from "react-expand-animated";
-import { isNode, MiniMap, OnLoadParams, Node } from "react-flow-renderer";
+import { MiniMap, ReactFlowInstance } from "react-flow-renderer";
 import { useTheme } from "@material-ui/core/styles";
 import { closeFullScreen, openFullScreen } from "@helpers/fullScreen";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import useWindowDimensions from "@hooks/useWindowDiemensions";
 import { timelineNodeDimensions } from "@pages/Timelines/constants";
 
 interface Props {
   currentZoom: number;
-  reactFlowInstance: OnLoadParams | null;
-  handleTransform?: (transform: { x: number, y: number, zoom: number }, direction: "front" | "back") => void;
+  reactFlowInstance: ReactFlowInstance | null;
+  handleTransform?: (
+    transform: { x: number; y: number; zoom: number },
+    direction: "front" | "back"
+  ) => void;
   panToNextIndex?: number | null;
 }
 
-
-const Controls = (props: Props) => {
-  const { currentZoom, reactFlowInstance, handleTransform, panToNextIndex } = props;
+function Controls(props: Props) {
+  const { currentZoom, reactFlowInstance, handleTransform, panToNextIndex } =
+    props;
   const classes = useStyles();
   const theme = useTheme();
   const { t } = useTranslation();
 
   const [showMiniMap, setShowMiniMap] = React.useState(true);
-  const handleToggleMiniMap = () => setShowMiniMap(prevVal => !prevVal);
+  const handleToggleMiniMap = () => setShowMiniMap((prevVal) => !prevVal);
 
   const [fullScreen, setFullScreen] = React.useState(false);
   const handleToggleFullScreen = () => {
@@ -52,16 +55,19 @@ const Controls = (props: Props) => {
   const handleCloseFitTooltip = () => setFitViewOpen(false);
   const handleOpenFitTooltip = () => setFitViewOpen(true);
 
-
   const { width, height } = useWindowDimensions();
 
-  const nodes = reactFlowInstance?.getElements().filter((e): e is Node => isNode(e) && e.type === "horizontal");
+  const nodes = reactFlowInstance
+    ?.getNodes()
+    .filter((e) => e.type === "horizontal");
 
   const move = (nextPosition, direction: "front" | "back") => {
     const { x, y } = nextPosition.position;
 
-    const calcX = 0 - x * 2 + (width || 0) / 2 - timelineNodeDimensions.width / 2;
-    const calcY = 0 - y * 2 + (height || 0) / 2 + timelineNodeDimensions.height / 2 + 50;
+    const calcX =
+      0 - x * 2 + (width || 0) / 2 - timelineNodeDimensions.width / 2;
+    const calcY =
+      0 - y * 2 + (height || 0) / 2 + timelineNodeDimensions.height / 2 + 50;
 
     if (handleTransform && nextPosition) {
       handleTransform({ x: calcX, y: calcY, zoom: 2 }, direction);
@@ -70,67 +76,57 @@ const Controls = (props: Props) => {
 
   const handleNext = () => {
     if (nodes) {
-      const nextPosition = nodes[typeof panToNextIndex === "number" ? panToNextIndex + 1 : 0];
+      const nextPosition =
+        nodes[typeof panToNextIndex === "number" ? panToNextIndex + 1 : 0];
       move(nextPosition, "front");
     }
   };
 
   const handleBack = () => {
     if (nodes) {
-      const nextPosition = nodes[typeof panToNextIndex === "number" ? panToNextIndex - 1 : 0];
+      const nextPosition =
+        nodes[typeof panToNextIndex === "number" ? panToNextIndex - 1 : 0];
 
       move(nextPosition, "back");
     }
   };
 
-
   return (
     <>
       <Paper elevation={4} className={classes.controlsPaper}>
-        {handleTransform && <>
-          <Tooltip
-            arrow
-            title={`${
-              t("genereic.back")
-            }`}
-            placement="top"
-          >
-            <IconButton
-              className={classes.buttons}
-              disabled={panToNextIndex === 0}
-              onClick={handleBack}
-            >
-              <NavigateBeforeIcon
-                className={classNames(
-                  classes.buttons,
-                  fullScreen ? classes.activeButton : ""
-                )}
-              />
-            </IconButton>
-          </Tooltip>
-          <Tooltip
-            arrow
-            title={`${
-
-              t("generic.next")
-            }`}
-            placement="top"
-          >
-            <IconButton
-              className={classes.buttons}
-              onClick={handleNext}
-              disabled={nodes && panToNextIndex === nodes.length - 1}
-            >
-              <NavigateNextIcon
-                className={classNames(
-                  classes.buttons,
-                  fullScreen ? classes.activeButton : ""
-                )}
-              />
-            </IconButton>
-          </Tooltip>
-          {' '}
-        </>}
+        {handleTransform && (
+          <>
+            <Tooltip arrow title={`${t("genereic.back")}`} placement="top">
+              <IconButton
+                className={classes.buttons}
+                disabled={panToNextIndex === 0}
+                onClick={handleBack}
+              >
+                <NavigateBeforeIcon
+                  className={classNames(
+                    classes.buttons,
+                    fullScreen ? classes.activeButton : ""
+                  )}
+                />
+              </IconButton>
+            </Tooltip>
+            <Tooltip arrow title={`${t("generic.next")}`} placement="top">
+              <IconButton
+                className={classes.buttons}
+                onClick={handleNext}
+                disabled={nodes && panToNextIndex === nodes.length - 1}
+              >
+                <NavigateNextIcon
+                  className={classNames(
+                    classes.buttons,
+                    fullScreen ? classes.activeButton : ""
+                  )}
+                />
+              </IconButton>
+            </Tooltip>
+            {" "}
+          </>
+        )}
         <Tooltip
           arrow
           title={`${
@@ -168,8 +164,19 @@ const Controls = (props: Props) => {
             />
           </IconButton>
         </Tooltip>
-        <Tooltip arrow title={`${t("workspaces.fit_to_view")}`} placement="top" open={fitViewOpen} onOpen={handleOpenFitTooltip} onClose={handleCloseFitTooltip}>
-          <IconButton id="fitView" className={classes.buttons} onClick={fitToView}>
+        <Tooltip
+          arrow
+          title={`${t("workspaces.fit_to_view")}`}
+          placement="top"
+          open={fitViewOpen}
+          onOpen={handleOpenFitTooltip}
+          onClose={handleCloseFitTooltip}
+        >
+          <IconButton
+            id="fitView"
+            className={classes.buttons}
+            onClick={fitToView}
+          >
             <SelectAllIcon className={classes.buttons} />
           </IconButton>
         </Tooltip>
@@ -179,7 +186,11 @@ const Controls = (props: Props) => {
           </IconButton>
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.zoom_to_100")}`} placement="top">
-          <Button className={classes.buttons} style={{ fontSize: 15 }} onClick={zoomTo}>
+          <Button
+            className={classes.buttons}
+            style={{ fontSize: 15 }}
+            onClick={zoomTo}
+          >
             {`${Math.round(currentZoom * 100)}%`}
           </Button>
         </Tooltip>
@@ -192,11 +203,7 @@ const Controls = (props: Props) => {
           <IconButton
             className={classes.buttons}
             onClick={() => {
-              const helper = document.querySelectorAll("[data-cshid*='-']");
-              if (helper?.length > 0) {
-                // @ts-ignore
-                helper[0].click();
-              }
+              $crisp.push(["do", "chat:open"]);
             }}
           >
             <HelpIcon className={classes.buttons} />
@@ -218,6 +225,6 @@ const Controls = (props: Props) => {
       </Expand>
     </>
   );
-};
+}
 
 export default Controls;

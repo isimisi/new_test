@@ -4,9 +4,10 @@ import {
   TimelineTableOptions,
   TimelineNode,
   EmailsFromImport,
+  TCustomNode,
 } from "@customTypes/reducers/timeline";
 import { NotifyActions } from "@redux/constants/notifConstants";
-import { FlowElement } from "react-flow-renderer";
+import { Edge } from "react-flow-renderer";
 
 export const GET_TIMELINES_LOADING = "GET_TIMELINES_LOADING";
 export const GET_TIMELINES_SUCCESS = "GET_TIMELINES_SUCCESS";
@@ -136,7 +137,8 @@ export interface ShowTimelineSuccess {
   description: string;
   group: string;
   shareOrg: boolean;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: Edge[];
   tags: Tag[];
 }
 
@@ -199,7 +201,8 @@ export interface TimelineElementDocumentChange {
 
 export interface PostTimelineElementSuccess {
   type: typeof POST_TIMELINE_ELEMENT_SUCCESS;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: Edge[];
 }
 
 export interface SetTimelineNode {
@@ -216,12 +219,13 @@ export interface ChangeTimelineNodeKey {
 
 export interface PutTimelineElementSuccess {
   type: typeof PUT_TIMELINE_ELEMENT_SUCCESS;
-  element: FlowElement;
+  node: TCustomNode;
 }
 
 export interface DeleteTimelineElementsSuccess {
   type: typeof DELETE_TIMELINE_ELEMENTS_SUCCESS;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: Edge[];
 }
 
 export interface OpenEmailChange {
@@ -232,12 +236,14 @@ export interface OpenEmailChange {
 export interface ChangeView {
   type: typeof CHANGE_VIEW;
   direction: "vertical" | "horizontal";
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: Edge[];
 }
 
 export interface ImportEmailsSuccess {
   type: typeof IMPORT_EMAILS_SUCCESS;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: Edge[];
   emails: EmailsFromImport[];
 }
 
@@ -280,7 +286,8 @@ export interface ValidateEmailsClose {
 
 export interface CustomSplitSuccess {
   type: typeof CUSTOM_SPLIT_SUCCESS;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
+  edges: Edge[];
 }
 
 export interface FilterTimeline {

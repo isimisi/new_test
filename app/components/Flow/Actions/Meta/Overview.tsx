@@ -2,12 +2,11 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable default-case */
 /* eslint-disable no-eval */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Grow from "@material-ui/core/Grow";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import MenuList from "@material-ui/core/MenuList";
 import MenuItem from "@material-ui/core/MenuItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import PeopleIcon from "@material-ui/icons/People";
 import DescriptionIcon from "@material-ui/icons/Description";
@@ -34,12 +33,12 @@ import {
 } from "@pages/Timelines/reducers/timelineActions";
 import { showDocument } from "@pages/Documents/reducers/documentActions";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+import { TCustomNode } from "@customTypes/reducers/timeline";
 
 interface Props {
   classes: any;
   t: any;
-  elements: any;
+  nodes: TCustomNode[];
   handleOpenNodeTable: () => void;
   openPeople: () => void;
   openDocuments: () => void;
@@ -48,18 +47,25 @@ interface Props {
 
 type ActiveItem = "People" | "Documents" | "Tags" | "Elements";
 
-const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openDocuments, openTags }: Props) => {
+function Overview({
+  classes,
+  t,
+  nodes: _nodes,
+  handleOpenNodeTable,
+  openPeople,
+  openDocuments,
+  openTags
+}: Props) {
   const [activeMenuItem, setActiveMenuItem] = useState<ActiveItem | null>(null);
   const dispatch = useAppDispatch();
-  const loadingsPerson = useAppSelector(state =>
+  const loadingsPerson = useAppSelector((state) =>
     state.person.getIn(["loadings", "main"])
   );
-  const loadingsDocument = useAppSelector(state =>
+  const loadingsDocument = useAppSelector((state) =>
     state.document.getIn(["loadings", "main"])
   );
 
   const user = useAuth0().user as User;
-
 
   const [itemOpen, setItemOpen] = useState(false);
 
@@ -90,20 +96,19 @@ const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openD
   const [menuItems, setMenuItems] = useState<any[]>([]);
 
   const openPerson = () => dispatch(timelineElementPersonChange(true));
-  const handleOpenPerson = id => {
+  const handleOpenPerson = (id) => {
     dispatch(showPerson(user, id, openPerson));
   };
 
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  const handleOpenDocument = id => {
+  const handleOpenDocument = (id) => {
     dispatch(showDocument(user, id, openDocument));
   };
 
-  const handleOpenTag = tag => dispatch(openTag(tag));
-
+  const handleOpenTag = (tag) => dispatch(openTag(tag));
 
   const getItems = (activeItem: ActiveItem) => {
-    const nodes = elements.filter(e => nodeTypes.includes(e.type));
+    const nodes = _nodes.filter((e) => nodeTypes.includes(e.type || ""));
     const item: any[] = [];
 
     switch (activeItem) {
@@ -113,7 +118,7 @@ const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openD
           const { persons } = node.data;
           for (let z = 0; z < persons.length; z++) {
             const person = persons[z];
-            const existingItem = item.find(p => p.id === person.id);
+            const existingItem = item.find((p) => p.id === person.id);
             if (!existingItem) {
               item.push({
                 type: "People",
@@ -149,7 +154,7 @@ const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openD
 
           for (let z = 0; z < documents.length; z++) {
             const document = documents[z];
-            const existingItem = item.find(d => d.id === document.id);
+            const existingItem = item.find((d) => d.id === document.id);
 
             if (!existingItem) {
               item.push({
@@ -174,7 +179,7 @@ const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openD
           for (let z = 0; z < tags.length; z++) {
             const tag = tags[z];
 
-            const existingItem = item.find(d => d.name === tag.name);
+            const existingItem = item.find((d) => d.name === tag.name);
 
             if (!existingItem) {
               item.push({
@@ -225,7 +230,7 @@ const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openD
     }
   };
 
-  const paperLeave = e => {
+  const paperLeave = (e) => {
     const _time = setTimeout(() => {
       handleClickAway(e);
     }, 300);
@@ -291,7 +296,7 @@ const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openD
                       {menuItems
                         .sort((a, b) => b.used - a.used)
                         .slice(0, 5)
-                        .map(item => (
+                        .map((item) => (
                           <MenuItem
                             className={classes.menuItem}
                             key={item.id}
@@ -338,8 +343,7 @@ const Overview = ({ classes, t, elements, handleOpenNodeTable, openPeople, openD
           )}
         </Popper>
       )}
-
     </>
   );
-};
+}
 export default Overview;

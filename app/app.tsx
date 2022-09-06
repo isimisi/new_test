@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
   Bugsnag.start({
     apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
     plugins: [new BugsnagPluginReact()],
-    appVersion: "1.4.81"
+    appVersion: "1.4.86"
   });
 }
 
@@ -49,8 +49,6 @@ openSansObserver.load().then(() => {
 });
 
 const domainGroupId = "e25f2e52-b958-4868-bb38-05482f232612";
-
-// Create redux store with history
 
 // TODO: påsæt reux with loace storage så den bliver initeret med localstorage og jeg dermed aldrig skal kigge i locale storage
 const MOUNT_NODE = document.getElementById("app");
@@ -71,24 +69,17 @@ if (!isMobile) {
   }());
 }
 
-// const persistor = persistStore(store);
-
 let render = () => {
   ReactDOM.render(
-    <>
-      {/* @ts-ignore */}
-      <Provider store={store}>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
-        <ConnectedRouter history={history}>
-          <Auth0ProviderWithHistory>
-            <App />
-            <ToastContainer />
-            <CookieBot domainGroupId={domainGroupId} />
-          </Auth0ProviderWithHistory>
-        </ConnectedRouter>
-        {/* </PersistGate> */}
-      </Provider>
-    </>,
+    <Provider store={store}>
+      {/* @ts-ignore - old react */}
+      <ConnectedRouter history={history}>
+        <Auth0ProviderWithHistory>
+          <App history={history} />
+          <ToastContainer />
+        </Auth0ProviderWithHistory>
+      </ConnectedRouter>
+    </Provider>,
     MOUNT_NODE
   );
 };
@@ -98,39 +89,24 @@ if (process.env.NODE_ENV === "production") {
   const ErrorBoundary = Bugsnag.getPlugin("react").createErrorBoundary(React);
   render = () => {
     ReactDOM.render(
-      <ErrorBoundary FallbackComponent={ErrorView}>
-        {/* @ts-ignore */}
-        <Provider store={store}>
-          {/* <PersistGate loading={null} persistor={persistor}> */}
-          <ConnectedRouter history={history}>
-            <Auth0ProviderWithHistory>
-              <App />
-              <ToastContainer />
-              <CookieBot domainGroupId={domainGroupId} />
-            </Auth0ProviderWithHistory>
-          </ConnectedRouter>
-          {/* </PersistGate> */}
-        </Provider>
-      </ErrorBoundary>,
+      <>
+        {/* @ts-ignore - old react */}
+        <ErrorBoundary FallbackComponent={ErrorView}>
+          <Provider store={store}>
+            {/* @ts-ignore - old react */}
+            <ConnectedRouter history={history}>
+              <Auth0ProviderWithHistory>
+                <App history={history} />
+                <ToastContainer />
+                <CookieBot domainGroupId={domainGroupId} />
+              </Auth0ProviderWithHistory>
+            </ConnectedRouter>
+          </Provider>
+        </ErrorBoundary>
+      </>,
       MOUNT_NODE
     );
   };
 }
 
-if (!window.Intl) {
-  new Promise(resolve => {
-    resolve(import("intl"));
-  })
-    .then(() =>
-      Promise.all([
-        import("intl/locale-data/jsonp/en.js"),
-        import("intl/locale-data/jsonp/de.js")
-      ])
-    )
-    .then(() => render())
-    .catch(err => {
-      throw err;
-    });
-} else {
-  render();
-}
+render();

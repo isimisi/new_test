@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable no-param-reassign */
-import React, { useCallback, useEffect, useRef, useState } from "react";
 
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 import { authHeader, baseUrl, getId } from "@api/constants";
@@ -16,7 +15,6 @@ import NodesTableModal from "@components/Timeline/Modals/NodesTable";
 import Persons from "@components/Timeline/Modals/Persons";
 import Documents from "@components/Timeline/Modals/Documents";
 import Tags from "@components/Timeline/Modals/Tags";
-import ShareModal from '@components/Flow/Share/ShareModal';
 import {
   addGroup,
   changeHandleVisability,
@@ -29,13 +27,23 @@ import {
   shareOrgChange,
   showTimeline,
   importEmails,
-  timelineElementPersonChange, timelineElementDocumentChange, saveElement, changeTimelineNodeKey, setTimelineNode, putElement, deleteElements, openEmailChange, changeView, setIsUpdating, goThroughSplitChange, clearSplitting, validateEmailsClose, closeTag
+  timelineElementPersonChange,
+  timelineElementDocumentChange,
+  saveElement,
+  changeTimelineNodeKey,
+  setTimelineNode,
+  putElement,
+  deleteElements,
+  openEmailChange,
+  changeView,
+  setIsUpdating,
+  goThroughSplitChange,
+  clearSplitting,
+  validateEmailsClose,
+  closeTag
 } from "./reducers/timelineActions";
-import ReactFlow, {
-  isNode,
-  OnLoadParams,
-} from "react-flow-renderer";
-import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
+import ReactFlow, { ReactFlowInstance, Viewport } from "react-flow-renderer";
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
 import Collaboration from "@components/Flow/Actions/Collaborations";
 import Meta from "@components/Flow/Actions/Meta";
@@ -45,7 +53,10 @@ import Controls from "@components/Flow/Actions/Controls";
 import { useTheme } from "@material-ui/core/styles";
 import Loader from "@components/Loading/LongLoader";
 import { handleExport } from "@helpers/export/handleExport";
-import { getGroupDropDown, workspacePowerpoint } from "../Workspaces/reducers/workspaceActions";
+import {
+  getGroupDropDown,
+  workspacePowerpoint
+} from "../Workspaces/reducers/workspaceActions";
 import {
   openMenuAction,
   closeMenuAction,
@@ -62,11 +73,23 @@ import "./timeline.css";
 
 import WorkspaceMeta from "@components/Workspace/Modals/WorkspaceMeta";
 import CreateElement from "@components/Timeline/Modals/CreateElement";
-import { changePerson, getPersonDropDown, showPerson } from "../Persons/reducers/personActions";
+import {
+  changePerson,
+  getPersonDropDown,
+  showPerson
+} from "../Persons/reducers/personActions";
 import Person from "@components/Timeline/Modals/Person";
 import Document from "@components/Timeline/Modals/Document";
-import { changeDocument, getDocumentDropDown, showDocument } from "../Documents/reducers/documentActions";
-import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
+import {
+  changeDocument,
+  getDocumentDropDown,
+  showDocument
+} from "../Documents/reducers/documentActions";
+import {
+  ITimelineNode,
+  TCustomNode,
+  TimelineNode
+} from "@customTypes/reducers/timeline";
 import Email from "@components/Timeline/Modals/Email";
 import VerticalNode from "@components/Timeline/Nodes/VerticalNode";
 import Content from "@components/Timeline/Drawer/Content";
@@ -75,7 +98,6 @@ import ImportEmails from "@components/Timeline/Modals/ImportEmails";
 import GoThroughSplit from "@components/Timeline/Modals/GoThroughSplit";
 import ValidateEmails from "@components/Timeline/Modals/ValidateEmails";
 import Tag from "@components/Timeline/Modals/Tag";
-
 
 const nodeTypes = {
   horizontal: HorizontalNode,
@@ -87,44 +109,57 @@ const edgeTypes = {
   custom: EdgeWithButton
 };
 
-const Timeline = () => {
+function Timeline() {
   const classes = useStyles();
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const elements = useAppSelector(state => state[reducer].get("elements")).toJS();
 
-  const messageNotif = useAppSelector(state => state[reducer].get("message"));
-  const createElementOpen = useAppSelector(state => state[reducer].get("createElementOpen"));
-  const goThroughSplitOpen = useAppSelector(state => state[reducer].get("goThroughSplitOpen"));
+  const nodes = useAppSelector((state) => state[reducer].get("nodes")).toJS();
+  const edges = useAppSelector((state) => state[reducer].get("edges")).toJS();
 
+  const messageNotif = useAppSelector((state) => state[reducer].get("message"));
+  const createElementOpen = useAppSelector((state) =>
+    state[reducer].get("createElementOpen")
+  );
+  const goThroughSplitOpen = useAppSelector((state) =>
+    state[reducer].get("goThroughSplitOpen")
+  );
 
-  const personOptions = useAppSelector(state => state.person.get("personOptions")).toJS();
-  const documentOptions = useAppSelector(state => state.document.get("documentOptions")).toJS();
-  const timelineNode = useAppSelector(state => state[reducer].get("timelineNode"));
-  const view = useAppSelector(state => state[reducer].get("view"));
-  const currSplittingNodeRefference = useAppSelector(state => state[reducer].get("currSplittingNodeRefference"));
-
+  const personOptions = useAppSelector((state) =>
+    state.person.get("personOptions")
+  ).toJS();
+  const documentOptions = useAppSelector((state) =>
+    state.document.get("documentOptions")
+  ).toJS();
+  const timelineNode = useAppSelector((state) =>
+    state[reducer].get("timelineNode")
+  );
+  const view = useAppSelector((state) => state[reducer].get("view"));
+  const currSplittingNodeRefference = useAppSelector((state) =>
+    state[reducer].get("currSplittingNodeRefference")
+  );
 
   const history = useHistory();
   const id = getId(history) as string;
   const user = useAuth0().user as User;
-
 
   // refs
   const reactFlowContainer = useRef(null);
 
   // state
   const [metaOpen, setMetaOpen] = useState(false);
-  const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
+  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
   const [currentZoom, setCurrentZoom] = useState(1);
   const [shareModalOpen, setShareModalOpen] = useState(false);
   const [elementPersons, setElementPersons] = useState<TPerson[]>([]);
   const [elementDocuments, setElementDocuments] = useState<TDocument[]>([]);
 
-  const changeTimelineNode = (attr: keyof TimelineNode, val: TimelineNode[keyof TimelineNode]) => {
+  const changeTimelineNode = (
+    attr: keyof TimelineNode,
+    val: TimelineNode[keyof TimelineNode]
+  ) => {
     dispatch(changeTimelineNodeKey(val, attr));
   };
-
 
   const openPerson = () => {
     dispatch(timelineElementPersonChange(true));
@@ -144,7 +179,8 @@ const Timeline = () => {
   };
 
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  const handleDocumentClose = () => dispatch(timelineElementDocumentChange(false));
+  const handleDocumentClose = () =>
+    dispatch(timelineElementDocumentChange(false));
   const handleTagClose = () => dispatch(closeTag);
 
   const handleDocumentOpen = (_id: string, title?: string) => {
@@ -168,7 +204,6 @@ const Timeline = () => {
     dispatch(openEmailChange(false));
   };
 
-
   const handleCloseCreateElement = () => {
     dispatch(setTimelineNode(null));
     setElementPersons([]);
@@ -191,7 +226,7 @@ const Timeline = () => {
     if (bool !== undefined) {
       setOpenDrawer(bool);
     } else {
-      setOpenDrawer(prevVal => !prevVal);
+      setOpenDrawer((prevVal) => !prevVal);
     }
   };
 
@@ -199,7 +234,7 @@ const Timeline = () => {
     if (bool !== undefined) {
       setOpenTableView(bool);
     } else {
-      setOpenTableView(prevVal => !prevVal);
+      setOpenTableView((prevVal) => !prevVal);
     }
   };
 
@@ -217,14 +252,13 @@ const Timeline = () => {
     setCorrectEmailsOpen(false);
   };
 
-
   const handleToggleCorectEmails = () => {
     if (correctEmailsOpen) {
       handleCloseCorectEmails();
     } else {
       setCorrectEmailsOpen(true);
-      const badges = elements.filter(
-        e => !e.data.date && isNode(e) && e.id !== "static-button"
+      const badges = nodes.filter(
+        (e) => !e.data.date && e.id !== "static-button"
       );
 
       dispatch(setTimelineNode(badges[0].data.id));
@@ -232,70 +266,71 @@ const Timeline = () => {
     }
   };
 
-  const handleVisability = useAppSelector(state =>
+  const handleVisability = useAppSelector((state) =>
     state[reducer].get("handleVisability")
   );
-  const personModalOpen = useAppSelector(state =>
+  const personModalOpen = useAppSelector((state) =>
     state[reducer].get("personOpen")
   );
-  const documentModalOpen = useAppSelector(state =>
+  const documentModalOpen = useAppSelector((state) =>
     state[reducer].get("documentOpen")
   );
-  const tagModalOpen = useAppSelector(state =>
-    state[reducer].get("tagOpen")
-  );
-  const emailModalOpen = useAppSelector(state =>
+  const tagModalOpen = useAppSelector((state) => state[reducer].get("tagOpen"));
+  const emailModalOpen = useAppSelector((state) =>
     state[reducer].get("emailOpen")
   );
 
+  const emailsToValidate = useAppSelector((state) =>
+    state.timeline.get("emailsToValidate")
+  );
 
-  const emailsToValidate = useAppSelector(state => state.timeline.get("emailsToValidate"));
-
-
-  const loadings = useAppSelector(state => state[reducer].get("loadings"));
-  const label = useAppSelector(state => state[reducer].get("title"));
-  const description = useAppSelector(state =>
+  const loadings = useAppSelector((state) => state[reducer].get("loadings"));
+  const label = useAppSelector((state) => state[reducer].get("title"));
+  const description = useAppSelector((state) =>
     state[reducer].get("description")
   );
-  const group = useAppSelector(state => state[reducer].get("group"));
-  const shareOrg = useAppSelector(state => state[reducer].get("shareOrg"));
-  const tags = useAppSelector(state =>
+  const group = useAppSelector((state) => state[reducer].get("group"));
+  const shareOrg = useAppSelector((state) => state[reducer].get("shareOrg"));
+  const tags = useAppSelector((state) =>
     state[reducer].get("specificTimelineTags")
   )?.toJS();
-  const groupsDropDownOptions = useAppSelector(state => state.workspace.get('groupsDropDownOptions')).toJS();
-  const tagOptions = useAppSelector(state => state.tags.get('tags')).toJS();
-  const isUpdatingNode = useAppSelector(state => state[reducer].get('isUpdatingNode'));
-  const currSplittingEmail = useAppSelector(state => state[reducer].get('currSplittingEmail'));
-  const splitElements = useAppSelector(state => state[reducer].get('splitElements'));
-  const tag = useAppSelector(state =>
-    state[reducer].get("tag")
+  const groupsDropDownOptions = useAppSelector((state) =>
+    state.workspace.get("groupsDropDownOptions")
+  ).toJS();
+  const tagOptions = useAppSelector((state) => state.tags.get("tags")).toJS();
+  const isUpdatingNode = useAppSelector((state) =>
+    state[reducer].get("isUpdatingNode")
   );
-
+  const currSplittingEmail = useAppSelector((state) =>
+    state[reducer].get("currSplittingEmail")
+  );
+  const splitElements = useAppSelector((state) =>
+    state[reducer].get("splitElements")
+  );
+  const tag = useAppSelector((state) => state[reducer].get("tag"));
 
   const handleVisabilityChange = () =>
     dispatch(changeHandleVisability(!handleVisability));
   const handleImage = (type, _stopLoading) =>
     handleExport(type, reactFlowContainer, label, _stopLoading);
-  const handlePowerpoint = _stopLoading => {
+  const handlePowerpoint = (_stopLoading) => {
     id &&
-      dispatch(workspacePowerpoint(user, id, label, elements, _stopLoading));
+      dispatch(
+        workspacePowerpoint(user, id, label, [...nodes, ...edges], _stopLoading)
+      );
   };
   const toggleSubMenu = () => dispatch(toggleAction);
 
-  const onLoad = _reactFlowInstance => {
+  const onInit = (_reactFlowInstance: ReactFlowInstance) => {
     setRfInstance(_reactFlowInstance);
     dispatch(showTimeline(user, id as string, setMetaOpen, _reactFlowInstance));
   };
 
-  const onSave = useCallback(() => {
-    if (rfInstance) {
-      // save
+  const onMove = (e, flowTransform) => {
+    if (flowTransform) {
+      setCurrentZoom(flowTransform.zoom);
     }
-  }, [rfInstance, user]);
-
-  const onMouseLeave = useCallback(() => {
-    onSave();
-  }, [rfInstance]);
+  };
 
   useEffect(() => {
     dispatch(closeMenuAction);
@@ -308,20 +343,22 @@ const Timeline = () => {
     };
   }, [user]);
 
-
   const handleChangeTags = useCallback(
-    _tags => dispatch(changeTags(_tags)),
+    (_tags) => dispatch(changeTags(_tags)),
     []
   );
   const handleLabelChange = useCallback(
-    e => dispatch(labelChange(e.target.value)),
+    (e) => dispatch(labelChange(e.target.value)),
     []
   );
   const handleDescriptionChange = useCallback(
-    e => dispatch(descriptionChange(e.target.value)),
+    (e) => dispatch(descriptionChange(e.target.value)),
     []
   );
-  const handleAddGroup = useCallback(_group => dispatch(addGroup(_group.value)), []);
+  const handleAddGroup = useCallback(
+    (_group) => dispatch(addGroup(_group.value)),
+    []
+  );
   const handleShareOrg = useCallback(() => dispatch(shareOrgChange), []);
 
   const updateMeta = useCallback(
@@ -342,8 +379,11 @@ const Timeline = () => {
   );
 
   const nextElWithoutDate = () => {
-    const badges = elements.filter(
-      e => !e.data.date && isNode(e) && e.id !== "static-button" && e.id !== timelineNode.get("id")
+    const badges = nodes.filter(
+      (e) =>
+        !e.data.date &&
+        e.id !== "static-button" &&
+        e.id !== timelineNode.get("id")
     );
     if (badges.length > 0) {
       dispatch(setTimelineNode(badges[0].data.id));
@@ -352,7 +392,10 @@ const Timeline = () => {
     }
   };
 
-  const onSaveElement = (alternativeCloseFunc?: () => void, customSplit?: string) => {
+  const onSaveElement = (
+    alternativeCloseFunc?: () => void,
+    customSplit?: string
+  ) => {
     dispatch(setTimelineNode(null));
     setElementPersons([]);
     setElementDocuments([]);
@@ -362,24 +405,42 @@ const Timeline = () => {
       closeFunc = nextElWithoutDate;
     }
 
-
     if (alternativeCloseFunc) {
       closeFunc = alternativeCloseFunc;
     }
 
-
     if (isUpdatingNode) {
-      dispatch(putElement(user, id, timelineNode, elementPersons, elementDocuments, closeFunc));
+      dispatch(
+        putElement(
+          user,
+          id,
+          timelineNode,
+          elementPersons,
+          elementDocuments,
+          closeFunc
+        )
+      );
     } else {
-      dispatch(saveElement(user, id, timelineNode, currSplittingNodeRefference, customSplit, elementPersons, elementDocuments, closeFunc, view));
+      dispatch(
+        saveElement(
+          user,
+          id,
+          timelineNode,
+          currSplittingNodeRefference,
+          customSplit,
+          elementPersons,
+          elementDocuments,
+          closeFunc,
+          view
+        )
+      );
     }
   };
 
-
   const onSavePerson = (person: TPerson) => {
-    setElementPersons(prevState => {
+    setElementPersons((prevState) => {
       const newPersons = [...prevState];
-      const newPersonsFiltered = newPersons.filter(p => {
+      const newPersonsFiltered = newPersons.filter((p) => {
         if (p.id) {
           return p.id !== person.id;
         }
@@ -393,9 +454,9 @@ const Timeline = () => {
   };
 
   const handleSetElementDocuments = (document: TDocument) => {
-    setElementDocuments(prevState => {
+    setElementDocuments((prevState) => {
       const newDocuments = [...prevState];
-      const newDocumentsFiltered = newDocuments.filter(p => {
+      const newDocumentsFiltered = newDocuments.filter((p) => {
         if (p.id) {
           return p.id !== document.id;
         }
@@ -407,8 +468,10 @@ const Timeline = () => {
     dispatch(timelineElementDocumentChange(false));
   };
 
-
-  const onSaveDocument = async (document: TDocument, stopLoading: () => void) => {
+  const onSaveDocument = async (
+    document: TDocument,
+    stopLoading: () => void
+  ) => {
     if (document.file) {
       const url = `${baseUrl}/timelinedocuments/savefile`;
       const header = authHeader(user);
@@ -433,13 +496,13 @@ const Timeline = () => {
     dispatch(deleteElements(user, id, [timelineNode.get("id")]));
   };
 
-  const onElementsRemove = (el) => {
-    const nodes = el.filter(e => isNode(e)).map(n => n.id);
-    dispatch(deleteElements(user, id, nodes));
+  const onElementsRemove = (n: TCustomNode[]) => {
+    const _nodes = n.map((x) => x.id);
+    dispatch(deleteElements(user, id, _nodes));
   };
 
   const handleChangeView = (direction: "horizontal" | "vertical") => {
-    dispatch(changeView(direction, elements));
+    dispatch(changeView(direction, [...nodes, ...edges]));
     setTimeout(() => {
       rfInstance?.fitView();
     }, 200);
@@ -459,22 +522,20 @@ const Timeline = () => {
 
   const [panToNextIndex, setPanToNextIndex] = useState<number | null>(null);
 
-
   const handleTransform = useCallback(
-    (trans, direction: "front" | "back") => {
+    (trans: Viewport, direction: "front" | "back") => {
       if (rfInstance) {
-        if (typeof panToNextIndex === 'number') {
+        if (typeof panToNextIndex === "number") {
           if (direction === "front") {
-            setPanToNextIndex((prevVal) => prevVal as number + 1);
+            setPanToNextIndex((prevVal) => (prevVal as number) + 1);
           } else {
-            setPanToNextIndex((prevVal) => prevVal as number - 1);
+            setPanToNextIndex((prevVal) => (prevVal as number) - 1);
           }
         } else {
           setPanToNextIndex(0);
         }
 
-
-        rfInstance.setTransform(trans);
+        rfInstance.setViewport(trans, { duration: 500 });
       }
     },
     [rfInstance, panToNextIndex]
@@ -493,7 +554,6 @@ const Timeline = () => {
     }
   }, [mouseLoading]);
 
-
   const handleSplit = (_timelineNode: ITimelineNode) => {
     dispatch(changeTimelineNodeKey(_timelineNode.get("email"), "email"));
     dispatch(createElementChange(false));
@@ -510,7 +570,6 @@ const Timeline = () => {
   // useEffect(() => {
   //   update();
   // }, [elements]);
-
 
   // const handleExportToPdf = (startLoading, stopLoading) => {
   //   startLoading();
@@ -533,7 +592,6 @@ const Timeline = () => {
   const closePeople = () => setPeopleOpen(false);
   const openPeople = () => setPeopleOpen(true);
 
-
   const [documentsOpen, setDocumentsOpen] = useState(false);
   const closeDocuments = () => setDocumentsOpen(false);
   const openDocuments = () => setDocumentsOpen(true);
@@ -542,7 +600,6 @@ const Timeline = () => {
   const closeTags = () => setTagsOpen(false);
   const openTags = () => setTagsOpen(true);
 
-
   return (
     <div style={{ display: "flex", cursor }}>
       <Notification
@@ -550,15 +607,18 @@ const Timeline = () => {
         message={messageNotif}
       />
       <div
-        className={classnames(classes.root, {
-          [classes.contentShift]: openDrawer
-        }, "transition")}
-
+        className={classnames(
+          classes.root,
+          {
+            [classes.contentShift]: openDrawer
+          },
+          "transition"
+        )}
         ref={reactFlowContainer}
-        onMouseLeave={onMouseLeave}
       >
         <ReactFlow
-          elements={elements}
+          nodes={nodes}
+          edges={edges}
           minZoom={0.3}
           maxZoom={3}
           style={{ backgroundColor: "#F3F5F8" }}
@@ -566,58 +626,52 @@ const Timeline = () => {
           //   [Number.NEGATIVE_INFINITY, -(windowHeight || 1000) / 1.5 / 3],
           //   [Number.POSITIVE_INFINITY, (windowHeight || 1000) / 1.5 / 3]
           // ]}
-          onElementsRemove={onElementsRemove}
+          onNodesDelete={onElementsRemove}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
-          onMove={flowTransform => {
-            if (flowTransform) {
-              setCurrentZoom(flowTransform.zoom);
-            }
-          }}
-          onLoad={onLoad}
+          onMove={onMove}
+          onInit={onInit}
         >
           <div data-html2canvas-ignore="true">
-            {/* <Collaboration setShareModalOpen={setShareModalOpen} timeline /> */}
-
-            <Views
-              openTableView={handleOpenTableView}
-              view={view}
-              changeView={handleChangeView}
-              handleOpenImportEmails={handleOpenImportEmails}
-              handleToggleCorectEmails={handleToggleCorectEmails}
-
-              openTable={openTableView}
-              toggleDrawer={toggleDrawer}
-              elements={elements}
-            />
-            <Controls
-              handleTransform={view === "horizontal" ? handleTransform : undefined}
-              panToNextIndex={panToNextIndex}
-              currentZoom={currentZoom}
-              reactFlowInstance={rfInstance}
-            />
+            <Collaboration setShareModalOpen={setShareModalOpen} timeline />
             <Meta
               label={label}
               setMetaOpen={setMetaOpen}
               handleVisabilityChange={handleVisabilityChange}
               handlePowerpoint={handlePowerpoint}
               handleVisability={handleVisability}
-              elements={elements}
               handleOpenMenu={toggleSubMenu}
               handleImage={handleImage}
               backLink="/app/timelines"
               timeline
-              rfInstance={rfInstance}
-              overview={view === "horizontal"}
+              overview
+              nodes={nodes}
               handleOpenNodeTable={handleOpenNodeTable}
               openPeople={openPeople}
               openDocuments={openDocuments}
               openTags={openTags}
+              // customPdfGenerator={handleExportToPdf}
+            />
+            <Views
+              openTableView={handleOpenTableView}
+              view={view}
+              changeView={handleChangeView}
+              handleOpenImportEmails={handleOpenImportEmails}
+              handleToggleCorectEmails={handleToggleCorectEmails}
+              openTable={openTableView}
+              toggleDrawer={toggleDrawer}
+              nodes={nodes}
+            />
+            <Controls
+              handleTransform={
+                view === "horizontal" ? handleTransform : undefined
+              }
+              panToNextIndex={panToNextIndex}
+              currentZoom={currentZoom}
+              reactFlowInstance={rfInstance}
             />
           </div>
-
         </ReactFlow>
-
       </div>
       <Drawer
         className={classes.drawer}
@@ -625,9 +679,11 @@ const Timeline = () => {
         anchor="right"
         open={openDrawer}
         PaperProps={{ style: { width: drawerWidth } }}
-
       >
-        <div onMouseDown={e => handleMouseDown(e)} className={classes.dragger}>
+        <div
+          onMouseDown={(e) => handleMouseDown(e)}
+          className={classes.dragger}
+        >
           <DragIndicatorIcon />
         </div>
         <Content
@@ -662,36 +718,40 @@ const Timeline = () => {
         onSave={updateMeta}
         closeForm={() => setMetaOpen(false)}
       />
-      {createElementOpen && <CreateElement
-        open={createElementOpen}
-        close={handleCloseCreateElement}
-        onSave={onSaveElement}
-        personOptions={personOptions}
-        documentOptions={documentOptions}
-        openPerson={handlePersonOpen}
-        openDocument={handleDocumentOpen}
-        timelineNode={timelineNode}
-        changeTimelineNode={changeTimelineNode}
-        handleDelete={handleDelete}
-        isUpdatingNode={isUpdatingNode}
-        handleSplit={handleSplit}
-      />}
+      {createElementOpen && (
+        <CreateElement
+          open={createElementOpen}
+          close={handleCloseCreateElement}
+          onSave={onSaveElement}
+          personOptions={personOptions}
+          documentOptions={documentOptions}
+          openPerson={handlePersonOpen}
+          openDocument={handleDocumentOpen}
+          timelineNode={timelineNode}
+          changeTimelineNode={changeTimelineNode}
+          handleDelete={handleDelete}
+          isUpdatingNode={isUpdatingNode}
+          handleSplit={handleSplit}
+        />
+      )}
 
-      {goThroughSplitOpen && <GoThroughSplit
-        open={goThroughSplitOpen}
-        close={handleCloseGoThorughSplit}
-        onSave={onSaveElement}
-        personOptions={personOptions}
-        documentOptions={documentOptions}
-        openPerson={handlePersonOpen}
-        openDocument={handleDocumentOpen}
-        timelineNode={timelineNode}
-        changeTimelineNode={changeTimelineNode}
-        handleDelete={handleDelete}
-        isUpdatingNode={isUpdatingNode}
-        splitElements={splitElements}
-        currSplittingEmail={currSplittingEmail}
-      />}
+      {goThroughSplitOpen && (
+        <GoThroughSplit
+          open={goThroughSplitOpen}
+          close={handleCloseGoThorughSplit}
+          onSave={onSaveElement}
+          personOptions={personOptions}
+          documentOptions={documentOptions}
+          openPerson={handlePersonOpen}
+          openDocument={handleDocumentOpen}
+          timelineNode={timelineNode}
+          changeTimelineNode={changeTimelineNode}
+          handleDelete={handleDelete}
+          isUpdatingNode={isUpdatingNode}
+          splitElements={splitElements}
+          currSplittingEmail={currSplittingEmail}
+        />
+      )}
 
       {nodesTableOpen && (
         <NodesTableModal open={nodesTableOpen} close={handleCLoseNodeTable} />
@@ -702,53 +762,73 @@ const Timeline = () => {
       {documentsOpen && (
         <Documents open={documentsOpen} close={closeDocuments} user={user} />
       )}
-      {tagsOpen && (
-        <Tags open={tagsOpen} close={closeTags} user={user} />
-      )}
+      {tagsOpen && <Tags open={tagsOpen} close={closeTags} />}
 
-      {personModalOpen && <Person open={personModalOpen} close={handlePersonClose} onSave={onSavePerson} user={user} />}
-      {documentModalOpen && <Document open={documentModalOpen} close={handleDocumentClose} onSave={onSaveDocument} />}
-      {tagModalOpen && <Tag open={tagModalOpen} close={handleTagClose} tag={tag as string} />}
-      {emailModalOpen && <Email
-        open={emailModalOpen}
-        close={handleEmailClose}
-        timelineNode={timelineNode}
-      />}
-      {emailsToValidate.size > 0 && <ValidateEmails
-        open={emailsToValidate.size > 0}
-        close={handleValidateEmailsClose}
-        timeline_id={id}
-      />}
-      {importEmailsOpen && <ImportEmails open={importEmailsOpen} close={handleCloseImportEmails} handleImportEmails={handleImportEmails} loading={loadings.get("modal")} />}
+      {personModalOpen && (
+        <Person
+          open={personModalOpen}
+          close={handlePersonClose}
+          onSave={onSavePerson}
+          user={user}
+        />
+      )}
+      {documentModalOpen && (
+        <Document
+          open={documentModalOpen}
+          close={handleDocumentClose}
+          onSave={onSaveDocument}
+        />
+      )}
+      {tagModalOpen && (
+        <Tag open={tagModalOpen} close={handleTagClose} tag={tag as string} />
+      )}
+      {emailModalOpen && (
+        <Email
+          open={emailModalOpen}
+          close={handleEmailClose}
+          timelineNode={timelineNode}
+        />
+      )}
+      {emailsToValidate.size > 0 && (
+        <ValidateEmails
+          open={emailsToValidate.size > 0}
+          close={handleValidateEmailsClose}
+          timeline_id={id}
+        />
+      )}
+      {importEmailsOpen && (
+        <ImportEmails
+          open={importEmailsOpen}
+          close={handleCloseImportEmails}
+          handleImportEmails={handleImportEmails}
+          loading={loadings.get("modal")}
+        />
+      )}
 
       {/* {openTableView && <Table open={openTableView} close={handleOpenTableView} elements={elements} personOptions={personOptions} />} */}
       {loadings.get("main") && (
-        <>
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: theme.palette.background.default,
-              position: "absolute",
-              zIndex: 10,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <Loader bigFont />
-          </div>
-        </>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: theme.palette.background.default,
+            position: "absolute",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Loader bigFont />
+        </div>
       )}
-      <ShareModal
+      {/* <ShareModal
         open={shareModalOpen}
         loading={loadings.get("modal")}
         close={() => setShareModalOpen(false)}
-
-      />
-
+      /> */}
     </div>
   );
-};
+}
 
 export default Timeline;

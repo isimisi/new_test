@@ -4,7 +4,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 // const OfflinePlugin = require('offline-plugin');
-const { HashedModuleIdsPlugin } = require("webpack");
+// const { HashedModuleIdsPlugin } = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const { BugsnagSourceMapUploaderPlugin } = require("webpack-bugsnag-plugins");
@@ -13,11 +13,7 @@ module.exports = require("./webpack.base.babel")({
   mode: "production",
 
   // In production, we skip all hot-reloading stuff
-  entry: [
-    require.resolve("react-app-polyfill/ie11"),
-    path.join(process.cwd(), "app/app.tsx"),
-  ],
-  devtool: "source-map", // Ensure your webpack build is creating source maps!
+  entry: [path.join(process.cwd(), "app/app.tsx")],
 
   // Utilize long-term caching by adding content hashes (not compilation hashes) to compiled assets
   output: {
@@ -27,6 +23,7 @@ module.exports = require("./webpack.base.babel")({
 
   optimization: {
     minimize: true,
+    moduleIds: "deterministic",
     minimizer: [
       new TerserPlugin({
         terserOptions: {
@@ -42,8 +39,6 @@ module.exports = require("./webpack.base.babel")({
           },
         },
         parallel: true,
-        cache: true,
-        sourceMap: true,
       }),
     ],
     nodeEnv: "production",
@@ -55,7 +50,6 @@ module.exports = require("./webpack.base.babel")({
       minChunks: 1,
       maxAsyncRequests: 5,
       maxInitialRequests: 3,
-      name: true,
       cacheGroups: {
         commons: {
           test: /[\\/]node_modules[\\/]/,
@@ -91,36 +85,38 @@ module.exports = require("./webpack.base.babel")({
       },
       inject: true,
     }),
+
     // It's a good idea to only run this plugin when you're building a bundle
     // that will be released, rather than for every development build
     new BugsnagSourceMapUploaderPlugin({
       apiKey: "6d9a9a961530851d4c09cac9aa86ada6",
-      appVersion: "1.4.81",
+      appVersion: "1.4.86",
       publicPath: "*/",
     }),
+
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
-    // new OfflinePlugin({
-    //   relativePaths: false,
-    //   publicPath: '/',
-    //   appShell: '/',
-
-    //   // No need to cache .htaccess. See http://mxs.is/googmp,
-    //   // this is applied before any match in `caches` section
-    //   excludes: ['.htaccess'],
-
-    //   caches: {
-    //     main: [':rest:'],
-
-    //     // All chunks marked as `additional`, loaded after main section
-    //     // and do not prevent SW to install. Change to `optional` if
-    //     // do not want them to be preloaded at all (cached only when first loaded)
-    //     additional: ['*.chunk.js'],
-    //   },
-
-    //   // Removes warning for about `additional` section usage
-    //   safeToUseOptionalCaches: true,
-    // }),
+    //    new OfflinePlugin({
+    //      relativePaths: false,
+    //      publicPath: '/',
+    //      appShell: '/',
+    //
+    //      // No need to cache .htaccess. See http://mxs.is/googmp,
+    //      // this is applied before any match in `caches` section
+    //      excludes: ['.htaccess'],
+    //
+    //      caches: {
+    //        main: [':rest:'],
+    //
+    //        // All chunks marked as `additional`, loaded after main section
+    //        // and do not prevent SW to install. Change to `optional` if
+    //        // do not want them to be preloaded at all (cached only when first loaded)
+    //        additional: ['*.chunk.js'],
+    //      },
+    //
+    //      // Removes warning for about `additional` section usage
+    //      safeToUseOptionalCaches: true,
+    //    }),
 
     new CompressionPlugin({
       algorithm: "gzip",
@@ -149,15 +145,10 @@ module.exports = require("./webpack.base.babel")({
         },
       ],
     }),
-
-    new HashedModuleIdsPlugin({
-      hashFunction: "sha256",
-      hashDigest: "hex",
-      hashDigestLength: 20,
-    }),
   ],
 
   performance: {
+    hints: false,
     assetFilter: (assetFilename) => !/(\.map$)|(^(main\.|favicon\.))/.test(assetFilename),
   },
 });

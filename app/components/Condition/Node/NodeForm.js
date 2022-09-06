@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import css from "@styles/Form.scss";
@@ -17,7 +17,7 @@ import CreatableSelect from "react-select/creatable";
 import styles from "../condition-jss";
 import { useTranslation } from "react-i18next";
 
-const ConditionNodeForm = (props) => {
+function ConditionNodeForm(props) {
   const {
     classes,
     close,
@@ -35,6 +35,7 @@ const ConditionNodeForm = (props) => {
     handleDeleteNode,
   } = props;
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const choosenNode = nodes.find((r) => r.label === nodeLabel);
 
@@ -74,7 +75,7 @@ const ConditionNodeForm = (props) => {
               placeholder="Description"
               label="Description"
               multiline
-              rows={2}
+              minRows={2}
               disabled
               value={choosenNode.description}
             />
@@ -161,7 +162,7 @@ const ConditionNodeForm = (props) => {
             variant="contained"
             type="button"
             onClick={handleDeleteNode}
-            style={{ backgroundColor: red, color: "white" }}
+            style={{ backgroundColor: theme.palette.error.dark, color: "white" }}
           >
             Slet
           </Button>
@@ -181,7 +182,7 @@ const ConditionNodeForm = (props) => {
       </div>
     </div>
   );
-};
+}
 
 ConditionNodeForm.propTypes = {
   classes: PropTypes.object.isRequired,

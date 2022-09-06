@@ -5,8 +5,8 @@ import {
   IImmutableTimelineState,
   TimelineNode,
   ITimelineNode,
+  TCustomNode,
 } from "@customTypes/reducers/timeline";
-import { FlowElement, isEdge, isNode, Node } from "react-flow-renderer";
 import { CLOSE_NOTIF, SHOW_NOTIF } from "@redux/constants/notifConstants";
 import { fromJS, List, Map } from "immutable";
 import { EditorState, ContentState } from "draft-js";
@@ -74,17 +74,15 @@ import {
 } from "./timelineConstants";
 import moment from "moment";
 
-const getInnerTagsDocumentsAndPeople = (mutableState: any, elements?: FlowElement[]) => {
+const getInnerTagsDocumentsAndPeople = (mutableState: any, elements?: TCustomNode[]) => {
   const persons: any = [];
   const documents: any = [];
   const tags: any = [];
 
   // eslint-disable-next-line no-param-reassign
-  elements = elements || (mutableState.get("elements").toJS() as FlowElement[]);
+  elements = elements || (mutableState.get("nodes").toJS() as TCustomNode[]);
 
-  const nodes = elements.filter(
-    (element): element is Node => isNode(element) && element.type !== "addItem"
-  );
+  const nodes = elements.filter((element) => element.type !== "addItem");
 
   for (let index = 0; index < nodes.length; index++) {
     const node = nodes[index];
@@ -139,7 +137,8 @@ const initialNode: TimelineNode = {
 
 const initialState: TimelineState = {
   timelines: List(),
-  elements: List(),
+  nodes: List(),
+  edges: List(),
   timelinePersons: List(),
   timelineDocuments: List(),
   timelineTags: List(),
@@ -194,37 +193,42 @@ export default function reducer(
         mutableState.set("title", action.title);
         mutableState.set("description", action.description);
         mutableState.set("group", action.group);
-        mutableState.set("shareOrg", action.shareOrg);
+        mutableState.set("shareOrg", Boolean(action.shareOrg));
         mutableState.set("specificTimelineTags", fromJS(action.tags));
         mutableState.setIn(["loadings", "main"], false);
-        mutableState.set("elements", fromJS(action.elements));
-        getInnerTagsDocumentsAndPeople(mutableState, action.elements);
+
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
       });
     case IMPORT_EMAILS_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "modal"], false);
-        mutableState.set("elements", fromJS(action.elements));
-        getInnerTagsDocumentsAndPeople(mutableState, action.elements);
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
         mutableState.set("emailsToValidate", fromJS(action.emails));
       });
     case PUT_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
-        const newEl = action.element as Node;
+        const newEl = action.node;
         // @ts-ignore
-        const elements = mutableState.get("elements").toJS();
-        const index = elements.findIndex((e) => e.id === action.element.id);
-        newEl.position = elements[index].position;
+        const nodes = mutableState.get("nodes").toJS();
+        const index = nodes.findIndex((e) => e.id === newEl.id);
+        newEl.position = nodes[index].position;
         // @ts-ignore
         newEl.type = mutableState.get("view");
-        elements[index] = newEl;
-        mutableState.set("elements", fromJS(elements));
-        getInnerTagsDocumentsAndPeople(mutableState, elements);
+        nodes[index] = newEl;
+
+        mutableState.set("nodes", fromJS(nodes));
+        getInnerTagsDocumentsAndPeople(mutableState, nodes);
         mutableState.setIn(["loadings", "post"], false);
       });
     case DELETE_TIMELINE_ELEMENTS_SUCCESS:
       return state.withMutations((mutableState) => {
-        mutableState.set("elements", fromJS(action.elements));
-        getInnerTagsDocumentsAndPeople(mutableState, action.elements);
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
         mutableState.setIn(["loadings", "mouse"], false);
         mutableState.set("createElementOpen", false);
         mutableState.set("timelineNode", Map(initialNode));
@@ -245,6 +249,7 @@ export default function reducer(
     case SHOW_TIMELINE_LOADING:
     case CUSTOM_SPLIT_LOADING:
     case IMPORT_EMAILS_LOADING:
+    case PUT_TIMELINE_LOADING:
     case DOWNLOAD_DOCUMENT_LOADING:
     case DELETE_TIMELINE_ELEMENTS_LOADING:
     case DELETE_TIMELINE_LOADING:
@@ -276,8 +281,10 @@ export default function reducer(
     case CUSTOM_SPLIT_SUCCESS:
       return state.withMutations((mutableState) => {
         mutableState.setIn(["loadings", "post"], false);
-        mutableState.set("elements", fromJS(action.elements));
-        getInnerTagsDocumentsAndPeople(mutableState, action.elements);
+
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
       });
     case TITLE_CHANGE:
       return state.withMutations((mutableState) => {
@@ -330,8 +337,9 @@ export default function reducer(
       });
     case POST_TIMELINE_ELEMENT_SUCCESS:
       return state.withMutations((mutableState) => {
-        mutableState.set("elements", fromJS(action.elements));
-        getInnerTagsDocumentsAndPeople(mutableState, action.elements);
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
+        getInnerTagsDocumentsAndPeople(mutableState, action.nodes);
         mutableState.set("timelineNode", Map(initialNode));
         mutableState.setIn(["loadings", "post"], false);
       });
@@ -341,12 +349,12 @@ export default function reducer(
         const isVertical = action.isVertical;
 
         if (id) {
-          // @ts-ignore
-          const elements = mutableState.get("elements").toJS();
-          const element = elements.find((el) => el.id === id);
+          const mutableNodes = mutableState.get("nodes") as List<TCustomNode>;
+          const nodes = mutableNodes.toJS() as TCustomNode[];
+          const element = nodes.find((el) => el.id === id) as TCustomNode;
 
           let editorState = EditorState.createEmpty();
-          if (element.data.content) {
+          if (element.data?.content) {
             const blocksFromHtml = htmlToDraft(element.data.content);
             const { contentBlocks, entityMap } = blocksFromHtml;
             const contentState = ContentState.createFromBlockArray(
@@ -358,26 +366,26 @@ export default function reducer(
 
           const node = {
             id: element.id,
-            title: element.data.label,
+            title: element.data?.label,
             content: editorState,
-            email: element.data.email,
-            description: element.data.description,
-            date: moment(element.data.date),
-            time: moment(element.data.date),
+            email: element.data?.email,
+            description: element.data?.description,
+            date: moment(element.data?.date),
+            time: moment(element.data?.date),
             persons: fromJS(
-              element.data.persons.map((p) => ({
+              element.data?.persons.map((p) => ({
                 icon: p.person_icon,
                 id: p.id,
                 name: p.name || p.email,
               }))
             ),
             documents: fromJS(
-              element.data.documents.map((d) => ({
+              element.data?.documents.map((d) => ({
                 id: d.id,
                 title: d.title,
               }))
             ),
-            tags: fromJS(element.data.tags),
+            tags: fromJS(element.data?.tags),
           };
           mutableState.set("timelineNode", fromJS(node));
           if (!isVertical) {
@@ -408,15 +416,17 @@ export default function reducer(
     case CHANGE_VIEW:
       return state.withMutations((mutableState) => {
         mutableState.set("view", action.direction);
-        mutableState.set("elements", fromJS(action.elements));
+
+        mutableState.set("nodes", fromJS(action.nodes));
+        mutableState.set("edges", fromJS(action.edges));
       });
     case ADD_CURR_SPLITTING_EMAIL:
       return state.withMutations((mutableState) => {
         const currSplit = mutableState.get("currSplittingEmail");
         if (!currSplit) {
-          const timelineNode = (mutableState.get(
+          const timelineNode = mutableState.get(
             "timelineNode"
-          ) as unknown) as ITimelineNode;
+          ) as unknown as ITimelineNode;
           mutableState.set("currSplittingEmail", action.email);
           mutableState.set("currSplittingNodeRefference", timelineNode.get("id"));
         }
@@ -453,7 +463,7 @@ export default function reducer(
 
         const filters = mutableState.get("filters") as List<string>;
 
-        mutableState.update("elements", (myList: any) =>
+        mutableState.update("nodes", (myList: any) =>
           myList.map((el) => {
             if (["addItem", "custom"].includes(el.get("type"))) {
               return el;
@@ -492,7 +502,7 @@ export default function reducer(
     case CLEAR_FILTER:
       return state.withMutations((mutableState) => {
         mutableState.set("filters", List());
-        mutableState.update("elements", (myList: any) =>
+        mutableState.update("nodes", (myList: any) =>
           myList.map((el) => {
             if (["addItem", "custom"].includes(el.get("type"))) {
               return el;

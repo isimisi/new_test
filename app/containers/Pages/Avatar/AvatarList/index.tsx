@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unused-class-component-methods */
+/* eslint-disable react/static-property-placement */
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -92,6 +94,7 @@ export default class AvatarList extends Component {
                 onClick={selectConfig.bind(this, item)}
               >
                 {idx >= displayMin && idx < displayMax && (
+                  /* @ts-ignore - No implicit children can be removed when material ui is upgraded */
                   <Avatar className="AvatarItem" {...item} />
                 )}
               </div>

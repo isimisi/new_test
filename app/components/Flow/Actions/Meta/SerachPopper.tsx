@@ -12,7 +12,6 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Typography,
   Avatar
 } from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
@@ -20,8 +19,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
-import { FlowElement, isNode, Node, OnLoadParams } from "react-flow-renderer";
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import { ReactFlowInstance } from "react-flow-renderer";
+import InsertDriveFileIcon from "@material-ui/icons/InsertDriveFile";
 import EventIcon from "@material-ui/icons/Event";
 import {
   getDate,
@@ -31,19 +30,24 @@ import {
 } from "@pages/Timelines/constants";
 import useWindowDimensions from "@hooks/useWindowDiemensions";
 import NoContent from "@components/NoContent";
-import { openTag, timelineElementDocumentChange, timelineElementPersonChange } from "@pages/Timelines/reducers/timelineActions";
+import {
+  openTag,
+  timelineElementDocumentChange,
+  timelineElementPersonChange
+} from "@pages/Timelines/reducers/timelineActions";
 import { useAppDispatch } from "@hooks/redux";
 import { showDocument } from "@pages/Documents/reducers/documentActions";
 import { showPerson } from "@pages/Persons/reducers/personActions";
 import { useAuth0, User } from "@auth0/auth0-react";
+import { TCustomNode } from "@customTypes/reducers/timeline";
 
 interface Props {
   open: boolean;
   close: () => void;
   anchor: HTMLButtonElement | null;
   t: any;
-  elements: FlowElement[];
-  rfInstance: OnLoadParams<any> | null | undefined;
+  nodes: TCustomNode[];
+  rfInstance: ReactFlowInstance<any> | null | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -90,26 +94,23 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const SearchPopper = (props: Props) => {
-  const { open, close, anchor, t, elements, rfInstance } = props;
+function SearchPopper(props: Props) {
+  const { open, close, anchor, t, nodes: _nodes, rfInstance } = props;
   const classes = useStyles();
 
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
-  const handleSearch = e => {
+  const handleSearch = (e) => {
     const value = e.target.value;
 
     setSearchText(value);
 
-    const nodes = elements.filter(
-      (element): element is Node =>
-        isNode(element) && element.type !== "addItem"
-    );
+    const nodes = _nodes.filter((element) => element.type !== "addItem");
 
     const filteredByDate = nodes
-      .filter(n => getDate(n.data.date, t).includes(value))
-      .map(n => ({
+      .filter((n) => getDate(n.data.date, t).includes(value))
+      .map((n) => ({
         ...n,
         primary: getDate(n.data.date, t),
         secondary: n.data.label,
@@ -118,8 +119,8 @@ const SearchPopper = (props: Props) => {
       }));
 
     const filteredByLabel = nodes
-      .filter(n => n.data.label && n.data.label.includes(value))
-      .map(n => ({
+      .filter((n) => n.data.label && n.data.label.includes(value))
+      .map((n) => ({
         ...n,
         primary: n.data.label || t("generic.noTitle"),
         secondary: getDate(n.data.date, t),
@@ -128,8 +129,8 @@ const SearchPopper = (props: Props) => {
       }));
 
     const filteredByDescription = nodes
-      .filter(n => n.data.description && n.data.description.includes(value))
-      .map(n => ({
+      .filter((n) => n.data.description && n.data.description.includes(value))
+      .map((n) => ({
         ...n,
         primary: n.data.label || t("generic.noTitle"),
         secondary: getDate(n.data.date, t),
@@ -138,12 +139,12 @@ const SearchPopper = (props: Props) => {
       }));
 
     const filterByPersons = nodes
-      .filter(n => {
-        const names = n.data.persons.map(p => p.name).join(" ");
-        const emails = n.data.persons.map(p => p.email).join(" ");
+      .filter((n) => {
+        const names = n.data.persons.map((p) => p.name).join(" ");
+        const emails = n.data.persons.map((p) => p.email).join(" ");
         return names.includes(value) || emails.includes(value);
       })
-      .map(n => ({
+      .map((n) => ({
         ...n,
         primary: n.data.label || t("generic.noTitle"),
         secondary: getDate(n.data.date, t),
@@ -152,11 +153,11 @@ const SearchPopper = (props: Props) => {
       }));
 
     const filterByDocuments = nodes
-      .filter(n => {
-        const titles = n.data.documents.map(p => p.title).join(" ");
+      .filter((n) => {
+        const titles = n.data.documents.map((p) => p.title).join(" ");
         return titles.includes(value);
       })
-      .map(n => ({
+      .map((n) => ({
         ...n,
         primary: n.data.label || t("generic.noTitle"),
         secondary: getDate(n.data.date, t),
@@ -170,33 +171,37 @@ const SearchPopper = (props: Props) => {
 
     for (let index = 0; index < nodes.length; index++) {
       const node = nodes[index];
-      const { persons: _persons, documents: _documents, tags: _tags } = node.data;
+      const {
+        persons: _persons,
+        documents: _documents,
+        tags: _tags
+      } = node.data;
 
       for (let z = 0; z < _persons.length; z++) {
         const person = _persons[z];
-        if (!persons.some(p => p.id === person.id)) {
+        if (!persons.some((p) => p.id === person.id)) {
           persons.push(person);
         }
       }
 
       for (let z = 0; z < _documents.length; z++) {
         const document = _documents[z];
-        if (!documents.some(p => p.id === document.id)) {
+        if (!documents.some((p) => p.id === document.id)) {
           documents.push(document);
         }
       }
 
       for (let z = 0; z < _tags.length; z++) {
         const tag = _tags[z];
-        if (!tags.some(p => p.name === tag.name)) {
+        if (!tags.some((p) => p.name === tag.name)) {
           tags.push(tag);
         }
       }
     }
 
     const filteretPersons = persons
-      .filter(p => p.name?.includes(value) || p.email?.includes(value))
-      .map(p => ({
+      .filter((p) => p.name?.includes(value) || p.email?.includes(value))
+      .map((p) => ({
         ...p,
         primary: p.name,
         secondary: p.email,
@@ -215,8 +220,8 @@ const SearchPopper = (props: Props) => {
       }));
 
     const filteretDocuments = documents
-      .filter(p => p.title?.includes(value))
-      .map(p => ({
+      .filter((p) => p.title?.includes(value))
+      .map((p) => ({
         ...p,
         primary: p.title,
         secondary: "",
@@ -224,23 +229,24 @@ const SearchPopper = (props: Props) => {
         icon: <InsertDriveFileIcon />
       }));
 
-
     const filteretTags = tags
-      .filter(p => p.name?.includes(value))
-      .map(p => ({
+      .filter((p) => p.name?.includes(value))
+      .map((p) => ({
         ...p,
         primary: p.name,
         secondary: "",
         filterType: "tags",
-        icon: <div
-          style={{
-            backgroundColor: p.color,
-            width: 12,
-            height: 12,
-            borderRadius: 6,
-            margin: 1
-          }}
-        />
+        icon: (
+          <div
+            style={{
+              backgroundColor: p.color,
+              width: 12,
+              height: 12,
+              borderRadius: 6,
+              margin: 1
+            }}
+          />
+        )
       }));
 
     if (value === "") {
@@ -265,27 +271,31 @@ const SearchPopper = (props: Props) => {
   const user = useAuth0().user as User;
 
   const openPerson = () => dispatch(timelineElementPersonChange(true));
-  const handleOpenPerson = id => {
+  const handleOpenPerson = (id) => {
     dispatch(showPerson(user, id, openPerson));
   };
 
   const openDocument = () => dispatch(timelineElementDocumentChange(true));
-  const handleOpenDocument = id => {
+  const handleOpenDocument = (id) => {
     dispatch(showDocument(user, id, openDocument));
   };
 
-  const handleOpenTag = tag => dispatch(openTag(tag));
+  const handleOpenTag = (tag) => dispatch(openTag(tag));
 
-  const handleResultClick = node => {
+  const handleResultClick = (node) => {
     switch (node.filterType) {
       case "node":
         const { x, y } = node.position;
         const calcX =
           0 - x * 2 + (width || 0) / 2 - timelineNodeDimensions.width / 2;
         const calcY =
-          0 - y * 2 + (height || 0) / 2 + timelineNodeDimensions.height / 2 + 50;
+          0 -
+          y * 2 +
+          (height || 0) / 2 +
+          timelineNodeDimensions.height / 2 +
+          50;
 
-        rfInstance && rfInstance.setTransform({ x: calcX, y: calcY, zoom: 2 });
+        rfInstance && rfInstance.setViewport({ x: calcX, y: calcY, zoom: 2 });
         break;
       case "person":
         handleOpenPerson(node.id);
@@ -354,7 +364,7 @@ const SearchPopper = (props: Props) => {
                       <MenuList
                         style={{ maxHeight: "50vh", overflowY: "auto" }}
                       >
-                        {searchResults.map(node => (
+                        {searchResults.map((node) => (
                           <MenuItem
                             className={classes.menuItem}
                             onClick={() => handleResultClick(node)}
@@ -365,12 +375,15 @@ const SearchPopper = (props: Props) => {
                               primary={node.primary}
                               primaryTypographyProps={{
                                 style: {
-                                  whiteSpace: "normal",
+                                  whiteSpace: "normal"
                                 }
                               }}
                               secondary={node.secondary}
                               secondaryTypographyProps={{
-                                style: { whiteSpace: "normal", fontSize: "12px" }
+                                style: {
+                                  whiteSpace: "normal",
+                                  fontSize: "12px"
+                                }
                               }}
                             />
                           </MenuItem>
@@ -386,6 +399,6 @@ const SearchPopper = (props: Props) => {
       )}
     </Popper>
   );
-};
+}
 
 export default SearchPopper;

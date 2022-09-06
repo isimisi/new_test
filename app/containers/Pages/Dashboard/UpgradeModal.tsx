@@ -6,7 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Lottie from "lottie-react";
-import printer from "./printer.json";
+import printer from "@lotties/printer.json";
 import { useTranslation } from "react-i18next";
 
 interface Props {

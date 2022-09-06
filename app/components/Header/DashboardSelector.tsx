@@ -25,14 +25,14 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const DashboardSelector = () => {
+function DashboardSelector() {
   const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
 
-  const dashboard = useAppSelector(state => state.dashboard.get("type"));
+  const dashboard = useAppSelector((state) => state.dashboard.get("type"));
 
-  const handleDashboard = event => {
+  const handleDashboard = (event) => {
     const type = event.target.value;
 
     dispatch(changeDashboardType(type));
@@ -51,14 +51,15 @@ const DashboardSelector = () => {
       onChange={handleDashboard}
       className={classes.Select}
       disableUnderline
+      style={{marginRight: 10}}
     >
-      {options.map(op => (
-        <MenuItem className={classes.menuItem} value={op.value}>
+      {options.map((op) => (
+        <MenuItem className={classes.menuItem} value={op.value} key={op.value}>
           {op.label}
         </MenuItem>
       ))}
     </Select>
   );
-};
+}
 
 export default DashboardSelector;

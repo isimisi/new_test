@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { withStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import Select from "react-select";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -18,7 +18,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
-import styles from "../workspace-jss";
+import useStyles from "../workspace-jss";
 import square from "./square.svg";
 import triangle from "./triangle.svg";
 import circle from "./circle.svg";
@@ -28,41 +28,25 @@ import { useTranslation } from "react-i18next";
 export const figurTypeOptions = [
   {
     value: "triangle",
-    label: (
-      <>
-        <img src={triangle} alt="triangle" style={{ height: 26 }} />
-      </>
-    ),
+    label: <img src={triangle} alt="triangle" style={{ height: 26 }} />,
   },
   {
     value: "square",
-    label: (
-      <>
-        <img src={square} alt="square" style={{ height: 26 }} />
-      </>
-    ),
+    label: <img src={square} alt="square" style={{ height: 26 }} />,
   },
   {
     value: "circle",
-    label: (
-      <>
-        <img src={circle} alt="circle" style={{ height: 26 }} />
-      </>
-    ),
+    label: <img src={circle} alt="circle" style={{ height: 26 }} />,
   },
   {
     value: "person",
-    label: (
-      <>
-        <img src={person} alt="person" style={{ height: 26 }} />
-      </>
-    ),
+    label: <img src={person} alt="person" style={{ height: 26 }} />,
   },
 ];
 
-const WorkspaceNodeForm = (props) => {
+function WorkspaceNodeForm(props) {
+  const classes = useStyles();
   const {
-    classes,
     nodes,
     nodeLabel,
     handleChangeLabel,
@@ -119,18 +103,16 @@ const WorkspaceNodeForm = (props) => {
           />
         </div>
         {choosenNode && (
-          <>
-            <div>
-              <TextField
-                name="displayName"
-                className={classes.field}
-                placeholder="Alias"
-                label="Alias"
-                value={nodeDisplayName}
-                onChange={handleDisplayNameChange}
-              />
-            </div>
-          </>
+          <div>
+            <TextField
+              name="displayName"
+              className={classes.field}
+              placeholder="Alias"
+              label="Alias"
+              value={nodeDisplayName}
+              onChange={handleDisplayNameChange}
+            />
+          </div>
         )}
         {choosenNode &&
           attributes.map((attribut, index) => (
@@ -144,7 +126,7 @@ const WorkspaceNodeForm = (props) => {
                   placeholder="Kendetegn"
                   noOptionsMessage={() => t("generic.no_options")}
                   formatCreateLabel={(input) => t("generic.create_new", { input })}
-                  options={attributesDropDownOptions}
+                  options={attributesDropDownOptions.toJS()}
                   value={
                     attribut.label && { label: attribut.label, value: attribut.label }
                   }
@@ -261,9 +243,7 @@ const WorkspaceNodeForm = (props) => {
                 <div
                   className={classes.color}
                   style={{
-                    backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${
-                      nodeColor.b
-                    }, ${nodeColor.a})`,
+                    backgroundColor: `rgba(${nodeColor.r}, ${nodeColor.g}, ${nodeColor.b}, ${nodeColor.a})`,
                   }}
                 />
               </div>
@@ -288,9 +268,7 @@ const WorkspaceNodeForm = (props) => {
                 <div
                   className={classes.color}
                   style={{
-                    backgroundColor: `rgba(${nodeBorderColor.r}, ${nodeBorderColor.g}, ${
-                      nodeBorderColor.b
-                    }, ${nodeBorderColor.a})`,
+                    backgroundColor: `rgba(${nodeBorderColor.r}, ${nodeBorderColor.g}, ${nodeBorderColor.b}, ${nodeBorderColor.a})`,
                   }}
                 />
               </div>
@@ -316,9 +294,7 @@ const WorkspaceNodeForm = (props) => {
                 <div
                   className={classes.color}
                   style={{
-                    backgroundColor: `rgba(${nodeLabelColor.r}, ${nodeLabelColor.g}, ${
-                      nodeLabelColor.b
-                    }, ${nodeLabelColor.a})`,
+                    backgroundColor: `rgba(${nodeLabelColor.r}, ${nodeLabelColor.g}, ${nodeLabelColor.b}, ${nodeLabelColor.a})`,
                   }}
                 />
               </div>
@@ -365,10 +341,9 @@ const WorkspaceNodeForm = (props) => {
       </div>
     </div>
   );
-};
+}
 
 WorkspaceNodeForm.propTypes = {
-  classes: PropTypes.object.isRequired,
   nodes: PropTypes.array.isRequired,
   nodeLabel: PropTypes.string.isRequired,
   handleChangeLabel: PropTypes.func.isRequired,
@@ -395,4 +370,4 @@ WorkspaceNodeForm.defaultProps = {
   nodeFigur: null,
 };
 
-export default withStyles(styles)(WorkspaceNodeForm);
+export default WorkspaceNodeForm;

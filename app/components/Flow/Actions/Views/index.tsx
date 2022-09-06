@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable @typescript-eslint/no-empty-interface */
-/* eslint-disable no-param-reassign */
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -12,12 +12,13 @@ import useStyles from "../actions.jss";
 
 import BorderHorizontalIcon from "@material-ui/icons/BorderHorizontal";
 import BorderVerticalIcon from "@material-ui/icons/BorderVertical";
-import TocIcon from "@material-ui/icons/Toc";
+
 import Divider from "@material-ui/core/Divider";
 import AllInboxIcon from "@material-ui/icons/AllInbox";
-import { FlowElement, isNode } from "react-flow-renderer";
+
 import ErrorIcon from "@material-ui/icons/Error";
 import Badge from "@material-ui/core/Badge";
+import { TCustomNode } from "@customTypes/reducers/timeline";
 
 interface Props {
   openTableView: (bool?: boolean) => void;
@@ -27,10 +28,10 @@ interface Props {
   handleToggleCorectEmails: () => void;
   openTable: boolean;
   toggleDrawer: (bool?: boolean) => void;
-  elements: FlowElement[];
+  nodes: TCustomNode[];
 }
 
-const Items = (props: Props) => {
+function Views(props: Props) {
   const {
     openTableView,
     view,
@@ -38,8 +39,7 @@ const Items = (props: Props) => {
     handleOpenImportEmails,
     handleToggleCorectEmails,
     openTable,
-    elements,
-
+    nodes,
     toggleDrawer
   } = props;
   const classes = useStyles();
@@ -59,36 +59,33 @@ const Items = (props: Props) => {
     openTableView();
   };
 
-  const badges = elements.filter(
-    e => !e.data.date && isNode(e) && e.id !== "static-button"
-  );
+  const badges = nodes.filter((e) => !e.data?.date && e.id !== "static-button");
 
   return (
-    <>
-      <Paper elevation={4} className={classes.viewsPaper}>
-        <Tooltip arrow title={`${t("timeline.horizontal")}`} placement="right">
-          <IconButton className={classes.buttons} onClick={handleHorizontal}>
-            <BorderHorizontalIcon
-              className={classNames(
-                classes.buttons,
-                classes.biggerIcon,
-                view === "horizontal" ? classes.activeButton : ""
-              )}
-            />
-          </IconButton>
-        </Tooltip>
-        <Tooltip arrow title={`${t("timeline.vertical")}`} placement="right">
-          <IconButton className={classes.buttons} onClick={handleVertical}>
-            <BorderVerticalIcon
-              className={classNames(
-                classes.buttons,
-                classes.biggerIcon,
-                view === "vertical" ? classes.activeButton : ""
-              )}
-            />
-          </IconButton>
-        </Tooltip>
-        {/* <Tooltip arrow title={`${t("timeline.table")}`} placement="right">
+    <Paper elevation={4} className={classes.viewsPaper}>
+      <Tooltip arrow title={`${t("timeline.horizontal")}`} placement="right">
+        <IconButton className={classes.buttons} onClick={handleHorizontal}>
+          <BorderHorizontalIcon
+            className={classNames(
+              classes.buttons,
+              classes.biggerIcon,
+              view === "horizontal" ? classes.activeButton : ""
+            )}
+          />
+        </IconButton>
+      </Tooltip>
+      <Tooltip arrow title={`${t("timeline.vertical")}`} placement="right">
+        <IconButton className={classes.buttons} onClick={handleVertical}>
+          <BorderVerticalIcon
+            className={classNames(
+              classes.buttons,
+              classes.biggerIcon,
+              view === "vertical" ? classes.activeButton : ""
+            )}
+          />
+        </IconButton>
+      </Tooltip>
+      {/* <Tooltip arrow title={`${t("timeline.table")}`} placement="right">
           <IconButton className={classes.buttons} onClick={handleTable}>
             <TocIcon
               className={classNames(
@@ -99,47 +96,42 @@ const Items = (props: Props) => {
             />
           </IconButton>
         </Tooltip> */}
-        <Divider flexItem className={classes.horDivider} />
+      <Divider flexItem className={classes.horDivider} />
+      <Tooltip arrow title={`${t("timeline.import_mails")}`} placement="right">
+        <IconButton
+          className={classes.buttons}
+          onClick={handleOpenImportEmails}
+        >
+          <AllInboxIcon
+            className={classNames(classes.buttons, classes.biggerIcon)}
+          />
+        </IconButton>
+      </Tooltip>
+      {badges.length > 0 && (
         <Tooltip
           arrow
-          title={`${t("timeline.import_mails")}`}
+          title={`${t("timeline.import_mails_with_error")}`}
           placement="right"
         >
           <IconButton
             className={classes.buttons}
-            onClick={handleOpenImportEmails}
+            onClick={handleToggleCorectEmails}
           >
-            <AllInboxIcon
-              className={classNames(classes.buttons, classes.biggerIcon)}
-            />
+            <Badge
+              color="error"
+              badgeContent={badges.length}
+              style={{ color: "white" }}
+              overlap="circular"
+            >
+              <ErrorIcon
+                className={classNames(classes.buttons, classes.biggerIcon)}
+              />
+            </Badge>
           </IconButton>
         </Tooltip>
-        {badges.length > 0 && (
-          <Tooltip
-            arrow
-            title={`${t("timeline.import_mails_with_error")}`}
-            placement="right"
-          >
-            <IconButton
-              className={classes.buttons}
-              onClick={handleToggleCorectEmails}
-            >
-              <Badge
-                color="error"
-                badgeContent={badges.length}
-                style={{ color: "white" }}
-                overlap="circular"
-              >
-                <ErrorIcon
-                  className={classNames(classes.buttons, classes.biggerIcon)}
-                />
-              </Badge>
-            </IconButton>
-          </Tooltip>
-        )}
-      </Paper>
-    </>
+      )}
+    </Paper>
   );
-};
+}
 
-export default Items;
+export default Views;

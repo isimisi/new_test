@@ -11,7 +11,7 @@ import brand from "@api/ui/brand";
 import logo from "@images/logo.svg";
 import { NavLink } from "react-router-dom";
 import styles from "../Forms/user-jss";
-import lock from "./lock.json";
+import lock from "@lotties/lock.json";
 
 const SendResetPassword = ({ classes, goBack }) => (
   <Paper className={classNames(classes.paperWrap, classes.petal)}>

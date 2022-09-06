@@ -19,7 +19,6 @@ import Button from "@material-ui/core/Button";
 import TrendingUpIcon from "@material-ui/icons/TrendingUp";
 import { useTranslation } from "react-i18next";
 import Typography from "@material-ui/core/Typography";
-import styles from "../workspace-jss";
 import FloatingPanel from "../../Panel/FloatingPanel";
 import AccountingTop from "./AccountingTop";
 import Timeline from "./Timeline";
@@ -173,4 +172,4 @@ CompanyDataModel.propTypes = {
   companyData: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CompanyDataModel);
+export default CompanyDataModel;

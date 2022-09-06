@@ -1,36 +1,44 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import React from "react";
 
-const styles = theme => ({
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
   close: {
     width: theme.spacing(4),
     height: theme.spacing(4),
-    padding: 0,
-  },
-});
+    padding: 0
+  }
+}));
 
-const Notification = (props) => {
+interface Props {
+  close: (type: string) => void;
+  message: string;
+}
+
+function Notification(props: Props) {
   const handleClose = () => {
     const { close } = props;
-    close('crudTableDemo');
+    close("crudTableDemo");
   };
 
-  const { classes, message } = props;
+  const { message } = props;
+
+  const classes = useStyles();
+
   return (
     <Snackbar
       anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
+        vertical: "bottom",
+        horizontal: "center"
       }}
-      open={message !== ''}
+      open={message !== ""}
       autoHideDuration={7000}
       onClose={handleClose}
       ContentProps={{
-        'aria-describedby': 'message-id',
+        "aria-describedby": "message-id"
       }}
       message={message}
       action={[
@@ -41,17 +49,11 @@ const Notification = (props) => {
           className={classes.close}
           onClick={handleClose}
         >
-          <CloseIcon style={{ color: 'white' }} />
-        </IconButton>,
+          <CloseIcon style={{ color: "white" }} />
+        </IconButton>
       ]}
     />
   );
-};
+}
 
-Notification.propTypes = {
-  classes: PropTypes.object.isRequired,
-  close: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
-};
-
-export default withStyles(styles)(Notification);
+export default Notification;

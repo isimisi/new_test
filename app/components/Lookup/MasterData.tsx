@@ -1,16 +1,21 @@
 import { Grid, Typography, Paper } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
-import { t } from "i18next";
+
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   company: any;
   country: any;
 }
 
-const MasterData = ({ company, country }: Props) => {
+function MasterData({ company, country }: Props) {
   const theme = useTheme();
-  const auditor = company.participants.find(p => p.role === "AUDITOR" && !p.to);
+  const { t } = useTranslation();
+
+  const auditor = company.participants.find(
+    (p) => p.role === "AUDITOR" && !p.to
+  );
   return (
     <Grid item lg={3}>
       <Typography
@@ -177,6 +182,6 @@ const MasterData = ({ company, country }: Props) => {
       )}
     </Grid>
   );
-};
+}
 
 export default MasterData;

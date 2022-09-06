@@ -154,7 +154,7 @@ function RelationshipForm(props) {
                 placeholder={t("relationships.relationship_form.desc")}
                 label={t("relationships.relationship_form.desc")}
                 multiline
-                rows={2}
+                minRows={2}
                 onChange={handleDescriptionChange}
                 value={description}
               />

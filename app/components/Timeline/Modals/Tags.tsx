@@ -10,7 +10,6 @@ import Button from "@material-ui/core/Button";
 
 import { useAppDispatch, useAppSelector } from "@hooks/redux";
 
-import { User } from "@auth0/auth0-react";
 import { nodeTypes } from "@pages/Timelines/constants";
 
 import TableContainer from "@material-ui/core/TableContainer";
@@ -23,26 +22,25 @@ import TableBody from "@material-ui/core/TableBody";
 import { openTag } from "@pages/Timelines/reducers/timelineActions";
 
 interface Props {
-  user: User;
   open: boolean;
   close: () => void;
 }
 
-const Persons = (props: Props) => {
-  const { open, close, user } = props;
+function Persons(props: Props) {
+  const { open, close } = props;
   const classes = useStyles();
   const dispatch = useAppDispatch();
 
-  const elements = useAppSelector(state =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
 
   const [tags, setTags] = useState<any>([]);
 
-  const handleOpenTag = tag => dispatch(openTag(tag));
+  const handleOpenTag = (tag) => dispatch(openTag(tag));
 
   useEffect(() => {
-    const nodes = elements.filter(e => nodeTypes.includes(e.type));
+    const nodes = nodeElements.filter((e) => nodeTypes.includes(e.type));
     const item: any[] = [];
 
     for (let index = 0; index < nodes.length; index++) {
@@ -50,7 +48,7 @@ const Persons = (props: Props) => {
       const { tags: _tags } = node.data;
       for (let z = 0; z < _tags.length; z++) {
         const tag = _tags[z];
-        const existingItem = item.find(p => p.id === tag.id);
+        const existingItem = item.find((p) => p.id === tag.id);
         if (!existingItem) {
           item.push({
             ...tag,
@@ -95,7 +93,7 @@ const Persons = (props: Props) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tags.map(row => (
+                {tags.map((row) => (
                   <TableRow>
                     <TableCell align="left">
                       <div
@@ -132,6 +130,6 @@ const Persons = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Persons;

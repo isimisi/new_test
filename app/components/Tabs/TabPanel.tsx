@@ -20,10 +20,15 @@ function TabPanel(props: TabPanelProps) {
       style={{ width: "100%", height: "100%" }}
     >
       {value === index && (
+        /* @ts-ignore - No implicit children can be removed when material ui is upgraded */
         <Box style={{ width: "100%", height: "100%" }}>{children}</Box>
       )}
     </div>
   );
 }
+
+TabPanel.defaultProps = {
+  children: null
+};
 
 export default TabPanel;

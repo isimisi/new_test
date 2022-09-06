@@ -1,7 +1,8 @@
+/* eslint-disable react/require-default-props */
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import React from "react";
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import Button from "@material-ui/core/Button";
@@ -20,19 +21,26 @@ const config = genConfig({
 });
 
 interface Props {
-  setShareModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setShareModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   timeline?: boolean;
+  setShowSignWorkspace?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Collaboration = (props: Props) => {
-  const { setShareModalOpen, timeline } = props;
+function Collaboration(props: Props) {
+  const { setShareModalOpen, timeline, setShowSignWorkspace } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const { user } = useAuth0();
   const meta: UserMeta = user && user["https://juristic.io/meta"];
-  const { first_name, last_name, organization_id } = meta.dbUser;
+  const { first_name, last_name, organization_id } = meta?.dbUser || {
+    first_name: "",
+    last_name: ""
+  };
 
-  const toggleShare = () => setShareModalOpen(prevVal => !prevVal);
+  const toggleShare = () =>
+    setShareModalOpen && setShareModalOpen((prevVal) => !prevVal);
+
+  const sign = () => setShowSignWorkspace && setShowSignWorkspace(true);
 
   return (
     <Paper elevation={4} className={classes.collaborationPaper}>
@@ -80,20 +88,26 @@ const Collaboration = (props: Props) => {
         placement="bottom"
       >
         <div style={{ cursor: "pointer", margin: "0 12px" }}>
+          {/* @ts-ignore */}
           <Avatar className={classes.avatar} {...config} />
         </div>
       </Tooltip>
       <Button
         variant="contained"
         color="primary"
-        disabled={timeline || organization_id === 72}
+        disabled={
+          timeline ||
+          organization_id === 72 ||
+          (setShareModalOpen === undefined &&
+            setShowSignWorkspace === undefined)
+        }
         className={classes.shareButton}
-        onClick={toggleShare}
+        onClick={setShowSignWorkspace ? sign : toggleShare}
       >
-        {t("workspaces.share")}
+        {setShowSignWorkspace ? t("workspaces.sign") : t("workspaces.share")}
       </Button>
     </Paper>
   );
-};
+}
 
-export default Collaboration;
+export default memo(Collaboration);

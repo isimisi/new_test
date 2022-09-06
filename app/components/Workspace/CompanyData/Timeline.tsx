@@ -8,7 +8,7 @@ import TimelineContent from "@material-ui/lab/TimelineContent";
 import TimelineOppositeContent from "@material-ui/lab/TimelineOppositeContent";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 
-import moment from 'moment';
+import moment from "moment";
 import Typography from "@material-ui/core/Typography";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
@@ -26,16 +26,15 @@ import Paper from "@material-ui/core/Paper";
 import { SelectOptions } from "@customTypes/data";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import Collapse from "@material-ui/core/Collapse";
-import ReactHtmlParser, { convertNodeToElement } from 'react-html-parser';
+import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import Link from "@material-ui/core/Link";
-
 
 interface Props {
   companyData?: CompanyData;
-  timeline?: Tidslinje[]
+  timeline?: Tidslinje[];
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     padding: "6px 16px",
     margin: "10px 0px"
@@ -76,10 +75,10 @@ const headerOptions = [
   "Virksomhedens status er ændret",
   "Ændring af selskabskapitalen",
   "Ændring af adresse",
-  "Ændring af revisionsforhold",
-].map(x => ({ value: x, label: x }));
+  "Ændring af revisionsforhold"
+].map((x) => ({ value: x, label: x }));
 
-const CompanyTimeline = (props: Props) => {
+function CompanyTimeline(props: Props) {
   const classes = useStyles();
   const { companyData, timeline } = props;
 
@@ -101,9 +100,7 @@ const CompanyTimeline = (props: Props) => {
     setSelectedDateEnd(date);
   };
 
-  const [filterHeader, setFilterHeader] = useState<SelectOptions | null>(
-    null
-  );
+  const [filterHeader, setFilterHeader] = useState<SelectOptions | null>(null);
 
   const handleFilterHeader = (header: SelectOptions | null) => {
     setFilterHeader(header);
@@ -131,7 +128,6 @@ const CompanyTimeline = (props: Props) => {
 
   // replace text inside string string with link
 
-
   const getTextBetween = (text: string, start: string, end: string) => {
     const regex = new RegExp(`${start}(.*?)${end}`, "g");
     const matches = text.match(regex);
@@ -144,20 +140,31 @@ const CompanyTimeline = (props: Props) => {
   // eslint-disable-next-line consistent-return
   const transformHtml = (node, index) => {
     if (node.name === "h1") {
-      return <Typography style={{ fontSize: "1rem", fontWeight: "bold" }}>{node?.children?.find(x => x.type === "text")?.data}</Typography>;
+      return (
+        <Typography style={{ fontSize: "1rem", fontWeight: "bold" }}>
+          {node?.children?.find((x) => x.type === "text")?.data}
+        </Typography>
+      );
     }
 
     if (node.name === "h2") {
-      return <Typography style={{ fontSize: "1rem", fontWeight: "bold", fontStyle: "italic" }}>{node?.children?.find(x => x.type === "text")?.data}</Typography>;
+      return (
+        <Typography
+          style={{ fontSize: "1rem", fontWeight: "bold", fontStyle: "italic" }}
+        >
+          {node?.children?.find((x) => x.type === "text")?.data}
+        </Typography>
+      );
     }
 
     if (node.type === "text") {
-      return <Typography style={{ fontSize: "0.875rem" }}>{node.data}</Typography>;
+      return (
+        <Typography style={{ fontSize: "0.875rem" }}>{node.data}</Typography>
+      );
     }
 
-
     if (node.name === "p") {
-      const text = node?.children?.find(x => x.type === "text")?.data;
+      const text = node?.children?.find((x) => x.type === "text")?.data;
       if (text) {
         const startText = text.split("@pers").shift();
         const endText = text.split("}").pop();
@@ -165,9 +172,25 @@ const CompanyTimeline = (props: Props) => {
         if (personText.length > 0) {
           return (
             <div>
-              <Typography display="inline" style={{ fontSize: "0.875rem" }}>{startText}</Typography>
-              <Typography display="inline" style={{ fontSize: "0.875rem" }}><Link target="_blank" display="inline" underline="hover" href={`https://datacvr.virk.dk/enhed/person/${personText.split(",").pop()?.replace(" ", '')}/deltager`}>{personText.split(",").shift()?.replace(/"/g, '')}</Link></Typography>
-              <Typography display="inline" style={{ fontSize: "0.875rem" }}>{endText}</Typography>
+              <Typography display="inline" style={{ fontSize: "0.875rem" }}>
+                {startText}
+              </Typography>
+              <Typography display="inline" style={{ fontSize: "0.875rem" }}>
+                <Link
+                  target="_blank"
+                  display="inline"
+                  underline="hover"
+                  href={`https://datacvr.virk.dk/enhed/person/${personText
+                    .split(",")
+                    .pop()
+                    ?.replace(" ", "")}/deltager`}
+                >
+                  {personText.split(",").shift()?.replace(/"/g, "")}
+                </Link>
+              </Typography>
+              <Typography display="inline" style={{ fontSize: "0.875rem" }}>
+                {endText}
+              </Typography>
             </div>
           );
         }
@@ -178,7 +201,7 @@ const CompanyTimeline = (props: Props) => {
 
     if (node.name === "html") {
       // eslint-disable-next-line no-param-reassign
-      node.name = 'div';
+      node.name = "div";
       return convertNodeToElement(node, index, transformHtml);
     }
 
@@ -188,7 +211,6 @@ const CompanyTimeline = (props: Props) => {
   };
 
   const actualTimeline = timeline || companyData?.Tidslinje;
-
 
   return (
     <div>
@@ -200,11 +222,11 @@ const CompanyTimeline = (props: Props) => {
           <Select
             styles={{
               ...selectStyles(),
-              container: provided => ({
+              container: (provided) => ({
                 ...provided,
                 marginTop: 16
               }),
-              control: provided => ({
+              control: (provided) => ({
                 ...provided,
                 height: 44.625
               })
@@ -219,7 +241,12 @@ const CompanyTimeline = (props: Props) => {
             onChange={handleFilterHeader}
           />
         </Grid>
-        <Grid item xs={6} className={classes.gridItem} style={{ display: 'flex' }}>
+        <Grid
+          item
+          xs={6}
+          className={classes.gridItem}
+          style={{ display: "flex" }}
+        >
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               className={classes.datePicker}
@@ -251,17 +278,16 @@ const CompanyTimeline = (props: Props) => {
             />
           </MuiPickersUtilsProvider>
         </Grid>
-
       </Grid>
 
       <Timeline>
         <TransitionGroup>
-
           {actualTimeline?.filter(filterTimeline).map((item) => (
             <Collapse key={`${item.header}${item.date}`}>
-
               <TimelineItem>
-                <TimelineOppositeContent>{moment(item.date).format("DD/MM/YYYY")}</TimelineOppositeContent>
+                <TimelineOppositeContent>
+                  {moment(item.date).format("DD/MM/YYYY")}
+                </TimelineOppositeContent>
                 <TimelineSeparator>
                   <TimelineConnector />
                   <TimelineDot color="primary" />
@@ -284,10 +310,8 @@ const CompanyTimeline = (props: Props) => {
           ))}
         </TransitionGroup>
       </Timeline>
-
-
     </div>
   );
-};
+}
 
 export default CompanyTimeline;

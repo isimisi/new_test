@@ -58,7 +58,7 @@ function Header(props) {
 
   const { classes, toggleDrawerOpen, margin, position, history } = props;
 
-  const setMargin = sidebarPosition => {
+  const setMargin = (sidebarPosition) => {
     if (sidebarPosition === "right-sidebar") {
       return classes.right;
     }
@@ -92,6 +92,7 @@ function Header(props) {
         >
           <MenuIcon className={classes.menuIcon} />
         </Fab>
+        {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
         <Hidden smDown>
           <div className={classes.headerProperties}>
             <div className={classNames(classes.headerAction)}>
@@ -147,9 +148,11 @@ function Header(props) {
         </div> */}
         {intro ? <DashboardSelector /> : null}
         <LanguageSelector />
+        {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
         <Hidden xsDown>
           <span className={classes.separatorV} />
         </Hidden>
+        {/* @ts-ignore - withstyles */}
         <UserMenu />
       </Toolbar>
     </AppBar>

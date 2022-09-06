@@ -31,17 +31,14 @@ function Sidebar(props) {
     };
   }, []);
 
-  const {
-    open,
-    toggleDrawerOpen,
-    loadTransition,
-    leftSidebar,
-    dataMenu
-  } = props;
+  const { open, toggleDrawerOpen, loadTransition, leftSidebar, dataMenu } =
+    props;
 
   return (
-    <Fragment>
+    <>
+      {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
       <Hidden lgUp>
+        {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
         <SwipeableDrawer
           onClose={toggleDrawerOpen}
           onOpen={toggleDrawerOpen}
@@ -59,6 +56,7 @@ function Sidebar(props) {
           </div>
         </SwipeableDrawer>
       </Hidden>
+      {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
       <Hidden mdDown>
         <Drawer
           variant="permanent"
@@ -83,7 +81,7 @@ function Sidebar(props) {
           />
         </Drawer>
       </Hidden>
-    </Fragment>
+    </>
   );
 }
 

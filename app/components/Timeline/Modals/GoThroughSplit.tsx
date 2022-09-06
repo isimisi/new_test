@@ -2,10 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from "react";
 
-import {
-  DocumentCleanOption,
-
-} from "@customTypes/reducers/document";
+import { DocumentCleanOption } from "@customTypes/reducers/document";
 import { MixedPersonOptions } from "@customTypes/reducers/person";
 import { useAppSelector } from "@hooks/redux";
 import Button from "@material-ui/core/Button";
@@ -18,7 +15,6 @@ import useStyles from "../timeline.jss";
 import { ITimelineNode, TimelineNode } from "@customTypes/reducers/timeline";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { useTheme } from "@material-ui/core/styles";
-
 
 import Paper from "@material-ui/core/Paper";
 import Step from "@material-ui/core/Step";
@@ -46,8 +42,7 @@ interface Props {
   splitElements: List<string>;
 }
 
-
-const GoThroughSplit = (props: Props) => {
+function GoThroughSplit(props: Props) {
   const {
     open,
     close,
@@ -71,10 +66,9 @@ const GoThroughSplit = (props: Props) => {
     if (activeStep === splitElements.size - 1) {
       close();
     } else {
-      setActiveStep(prevActiveStep => prevActiveStep + 1);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
-
 
   const branch = "";
   const { t } = useTranslation();
@@ -83,28 +77,34 @@ const GoThroughSplit = (props: Props) => {
   const title = timelineNode.get("title");
 
   const theme = useTheme();
-  const loadingsT = useAppSelector(state => state.timeline.get("loadings"));
+  const loadingsT = useAppSelector((state) => state.timeline.get("loadings"));
 
   const getHtmlIfCurrSplitting = () => {
-    const splittedHtml = currSplittingEmail?.split(splitElements.get(activeStep));
+    const splittedHtml = currSplittingEmail?.split(
+      splitElements.get(activeStep)
+    );
     if (splittedHtml) {
-      return splitElements.get(activeStep) + splittedHtml[splittedHtml.length - 1];
+      return (
+        splitElements.get(activeStep) + splittedHtml[splittedHtml.length - 1]
+      );
     }
     return "";
   };
 
-  const [currSplittingHtmlContent, setCurrSplittingHtmlContent] = useState<string | null>(null);
+  const [currSplittingHtmlContent, setCurrSplittingHtmlContent] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     if (currSplittingEmail) {
-      setCurrSplittingHtmlContent(getHtmlIfCurrSplitting()); 8;
+      setCurrSplittingHtmlContent(getHtmlIfCurrSplitting());
+      8;
     }
   }, [activeStep, currSplittingEmail, splitElements]);
 
   const handleSaveAndNext = () => {
     onSave(handleNext, splitElements.get(activeStep));
   };
-
 
   return (
     <div>
@@ -118,8 +118,8 @@ const GoThroughSplit = (props: Props) => {
       >
         <div>
           <div>
-
             <Stepper activeStep={activeStep}>
+              {/* @ts-ignore */}
               {splitElements.map((label, index) => {
                 const stepProps: { completed?: boolean } = {};
                 const labelProps: { optional?: React.ReactNode } = {};
@@ -136,7 +136,6 @@ const GoThroughSplit = (props: Props) => {
               })}
             </Stepper>
 
-
             <div style={{ display: "flex", maxHeight: "60vh" }}>
               {currSplittingEmail && currSplittingHtmlContent && (
                 <Paper
@@ -147,14 +146,13 @@ const GoThroughSplit = (props: Props) => {
                     overflowY: "scroll"
                   }}
                 >
-
                   <div
+                    // eslint-disable-next-line react/no-danger
                     dangerouslySetInnerHTML={{
                       __html: currSplittingHtmlContent
                     }}
                     className={classes.emailContent}
                   />
-
                 </Paper>
               )}
               <CreateForm
@@ -215,6 +213,6 @@ const GoThroughSplit = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default GoThroughSplit;

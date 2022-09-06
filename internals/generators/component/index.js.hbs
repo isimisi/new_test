@@ -1,0 +1,35 @@
+/** * *
+{{properCase name}}
+* */
+
+{{#if memo}}
+  import React, { memo } from 'react';
+{{else}}
+  import React from 'react';
+{{/if}}
+import useStyles from "./{{properCase name}}-jss"; import { useTranslation } from
+"react-i18next";
+{{#if redux}}
+  import { useAppDispatch, useAppSelector } from "@hooks/redux";
+{{/if}}
+
+interface Props { }
+
+{{properCase name}}(props: Props) { const { t } = useTranslation(); const classes =
+useStyles();
+{{#if redux}}
+  const dispatch = useAppDispatch(); const something = useAppSelector(state =>
+  state.some.get("thing"))
+
+{{/if}}
+return (
+<div>
+</div>
+); }
+
+{{#if memo}}
+  export default memo({{properCase name}});
+{{else}}
+  export default
+  {{properCase name}};
+{{/if}}

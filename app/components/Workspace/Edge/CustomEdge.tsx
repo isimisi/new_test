@@ -1,419 +1,216 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-
-import CircularProgress from "@material-ui/core/CircularProgress";
+/* eslint-disable no-lone-blocks */
+/* eslint-disable default-case */
 import React, { memo } from "react";
-import {
-  EdgeText,
-  getEdgeCenter,
-  getMarkerEnd,
-  Position
-} from "react-flow-renderer";
-import { useHistory } from "react-router-dom";
+import { EdgeProps, Position } from "react-flow-renderer";
+import BaseEdge from "./BaseEdge";
 
-const getFactor = (
-  sourcePosition: Position,
-  targetPosition: Position,
-  sourceY: number,
-  targetY: number,
-  sourceX: number,
-  targetX: number,
-  cpComputedPosition: { x: number; y: number } | undefined
-) => {
-  const leftAndRight = [Position.Left, Position.Right];
-  let factor = 0;
+export interface GetBezierPathParams {
+  sourceX: number;
+  sourceY: number;
+  sourcePosition?: Position;
+  targetX: number;
+  targetY: number;
+  targetPosition?: Position;
+  curvature?: number;
+}
 
-  if (sourcePosition === Position.Top && targetPosition === Position.Bottom) {
-    factor = 0.2;
-    if (targetY + 100 < sourceY) {
-      factor = 0.1;
-    } else if (targetY - 120 > sourceY) {
-      factor = 0.8;
-    } else if (targetY - 60 > sourceY) {
-      factor = 0.6;
-    } else if (targetY > sourceY) {
-      factor = 0.4;
-    }
+interface GetControlWithCurvatureParams {
+  pos: Position;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  c: number;
+  otherPos?: Position;
+}
+
+function calculateControlOffset(distance: number, curvature: number): number {
+  if (distance >= 0) {
+    return 0.5 * distance;
   }
+  return curvature * 25 * Math.sqrt(-distance);
+}
 
-  if (targetPosition === Position.Top && sourcePosition === Position.Bottom) {
-    factor = 0.2;
-    if (sourceY + 100 < targetY) {
-      factor = 0.1;
-    } else if (sourceY - 120 > targetY) {
-      factor = 0.8;
-    } else if (sourceY - 60 > targetY) {
-      factor = 0.6;
-    } else if (sourceY > targetY) {
-      factor = 0.4;
-    }
+function getControlWithCurvature({
+  pos,
+  x1,
+  y1,
+  x2,
+  y2,
+  c,
+  otherPos
+}: GetControlWithCurvatureParams): [number, number] {
+  let ctX: number;
+  let ctY: number;
+  switch (pos) {
+    case Position.Left:
+      {
+        ctX =
+          x1 -
+          (pos === otherPos
+            ? calculateControlOffset(y1 - y2, c) / 2
+            : calculateControlOffset(x1 - x2, c));
+        ctY = y1;
+      }
+      break;
+    case Position.Right:
+      {
+        ctX =
+          x1 +
+          (pos === otherPos
+            ? calculateControlOffset(y2 - y1, c) / 2
+            : calculateControlOffset(x2 - x1, c));
+        ctY = y1;
+      }
+      break;
+    case Position.Top:
+      {
+        ctX = x1;
+        ctY =
+          y1 -
+          (pos === otherPos
+            ? calculateControlOffset(x1 - x2, c) / 2
+            : calculateControlOffset(y1 - y2, c));
+      }
+      break;
+    case Position.Bottom:
+      {
+        ctX = x1;
+        ctY =
+          y1 +
+          (pos === otherPos
+            ? calculateControlOffset(x2 - x1, c) / 2
+            : calculateControlOffset(y2 - y1, c));
+      }
+      break;
   }
+  return [ctX, ctY];
+}
 
-  if (
-    leftAndRight.includes(sourcePosition) &&
-    leftAndRight.includes(targetPosition)
-  ) {
-    factor = 0.2;
-  }
-
-  if (
-    sourcePosition === Position.Top &&
-    leftAndRight.includes(targetPosition)
-  ) {
-    factor = 0.2;
-  }
-  if (
-    sourcePosition === Position.Bottom &&
-    leftAndRight.includes(targetPosition)
-  ) {
-    factor = targetY + 60 < sourceY ? 0.6 : 0.4;
-  }
-
-  if (
-    leftAndRight.includes(sourcePosition) &&
-    targetPosition === Position.Bottom
-  ) {
-    factor = targetY + 60 < sourceY ? 0.6 : 0.4;
-  }
-
-  if (
-    leftAndRight.includes(sourcePosition) &&
-    targetPosition === Position.Top
-  ) {
-    factor = sourceY + 60 < targetY ? 0.6 : 0.4;
-  }
-
-  if (
-    sourcePosition === targetPosition &&
-    leftAndRight.includes(sourcePosition)
-  ) {
-    factor = 0.3;
-    if (sourceX + 100 < targetX) {
-      factor = 0.6;
-    } else if (targetX + 100 < sourceX) {
-      factor = 0.6;
-    }
-  }
-
-  if (
-    sourcePosition === targetPosition &&
-    !leftAndRight.includes(sourcePosition)
-  ) {
-    factor = 0.3;
-    if (sourceY + 100 < targetY) {
-      factor = 0.6;
-    } else if (targetY + 100 < sourceY) {
-      factor = 0.6;
-    }
-  }
-
-  return factor;
-};
-
-const drawCurve = (
-  sourceX: number,
-  sourceY: number,
-  sourcePosition: Position,
-  targetX: number,
-  targetY: number,
-  targetPosition: Position,
-  controlPoints: string,
-  source: string,
-  target: string
-): string => {
-  const [_centerX, _centerY] = getEdgeCenter({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY
-  });
-
-  const cX = _centerX;
-  const cY = _centerY;
-
-  const lengthBetweenPoints = Math.sqrt(
-    // eslint-disable-next-line no-restricted-properties
-    Math.pow(sourceX - targetX, 2) + Math.pow(sourceY - targetY, 2)
-  );
-
-  let cp1x = 0;
-  let cp1y = 0;
-  let cp2x = 0;
-  let cp2y = 0;
-
-  const cpMiddle = document.querySelector(`[data-id=${controlPoints}]`);
-
-  const middleRadius = 3;
-  let cpComputedPosition;
-  if (cpMiddle) {
-    // @ts-ignore
-    const { x, y } = cpMiddle.computedStyleMap().get("transform")[0];
-    cpComputedPosition = {
-      x: x.value,
-      y: y.value
-    };
-  }
-
-  let cpMidX = cpComputedPosition ? cpComputedPosition.x - 50 : 0;
-  const cpMidY = cpComputedPosition ? cpComputedPosition.y : 0;
-
-  const factor = getFactor(
-    sourcePosition,
-    targetPosition,
-    sourceY,
-    targetY,
-    sourceX,
-    targetX,
-    cpComputedPosition
-  );
-
-  const offset = lengthBetweenPoints * factor;
-
-  if (sourcePosition === Position.Top && targetPosition === Position.Bottom) {
-    cp1x = sourceX;
-    cp1y = cY - offset;
-    cp2x = targetX;
-    cp2y = cY + offset;
-  } else if (
-    sourcePosition === Position.Top &&
-    targetPosition === Position.Top
-  ) {
-    cp1x = sourceX;
-    cp1y = cY - offset;
-    cp2x = targetX;
-    cp2y = cY - offset;
-    cpMidX = cpComputedPosition ? cpComputedPosition.x - 10 : 0;
-  } else if (
-    sourcePosition === Position.Top &&
-    targetPosition.includes("left")
-  ) {
-    cp1x = sourceX;
-    cp1y = sourceY - offset;
-    cp2x = targetX - offset;
-    cp2y = targetY;
-  } else if (
-    sourcePosition === Position.Top &&
-    targetPosition.includes("right")
-  ) {
-    cp1x = sourceX;
-    cp1y = sourceY - offset;
-    cp2x = targetX + offset;
-    cp2y = targetY;
-  } else if (
-    sourcePosition === Position.Bottom &&
-    targetPosition === Position.Bottom
-  ) {
-    cp1x = sourceX;
-    cp1y = cY + offset;
-    cp2x = targetX;
-    cp2y = cY + offset;
-  } else if (
-    sourcePosition === Position.Bottom &&
-    targetPosition === Position.Top
-  ) {
-    if (source === target) {
-      cp1x = sourceX;
-      cp1y = cY + offset;
-      cp2x = targetX;
-      cp2y = cY - offset;
-    } else {
-      cp1x = sourceX;
-      cp1y = cY + offset;
-      cp2x = targetX;
-      cp2y = cY - offset;
-    }
-  } else if (
-    sourcePosition === Position.Bottom &&
-    targetPosition.includes("left")
-  ) {
-    cp1x = sourceX;
-    cp1y = cY + offset;
-    cp2x = targetX - offset;
-    cp2y = targetY;
-  } else if (
-    sourcePosition === Position.Bottom &&
-    targetPosition.includes("right")
-  ) {
-    cp1x = sourceX;
-    cp1y = cY + offset;
-    cp2x = targetX + offset;
-    cp2y = targetY;
-  } else if (
-    sourcePosition.includes("left") &&
-    targetPosition === Position.Bottom
-  ) {
-    cp1x = sourceX - offset;
-    cp1y = sourceY;
-    cp2x = targetX;
-    cp2y = targetY + offset;
-  } else if (
-    sourcePosition.includes("left") &&
-    targetPosition === Position.Top
-  ) {
-    cp1x = sourceX - offset;
-    cp1y = sourceY;
-    cp2x = targetX;
-    cp2y = targetY - offset;
-  } else if (
-    sourcePosition.includes("left") &&
-    targetPosition.includes("left")
-  ) {
-    cp1x = cX - offset;
-    cp1y = sourceY;
-    cp2x = cX - offset;
-    cp2y = targetY;
-  } else if (
-    sourcePosition.includes("left") &&
-    targetPosition.includes("right")
-  ) {
-    cp1x = cX - offset;
-    cp1y = sourceY;
-    cp2x = cX + offset;
-    cp2y = targetY;
-  } else if (
-    sourcePosition.includes("right") &&
-    targetPosition === Position.Bottom
-  ) {
-    cp1x = sourceX + offset;
-    cp1y = sourceY;
-    cp2x = targetX;
-    cp2y = targetY + offset;
-  } else if (
-    sourcePosition.includes("right") &&
-    targetPosition === Position.Top
-  ) {
-    cp1x = sourceX + offset;
-    cp1y = sourceY;
-    cp2x = targetX;
-    cp2y = targetY - offset;
-  } else if (
-    sourcePosition.includes("right") &&
-    targetPosition.includes("left")
-  ) {
-    cp1x = sourceX + offset;
-    cp1y = sourceY;
-    cp2x = targetX - offset;
-    cp2y = targetY;
-    cpMidX = cpComputedPosition ? cpComputedPosition.x - 50 : 0;
-  } else if (
-    sourcePosition.includes("right") &&
-    targetPosition.includes("right")
-  ) {
-    cp1x = cX + offset;
-    cp1y = sourceY;
-    cp2x = cX + offset;
-    cp2y = targetY;
-  }
-
-  let path = `
-  M${sourceX},${sourceY}
-  C${cp1x},${cp1y} ${cp2x},${cp2y} ${targetX},${targetY}`;
-
-  if (cpComputedPosition) {
-    path = `
-    M${sourceX},${sourceY}
-    C${cp1x},${cp1y} ${cpMidX},${cpMidY} ${cpComputedPosition.x +
-      middleRadius},${cpComputedPosition.y + middleRadius}
-    S${cp2x},${cp2y} ${targetX},${targetY}`;
-  }
-
-  return path;
-};
-
-export const findPointOnEdge = (
-  d: string,
-  prcnt: number
-): { x: number; y: number } => {
-  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", d);
-
-  const pathLength = Math.floor(path.getTotalLength());
-
-  // eslint-disable-next-line no-param-reassign
-  prcnt = (prcnt * pathLength) / 100;
-
-  // Get x and y values at a certain point in the line
-  const pt = path.getPointAtLength(prcnt);
-  const x = Math.round(pt.x);
-  const y = Math.round(pt.y);
-
-  path.remove();
-
-  return { x, y };
-};
-
-const CustomEdge = ({
-  id,
-  source,
-  target,
+export function getBezierPath({
   sourceX,
   sourceY,
+  sourcePosition = Position.Bottom,
   targetX,
   targetY,
-  sourcePosition,
-  targetPosition,
-  style = {},
-  data,
-  // label,
-  labelStyle,
-  labelShowBg,
-  labelBgStyle,
-  labelBgPadding,
-  labelBgBorderRadius,
-  arrowHeadType,
-  markerEndId
-}) => {
-  const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+  targetPosition = Position.Top,
+  curvature = 0.25
+}: GetBezierPathParams): string {
+  const [sourceControlX, sourceControlY] = getControlWithCurvature({
+    pos: sourcePosition,
+    x1: sourceX,
+    y1: sourceY,
+    x2: targetX,
+    y2: targetY,
+    c: curvature,
+    otherPos: targetPosition
+  });
+  const [targetControlX, targetControlY] = getControlWithCurvature({
+    pos: targetPosition,
+    x1: targetX,
+    y1: targetY,
+    x2: sourceX,
+    y2: sourceY,
+    c: curvature,
+    otherPos: sourcePosition
+  });
+  return `M${sourceX},${sourceY} C${sourceControlX},${sourceControlY} ${targetControlX},${targetControlY} ${targetX},${targetY}`;
+}
 
-  const path = drawCurve(
+// @TODO: this function will recalculate the control points
+// one option is to let getXXXPath() return center points
+// but will introduce breaking changes
+// the getCenter() of other types of edges might need to change, too
+export function getBezierCenter({
+  sourceX,
+  sourceY,
+  sourcePosition = Position.Bottom,
+  targetX,
+  targetY,
+  targetPosition = Position.Top,
+  curvature = 0.25
+}: GetBezierPathParams): [number, number, number, number] {
+  const [sourceControlX, sourceControlY] = getControlWithCurvature({
+    pos: sourcePosition,
+    x1: sourceX,
+    y1: sourceY,
+    x2: targetX,
+    y2: targetY,
+    c: curvature,
+    otherPos: targetPosition
+  });
+  const [targetControlX, targetControlY] = getControlWithCurvature({
+    pos: targetPosition,
+    x1: targetX,
+    y1: targetY,
+    x2: sourceX,
+    y2: sourceY,
+    c: curvature,
+    otherPos: sourcePosition
+  });
+  // cubic bezier t=0.5 mid point, not the actual mid point, but easy to calculate
+  // https://stackoverflow.com/questions/67516101/how-to-find-distance-mid-point-of-bezier-curve
+  const centerX =
+    sourceX * 0.125 +
+    sourceControlX * 0.375 +
+    targetControlX * 0.375 +
+    targetX * 0.125;
+  const centerY =
+    sourceY * 0.125 +
+    sourceControlY * 0.375 +
+    targetControlY * 0.375 +
+    targetY * 0.125;
+  const xOffset = Math.abs(centerX - sourceX);
+  const yOffset = Math.abs(centerY - sourceY);
+  return [centerX, centerY, xOffset, yOffset];
+}
+
+export default memo(
+  ({
     sourceX,
     sourceY,
-    sourcePosition,
     targetX,
     targetY,
-    targetPosition,
-    data.controlPoints,
-    source,
-    target
-  );
+    sourcePosition = Position.Bottom,
+    targetPosition = Position.Top,
+    label,
+    labelStyle,
+    labelShowBg,
+    labelBgStyle,
+    labelBgPadding,
+    labelBgBorderRadius,
+    style,
+    markerEnd,
+    markerStart,
+    curvature
+  }: EdgeProps) => {
+    const params = {
+      sourceX,
+      sourceY,
+      sourcePosition,
+      targetX,
+      targetY,
+      targetPosition,
+      curvature
+    };
+    const path = getBezierPath(params);
+    const [centerX, centerY] = getBezierCenter(params);
 
-  const center = findPointOnEdge(path, 50);
-
-  const history = useHistory();
-  const isCondition = history.location.pathname.includes("conditions");
-  let label = `${data.showLabel || !data.value ? data.label : ""}${
-    data.showLabel ? ": " : ""
-  }${data.value}`;
-
-  if (isCondition) {
-    label = `${data.label} ${data.comparison_type} ${data.comparison_value}`;
-  }
-
-  const text = label ? (
-    <EdgeText
-      x={center.x}
-      y={center.y}
-      label={label}
-      labelStyle={labelStyle}
-      labelShowBg={labelShowBg}
-      labelBgStyle={labelBgStyle}
-      labelBgPadding={labelBgPadding}
-      labelBgBorderRadius={labelBgBorderRadius}
-    />
-  ) : null;
-
-  return (
-    <>
-      <path
-        id={id}
+    return (
+      <BaseEdge
+        path={path}
+        centerX={centerX}
+        centerY={centerY}
+        label={label}
+        labelStyle={labelStyle}
+        labelShowBg={labelShowBg}
+        labelBgStyle={labelBgStyle}
+        labelBgPadding={labelBgPadding}
+        labelBgBorderRadius={labelBgBorderRadius}
         style={style}
-        className="react-flow__edge-path"
-        d={path}
         markerEnd={markerEnd}
+        markerStart={markerStart}
       />
-      {text}
-    </>
-  );
-};
-
-export default memo(CustomEdge);
+    );
+  }
+);

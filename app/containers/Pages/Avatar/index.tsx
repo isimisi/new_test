@@ -59,9 +59,9 @@ class AvatarEdit extends Component {
       const blob = await domtoimage.toBlob(node, {
         height: node.offsetHeight * scale,
         style: {
-          transform: `scale(${scale}) translate(${node.offsetWidth /
-            2 /
-            scale}px, ${node.offsetHeight / 2 / scale}px)`,
+          transform: `scale(${scale}) translate(${
+            node.offsetWidth / 2 / scale
+          }px, ${node.offsetHeight / 2 / scale}px)`,
           "border-radius": 0
         },
         width: node.offsetWidth * scale
@@ -79,10 +79,12 @@ class AvatarEdit extends Component {
       <Paper className="paper">
         <main className="main">
           <div>
+            {/* @ts-ignore */}
             <Avatar
               className="avatar"
               hairColorRandom
               shape={shape}
+              // eslint-disable-next-line react/jsx-props-no-spreading
               {...config}
             />
           </div>

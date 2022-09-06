@@ -1,5 +1,4 @@
-/* eslint-disable no-param-reassign */
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 import css from "@styles/Form.scss";
@@ -24,33 +23,31 @@ interface Props {
   onSave: (document: TDocument, stopLoading: () => void) => void;
 }
 
-const Document = (props: Props) => {
+function Document(props: Props) {
   const { open, close, onSave } = props;
 
   const classes = useStyles();
 
-  const document = useAppSelector(state => state.document.get("document"));
-  const createElementOpen = useAppSelector(state =>
+  const document = useAppSelector((state) => state.document.get("document"));
+  const createElementOpen = useAppSelector((state) =>
     state.timeline.get("createElementOpen")
   );
 
-  const isUpdatingNode = useAppSelector(state =>
+  const isUpdatingNode = useAppSelector((state) =>
     state.timeline.get("isUpdatingNode")
   );
-  const elements = useAppSelector(state =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
 
   const nodes = useMemo(
     () =>
-      elements
-        .filter((e): e is Node => isNode(e))
-        .filter(
-          n =>
-            n.data.documents &&
-            n.data.documents.some(p => p.id === document.get("id"))
-        ),
-    [elements, document]
+      nodeElements.filter(
+        (n) =>
+          n.data.documents &&
+          n.data.documents.some((p) => p.id === document.get("id"))
+      ),
+    [nodeElements, document]
   );
 
   const { t } = useTranslation();
@@ -60,7 +57,7 @@ const Document = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const stopLoading = () => setLoading(false);
 
-  const handleFileChange = _file => {
+  const handleFileChange = (_file) => {
     if (_file) {
       setFile(_file);
     } else {
@@ -161,6 +158,6 @@ const Document = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default Document;

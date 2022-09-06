@@ -1,12 +1,12 @@
-/* eslint-disable no-param-reassign */
-import React from "react";
+/* eslint-disable react/require-default-props */
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import IconButton from "@material-ui/core/IconButton";
 
 import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import useStyles from "./actions.jss";
+import useStyles from "../actions.jss";
 import Divider from "@material-ui/core/Divider";
 import BusinessIcon from "@material-ui/icons/Business";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
@@ -32,22 +32,24 @@ import LowPriorityIcon from "@material-ui/icons/LowPriority";
 import { onDragStartNode, onDragStartNote } from "@helpers/flow/dragHelper";
 
 interface Props {
-  defineNodeOpen: boolean;
-  mouseActive: boolean;
-  stickyActive: boolean;
-  nodeActive: boolean;
-  toggleMouse: () => void;
-  toggleSticky: () => void;
-  toggleNode: () => void;
-  handleOpenCvr: () => void;
-  setShowAlertLog: React.Dispatch<React.SetStateAction<boolean>>;
-  showAlertLog: boolean;
-  history: any;
-  id: string | undefined;
-  zoom: number;
+  defineNodeOpen?: boolean;
+  mouseActive?: boolean;
+  stickyActive?: boolean;
+  nodeActive?: boolean;
+  toggleMouse?: () => void;
+  toggleSticky?: () => void;
+  toggleNode?: () => void;
+  handleOpenCvr?: () => void;
+  setShowAlertLog?: React.Dispatch<React.SetStateAction<boolean>>;
+  showAlertLog?: boolean;
+  history?: any;
+  id?: string | undefined;
+  zoom?: number;
+  pub?: boolean;
+  editable?: boolean;
 }
 
-const Items = (props: Props) => {
+function Items(props: Props) {
   const {
     mouseActive,
     stickyActive,
@@ -60,7 +62,9 @@ const Items = (props: Props) => {
     showAlertLog,
     history,
     id,
-    zoom
+    zoom,
+    pub,
+    editable
   } = props;
   const classes = useStyles();
   const { t } = useTranslation();
@@ -85,13 +89,14 @@ const Items = (props: Props) => {
   };
 
   const [editSteps, setEditSteps] = React.useState(false);
-  const toggleEditSteps = () => setEditSteps(prevVal => !prevVal);
+  const toggleEditSteps = () => setEditSteps((prevVal) => !prevVal);
 
-  const toggleShowAlerts = () => setShowAlertLog(prevVal => !prevVal);
+  const toggleShowAlerts = () =>
+    setShowAlertLog && setShowAlertLog((prevVal) => !prevVal);
   const goToAnalysis = () => history.push(`analysis/${id}`);
 
-  const handleDragNode = e => onDragStartNode(e, zoom);
-  const handleDragNote = e => onDragStartNote(e, zoom);
+  const handleDragNode = (e) => onDragStartNode(e, zoom);
+  const handleDragNote = (e) => onDragStartNote(e, zoom);
   // const handleDragStep = e => (e, zoom);
 
   return (
@@ -113,7 +118,11 @@ const Items = (props: Props) => {
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.add_node")}`} placement="right">
           <div onDragStart={handleDragNode} draggable>
-            <IconButton className={classes.buttons} onClick={toggleNode}>
+            <IconButton
+              className={classes.buttons}
+              onClick={toggleNode}
+              disabled={(pub && !editable) || !toggleNode}
+            >
               <AddBoxIcon
                 className={classNames(
                   classes.buttons,
@@ -126,7 +135,11 @@ const Items = (props: Props) => {
         </Tooltip>
         <Tooltip arrow title={`${t("workspaces.add_note")}`} placement="right">
           <div onDragStart={handleDragNote} draggable>
-            <IconButton className={classes.buttons} onClick={toggleSticky}>
+            <IconButton
+              className={classes.buttons}
+              onClick={toggleSticky}
+              disabled={(pub && !editable) || !toggleSticky}
+            >
               <NoteAddIcon
                 className={classNames(
                   classes.buttons,
@@ -159,31 +172,56 @@ const Items = (props: Props) => {
           title={`${t("workspaces.get_from_company_data")}`}
           placement="right"
         >
-          <IconButton className={classes.buttons} onClick={handleOpenCvr}>
+          <IconButton
+            className={classes.buttons}
+            onClick={handleOpenCvr}
+            disabled={(pub && !editable) || !handleOpenCvr}
+          >
             <BusinessIcon
               className={classNames(classes.buttons, classes.biggerIcon)}
             />
           </IconButton>
         </Tooltip>
-        <Divider flexItem className={classes.horDivider} />
-        <Tooltip arrow title={`${t("workspaces.red_flags")}`} placement="right">
-          <IconButton className={classes.buttons} onClick={toggleShowAlerts}>
-            <FlagIcon
-              className={classNames(
-                classes.buttons,
-                classes.biggerIcon,
-                showAlertLog ? classes.activeButton : ""
-              )}
-            />
-          </IconButton>
-        </Tooltip>
-        <Tooltip arrow title={`${t("workspaces.analyse")}`} placement="right">
-          <IconButton className={classes.buttons} onClick={goToAnalysis}>
-            <AssessmentIcon
-              className={classNames(classes.buttons, classes.biggerIcon)}
-            />
-          </IconButton>
-        </Tooltip>
+
+        {!pub && (
+          <>
+            <Divider flexItem className={classes.horDivider} />
+            <Tooltip
+              arrow
+              title={`${t("workspaces.red_flags")}`}
+              placement="right"
+            >
+              <IconButton
+                className={classes.buttons}
+                onClick={toggleShowAlerts}
+                disabled={!setShowAlertLog}
+              >
+                <FlagIcon
+                  className={classNames(
+                    classes.buttons,
+                    classes.biggerIcon,
+                    showAlertLog ? classes.activeButton : ""
+                  )}
+                />
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              arrow
+              title={`${t("workspaces.analyse")}`}
+              placement="right"
+            >
+              <IconButton
+                className={classes.buttons}
+                onClick={goToAnalysis}
+                disabled={!history}
+              >
+                <AssessmentIcon
+                  className={classNames(classes.buttons, classes.biggerIcon)}
+                />
+              </IconButton>
+            </Tooltip>
+          </>
+        )}
         <Divider flexItem className={classes.horDivider} />
         <Tooltip arrow title={`${t("workspaces.undo")}`} placement="right">
           <span>
@@ -242,6 +280,7 @@ const Items = (props: Props) => {
                       <LowPriorityIcon />
                     </ListItemIcon>
                     <ListItemText>{t("workspace.edit_steps")}</ListItemText>
+                    {/* @ts-ignore - with styles */}
                     <CustomSwitch checked={editSteps} name="editSteps" />
                   </MenuItem>
                 </MenuList>
@@ -252,6 +291,6 @@ const Items = (props: Props) => {
       </Popper>
     </>
   );
-};
+}
 
-export default Items;
+export default memo(Items);

@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import css from "@styles/Form.scss";
@@ -50,7 +50,7 @@ const relationshipTypeOptions = [
 
 const nonValueArray = ["exists", "does not exist", "any"];
 
-const EdgeForm = (props) => {
+function EdgeForm(props) {
   const {
     classes,
     close,
@@ -69,6 +69,7 @@ const EdgeForm = (props) => {
     isUpdatingElement,
   } = props;
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const editable = relationshipLabel.length === 0;
   const choosenRelationship = relationships.find((r) => r.label === relationshipLabel);
@@ -138,7 +139,7 @@ const EdgeForm = (props) => {
               placeholder="Description"
               label="Description"
               multiline
-              rows={2}
+              minRows={2}
               disabled
               value={choosenRelationship && choosenRelationship?.description}
             />
@@ -176,7 +177,7 @@ const EdgeForm = (props) => {
             variant="contained"
             type="button"
             onClick={handleDeleteEdge}
-            style={{ backgroundColor: red, color: "white" }}
+            style={{ backgroundColor: theme.palette.error.dark, color: "white" }}
           >
             Slet
           </Button>
@@ -196,7 +197,7 @@ const EdgeForm = (props) => {
       </div>
     </div>
   );
-};
+}
 
 EdgeForm.propTypes = {
   classes: PropTypes.object.isRequired,

@@ -50,6 +50,7 @@ const resetEnhancer = (rootReducer) => (state, action) => {
 const initialState = {};
 const store = createStore<ApplicationState, any, unknown, unknown>(
   resetEnhancer(persistedReducer),
+  // @ts-ignore
   initialState,
   compose(applyMiddleware(thunk, routerMiddleware(history), _logger))
 );

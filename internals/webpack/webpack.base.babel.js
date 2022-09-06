@@ -5,6 +5,7 @@
 
 const path = require("path");
 const webpack = require("webpack");
+// const ESLintPlugin = require('eslint-webpack-plugin');
 
 const HappyPack = require("happypack");
 const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
@@ -12,31 +13,15 @@ const happyThreadPool = HappyPack.ThreadPool({ size: 5 });
 module.exports = (options) => ({
   mode: options.mode,
   entry: options.entry,
-  output: Object.assign(
-    {
-      // Compile into js/build.js
-      path: path.resolve(process.cwd(), "build"),
-      publicPath: "/",
-    },
-    options.output
-  ), // Merge with env dependent settings
+  output: {
+    // Compile into js/build.js
+    path: path.resolve(process.cwd(), "build"),
+    publicPath: "/",
+    ...options.output,
+  }, // Merge with env dependent settings
   optimization: options.optimization,
   module: {
     rules: [
-      /*
-        Disabled eslint by default.
-        You can enable it to maintain and keep clean your code.
-        NOTE: By enable eslint running app process at beginning will slower
-      */
-      // {
-      //   enforce: 'pre',
-      //   test: /\.js?$/,
-      //   exclude: [/node_modules/],
-      //   loader: 'eslint-loader',
-      //   options: {
-      //     quiet: true,
-      //   }
-      // },
       {
         test: /\.jsx?$/, // Transform all .js and .jsx files required somewhere with Babel
         exclude: /node_modules/,
@@ -45,6 +30,23 @@ module.exports = (options) => ({
           options: options.babelQuery,
         },
       },
+      {
+        type: "javascript/auto",
+        test: /\.json$/,
+        include: /(lottie)/,
+        loader: "lottie-web-webpack-loader",
+        options: {
+          assets: {
+            scale: 0.5, // proportional resizing multiplier
+          },
+        },
+      },
+      {
+        test: /\.js$/,
+        enforce: "pre",
+        use: ["source-map-loader"],
+      },
+
       {
         test: /\.tsx?$/,
         loader: "ts-loader",
@@ -56,13 +58,38 @@ module.exports = (options) => ({
         // for a list of loaders, see https://webpack.js.org/loaders/#styling
         test: /\.css$/,
         exclude: /node_modules/,
-        use: ["style-loader", "css-loader"],
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+            options: {
+              esModule: false,
+              sourceMap: false,
+              importLoaders: 10,
+              modules: false,
+            },
+          },
+        ],
       },
       {
         // Preprocess 3rd party .css files located in node_modules
         test: /\.css$/,
         include: /node_modules/,
-        use: ["style-loader", "css-loader"],
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+            options: {
+              esModule: false,
+              importLoaders: 10,
+              modules: false,
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
@@ -77,17 +104,25 @@ module.exports = (options) => ({
           {
             loader: "css-loader",
             options: {
+              esModule: false,
               sourceMap: false,
-              importLoaders: 2,
+              importLoaders: 10,
               modules: true,
-              localIdentName: "[local]__[hash:base64:5]",
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              sourceMap: false,
             },
           },
           {
             loader: "sass-loader",
             options: {
-              outputStyle: "expanded",
-              sourceMap: false,
+              sassOptions: {
+                outputStyle: "expanded",
+                sourceMap: false,
+              },
             },
           },
         ],
@@ -96,6 +131,7 @@ module.exports = (options) => ({
         test: /\.md$/,
         use: "raw-loader",
       },
+
       {
         test: /\.(jpg|png|gif|svg)$/,
         use: [
@@ -152,10 +188,25 @@ module.exports = (options) => ({
       },
     ],
   },
-  node: {
-    fs: "empty",
-  },
+  ignoreWarnings: [
+    /Failed to parse source map/,
+    /the request of a dependency is an expression/,
+    /require function is used in a way in which dependencies cannot be statically extracted/,
+  ],
   plugins: options.plugins.concat([
+    /*
+      Disabled eslint by default.
+      You can enable it to maintain and keep clean your code.
+      NOTE: By enable eslint running app process at beginning will slower
+    */
+    //    new ESLintPlugin({
+    //      extensions: 'js',
+    //      exclude: 'node_modules',
+    //      failOnWarning: true,
+    //      failOnError: true,
+    //      emitError: true,
+    //      emitWarning: true,
+    //    }),
     // Always expose NODE_ENV to webpack, in order to use `process.env.NODE_ENV`
     // inside your code for any environment checks; Terser will automatically
     // drop any unreachable code.
@@ -167,23 +218,60 @@ module.exports = (options) => ({
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
     }),
-    new webpack.ContextReplacementPlugin(/^\.\/locale$/, (context) => {
-      if (!/\/moment\//.test(context.context)) {
-        return;
-      }
-      // context needs to be modified in place
-      Object.assign(context, {
-        // include only CJK
-        regExp: /^\.\/(ja|ko|zh)/,
-        // point to the locale data folder relative to moment's src/lib/locale
-        request: "../../locale",
-      });
+    new webpack.ProvidePlugin({
+      process: "process/browser",
     }),
+    // new webpack.ContextReplacementPlugin(/^\.\/locale$/, (context) => {
+    //   if (!/\/moment\//.test(context.context)) {
+    //     return;
+    //   }
+    //   // context needs to be modified in place
+    //   Object.assign(context, {
+    //     // include only CJK
+    //     regExp: /^\.\/(ja|ko|zh)/,
+    //     // point to the locale data folder relative to moment's src/lib/locale
+    //     request: "../../locale",
+    //   });
+    // }),
   ]),
   resolve: {
     modules: ["node_modules", "app"],
     extensions: [".ts", ".tsx", ".js", ".jsx", ".react.js"],
     mainFields: ["browser", "jsnext:main", "main"],
+    fallback: {
+      fs: false,
+      domain: false,
+      path: false,
+      os: false,
+      assert: false,
+      crypto: false,
+      util: false,
+      stream: false,
+      url: false,
+      http: false,
+      https: false,
+      zlib: false,
+      vm: false,
+      console: false,
+      tty: false,
+      timers: false,
+      constants: false,
+      child_process: false,
+      inspector: false,
+      esbuild: false,
+      "@swc": false,
+      "spdx-exceptions": false,
+      worker_threads: false,
+      "spdx-license-ids": false,
+      net: false,
+      tls: false,
+      perf_hooks: false,
+      bufferutil: false,
+      "utf-8-validate": false,
+      querystring: false,
+      process: false,
+      "flag-icon-css": false,
+    },
     alias: {
       "@pages": path.resolve(__dirname, "../../app/containers/Pages"),
       "@components": path.resolve(__dirname, "../../app/components/"),

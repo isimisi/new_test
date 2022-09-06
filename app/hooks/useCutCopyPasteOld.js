@@ -1,10 +1,8 @@
 /* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
+
 /* eslint-disable import/prefer-default-export */
-import { useEffect } from 'react';
-import {
-  useStoreState, isEdge, getConnectedEdges
-} from 'react-flow-renderer';
+import { useEffect } from "react";
+import { useStoreState, isEdge, getConnectedEdges } from "react-flow-renderer";
 function getSelectedGraph(selectedNodes, elements) {
   const allEdges = [];
   const allNodeMap = {};
@@ -28,10 +26,7 @@ function getSelectedGraph(selectedNodes, elements) {
   });
   // pick edges which has both nodes present in selectedNodes
   Object.values(edgeMap).forEach((edge) => {
-    if (
-      selectedNodeIds.includes(edge.source)
-      && selectedNodeIds.includes(edge.target)
-    ) {
+    if (selectedNodeIds.includes(edge.source) && selectedNodeIds.includes(edge.target)) {
       nodes.push(edge);
     }
   });
@@ -46,9 +41,9 @@ export function useCutCopyPaste(elements, onElementsRemove, handleSave) {
     // remove selected nodes from graph
     // copy to clipboard
     if ((selectedElements && selectedElements.length) || element) {
-      const data = element ? JSON.stringify([element]) : JSON.stringify(
-        getSelectedGraph(selectedElements, elements)
-      );
+      const data = element
+        ? JSON.stringify([element])
+        : JSON.stringify(getSelectedGraph(selectedElements, elements));
       navigator.clipboard.writeText(data);
 
       if (element) {
@@ -62,9 +57,9 @@ export function useCutCopyPaste(elements, onElementsRemove, handleSave) {
   }
   function copy(event, element = null) {
     if ((selectedElements && selectedElements.length) || element) {
-      const data = element ? JSON.stringify([element]) : JSON.stringify(
-        getSelectedGraph(selectedElements, elements)
-      );
+      const data = element
+        ? JSON.stringify([element])
+        : JSON.stringify(getSelectedGraph(selectedElements, elements));
 
       navigator.clipboard.writeText(data);
       event.preventDefault();
@@ -80,13 +75,13 @@ export function useCutCopyPaste(elements, onElementsRemove, handleSave) {
     }
   }
   useEffect(() => {
-    document.addEventListener('cut', cut);
-    document.addEventListener('copy', copy);
-    document.addEventListener('paste', paste);
+    document.addEventListener("cut", cut);
+    document.addEventListener("copy", copy);
+    document.addEventListener("paste", paste);
     return () => {
-      document.removeEventListener('cut', cut);
-      document.removeEventListener('copy', copy);
-      document.removeEventListener('paste', paste);
+      document.removeEventListener("cut", cut);
+      document.removeEventListener("copy", copy);
+      document.removeEventListener("paste", paste);
     };
   }, [elements, onElementsRemove, selectedElements, handleSave]);
 

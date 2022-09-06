@@ -45,13 +45,15 @@ import brand from "@api/ui/brand";
 const title = brand.name + " - Lookup";
 const description = brand.desc;
 
-const Lookup = () => {
+function Lookup() {
   const classes = useStyles();
 
   const dispatch = useAppDispatch();
-  const lookups = useAppSelector(state => state[reducer].get("lookups")).toJS();
-  const loading = useAppSelector(state => state[reducer].get("loading"));
-  const messageNotif = useAppSelector(state => state[reducer].get("message"));
+  const lookups = useAppSelector((state) =>
+    state[reducer].get("lookups")
+  ).toJS();
+  const loading = useAppSelector((state) => state[reducer].get("loading"));
+  const messageNotif = useAppSelector((state) => state[reducer].get("message"));
 
   const history = useHistory();
   const user = useAuth0().user as User;
@@ -110,6 +112,8 @@ const Lookup = () => {
                 {t("groups.search-group.results")}
               </Typography>
             ) : null}
+            {/* @ts-ignore - No implicit children can be removed when material ui is upgraded */}
+
             <Hidden mdDown>
               <div className={classes.toggleContainer}>
                 <ToggleButtonGroup
@@ -148,7 +152,7 @@ const Lookup = () => {
                 md={listView === "list" ? 12 : 4}
                 sm={listView === "list" ? 12 : 6}
                 xs={12}
-                key={index.toString()}
+                key={item.value}
               >
                 <Card style={{ position: "relative" }}>
                   <ButtonBase
@@ -200,6 +204,6 @@ const Lookup = () => {
       )}
     </div>
   );
-};
+}
 
 export default Lookup;

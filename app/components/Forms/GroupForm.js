@@ -72,7 +72,7 @@ function GroupForm(props) {
                 placeholder="Description"
                 label="Description"
                 multiline
-                rows={2}
+                minRows={2}
                 onChange={handleDescriptionChange}
                 value={description}
               />

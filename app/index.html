@@ -10,10 +10,10 @@
     />
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Juristic</title>
-    <script src="//install.fullview.io?o=77482be3-d169-4146-ab80-0597dd5d5ba3"></script>
+    <!-- <script src="//install.fullview.io?o=77482be3-d169-4146-ab80-0597dd5d5ba3"></script> -->
     <!-- segment -->
     <script>
-      !(function() {
+      !(function () {
         var analytics = (window.analytics = window.analytics || []);
         if (!analytics.initialize)
           if (analytics.invoked)
@@ -44,8 +44,8 @@
               "setAnonymousId",
               "addDestinationMiddleware",
             ];
-            analytics.factory = function(e) {
-              return function() {
+            analytics.factory = function (e) {
+              return function () {
                 var t = Array.prototype.slice.call(arguments);
                 t.unshift(e);
                 analytics.push(t);
@@ -56,7 +56,7 @@
               var key = analytics.methods[e];
               analytics[key] = analytics.factory(key);
             }
-            analytics.load = function(key, e) {
+            analytics.load = function (key, e) {
               var t = document.createElement("script");
               t.type = "text/javascript";
               t.async = !0;
@@ -177,7 +177,7 @@
         src="https://assets9.lottiefiles.com/packages/lf20_t8jhdiii.json"
         background="transparent"
         speed="1"
-        style="width: 400px; height: 400px;"
+        style="width: 400px; height: 400px"
         loop
         autoplay
       ></lottie-player>

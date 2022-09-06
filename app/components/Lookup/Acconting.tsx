@@ -6,7 +6,6 @@ import CounterWidget from "@components/Counter/CounterWidget";
 import { Doughnut, Bar } from "react-chartjs-2";
 
 import useStyles from "./lookup.jss";
-import { useTheme } from "@material-ui/core/styles";
 import Select from "react-select";
 import { selectStyles } from "@api/ui/helper";
 import { SelectOptions } from "@customTypes/data";
@@ -32,7 +31,7 @@ const chartColorsMedium = ["#FFDC79", "#FCF5DE"];
 
 const chartColorsBad = ["#FF8DA0", "#FFF6F7"];
 
-const agGetColor = value => {
+const agGetColor = (value) => {
   if (value >= 6) {
     return chartColorsGood;
   }
@@ -42,7 +41,7 @@ const agGetColor = value => {
   return chartColorsBad;
 };
 
-const sgGetColor = value => {
+const sgGetColor = (value) => {
   if (value >= 10) {
     return chartColorsGood;
   }
@@ -52,7 +51,7 @@ const sgGetColor = value => {
   return chartColorsBad;
 };
 
-const lgGetColor = value => {
+const lgGetColor = (value) => {
   if (value >= 100) {
     return chartColorsGood;
   }
@@ -70,7 +69,7 @@ const options = {
   }
 };
 
-const Accounting = (props: Props) => {
+function Accounting(props: Props) {
   const { data, years, year, handleYear } = props;
 
   const classes = useStyles();
@@ -127,7 +126,7 @@ const Accounting = (props: Props) => {
         enabled: false,
         intersect: false,
 
-        external: context => {
+        external: (context) => {
           const yearVal = context.tooltip.title[0];
           const val = context.tooltip.body[0].lines[0];
 
@@ -203,7 +202,7 @@ const Accounting = (props: Props) => {
             color="white"
             start={0}
             end={AG}
-            formattingFn={val => genericFormatter(val, t("numberformat"))}
+            formattingFn={(val) => genericFormatter(val, t("numberformat"))}
             duration={3}
             title={t("accounting.ag")}
             unitAfter={t("percent")}
@@ -219,7 +218,7 @@ const Accounting = (props: Props) => {
           color="white"
           start={0}
           end={SG}
-          formattingFn={val => genericFormatter(val, t("numberformat"))}
+          formattingFn={(val) => genericFormatter(val, t("numberformat"))}
           duration={3}
           unitAfter={t("percent")}
           title={t("accounting.sg")}
@@ -234,7 +233,7 @@ const Accounting = (props: Props) => {
           color="white"
           start={0}
           end={LG}
-          formattingFn={val => genericFormatter(val, t("numberformat"))}
+          formattingFn={(val) => genericFormatter(val, t("numberformat"))}
           duration={3}
           unitAfter={t("percent")}
           title={t("accounting.lg")}
@@ -250,7 +249,7 @@ const Accounting = (props: Props) => {
         </Typography>
       </Grid>
       {Object.values(currFinancials.income).every(
-        value => !value || value === "FinancialIncome"
+        (value) => !value || value === "FinancialIncome"
       ) ? (
         <NoContent
           noLottie
@@ -260,7 +259,7 @@ const Accounting = (props: Props) => {
           textVariant="subtitle1"
         />
       ) : (
-        Object.keys(currFinancials.income).map(key => {
+        Object.keys(currFinancials.income).map((key) => {
           if (key === "__typename" || currFinancials.income[key] === null) {
             return null;
           }
@@ -270,13 +269,12 @@ const Accounting = (props: Props) => {
                 color="white"
                 start={0}
                 end={currFinancials.income[key]}
-                formattingFn={val =>
+                formattingFn={(val) =>
                   currencyFormatter(
                     val * 1000,
                     currFinancials.currency,
                     t("numberformat")
-                  )
-                }
+                  )}
                 duration={1}
                 title={t(`accounting.${key}`)}
               >
@@ -291,13 +289,13 @@ const Accounting = (props: Props) => {
                       data={{
                         labels: years
                           .sort((a, b) => Number(a.value) - Number(b.value))
-                          .map(v => v.value),
+                          .map((v) => v.value),
                         datasets: [
                           {
                             data: years
                               .sort((a, b) => Number(a.value) - Number(b.value))
                               .map(
-                                v =>
+                                (v) =>
                                   data.primaryFinancials["year" + v.value]
                                     .income[key]
                               ),
@@ -321,7 +319,7 @@ const Accounting = (props: Props) => {
           {t("lookup.balance_sheet")}
         </Typography>
       </Grid>
-      {Object.keys(currFinancials.assets).map(key => {
+      {Object.keys(currFinancials.assets).map((key) => {
         if (key === "__typename" || currFinancials.assets[key] === null) {
           return null;
         }
@@ -331,13 +329,12 @@ const Accounting = (props: Props) => {
               color="white"
               start={0}
               end={currFinancials.assets[key]}
-              formattingFn={val =>
+              formattingFn={(val) =>
                 currencyFormatter(
                   val * 1000,
                   currFinancials.currency,
                   t("numberformat")
-                )
-              }
+                )}
               duration={1}
               title={t(`accounting.${key}`)}
             >
@@ -352,13 +349,13 @@ const Accounting = (props: Props) => {
                     data={{
                       labels: years
                         .sort((a, b) => Number(a.value) - Number(b.value))
-                        .map(v => v.value),
+                        .map((v) => v.value),
                       datasets: [
                         {
                           data: years
                             .sort((a, b) => Number(a.value) - Number(b.value))
                             .map(
-                              v =>
+                              (v) =>
                                 data.primaryFinancials["year" + v.value].assets[
                                   key
                                 ]
@@ -376,7 +373,7 @@ const Accounting = (props: Props) => {
           </Grid>
         );
       })}
-      {Object.keys(currFinancials.equityAndLiabilities).map(key => {
+      {Object.keys(currFinancials.equityAndLiabilities).map((key) => {
         if (
           key === "__typename" ||
           currFinancials.equityAndLiabilities[key] === null
@@ -389,13 +386,12 @@ const Accounting = (props: Props) => {
               color="white"
               start={0}
               end={currFinancials.equityAndLiabilities[key]}
-              formattingFn={val =>
+              formattingFn={(val) =>
                 currencyFormatter(
                   val * 1000,
                   currFinancials.currency,
                   t("numberformat")
-                )
-              }
+                )}
               duration={1}
               title={t(`accounting.${key}`)}
             >
@@ -410,13 +406,13 @@ const Accounting = (props: Props) => {
                     data={{
                       labels: years
                         .sort((a, b) => Number(a.value) - Number(b.value))
-                        .map(v => v.value),
+                        .map((v) => v.value),
                       datasets: [
                         {
                           data: years
                             .sort((a, b) => Number(a.value) - Number(b.value))
                             .map(
-                              v =>
+                              (v) =>
                                 data.primaryFinancials["year" + v.value]
                                   .equityAndLiabilities[key]
                             ),
@@ -439,7 +435,7 @@ const Accounting = (props: Props) => {
         </Typography>
       </Grid>
       {Object.values(currFinancials.cashFlows).every(
-        value => !value || value === "FinancialCashFlows"
+        (value) => !value || value === "FinancialCashFlows"
       ) ? (
         <NoContent
           noLottie
@@ -449,7 +445,7 @@ const Accounting = (props: Props) => {
           textVariant="subtitle1"
         />
       ) : (
-        Object.keys(currFinancials.cashFlows).map(key => {
+        Object.keys(currFinancials.cashFlows).map((key) => {
           if (key === "__typename" || currFinancials.cashFlows[key] === null) {
             return null;
           }
@@ -459,13 +455,12 @@ const Accounting = (props: Props) => {
                 color="white"
                 start={0}
                 end={currFinancials.cashFlows[key]}
-                formattingFn={val =>
+                formattingFn={(val) =>
                   currencyFormatter(
                     val * 1000,
                     currFinancials.currency,
                     "da-DK"
-                  )
-                }
+                  )}
                 duration={1}
                 title={t(`accounting.${key}`)}
               >
@@ -480,13 +475,13 @@ const Accounting = (props: Props) => {
                       data={{
                         labels: years
                           .sort((a, b) => Number(a.value) - Number(b.value))
-                          .map(v => v.value),
+                          .map((v) => v.value),
                         datasets: [
                           {
                             data: years
                               .sort((a, b) => Number(a.value) - Number(b.value))
                               .map(
-                                v =>
+                                (v) =>
                                   data.primaryFinancials["year" + v.value]
                                     .cashFlows[key]
                               ),
@@ -506,6 +501,6 @@ const Accounting = (props: Props) => {
       )}
     </Grid>
   );
-};
+}
 
 export default Accounting;

@@ -462,7 +462,8 @@
       "show_arrow": "Vis som pil",
       "more": "Mere"
     },
-    "no_label_double_click": "Du skal tilføje en relationstype før du kan redigere teksten"
+    "no_label_double_click": "Du skal tilføje en relationstype før du kan redigere teksten",
+    "sign": "Signer"
   },
   "workspace-analysis": {
     "earlier_versions": "Tidligere versioner",

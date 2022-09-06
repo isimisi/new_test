@@ -7,7 +7,6 @@ import Button from "@material-ui/core/Button";
 import { useAppSelector } from "@hooks/redux";
 
 import NodesTable from "../Util/NodesTable";
-import { isNode } from "react-flow-renderer";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -15,19 +14,18 @@ interface Props {
   close: () => void;
 }
 
-const NodesTableModal = (props: Props) => {
+function NodesTableModal(props: Props) {
   const { open, close } = props;
 
   const classes = useStyles();
 
-  const elements = useAppSelector(state =>
-    state.timeline.get("elements")
+  const nodeElements = useAppSelector((state) =>
+    state.timeline.get("nodes")
   ).toJS();
 
   const nodes = useMemo(
-    () =>
-      elements.filter((e): e is Node => isNode(e) && e.id !== "static-button"),
-    [elements]
+    () => nodeElements.filter((e) => e.id !== "static-button"),
+    [nodeElements]
   );
 
   const { t } = useTranslation();
@@ -56,6 +54,6 @@ const NodesTableModal = (props: Props) => {
       </FloatingPanel>
     </div>
   );
-};
+}
 
 export default NodesTableModal;
