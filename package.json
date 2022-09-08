@@ -1,6 +1,6 @@
 {
   "name": "juristic",
-  "version": "1.4.88",
+  "version": "1.4.89",
   "description": "juristic",
   "private": true,
   "author": "Kean Ottesen",
@@ -101,6 +101,7 @@
     "axios": "^0.25.0",
     "bourbon": "^5.1.0",
     "bourbon-neat": "^3.0.0",
+    "buffer": "^6.0.3",
     "caniuse-lite": "^1.0.30001307",
     "chalk": "^2.4.2",
     "chart.js": "3.7.1",

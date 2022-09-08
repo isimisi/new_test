@@ -12,24 +12,18 @@ import DeleteIcon from "@material-ui/icons/Delete";
 interface Props {
   file: any;
   handleFileChange: (files: any) => void;
-
 }
 
-const UploadForm = (props: Props) => {
+function UploadForm(props: Props) {
   const { file, handleFileChange } = props;
   const { t } = useTranslation();
   const classes = useStyles();
 
-  const doc = useAppSelector(state => state.document.get("document"));
+  const doc = useAppSelector((state) => state.document.get("document"));
 
   const download = () => {
     const data = Uint8Array.from(
-      file
-        ? file.Body.data
-        : doc
-          .get("link")
-          .get("Body")
-          .get("data")
+      file ? file.Body.data : doc.get("link").get("Body").get("data")
     );
     const content = new Blob([data.buffer], {
       type: file ? file.ContentType : doc.get("link").get("ContentType")
@@ -47,7 +41,7 @@ const UploadForm = (props: Props) => {
   const fileChanges = (_files) => {
     const _file = _files[0];
 
-    _file.arrayBuffer().then(buf => {
+    _file.arrayBuffer().then((buf) => {
       const buffer = Buffer.from(buf);
 
       const newFile = {
@@ -60,7 +54,6 @@ const UploadForm = (props: Props) => {
       handleFileChange(newFile);
     });
   };
-
 
   return (
     <>
@@ -93,6 +86,6 @@ const UploadForm = (props: Props) => {
       />
     </>
   );
-};
+}
 
 export default UploadForm;

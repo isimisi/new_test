@@ -221,6 +221,10 @@ module.exports = (options) => ({
     new webpack.ProvidePlugin({
       process: "process/browser",
     }),
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+    }),
     // new webpack.ContextReplacementPlugin(/^\.\/locale$/, (context) => {
     //   if (!/\/moment\//.test(context.context)) {
     //     return;
@@ -267,6 +271,7 @@ module.exports = (options) => ({
       tls: false,
       perf_hooks: false,
       bufferutil: false,
+      buffer: require.resolve("buffer"),
       "utf-8-validate": false,
       querystring: false,
       process: false,
