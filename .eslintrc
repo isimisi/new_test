@@ -22,6 +22,7 @@
     "no-param-reassign": 0,
     "import/no-unresolved": 0,
     "import/no-named-as-default": 0,
+    "react/function-component-definition": 0,
     "no-unused-expressions": 0,
     "comma-dangle": 0, // not sure why airbnb turned this on. gross!
     "indent": 0,

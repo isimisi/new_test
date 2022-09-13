@@ -24,7 +24,7 @@ export interface HttpHeader {
 
 export const authHeader = (user: AuthUser): HttpHeader => ({
   headers: {
-    Authorization: `Bearer ${getToken(user)}`,
+    Authorization: `Bearer Y2w3aXd6ZDl2MDAwMGw0bzc3cmIzOTNtaw.igf5pdIbyO6MILb1G-tRkUxvxhDoiWBbNVDbAqY0w3d6L2H3tL0i2KTU8NzA`,
   },
 });
 

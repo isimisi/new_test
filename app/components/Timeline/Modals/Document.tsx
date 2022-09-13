@@ -73,7 +73,7 @@ function Document(props: Props) {
   const user = useAuth0().user as User;
 
   const download = () => {
-    dispatch(downloadDocument(user, document.get("title"), document.get("id")));
+    dispatch(downloadDocument(user, document.get("title"), document.get("id"), document.get('file_type')));
   };
 
   const handleSave = () => {

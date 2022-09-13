@@ -23,6 +23,7 @@ export interface Document {
   created_at: string | null;
   updated_at: string | null;
   group: string | null;
+  file_type: string | null;
   file?: any;
   initial?: boolean;
   tags: List<TagDeconstructedOnOtherElements[]>;

@@ -84,10 +84,9 @@ export const putDocument = (
 
   let body;
   if (hasNewDoc) {
-    const blob = new Blob([file.Body.data]);
-
     body = new FormData();
-    body.append("file_content", blob);
+    body.append("file_content", file.data);
+    console.log(file);
   }
   try {
     await axios.put(url, body, header);

@@ -77,8 +77,8 @@ function Documents(props: Props) {
 
   const { t } = useTranslation();
 
-  const download = (title, id) => {
-    dispatch(downloadDocument(user, title, id));
+  const download = (title, id, file_type?) => {
+    dispatch(downloadDocument(user, title, id, file_type));
   };
 
   return (
@@ -114,7 +114,7 @@ function Documents(props: Props) {
                     <TableCell align="right">
                       <IconButton
                         aria-label="settings"
-                        onClick={() => download(row.title, row.id)}
+                        onClick={() => download(row.title, row.id, row.file_type)}
                         disabled={!row.link}
                       >
                         <AttachFileIcon />

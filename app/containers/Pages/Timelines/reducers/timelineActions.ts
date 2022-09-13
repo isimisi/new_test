@@ -348,7 +348,7 @@ export const timelineElementDocumentChange = (bool: boolean) => ({
 });
 
 export const downloadDocument =
-  (user: User, title: string, document_id: string) =>
+  (user: User, title: string, document_id: string, file_type?: string) =>
   async (dispatch: ThunkDispatch<IImmutableTimelineState, any, TimelineActions>) => {
     dispatch({ type: types.DOWNLOAD_DOCUMENT_LOADING, loadingType: "post" });
 
@@ -368,7 +368,7 @@ export const downloadDocument =
       const link = document.createElement("a");
 
       link.setAttribute("href", encodedUri);
-      link.setAttribute("download", title);
+      link.setAttribute("download", file_type ? `${title}.${file_type}` : title);
 
       link.click();
       dispatch({ type: types.DOWNLOAD_DOCUMENT_SUCCESS });

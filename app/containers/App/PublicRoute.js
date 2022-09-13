@@ -4,12 +4,11 @@ import {
   Route,
 } from 'react-router-dom';
 
-
-const PublicRoute = ({ children, ...rest }) => (
-  <Route
+function PublicRoute({ children, ...rest }) {
+  return <Route
     {...rest}
     render={() => children}
-  />
-);
+  />;
+}
 
 export default PublicRoute;
