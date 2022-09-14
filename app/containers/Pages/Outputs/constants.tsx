@@ -11,13 +11,13 @@ import Chip from "@material-ui/core/Chip";
 
 const downloadFile = (label, file) => {
   const data = Uint8Array.from(file.Body.data);
-  const content = new Blob([data.buffer], { type: file.ContentType });
+  const content = new Blob([data], { type: file.ContentType });
 
   const encodedUri = window.URL.createObjectURL(content);
   const link = document.createElement("a");
 
   link.setAttribute("href", encodedUri);
-  link.setAttribute("download", label);
+  link.setAttribute("download", file.Metadata.file_type ? `${label}.${file.Metadata.file_type}` : label);
 
   link.click();
 };

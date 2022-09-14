@@ -139,14 +139,16 @@ const OutputForm = (props: Props) => {
   };
 
   const downloadFile = () => {
+    console.log(outputFile);
     const data = Uint8Array.from(outputFile.Body.data);
+    const { file_type } = outputFile.Metadata;
     const content = new Blob([data.buffer], { type: outputFile.ContentType });
     const encodedUri = window.URL.createObjectURL(content);
 
     const link = document.createElement("a");
 
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", title);
+    link.setAttribute("download", file_type ? `${title}.${file_type}` : title);
 
     link.click();
   };
@@ -158,10 +160,12 @@ const OutputForm = (props: Props) => {
       const buffer = Buffer.from(buf);
 
       const newFile = {
+        file,
         Body: {
           type: "Buffer",
           data: buffer
         },
+        Metadata: {},
         ContentType: file.type
       };
       onOutputChange(newFile);

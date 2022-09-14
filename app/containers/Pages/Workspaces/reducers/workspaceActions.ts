@@ -625,7 +625,7 @@ export const getCompanyData =
   ) =>
   async (dispatch: ThunkDispatch<IImmutableWorkspaceState, any, WorkspaceActions>) => {
     dispatch({ type: types.GET_WORKSPACE_NODE_COMPANY_DATA_LOADING });
-    const url = `${baseUrl}/workspacenodes/company/info/${id}`;
+    const url = `${baseUrl}/workspaces/nodes/company/info/${id}`;
     const header = authHeader(user);
     try {
       const response = await axios.get(url, header);

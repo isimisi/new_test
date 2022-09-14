@@ -64,34 +64,35 @@ function UploadForm(props: Props) {
    };
 
    return (
-      <>
-         {(doc.get('link')?.size > 0 || file) && (
-            <div className={classes.flexRow}>
-               {file && (
-                  <Tooltip title={`${t('document.delete_file')}`}>
-                     <IconButton
-                        color="primary"
-                        aria-label="Download fil"
-                        component="span"
-                        style={{ marginRight: 20 }}
-                        onClick={() => handleFileChange(null)}>
-                        <DeleteIcon />
-                     </IconButton>
-                  </Tooltip>
+     <>
+       {(doc.get('link')?.size > 0 || file) && (
+       <div className={classes.flexRow}>
+         {file && (
+         <Tooltip title={`${t('document.delete_file')}`}>
+           <IconButton
+             color="primary"
+             aria-label="Download fil"
+             component="span"
+             style={{ marginRight: 20 }}
+             onClick={() => handleFileChange(null)}
+           >
+             <DeleteIcon />
+           </IconButton>
+         </Tooltip>
                )}
-               <Tooltip title={`${t('document.change_file')}`}>
-                  <FileUpload minimal handleChangeFile={fileChanges} />
-               </Tooltip>
-            </div>
+         <Tooltip title={`${t('document.change_file')}`}>
+           <FileUpload minimal handleChangeFile={fileChanges} />
+         </Tooltip>
+       </div>
          )}
 
-         <FileUpload
-            height={doc.get('link') || file ? 240 : 280}
-            handleChangeFile={fileChanges}
-            uploaded={Boolean(doc.get('link')) || Boolean(file)}
-            download={download}
-         />
-      </>
+       <FileUpload
+         height={doc.get('link') || file ? 240 : 280}
+         handleChangeFile={fileChanges}
+         uploaded={Boolean(doc.get('link')) || Boolean(file)}
+         download={download}
+       />
+     </>
    );
 }
 

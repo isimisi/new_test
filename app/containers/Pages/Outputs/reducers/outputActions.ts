@@ -99,11 +99,9 @@ export const putOutput = (
 
   let body;
   if (!output.AcceptRanges && outputType === "upload") {
-    const blob = new Blob([output.Body.data]);
-
     header.params.hasFile = true;
     body = new FormData();
-    body.append("file_content", blob);
+    body.append("file_content", output.file);
   }
 
   try {

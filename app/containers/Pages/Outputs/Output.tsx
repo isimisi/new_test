@@ -69,7 +69,6 @@ const Output = () => {
 
   const [loading, setLoading] = useState(false);
 
-
   const [deletedConditions, setDeletedConditions] = useState<any[]>([]);
 
   useEffect(() => {
